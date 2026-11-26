@@ -16,6 +16,9 @@
                                             rel: with or without a leading Textures/.
                                             TAG: artpipe-collect | script:<writer path>; a mechanical
                                             install is refused over an owner-kept picture.
+                                            --owner-said on an install means that the owner chose this picture; an
+                                            order of the owner to fix a thing goes in --why. A Conductor ruling alone
+                                            (--per-ruling + --why) records no keep of his.
                                             Owner authority, one field per kind (CLAUDE.md, as rimflow): --owner-said
                                             his words only; --by-card a card decision (our label); --per-ruling a
                                             standing ruling cited. --why = the agent's own reason: grants nothing
@@ -24,6 +27,11 @@
     art.py correct-provenance <ruling-id>... (--by-card "..." | --per-ruling REF | --owner-said "...") --why "..."
                                             append a provenance_fix re-stating which field carries his authority
                                             on an owner keep (never edits the past event) [--dry-run]
+    art.py correct-keep <sha|event-id>... --per-ruling <CONDUCTOR RULING> --why "..." [--dry-run]
+                                            release an owner keep that a run recorded by mistake: a Conductor ruling
+                                            alone, or the `said` of an install (its --why names the install). Never a
+                                            keep with his card, his words on a sheet, or another ruling. Appends an
+                                            event; deletes no history
     art.py guard     range A..B | worktree [paths]   texture changes the ledger did not make; a push range is
                                             also checked event -> PNG (the committed tree holds what the ledger says)
     art.py doctor    [--rev REV] [--out FILE]   every slot where the folded ledger and REV's committed tree
@@ -254,6 +262,18 @@ def cmd_correct_provenance(a):
             print(json.dumps(r, ensure_ascii=False))
         except L.Refused as e:
             print(f"REFUSED {rid}: {e}")
+            rc = 2
+    return rc
+
+
+def cmd_correct_keep(a):
+    rc = 0
+    for ref in a.refs:
+        try:
+            r = L.correct_keep(ref, why=a.why, per_ruling=a.per_ruling, dry_run=a.dry_run)
+            print(json.dumps(r, ensure_ascii=False))
+        except L.Refused as e:
+            print(f"REFUSED {ref}: {e}")
             rc = 2
     return rc
 
@@ -517,15 +537,25 @@ def main(argv=None):
     p = sp.add_parser("put"); p.add_argument("files", nargs="+")
     p = sp.add_parser("install"); p.add_argument("mod"); p.add_argument("rel"); p.add_argument("sha", nargs="?")
     p.add_argument("--file", help="a PNG inside this clone: put it in the store, then install its sha")
-    p.add_argument("--ruling"); p.add_argument("--owner-said"); p.add_argument("--reason")
+    p.add_argument("--ruling")
+    p.add_argument("--owner-said", help="his typed words only. --owner-said on an install means that the owner chose this "
+                   "picture; an order of the owner to fix a thing goes in --why, never here (the install is recorded as his keep)")
+    p.add_argument("--reason")
     p.add_argument("--by-card", help='a decision he took by question card: "question → picked option" (our label)')
-    p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
-    p.add_argument("--why", help="the acting agent's own reason; grants no owner authority")
+    p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event. A ruling of the "
+                   "Conductor alone records no keep of his: the install carries the ruling and --why on its live event")
+    p.add_argument("--why", help="the acting agent's own reason; grants no owner authority. An order of the owner to fix "
+                   "a thing goes in --why")
     p.add_argument("--dry-run", action="store_true")
     sp.add_parser("card-said", aliases=["card_said"])   # the underscore spelling: relentless_boxrun reads a hyphenated subcommand as prose
     p = sp.add_parser("correct-provenance"); p.add_argument("ruling_ids", nargs="+")
     p.add_argument("--by-card"); p.add_argument("--per-ruling"); p.add_argument("--owner-said")
     p.add_argument("--why", required=True); p.add_argument("--dry-run", action="store_true")
+    p = sp.add_parser("correct-keep", help="release an owner keep that a run recorded by mistake (an install under a Conductor ruling)")
+    p.add_argument("refs", nargs="+", help="a picture sha (8+ hex digits) or the ledger event id of an install's keep")
+    p.add_argument("--per-ruling", required=True, help="one of the Conductor's two rulings")
+    p.add_argument("--why", required=True, help="the Conductor's text; for a keep carrying `said` it names the install")
+    p.add_argument("--dry-run", action="store_true")
     p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said")
     p.add_argument("--by-card", help='a decision he took by question card: "question → picked option" (our label)')
     p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
@@ -570,7 +600,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "card-said": cmd_card_said, "card_said": cmd_card_said, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "correct-keep": cmd_correct_keep, "card-said": cmd_card_said, "card_said": cmd_card_said, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 

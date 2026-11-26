@@ -1304,7 +1304,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
       * by_card: a decision he took by question card ("question → picked option"; the label is OUR text, so
         it never goes in owner_said), recorded as an owner keep ruling carrying `by_card`;
       * per_ruling: a standing ruling of his cited by item id or ledger event, recorded as an owner keep ruling
-        carrying `per_ruling` (ART_INSTALL_WIRE_BY_CARD_FLAG_MISSING; rimflow's four provenance fields);
+        carrying `per_ruling` (ART_INSTALL_WIRE_BY_CARD_FLAG_MISSING; rimflow's four provenance fields). A ruling of
+        the Conductor (CONDUCTOR_RULINGS) alone is NOT his: no keep is recorded, the live event carries the ruling and
+        --why, and the picture stays unprotected;
       * why: the acting agent's own reason (a delegated call: "delegated: art <verdict file>"). It grants NO
         owner authority: alone it installs under the mechanical guards (never over a kept, purged or
         rejected picture); beside an owner field it is recorded on the live event;
@@ -1375,7 +1377,10 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
                       "(--by-card), a standing ruling of his (--per-ruling), a mechanical reason "
                       "(artpipe-collect | script:<path>) or the agent's own reason (--why)")
     owner_kw = dict(owner_said=owner_said, by_card=by_card, per_ruling=per_ruling)
-    owner_auth = bool(owner_said or by_card or per_ruling)
+    # a Conductor ruling alone is the Conductor's act, never his: it mints no owner keep (the tool once recorded 16
+    # installs by runs as his keeps, which then locked the pictures against the pipeline)
+    conductor_only = conductor_only_authority(owner_said, by_card, per_ruling)
+    owner_auth = bool(owner_said or by_card or per_ruling) and not conductor_only
     old_sha = sha256_file(target) if target.is_file() else None
     if old_sha == sha:
         if owner_auth and not ruling_id and not dry_run and not idx.protected(sha):
@@ -1436,6 +1441,8 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         live.update(ruling_id=ruling["id"], reason="install")
     else:
         live.update(reason=reason or "agent-why")
+    if conductor_only:
+        live.update(reason="conductor-ruling", per_ruling=per_ruling.strip())
     if why:
         live["why"] = why
     if mark and old_protected:                       # newest mark over an older keep: the act is digest-listed
@@ -1499,6 +1506,92 @@ def install_image(dest, img, **kw) -> dict:
 # flights, replacing art I kept, ..."): a Conductor ruling alone (his authority relayed, or the Conductor's own act)
 # never displaces, retires or releases a kept picture. His words or card do; the open exceptions use --by-card.
 CONDUCTOR_RULINGS = ("CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM", "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS")
+
+
+def conductor_only_authority(owner_said=None, by_card=None, per_ruling=None) -> bool:
+    """True when the only authority given is one of the Conductor's two rulings (no words of his, no card)."""
+    return (not (owner_said or "").strip() and not (by_card or "").strip()
+            and (per_ruling or "").strip() in CONDUCTOR_RULINGS)
+
+
+def _keep_authority_kind(auth: dict) -> str:
+    """'conductor' (per_ruling is a Conductor ruling, nothing else), 'said' (his words, nothing else), else 'other'."""
+    if set(auth) == {"per_ruling"} and auth["per_ruling"].strip() in CONDUCTOR_RULINGS:
+        return "conductor"
+    if set(auth) == {"said"}:
+        return "said"
+    return "other"
+
+
+def correct_keep(ref: str, *, why: str, per_ruling: str, dry_run: bool = False) -> dict:
+    """Release an owner keep that a run recorded by mistake (an install passed a Conductor ruling, or the owner's order
+    to fix a thing as --owner-said, and `install` wrote it down as his keep). Appends one `ruling` event (verdict
+    release, `releases` = the keep, by the Conductor); the keep itself stays in the ledger.
+
+    `ref` is a picture (sha or a prefix of 8 or more hex digits) or a ledger event id.
+      * a picture: every keep that protects it must carry a Conductor ruling alone (no `said`, no `by_card`, no other
+        `per_ruling`); one keep of another kind refuses the whole picture;
+      * an event id: the event must be an owner keep written by `art install`; its authority is a Conductor ruling
+        alone, or `said` alone, and for `said` the --why must name the install (its event id or the picture's sha).
+    `per_ruling` must be one of the Conductor's two rulings and `why` the Conductor's text: the correction is his act."""
+    if (per_ruling or "").strip() not in CONDUCTOR_RULINGS:
+        raise Refused("a correction is the Conductor's act: --per-ruling must be one of %s" % ", ".join(CONDUCTOR_RULINGS))
+    if not (why or "").strip():
+        raise Refused("a correction needs --why: the Conductor's text, naming what was wrong")
+    idx = cached_index()
+    ev = next((e for e in idx.events if e.get("id") == ref), None)
+    if ev is not None:                                             # event mode
+        if not (ev.get("type") == "ruling" and ev.get("verdict") == "keep" and ev.get("by") == "owner"
+                and str(ev.get("via") or "").startswith("art install")):
+            raise Refused(f"{ref} is not an owner keep written by `art install` (type {ev.get('type')!r}, "
+                          f"via {ev.get('via')!r}) — only an install's keep is corrected here")
+        keeps = [ev]
+        sha_text = ((ev.get("target") or {}).get("sha") or "")
+        kind = _keep_authority_kind(idx.authority(ev))
+        if kind == "other":
+            raise Refused(f"{ref} carries {', '.join(idx.authority(ev)) or 'no authority'} — a card pick or another "
+                          f"ruling's id is his; only a Conductor ruling alone or `said` of an install is corrected")
+        if kind == "said" and ref not in why and not (sha_text and sha_text[:12] in why):
+            raise Refused(f"{ref} carries `said`: --why must name that install as the act of a run "
+                          f"(write its event id {ref} or the picture {sha_text[:12]} in --why)")
+        shas = [sha_text]
+    else:                                                          # picture mode
+        ref = (ref or "").strip().lower()
+        if not re.fullmatch(r"[0-9a-f]{8,64}", ref):
+            raise Refused(f"{ref!r} is neither a ledger event id nor a picture sha (8 or more hex digits)")
+        shas = sorted({s for s in idx.rulings_by_sha if s.startswith(ref)})
+        if len(shas) != 1:
+            raise Refused(f"{ref} names {len(shas)} pictures with a ruling — give more of the sha" if shas
+                          else f"no ruling in the ledger names a picture starting {ref}")
+        keeps = [k for k in idx.rulings_by_sha[shas[0]] if k.get("verdict") == "keep" and k.get("by") == "owner"
+                 and k.get("trust") in TRUST_PROTECTS]
+        live_keeps = idx.protected(shas[0])
+        bad = [k for k in live_keeps if _keep_authority_kind(idx.authority(k)) != "conductor"]
+        if bad:
+            raise Refused(f"{shas[0][:12]} has a keep that is his ({bad[0]['id']}: "
+                          f"{', '.join(idx.authority(bad[0])) or 'no authority field'}) — not corrected here")
+        if not keeps:
+            raise Refused(f"{shas[0][:12]} has no owner keep to correct")
+        keeps = live_keeps
+    released = {r.get("releases") for r in idx.rulings if r.get("releases")}
+    todo = [k for k in keeps if k["id"] not in released]
+    if not todo:
+        return {"status": "already-corrected", "sha": shas[0], "keeps": [k["id"] for k in keeps]}
+    events = []
+    for k in todo:
+        events.append({"type": "ruling", "id": det_id("keep-correction", k["id"]), "target": deepcopy(k.get("target") or {}),
+                       "verdict": "release", "releases": k["id"], "by": "conductor", "trust": "ruled",
+                       "via": "art correct-keep", "per_ruling": per_ruling.strip(), "why": why,
+                       "was": {f: k.get(f) for f in AUTHORITY_FIELDS if k.get(f)}, "subject_key": ""})
+    if dry_run:
+        return {"status": "planned", "sha": shas[0], "events": events}
+    w = Writer({e["id"] for e in idx.events})
+    for e in events:
+        w.add(e)
+    added = list(w.buf)
+    w.flush()
+    _absorb(added)
+    return {"status": "recorded", "sha": shas[0], "events": events}
 
 
 def kept_art_refusal(owner_said=None, by_card=None, per_ruling=None):

@@ -57,6 +57,7 @@ PAGES = {
     "design/specs/2026-11-25-treecheck-kept-tree/boundary.md": "src/RimMandrake/Utils/selftest_treecheck_kept.py",
     "design/specs/2026-11-24-quiet-scan/boundary.md": "src/RimMandrake/rimflow/selftest_quiet_scan.py",
     "design/specs/art-x-delete/boundary.md": "src/RimMandrake/Utils/art/selftest_art_x_ban_hardening.py",
+    "design/specs/art-install-authority/boundary.md": "src/RimMandrake/Utils/art/selftest_art_install_authority.py",
     "design/specs/static-call-thing-id/boundary.md": "src/RimMandrake/Utils/selftest_static_call_args_core.py",
     "design/specs/2026-11-24-wrapup-game-debts/boundary.md": "src/RimMandrake/rimflow/selftest_wrapup_void_relaunch.py",
     "design/specs/2026-11-24-wrapup-game-release/boundary.md": "src/RimMandrake/rimflow/selftest_wrapup_restore_at_release.py",
