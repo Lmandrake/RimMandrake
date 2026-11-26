@@ -86,6 +86,32 @@ def t_cause_identity(W, step, now):
         W.lane_state = real_state
 
 
+def t_tick_unit_absent(W):
+    """A machine with no testq-tick.timer unit (SteveDesktop: the tick runs on Archmagi) is an unknown state, never
+    TICK_STOPPED. systemd answers `is-active` of a missing unit with "inactive" (exit 4), so the word alone is a false
+    fault: a helper's `testq.py steward` on SteveDesktop filed STEVE_LANE_UNSTICK_STALLED_UNOWNED_TICKSTOPPED_INFPUH
+    on 2026-11-26 (STEVE_LANE_MONITOR_PAUSE_FINDINGS)."""
+    real = W.subprocess.run
+
+    def fake(load, active):
+        def run(argv, **kw):
+            if "is-active" in argv:
+                out, rc = active + "\n", (4 if load == "not-found" else (0 if active == "active" else 3))
+            else:
+                out, rc = "LoadState=%s\nActiveState=%s\n" % (load, active), 0
+            return subprocess.CompletedProcess(argv, rc, out, "")
+        return run
+    try:
+        for load, active, want in (("not-found", "inactive", None), ("loaded", "inactive", "inactive"),
+                                   ("loaded", "active", "active"), ("loaded", "failed", "failed")):
+            W.subprocess.run = fake(load, active)
+            got = W.tick_timer_state()
+            check(got == want, "tick_timer_state with LoadState=%s ActiveState=%s -> %r (want %r)"
+                  % (load, active, got, want))
+    finally:
+        W.subprocess.run = real
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="rf_steward_")
     try:
@@ -114,6 +140,7 @@ def main():
         import schema as S
         import testq as T
         import steward as W
+        t_tick_unit_absent(W)
         W.tick_timer_state = lambda: "active"      # the real one asks this machine's systemd
         W.tick_run_start = lambda: W.NOT_RUNNING   # the real one asks this machine's systemd: a live tick would excuse a stale case
         check(T.QHOME == queue, "the queue is the temp one")

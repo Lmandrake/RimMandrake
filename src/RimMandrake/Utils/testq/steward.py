@@ -387,13 +387,18 @@ def failreport(ok, cause=None):
 
 
 def tick_timer_state():
-    """systemctl's word for testq-tick.timer (active, inactive, failed, ...), or None when it cannot be asked."""
+    """systemctl's word for testq-tick.timer (active, inactive, failed, ...), or None when it cannot be asked or this
+    machine has no such unit. A missing unit reads "inactive" to `is-active`, so a machine that never runs the tick
+    (SteveDesktop: it runs on Archmagi) was a false TICK_STOPPED; LoadState tells the two apart."""
     try:
-        r = subprocess.run(["systemctl", "--user", "is-active", "testq-tick.timer"], capture_output=True, text=True,
-                           timeout=30)
+        r = subprocess.run(["systemctl", "--user", "show", "testq-tick.timer", "-p", "LoadState", "-p",
+                            "ActiveState"], capture_output=True, text=True, timeout=30)
     except (OSError, subprocess.SubprocessError):
         return None
-    word = r.stdout.strip()
+    kv = dict(line.split("=", 1) for line in r.stdout.splitlines() if "=" in line)
+    if kv.get("LoadState") != "loaded":
+        return None
+    word = kv.get("ActiveState", "").strip()
     return word if word in ("active", "inactive", "failed", "activating", "deactivating", "reloading") else None
 
 
