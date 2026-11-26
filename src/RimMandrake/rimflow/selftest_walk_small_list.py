@@ -141,7 +141,7 @@ def t_an_about_that_fails_once_is_read_again():
     import modset_builder as MB
     calls, bad = [], [2]
 
-    def flaky():
+    def flaky(*a, **k):
         calls.append(1)
         if len(calls) < bad[0]:
             sys.stderr.write("  ! could not parse /x/About.xml (OSError: no memory) -- this mod will read as NOT INSTALLED\n")

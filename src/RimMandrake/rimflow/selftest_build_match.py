@@ -356,7 +356,7 @@ def io_checks(tmp):
             return {} if t in ("bridge", "other") else None
 
         @staticmethod
-        def scan():
+        def scan(*a, **k):
             calls["scan"] += 1
             return {}
 
@@ -393,7 +393,7 @@ def io_checks(tmp):
             return {} if t == "bridge" else None
 
         @staticmethod
-        def scan(local_mods=None):
+        def scan(local_mods=None, keep=False):
             scans.append(local_mods)
             return {"where": local_mods}
 

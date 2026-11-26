@@ -626,7 +626,7 @@ def _resolve_tier(t, installed, mods_dir=None):
         if MB.tier_def(t) is None:
             return None, "modset_builder has no tier %s" % t
         if not installed:
-            installed.append(MB.scan(mods_dir) if mods_dir else MB.scan())
+            installed.append(MB.scan(mods_dir, keep=True) if mods_dir else MB.scan(keep=True))
         ordered, missing, refusals = MB.resolve_tier(t, installed[0])
         if missing or refusals:
             return None, "modset_builder refuses tier %s: %s" % (t, "; ".join(map(str, (missing and [

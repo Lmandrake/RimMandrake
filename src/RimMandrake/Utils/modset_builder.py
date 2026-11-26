@@ -1178,6 +1178,8 @@ def read_about(path):
     except Exception as e:
         print("  ! could not parse %s (%s: %s) -- this mod will read as "
               "NOT INSTALLED" % (path, type(e).__name__, e), file=sys.stderr)
+        global PARSE_FAILS
+        PARSE_FAILS += 1
         return None
     pid = (r.findtext("packageId") or "").strip()
     if not pid:
@@ -1212,9 +1214,33 @@ def read_about(path):
     }
 
 
-def scan(local_mods=None):
+PARSE_FAILS = 0          # About.xml files read_about could not parse, in this process
+# A read-only caller (keep=True: the build match, small_list) reads the install folders once per process (2026-11-25:
+# `maturation.py next FlowWorks` scanned the Windows Mods folder five times, about 11 s each). The default scan stays a
+# fresh read, because a long-lived worker deploys and then scans. A scan that met an unparseable About.xml is not kept.
+# budget: danger=a long-lived importer that keeps reading an install after a deploy changed it; evidence=a CLI's own
+# budget: scans fall within about 140 s (the profiled next of 2026-11-25); a kept scan is used for 10x that
+SCAN_KEEP_S = 1500
+SCAN_SEEN = {}           # (folders) -> (time, map)
+
+
+def scan(local_mods=None, keep=False):
     """packageId -> record, across DLC, workshop and local mods (local_mods: another install's Mods folder).
-    Raises AboutUnreadable when a file there stays unreadable for want of memory: never a quieter map."""
+    Raises AboutUnreadable when a file there stays unreadable for want of memory: never a quieter map. keep=True: a
+    clean scan of the same folders made in this process within SCAN_KEEP_S is used again; each caller gets its own copy
+    of the map. Every scan, kept or not, refreshes the kept one."""
+    key = (DATA, WORKSHOP, local_mods or LOCAL_MODS)
+    kept = SCAN_SEEN.get(key)
+    if keep and kept and time.time() - kept[0] < SCAN_KEEP_S:
+        return {k: dict(v) for k, v in kept[1].items()}
+    fails0 = PARSE_FAILS
+    found = _scan(local_mods)
+    if PARSE_FAILS == fails0:
+        SCAN_SEEN[key] = (time.time(), {k: dict(v) for k, v in found.items()})
+    return found
+
+
+def _scan(local_mods=None):
     found = {}
     for base in (DATA, WORKSHOP, local_mods or LOCAL_MODS):
         if not os.path.isdir(base):

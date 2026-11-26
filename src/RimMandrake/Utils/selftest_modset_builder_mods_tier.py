@@ -109,8 +109,54 @@ def t_cherry_picker():
     ok(MB.CHERRY not in [p.lower() for p in pids], "a map without Cherry Picker does not invent it")
 
 
+def t_scan_read_once_per_process():
+    """One process scans the install folders once: a second scan() of the same folders reads no About.xml again
+    (2026-11-25: `maturation.py next FlowWorks` scanned the Windows Mods folder 5 times, about 11 s each). A scan that met
+    an About.xml it could not parse is not kept, so the next scan reads again."""
+    import tempfile
+    import shutil
+    root = tempfile.mkdtemp(prefix="mb_scan_once_")
+    was = (MB.DATA, MB.WORKSHOP, MB.LOCAL_MODS, MB.read_about)
+    try:
+        for d, body in (("A", "<ModMetaData><packageId>t.a</packageId></ModMetaData>"),
+                        ("B", "<ModMetaData><packageId>t.b</packageId></ModMetaData>")):
+            os.makedirs(os.path.join(root, d, "About"))
+            with open(os.path.join(root, d, "About", "About.xml"), "w") as f:
+                f.write(body)
+        MB.DATA, MB.WORKSHOP, MB.LOCAL_MODS = os.path.join(root, "none1"), os.path.join(root, "none2"), root
+        reads = []
+        real = was[3]
+        MB.read_about = lambda path: (reads.append(path), real(path))[1]
+        MB.SCAN_SEEN.clear() if hasattr(MB, "SCAN_SEEN") else None
+        a = MB.scan(keep=True)
+        n1 = len(reads)
+        b = MB.scan(keep=True)
+        ok(sorted(a) == ["t.a", "t.b"] == sorted(b) and n1 == 2 and len(reads) == 2,
+           "scan-read-once-per-process: a second kept scan of the same folders reads no About.xml again (%d then %d)"
+           % (n1, len(reads) - n1))
+        b["t.zz"] = {}
+        ok("t.zz" not in MB.scan(keep=True), "scan-read-once-per-process: a caller that adds to its map does not "
+           "change the next")
+        k0 = len(reads)
+        MB.scan()
+        ok(len(reads) - k0 == 2, "scan-read-once-per-process: the default scan reads the folders again (a worker that "
+           "deploys and then scans sees the deploy)")
+        with open(os.path.join(root, "B", "About", "About.xml"), "w") as f:
+            f.write("<ModMetaData><packageId>t.b")
+        MB.SCAN_SEEN.clear() if hasattr(MB, "SCAN_SEEN") else None
+        MB.scan(keep=True)
+        k = len(reads)
+        MB.scan(keep=True)
+        ok(len(reads) - k == 2, "scan-read-once-per-process: a scan that met an unparseable About.xml is read again")
+    finally:
+        MB.DATA, MB.WORKSHOP, MB.LOCAL_MODS, MB.read_about = was
+        MB.SCAN_SEEN.clear() if hasattr(MB, "SCAN_SEEN") else None
+        shutil.rmtree(root, ignore_errors=True)
+
+
 if __name__ == "__main__":
     t_cherry_picker()
+    t_scan_read_once_per_process()
     t_round_trip()
     t_refusals()
     t_sides_agree()

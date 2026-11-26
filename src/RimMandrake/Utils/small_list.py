@@ -139,7 +139,7 @@ def scan():
     for _try in (1, 2, 3):          # a drvfs read can fail once for want of memory (measured 2026-11-24, five files)
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
-            got = MB.scan()
+            got = MB.scan(keep=True)
         if "could not parse" not in err.getvalue():
             return got
     raise CouldNotLook("modset_builder.scan: %s" % err.getvalue().strip().splitlines()[0].strip())
