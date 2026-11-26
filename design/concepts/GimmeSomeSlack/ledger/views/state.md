@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":438179,"DISPATCH":20369,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=f4c716d76c11b00d4c1fd626c8d3b0e69be91b5cb21e7cada8d6ae99a1ef98e9 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":443819,"DISPATCH":20369,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=197e91614b572d25ec3d85945bb9b0767cab110cb6a2c70cb94ed27ca74dbc31 -->
 # GimmeSomeSlack — mod ledger packet
-version 0.2.0 · stage passed · 642 events in 5 shards · reducer 1
+version 0.2.0 · stage passed · 653 events in 5 shards · reducer 1
 holder lease run-1794835732, token 7, last active 2026-11-16T13:29:05Z
 holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 400000
 
@@ -275,13 +275,15 @@ holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 4
 
 ## Open questions (0)
 
-## Bars (48)
+## Bars (59)
+- bar:battery_takes_looks [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:break_ends_live_dead [locked] verdict FAIL: inventory bar from record.json, proves at stage 6
 - bar:conduit_invisible [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:connectivity_truth [locked] verdict FAIL: inventory bar from record.json, proves at stage 6
 - bar:cord_shape_variation_probe [locked] verdict PASS: instrument bar from tree.json, proves at stage 6
 - bar:cord_slack_lay [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:cords_draw_under_things [locked] verdict none: inventory bar from record.json, proves at stage 6
+- bar:cords_join_stubs_on_position_and_slope [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:cords_lie_slack [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:cords_meet_walls_at_face [locked] verdict UNMEASURED: experience bar from tree.json, proves at stage 6
 - bar:cords_never_repeat [locked] verdict none: experience bar from tree.json, proves at stage 6
@@ -302,27 +304,36 @@ holder session 18a0c1e9-d471-4254-a766-ca303b1027ec, context 114312 of ceiling 4
 - bar:invisible_conduit [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:junction_strips [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:live_wire_lights_fuel [locked] verdict none: experience bar from tree.json, proves at stage 6
+- bar:look_menu_icons [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:mod_settings [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:no_hose [locked] verdict none: inventory bar from record.json, proves at stage 4-5
 - bar:no_hose_in_gss [locked] verdict none: experience bar from tree.json, proves at stage 4-5
+- bar:no_roof_over_pole [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:no_stall_on_rewire [locked] verdict none: constraint bar from tree.json, proves at stage 6
 - bar:no_unforced_sharp_turn [locked] verdict PASS: experience bar from tree.json, proves at stage 6
 - bar:overhead_spans [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:owner_change_coils_wires [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:owner_change_cut [locked] verdict none: inventory bar from record.json, proves at stage 6
 - bar:pipe_pole_switch [locked] verdict none: inventory bar from record.json, proves at stage 6
+- bar:pole_buttons_show_icons [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
+- bar:poles_draw_in_front_when_south [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:power_theft [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:rebuild_cost [locked] verdict UNMEASURED: inventory bar from record.json, proves at stage 6
 - bar:restring_cut_span [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:restring_job [locked] verdict none: inventory bar from record.json, proves at stage 6
+- bar:restyle_whole_line [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:settings_switch_cleanly [locked] verdict none: experience bar from tree.json, proves at stage 6
+- bar:ship_to_ground_wire_snaps [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:shock_reach_setting [locked] verdict none: experience bar from tree.json + record.json, proves at stag…
 - bar:spans_above_everything [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:statics_clear_between_games [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:strip_at_every_junction [locked] verdict none: experience bar from tree.json, proves at stage 6
+- bar:switch_light_reads_state [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
+- bar:switch_off_cords_stay_connected [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:tap_steals_and_costs_goodwill [locked] verdict none: experience bar from tree.json, proves at stage 6
 - bar:uninstall_clean [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 - bar:walk_scavenger_base [locked] verdict FAIL: walk bar from tree.json, proves at stage 8
+- bar:wall_lamp_takes_looks [locked] verdict none: locked for 0.2.0 in version/locked_bars.json (record 6 of 2…
 - bar:wire_down_alert [locked] verdict PASS: inventory bar from record.json, proves at stage 6
 
 spend recorded: USD 147.58, 73397505 tokens
@@ -334,6 +345,6 @@ spend recorded: USD 147.58, 73397505 tokens
 - open findings in brief: the oldest 40 on one line, their fix and accept by `modledger.py show --mod GimmeSomeSlack <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars)
-- the full history: 642 events (views/history.md; never read whole)
+- the full history: 653 events (views/history.md; never read whole)
 
-cursor: t=2026-11-24T23:01:50Z.1795561310731577105 (modledger.py since --mod GimmeSomeSlack t=2026-11-24T23:01:50Z.1795561310731577105 prints what changed after this packet)
+cursor: t=2026-11-26T02:20:11Z.1795659611306651821 (modledger.py since --mod GimmeSomeSlack t=2026-11-26T02:20:11Z.1795659611306651821 prints what changed after this packet)

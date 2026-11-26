@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "80b6cd47f9b2db31c54dd309d0747fa7c4d23a73d0d091675123a43d73d18526",
+  "body_sha256": "2b9c06c6cba57f782ba42bae7de1bfcc92f42890dc93c53c7d4d1d6084d0e24a",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 890449,
+   "BACKFILL": 892335,
    "DISPATCH": 86557,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
@@ -675,12 +675,6 @@
     "ts": "2026-11-16T07:16:23Z",
     "verdict": "PASS"
    },
-   "bar:inv_raider_fetch_fallen": {
-    "status": "locked",
-    "text": "inventory bar from record.json, proves at stage 6",
-    "ts": "2026-11-16T07:16:23Z",
-    "verdict": "UNMEASURED"
-   },
    "bar:inv_rivers": {
     "status": "locked",
     "text": "inventory bar from record.json, proves at stage 6",
@@ -735,11 +729,11 @@
     "ts": "2026-11-16T07:16:23Z",
     "verdict": "UNMEASURED"
    },
-   "bar:moat_raid_sequence": {
+   "bar:moat_drains_and_burns": {
     "status": "locked",
-    "text": "experience bar from tree.json, proves at stage 6",
-    "ts": "2026-11-16T07:16:23Z",
-    "verdict": "FAIL"
+    "text": "locked for 0.1.0 in version/locked_bars.json (record 2 of 2026-11-24T07:25:16Z): experience bar, from tree.json, proves at stage 6",
+    "ts": "2026-11-26T02:20:09Z",
+    "verdict": null
    },
    "bar:no_full_source_after_draw": {
     "status": "locked",
@@ -784,12 +778,6 @@
     "verdict": null
    },
    "bar:pit_reads_as_hole": {
-    "status": "locked",
-    "text": "experience bar from tree.json, proves at stage 6",
-    "ts": "2026-11-16T07:16:23Z",
-    "verdict": null
-   },
-   "bar:raiders_fetch_their_fallen": {
     "status": "locked",
     "text": "experience bar from tree.json, proves at stage 6",
     "ts": "2026-11-16T07:16:23Z",
@@ -841,6 +829,26 @@
     "status": "locked",
     "text": "experience bar from tree.json, proves at stage 6",
     "ts": "2026-11-16T07:16:23Z",
+    "verdict": null
+   }
+  },
+  "bars_deferred": {
+   "bar:inv_raider_fetch_fallen": {
+    "status": "deferred",
+    "text": "not among the 55 bars version/locked_bars.json records for 0.1.0 (record 2 of 2026-11-24T07:25:16Z): out of this version",
+    "ts": "2026-11-26T02:20:09Z",
+    "verdict": "UNMEASURED"
+   },
+   "bar:moat_raid_sequence": {
+    "status": "deferred",
+    "text": "not among the 55 bars version/locked_bars.json records for 0.1.0 (record 2 of 2026-11-24T07:25:16Z): out of this version",
+    "ts": "2026-11-26T02:20:09Z",
+    "verdict": "FAIL"
+   },
+   "bar:raiders_fetch_their_fallen": {
+    "status": "deferred",
+    "text": "not among the 55 bars version/locked_bars.json records for 0.1.0 (record 2 of 2026-11-24T07:25:16Z): out of this version",
+    "ts": "2026-11-26T02:20:09Z",
     "verdict": null
    }
   },
@@ -1740,7 +1748,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1705,
+  "events": 1709,
   "exit_claims": [],
   "fenced": [],
   "findings": {
