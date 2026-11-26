@@ -123,9 +123,12 @@ def check(canfail=False):
             carrying[sd.findtext("defName")] = li[0]
     sys.path.insert(0, GEN)
     import seam_strips as SS
-    extra = sorted(set(carrying) - set(PICKS) - set(SS.SOURCES))
+    # RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS: the timber looks carry their own beam-bridge art
+    # (art_source/TimberBridge, selftest_flowworks_timber_bridge.py), never one of his picked strips
+    timber = {"RM_SuspensionDeck_Timber_" + lk for lk in ("Scrapper", "Industrial", "Modern", "Futuristic")}
+    extra = sorted(set(carrying) - set(PICKS) - set(SS.SOURCES) - timber)
     picked = {R + look + "/" + base + "_Strip" for (_, look, base, _) in PICKS.values()}
-    for style in sorted(set(carrying) & set(SS.SOURCES)):
+    for style in sorted(set(carrying) & (set(SS.SOURCES) | timber)):
         if carrying[style].findtext("strip") in picked:
             fails.append("%s (a derived jetty look) draws one of his picked strips: %s" % (style, carrying[style].findtext("strip")))
     if extra:

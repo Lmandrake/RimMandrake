@@ -381,6 +381,14 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 				return;   // the gate frame (hinge bank) or the mooring (far bank): no suspension tower, no painted ropes
 			}
+			if (RM_DeckArt.PrintAbutment(layer, this))
+			{
+				foreach (ThingComp c in AllComps)
+				{
+					c.PostPrintOnto(layer);
+				}
+				return;   // RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS: a beam bridge's end is a sill, no bollards or ropes
+			}
 			RM_DrawbridgeArt.AnchorPrint p = RM_DrawbridgeArt.AnchorPrintFor(this);
 			if (p == null)
 			{

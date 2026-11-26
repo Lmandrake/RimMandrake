@@ -16,6 +16,22 @@
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS (his walk 2026-11-25, photos 13-15; "No ropes tied to the ground
+           for the wood bridge"): a beam bridge, parts from art_source/TimberBridge/timber_bridge_art.py. deckWidth = 2 x the curb's
+           centre line (CURB_LAT 0.3477), where railing posts stand; selftest_flowworks_timber_bridge.py keeps these equal. -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Timber_Strip</strip>
+        <abutment>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Timber_Abutment</abutment>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Rail_Timber_Scrapper</cable>
+        <laneEdges>true</laneEdges>
+        <deckWidth>0.6953</deckWidth>
+        <railPitch>1</railPitch>
+        <railHeight>0.45</railHeight>
+        <railThick>0.07</railThick>
+        <braceOut>0.12</braceOut>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -27,6 +43,22 @@
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS (his walk 2026-11-25, photos 13-15; "No ropes tied to the ground
+           for the wood bridge"): a beam bridge, parts from art_source/TimberBridge/timber_bridge_art.py. deckWidth = 2 x the curb's
+           centre line (CURB_LAT 0.3477), where railing posts stand; selftest_flowworks_timber_bridge.py keeps these equal. -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Timber_Strip</strip>
+        <abutment>RimMandrake/FlowWorks/SuspensionBridge/Industrial/RM_SuspensionDeck_Timber_Abutment</abutment>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Rail_Timber_Industrial</cable>
+        <laneEdges>true</laneEdges>
+        <deckWidth>0.6953</deckWidth>
+        <railPitch>1</railPitch>
+        <railHeight>0.45</railHeight>
+        <railThick>0.07</railThick>
+        <braceOut>0.12</braceOut>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -38,6 +70,22 @@
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS (his walk 2026-11-25, photos 13-15; "No ropes tied to the ground
+           for the wood bridge"): a beam bridge, parts from art_source/TimberBridge/timber_bridge_art.py. deckWidth = 2 x the curb's
+           centre line (CURB_LAT 0.3477), where railing posts stand; selftest_flowworks_timber_bridge.py keeps these equal. -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Timber_Strip</strip>
+        <abutment>RimMandrake/FlowWorks/SuspensionBridge/Modern/RM_SuspensionDeck_Timber_Abutment</abutment>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Rail_Timber_Modern</cable>
+        <laneEdges>true</laneEdges>
+        <deckWidth>0.6953</deckWidth>
+        <railPitch>1</railPitch>
+        <railHeight>0.45</railHeight>
+        <railThick>0.07</railThick>
+        <braceOut>0.12</braceOut>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
@@ -49,6 +97,22 @@
       <graphicClass>Graphic_Single</graphicClass>
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS (his walk 2026-11-25, photos 13-15; "No ropes tied to the ground
+           for the wood bridge"): a beam bridge, parts from art_source/TimberBridge/timber_bridge_art.py. deckWidth = 2 x the curb's
+           centre line (CURB_LAT 0.3477), where railing posts stand; selftest_flowworks_timber_bridge.py keeps these equal. -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Timber_Strip</strip>
+        <abutment>RimMandrake/FlowWorks/SuspensionBridge/Futuristic/RM_SuspensionDeck_Timber_Abutment</abutment>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Rail_Timber_Futuristic</cable>
+        <laneEdges>true</laneEdges>
+        <deckWidth>0.6953</deckWidth>
+        <railPitch>1</railPitch>
+        <railHeight>0.45</railHeight>
+        <railThick>0.07</railThick>
+        <braceOut>0.12</braceOut>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>

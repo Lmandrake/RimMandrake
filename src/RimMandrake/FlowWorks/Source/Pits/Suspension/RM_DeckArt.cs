@@ -48,6 +48,19 @@ namespace RimMandrake.FlowWorks.Pits
 		public float netPitch = 0f;
 		/// <summary>A netting rope's thickness, as a share of cableThick.</summary>
 		public float netFactor = 0.4f;
+		/// <summary>RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS: a beam bridge. Each anchor square draws this picture
+		/// (drawn with the deck to its east, turned to face the deck; plus the lane suffix) in place of its bollards and ropes,
+		/// and the ends draw no posts, cables or backstays. Null: an anchor draws as before.</summary>
+		public string abutment;
+		/// <summary>A bridge 2+ squares wide draws lane pieces (strip/abutment + LaneEdge's suffix) that carry only their own
+		/// outer edge, so no curb or stringer runs down the middle of a wide deck.</summary>
+		public bool laneEdges;
+		/// <summary>A railed square draws timber posts this far apart along the run (cells), standing on the side line (deckWidth
+		/// / 2), with a top rail at railHeight and knee braces landing braceOut outside it; the rail picture is cable. 0: none.</summary>
+		public float railPitch = 0f;
+		public float railHeight = 0.45f;
+		public float railThick = 0.07f;
+		public float braceOut = 0.1f;
 	}
 
 	/// <summary>The pure geometry of the picked art (no game state): which piece a deck square draws, how it is turned, and where
@@ -115,6 +128,41 @@ namespace RimMandrake.FlowWorks.Pits
 				s = e;
 			}
 			return bays;
+		}
+
+		/// <summary>The picture suffix of a lane piece: "" on a 1-wide bridge; on a wider one "_top" for the lane on the left of
+		/// the picture's run (it keeps the picture's top edge), "_bottom" for the right-most, "_open" between. A deck piece runs
+		/// with the bridge (<paramref name="withRun"/> true): its left is lane 0 (Side is the clockwise turn of dir). An
+		/// abutment faces its deck, so at the far end it runs against the bridge and the lanes swap.</summary>
+		public static string LaneEdge(int lane, int width, bool withRun)
+		{
+			if (width <= 1)
+			{
+				return "";
+			}
+			int fromLeft = withRun ? lane : width - 1 - lane;
+			return fromLeft <= 0 ? "_top" : fromLeft >= width - 1 ? "_bottom" : "_open";
+		}
+
+		/// <summary>Where the railing posts of deck square k (0-based from the root) stand, in cells from the near anchor's
+		/// deck-facing edge: from k, <paramref name="pitch"/> apart, short of k + 1, plus k + 1 on the last square, so a post
+		/// stands on every shared edge once and at both ends.</summary>
+		public static List<double> RailPosts(int k, double pitch, bool last)
+		{
+			var ss = new List<double>();
+			if (pitch <= 0)
+			{
+				return ss;
+			}
+			for (double s = k; s < k + 1 - 1e-6; s += pitch)
+			{
+				ss.Add(s);
+			}
+			if (last)
+			{
+				ss.Add(k + 1);
+			}
+			return ss;
 		}
 
 		/// <summary>A jetty's cable landing points, in cells out from the root anchor's edge, for a jetty n squares long.</summary>
@@ -210,7 +258,17 @@ namespace RimMandrake.FlowWorks.Pits
 				return null;
 			}
 			angle = RM_DeckArtMath.StripAngle(r.dir.AsInt);
-			return Mat(x.strip + "_" + RM_DeckArtMath.PieceAt(i - FirstDeck(r), DeckCount(r)));
+			string path = x.strip + "_" + RM_DeckArtMath.PieceAt(i - FirstDeck(r), DeckCount(r));
+			if (x.laneEdges && r.TryIndexOf(deck.Position, out int lane, out _))
+			{
+				string suffix = RM_DeckArtMath.LaneEdge(lane, r.width, true);
+				Material lm = suffix.Length > 0 ? Mat(path + suffix) : null;
+				if (lm != null)
+				{
+					return lm;
+				}
+			}
+			return Mat(path);
 		}
 
 		/// <summary>Every deck square of the record is built and down (lane 0): the cables have something to hold.</summary>
@@ -272,9 +330,9 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Building_SuspensionDeck first = r.Cell(0, 1).InBounds(map) ? r.Cell(0, 1).GetFirstThing<Building_SuspensionDeck>(map) : null;
 			RM_DeckArtExtension x = For(r, first?.StyleDef);
-			if (x == null)
+			if (x == null || x.abutment != null)
 			{
-				return;
+				return;   // a beam bridge's ends are its abutments (PrintAbutment): no posts, cables or backstays
 			}
 			Vector3 a = r.dir.FacingCell.ToVector3();          // along the deck, from the near end to the far end
 			Vector3 f = near ? a : -a;                          // from this end toward the deck
@@ -392,6 +450,87 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		/// <summary>RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS: an anchor square of a beam bridge (its art names an
+		/// abutment) prints the abutment, the deck's end resting on a sill, turned to face its deck, in place of its own picture
+		/// (bollards and ropes: "No ropes tied to the ground for the wood bridge"). False when its bridge has no abutment.</summary>
+		public static bool PrintAbutment(SectionLayer layer, Thing anchor)
+		{
+			Map map = anchor.Map;
+			SuspensionBridgeRecord r = map?.GetComponent<RM_MapComponent_SuspensionBridges>()?.RecordAt(anchor.Position);
+			if (r == null || r.jetty || !r.TryIndexOf(anchor.Position, out int lane, out int i))
+			{
+				return false;
+			}
+			bool near = i == 0;
+			if (!near && i != r.length - 1)
+			{
+				return false;
+			}
+			Building_SuspensionDeck first = r.Cell(0, 1).InBounds(map) ? r.Cell(0, 1).GetFirstThing<Building_SuspensionDeck>(map) : null;
+			RM_DeckArtExtension x = For(r, first?.StyleDef);
+			if (x?.abutment == null)
+			{
+				return false;
+			}
+			string suffix = x.laneEdges ? RM_DeckArtMath.LaneEdge(lane, r.width, near) : "";
+			Material m = (suffix.Length > 0 ? Mat(x.abutment + suffix) : null) ?? Mat(x.abutment);
+			if (m == null)
+			{
+				return false;
+			}
+			Rot4 facing = near ? r.dir : r.dir.Opposite;
+			Vector3 c = anchor.Position.ToVector3Shifted();
+			c.y = anchor.def.Altitude;
+			Printer_Plane.PrintPlane(layer, c, Vector2.one, m, RM_DeckArtMath.StripAngle(facing.AsInt));
+			return true;
+		}
+
+		/// <summary>RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS (his photo 14): a railed square of a beam bridge draws
+		/// timber posts on its outer side line, a top rail and knee braces, each with its sun shadow; the railing picture is
+		/// not drawn.</summary>
+		private static void PrintTimberRail(SectionLayer layer, SuspensionBridgeRecord r, RM_DeckArtExtension x, Material beam, int lane, int i)
+		{
+			Vector3 a = r.dir.FacingCell.ToVector3();
+			Vector3 side = r.Side.ToVector3();
+			float across = (r.width - 1) * 0.5f;
+			float sw = across + x.deckWidth * 0.5f;
+			Vector3 edge = r.Cell(0, 0).ToVector3Shifted() + side * across + a * 0.5f;
+			edge.y = 0f;
+			int k = i - FirstDeck(r);
+			bool last = i == r.LastDeck;
+			float H = x.railHeight;
+			var runs = new List<(Vector3 p, float h, Vector3 q, float g, float w)>();
+			for (int sd = 0; sd < 2; sd++)
+			{
+				float sg = sd == 0 ? -1f : 1f;
+				if ((sd == 0 && lane != 0) || (sd == 1 && lane != r.width - 1))
+				{
+					continue;   // an inner lane edge has no rail
+				}
+				Vector3 line = edge + side * (sw * sg);
+				runs.Add((line + a * k, H, line + a * (k + 1), H, x.railThick));           // the top rail
+				foreach (double s in RM_DeckArtMath.RailPosts(k, x.railPitch, last))
+				{
+					Vector3 p = line + a * (float)s;
+					runs.Add((p, 0f, p, H + x.railThick * 0.5f, x.railThick));            // a post
+					if (x.braceOut > 0f)
+					{
+						runs.Add((p + side * (x.braceOut * sg), 0f, p, H * 0.5f, x.railThick * 0.7f));   // a knee brace
+					}
+				}
+			}
+			float shadowY = AltitudeLayer.Building.AltitudeFor() - Altitudes.AltInc;
+			float beamY = AltitudeLayer.PawnUnused.AltitudeFor();
+			foreach (var run in runs)
+			{
+				Run(layer, Shade, run.p, run.h, run.q, run.g, run.w, shadowY, true);
+			}
+			foreach (var run in runs)
+			{
+				Run(layer, beam, run.p, run.h, run.q, run.g, run.w, beamY, false);
+			}
+		}
+
 		/// <summary>RIMMANDRAKE_REDRAW_ROPE_BRIDGE_AS_ROPES_AND_SPARSE_SLATS: a railed square of a bridge whose art has netting
 		/// draws rope netting on its two sides, diagonals between the side rope (on the deck) and the hand rope above it, with
 		/// their shadows; the railing picture is not drawn. False when the bridge's art has no netting (draw the railing).</summary>
@@ -405,6 +544,11 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			Building_SuspensionDeck deck = railing.Position.GetFirstThing<Building_SuspensionDeck>(map);
 			RM_DeckArtExtension x = For(r, deck?.StyleDef);
+			if (x != null && x.railPitch > 0f && Mat(x.cable) is Material beam)
+			{
+				PrintTimberRail(layer, r, x, beam, lane, i);
+				return true;
+			}
 			if (x == null || x.netPitch <= 0f)
 			{
 				return false;
