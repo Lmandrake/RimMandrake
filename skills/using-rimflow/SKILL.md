@@ -322,8 +322,8 @@ A projection is a view that a program makes from the ledger, for example `rimflo
   that knew only the `needs` verb missed `implemented` and `file --needs owner`. So the old RimPulse board hid 29 owner
   items, and listed one item 9.5 h after it moved (2026-10-11).
 - `model.replay` calls `observe(ev, world, ok)` after every folded event. So `observe` tells you which event moved a
-- **`rimflow show <host>` lists a testq finding as UNTRIAGED even after findings_fold decided it.** The fold's decisions are in `infrastructure/state/findings/decisions.jsonl` and are not ledger retypes. Before you triage a host, read Archmagi's `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`.
   field, and you do not write the verbs again.
+- **`rimflow show <host>` lists a testq finding as UNTRIAGED even after findings_fold decided it.** The fold's decisions are in `infrastructure/state/findings/decisions.jsonl` and are not ledger retypes. Before you triage a host, read Archmagi's `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`.
 
 More traps for this section: [references/traps.md](references/traps.md) § Reading projections.
 

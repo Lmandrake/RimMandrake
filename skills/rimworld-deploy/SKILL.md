@@ -171,7 +171,7 @@ root, a correct `ParentName` that points into another mod of ours reads as "reso
 
 - Pass the mod's small list (`design/concepts/<Mod>/version/small_list.json` names its tier), never a dated backup with
   its date in the name (`CLAUDE.md` §Mod development runs on small lists).
-- Never pass another seat's spike config in its place. It may lack a mod that this mod patches. Every xpath into an
+- Never pass another seat's spike config in its place. That config may lack a mod that this mod patches. Every xpath into an
   absent mod then matches nothing, and the wall of false failures burns a day.
 
 ```bash
