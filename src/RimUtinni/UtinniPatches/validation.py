@@ -634,3 +634,198 @@ def mindstone_matrix_recipes(t):
             r = t.bridge_call("jawa/get_defs", defs=d)
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+
+
+# ---------------------------------------------------------------- UTINNI_WORLDMAP_FLIGHT_ICON_1
+# The globe in flight draws OUR ship (A1, A3). The only in-flight captures (2026-09-24, full list) showed vanilla's
+# dome, so a def read-back is not enough: this chain flies a real gravship and reads the textures the Gravship
+# WORLD OBJECT draws mid-flight (jawa/world_objects_get textures=true: o.ExpandingIcon zoomed out, o.Material's
+# mainTexture zoomed in; read from the instance, because a subclass may override either), then captures the globe
+# centred on the ship at three altitudes for the art judge (A2, A3). The launch destroys the origin map: run this
+# chain alone (`--chains world_icon_in_flight`). A gravship on the world map is not a flyer (owner's flight rule
+# covers creature flyers; Conductor class call 2026-11-27).
+WORLD_ICON_WANT = {"expandingIcon": "RUT_Utinni", "materialTexture": "RUT_UtinniCaravan"}
+WORLD_ICON_VANILLA = {"expandingIcon": "Gravship", "materialTexture": "Caravan"}
+WORLD_ICON_ALTITUDES = (("close", 160), ("mid", 400), ("far", 900))
+FILL_PREFIXES = ("DEBUG: Fill", "DEV: Set fuel to max")   # gravship_fuel.FILL_PREFIXES (exact prefixes, not 'fill')
+
+
+def world_icon_findings(reply, field):
+    """Judge one field of a `jawa/world_objects_get def=Gravship textures=true` reply.
+    -> (verdict, text): verdict "PASS", "FAIL" or "UNMEASURED". Pure: the offline selftest drives it."""
+    if not isinstance(reply, dict) or reply.get("success") is not True:
+        return "UNMEASURED", "world_objects_get did not answer: %s" % str(reply)[:200]
+    rows = [o for o in (reply.get("objects") or []) if isinstance(o, dict) and "textures" in o]
+    if not rows:
+        if reply.get("objects"):
+            return "UNMEASURED", "rows carry no textures (a companion without textures=true?): %s" % str(reply)[:200]
+        return "UNMEASURED", "no Gravship world object exists (not in flight)"
+    got = [str((o.get("textures") or {}).get(field)) for o in rows]
+    bad = [g for g in got if g.startswith("ERROR") or g in ("None", "(none)", "(unnamed)")]
+    if bad:
+        return "UNMEASURED", "%s unreadable: %s" % (field, bad)
+    want = WORLD_ICON_WANT[field]
+    wrong = [g for g in got if g != want]
+    if wrong:
+        hint = " (vanilla's own texture: the patch did not reach this def)" if WORLD_ICON_VANILLA[field] in wrong else ""
+        return "FAIL", "the ship in flight draws %s=%s, want %s%s" % (field, wrong, want, hint)
+    return "PASS", "%s=%s on %d ship(s) in flight" % (field, want, len(got))
+
+
+def _wc(t, tool, **kw):
+    r = t.session.call(tool, **kw)
+    return r if isinstance(r, dict) else {}
+
+
+def _fly_a_ship(t):
+    """Build a minimal flyable ship at the anchor (prove_gravship.py's steps), launch it to a near tile, and stop
+    the clock while it is on the globe. -> dict(origin, target, ship). Raises ExpectationFailed('UNMEASURED: ...')."""
+    import time
+    x0, z0 = t.anchor
+    X, Z = x0 - 10, z0 - 6
+    t.clear_area(size=44)
+    _wc(t, "jawa/set_roof_batch", ops="Clear:%d,%d,22,29" % (X - 1, Z - 8))
+    _wc(t, "jawa/set_terrain_batch", ops="Soil:%d,%d,22,29" % (X - 1, Z - 8))
+    _wc(t, "jawa/set_substructure_batch", action="set", rect="%d,%d,20,20" % (X, Z), doLeavings=False)
+    for op in ("GravEngine:%d,%d" % (X + 10, Z + 10), "PilotConsole:%d,%d" % (X + 5, Z + 10),
+               "ChemfuelTank:%d,%d" % (X + 14, Z + 10), "SmallThruster:%d,%d,0" % (X + 10, Z + 1)):
+        r = _wc(t, "jawa/build_batch", ops=op, faction="PlayerColony")
+        if not r.get("success") or r.get("failed"):
+            raise ExpectationFailed("UNMEASURED: could not build %s: %s" % (op, str(r)[:200]))
+    _wc(t, "jawa/map_commit", full=True)
+    tx = X + 10
+    occ = [z for z in range(Z - 2, Z + 4)
+           if any(th.get("defName") == "SmallThruster"
+                  for th in ((_wc(t, "rimworld/get_cell_info", x=tx, z=z).get("cell") or {}).get("things") or []))]
+    if not occ:
+        raise ExpectationFailed("UNMEASURED: the thruster is not on the map")
+    zone = "%d,%d,1,5" % (tx, min(occ) - 5)
+    _wc(t, "jawa/set_substructure_batch", action="remove", rect=zone, doLeavings=False)
+    _wc(t, "jawa/destroy_batch", rects=zone, categories="All")
+    _wc(t, "jawa/map_commit", full=True)
+    # fuel: VGE's pipe model or vanilla's facility model, asked of the DefDatabase (gravship_fuel.fuel_mode)
+    pipe = _wc(t, "jawa/get_def", defName="VGE_AstrofuelPipe", defType="ThingDef")
+    if pipe.get("success") is True:
+        raise ExpectationFailed("UNMEASURED: VGE is on this list; this scene lays no astrofuel pipe "
+                                "(prove_gravship.py does: gravship_fuel.pipe_run)")
+    tanks = [(th.get("x"), th.get("z")) for th in (_wc(t, "jawa/list_things", defName="ChemfuelTank", limit=5)
+                                                  .get("things") or [])]
+    if not tanks:
+        raise ExpectationFailed("UNMEASURED: the chemfuel tank is not on the map")
+    _wc(t, "rimworld/set_god_mode", enabled=True)
+    filled = False
+    try:
+        _wc(t, "rimworld/click_cell", x=tanks[0][0], z=tanks[0][1])
+        for g in (_wc(t, "rimworld/list_selected_gizmos").get("gizmos") or []):
+            if any((g.get("label") or "").startswith(p) for p in FILL_PREFIXES):
+                filled = bool(_wc(t, "rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id")).get("success"))
+                break
+    finally:
+        _wc(t, "rimworld/set_god_mode", enabled=False)
+        _wc(t, "rimworld/clear_selection")
+    if not filled:
+        raise ExpectationFailed("UNMEASURED: the tank's fill gizmo was not found or failed")
+    _wc(t, "rimworld/step_game_ticks", ticks=900)          # comps register on the rare tick (250)
+    st = _wc(t, "jawa/gravship_status")
+    engines = st.get("engines") or []
+    if not engines:
+        raise ExpectationFailed("UNMEASURED: gravship_status names no engine: %s" % str(st)[:200])
+    origin = engines[0].get("tile")
+    import os as _os
+    csv = _os.path.join(_os.environ.get("TEMP") or r"C:\Windows\Temp", "world_icon_neighbors.csv")
+    _wc(t, "jawa/world_neighbors", path=csv)
+    nbr = {}
+    try:
+        with open(csv) as fh:
+            for line in fh:
+                p = line.strip().split(",")
+                if p and p[0].isdigit():
+                    nbr[int(p[0])] = [int(q) for q in p[1:] if q.strip().lstrip("-").isdigit()]
+    except OSError as e:
+        raise ExpectationFailed("UNMEASURED: the neighbour dump is unreadable (%s)" % e)
+    # ring 2 first: a longer hop keeps the ship on the globe for more ticks
+    ring1 = nbr.get(origin, [])
+    ring2 = [b for a in ring1 for b in nbr.get(a, []) if b not in ring1 and b != origin]
+    target, refusals = None, []
+    for cand in list(dict.fromkeys(ring2)) + ring1:
+        chk = _wc(t, "jawa/gravship_launch_check", targetTile=cand)
+        if chk.get("wouldLaunch"):
+            target = cand
+            break
+        refusals.append((cand, chk.get("reasons")))
+    if target is None:
+        raise ExpectationFailed("UNMEASURED: no near tile accepts a launch: %s" % str(refusals[:4])[:300])
+    go = _wc(t, "jawa/gravship_launch", targetTile=target, dryRun=False)
+    t._record("gravship_launch %s -> %s" % (origin, target), go)
+    if go.get("launched") is not True:
+        raise ExpectationFailed("UNMEASURED: the launch did not go: %s" % str(go)[:300])
+    # the cutscene runs on the wall clock, travel on ticks: step in small slices and stop at the first sighting
+    deadline = time.time() + 600     # hang guard: the 2026-08-29 prove_gravship run reached landing in under 180 s
+    while time.time() < deadline:
+        r = _wc(t, "jawa/world_objects_get", **{"def": "Gravship", "textures": True})
+        if r.get("count"):
+            return {"origin": origin, "target": target, "ship": r}
+        st = _wc(t, "jawa/gravship_status")
+        if st.get("landingConfirmationPending"):
+            raise ExpectationFailed("UNMEASURED: the ship landed between two reads (no flight was seen)")
+        if not st.get("cutsceneInProgress"):
+            _wc(t, "rimworld/step_game_ticks", ticks=5)
+        time.sleep(1)
+    raise ExpectationFailed("UNMEASURED: no Gravship world object appeared in 600 s after the launch")
+
+
+def _globe_shots(t, tile):
+    """Capture the globe centred on `tile` at each altitude. -> [(name, altitude, path or None, why)]."""
+    import time
+    out = []
+    for name, alt in WORLD_ICON_ALTITUDES:
+        v = _wc(t, "jawa/world_view", show=True, centerTile=tile, altitude=alt, northUp=True)
+        _wc(t, "jawa/clear_ui")
+        time.sleep(1.5)        # let the camera settle and the expanding icons fade to their altitude
+        s = _wc(t, "rimworld/take_screenshot", fileName="world_icon_in_flight_%s_%d" % (name, int(time.time())),
+                suppressMessage=True)
+        path = s.get("path")
+        out.append((name, alt, path, None if path else "view %s / shot %s" % (str(v)[:120], str(s)[:120])))
+        if path and t._current is not None:
+            t._current.screenshots.append(path)
+    return out
+
+
+@suite.chain("world_icon_in_flight")
+def world_icon_in_flight(t):
+    state = {}
+    with t.component("ship_in_flight_draws_our_icon_zoomed_out", toggle="utinniWorldIconEnabled"):
+        if not _live(t):
+            raise RowDone()
+        state.update(_fly_a_ship(t))
+        t._record("Gravship world object textures in flight", state["ship"])
+        verdict, text = world_icon_findings(state["ship"], "expandingIcon")
+        if verdict != "PASS":
+            raise ExpectationFailed(text if verdict == "FAIL" else "UNMEASURED: " + text)
+    with t.component("ship_in_flight_draws_our_ship_zoomed_in", toggle="utinniWorldIconEnabled"):
+        if not _live(t):
+            raise RowDone()
+        verdict, text = world_icon_findings(state.get("ship"), "materialTexture")
+        if verdict != "PASS":
+            raise ExpectationFailed(text if verdict == "FAIL" else "UNMEASURED: " + text)
+    with t.component("globe_captured_on_the_ship_for_the_judge", beyond_toggle=True):
+        if not _live(t):
+            raise RowDone()
+        rows = (state["ship"].get("objects") or [{}])
+        tile = ((rows[0].get("row") or {}).get("tile"))
+        if tile is None:
+            tile = state["origin"]
+        shots = _globe_shots(t, tile)
+        t._record("globe captures on the ship (tile %s)" % tile, {"shots": shots, "target": state["target"]})
+        missing = [s for s in shots if not s[2]]
+        if missing:
+            raise ExpectationFailed("UNMEASURED: %d of %d captures came back empty: %s"
+                                    % (len(missing), len(shots), missing))
+        # land the ship so the game is left on a map, not mid-flight (the landed map is a scratch quicktest map)
+        for _ in range(60):
+            if _wc(t, "jawa/gravship_status").get("landingConfirmationPending"):
+                break
+            _wc(t, "rimworld/step_game_ticks", ticks=250)
+        land = _wc(t, "jawa/gravship_land")
+        t._record("gravship_land after the captures", land)
+        _wc(t, "jawa/world_view", show=False)

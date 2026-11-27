@@ -2339,6 +2339,35 @@ namespace JawaBench.BridgeTools
             };
         }
 
+        // UTINNI_WORLDMAP_FLIGHT_ICON_1: the textures the globe really draws for one object. The expanding icon
+        // (zoomed out) is o.ExpandingIcon, the dynamic-drawer one (zoomed in) is o.Material's mainTexture; a
+        // subclass may override either (Gravship.Material, Settlement.ExpandingIcon), so the instance is read, not
+        // the def. Each read in its own try: a throw is reported as "ERROR: <type>: <message>", never null, and a
+        // missing texture is "(none)", so a caller can tell "could not read" from "nothing is drawn".
+        private static object WorldObjectTextures(WorldObject o)
+        {
+            return new
+            {
+                expandingIcon = TexName(() => (o.def != null && o.def.expandingIcon) ? o.ExpandingIcon : null),
+                expandingIconDefPath = o.def != null ? o.def.expandingIconTexture : null,
+                materialTexture = TexName(() => o.Material != null ? o.Material.mainTexture : null),
+                materialDefPath = o.def != null ? o.def.texture : null,
+            };
+        }
+
+        private static string TexName(Func<Texture> read)
+        {
+            try
+            {
+                var tex = read();
+                return tex == null ? "(none)" : (string.IsNullOrEmpty(tex.name) ? "(unnamed)" : tex.name);
+            }
+            catch (Exception e)
+            {
+                return "ERROR: " + e.GetType().Name + ": " + e.Message;
+            }
+        }
+
         [Tool(
             "jawa/world_objects_get",
             Description =
@@ -2347,7 +2376,7 @@ namespace JawaBench.BridgeTools
                 "whether the player named it. Filter by def, by faction, or by tile. " +
                 "Use onlyMissingFaction=true to find the ones that will be DESTROYED on the " +
                 "next load: a Settlement with a null faction does not survive Scribe.",
-            ResultDescription = "success, count, byDef{}, byFaction{}, objects[].")]
+            ResultDescription = "success, count, byDef{}, byFaction{}, objects[] (with textures=true each row is {row, textures}).")]
         public static async Task<object> WorldObjectsGet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -2355,7 +2384,10 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Only this faction defName.")] string faction = null,
             [ToolParameter(Description = "Only objects on these comma-separated tile ids.")] string tiles = null,
             [ToolParameter(Description = "Only objects with a NULL faction - these die on load.")] bool onlyMissingFaction = false,
-            [ToolParameter(Description = "Max rows. Default 100.")] int limit = 100)
+            [ToolParameter(Description = "Max rows. Default 100.")] int limit = 100,
+            [ToolParameter(Description = "Also report, per row, the textures the globe draws for the object: " +
+                "textures{expandingIcon (zoomed out), materialTexture (zoomed in), and the def's two paths}. Off by " +
+                "default: reading them loads each texture, and a def path with no PNG logs a red error.")] bool textures = false)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -2387,7 +2419,9 @@ namespace JawaBench.BridgeTools
                     int c;
                     byDef.TryGetValue(dn, out c); byDef[dn] = c + 1;
                     byFaction.TryGetValue(fn, out c); byFaction[fn] = c + 1;
-                    if (outp.Count < Math.Max(1, limit)) outp.Add(WorldObjectRow(o));
+                    if (outp.Count < Math.Max(1, limit))
+                        outp.Add(textures ? (object)new { row = WorldObjectRow(o), textures = WorldObjectTextures(o) }
+                                          : WorldObjectRow(o));
                 }
 
                 return (object)new
