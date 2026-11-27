@@ -6,9 +6,10 @@ Code: `src/RimMandrake/Utils/code_review_status.py` (`page_states`, `code_files`
 (`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested): for all code, CLEAN is judged
 against a stated page of promises with named covering tests; the reviewer fixes a significant finding, and one blind
 reread checks the fix. `check` reads the pages
-(`design/specs/*/boundary.md`) and the tests files that `src/RimMandrake/Utils/boundary_check.py` `PAGES` registers;
-the promise-to-test match is `boundary_check.promises`, `tests_in` and `test_name`. Each promise has a test of its name
-in `src/RimMandrake/Utils/selftest_code_review_page_state.py`, each watched failing on the base `84a50ad44c`.
+(`design/specs/*/boundary.md`) and the tests files that `src/RimMandrake/Utils/boundary_pages.json` registers (read
+by `src/RimMandrake/Utils/boundary_check.py` into `PAGES`); the promise-to-test match is `boundary_check.promises`,
+`tests_in` and `test_name`. Each promise has a test of its name in
+`src/RimMandrake/Utils/selftest_code_review_page_state.py`, each watched failing on the base `84a50ad44c`.
 
 Version 0.2.0 (item `RIMMANDRAKE_ENACT_REVIEWER_FIXES_ONE_REREAD_THEN_FLAG`, 2026-11-19) adds FLAGGED, from the
 owner's card of 2026-11-19 5:54 PM PST: when the one blind reread of a fix also finds and fixes a significant finding,
@@ -69,7 +70,7 @@ in-game decider has a PASS that no change since touched counts green. The reader
 - **a-red-tests-file-is-dirty.** When a naming page's tests file exits non-zero, the file reads DIRTY (exit 1) and the
   detail names the tests file and its exit code.
 - **no-page-is-its-own-answer.** A file that no page names reads `NO PAGE` (exit 4), never DIRTY and never CLEAN.
-- **could-not-look-is-its-own-answer.** When a page that names the file is not registered in `PAGES`, its page or
+- **could-not-look-is-its-own-answer.** When a page that names the file is not registered in `PAGES` (or `boundary_pages.json` cannot be read), its page or
   tests file cannot be read or parsed, its tests file cannot be started or does not end within `TESTS_TIMEOUT_S`, or a page has no readable `Code:` or
   `Source:` sentence (so whether it names the file is unknown), the file reads `UNREADABLE` (exit 3) with the cause,
   never CLEAN or NO PAGE. It reads DIRTY only when another page that names it reads DIRTY; the detail then names both.

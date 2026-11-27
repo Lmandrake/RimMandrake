@@ -89,6 +89,61 @@ def runtime_optional_test_counted(td, write):
               (rc, out))
 
 
+def pages_live_in_data_file(td, write):
+    """RIMMANDRAKE_MOVE_PAGES_TO_DATA_STALE_TWICE_HALF_HOUR: the page -> tests file list is data
+    (boundary_pages.json beside the tool), not code, so a new page's row does not change boundary_check.py's bytes. A
+    data file that cannot be read is UNREADABLE (exit 3, cause named), never a crash and never an empty pass."""
+    import json
+    import shutil
+    here = os.path.dirname(os.path.abspath(__file__))
+    sys.path.insert(0, here)
+    import boundary_check as B
+    import code_review_status as CRS
+    src = open(TOOL, encoding="utf-8").read()
+    check(not re.search(r"^PAGES\s*=\s*\{", src, re.M) and not re.search(r'"design/specs/\d', src),
+          "boundary_check.py holds no PAGES literal and no page row", re.findall(r'"design/specs/[^"]*"', src)[:3])
+    data = os.path.join(here, "boundary_pages.json")
+    check(B.PAGES_FILE == data and os.path.isfile(data), "the list is the data file beside the tool", B.PAGES_FILE)
+    check(B.PAGES_UNREADABLE is None and B.PAGES == B.load_pages(data) and len(B.PAGES) > 0,
+          "PAGES is the data file's rows, read at import", (B.PAGES_UNREADABLE, len(B.PAGES)))
+    check(CRS.PAGES is B.PAGES, "code_review_status check reads the same rows", type(CRS.PAGES))
+    import publish as P
+    cfg = json.load(open(os.path.join(B.TOP, P.PIPELINE_TESTS), encoding="utf-8"))
+    sel = sorted(c["test"] for c in P.pipeline_selection(B.TOP, ["src/RimMandrake/Utils/boundary_pages.json"], cfg))
+    check(sel == ["src/RimMandrake/Utils/boundary_check.py", "src/RimMandrake/Utils/selftest_boundary_check.py"],
+          "a change to the page list alone selects the two tests that read it at ./publish, not every importer", sel)
+    good = os.path.join(td, "pages_good.json")
+    write(good, json.dumps({"_doc": "prose", "design/specs/a/boundary.md": "src/t_a.py"}))
+    check(B.load_pages(good) == {"design/specs/a/boundary.md": "src/t_a.py"}, "a `_` key is prose, not a row",
+          B.load_pages(good))
+    for what, body in (("a file that does not exist", None), ("bad JSON", "{"), ("a list, not an object", "[]"),
+                       ("a page named twice", '{"design/specs/a/boundary.md": "x.py", "design/specs/a/boundary.md": '
+                                              '"y.py"}'),
+                       ("a tests file that is not a string", '{"design/specs/a/boundary.md": 3}'),
+                       ("an empty tests file", '{"design/specs/a/boundary.md": ""}')):
+        p = os.path.join(td, "pages_bad.json")
+        if os.path.exists(p):
+            os.remove(p)
+        if body is not None:
+            write(p, body)
+        try:
+            B.load_pages(p)
+            got = "no refusal"
+        except B.Unreadable as e:
+            got = str(e)
+        check("pages_bad.json" in got, "a data file with %s is Unreadable, the cause named" % what, got)
+    copy = os.path.join(td, "tool")
+    os.makedirs(copy)
+    shutil.copy(TOOL, copy)
+    write(os.path.join(copy, "boundary_pages.json"), "{not json")
+    r = subprocess.run([sys.executable, os.path.join(copy, "boundary_check.py")], capture_output=True, text=True,
+                       timeout=120)
+    out = r.stdout + r.stderr
+    check(r.returncode == 3 and re.search(r"^UNREADABLE .*boundary_pages\.json", out, re.M) and "Traceback" not in out
+          and "covered" not in out, "a broken data file: the default run is UNREADABLE exit 3, no crash, no count",
+          (r.returncode, out[-400:]))
+
+
 def main():
     td = tempfile.mkdtemp(prefix="selftest_boundary_check_")
     page, tests = os.path.join(td, "boundary.md"), os.path.join(td, "selftest_x.py")
@@ -151,6 +206,7 @@ def main():
           "every page the tool checks by default "
           "(what ./publish runs) has a test for each promise", (rc, out[-600:]))
     page_only_change(td, write)
+    pages_live_in_data_file(td, write)
     import shutil
     shutil.rmtree(td, ignore_errors=True)
     print("FAILED %d" % len(FAILS) if FAILS else "PASS selftest_boundary_check")

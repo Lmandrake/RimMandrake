@@ -168,6 +168,16 @@ def t_could_not_look_is_its_own_answer():
     finally:
         CRS.TESTS_TIMEOUT_S = old
     eq((rc, state(rows, "src/pkg/one.py")), (3, "UNREADABLE"), "a tests file past TESTS_TIMEOUT_S")
+    root("nolist", {"design/specs/p/boundary.md": "tests/t_p.py"})
+    CRS.PAGES = {}
+    old = CRS.BC.PAGES_UNREADABLE
+    CRS.BC.PAGES_UNREADABLE = "boundary_pages.json: planted parse error"
+    try:
+        rc, rows = check("src/pkg/one.py")
+    finally:
+        CRS.BC.PAGES_UNREADABLE = old
+    eq((rc, state(rows, "src/pkg/one.py"), "planted parse error" in rows.get("src/pkg/one.py", ("", ""))[1]),
+       (3, "UNREADABLE", True), "a page list that cannot be read: the cause is named")
 
 
 def t_a_review_record_cleans_nothing():

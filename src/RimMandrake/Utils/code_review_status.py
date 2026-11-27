@@ -639,7 +639,7 @@ def clean_state(rel, entry):
 # `check` reads CLEAN only against a stated page of promises whose tests pass:
 # design/specs/2026-11-19-clean-means-promises-tested/boundary.md. The review
 # record above answers only `check --record` (a review round on these bytes).
-PAGES = BC.PAGES  # page -> its tests file, repo-relative; boundary_check.py owns the list
+PAGES = BC.PAGES  # page -> its tests file, repo-relative; boundary_check.py reads it from boundary_pages.json
 
 
 def code_files(page):
@@ -909,7 +909,8 @@ def _boundary_states(rels):
         for page in mine:
             tests = PAGES.get(page)
             if not tests:
-                unread.append("%s has no tests file registered in boundary_check.py PAGES" % page)
+                unread.append("%s has no tests file registered in boundary_pages.json%s" % (
+                    page, " (%s)" % BC.PAGES_UNREADABLE if BC.PAGES_UNREADABLE else ""))
                 continue
             try:
                 names = BC.promises(os.path.join(ROOT, page))
