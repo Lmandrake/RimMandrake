@@ -26,6 +26,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -2755,7 +2756,7 @@ def t_undo_disarms_escalation():
     during_arm = False
     with patch.object(C, "schedule_escalation", lambda *args: schedule(*args, runner=arm)), \
             patch.object(C, "_systemctl", disarm):
-        pipe_cli("stop", unit, "--write-now", "--deadline", "1h", "--why", "keep this order")
+        pipe_cli("stop", unit, "--write-now", "--deadline", "3h", "--why", "keep this order")   # longer than the default
         keep = armed.copy()
         pipe_cli("stop", unit, "--write-now", "--why", "withdraw this order")
         check(len(keep) == 1 and len(armed) == 2, "write-now stops arm separate timers", armed)
@@ -2801,6 +2802,22 @@ def t_an_unseeded_mod_can_be_switched_off():
         check(rc != 0 and "no mod 'Wrecked'" in out, "`pipe %s` still refuses an unseeded mod" % verb[0], out)
 
 
+def t_a_write_now_order_says_write_then_end():
+    """RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 8: 3 of 6 write-now orders in the 7 days to 2026-11-26 ended
+    in a kill at 300 s. One run saw the order at +66 s and was still in the "./publish what is finished" step the order
+    asked for; a publish in the door's line takes minutes. The order says: write the LEFT OPEN: note now, then end."""
+    t = C.STOP_TEXT["write_now"]
+    check("LEFT OPEN" in C.STOP_THEN_TEXT["continue"][1] and "{note_head}" in t, "the note it asks for is LEFT OPEN:")
+    check("./publish only" not in t and "commit and ./publish" not in t,
+          "the write-now order asks for no publish of code before the note", t[:200])
+    check("then end your turn" in t and "now" in t.lower(), "the order says write the note now, then end")
+    src = open(os.path.join(os.path.dirname(os.path.abspath(C.__file__)), "control.py")).read()
+    m = re.search(r"((?:^# budget: .*\n)+)WRITE_NOW_DEADLINE_S = (.+)", src, re.M)
+    check(m and "longest=599s" in m.group(1) and C.WRITE_NOW_DEADLINE_S >= 10 * 599,
+          "the deadline is at least 10 times the longest measured order-to-end time (599 s), written beside it",
+          C.WRITE_NOW_DEADLINE_S)
+
+
 def main():
     # its probe units have fixed names in the one user systemd: runs on one machine (sibling clones' ./publish) take
     # turns, or one run's unit is "already loaded" for the other (RIMMANDRAKE_SERIALIZE_CONTROL_SELFTEST_SIBLINGS_SHARE_UNIT_NAMES)
@@ -2820,7 +2837,8 @@ def main():
               t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror,
               t_next_fits_a_screen, t_deadline_is_wall_clock, t_undo_disarms_escalation, t_an_unseeded_mod_can_be_switched_off,
               t_an_off_over_a_live_switch_names_the_one_it_replaces,
-              t_a_test_process_starts_no_real_unit, t_a_test_process_never_writes_the_real_ledger):
+              t_a_test_process_starts_no_real_unit, t_a_test_process_never_writes_the_real_ledger,
+              t_a_write_now_order_says_write_then_end):
         print("== %s" % t.__name__)
         try:
             t()

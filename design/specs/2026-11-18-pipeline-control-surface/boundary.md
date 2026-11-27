@@ -235,6 +235,13 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   the same mods with the same words, dates and allowances, row for row. Tested by
   `t_held_stays_held_across_the_mirror`.
 
+- **a-write-now-order-says-write-then-end.** The write-now order asks for the `LEFT OPEN:` note now (with
+  `--publish`, which lands only the note's shard) and then the end of the turn; it asks for no `./publish` of code
+  first. `WRITE_NOW_DEADLINE_S` is at least 10 times the longest measured order-to-end time (599 s), written beside
+  it; the account end keeps its own `ACCOUNT_STOP_DEADLINE_S` (300 s), so an account at its line is not spent longer.
+  Why: 3 of 6 write-now orders in the 7 days to 2026-11-26 ended in a kill at 300 s
+  (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 8).
+
 ## LIFE CYCLES (a move not listed here is a defect)
 
 - **run:** admitted → started → ended or killed. admitted → cancelled (an off came first), refused (at its start

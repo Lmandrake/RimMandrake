@@ -89,7 +89,8 @@ elif a["do"] == "stop":         # pipe stop UNIT --write-now: the trial voided, 
     import control as C
     rows = []
     for u in a["units"]:
-        r = C.stop(u, "write_now", a["why"], per_ruling=a.get("per_ruling"))
+        r = C.stop(u, "write_now", a["why"], per_ruling=a.get("per_ruling"),
+                   deadline_s=getattr(C, "ACCOUNT_STOP_DEADLINE_S", 300))   # the account end's own deadline
         rows += [{"unit": x.get("unit"), "ok": x.get("ok", True), "said": x.get("said")} for x in r.get("units", [])]
     out = {"ok": bool(rows) and all(x["ok"] for x in rows), "units": rows}
 elif a["do"] == "probe":        # read only: the code there holds each function that the acts above call
@@ -136,7 +137,7 @@ def order_machine(alias, units, text):
 
 def stop_machine_runs(alias, units, why, per_ruling=None):
     """`pipe stop U --write-now` on the machine behind `alias`, for each of `units`: its trial voided, the order said
-    by its hook, the kill at that machine's own write-now deadline (control.WRITE_NOW_DEADLINE_S); a run that saved a
+    by its hook, the kill at the account end's own write-now deadline (control.ACCOUNT_STOP_DEADLINE_S); a run that saved a
     LEFT OPEN note is carried on (control.carry_stop)."""
     ok, ans = remote_step(alias, {"do": "stop", "units": list(units or []), "why": why, "per_ruling": per_ruling},
                           SSH_DEADLINE_S)

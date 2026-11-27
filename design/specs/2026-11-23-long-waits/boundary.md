@@ -94,3 +94,8 @@ ends uses the background command.
   the call, and tells no spend.
 
 Later lists beside this page: `polish.md`.
+- **a-stop-order-ends-the-wait.** A write-now stop order for this run (`stops` row, mode `write_now`, unit
+  `RM_ROLE_UNIT` else `RM_DETACHED_UNIT`) ends the wait within `STOP_POLL_S` with verdict 7 STOPPED; the job keeps
+  running and nothing is killed. An at-easy-spot order does not end it (the command in hand is the unit in hand). A
+  store that cannot be read ends nothing. Why: the order reaches a run only after a tool call ends; 2 of 3 runs killed
+  on a write-now order in the 7 days to 2026-11-26 were inside one long command (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX).

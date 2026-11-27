@@ -8,7 +8,8 @@
   default 10m. The sign of life is growth of CMD's output, of the progress file, or of the CPU time of its process tree.
   It prints the tail of the output and one verdict line last, and kills nothing:
     0 FINISHED rc=0 | 1 FINISHED rc=N | 2 usage | 3 HUNG (pid) | 4 STILL RUNNING at --max (pid; attach takes it)
-    5 COULD NOT LOOK | 6 DIED with no exit code
+    5 COULD NOT LOOK | 6 DIED with no exit code | 7 STOPPED: a write-now stop order for this run (`pipe stop
+    --write-now`) ends the wait at once and kills nothing; the order's text reaches the agent when this call returns
   state: $WAITALIVE_STATE, else <data root>/waitalive (rmpaths.py); verdicts.jsonl there holds each verdict.
 Page: design/specs/2026-11-23-long-waits/boundary.md
 """
@@ -35,7 +36,11 @@ START_S = 30
 KEEP_DAYS = 14
 TAIL_LINES = 20
 TICK = os.sysconf("SC_CLK_TCK") if hasattr(os, "sysconf") else 100
-FINISHED, FAILED, USAGE, HUNG, RUNNING, BLIND, DIED = range(7)
+FINISHED, FAILED, USAGE, HUNG, RUNNING, BLIND, DIED, STOPPED = range(8)
+# ends no work: how often the wait reads the control store for a write-now order to this run (one indexed read).
+# Danger without it: a run inside one long command never sees the order (its PostToolUse hook waits for the call), and
+# the order's deadline kills it: 2 of 3 such kills in the 7 days to 2026-11-26 (stuck-items study, part 8).
+STOP_POLL_S = 5
 
 
 class CouldNotLook(Exception):
@@ -250,7 +255,28 @@ def size_of(path):
         raise CouldNotLook("%s cannot be read (%s: %s)" % (path, type(e).__name__, e))
 
 
-def wait(d, max_s, silence_s, progress=None, now=time.monotonic, sleep=time.sleep):
+def stop_order(unit=None):
+    """-> the act id of a write-now stop order that waits for this run (RM_ROLE_UNIT, else RM_DETACHED_UNIT), or None.
+    A store that is missing or cannot be read answers None: the wait goes on, and the hook and the kill still act."""
+    unit = unit or os.environ.get("RM_ROLE_UNIT") or os.environ.get("RM_DETACHED_UNIT")
+    db = os.environ.get("RM_CONTROL_DB") or os.path.expanduser("~/.local/state/rimmandrake/control/control.db")
+    if not unit or not os.path.exists(db):
+        return None
+    import sqlite3
+    try:
+        # budget: danger=a locked store holds the wait; ends no work: a locked read answers None and the wait goes on
+        c = sqlite3.connect("file:%s?mode=ro" % db, uri=True, timeout=0.5)
+        try:
+            r = c.execute("SELECT act FROM stops WHERE unit=? AND mode='write_now' AND state IN ('pending','seen') "
+                          "ORDER BY id DESC LIMIT 1", (unit,)).fetchone()
+        finally:
+            c.close()
+    except sqlite3.Error:   # could-not-look-ok: NOT A COLLAPSE: the wait goes on as before; the hook and the kill act
+        return None
+    return r[0] if r else None
+
+
+def wait(d, max_s, silence_s, progress=None, now=time.monotonic, sleep=time.sleep, stop_fn=None):
     """-> (verdict, text, facts). Reads the job of folder `d` until its end, its silence bound or max_s."""
     out = os.path.join(d, "out")
     t0 = last = now()
@@ -261,6 +287,8 @@ def wait(d, max_s, silence_s, progress=None, now=time.monotonic, sleep=time.slee
     cpu = tree_cpu(job["pid"]) if job else 0.0
     need = max(CPU_MIN_S, CPU_SHARE * silence_s)
     facts = {"pid": job and job.get("pid"), "waited_s": 0, "silent_s": 0}
+    stop_fn = stop_order if stop_fn is None else stop_fn
+    polled = None
     while True:
         end = read_json(os.path.join(d, "exit.json"))
         if end is None and not running(d):      # ended between the two reads, or gone without a record
@@ -291,6 +319,14 @@ def wait(d, max_s, silence_s, progress=None, now=time.monotonic, sleep=time.slee
             return HUNG, ("HUNG: no output, no progress and %.2f s of CPU in %s; pid %d still runs, nothing was killed%s"
                           % (c - cpu, human(silent), job["pid"],
                              "; the progress file %s is not there" % progress if progress and not sig[1] else "")), facts
+        if polled is None or t - polled >= STOP_POLL_S:
+            polled = t
+            order = stop_fn()
+            if order:
+                facts["stop_act"] = order
+                return STOPPED, ("STOP ORDER (write-now, act %s) for this run: the wait ends, the job (pid %d) keeps "
+                                 "running and nothing was killed. Write your LEFT OPEN: note now, then end your turn"
+                                 % (order, job["pid"])), facts
         if t - t0 >= max_s:
             return RUNNING, "STILL RUNNING after %s; last sign of life %s ago; pid %d" % (
                 human(t - t0), human(silent), job["pid"]), facts
@@ -317,7 +353,8 @@ def log(root, rec):
         return "%s: %s" % (type(e).__name__, e)
 
 
-WORDS = {FINISHED: "FINISHED", FAILED: "FINISHED", HUNG: "HUNG", RUNNING: "STILL RUNNING", BLIND: "COULD NOT LOOK", DIED: "DIED"}
+WORDS = {FINISHED: "FINISHED", FAILED: "FINISHED", HUNG: "HUNG", RUNNING: "STILL RUNNING", BLIND: "COULD NOT LOOK", DIED: "DIED",
+         STOPPED: "STOPPED"}
 
 
 def parser():

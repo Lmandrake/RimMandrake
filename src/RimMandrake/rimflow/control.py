@@ -112,10 +112,17 @@ STOP_MODES = ("write_now", "at_easy_spot", "kill")
 # for good. A kill is never carried on (RIMMANDRAKE_CONTINUE_A_RUN_THE_CONDUCTOR_STOPPED_VOIDED_MEANS_NO_CARRY_ON)
 STOP_THEN = ("continue", "end")
 DEFAULT_STOP_MODE = "at_easy_spot"  # his default (card 2026-11-18); `pipe` always prints which mode it used
+# Measured (control.db stops, 19 write_now orders to 2026-11-26): order to note at most 408 s; 3 of 6 in the 7 days to
+# 2026-11-26 were killed at 300 s, 2 of them inside one long command (stuck-items study part 8). A shorter --deadline
+# on one order is still the orderer's to give.
 # budget: danger=a run that is told to write now never stops; evidence=3 of 15 write_now stops reached it and were escalated;
 # budget: longest=599s (control.db stops, 14 days to 2026-11-24); stays=the owner's stop, and the deadline is part of the stop
 # budget: he orders
-WRITE_NOW_DEADLINE_S = 300
+WRITE_NOW_DEADLINE_S = 6000
+# budget: danger=a run on an account at its line spends past the line while it writes; evidence=the account end's own
+# budget: stop (account_plan.stop_grace_s, account_plan_machines stop) kept 300 s when pipe stop's deadline rose;
+# budget: longest=599s (control.db stops, 14 days to 2026-11-24); stays=the account's leave line, his limit
+ACCOUNT_STOP_DEADLINE_S = 300
 # budget: danger=a process that does not die, or a locked store, holds a kill; its reach leaves no record; no record of its run
 KILL_WAIT_S = 1.0
 # budget: danger=a process that does not die, or a locked store, holds a kill; its reach leaves no record; no record of its run
@@ -1976,10 +1983,11 @@ def _unit_loaded(unit):
 
 STOP_TEXT = {
     "write_now": "STOP ORDER, write now (pipe stop --write-now, act {act} at {at}, by {who}: {why}). Stop what you are "
-                 "doing NOW and start no new work. Write where you are: commit and ./publish only units that are "
-                 "finished; put a short handoff note on your item ({item}) with `python3 src/RimMandrake/rimflow/cli.py "
-                 "note {item} --text \"{note_head}STOPPED (write-now): done: ...; half-done: ...; next: ...\" --why "
-                 "\"pipe stop\"` and publish its shard; then end your turn. {then_text}At {deadline} the run is killed.",
+                 "doing NOW and start no new work. Write the note on your item ({item}) now, before anything else: "
+                 "`python3 src/RimMandrake/rimflow/cli.py note {item} --text \"{note_head}STOPPED (write-now): done: "
+                 "...; half-done: ...; unlanded: <paths and the clone>; next: ...\" --why \"pipe stop\" --publish` "
+                 "(it lands only the note's shard); then end your turn. Start no ./publish of code: what is not landed "
+                 "stays in your clone, and the note names it. {then_text}At {deadline} the run is killed.",
     "at_easy_spot": "STOP ORDER, at the next easy spot (pipe stop --at-easy-spot, act {act} at {at}, by {who}: {why}). "
                     "Finish the unit of work in hand, start no other, then write where you are: commit and ./publish "
                     "what is finished; put a short handoff note on your item ({item}) with `python3 "
@@ -3244,7 +3252,8 @@ def main(argv=None):
     p.add_argument("--at-easy-spot", action="store_true", help="finish the unit in hand, write where you are, end "
                                                                "(the default; name it anyway)")
     p.add_argument("--kill", action="store_true", help="FORCE KILL: SIGKILL the whole cgroup, no write")
-    p.add_argument("--deadline", help="after it, a writing stop escalates to --kill (default 5m for --write-now)")
+    p.add_argument("--deadline", help="after it, a writing stop escalates to --kill (default 100m for --write-now: 10 times the longest "
+                        "measured order to end)")
     p.add_argument("--end", action="store_true", help="the work ends with this writing stop: no run carries it on "
                                                       "(default: a fresh run carries it on once the cause is gone)")
     p = sub.add_parser("show")

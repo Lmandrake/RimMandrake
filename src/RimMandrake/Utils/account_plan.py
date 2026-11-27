@@ -1387,12 +1387,12 @@ def machine_facts(f, account) -> dict:
 SWITCH_RETRY_S = 30 * 60    # budget: danger=a switch asked on every pass while it fails; ends no work: asked again
 def stop_grace_s():
     """From the write-now stop of a run on another machine to its machine's switch: twice the stop's own kill deadline
-    (control.WRITE_NOW_DEADLINE_S, the deadline of `pipe stop --write-now`, whose danger and evidence are written there):
+    (control.ACCOUNT_STOP_DEADLINE_S, the account end's write-now deadline, whose danger and evidence are written there):
     the deadline, then as long again for the kill and the run's end to land. A run that is still listed then is closed
     by the switch."""
     sys.path.insert(0, str(HERE.parent / "rimflow"))
     import control as C
-    return 2 * C.WRITE_NOW_DEADLINE_S
+    return 2 * C.ACCOUNT_STOP_DEADLINE_S
 
 
 def machine_bound_s(plan, d):

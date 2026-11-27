@@ -340,12 +340,40 @@ def run_one(t):
         return "%s: %s" % (type(e).__name__, e)
 
 
+def t_a_stop_order_ends_the_wait():
+    """RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 8: the order reaches a run only after a tool call ends (its
+    PostToolUse hook). 2 of 3 runs killed on a write-now order in the 7 days to 2026-11-26 were inside one long command
+    and never saw it. A write-now order for this run ends the wait at once; an at-easy-spot order does not."""
+    import sqlite3
+    import time as T
+    import control as C
+    db = os.path.join(TMP, "stop_control.db")
+    C.init(db)
+    unit = "rm-detached-selftest-stop"
+    c = sqlite3.connect(db)
+    c.execute("INSERT INTO stops (unit, mode, act, why, at, deadline, state) VALUES (?,?,?,?,?,?,?)",
+              (unit + "-easy", "at_easy_spot", "ct_e", "w", T.time(), T.time() + 300, "pending"))
+    c.commit()
+    e = dict(env(unit=unit), RM_CONTROL_DB=db)
+    rc, out, last = wa("run", "--max", "8s", "--silence", "30s", "--", "sleep", "3", env=e)
+    need(rc == 0, "no order: the wait runs to the end (rc %s, %s)" % (rc, last))
+    rc, out, last = wa("run", "--max", "8s", "--silence", "30s", "--", "sleep", "3", env=dict(e, RM_DETACHED_UNIT=unit + "-easy"))
+    need(rc == 0, "an at-easy-spot order lets the command in hand finish (rc %s, %s)" % (rc, last))
+    c.execute("INSERT INTO stops (unit, mode, act, why, at, deadline, state) VALUES (?,?,?,?,?,?,?)",
+              (unit, "write_now", "ct_w", "w", T.time(), T.time() + 300, "pending"))
+    c.commit()
+    t = T.time()
+    rc, out, last = wa("run", "--max", "50s", "--silence", "60s", "--", "sleep", "40", env=e)
+    need(rc == 7 and "STOP ORDER" in last and T.time() - t < 30,
+         "a write-now order ends the wait at once (rc %s, %.0f s, %s)" % (rc, T.time() - t, last))
+
+
 def main():
     tests = [t_a_hung_job_is_named, t_a_live_job_is_never_called_hung, t_a_failure_is_never_finished_well,
              t_a_dead_job_is_died, t_could_not_look_is_its_own_answer, t_no_wait_outlives_the_cache,
              t_the_job_outlives_the_wait, t_the_call_returns, t_one_verdict_line_last,
              t_a_taken_name_is_repaired, t_each_verdict_is_logged, t_the_setting_stands_on_the_experiment,
-             t_the_brief_names_the_command]
+             t_the_brief_names_the_command, t_a_stop_order_ends_the_wait]
     serial = [t_no_wait_outlives_the_cache, t_the_setting_stands_on_the_experiment,
               t_the_brief_names_the_command]
     with ThreadPoolExecutor(6) as ex:       # each test waits far more than it works
