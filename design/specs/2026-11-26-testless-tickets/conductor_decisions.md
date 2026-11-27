@@ -34,6 +34,11 @@ Build ticket: `RIMMANDRAKE_CLOSE_TESTLESS_HOLES_HOMES_NOT_248_SHAPE_RUNS`. Its o
 - The Shape run first checks that the ticket is still true (`CLAUDE.md` §Old work is filtered before any process takes it). It
   drops a stale or wrong ticket with its reason.
 - The lane keeps its two slots. No new pace limit is added.
+- The age line sends no ticket to Shape while the class of its home is off (`onboard_classes` in
+  `src/RimMandrake/rimflow/list_dispatch.json`). This applies to every block that the age line reads, with a kind or without.
+  The case: on 2026-11-26 the owner's card answer switched the class `game` off at 7:35 PM PST. At 9:51 PM PST the age line
+  sent `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL` (home `game:world-map`, a live block idle 3 days) to a Shape run. That run did
+  the ticket's work and held ArchBig and ArchSmall for it. A selftest case plants that ticket shape and fails on today's code.
 
 ## Question 3: the ten tickets of Pyrelands and Wrecked Machines. Decision: not in this build
 

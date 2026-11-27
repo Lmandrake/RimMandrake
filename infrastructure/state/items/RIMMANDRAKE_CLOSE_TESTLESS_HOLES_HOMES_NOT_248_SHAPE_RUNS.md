@@ -35,6 +35,8 @@ or hold, so its no-home count is higher than the 248 of the page.
 - `holes_check.py` exits 0 on the live ledger.
 - `testless_census.py` reads each new route from the lane's own code. No hole flag is changed by hand.
 - Each new rule has a selftest case that is red under a planted fault and green on the real code.
+- The age line sends no ticket to Shape while the class of its home is off. A selftest case with a `game:` ticket under a
+  live block, idle 3 days, with the class `game` off, is red on base 8a4263dc29 and green after the fix.
 - The boundary page of the ticket lane holds the new promises, written before the code.
 - The cost of one Shape run is measured from the run records and written beside the pace of 5 a day.
 - No park or hold of a ticket is changed by hand, and the work of no ticket is done.
