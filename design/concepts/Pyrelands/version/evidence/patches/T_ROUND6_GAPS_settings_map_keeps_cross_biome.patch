@@ -1,0 +1,12 @@
+--- a/design/concepts/Pyrelands/scenes.json
++++ b/design/concepts/Pyrelands/scenes.json
+@@ -961,6 +961,9 @@
+     "fireClockEnabled": [
+      "T_SETTINGS_SWEEP_OFFLINE"
+     ],
++    "crossBiomeEnabled": [
++     "T_SETTINGS_SWEEP_OFFLINE"
++    ],
+     "herdThirstEnabled": [
+      "T_SETTINGS_SWEEP_OFFLINE",
+      "T_SETTINGS_SCREENS"

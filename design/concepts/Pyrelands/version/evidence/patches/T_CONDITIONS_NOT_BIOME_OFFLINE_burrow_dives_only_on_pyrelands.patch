@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs
++++ b/src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs
+@@ -39,7 +39,7 @@
+         internal static bool WouldDive(Pawn pawn)
+         {
+             Map map = pawn?.Map;
+-            if (map == null || pawn.Dead || !pawn.Spawned)
++            if (map == null || pawn.Dead || !pawn.Spawned || !PyrelandsAshSand.IsAshMap(map) || map.Biome.defName != "RM_Pyrelands")
+             {
+                 return false;
+             }

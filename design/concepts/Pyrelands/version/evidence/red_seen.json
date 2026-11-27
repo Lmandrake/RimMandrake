@@ -25,6 +25,19 @@
   "rc": 1,
   "test_blob": "3edda7da214c160278d10f9cc0349a875413d09e"
  },
+ "T_CONDITIONS_NOT_BIOME_OFFLINE": {
+  "at": "2026-11-27T04:24:48Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_conditions_not_biome.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_conditions_not_biome.py",
+  "last": "FAIL",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs\n@@ -39,7 +39,7 @@\n         internal static bool WouldDive(Pawn pawn)\n         {\n             Map map = pawn?.Map;\n-            if (map == null || pawn.Dead || !pawn.Spawned)\n+            if (map == null || pawn.Dead || !pawn.Spawned || !PyrelandsAshSand.IsAshMap(map) || map.Biome.defName != \"RM_Pyrelands\")\n             {\n                 return false;\n             }\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs"
+  ],
+  "patch_sha": "49c48e771148625d",
+  "rc": 1,
+  "test_blob": "e9cc6599327e96e558c6af9b988783bbce22d114"
+ },
  "T_CRESTFEATHER_OWN_ART_OFFLINE": {
   "at": "2026-11-27T03:03:27Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_crestfeather_own_art.py",
@@ -104,44 +117,70 @@
   "rc": 1,
   "test_blob": "9f77d082fb433d4e86a3b19b744edbbaa340d383"
  },
- "T_SETTINGS_SCREENS": {
-  "at": "2026-11-22T11:35:00Z",
-  "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
-  "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
-  "last": "settings screens selftest: 13/14 ok (mods: Pyrelands)",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\nindex 0ebdc5d6d5..a1220c98de 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -379,7 +379,7 @@ namespace RimMandrake.Pyrelands\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"Black rain puts fires out\", RimMandrake.Shared.SettingScope.Now, new[] { \"blackRainDousingEnabled\", \"blackRainDousing\" }))\n+            if (Group(list, \"Black rain puts fires out\", RimMandrake.Shared.SettingScope.Now, new[] { \"blackRainDousingEnabled\" }))\n             {\n                 using (Dependent(list, \"blackRainDousingEnabled\", \"blackRainDousing\"))\n                 {\n",
+ "T_ROUND6_GAPS": {
+  "at": "2026-11-27T04:25:28Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
+  "last": "FAIL: 1 of 18 checks failed",
+  "patch": "--- a/design/concepts/Pyrelands/scenes.json\n+++ b/design/concepts/Pyrelands/scenes.json\n@@ -961,6 +961,9 @@\n     \"fireClockEnabled\": [\n      \"T_SETTINGS_SWEEP_OFFLINE\"\n     ],\n+    \"crossBiomeEnabled\": [\n+     \"T_SETTINGS_SWEEP_OFFLINE\"\n+    ],\n     \"herdThirstEnabled\": [\n      \"T_SETTINGS_SWEEP_OFFLINE\",\n      \"T_SETTINGS_SCREENS\"\n",
+  "patch_files": [
+   "design/concepts/Pyrelands/scenes.json"
+  ],
+  "patch_sha": "bc17b6b6e478bb48",
+  "rc": 1,
+  "test_blob": "9da29475eefc9df7c4d9e195fa8d7d44312efe20"
+ },
+ "T_SELF_CONTAINED_OFFLINE": {
+  "at": "2026-11-27T04:25:09Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
+  "last": "FAIL: 1 problem(s) in the shipped Pyrelands",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -145,6 +145,7 @@\n         // (MapComponent_PyrelandsHerdThirst). Fire sense: people keep their walks clear of fire and step off a cell it reaches\n         // (PyrelandsFireSense). Meal before fire duty: an urgently hungry colonist eats before fighting fire (RM_PyreEatBeforeFireDuty).\n         public static bool herdThirstEnabled = true;\n+        public static bool crossBiomeEnabled = false;\n         public static bool fireSenseEnabled = true;\n         public static bool mealBeforeFireDutyEnabled = true;\n \n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
   ],
-  "patch_sha": "947b3f4258f1c464",
+  "patch_sha": "b2b5e73e10c1aeee",
   "rc": 1,
-  "test_blob": "e9bc063b23c724c03dc083e4fe903a476d17771b"
+  "test_blob": "e6944721861b142773dbe8eaf09cca211a8a14ca"
+ },
+ "T_SETTINGS_SCREENS": {
+  "at": "2026-11-27T04:25:00Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
+  "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
+  "last": "settings screens selftest: 13/14 ok (mods: Pyrelands)",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -597,7 +597,7 @@\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"People, herds and fire\", RimMandrake.Shared.SettingScope.Now, new[] { \"fireSenseEnabled\", \"mealBeforeFireDutyEnabled\", \"herdThirstEnabled\" }))\n+            if (Group(list, \"People and fire\", RimMandrake.Shared.SettingScope.Now, new[] { \"fireSenseEnabled\", \"mealBeforeFireDutyEnabled\", \"herdThirstEnabled\" }))\n             {\n                 using (Dependent(list, \"fireSenseEnabled\", \"mealBeforeFireDutyEnabled\", \"herdThirstEnabled\"))\n                 {\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
+  ],
+  "patch_sha": "165686587b7038d8",
+  "rc": 1,
+  "test_blob": "e79cc7d17295196ddf3d13fd165a62d243c2f438"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-24T14:43:50Z",
+  "at": "2026-11-27T04:24:59Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "last": "FAIL: the unchanged copy is not green",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs b/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs\nindex 313af437c0..21ecf5c7d2 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs\n@@ -28,8 +28,8 @@ namespace RimMandrake.Pyrelands\n     /// ground for PyrelandsTuning.BurrowTimeoutCooldownTicks; without that the\n     /// giver would re-issue the burrow at once. AddFinishAction removes the\n     /// hediff on every exit path \u2014 safe emergence, timeout, the job being\n-    /// interrupted by damage or capture, the gate or burrow switch going off,\n-    /// or the pawn dying \u2014 so the hediff can never outlive the job that granted it.\n+    /// interrupted by damage or capture, or the pawn dying \u2014 so the hediff\n+    /// can never outlive the job that granted it.\n     /// </summary>\n     public class RM_JobDriver_Burrow : JobDriver\n     {\n@@ -65,7 +65,6 @@ namespace RimMandrake.Pyrelands\n         protected override IEnumerable<Toil> MakeNewToils()\n         {\n             this.FailOn(() => pawn.Dead);\n-            this.FailOn(() => !PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.burrowOnFireEnabled);\n \n             yield return Toils_General.Do(() => ApplyBurrowedHediff(pawn));\n \n",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs\n+++ b/src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs\n@@ -12,7 +12,7 @@\n     /// </summary>\n     public static class PyrelandsMechanicsGate\n     {\n-        public static bool On => RM_PyrelandsSettings.pyrelandsEnabled;\n+        public static bool On => true;\n     }\n \n     /// <summary>\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/RM_JobDriver_Burrow.cs"
+   "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs"
   ],
-  "patch_sha": "31ba0a086b5fa9e7",
+  "patch_sha": "9a2e5a31fef720cd",
   "rc": 1,
-  "test_blob": "95a5114462e102d33764e9b9e93d103f792a4178"
+  "test_blob": "d9545ce72c15a8890e7bb0a760b8f54c807702e9"
  },
  "T_SITE": {
-  "at": "2026-11-24T20:30:07Z",
+  "at": "2026-11-27T04:25:38Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
   "last": "FAIL: 1 failure(s)",
-  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs b/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs\nindex 246636f9eb..326120e8f1 100644\n--- a/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs\n+++ b/src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs\n@@ -40,7 +40,7 @@ namespace RimMandrake.Pyrelands\n         /// <summary>Sheet \u00a75: \"The burn exists somewhere on the biome, always;\n         /// only its address changes.\" Two quiet days is the grace period before\n         /// this component lights the next address itself. [INVENTED]</summary>\n-        public const int StandingBurnQuietTicks = 120000;\n+        public const int StandingBurnQuietTicks = 60000;\n \n         /// <summary>How many cells are sampled looking for somewhere lawful to\n         /// re-seed the standing burn before giving up until the next attempt.</summary>\n",
+  "patch": "--- a/src/RimMandrake/Pyrelands/preflight_pyrelands.py\n+++ b/src/RimMandrake/Pyrelands/preflight_pyrelands.py\n@@ -81,7 +81,7 @@\n     \"fireClockEnabled\": True,\n     \"burrowOnFireEnabled\": True, \"burrowDomeOnHeatHit\": True,\n     \"ullaiEnabled\": True, \"ullaiHerdSizeMultiplier\": 1.0, \"furnaceBeastGiant\": True,\n-    \"herdThirstEnabled\": True, \"fireSenseEnabled\": True, \"mealBeforeFireDutyEnabled\": True,\n+    \"fireSenseEnabled\": True, \"mealBeforeFireDutyEnabled\": True,\n     \"sandShovelEnabled\": True, \"sandShovelYieldMultiplier\": 1.0, \"sprayerFoamsPathEnabled\": True,\n     \"ashWaterFertilityEnabled\": True, \"ashDryFertility\": 0.7, \"ashWateredFertility\": 1.4, \"ashNaturalWaterRadius\": 2,\n     \"freshBurnBonusEnabled\": True, \"freshBurnBonus\": 0.5, \"freshBurnDays\": 6.0,\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs"
+   "src/RimMandrake/Pyrelands/preflight_pyrelands.py"
   ],
-  "patch_sha": "0e2a35fc8df1b95f",
+  "patch_sha": "6fb8ba5d6b9a144f",
   "rc": 1,
-  "test_blob": "ffbb55b3e121e8b21d453973da635f493df69d96"
+  "test_blob": "8896e79600db39f8d16760e8871b60469cb43a70"
  },
  "T_VENOM_STAGING": {
   "at": "2026-11-23T10:09:23Z",

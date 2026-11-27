@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
++++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
+@@ -597,7 +597,7 @@
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "People, herds and fire", RimMandrake.Shared.SettingScope.Now, new[] { "fireSenseEnabled", "mealBeforeFireDutyEnabled", "herdThirstEnabled" }))
++            if (Group(list, "People and fire", RimMandrake.Shared.SettingScope.Now, new[] { "fireSenseEnabled", "mealBeforeFireDutyEnabled", "herdThirstEnabled" }))
+             {
+                 using (Dependent(list, "fireSenseEnabled", "mealBeforeFireDutyEnabled", "herdThirstEnabled"))
+                 {

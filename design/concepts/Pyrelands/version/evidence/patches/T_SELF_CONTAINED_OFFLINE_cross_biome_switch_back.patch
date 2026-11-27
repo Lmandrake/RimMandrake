@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
++++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
+@@ -145,6 +145,7 @@
+         // (MapComponent_PyrelandsHerdThirst). Fire sense: people keep their walks clear of fire and step off a cell it reaches
+         // (PyrelandsFireSense). Meal before fire duty: an urgently hungry colonist eats before fighting fire (RM_PyreEatBeforeFireDuty).
+         public static bool herdThirstEnabled = true;
++        public static bool crossBiomeEnabled = false;
+         public static bool fireSenseEnabled = true;
+         public static bool mealBeforeFireDutyEnabled = true;
+ 
