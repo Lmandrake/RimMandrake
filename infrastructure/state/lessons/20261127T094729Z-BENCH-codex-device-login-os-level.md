@@ -1,0 +1,3 @@
+A Codex device login for another machine (SteveDesktop) is finished from Archmagi without CDP: run gpt_door.py renew --no-open over ssh on that machine, open https://auth.openai.com/codex/device in his Windows Chrome with powershell Start-Process, then system_screenshot.py, system_click.py on the account card, type the code with WScript.Shell SendKeys one character at a time, read the boxes back on a screenshot, click Continue, Ctrl+W the tab. Measured 2026-11-27: about 2 minutes, no owner. Chrome had no remote-debugging port and the Machinist extension bridge read EXT_NOT_CONNECTED, so the chrome_access route was closed.
+item: RIMMANDRAKE_RENEW_STEVEDESKTOP_CODEX_LOGIN_REFRESH_REVOKED
+home: ~/.claude/skills/chatgpt-consult/SKILL.md §Sign-in
