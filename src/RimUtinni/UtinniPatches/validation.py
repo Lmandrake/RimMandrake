@@ -755,6 +755,10 @@ def _fly_a_ship(t):
         refusals.append((cand, chk.get("reasons")))
     if target is None:
         raise ExpectationFailed("UNMEASURED: no near tile accepts a launch: %s" % str(refusals[:4])[:300])
+    # colonists left off the pad die with the origin map, and a colony with nobody left ends the game
+    walk = _wc(t, "jawa/order_pawn", pawnId="colonists", x=X + 8, z=Z + 8, waitTicks=5000, timeoutSeconds=180,
+               unpause=True)
+    t._record("colonists walked onto the pad", walk)
     go = _wc(t, "jawa/gravship_launch", targetTile=target, dryRun=False)
     t._record("gravship_launch %s -> %s" % (origin, target), go)
     if go.get("launched") is not True:
