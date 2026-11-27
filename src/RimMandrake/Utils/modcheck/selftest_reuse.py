@@ -363,6 +363,7 @@ def t_validity_module():
     r = validity.canary(s, (0, 0))
     ok(r["ok"] and len(s.destroyed) == 1 and s.destroyed[0] != (0, 0) and min(s.destroyed[0]) >= 0,
        "canary: an occupied anchor on the map edge skips off-map cells and uses an in-bounds neighbour", (r, s.destroyed))
+    # the plant-only fallback (STEVE_LANE_CANARY_RED_F99275): selftest_canary.py, its boundary page
     # wave 76: a spawn_batch that raises in flight (rimdrive Reconnected) may still have landed the stack; the canary
     # must still clean its cell, or a Steel stack is left on the colony map.
     class _InFlightSess(_Sess):

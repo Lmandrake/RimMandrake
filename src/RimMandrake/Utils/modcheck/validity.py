@@ -90,13 +90,36 @@ def default_checks(fixtures=()):
     return [menu_drop, colonists_zero, hostile_arrival(fixtures)]
 
 
+def _plants_by_cell(session, anchor, radius):
+    """{(x, z): {plant defName, ..}} in the square of `radius` around `anchor`, from one jawa/list_things group=Plant
+    call; {} when the read is refused or shaped wrong (then no cell is taken as plant-only)."""
+    x0, z0 = anchor
+    lx, lz = max(0, x0 - radius), max(0, z0 - radius)   # the rect is clamped at the map's low edge, never negative
+    try:
+        r = session.call("jawa/list_things", group="Plant", rect="%d,%d,%d,%d" % (
+            lx, lz, x0 + radius + 1 - lx, z0 + radius + 1 - lz), limit=4 * (2 * radius + 1) ** 2) or {}
+    except Exception:  # noqa: BLE001 - a plant read that fails takes no cell; the canary goes red as before
+        return {}
+    if not r.get("success") or not isinstance(r.get("things"), list):
+        return {}
+    out = {}
+    for t in r["things"]:
+        if isinstance(t, dict) and t.get("def") and isinstance(t.get("x"), int) and isinstance(t.get("z"), int):
+            out.setdefault((t["x"], t["z"]), set()).add(t["def"])
+    return out
+
+
 def _empty_cell(session, anchor, radius=12):
-    """The first cell at or around `anchor` (Chebyshev rings out to `radius`) holding no thing at all, or None. The
-    canary spawns and destroys only there, so its Item cleanup can remove nothing but its own stack.
+    """The first cell at or around `anchor` (Chebyshev rings out to `radius`) holding no thing at all; failing that,
+    the first holding only plants; else None. The canary spawns and destroys only there, and its cleanup destroys
+    Items only, so it can remove nothing but its own stack. The plant-only fallback (STEVE_LANE_CANARY_RED_8A39DE,
+    _F99275): on a grassy map every cell near the anchor holds a plant, and a canary that took only bare cells went
+    red (HARNESS) on a healthy session and paused the lane.
     An out-of-bounds cell is skipped, not fatal: rimdrive's cell() raises SessionError (a RuntimeError) there, and each
     ring is scanned from dx=-r, so an occupied anchor near the map's low edge used to raise before its in-bounds
     neighbours were looked at, turning the canary red (HARNESS) on a healthy session. A dead bridge (OSError) still raises."""
     x0, z0 = anchor
+    seen = []   # (cell, defNames) in ring order, in-bounds and occupied
     for r in range(radius + 1):
         for dx in range(-r, r + 1):
             for dz in range(-r, r + 1):
@@ -108,6 +131,11 @@ def _empty_cell(session, anchor, radius=12):
                     continue
                 if not occupied:
                     return x0 + dx, z0 + dz
+                seen.append(((x0 + dx, z0 + dz), occupied))
+    plants = _plants_by_cell(session, anchor, radius) if seen else {}
+    for cell, occupied in seen:
+        if plants.get(cell) and set(occupied) <= plants[cell]:
+            return cell
     return None
 
 
@@ -136,7 +164,7 @@ def canary(session, anchor):
                 " (left so by live driver(s) %s)" % ", ".join(COLONY_BREAKERS) if COLONY_BREAKERS else ""))
         cell = _empty_cell(session, (x, z))
         if cell is None:
-            out["problems"].append("no empty cell within 12 of the anchor %d,%d: nothing spawned" % (x, z))
+            out["problems"].append("no empty or plant-only cell within 12 of the anchor %d,%d: nothing spawned" % (x, z))
             return out
         x, z = cell
         # marked BEFORE the call: a spawn that raises in flight (rimdrive Reconnected: "effect UNKNOWN") may still have
