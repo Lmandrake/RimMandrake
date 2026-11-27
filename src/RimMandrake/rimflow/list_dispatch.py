@@ -36,7 +36,8 @@ oldest item that another waits on, then oldest filing, one decision:
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
                   wait passed and the check fails on an old item that nobody named (a date never launches old work). A due
                   item with no check whose wait passed reads shape. A lane item (named, or filed after shape_from) whose
-                  wait passed gets one second look: a Work run, opus, inside max_runs_per_item. The age line: a block
+                  wait passed gets one second look: a Work run, opus, inside max_runs_per_item. An old item that a
+                  Shape split gave its check counts as named. The age line: a block
                   idle past block_idle_days whose `needs` window (game UP, a bridge free) opened block_window_min times
                   since is stale; it does not stop the lane, and an item with no check it makes due for Shape. A block
                   with no end (block_end) is stale after block_idle_days whatever its needs, where its route is open
@@ -1517,7 +1518,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
              "caused_by": x.caused_by, "needs": getattr(x, "needs", None), "home": (getattr(x, "home", None) or {}).get("home"), "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
              "raised": LM.raise_key(x) if x.raised is not None else None, "block_stale": stale,
-             "second_look": bool(sf["named"] or (sf["filed"] and cfg.get("shape_from")
+             # a Shape split is a naming: the run that wrote it read the old item against now (old-work filter)
+             "second_look": bool(sf["named"] or sf["shape_at"] or (sf["filed"] and cfg.get("shape_from")
                                                  and sf["filed"] >= LS._epoch(cfg["shape_from"])))}
         if x.state == "doing" and LM.lease_status(x, now) == "live":
             d["claimed"] = "doing under %s, whose lease is live to %s" % (x.owner, (x.lease or {}).get("expires"))

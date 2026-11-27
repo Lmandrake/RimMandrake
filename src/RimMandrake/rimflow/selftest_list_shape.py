@@ -324,6 +324,32 @@ def t_a_naming_can_be_taken_off():
     chk(lambda: it.shape and it.effect and it.shape_named is None, "--leave keeps the split and the check")
 
 
+def t_enter_names_a_checked_item_for_its_second_look():
+    """RIMMANDRAKE_PREPARE_LANE_ROWS_THAT_WAIT_FOR_CONDUCTOR_SIXTEEN_OPEN: the lane's `reshape` row tells a person to run
+    `rimflow shape <ID> --enter` on an old item whose wait passed and whose check fails. --enter refused every such item
+    ("it needs no Shape run") and wrote nothing, so the advice could never be followed. Now --enter on an item with a
+    check writes the naming, which the lane reads as its one second look; it still starts no Shape run. A routed item
+    stays refused: its route holds it."""
+    iid = "RIMMANDRAKE_TEST_SHAPE_ENTER_NAMES_A_CHECKED_ITEM"
+    file_item(iid)
+    page("sh/page.md", "nothing yet\n")
+    cli("shape", iid, "--parts", json.dumps([part("a")]), "--why", "selftest")
+    cli("shape", iid, "--leave", "--why", "selftest")
+    rc, out = cli("shape", iid, "--enter", "--why", "selftest: a second look")
+    it = world().items[iid]
+    chk(lambda: rc == 0 and bool(it.shape_named) and "second look" in out,
+        "--enter on a checked item names it for its second look (rc %d, named %s: %s)" % (rc, it.shape_named, out[-200:]))
+    cfg = {"shape_from": NOW + 9e9, "shape_grace_h": 24}
+    chk(lambda: LS().due(LS().facts(it), cfg, NOW)[0] is False, "the naming starts no Shape run: the item has its check")
+    ro = "RIMMANDRAKE_TEST_SHAPE_ENTER_ROUTED_STAYS_OUT"
+    file_item(ro)
+    cli("shape", ro, "--parts", json.dumps([part("b", effect=None, fooled_by=None, route=R_OK)]), "--why", "selftest")
+    n = len(events())
+    rc, out = cli("shape", ro, "--enter", "--why", "selftest")
+    chk(lambda: rc == 0 and len(events()) == n and not world().items[ro].shape_named,
+        "--enter on a routed item writes nothing: its route holds it (%s)" % out[-200:])
+
+
 def t_the_lane_launches_a_shape_run_through_every_gate():
     rows, launches, _ = decide({"A": lane_it()})
     chk(lambda: rows["A"]["decision"] == "shape" and launches == ["A"] and rows["A"].get("kind") == "shape"
@@ -584,6 +610,7 @@ def main():
                   t_the_ledger_carries_the_shape,
                   t_old_items_enter_only_when_named,
                   t_a_naming_can_be_taken_off,
+                  t_enter_names_a_checked_item_for_its_second_look,
                   t_the_lane_launches_a_shape_run_through_every_gate,
                   t_a_shape_run_that_left_neither_check_nor_route_is_stopped,
                   t_a_large_shape_run_is_not_a_work_run,

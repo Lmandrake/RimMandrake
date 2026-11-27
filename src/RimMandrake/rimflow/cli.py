@@ -2259,12 +2259,17 @@ def cmd_shape(args, seat):
         return 0
     if args.enter:
         f = list_shape.facts(it)
-        if not list_shape.needs_shape_run(f):
+        checked = bool(f.get("effect")) and not list_shape.route_ok(f.get("route"))
+        if not list_shape.needs_shape_run(f) and not checked:
             print("%s: not named; it needs no Shape run (%s). Nothing was written."
                   % (args.id, list_shape.due(f, {}, 0)[1]))
             return 0
         ev["enter"] = True
         _emit(ev, w, quiet=True)
+        if checked:     # the lane's `reshape` advice: an old item with a check gets one Work run when its wait passes
+            print("%s: named for its second look: it carries an outcome check, so no Shape run starts; when its dated "
+                  "wait has passed and the check still fails, the Workshop Pipeline gives it one Work run." % args.id)
+            return 0
         print("%s: named for Shape. the Workshop Pipeline (list_dispatch.py) launches its Shape run through its gates." % args.id)
         return 0
     parts, why = list_shape.read_parts(args.parts)

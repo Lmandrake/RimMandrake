@@ -84,6 +84,10 @@ skills or models, or the run needs help. Asking for help (a `LEFT OPEN:` note, a
 - **the-ledger-carries-the-shape.** A `shape` event replays into `Item.shape` (parts, size, when, who) and sets
   `Item.effect` to the derived check (None when all parts are routed). `--enter` replays into `Item.shape_named`. No
   stage keeps a store of its own.
+- **enter-names-a-checked-item-for-its-second-look.** `rimflow shape <ID> --enter` on an item with an outcome check and
+  no route writes the naming and says so; the lane reads it as the item's one second look, and no Shape run starts (the
+  item has its check). A routed item stays refused and nothing is written. Before 2026-11-27, `--enter` refused every
+  checked item, while the lane's `reshape` row asked for exactly that `--enter`.
 - **old-items-enter-only-when-named.** An open item with no check and no route is due for a Shape run of its own only
   when it is named, or it was filed at or after `shape_from` and is at least `shape_grace_h` old. Each reading says why
   in words.

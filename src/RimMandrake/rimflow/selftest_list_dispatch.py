@@ -1029,6 +1029,36 @@ def t_blocked_idle_window_open_is_due():
         "unblock` (got due=%s, why=%s)" % (g["shape_due"], g["shape_why"]))
 
 
+def t_a_shaped_old_item_gets_its_second_look():
+    """RIMMANDRAKE_PREPARE_LANE_ROWS_THAT_WAIT_FOR_CONDUCTOR_SIXTEEN_OPEN: an old item that a Shape split gave its check is a
+    lane item. On 2026-11-27 two such items (shaped 2026-11-26 by a work bundle) read `reshape` and were told to run
+    `rimflow shape <ID> --enter`, which refuses an item that carries a check: no program and no hand could move them.
+    An old item with a check from `file --effect` and no split stays out (a date never launches old work)."""
+    import contextlib
+    import list_effect as LE
+    import datetime as _dt
+    import model as LM
+    ld, _ids, _cfg, pats = _lag_world()
+    sh, fe = "LD_SHAPED_OLD_ITEM_SECOND_LOOK", "LD_FILED_EFFECT_OLD_ITEM_NO_LOOK"
+    part = {"name": "p", "effect": "cmd:false", "fooled_by": "nothing", "route": None}
+    evs = [{"seat": "BENCH", "ts": "2026-10-01T00:00:00Z", "tsn": 1, "event": "file", "id": sh, "title": "t",
+            "kind": "task", "for": "BENCH"},
+           {"seat": "BENCH", "ts": _dt.datetime.fromtimestamp(NOW - 86400, _dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "tsn": 2, "event": "shape", "id": sh, "parts": [part],
+            "check": "cmd:false"},
+           {"seat": "BENCH", "ts": "2026-10-01T00:00:00Z", "tsn": 3, "event": "file", "id": fe, "title": "t",
+            "kind": "task", "for": "BENCH", "effect": "cmd:false"}]
+    with tempfile.TemporaryDirectory(prefix="ld_look_") as d, patch.dict(os.environ, RM_DISPATCHER_STATE=d), \
+            contextlib.ExitStack() as es:
+        for p in pats[1:]:
+            es.enter_context(p)
+        es.enter_context(patch.object(LE, "_world", lambda observe=None: LM.replay(evs, observe=observe)))
+        g = ld.gather({"shape_from": "2026-11-20T00:00:00Z"}, NOW, load_lag_s=90)["items"]
+    chk(lambda: g[sh]["second_look"] is True, "an old item with a Shape split is a lane item: one second look (%s)"
+        % g[sh].get("second_look"))
+    chk(lambda: g[fe]["second_look"] is False, "an old item with a filed check, never named or split: no look (%s)"
+        % g[fe].get("second_look"))
+
+
 def t_a_lead_takes_the_ready_tickets_of_its_home():
     """RIMMANDRAKE_BUNDLE_LIST_TICKETS_BY_HOME_TEN_OF_TWELVE_HELD_ONE: an open ticket with no check (no lane row) of the
     lead's home joins the lead's bundle when it is ready; one that waits, is blocked, held, off, leased or refused stays
@@ -1401,6 +1431,7 @@ def main():
               t_a_lane_run_on_a_mod_takes_no_mod_slot,
               t_a_lane_run_holds_its_mod_only_on_its_files,
               t_a_passed_wait_gets_one_second_look,
+              t_a_shaped_old_item_gets_its_second_look,
               t_a_claimed_item_is_not_the_lanes,
               t_oldest_blocking_item_first,
               t_the_run_owns_no_continuation,

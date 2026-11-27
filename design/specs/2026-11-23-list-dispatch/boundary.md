@@ -120,6 +120,11 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   wait was for and asks first if the work is still worth the touch. It counts as a Work run: after `max_runs_per_item` the
   item reads `stopped`, with its Needs Conductor line. A lane run launched since the date was that look. Measured
   2026-11-24: such an item read `reshape` for good and no program ever launched it.
+- **a-shaped-old-item-gets-its-second-look.** An old item (filed before `shape_from`) that a Shape split gave its check
+  is a lane item: the run that wrote the split read it against now. Its passed wait gets the one second look above. An
+  old item whose check came from `file --effect`, never named and never split, still reads `reshape`. Measured
+  2026-11-27: two items shaped 2026-11-26 by a work bundle read `reshape`, and the `shape --enter` it asked for refused
+  them, so neither a program nor a hand could move them.
 - **a-block-whose-predecessor-is-done-is-not-a-block.** `block_facts` asks `priority.block_holds`, the one rule of every
   offer path. When each ticket that the block names has reached its level, the item reads neither `waits_on` nor
   `blocked` and the lane works it. A superseded predecessor is followed to its successor. A block of another kind, or on
