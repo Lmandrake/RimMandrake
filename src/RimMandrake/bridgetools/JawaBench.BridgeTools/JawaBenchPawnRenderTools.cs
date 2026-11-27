@@ -34,13 +34,16 @@ namespace JawaBench.BridgeTools
                 "zoom root size (the engine draws a humanlike pawn as cachedAtlas above 18), bodyPos, and for each draw request " +
                 "of the render tree: node label, tag, worker, material (name, id, shader, renderQueue) and the drawn spot (the " +
                 "translation of its matrix: y is its height, larger = nearer the camera). Under cachedAtlas the requests are the " +
-                "last ones built and are not drawn. framesSinceDraw (0..2 = drawn now) dates the reading; a pawn never drawn reads " +
+                "last ones built and are not drawn. framesSinceDraw counts frames since the pawn's tweener last placed it " +
+                "(PawnTweener.lastDrawFrame); the map's cull pass places EVERY spawned pawn each frame, on screen or not, so a low " +
+                "value does not prove a draw: bodyPos and the requests are from the last frame that drew the pawn, so put the " +
+                "camera on the pawn and let a frame pass before the read. A pawn never placed (or teleported since) reads " +
                 "notPreRendered. The requests are read first, as the last frame built them; then the path comes from the engine's " +
                 "own PawnRenderer.ParallelGetPreRenderResults at the last drawn body position, which rebuilds the requests as " +
                 "every frame does. nodesY spans the requests that have a material (the drawn ones). With probeY >= 0 (a vertex " +
                 "height from jawa/cell_draw_census) each draw says vsProbe: above, below or level. Calls no DrawPos.",
             ResultDescription =
-                "success, ticksGame, pawn{thingId, x, z}, framesSinceDraw (-1 = never drawn), cameraRootSize, drawPath, " +
+                "success, ticksGame, pawn{thingId, x, z}, framesSinceDraw (-1 = never placed), cameraRootSize, drawPath, " +
                 "bodyPos[x,y,z], cachedQuad{shader, renderQueue, y, vsProbe} (cachedAtlas only), requests[] {node, tag, worker, " +
                 "material, materialId, shader, renderQueue, drawn[x,y,z], vsProbe}, nodesY{n, min, max} (n=0: no request read), probeY.")]
         public static async Task<object> PawnRenderNodes(
