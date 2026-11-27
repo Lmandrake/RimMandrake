@@ -18,9 +18,13 @@ Each case is real git against a local bare origin, with the real land.sh and sea
   sync-clone-moves-past-a-dirty-view        nothing is unlanded but a derived view is dirty and origin rewrites it
                                             (the ff-only pull refuses); sync_clone still moves the clone level.
 
+`--at REV` replays maturation_dispatch.py as it was at commit REV (the rest of the repo stays as now): the class
+guard of OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW is shown red on the 2026-11-26 instance with `--at ccfbc2b57e`, the
+parent of the fix db97e6c7e4.
+
 Page: design/specs/2026-11-26-tick-clone-sync/boundary.md
 
-    python3 src/RimMandrake/rimflow/selftest_dispatch_clone_sync.py
+    python3 src/RimMandrake/rimflow/selftest_dispatch_clone_sync.py [--at REV]
 """
 import os
 import shutil
@@ -34,6 +38,20 @@ import maturation_dispatch as MD     # noqa: E402
 import modledger as ML               # noqa: E402
 
 FAILS = []
+
+
+def replay_at(rev):
+    """-> maturation_dispatch as it was at `rev`, with __file__ the real path, so its paths resolve into this repo."""
+    import types
+    rel = "src/RimMandrake/rimflow/maturation_dispatch.py"
+    root = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+    src = subprocess.run(["git", "-C", root, "show", "%s:%s" % (rev, rel)], capture_output=True, text=True, check=True,
+                         timeout=60, stdin=subprocess.DEVNULL).stdout
+    mod = types.ModuleType("maturation_dispatch")
+    mod.__file__ = os.path.join(root, rel)
+    sys.modules["maturation_dispatch"] = mod
+    exec(compile(src, "%s@%s" % (rel, rev), "exec"), mod.__dict__)
+    return mod
 
 
 def ok(cond, what):
@@ -165,7 +183,12 @@ def t_sync_clone_moves_past_a_dirty_view():
         fx.close()
 
 
-def main():
+def main(argv):
+    global MD
+    if "--at" in argv:
+        rev = argv[argv.index("--at") + 1]
+        MD = replay_at(rev)
+        print("     maturation_dispatch.py replayed at %s" % rev)
     saved = {k: os.environ.pop(k, None) for k in ("RM_STAGE_LAND", "LAND_SYNC", "RM_MODLEDGER_WRITER")}
     try:
         t_land_ledger_lands_beside_a_peer_append()
@@ -180,4 +203,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))
