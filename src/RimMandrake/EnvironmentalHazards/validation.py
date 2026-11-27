@@ -53,6 +53,9 @@ RULES = (
     ("BackCompatibility", "BackCompatibleDefName", "postfixes", "BackCompatibleDefName_Postfix", None),
     ("BackCompatibility", "BackCompatibleTerrainWithShortHash", "postfixes", "BackCompatibleTerrainWithShortHash_Postfix", None),
     ("Plant", "IngestedCalculateAmounts", "postfixes", "IngestedCalculateAmounts_Postfix", "grazingSuppressionHookEnabled"),
+    # LAUNCH_HELD_COLONIST_WARNING_1 A2: the launch confirmation's held-colonist postfix armed on the load
+    ("GravshipUtility", "PreLaunchConfirmation", "postfixes", "PreLaunchConfirmation_Postfix",
+     "launchHeldColonistWarningEnabled"),
 )
 
 

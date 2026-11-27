@@ -1,0 +1,1805 @@
+{
+ "mod": "EnvironmentalHazards",
+ "stamp": "20261127T022855Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "harmony_rules_armed",
+    "components": [
+     {
+      "name": "control_unpatched_method_has_no_owner",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenCelestial",
+         "methodName": "NoSuchMethodZZ",
+         "methodCount": 0,
+         "methods": [],
+         "ticksGame": 1,
+         "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+         "operation": {
+          "OperationId": "op_7209b00fc6a040f1ab452ffb8d09bd04",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "GenCelestial_CurCelestialSunGlow_postfix_armed",
+      "toggle": "biomeGlowMultiplierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenCelestial",
+         "methodName": "CurCelestialSunGlow",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CurCelestialSunGlow",
+           "declaringType": "RimWorld.GenCelestial",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "com.alphabiomes",
+             "priority": 400,
+             "patchMethod": "AlphaBiomes.AlphaBiomes_GenCelestial_CurCelestialSunGlow_Patch.AvoidTheLight",
+             "patchAssembly": "AlphaBiomes"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.BiomeGlowPatches.CurCelestialSunGlow_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_b48d7f94ad5f45bc9e148910f64198d9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "ConditionalStatAffecter_InSunlight_Applies_postfix_armed",
+      "toggle": "biomeGlowMultiplierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "ConditionalStatAffecter_InSunlight",
+         "methodName": "Applies",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Applies",
+           "declaringType": "Verse.ConditionalStatAffecter_InSunlight",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "com.alphabiomes",
+             "priority": 400,
+             "patchMethod": "AlphaBiomes.AlphaBiomes_ConditionalStatAffecter_InSunlight_Applies_Patch.VampiresAreFine",
+             "patchAssembly": "AlphaBiomes"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.BiomeGlowPatches.InSunlightApplies_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_b1e522c4cf7c4688ad75250e29aa3ec4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "PathFinder_CreateRequest_prefix_armed",
+      "toggle": "bodySizeBarrierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "PathFinder",
+         "methodName": "CreateRequest",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CreateRequest",
+           "declaringType": "Verse.PathFinder",
+           "prefixCount": 2,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Hediffs.PhasingPatches.CreateRequest_Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_BodySizeBarrierPatches.CreateRequest_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_1e419f3ba3174ad2a81059fdcd19b793",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Pawn_PathFollower_GetPawnCellBaseCostOverride_postfix_armed",
+      "toggle": "bodySizeBarrierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Pawn_PathFollower",
+         "methodName": "GetPawnCellBaseCostOverride",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "GetPawnCellBaseCostOverride",
+           "declaringType": "Verse.AI.Pawn_PathFollower",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_BodySizeBarrierPatches.GetPawnCellBaseCostOverride_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_183fcf52872e4081b834f1f51267ceb2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Thing_PostApplyDamage_postfix_armed",
+      "toggle": "waterTruceRetributionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Thing",
+         "methodName": "PostApplyDamage",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "PostApplyDamage",
+           "declaringType": "Verse.Thing",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.divinginteraction",
+             "priority": 400,
+             "patchMethod": "RimMandrake.DivingInteraction.Patch_Thing_PostApplyDamage.Postfix",
+             "patchAssembly": "RimMandrake.DivingInteraction"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_WaterTruceDamagePatches.PostApplyDamage_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_e8804ace173846a2bbe3b49b096e7878",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "FoodUtility_IsAcceptablePreyFor_postfix_armed",
+      "toggle": "waterTruceSuppressionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "FoodUtility",
+         "methodName": "IsAcceptablePreyFor",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "IsAcceptablePreyFor",
+           "declaringType": "RimWorld.FoodUtility",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_WaterTruceHuntSuppression.IsAcceptablePreyFor_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_940f61ec8b7a4905b436956ef4b8ec4e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "JobDriver_PredatorHunt_MakeNewToils_postfix_armed",
+      "toggle": "waterTruceSuppressionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "JobDriver_PredatorHunt",
+         "methodName": "MakeNewToils",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "MakeNewToils",
+           "declaringType": "RimWorld.JobDriver_PredatorHunt",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_WaterTruceHuntSuppression.MakeNewToils_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_d0686eb080b6414f8f27342854b1c6dc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "WildPlantSpawner_CalculatePlantsWhichCanGrowAt_postfix_armed",
+      "toggle": "leachmossEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "WildPlantSpawner",
+         "methodName": "CalculatePlantsWhichCanGrowAt",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CalculatePlantsWhichCanGrowAt",
+           "declaringType": "RimWorld.WildPlantSpawner",
+           "prefixCount": 0,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_LeachmossWildSpawnGatePatch.CalculatePlantsWhichCanGrowAt_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            },
+            {
+             "owner": "mandrake.rm.longshade",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LongShade.RM_Patch_DewfringeWildSpawnGate.CalculatePlantsWhichCanGrowAt_Postfix",
+             "patchAssembly": "RimMandrake.LongShade"
+            },
+            {
+             "owner": "mandrake.rm.pyrelands.wildplantallowlist",
+             "priority": 400,
+             "patchMethod": "RimMandrake.Pyrelands.Patch_EnforcePyrelandsWildPlantAllowlist.Postfix",
+             "patchAssembly": "FireEcologyHook"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_d2783a57a0f4432aabd54108228f3739",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 18
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "GenStep_GravshipMarker_Generate_postfix_armed",
+      "toggle": "biomeArrivalLettersEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenStep_GravshipMarker",
+         "methodName": "Generate",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Generate",
+           "declaringType": "RimWorld.GenStep_GravshipMarker",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_GravshipArrivalLetter.Generate_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_49f9b487686046f3a7d3aaee5b642701",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "IncidentWorker_ChanceFactorNow_postfix_armed",
+      "toggle": "crecheDespoilMemoryEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "IncidentWorker",
+         "methodName": "ChanceFactorNow",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "ChanceFactorNow",
+           "declaringType": "RimWorld.IncidentWorker",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_CrecheDespoilManhunterFactorPatch.ChanceFactorNow_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            },
+            {
+             "owner": "mandrake.rm.leaningscrub",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LeaningScrub.RM_WindCalendarPatches.ChanceFactorNow_Postfix",
+             "patchAssembly": "RimMandrake.LeaningScrub"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_385b3a913f29493d9ccb326f4bab2244",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "CompTemperatureRuinable_CompTick_prefix_armed",
+      "toggle": "livePrepStrictViability",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "CompTemperatureRuinable",
+         "methodName": "CompTick",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CompTick",
+           "declaringType": "RimWorld.CompTemperatureRuinable",
+           "prefixCount": 1,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_LivePrepViability.CompTick_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_3ab7df1d9ec044eea87bc60078f761a2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "JobGiver_OptimizeApparel_ApparelScoreRaw_transpile_armed",
+      "toggle": "hazardApparelAIAwarenessEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "JobGiver_OptimizeApparel",
+         "methodName": "ApparelScoreRaw",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "ApparelScoreRaw",
+           "declaringType": "RimWorld.JobGiver_OptimizeApparel",
+           "prefixCount": 0,
+           "postfixCount": 0,
+           "transpilerCount": 1,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [],
+           "transpilers": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_HazardApparelScoring.ApparelScoreRaw_Transpiler",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_038f07facee04faaaca7bac9c13738c8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 19
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "TradeDeal_TryExecute_prefix_armed",
+      "toggle": "treasureConscienceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "TradeDeal",
+         "methodName": "TryExecute",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "TryExecute",
+           "declaringType": "RimWorld.TradeDeal",
+           "prefixCount": 3,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Prefix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Postfix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_20a0c0c5785a4b6c9a82d2965d54721d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "TradeDeal_TryExecute_postfix_armed",
+      "toggle": "treasureConscienceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "TradeDeal",
+         "methodName": "TryExecute",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "TryExecute",
+           "declaringType": "RimWorld.TradeDeal",
+           "prefixCount": 3,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Prefix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Postfix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_4be287c01fdf46d895d9f5000d1e55e0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "BackCompatibility_BackCompatibleDefName_postfix_armed",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "BackCompatibility",
+         "methodName": "BackCompatibleDefName",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "BackCompatibleDefName",
+           "declaringType": "Verse.BackCompatibility",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.flowworks.hose.essential",
+             "priority": 400,
+             "patchMethod": "RimMandrake.FlowWorks.Hose.RM_HoseLegacy.DefNamePostfix",
+             "patchAssembly": "RimMandrakeFlowWorks"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_DefAliasPatches.BackCompatibleDefName_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_c032e4721839453fa525bc300ec75a54",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "BackCompatibility_BackCompatibleTerrainWithShortHash_postfix_armed",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "BackCompatibility",
+         "methodName": "BackCompatibleTerrainWithShortHash",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "BackCompatibleTerrainWithShortHash",
+           "declaringType": "Verse.BackCompatibility",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_DefAliasPatches.BackCompatibleTerrainWithShortHash_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_ca931236803d4832bbd3092743370d89",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "Plant_IngestedCalculateAmounts_postfix_armed",
+      "toggle": "grazingSuppressionHookEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Plant",
+         "methodName": "IngestedCalculateAmounts",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "IngestedCalculateAmounts",
+           "declaringType": "RimWorld.Plant",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_GrazingSuppressionHookPatch.IngestedCalculateAmounts_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_28ea1844ef584b8fabe8099d98ff5819",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "GravshipUtility_PreLaunchConfirmation_postfix_armed",
+      "toggle": "launchHeldColonistWarningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GravshipUtility",
+         "methodName": "PreLaunchConfirmation",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "PreLaunchConfirmation",
+           "declaringType": "RimWorld.GravshipUtility",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_LaunchHeldColonistWarning.PreLaunchConfirmation_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_edd4577e42c34e4aab24b044c86e6122",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 4,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 2073,
+        "foggedNow": 0,
+        "releasedByUnfog": [
+         "RM_LivingBolt4539",
+         "RM_LivingBolt4540",
+         "RM_HullBolt4541",
+         "Mech_Militor4542"
+        ],
+        "sweepPasses": 1,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human956": [
+           "DislikesWomen 0",
+           "Brawler 0",
+           "Industriousness 1"
+          ],
+          "Human962": [
+           "QuickSleeper 0",
+           "Delicate 0",
+           "Kind 0"
+          ],
+          "Human952": [
+           "ShootingAccuracy -1",
+           "Nerves 2"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 52,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "destroy_bulk"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 10,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "restore_touched_settings []",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 9.774,
+     "body": 1.509,
+     "teardown": 0.0
+    }
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\LAUNCH_HELD_COLONIST_WARNING_1.det\\design\\validation_walks\\RimMandrake\\EnvironmentalHazards.md",
+  "acceptance": {
+   "overall": "INDETERMINATE",
+   "rows": [
+    {
+     "row": "harmony_rules_armed/control_unpatched_method_has_no_owner",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/GenCelestial_CurCelestialSunGlow_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/ConditionalStatAffecter_InSunlight_Applies_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/PathFinder_CreateRequest_prefix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/Pawn_PathFollower_GetPawnCellBaseCostOverride_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/Thing_PostApplyDamage_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/FoodUtility_IsAcceptablePreyFor_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/JobDriver_PredatorHunt_MakeNewToils_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/WildPlantSpawner_CalculatePlantsWhichCanGrowAt_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/GenStep_GravshipMarker_Generate_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/IncidentWorker_ChanceFactorNow_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/CompTemperatureRuinable_CompTick_prefix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/JobGiver_OptimizeApparel_ApparelScoreRaw_transpile_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/TradeDeal_TryExecute_prefix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/TradeDeal_TryExecute_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/BackCompatibility_BackCompatibleDefName_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/BackCompatibility_BackCompatibleTerrainWithShortHash_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/Plant_IngestedCalculateAmounts_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "harmony_rules_armed/GravshipUtility_PreLaunchConfirmation_postfix_armed",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "harmony_rules_armed"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 19,
+    "UNMEASURED": 0,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": true,
+  "invalid": [],
+  "leads": [],
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true,
+  "targeted": {
+   "chains": [
+    "harmony_rules_armed"
+   ],
+   "of_chains": 9,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain harmony_rules_armed: named by --chains"
+   ],
+   "rows_run": [
+    "control_unpatched_method_has_no_owner",
+    "GenCelestial_CurCelestialSunGlow_postfix_armed",
+    "ConditionalStatAffecter_InSunlight_Applies_postfix_armed",
+    "PathFinder_CreateRequest_prefix_armed",
+    "Pawn_PathFollower_GetPawnCellBaseCostOverride_postfix_armed",
+    "Thing_PostApplyDamage_postfix_armed",
+    "FoodUtility_IsAcceptablePreyFor_postfix_armed",
+    "JobDriver_PredatorHunt_MakeNewToils_postfix_armed",
+    "WildPlantSpawner_CalculatePlantsWhichCanGrowAt_postfix_armed",
+    "GenStep_GravshipMarker_Generate_postfix_armed",
+    "IncidentWorker_ChanceFactorNow_postfix_armed",
+    "CompTemperatureRuinable_CompTick_prefix_armed",
+    "JobGiver_OptimizeApparel_ApparelScoreRaw_transpile_armed",
+    "TradeDeal_TryExecute_prefix_armed",
+    "TradeDeal_TryExecute_postfix_armed",
+    "BackCompatibility_BackCompatibleDefName_postfix_armed",
+    "BackCompatibility_BackCompatibleTerrainWithShortHash_postfix_armed",
+    "Plant_IngestedCalculateAmounts_postfix_armed",
+    "GravshipUtility_PreLaunchConfirmation_postfix_armed"
+   ],
+   "scope": {
+    "harmony_rules_armed": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "control_unpatched_method_has_no_owner",
+      "GenCelestial_CurCelestialSunGlow_postfix_armed",
+      "ConditionalStatAffecter_InSunlight_Applies_postfix_armed",
+      "PathFinder_CreateRequest_prefix_armed",
+      "Pawn_PathFollower_GetPawnCellBaseCostOverride_postfix_armed",
+      "Thing_PostApplyDamage_postfix_armed",
+      "FoodUtility_IsAcceptablePreyFor_postfix_armed",
+      "JobDriver_PredatorHunt_MakeNewToils_postfix_armed",
+      "WildPlantSpawner_CalculatePlantsWhichCanGrowAt_postfix_armed",
+      "GenStep_GravshipMarker_Generate_postfix_armed",
+      "IncidentWorker_ChanceFactorNow_postfix_armed",
+      "CompTemperatureRuinable_CompTick_prefix_armed",
+      "JobGiver_OptimizeApparel_ApparelScoreRaw_transpile_armed",
+      "TradeDeal_TryExecute_prefix_armed",
+      "TradeDeal_TryExecute_postfix_armed",
+      "BackCompatibility_BackCompatibleDefName_postfix_armed",
+      "BackCompatibility_BackCompatibleTerrainWithShortHash_postfix_armed",
+      "Plant_IngestedCalculateAmounts_postfix_armed",
+      "GravshipUtility_PreLaunchConfirmation_postfix_armed"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  },
+  "restarted_onto_list": {
+   "game": "ArchBig",
+   "why": [
+    "jawa/running_mods raised (RimBridgeError: cannot reach the bridge at 127.0.0.1:5174 ([WinError 10061] No connection could be made because the target machine actively refused it) - is RimWorld running with RimBridgeServer enabled?)"
+   ],
+   "steps": [
+    {
+     "step": "mine",
+     "rc": 0,
+     "said": "ArchBig: MINE: held by this process for 'LAUNCH_HELD_COLONIST_WARNING_1 A2: harmony_rules_armed on a load modcheck starts itself (game down)' (gen 1730)"
+    },
+    {
+     "step": "stop",
+     "rc": 0,
+     "said": "ArchBig is not running"
+    },
+    {
+     "step": "pid",
+     "rc": 0,
+     "said": ""
+    },
+    {
+     "step": "deploy",
+     "rc": 0,
+     "said": "try 1"
+    },
+    {
+     "step": "launch",
+     "rc": 0,
+     "said": "started ArchBig directly (Steam answered WaitingPrevProcess while ArchSmall runs), flags -disable-compute-shaders, pid 52044, bridge on port 5174 after 112 s"
+    }
+   ],
+   "restarted": true,
+   "refused": null
+  }
+ },
+ "benign_stops": []
+}
