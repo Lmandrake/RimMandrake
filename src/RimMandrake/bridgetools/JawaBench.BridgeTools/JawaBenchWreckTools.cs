@@ -304,21 +304,28 @@ namespace JawaBench.BridgeTools
                 "chosen process, a fresh thing of the row's def (the first def of its category for a category row) is made and handed " +
                 "to the row's own AddFromThing, the call a colonist's delivery makes; a row fed by a pipe net is skipped by name. " +
                 "process = a ProcessDef defName already in the processor's list (default the current process); add=true first adds " +
-                "it to the list (ProcessStack.AddProcess, repeat count 1). Every row is read back after the fill.",
+                "it to the list (ProcessStack.AddProcess, repeat count 1). Every row is read back after the fill. " +
+                "A REPEAT-COUNT PROCESS THAT MADE ITS COUNT DOES NOT RUN AGAIN WHEN REFILLED (it stays in the list, made = target): " +
+                "pass runs=N to let it make N more (its target becomes made + N). runs acts only on a repeat-count process; " +
+                "for another repeat mode the result names it in runsSkip and changes nothing.",
             ResultDescription =
                 "success, thing, process, rows[] (def, category, net, haveBefore, required, wanted, used, haveAfter, skip), " +
-                "processes[] (the processor's list), available[] (every ProcessDef its tab offers; also on a refusal), allFull.")]
+                "processes[] (the processor's list), available[] (every ProcessDef its tab offers; also on a refusal), allFull, " +
+                "repeatMode, made, targetBefore, target (read back after the call), willRun (the process's own ShouldDoNow, or null " +
+                "when it cannot be read), runsSkip (why runs changed nothing, or null).")]
         public static async Task<object> ProcessorFill(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "ThingID of the processor building.")] string thing = null,
             [ToolParameter(Description = "ProcessDef defName; default the processor's current process.")] string process = null,
             [ToolParameter(Description = "Add the process to the processor's list first when it is not there.")] bool add = false,
-            [ToolParameter(Description = "Read only: report the rows and fill nothing.")] bool dryRun = false)
+            [ToolParameter(Description = "Read only: report the rows and fill nothing.")] bool dryRun = false,
+            [ToolParameter(Description = "How many more runs a repeat-count process may make from now (its target becomes made + runs). 0 leaves its count as it is.")] int runs = 0)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
+                if (runs < 0) return Fail("runs must be 0 or more (got " + runs + ").");
                 string err;
                 Thing t = WreckFindThing(thing, out err);
                 if (t == null) return Fail(err);
@@ -363,6 +370,23 @@ namespace JawaBench.BridgeTools
                         new { processes = names, available });
                 var owners = (get(chosen, "IngredientsOwners") as IEnumerable)?.Cast<object>().ToList();
                 if (owners == null) return Fail("Process.IngredientsOwners not readable: the PipeSystem API changed.");
+                // the process's own count: read raw, set only on a repeat-count process, read back
+                string repeatMode = (get(chosen, "repeatMode") as Def)?.defName;
+                int madeRuns = Convert.ToInt32(get(chosen, "processCount") ?? 0), targetBefore = Convert.ToInt32(get(chosen, "targetCount") ?? 0);
+                string runsSkip = null;
+                if (runs > 0 && !dryRun)
+                {
+                    FieldInfo targetField = chosen.GetType().GetField("targetCount", F);
+                    if (repeatMode != BillRepeatModeDefOf.RepeatCount.defName) runsSkip = "the process's repeat mode is " + (repeatMode ?? "unreadable") + ", not RepeatCount";
+                    else if (targetField == null) runsSkip = "Process.targetCount not found: the PipeSystem API changed";
+                    else
+                    {
+                        targetField.SetValue(chosen, JawaBenchWreckReadsCore.RunsTarget(madeRuns, targetBefore, runs));
+                        stack?.GetType().GetMethod("Notify_ProcessChange", F)?.Invoke(stack, null);
+                    }
+                }
+                else if (runs > 0) runsSkip = "dryRun";
+                int target = Convert.ToInt32(get(chosen, "targetCount") ?? 0);
                 var rows = new List<object>();
                 bool allFull = true;
                 foreach (object o in owners)
@@ -401,9 +425,13 @@ namespace JawaBench.BridgeTools
                     rows.Add(new { def = plan.def, category = plan.category, net = plan.net, haveBefore = have, required = req, wanted = plan.want,
                                    used, haveAfter = after, skip = plan.skip });
                 }
+                object willRun = null;
+                try { willRun = chosen.GetType().GetMethod("ShouldDoNow", F, null, Type.EmptyTypes, null)?.Invoke(chosen, null); }
+                catch (Exception e) { willRun = "error: " + (e.InnerException ?? e).Message; }
                 return (object)new
                 {
                     success = true, thing = t.ThingID, process = defOf(chosen), dryRun, rows, processes = names, available, allFull,
+                    repeatMode, made = madeRuns, targetBefore, target, willRun, runsSkip,
                     ticksGame = TicksGameSafe()
                 };
             }, cancellationToken);

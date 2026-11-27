@@ -26,7 +26,7 @@ CS = os.path.join(HERE, "JawaBench.BridgeTools")
 CORE = "JawaBenchWreckReadsCore.cs"
 TOOLS = "JawaBenchWreckTools.cs"
 PROJ = os.path.join(HERE, "WreckReadsSelfTest", "WreckReadsSelfTest.csproj")
-N_UNITS = 21
+N_UNITS = 22
 
 # (planted fault: old -> new in the core, the unit that must go red)
 PLANTS = [
@@ -50,6 +50,9 @@ PLANTS = [
      "fill_skips_net_owner"),
     ("l.def = firstOfCategory;", "l.def = category;", "fill_category_uses_first_def"),
     ("if (l.want == 0) l.skip", "if (l.want < 0) l.skip", "fill_full_skipped"),
+    ("if (runs <= 0) return target;", "if (runs < 0) return target;", "fill_runs_again_after_its_count"),
+    ("return Math.Max(0, made) + runs;", "return target + runs - 1;", "fill_runs_again_after_its_count"),
+    ("return Math.Max(0, made) + runs;", "return made + runs;", "fill_runs_again_after_its_count"),
     ("return usage > capacity;", "return usage >= capacity;", "caravan_over_only_above_capacity"),
     ("if (thingsElsewhere > 0) return", "if (thingsElsewhere > 1) return", "form_refuses_no_pawn_or_elsewhere"),
     ("            return null;\n        }\n\n        // ------------------------------------------------------------ processor_fill",
@@ -66,7 +69,8 @@ WIRING = [
                                 r"JawaBenchWreckReadsCore\.Classify\([^;]*t\.MapHeld == map"]),
     ("jawa/study_record", [r"JawaBenchWreckReadsCore\.StudyStatus\(", r"JawaBenchWreckReadsCore\.CompletedCount\(",
                            r"Find\.AnalysisManager\.TryGetAnalysisProgress\(", r"requiredAnalyzed"]),
-    ("jawa/processor_fill", [r"JawaBenchWreckReadsCore\.Plan\(", r"\"AddFromThing\"", r"\"IngredientsOwners\"", r"\"processes\"\) as IEnumerable"]),
+    ("jawa/processor_fill", [r"JawaBenchWreckReadsCore\.Plan\(", r"\"AddFromThing\"", r"\"IngredientsOwners\"", r"\"processes\"\) as IEnumerable",
+                             r"JawaBenchWreckReadsCore\.RunsTarget\(", r"\"targetCount\"", r"\"processCount\""]),
     ("jawa/caravan_mass", [r"JawaBenchWreckReadsCore\.OverCapacity\(", r"CollectionsMassCalculator\.Capacity\(",
                            r"CollectionsMassCalculator\.MassUsage\("]),
     ("jawa/reach_edge", [r"JawaBenchWreckReadsCore\.TraverseModeName\(", r"reachability\.CanReachMapEdge\("]),

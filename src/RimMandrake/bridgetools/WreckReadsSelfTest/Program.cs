@@ -147,6 +147,12 @@ namespace JawaBench.BridgeTools
                 var o = C.Plan("Steel", null, null, 120, 100, null);
                 return l.want == 0 && l.skip != null && o.want == 0 ? null : "want " + l.want + "/" + o.want;
             });
+            U("fill_runs_again_after_its_count", () =>
+            {
+                // made 1 of a count of 1: one more run asked -> target 2; none asked -> the target (5) stays; a fresh process -> runs
+                int again = C.RunsTarget(1, 1, 1), leave = C.RunsTarget(1, 5, 0), fresh = C.RunsTarget(0, 1, 3), odd = C.RunsTarget(-2, 1, 1);
+                return again == 2 && leave == 5 && fresh == 3 && odd == 1 ? null : "targets " + again + "/" + leave + "/" + fresh + "/" + odd;
+            });
             U("caravan_over_only_above_capacity", () =>
                 !C.OverCapacity(70f, 70f) && C.OverCapacity(70.5f, 70f) && !C.OverCapacity(10f, 70f) ? null : "the edge is wrong");
             U("form_refuses_no_pawn_or_elsewhere", () =>

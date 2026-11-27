@@ -185,5 +185,14 @@ namespace JawaBench.BridgeTools
             if (l.want == 0) l.skip = "already full (" + have + " of " + required + ")";
             return l;
         }
+
+        // The target count of a repeat-count process after a caller asks for `runs` more runs. PipeSystem runs such a process
+        // only while its made count is under its target (Process.ShouldDoNow: processCount < targetCount), so a process that
+        // made its count stays in the list and does nothing when its inputs are filled again. runs 0 leaves the target.
+        public static int RunsTarget(int made, int target, int runs)
+        {
+            if (runs <= 0) return target;
+            return Math.Max(0, made) + runs;
+        }
     }
 }
