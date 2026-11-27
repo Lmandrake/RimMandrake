@@ -67,5 +67,14 @@ Owner, by card 2026-11-19: a rare failure that breaks a promise is listed below 
   live or cleared attempts: `maturation_hands.lane_units`) is recorded by `collect` as no hand run, and
   `_fold_tick_own` folds, once, an open `hand_run` act for such a unit, naming the lane. A run that no lane attempt and
   no tick book holds stays an open hand act; a lane state that cannot be read (`None`) folds nothing.
+- **stage-move-time-reads-its-offset.** `maturation_hands.ts` reads a time's offset: a stage move's `at` of
+  `2026-11-26T09:35:38-08:00` (local time, as `maturation.py` writes it) is `2026-11-26T17:35:38Z`; Z or no offset is
+  UTC, a fraction is kept, a tail that is neither is None (no time, never a guess at UTC). A move's act carries that
+  instant, so `list` prints it and the 24 h overdue count starts at the move. The act id keeps the reading of before
+  2026-11-27 (`key_ts`, the offset ignored), so an act recorded then is not recorded again and keeps its fold;
+  `observe` sets such an act's time right once, with an `at_fix` line that `read_acts` applies.
+- **pass-on-his-recorded-words-folds.** An open `hand_move` to passed, or off his_walk, whose move carries
+  `confirmed.owner_said` (his `--owner-said` event, which `maturation.py` checks before it writes the move) folds by
+  itself, naming his words, whoever recorded it. The same move with no owner_said stays an open hand act.
 
 Later lists beside this page: `polish.md`, and `next_version.md` (none yet).

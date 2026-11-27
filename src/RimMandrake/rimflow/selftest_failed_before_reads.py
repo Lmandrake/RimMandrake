@@ -160,6 +160,99 @@ def t_lane_launched_run_is_no_hand_run():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def _hands_site(prefix, moves, since):
+    """A temp state dir and a root with one mod K whose stage_record holds `moves`. -> (root, saved env, st)."""
+    import json
+    root = tempfile.mkdtemp(prefix=prefix)
+    saved = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(root, "state")
+    import maturation_dispatch as MD
+    MD.sdir()
+    os.makedirs(os.path.join(root, "design", "concepts", "K", "version"))
+    with open(os.path.join(root, "design", "concepts", "K", "version", "stage_record.json"), "w") as f:
+        json.dump({"moves": moves}, f)
+    return root, saved, {"hands": {"since": since, "last_tick": since + 10, "fold_at": since + 10}, "mods": {"K": {}}}
+
+
+def _hands_done(root, saved):
+    if saved is None:
+        os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+    else:
+        os.environ["RM_MATURATION_DISPATCH_DIR"] = saved
+    shutil.rmtree(root, ignore_errors=True)
+
+
+def t_stage_move_time_reads_its_offset():
+    """A stage move's `at` is local time with its offset (maturation.py writes 2026-11-26T09:35:38-08:00): the act's
+    time is that instant in UTC (17:35:38Z), so `list` prints 17:35:38Z and the 24 h overdue alarm counts from the move,
+    not 8 h before it. The act id keeps the reading it had before the fix (move-K-1795685738), so an act recorded and
+    folded then is not recorded a second time. RIMMANDRAKE_FIX_HAND_ACT_CLOCK_LOCAL_TIME_READ_AS_UTC."""
+    import contextlib
+    import io
+    true = 1795714538.0         # 2026-11-26T17:35:38Z = 09:35:38 PST
+    old_id = "move-K-1795685738"
+    root, saved, st = _hands_site("fbr_clock_", [
+        {"from": "his_walk", "to": "in_game", "at": "2026-11-26T09:35:38-08:00", "by": "CONDUCTOR", "why": "tick stuck"},
+        {"from": "in_game", "to": "pre_human", "at": "2026-11-26T05:00:00-08:00", "by": "CONDUCTOR", "why": "by hand"}],
+        true - 86400)
+    try:
+        # the 05:00 PST move was recorded before the fix, read as 05:00Z, and folded then
+        MH._append(MH.ACTS, MH._act("move-K-1795669200", 1795669200.0, "hand_move", "K", "moved in_game -> pre_human")
+                   | {"recorded": true})
+        MH._append(MH.FOLDS, {"id": "move-K-1795669200", "at": true, "item": "RIMMANDRAKE_X_Y_Z", "by": "hand"})
+        rd = {"needs_conductor": []}
+        now = true + 20 * 3600      # 20 h after the move: not overdue; read 8 h early it would be 28 h, overdue
+        MH.observe(root, {"advancing": ["K"]}, st, {"K": {"runs_seen": []}}, now, rd,
+                   {"events": lambda: [], "known": lambda: set(), "record": lambda u: None, "quiet_gap": True})
+        acts = {a["id"]: a for a in MH.read_acts()}
+        check(old_id in acts, "the act id keeps the reading it had before the fix", sorted(acts))
+        check(old_id in acts and acts[old_id]["at"] == true and MH.iso(acts[old_id]["at"]) == "2026-11-26T17:35:38Z",
+              "the act's time is the move's instant in UTC (17:35:38Z)", acts.get(old_id))
+        check(rd["hand_acts"]["open"] == 1 and rd["hand_acts"]["overdue"] == 0,
+              "20 h after the move the open act is not overdue", rd["hand_acts"])
+        check(sorted(acts) == sorted([old_id, "move-K-1795669200"]),
+              "the move recorded before the fix is not recorded a second time", sorted(acts))
+        check("move-K-1795669200" in MH.read_folds(), "the move recorded before the fix stays folded", MH.read_folds())
+        check(acts.get("move-K-1795669200", {}).get("at") == 1795669200.0 + 8 * 3600,
+              "the move recorded before the fix lists at its UTC instant (13:00:00Z)", acts.get("move-K-1795669200"))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            MH.main(["list", "--all"])
+        check("2026-11-26T17:35:38Z" in out.getvalue() and "2026-11-26T09:35:38Z" not in out.getvalue(),
+              "`list` prints 17:35:38Z, never 09:35:38Z", out.getvalue()[-400:])
+        check(MH.ts("2026-11-26T09:35:38Z") == 1795685738.0 and MH.ts("2026-11-26T09:35:38") == 1795685738.0
+              and MH.ts("2026-11-26T09:35:38.250000+00:00") == 1795685738.25 and MH.ts("2026-11-26T09:35:38 PST") is None,
+              "ts: Z and no offset are UTC, a fraction is kept, an unknown tail is no time",
+              [MH.ts(x) for x in ("2026-11-26T09:35:38Z", "2026-11-26T09:35:38", "2026-11-26T09:35:38.250000+00:00",
+                                   "2026-11-26T09:35:38 PST")])
+    finally:
+        _hands_done(root, saved)
+
+
+def t_pass_on_his_recorded_words_folds():
+    """A move to passed, or off his_walk, that carries his words (`confirmed.owner_said`, the `--owner-said` event that
+    maturation.py checks) is his act, recorded by the Conductor: it folds as a move by OWNER does, whatever the why
+    says. The same move with no owner_said stays an open hand act."""
+    t = MH.BASELINE_TS + 1e6
+    root, saved, st = _hands_site("fbr_words_", [
+        {"from": "his_walk", "to": "passed", "at": MH.iso(t + 100), "by": "CONDUCTOR", "why": "the walk is recorded",
+         "confirmed": {"owner_said": "OWNER:1795714498917797906"}},
+        {"from": "his_walk", "to": "passed", "at": MH.iso(t + 200), "by": "CONDUCTOR", "why": "the walk is recorded",
+         "confirmed": {}}], t)
+    try:
+        MH.observe(root, {"advancing": ["K"]}, st, {"K": {"runs_seen": []}}, t + 3600, {"needs_conductor": []},
+                   {"events": lambda: [], "known": lambda: set(), "record": lambda u: None, "quiet_gap": True})
+        folds = MH.read_folds()
+        a1, a2 = "move-K-%d" % (t + 100), "move-K-%d" % (t + 200)
+        ids = {a["id"] for a in MH.read_acts()}
+        check({a1, a2} <= ids, "both moves are recorded as hand moves", sorted(ids))
+        check(a1 in folds and "five acts" in folds[a1].get("why", ""), "the pass that carries his words folds, naming why",
+              folds.get(a1))
+        check(a2 not in folds, "the pass with no words of his stays open", sorted(folds))
+    finally:
+        _hands_done(root, saved)
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
@@ -167,7 +260,8 @@ def main(argv=None):
     for t in (t_unreadable_concept_stage_holds_the_designer_lane, t_unparseable_stage_time_is_no_time,
               t_blind_ledger_on_road_back_is_named, t_unreadable_prior_verdict_is_no_baseline,
               t_unreadable_run_record_spend_is_unmeasured, t_hand_run_the_books_now_own_is_folded,
-              t_lane_launched_run_is_no_hand_run):
+              t_lane_launched_run_is_no_hand_run, t_stage_move_time_reads_its_offset,
+              t_pass_on_his_recorded_words_folds):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

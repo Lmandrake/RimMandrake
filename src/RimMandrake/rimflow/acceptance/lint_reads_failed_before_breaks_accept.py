@@ -32,6 +32,11 @@ MUT = [
  ("run_void", "t_unreadable_run_record_spend_is_unmeasured",
   "            tok += RL.list_usd_to_weighted(c)\n        else:\n            unm.append(u)",
   "            tok += RL.list_usd_to_weighted(c)\n        else:\n            pass"),
+ ("maturation_hands", "t_stage_move_time_reads_its_offset",
+  "        t -= (1 if o[0] == \"+\" else -1) * (int(o[1:3]) * 3600 + int(o[3:5]) * 60)", "        pass"),
+ ("maturation_hands", "t_pass_on_his_recorded_words_folds",
+  "        if a[\"id\"] in folds or a.get(\"kind\") != \"hand_move\" or not a.get(\"owner_said\"):",
+  "        if a[\"id\"] in folds or a.get(\"kind\") != \"hand_move\" or not a.get(\"owner_said\") or True:"),
 ]
 
 

@@ -27,6 +27,8 @@ What it proves, one section per child item:
            finish never ran; a killed blind or in-game run is left to its retry path; a failing chore is reported
   his_walk a move off his_walk by OWNER (his walk verdict, one of his five acts) folds by itself; a move off his_walk by
            a program, and a move by OWNER from another stage, stay open
+  clock    a stage move at 2026-11-26T09:35:38-08:00 lists as 17:35:38Z under its old id, and a pass move that carries
+           his --owner-said event folds (the two promise tests of design/specs/2026-11-19-failed-before-reads/boundary.md)
 """
 import inspect
 import json
@@ -951,10 +953,26 @@ def his_walk_main():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def clock_main():
+    """RIMMANDRAKE_FIX_HAND_ACT_CLOCK_LOCAL_TIME_READ_AS_UTC, seen 10:36 AM PST 2026-11-26: `maturation_hands.py list`
+    printed the Explosive Knockback pass of 9:35:38 AM PST as 09:35:38Z and 'OPEN 9 h' one hour after the act, so the
+    24 h overdue alarm would ring 8 h early. The tests live once, under their promise names, in
+    selftest_failed_before_reads.py; this section runs them."""
+    import contextlib
+    import io
+    import selftest_failed_before_reads as FBR
+    for t in ("t_stage_move_time_reads_its_offset", "t_pass_on_his_recorded_words_folds"):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = FBR.main(["--only", t])
+        ok(rc == 0, "clock: %s" % t, "" if rc == 0 else out.getvalue()[-500:])
+
+
 SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
             ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main),
             ("road_back", road_back_main), ("fold_later", fold_later_main), ("reclass", reclass_main),
-            ("continued", continued_main), ("his_walk", his_walk_main))
+            ("continued", continued_main), ("his_walk", his_walk_main),
+            ("clock", clock_main))
 
 if __name__ == "__main__":
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None

@@ -173,7 +173,7 @@
   "src/RimMandrake/rimflow/maturation_hands.py::_json::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation_hands.py::_road_back_items::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation_hands.py::collect::or-empty": 3,
-  "src/RimMandrake/rimflow/maturation_hands.py::ts::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/maturation_hands.py::key_ts::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation_rescue.py::_exit_reds::or-empty": 1,
   "src/RimMandrake/rimflow/maturation_rescue.py::_json::except-returns-empty": 2,
   "src/RimMandrake/rimflow/maturation_rescue.py::read_blind::or-empty": 1,
@@ -854,8 +854,8 @@
    "RARE (failed-before-reads an-unreadable-stage-file-hides-hand-acts): an unreadable stage_record.json shows no move by hand (written temp + os.replace)",
    "RARE (failed-before-reads a-ledger-time-that-does-not-parse): an unparseable ledger ts reads 0, so its close is not seen (0 of 60,387 ledger events, 2026-11-19)"
   ],
-  "src/RimMandrake/rimflow/maturation_hands.py::ts::except-returns-empty": [
-   "NOT A COLLAPSE: None is the parse answer; every caller tests it before use"
+  "src/RimMandrake/rimflow/maturation_hands.py::key_ts::except-returns-empty": [
+   "NOT A COLLAPSE: None is the parse answer; ts and every caller test it before use"
   ],
   "src/RimMandrake/rimflow/maturation_rescue.py::_exit_reds::or-empty": [
    "unread by owner's card 2026-11-19: only files that failed before are read"

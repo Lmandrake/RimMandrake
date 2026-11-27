@@ -32,8 +32,10 @@ A hand act (observe, called by maturation_dispatch.tick on every applied tick):
 
 Each act is one line in <state dir>/hand_acts.jsonl, once (its id). A fold is one line in hand_folds.jsonl. An act
 older than the census (BASELINE_TS) is folded by the census; one whose reason names an item on the ledger is folded by
-that item. A move off his_walk by OWNER is his walk verdict (one of his five acts) and folds by itself. Any other act
-is open until `fold`. The reading's `hand_acts` block counts the open ones and the overdue
+that item. A move off his_walk by OWNER is his walk verdict (one of his five acts) and folds by itself, as does a move
+to passed or off his_walk that carries his --owner-said event (confirmed.owner_said), whoever recorded it. Any other act
+is open until `fold`. A stage move's time is local with its offset: an act carries its UTC instant, and its id keeps
+the offset-blind reading of before 2026-11-27 (key_ts). The reading's `hand_acts` block counts the open ones and the overdue
 ones (open for DAY_S); each overdue act is a Needs Conductor line, and ops_watch reads maturation.hand_acts_overdue:
 over 0 raises OPS_MATURATION_HAND_ACT_UNFOLDED (ops_watch_rules.json), one fixed item id.
 """
@@ -68,13 +70,38 @@ def iso(t):
     return dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def ts(s):
+TAIL_RX = re.compile(r"^(\.\d+)?(Z|[+-]\d\d:?\d\d)?$")
+
+
+def key_ts(s):
+    """The integer that an act id carries: the first 19 characters read as UTC, the offset ignored. This was every
+    time's reading before 2026-11-27, and the ids stay on it, so an act recorded then is never recorded a second time
+    (a stage move's local time made its id 8 h early: move-ExplosiveKnockback-1795685738 is 09:35:38 PST)."""
     if isinstance(s, (int, float)) and not isinstance(s, bool):
         return float(s)
     try:
         return dt.datetime.strptime(str(s)[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=dt.timezone.utc).timestamp()
     except ValueError:
         return None
+
+
+def ts(s):
+    """-> the instant as epoch seconds, or None when it does not parse. A time with no offset, or Z, is UTC; an offset
+    is read (maturation.py writes stage moves as local time, 2026-11-26T09:35:38-08:00 = 17:35:38Z); a fraction is
+    kept. A tail that is neither is no time, never a guess at UTC
+    (RIMMANDRAKE_FIX_HAND_ACT_CLOCK_LOCAL_TIME_READ_AS_UTC)."""
+    base = key_ts(s)
+    if base is None or isinstance(s, (int, float)):
+        return base
+    m = TAIL_RX.match(str(s)[19:])
+    if not m:
+        return None
+    frac, off = m.group(1), m.group(2)
+    t = base + (float(frac) if frac else 0.0)
+    if off and off != "Z":
+        o = off.replace(":", "")
+        t -= (1 if o[0] == "+" else -1) * (int(o[1:3]) * 3600 + int(o[3:5]) * 60)
+    return t
 
 
 def _sdir():
@@ -104,11 +131,16 @@ def _append(name, rec):
 
 
 def read_acts():
-    """-> every recorded act, oldest first, each id once."""
-    seen, out = set(), []
+    """-> every recorded act, oldest first, each id once. A later line {"id", "at_fix"} sets the time of an act
+    recorded before (observe writes one when the act's time was read wrong: a stage move's offset, before 2026-11-27)."""
+    seen, out = {}, []
     for r in _lines(ACTS):
+        if "at_fix" in r:
+            if r["id"] in seen and isinstance(r["at_fix"], (int, float)):
+                seen[r["id"]]["at"] = float(r["at_fix"])
+            continue
         if r["id"] not in seen:
-            seen.add(r["id"])
+            seen[r["id"]] = r = dict(r)
             out.append(r)
     return out
 
@@ -126,8 +158,8 @@ def _json(p):
         return None
 
 
-def _act(aid, at, kind, mod, what, why=""):
-    return {"id": aid, "at": at, "kind": kind, "mod": mod, "what": what, "why": str(why or "")}
+def _act(aid, at, kind, mod, what, why="", **more):
+    return dict({"id": aid, "at": at, "kind": kind, "mod": mod, "what": what, "why": str(why or "")}, **more)
 
 
 def continued_from(unit, fx=None):
@@ -266,11 +298,11 @@ def collect(root, cfg, st, facts, now, fx=None):
         dst = _json(os.path.join(root, "design", "concepts", mod, "stage.json")) or {}
         for c in dst.get("coverage_releases") or []:
             if isinstance(c, dict) and not c.get("granted_at") and ts(c.get("at")):
-                out.append(_act("covrel-%s-%d" % (mod, ts(c["at"])), ts(c["at"]), "coverage_release", mod,
+                out.append(_act("covrel-%s-%d" % (mod, key_ts(c["at"])), ts(c["at"]), "coverage_release", mod,
                                 "coverage judging released for one more look", c.get("why")))
         g = dst.get("coverage_release_granted")
         if isinstance(g, dict) and ts(g.get("at")):
-            out.append(_act("covgrant-%s-%d" % (mod, ts(g["at"])), ts(g["at"]), "coverage_release", mod,
+            out.append(_act("covgrant-%s-%d" % (mod, key_ts(g["at"])), ts(g["at"]), "coverage_release", mod,
                             "a coverage release granted, to take effect after %s" % ", ".join(g.get("after") or []),
                             g.get("why")))
         units, _items = tick_units(s)
@@ -311,8 +343,11 @@ def collect(root, cfg, st, facts, now, fx=None):
                 continue
             if any(a - 120 <= at <= (e if isinstance(e, (int, float)) else now) + 120 for a, e in spans):
                 continue        # a run the tick launched was live then (a run from before moves carried their unit)
-            out.append(_act("move-%s-%d" % (mod, at), at, "hand_move", mod, "moved %s -> %s by %s, naming no run" % (
-                m.get("from"), m.get("to"), m.get("by")), m.get("why")))
+            said = (m.get("confirmed") or {}).get("owner_said") if isinstance(m.get("confirmed"), dict) else None
+            # the id keeps the reading of before 2026-11-27 (key_ts), so an act recorded then resolves to its fold
+            out.append(_act("move-%s-%d" % (mod, key_ts(m.get("at"))), at, "hand_move", mod,
+                            "moved %s -> %s by %s, naming no run" % (m.get("from"), m.get("to"), m.get("by")),
+                            m.get("why"), **({"owner_said": str(said)} if said else {})))
     # hand closes of the tick's own items: the ledger, read every LEDGER_S
     if "events" in fx or now - float(h.get("ledger_at") or 0) >= LEDGER_S:
         h["ledger_at"] = now
@@ -333,7 +368,7 @@ def collect(root, cfg, st, facts, now, fx=None):
             if (e.get("event") in ("close", "drop", "supersede") and e.get("id") in mine and not e.get("role_unit")
                     and e.get("seat") not in NOT_HANDS and (ts(e.get("ts")) or 0) > since):
                 at = ts(e["ts"])
-                out.append(_act("close-%s-%d" % (e["id"], at), at, "hand_close", mine[e["id"]],
+                out.append(_act("close-%s-%d" % (e["id"], key_ts(e["ts"])), at, "hand_close", mine[e["id"]],
                                 "%s of %s by %s from a window, not by its run" % (e["event"], e["id"], e.get("seat")),
                                 e.get("why") or e.get("reason")))
     # a settings edit: the shipped values, doc keys aside
@@ -415,6 +450,23 @@ def _fold_his_walk(now):
             continue
         _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
                         "why": "his walk verdict: his act, one of his five acts (the pass at his walk), not a hand's"})
+    _fold_his_words(now)
+
+
+def _fold_his_words(now):
+    """Fold every open hand_move to passed, or off his_walk, that carries his words: the move's confirmed.owner_said,
+    the `--owner-said` event that maturation.py checks before it writes the move. The Conductor recorded his act; it
+    folds as his own move does, whatever its why says (RIMMANDRAKE_FIX_HAND_ACT_CLOCK_LOCAL_TIME_READ_AS_UTC)."""
+    folds = read_folds()
+    for a in read_acts():
+        w = str(a.get("what") or "")
+        if a["id"] in folds or a.get("kind") != "hand_move" or not a.get("owner_said"):
+            continue
+        if not (w.startswith(WALK_VERDICT) or " -> passed by " in w):
+            continue
+        _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
+                        "why": "his words (%s) recorded by %s: his act, one of his five acts (the pass at his walk), "
+                               "not a hand's" % (a["owner_said"], w.split(" by ", 1)[-1].split(",")[0])})
 
 
 def _fold_tick_own(st, now, fx=None):
@@ -456,8 +508,17 @@ def observe(root, cfg, st, facts, now, rd, fx=None):
     overdue act. -> rd. A failure in here must never cost the tick: the caller guards it."""
     fx = fx or {}
     h = st.setdefault("hands", {})
-    have = {a["id"] for a in read_acts()}
-    new = [a for a in collect(root, cfg, st, facts, now, fx) if a["id"] not in have]
+    had = {a["id"]: a for a in read_acts()}
+    have = set(had)
+    seen_now = collect(root, cfg, st, facts, now, fx)
+    new = [a for a in seen_now if a["id"] not in have]
+    # an act recorded at a time read wrong (a stage move's offset, before 2026-11-27): its time is set right, once
+    # (RIMMANDRAKE_FIX_HAND_ACT_CLOCK_LOCAL_TIME_READ_AS_UTC)
+    for a in seen_now:
+        o = had.get(a["id"])
+        if o is not None and a["kind"] == "hand_move" and isinstance(a["at"], (int, float)) and o.get("at") != a["at"]:
+            _append(ACTS, {"id": a["id"], "at_fix": a["at"], "recorded": now})
+            o["at"] = a["at"]
     seen = set()
     for a in new:
         if a["id"] in seen:
