@@ -251,6 +251,7 @@ namespace JawaBench.BridgeTools
         {
             __state = default(JawaBenchHookGuard.Scope);
             __state.Rejected = true;                      // not counted unless the body below admits it
+            try { JawaBenchRandTrace.Enter(__instance); } catch (Exception e) { Fault("rand-trace", e); }   // the draw tracer's phase
             if (!Armed && !JawaBenchSceneTick.Live) return;
             try
             {
@@ -265,6 +266,7 @@ namespace JawaBench.BridgeTools
 
         private static void TickPost(TickManager __instance, JawaBenchHookGuard.Scope __state, bool __runOriginal)
         {
+            try { JawaBenchRandTrace.Exit(); } catch (Exception e) { Fault("rand-trace", e); }
             if (!__state.Valid) { if (!__state.Rejected) Interlocked.Increment(ref TickOrphans); return; }
             if (!__runOriginal)
             {
@@ -292,6 +294,7 @@ namespace JawaBench.BridgeTools
         /// <summary>A tick that threw ran no postfix: the scene run ends here, and the exception goes on unchanged.</summary>
         private static void TickFin(Exception __exception)
         {
+            try { JawaBenchRandTrace.Exit(); } catch (Exception e) { Fault("rand-trace", e); }
             if (__exception == null) return;
             try { JawaBenchSceneTick.TickThrew(__exception); } catch (Exception e) { Fault("scene-threw", e); }
         }

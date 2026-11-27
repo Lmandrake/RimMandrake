@@ -59,7 +59,9 @@ namespace JawaBench.BridgeTools
             if (_rand == null) return "Rand.StateCompressed has no reader yet";
             _setRand(v);
             ulong back = _rand();
-            return back == v ? null : "wrote " + v + ", read back " + back;
+            if (back != v) return "wrote " + v + ", read back " + back;
+            JawaBenchRandTrace.Begin(v);                    // the draw tracer's window opens at the write-back (when armed)
+            return null;
         }
 
         /// <summary>The tick hook has work for a run.</summary>
