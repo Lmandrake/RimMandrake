@@ -130,6 +130,12 @@ refused a fifth run at its disk floor.
 
 ## PROOF
 
+- 2026-11-27, the fresh read of 4176294c32 (`RIMMANDRAKE_READ_RERUN_IN_CHECKS_TREE_FIX_FRESH_ONCE`): the promise's
+  last sentence (a check tree that names no clone or cannot be made exact gets a tree of its own, and the output says
+  why) had no reading, so a re-run in the tree as the door left it got past. Two readings now plant each case. Both
+  plants got past the selftest before and are caught now; the selftest is green, 12 of 12, and 24 of 24 planted faults
+  are caught.
+
 - 2026-11-26, a red re-run of the commit takes the checks' own tree
   (`RIMMANDRAKE_FIT_PUBLISH_PROOF_TREES_STEVEDESKTOP_POOL_DISK`): the promise's two readings were red on the code before
   (two fresh trees while the other kept tree was held, one while it was free) and are green on the fix; the selftest is

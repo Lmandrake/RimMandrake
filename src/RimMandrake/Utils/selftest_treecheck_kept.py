@@ -343,14 +343,14 @@ def t_a_red_re_run_of_the_commit_takes_the_checks_own_tree():
     root = os.environ[KROOT_ENV]
     red = [({"test": "d1/f1.txt"}, "FAIL one\n", 1)]
 
-    def proof(t, committed, hold_other):
+    def proof(t, committed, hold_other, plant=None):
         seen = {"runs": [], "fresh": set()}
 
         def run_one(c, tree):
             seen["fresh"].update(n for n in os.listdir(os.path.join(t, ".git")) if n.startswith(P.CHECKTREE_PREFIX)
                                  and not n.endswith(".lock"))
             seen["runs"].append((tree, g(tree, "rev-parse", "HEAD"), exact(top, tree, g(tree, "rev-parse", "HEAD"))
-                                 if tree != top else None))
+                                 if tree != top else None, g(tree, "status", "--porcelain", "--ignored", "-uall")))
             return c, 1, "FAIL one\n", 0.0
         fd = None
         if hold_other:                                           # a second publish holds the machine's other kept tree
@@ -360,15 +360,18 @@ def t_a_red_re_run_of_the_commit_takes_the_checks_own_tree():
         try:
             Path(t, "d2", "stray.txt").write_text("a file the door's run left\n")
             Path(t, "d1", "f3.txt").write_text("an edit the door's run made\n")
-            (still, pre), _o = quiet(lambda: P.split_pre_existing(t, (a, "the base"), red, run_one, committed=committed))
+            if plant:
+                plant(t)
+            (still, pre), seen["out"] = quiet(lambda: P.split_pre_existing(t, (a, "the base"), red, run_one,
+                                                                          committed=committed))
         finally:
             if fd is not None:
                 os.close(fd)
         seen["left"] = [n for n in os.listdir(os.path.join(t, ".git")) if n.startswith(P.CHECKTREE_PREFIX)]
         return seen, still, pre
 
-    def door(committed, hold_other):
-        return tree_at(top, keep=lambda t: proof(t, committed, hold_other))
+    def door(committed, hold_other, plant=None):
+        return tree_at(top, keep=lambda t: proof(t, committed, hold_other, plant))
     t, (seen, still, pre), _o = door(True, True)
     heads = [r for r in seen["runs"] if r[1] == b]
     check(len(heads) == 1 and heads[0][0] == t and heads[0][2] is None and len(seen["fresh"]) <= 1 and pre
@@ -389,6 +392,19 @@ def t_a_red_re_run_of_the_commit_takes_the_checks_own_tree():
     check(len(heads) == 1 and heads[0][0] != t,
           "a-red-re-run-of-the-commit-takes-the-checks-own-tree: a door run that read a working tree, not HEAD's "
           "commit, re-runs HEAD's commit in a tree of its own (%s)" % [os.path.basename(r[0]) for r in heads])
+    kept_top = getattr(P, "KEPT_TOP", "rm-kept-top")
+    for plant, how, said in ((lambda t: os.remove(os.path.join(t, ".git", kept_top)), "a tree that names no clone",
+                              "it names no clone"),
+                             (ro_folder, "a read-only folder git clean cannot empty", "git clean")):
+        t, (seen, still, pre), _o = door(True, False, plant)
+        if os.path.isdir(os.path.join(t, "ro")):
+            os.chmod(os.path.join(t, "ro"), 0o755)
+        heads = [r for r in seen["runs"] if r[1] == b]
+        why = [ln for ln in seen["out"].splitlines() if "cannot be made exact again" in ln]
+        check(len(heads) == 1 and heads[0][0] != t and heads[0][3] == "" and pre and why and said in why[0],
+              "a-red-re-run-of-the-commit-takes-the-checks-own-tree: %s: HEAD's commit is re-run in a clean tree of its "
+              "own, not in the tree as the door left it, and the output says why (%s; %s)"
+              % (how, [(os.path.basename(r[0]), r[3][:80]) for r in heads], why[:1] or seen["out"].strip()[-200:]))
 
 
 TERMED = r'''
@@ -564,6 +580,10 @@ MUTANTS = [
     ("a red re-run in the checks' tree as the door left it",
      '        why = _reuse_kept(src, top, out(top, "rev-parse", "HEAD")) if src else "it names no clone"',
      "        why = None"),
+    ("a red re-run in a checks' tree that names no clone, as the door left it",
+     'if src else "it names no clone"', "if src else None"),
+    ("a red re-run in a checks' tree that cannot be made exact, as the door left it",
+     '        if why is None:\n            print("tree checks: a red test re-run', '        if True:\n            print("tree checks: a red test re-run'),
 ]
 
 
