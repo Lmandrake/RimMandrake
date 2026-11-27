@@ -158,7 +158,9 @@ def t_peek_callers_race_for_one_item_sanity_probe():
     for i in range(N):
         ready(_fx("RACE_ITEM_HERE", i + 1))
     outs = parallel(N, "next", "--peek")
-    tops = {o.split("\n")[1].split()[0] for o in outs}
+    # the top item is the first line that is not a "(...)" header: the header count is per machine (SteveDesktop adds
+    # "(companion grant UNMEASURED ...)", because the grant folder is on Archmagi; a fixed line index read "(game")
+    tops = {next((ln.split()[0] for ln in o.split("\n") if ln.strip() and not ln.startswith("(")), None) for o in outs}
     assert tops == {"RACE_ITEM_HERE_PROBE_FIXTURE"}, tops
 
 
