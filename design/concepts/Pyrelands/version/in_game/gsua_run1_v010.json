@@ -1,0 +1,357 @@
+{
+ "scene": "sc_grass_seen_under_ash",
+ "bar": "grass_still_seen_under_ash",
+ "run": "run1_v010 (red-first reading on 0.1.0's DLL)",
+ "build": {
+  "dll": "FireEcologyHook.dll sha256 728425fd7b9e2ec0... (the 0.1.0 snapshot), defs from mod_sha bbb318e0ab (both carry hideAtSnowOrSandDepth 0.5 on EmberGrass and Quickgrass)",
+  "game": "ArchSmall (instance b), small list"
+ },
+ "manifest": {
+  "scene": "sc_grass_seen_under_ash",
+  "frames": {
+   "G": [
+    188,
+    220,
+    12,
+    8
+   ],
+   "B": [
+    204,
+    220,
+    12,
+    8
+   ]
+  },
+  "pairs": [
+   {
+    "regime": "light",
+    "fallMeans": [
+     0.0149,
+     0.0553,
+     0.1001,
+     0.1459,
+     0.1911
+    ],
+    "hour": 13.1,
+    "clearAge": 4000,
+    "weather": "Clear",
+    "G": {
+     "rect": [
+      188,
+      220,
+      12,
+      8
+     ],
+     "cells": 96,
+     "depthRead": 96,
+     "median": 0.212,
+     "min": 0.207,
+     "max": 0.309,
+     "ashedShare": 1.0,
+     "grown": 96,
+     "grownShare": 1.0,
+     "grownUnderAsh": 96,
+     "plants": 96,
+     "fires": 0
+    },
+    "B": {
+     "rect": [
+      204,
+      220,
+      12,
+      8
+     ],
+     "cells": 96,
+     "depthRead": 96,
+     "median": 0.322,
+     "min": 0.208,
+     "max": 0.412,
+     "ashedShare": 1.0,
+     "grown": 0,
+     "grownShare": 0.0,
+     "grownUnderAsh": 0,
+     "plants": 0,
+     "fires": 0
+    },
+    "shotG": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\gsua_light_G_1795749652276_1__cell_rect.png",
+    "shotB": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\gsua_light_B_1795749653661_2__cell_rect.png",
+    "checks": [
+     {
+      "check": "G grown ember grass share",
+      "ok": true,
+      "worst": 1.0,
+      "limit": "> 0.50",
+      "cases": 96
+     },
+     {
+      "check": "G cells with ash",
+      "ok": true,
+      "worst": 1.0,
+      "limit": "> 0.50 at >= 0.03",
+      "cases": 96
+     },
+     {
+      "check": "G median depth in the light regime",
+      "ok": true,
+      "worst": 0.212,
+      "limit": "[0.08, 0.40)",
+      "cases": 96
+     },
+     {
+      "check": "B plants",
+      "ok": true,
+      "worst": 0,
+      "limit": "== 0",
+      "cases": 96
+     },
+     {
+      "check": "B cells with ash",
+      "ok": true,
+      "worst": 1.0,
+      "limit": "> 0.50 at >= 0.03",
+      "cases": 96
+     },
+     {
+      "check": "B median depth in the light regime",
+      "ok": true,
+      "worst": 0.322,
+      "limit": "[0.08, 0.40)",
+      "cases": 96
+     },
+     {
+      "check": "fires in either frame",
+      "ok": true,
+      "worst": 0,
+      "limit": "== 0",
+      "cases": 2
+     },
+     {
+      "check": "weather at the captures",
+      "ok": true,
+      "worst": "Clear",
+      "limit": "Clear",
+      "cases": 1
+     },
+     {
+      "check": "ticks of clear before the captures",
+      "ok": true,
+      "worst": 4000,
+      "limit": ">= 4000",
+      "cases": 1
+     }
+    ],
+    "valid": true,
+    "why": "9 of 9 opportunity checks hold",
+    "plantedFault": null,
+    "reclears": [
+     "light"
+    ]
+   },
+   {
+    "regime": "deep",
+    "fallMeans": [
+     0.2421,
+     0.2826,
+     0.3278,
+     0.3737,
+     0.4192,
+     0.4644,
+     0.5095,
+     0.5556,
+     0.6009
+    ],
+    "hour": 10.5,
+    "clearAge": 31000,
+    "weather": "Clear",
+    "G": {
+     "rect": [
+      188,
+      220,
+      12,
+      8
+     ],
+     "cells": 96,
+     "depthRead": 96,
+     "median": 0.546,
+     "min": 0.537,
+     "max": 0.822,
+     "ashedShare": 1.0,
+     "grown": 96,
+     "grownShare": 1.0,
+     "grownUnderAsh": 96,
+     "plants": 96,
+     "fires": 0
+    },
+    "B": {
+     "rect": [
+      204,
+      220,
+      12,
+      8
+     ],
+     "cells": 96,
+     "depthRead": 96,
+     "median": 0.856,
+     "min": 0.54,
+     "max": 0.956,
+     "ashedShare": 1.0,
+     "grown": 0,
+     "grownShare": 0.0,
+     "grownUnderAsh": 0,
+     "plants": 0,
+     "fires": 0
+    },
+    "shotG": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\gsua_deep_G_1795749768276_3__cell_rect.png",
+    "shotB": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\gsua_deep_B_1795749768959_4__cell_rect.png",
+    "checks": [
+     {
+      "check": "G grown ember grass share",
+      "ok": true,
+      "worst": 1.0,
+      "limit": "> 0.50",
+      "cases": 96
+     },
+     {
+      "check": "G cells with ash",
+      "ok": true,
+      "worst": 1.0,
+      "limit": "> 0.50 at >= 0.03",
+      "cases": 96
+     },
+     {
+      "check": "G median depth in the deep regime",
+      "ok": true,
+      "worst": 0.546,
+      "limit": ">= 0.50",
+      "cases": 96
+     },
+     {
+      "check": "B plants",
+      "ok": true,
+      "worst": 0,
+      "limit": "== 0",
+      "cases": 96
+     },
+     {
+      "check": "B cells with ash",
+      "ok": true,
+      "worst": 1.0,
+      "limit": "> 0.50 at >= 0.03",
+      "cases": 96
+     },
+     {
+      "check": "B median depth in the deep regime",
+      "ok": true,
+      "worst": 0.856,
+      "limit": ">= 0.50",
+      "cases": 96
+     },
+     {
+      "check": "fires in either frame",
+      "ok": true,
+      "worst": 0,
+      "limit": "== 0",
+      "cases": 2
+     },
+     {
+      "check": "weather at the captures",
+      "ok": true,
+      "worst": "Clear",
+      "limit": "Clear",
+      "cases": 1
+     },
+     {
+      "check": "ticks of clear before the captures",
+      "ok": true,
+      "worst": 31000,
+      "limit": ">= 4000",
+      "cases": 1
+     }
+    ],
+    "valid": true,
+    "why": "9 of 9 opportunity checks hold",
+    "plantedFault": null,
+    "reclears": [
+     "light"
+    ]
+   }
+  ],
+  "stage": {
+   "window": [
+    188,
+    220
+   ],
+   "windowGrass": 189,
+   "windows": 364,
+   "plantReply": {
+    "rect": "188,220,12,8",
+    "plant": "RM_FE_Plant_EmberGrass",
+    "reply": {
+     "planted": 96,
+     "rejected": 0,
+     "rejectionReasons": {},
+     "cellsSkippedByDensity": 0,
+     "message": "Planted 96, cleared 96."
+    }
+   },
+   "grownG": 96,
+   "plantsBborder": 0
+  }
+ },
+ "keys": {
+  "light": {
+   "regime": "light",
+   "G": "B",
+   "valid": true
+  },
+  "deep": {
+   "regime": "deep",
+   "G": "A",
+   "valid": true
+  }
+ },
+ "answers": {
+  "light": {
+   "A_grass": false,
+   "B_grass": true,
+   "grass_image": "B",
+   "why": "A: bare dark-grey ash with no plants; B: dense standing grass tufts covering nearly the whole patch",
+   "judge": "rm-judge opus aece0789a576ea0bc, blind folder D:\\ClaudeWork\\scratch\\judge_first"
+  },
+  "deep": {
+   "A_grass": false,
+   "B_grass": false,
+   "grass_image": "neither",
+   "why": "A: bare grey ash dunes with no grass, only rocks, bits of wood and small hoof-print pairs. B: the same grey ash dunes with the same rocks and wood, no grass, and the hoof prints in different places.",
+   "judge": "rm-judge opus aef4f4afdd998aba8, blind folder D:\\ClaudeWork\\scratch\\judge_second"
+  }
+ },
+ "judges": {
+  "light": "blind rm-judge opus, shown only blind_light/A.png,B.png (neutral copy)",
+  "deep": "blind rm-judge opus, shown only blind_deep/A.png,B.png (neutral copy)"
+ },
+ "verdicts": {
+  "light": "PASS (picked G, grass in G, none in B)",
+  "deep": "FAIL: grass hidden under the ash in G (judge read neither frame with grass)"
+ },
+ "log_check": "0 warning/error lines after the mark; instrument sanity-probed 2026-11-26: a planted Log.Error after a mark is read and classed (1 of 1)",
+ "diagnosis": {
+  "cause": "EmberGrass.xml:42 and Quickgrass.xml:60 <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth> (commit 39422d7e7c); ash is SandGrid depth since 2026-11-08; vanilla SectionLayer_Things.cs:66 and DynamicDrawManager skip printing a thing when max(snow,sand) > hideAtSnowOrSandDepth < 1; RimWorld/Plant.cs:193 IngestibleNow also false there (no grazing)",
+  "sweep": {
+   "how": "LayAsh on G (188,220,12,8), clear weather, 96 grown ember grass throughout, capture per depth; orange-pixel share (R-B>40, R>90) of the frame",
+   "orange_share": {
+    "0.00": 0.7705,
+    "0.30": 0.2575,
+    "0.45": 0.2572,
+    "0.49": 0.2586,
+    "0.51": 0.063,
+    "0.55": 0.0298,
+    "0.80": 0.0317,
+    "cleared": 0.7699
+   },
+   "boundary": "0.49 drawn (dusted), 0.51 not drawn: the threshold is 0.50, the def field's value"
+  },
+  "not": "not the ash cover's altitude (PyrelandsAshCover.cs Terrain altitude) and not the dust overlay (PyrelandsAshDust.cs)",
+  "likely_fix": "drop the field from both Pyrelands grass defs (or set >= 1, which vanilla reads as never hide); this also restores grazing under ash; other plants the Pyrelands biome spawns that carry the field need the same look"
+ }
+}
