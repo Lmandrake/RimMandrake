@@ -18,11 +18,12 @@ beautifully. Of course it should intelligently subagent fanout as needed."
 
 ## The mod as it stands
 
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 4:58 PM PST).
-- **Stage now:** Stage 1, the Designer, since 2026-11-26 4:58 PM PST (`version/stage_record.json`).
+- **Waiting on:** the Preflight run (Stage 2), which the Dispatch tick launches; nothing waits on him
+- **Stage now:** Stage 2, preflight, since 2026-11-27 4:54 AM PST (`version/stage_record.json`).
 - **Mod:** `src/RimMandrake/WreckedMachines` (mandrake.rm.wreckedmachines, namespace RimMandrake.WreckedMachines,
   prefix RM_), the generic RimMandrake tier. The Utinni layer and ship parts are later work.
-- **Design Version:** 0.1.0, open (`version/VERSION.json`). No locked design yet; the Designer's Lock step cuts it.
+- **Design Version:** 0.1.0, locked on 2026-11-27 by the pipeline (`version/VERSION.json`). Its 30 bars are in
+  `version/locked_bars.json`, and `version/bars.md` pins the locked files.
 - **Model:** every builder role on Fable 5.2 (`pipe model WreckedMachines fable`); a Fable builder may start subagents
   (Sonnet or Opus, never Fable). Judges and the in-game driver keep their own models.
 - **Design input:** `design/specs/2026-11-26-wrecked-machines-fable/tickets_bundle.md` (the 10 open tickets, read
@@ -47,3 +48,28 @@ beautifully. Of course it should intelligently subagent fanout as needed."
 - Was, "Stage now": - **Stage now:** Intake, ideas waiting, since 2026-11-26 5:00 PM PST (admitted the same afternoon; see history).
 - Was, "Waiting on": - **Waiting on:** the Designer's first-touch run (`role_launch.py run-now --role Designer --concept design/concepts/WreckedMachines`); nothing waits on him.
 - Record: `version/stage_record.json`.
+
+### 2026-11-27 4:54 AM PST, stage change: Designer (Stage 1) to Preflight (Stage 2) (by BENCH)
+
+- Why: the Design Version 0.1.0 is locked (the pipeline's lock of 2026-11-27, Evidence-for-Ask ruling) and its 30 bars are recorded in version/locked_bars.json; steward run on RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT
+- Checks passed: order, by, version, hold, locked.
+- Steward confirms: read: stage.json status locked at stage 5; coverage_verdict.json verdict covered, signed, CALIBRATED, gaps none (judge rm-coverage-judge-1795781593); exam.json 20 of 20 with 2 Readers; VERSION.json state locked 0.1.0, bars_total 30; lock-bars recorded 30 ids at lock commit 063eb68488. Verdict: the Designer's exit is met
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Design Version 0.1.0 is locked (the pipeline's lock of 2026-11-27, Evidence-for-Ask ruling) and its 30 bars are recorded in version/locked_bars.json; steward run on RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT
+- Was, "Stage now": - **Stage now:** Stage 1, the Designer, since 2026-11-26 4:58 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 4:58 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-27 4:50 AM PST, the lock commit in `version/VERSION.json` corrected, and the bars recorded (by BENCH)
+
+- What changed: `locked_from_commit` was `b53e34d70527cdd6ab1d8c37c74716851708ddc1`. It is now
+  `063eb68488bc5cccc3dd2671617fff0a731a591c`. No bar, no locked file and no other field of the lock changed.
+- Why: `b53e34d705` was the HEAD of the dispatch clone at the lock, a ledger commit that never reached origin/main under
+  that sha. No other clone holds it, so `maturation.py lock-bars WreckedMachines` refused ("tree.json at b53e34d705...
+  cannot be read"). `063eb68488` is the parent of `b53e34d705` and is on origin/main.
+- Why the meaning is the same: each of the 9 locked files (`tree.json`, `sheet.md`, `scenes.json`, `floor.json`,
+  `exam.json`, `record.json`, `plan.md`, `stage.json`, `coverage_verdict.json`) has the same git blob at `b53e34d705`
+  (read in `/home/mandrake/rm/dispatch`) and at `063eb68488`. The blobs are in `version/bars.md`.
+- The cause is fixed in the pipeline at commit `50b17bd053` (page
+  `design/specs/2026-11-27-lock-commit-is-landed/boundary.md`): the pipeline's lock now names a commit that origin/main
+  holds.
+- `maturation.py lock-bars` then recorded 30 bars in `version/locked_bars.json` and wrote `version/bars.md`.

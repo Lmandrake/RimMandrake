@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "WreckedMachines",
   "version": "0.1.0",
-  "stage": "designer",
-  "stage_label": "Designer (Stage 1)",
-  "since": "2026-11-26T16:58:43-08:00",
+  "stage": "preflight",
+  "stage_label": "Preflight (Stage 2)",
+  "since": "2026-11-27T04:54:02-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -37,6 +37,26 @@
         "version",
         "hold",
         "intake_closed"
+      ]
+    },
+    {
+      "from": "designer",
+      "to": "preflight",
+      "at": "2026-11-27T04:54:02-08:00",
+      "by": "BENCH",
+      "why": "the Design Version 0.1.0 is locked (the pipeline's lock of 2026-11-27, Evidence-for-Ask ruling) and its 30 bars are recorded in version/locked_bars.json; steward run on RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT",
+      "unit": "rm-detached-bench-rimmandrake-advance-wreckedmachines-lock-1795781841",
+      "item": "RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT",
+      "confirmed": {
+        "steward_confirms": "read: stage.json status locked at stage 5; coverage_verdict.json verdict covered, signed, CALIBRATED, gaps none (judge rm-coverage-judge-1795781593); exam.json 20 of 20 with 2 Readers; VERSION.json state locked 0.1.0, bars_total 30; lock-bars recorded 30 ids at lock commit 063eb68488. Verdict: the Designer's exit is met",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Design Version 0.1.0 is locked (the pipeline's lock of 2026-11-27, Evidence-for-Ask ruling) and its 30 bars are recorded in version/locked_bars.json; steward run on RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "locked"
       ]
     }
   ],

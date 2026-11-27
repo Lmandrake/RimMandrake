@@ -10,7 +10,7 @@
   "bars_met": "UNMEASURED",
   "judge_rounds": 2,
   "tokens_spent": 58030927,
-  "locked_from_commit": "b53e34d70527cdd6ab1d8c37c74716851708ddc1",
+  "locked_from_commit": "063eb68488bc5cccc3dd2671617fff0a731a591c",
   "measured_from": {
     "bars_total": "coverage_judge.required_ids(record.json inventory + tree.json leaves)",
     "judge_rounds": "coverage_judge.rounds(stage.json)",

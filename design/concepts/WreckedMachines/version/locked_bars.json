@@ -1,0 +1,50 @@
+{
+ "schema": 1,
+ "mod": "WreckedMachines",
+ "version": "0.1.0",
+ "locked_from_commit": "063eb68488bc5cccc3dd2671617fff0a731a591c",
+ "ids": [
+  "inv_grade_ladder",
+  "inv_smelter_line",
+  "inv_power_cell_line",
+  "inv_emanator_line",
+  "inv_study_the_wreck",
+  "inv_ancient_component",
+  "inv_donor_smelter_hidden",
+  "inv_mod_settings",
+  "inv_wrecks_draw_links",
+  "inv_alloy_forge_gates",
+  "inv_one_salvage_rule",
+  "inv_distillation_module",
+  "inv_wreck_found_in_world",
+  "inv_ancient_component_source",
+  "inv_wealth_exclusion",
+  "inv_grade_changed_signal",
+  "inv_turret_line",
+  "inv_more_factory_machines",
+  "only_by_repair",
+  "wreck_is_found",
+  "wreck_comes_home",
+  "study_opens_research",
+  "repair_on_the_machine",
+  "levels_of_function",
+  "last_repair_needs_component",
+  "levels_told_apart",
+  "switch_gives_machine_back",
+  "no_setting_named",
+  "wrecks_join_lines",
+  "whole_journey"
+ ],
+ "history": [
+  {
+   "at": "2026-11-27T12:53:47Z",
+   "by": "BENCH",
+   "why": "steward run on RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT: Design Version 0.1.0 is locked (the pipeline's lock, Evidence-for-Ask ruling); the bars are read from the locked tree at 063eb68488, the commit of origin/main with the same 9 locked files as the lock's unlanded commit b53e34d705 (coverage verdict covered, exam 20 of 20)",
+   "how": "required_ids at locked_from_commit 063eb68488bc5cccc3dd2671617fff0a731a591c (30), less bars_moved_to_next_version (0), plus bars_added_after_lock (0)",
+   "source": null,
+   "added": [],
+   "removed": [],
+   "count": 30
+  }
+ ]
+}
