@@ -1,0 +1,26 @@
+{"judge_model": "claude-opus-5-5",
+ "judge_run": "rm-detached-bench-world-faces-redraw-abyss-rot-rust-1795766752",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "World faces RM_Abyss, RM_TheRot, RM_RustCathedral (+ RM_Swirls/Abyss, RM_Swirls/TheRot), item WORLD_FACES_REDRAW_ABYSS_ROT_RUST",
+ "work_sha": "793dbc3df4 (landed as d6f49bba44; face and swirl textures unchanged on origin/main since)",
+ "his_note_E4": "Owner 2026-10-20: \"Abyss I had envisioned as far darker still with eerie swirling within it. The Rot should have a lot more texture and swirls of wild colors. ... Rust Cathedral is wrong: I really liked the harsh rusty machinery that was visible before.\" Card 2026-10-20 10:12 PM PDT: Abyss far darker, eerie swirls, near-black base made legible by pale/rim-lit decals; The Rot rich texture, wild-colour swirls; Rust Cathedral a NEW hero face with bold harsh rusty machinery at a calmer grain than the pre-calm face, not a restore.",
+ "how_seen": "ArchBig, live game (loaded planet, 119904 tiles), 2026-11-27 ~00:20-00:30 PST. Swirl layer on (worldBiomeSwirls=True); soft borders (worldBorderBlend=true) and hard (false), world redraw after each; world_view altitudes 140, 200, 320 (and 320/600 on the unstaged planet); landmarks and hill glyphs on as shipped. The planet holds only 5 single RM_Abyss tiles and 16 single RM_RustCathedral tiles (expected before the one paint at the end), so a 127-tile patch of each was staged in memory around tiles 89502 (mountainous) and 65773 (flat), captured, then restored: 254 tiles set back, read-back 0 differ of 200, swirls/blend counts back to the pre-stage 25848 tiles / 11785 overlays; nothing saved. The Rot judged on its existing 25843-tile region around tile 60110. Captures: this file's folder; full-size originals D:\\ClaudeWork\\rimmandrake\\scratch\\faces_judge_20261127\\.",
+ "verdicts": [
+  {"picture": "RM_Abyss face + RM_Swirls/Abyss", "facing": "world map", "verdict": "KEEP",
+   "notes": "E4 kept: near-black navy base, far darker than every neighbour at 140, 200 and 320; fine dark swirl contours across the base and pale blue-white current streaks through it read as eerie currents (RM_Abyss_hard_140_crop.jpg). Soft and hard borders both read cleanly. B2 not grey mud: the patch is the darkest thing on the map, clearly apart from The Rot and desert around it."},
+  {"picture": "RM_TheRot face + RM_Swirls/TheRot", "facing": "world map", "verdict": "KEEP",
+   "notes": "E4 kept: wild-colour swirls (magenta, green, cyan, orange) flow continuously across tiles over a rich mottled purple texture, at 140, 200 and 320, soft and hard borders. Reads unlike any other biome."},
+  {"picture": "RM_RustCathedral face", "facing": "world map", "verdict": "KEEP",
+   "notes": "E4 kept: a new hero face, not a restore: rust plates, girders, rivets and gears read as harsh rusty machinery at 140 and still read as a rust-machinery grid at 320; the grain (one gear-and-girder grid per several tiles) is far calmer than the fine speckle of the pre-calm face (RM_RustCathedral_face_precalm_calm_now.jpg: pre-calm, calm, now)."}],
+ "polish": [
+  "Abyss: at 200 and above the pale currents are sparse (two or three streaks per ~127 tiles) and the vanilla hill glyphs on its mountainous tiles cover much of the base; a few more currents would make the 'eerie swirling' read from further out. Polish only: the promise reads at mid zoom.",
+  "Rust Cathedral: the gear-and-girder grid repeats on a visible square lattice over a large patch; a second variant or offset would hide the repeat once the paint makes the biome large. Polish only."],
+ "proposals": [
+  "E2 (script-drawn stand-ins are no art) is written for sprites; world faces are drawn by biome_worldfaces.py by the owner's own route (this item's NEXT and card). The brief could say that procedurally generated world faces are art when an owner card orders them, so a later judge does not read E2 against them."],
+ "contract": {"item": "WORLD_FACES_REDRAW_ABYSS_ROT_RUST", "family": "art_judge_brief", "sha": "d6f49bba44",
+  "passed": [{"clause": "E4", "evidence": ["RM_Abyss_hard_140_crop.jpg", "RM_Abyss_soft_200_half.jpg", "RM_TheRot_soft_200_half.jpg", "RM_TheRot_hard_140_half.jpg", "RM_RustCathedral_soft_140_half.jpg", "RM_RustCathedral_face_precalm_calm_now.jpg"]},
+             {"clause": "B2", "evidence": ["RM_Abyss_soft_200_half.jpg", "RM_TheRot_soft_200_half.jpg", "RM_RustCathedral_soft_320_half.jpg"]},
+             {"clause": "B5", "evidence": ["RM_TheRot_soft_200_half.jpg"]},
+             {"clause": "E1", "evidence": ["RM_RustCathedral_face_precalm_calm_now.jpg"]}],
+  "not_applicable": ["A1-A5 (no canon entry: world faces)", "B1a, B3, B4, B6", "C1-C6", "D1-D4 (sprite scale/alpha clauses)", "F1"],
+  "refusals": []}}
