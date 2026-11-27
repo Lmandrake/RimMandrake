@@ -1059,12 +1059,16 @@ def run_mod(name, cs_name, pj_name, expected, extra):
         plants.append(("a next-game-start tag overridden to [now]", lambda c, p: (c.replace('"[next game start]"))', '"[now]"))', 1), p), "audited scope"))
     decl = re.search(r'\.Declare\(([^)]*)\)', cs)
     if decl:
-        # a pure dependent of the first Declare (not itself a master, not declared again elsewhere)
-        first = re.findall(r'"(\w+)"', decl.group(1))
         masters = {re.findall(r'"(\w+)"', d)[0] for d in re.findall(r'\.Declare\(([^)]*)\)', cs)}
         # (declared as a dependent of ONLY this Declare: a second master keeps it classified, so the plant would be a no-op)
         ndecl = lambda n: sum(1 for d in re.findall(r'\.Declare\(([^)]*)\)', cs) if n in re.findall(r'"(\w+)"', d)[1:])
-        pure = next(n for n in reversed(first[1:]) if n not in masters and ndecl(n) == 1 and cs.count(f'"{n}"') >= 2)
+        is_pure = lambda n: n not in masters and ndecl(n) == 1 and cs.count(f'"{n}"') >= 2
+        # a pure dependent (not itself a master, not declared again elsewhere) of the FIRST Declare that has one: a mod's
+        # first Declare may hold only sub-masters ("Mod enabled" over the biome switches, Terminal Biomes)
+        decl = next((m for m in re.finditer(r'\.Declare\(([^)]*)\)', cs)
+                     if any(is_pure(n) for n in re.findall(r'"(\w+)"', m.group(1))[1:])), decl)
+        first = re.findall(r'"(\w+)"', decl.group(1))
+        pure = next(n for n in reversed(first[1:]) if is_pure(n))
         # a scope whose first key is drawn by a checkbox (a radio-button setting is invisible to the drawn-control scan)
         dm = next(m for m in re.finditer(r'using \(Dependent\(list, "(\w+)"', cs) if re.search(r'CheckboxLabeled\([^;]*ref ' + m.group(1) + r'\b', cs))
         dmasters = {}
