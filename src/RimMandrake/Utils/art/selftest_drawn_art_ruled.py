@@ -14,8 +14,8 @@ The check, for every PawnKindDef in src/ (parsed XML, never text-matched):
   * a creature is APPROVED when the owner has a keep/pick/approve ruling on its subject, or one of its primary
     pictures is owner-protected;
   * for an approved creature, every alternate PNG (resolved in the def's own mod Textures/) must be byte-identical to
-    one of its primary pictures, or owner-protected / owner-ruled / judge-kept (delegated) by sha. Anything else is a picture the game shows
-    on most spawns that he never saw next to his approval.
+    one of its primary pictures, or owner-protected / owner-ruled / judge-kept (delegated) by sha. Anything else is a
+    picture the game shows on most spawns that nobody ruled on next to his approval.
 
 Known debts are listed in drawn_art_ruled_baseline.json (a ratchet: a NEW violation fails, a fixed one must be removed
 from the baseline). Limitation: alternateGraphics added by a Patch are not seen.
@@ -224,8 +224,8 @@ def main(argv) -> int:
     if kinds and not pictures_seen(kinds):
         for f in fails:
             print("FAIL", f)
-        print(f"UNMEASURED, not a pass or a fail: {len(kinds)} kind(s) with alternates, no primary PNG on disk (a slim clone? "
-              f"`scratch_clone.py shape . --full`)")
+        print(f"UNMEASURED, not a pass or a fail: {len(kinds)} kind(s) with alternates, no primary PNG on disk "
+              f"(a slim clone? `scratch_clone.py shape . --full`)")
         return 1 if fails else 2
     v = violations(kinds, idx, L, sha_of, deleg=delegated_keeps())
     keys = {x["key"] for x in v}
