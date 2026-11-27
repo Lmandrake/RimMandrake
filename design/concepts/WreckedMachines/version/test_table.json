@@ -1,7 +1,7 @@
 {
  "mod": "WreckedMachines",
  "version": "0.1.0",
- "made": "2026-11-27T06:03:32-0800",
+ "made": "2026-11-27T06:17:18-0800",
  "made_by": "design/concepts/WreckedMachines/version/pilot_throwaway/make_test_table.py (throwaway, no model), steward run RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
  "stages": {
   "2": "preflight (a program)",
@@ -48,7 +48,6 @@
   "T_ONBOARDING_COMPLETE": "C_onboarding_complete",
   "T_ONBOARDING_TABLE_OFFLINE": "C_onboarding_table_offline",
   "T_LEVEL_NUMBERS": "C_level_numbers",
-  "T_REPAIR_STATE_WALK": "C_repair_state_walk",
   "T_NEIGHBOUR_NAMES": "C_neighbour_names",
   "T_FORGE_GATES_GONE": "C_forge_gates_gone",
   "sc_old_save": "C_old_save",
@@ -91,9 +90,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.1,
-    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.64s total -> OK",
-    "at": "2026-11-27T14:02:58Z",
+    "seconds": 3.1,
+    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.58s total -> OK",
+    "at": "2026-11-27T14:16:32Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_KERNEL_FUZZ.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py"
@@ -113,9 +112,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.2,
+    "seconds": 8.5,
     "last": "salvage rule: OK (fuzz salvage: 3000 cases, 8003 steps, 0.04s, 0 failures; 41 variants executed, 40 red)",
-    "at": "2026-11-27T14:03:02Z",
+    "at": "2026-11-27T14:16:40Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_SALVAGE_RULE.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py"
@@ -207,16 +206,21 @@
    "check": "C_repair_state_walk",
    "observes": "The offline walk of the repair state machine in the shipped kernel against a fake game (plan.md, offline simulation): every state and event, with the rows 'a cancel never loses the machine', 'the level changes only on complete work' and 'the signal fires once for each change'.",
    "reads": [
-    "src/RimMandrake/WreckedMachines"
+    "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
+    "src/RimMandrake/WreckedMachines/Source/Kernel",
+    "src/RimMandrake/WreckedMachines/Source/SelfTest"
    ],
    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
-   "new": true,
-   "built_in_stage": "3",
    "runs_today": {
-    "ran": false,
-    "why": "specified at the lock of 0.1.0 (tree check C_repair_state_walk); Stage 3 builds it and records it red first (maturation.py red-seen)"
-   },
-   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.3,
+    "last": "T_REPAIR_STATE_WALK: PASS",
+    "at": "2026-11-27T14:16:43Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_REPAIR_STATE_WALK.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py"
+   }
   },
   "T_NEIGHBOUR_NAMES": {
    "id": "T_NEIGHBOUR_NAMES",
@@ -275,9 +279,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.7,
+    "seconds": 0.8,
     "last": "T_DISTILLATION_LOADS: PASS (7 rows, 0 not PASS)",
-    "at": "2026-11-27T14:03:03Z",
+    "at": "2026-11-27T14:16:44Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_DISTILLATION_LOADS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py"
@@ -326,9 +330,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.5,
+    "seconds": 2.1,
     "last": "wreckedmachines lint (data): 10 graded defs, 3 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
-    "at": "2026-11-27T14:03:05Z",
+    "at": "2026-11-27T14:16:46Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_DEFS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py"
@@ -348,9 +352,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 26.7,
+    "seconds": 31.4,
     "last": "WreckedMachines lint planted-defect selftest: 17/17 ok",
-    "at": "2026-11-27T14:03:31Z",
+    "at": "2026-11-27T14:17:17Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_PLANTS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py"
@@ -373,7 +377,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "STATIC: PASS (0 findings)",
-    "at": "2026-11-27T14:03:31Z",
+    "at": "2026-11-27T14:17:17Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_STATIC.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/validation.py"
@@ -986,7 +990,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "sc_text_names_no_setting: PASS 3 components, 0 not PASS",
-    "at": "2026-11-27T14:03:31Z",
+    "at": "2026-11-27T14:17:17Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_text_names_no_setting.txt",
     "result": "PASS",
     "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\""
@@ -1014,7 +1018,7 @@
     "rc": 0,
     "seconds": 0.5,
     "last": "wrecked_links: 9 wrecked defs judged, 5 owe pipes, 7 owe conduit, 0 problems",
-    "at": "2026-11-27T14:03:32Z",
+    "at": "2026-11-27T14:17:18Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_wreck_link_tags.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py"
@@ -1909,13 +1913,11 @@
    "offline_decides": [
     "T_REPAIR_STATE_WALK"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_REPAIR_STATE_WALK"
-   ],
+   "not_runnable_today": [],
    "scope": "approved",
    "impl": "absent"
   },

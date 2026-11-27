@@ -3,7 +3,7 @@
  "version": "0.1.0",
  "program": "design/concepts/WreckedMachines/version/pilot_throwaway/preflight_wreckedmachines.py (throwaway, no model)",
  "table": "design/concepts/WreckedMachines/version/test_table.json",
- "at": "2026-11-27T06:03:57-08:00",
+ "at": "2026-11-27T06:17:34-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -14,7 +14,7 @@
    "modlist_fingerprint": "d66ead97de339ac9"
   }
  },
- "seconds": 15.82,
+ "seconds": 15.21,
  "verdict": "pass",
  "refusals": 0,
  "refusals_by_route": {},
@@ -23,7 +23,6 @@
   "T_ONBOARDING_COMPLETE",
   "T_ONBOARDING_TABLE_OFFLINE",
   "T_LEVEL_NUMBERS",
-  "T_REPAIR_STATE_WALK",
   "T_NEIGHBOUR_NAMES",
   "T_FORGE_GATES_GONE",
   "sc_old_save",
@@ -75,7 +74,7 @@
    "what": "every built test's file exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "34 built tests",
+   "evidence": "35 built tests",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -98,17 +97,17 @@
    "evidence": "read with designer_stage.entry_point_exists",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.053
+   "seconds": 0.048
   },
   {
    "id": "C6_built_deciders_run",
    "what": "every built deciding test runs green today; a deciding test that is specified and not built is Stage 3 work, not a refusal",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "33 deciding tests; 0 not green or not written; 4 specified for Stage 3: T_LATER_STAYS_OUT, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE, T_REPAIR_STATE_WALK",
+   "evidence": "33 deciding tests; 0 not green or not written; 3 specified for Stage 3: T_LATER_STAYS_OUT, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.053
+   "seconds": 0.048
   },
   {
    "id": "C7_game_reason_written",
@@ -128,7 +127,7 @@
    "evidence": "2 line(s) of design/RimMandrake/validation_holding/*.md match 'wreck|kludg|refurbish|smelter|vanometric|emanator|ancient component|alloy forge'; 0 placed; the table's note: 0 held look statements name this mod: a grep of design/RimMandrake/validation_holding/*.md for 'wreck|kludg|refurbish|smelter|vanometric|emanator|ancient component|alloy forge' finds 2 line(s) (design/RimMandrake/validation_holding/flowworks_walk_20261120.md:77, design/RimMandrake/validation_holding/flowworks_walk_20261120.md:164), and each is FlowWorks' ruined bridge (RM_SuspensionWreck), not a machine of this mod",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.006
+   "seconds": 0.007
   },
   {
    "id": "C9_defs_real",
@@ -138,7 +137,7 @@
    "evidence": "16 names checked (11 from validation.py's ORIGINAL and staging constants); dump captured 2026-11-27T06:22:12Z, 51180 defs, 318 mods",
    "smallest_fix": null,
    "route": null,
-   "seconds": 1.316
+   "seconds": 0.832
   },
   {
    "id": "C10_mods_real",
@@ -168,7 +167,7 @@
    "evidence": "27 in-game tests: A 27, B 0, C 0",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.001
+   "seconds": 0.0
   },
   {
    "id": "C12_locked_files_unchanged",
@@ -178,7 +177,7 @@
    "evidence": "9 pins (stage.json is state and is not compared)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.04
+   "seconds": 0.021
   },
   {
    "id": "C13_scenes_and_checks_wired",
@@ -198,7 +197,7 @@
    "evidence": "44 tool names",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.21
+   "seconds": 0.151
   },
   {
    "id": "C15_items_real",
@@ -208,7 +207,7 @@
    "evidence": "1 items: RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.282
+   "seconds": 0.232
   },
   {
    "id": "C16_small_list",
@@ -218,7 +217,7 @@
    "evidence": "ok    WreckedMachines: tier wreckedmachines_solo, 16 mods",
    "smallest_fix": null,
    "route": null,
-   "seconds": 13.556
+   "seconds": 13.702
   }
  ]
 }

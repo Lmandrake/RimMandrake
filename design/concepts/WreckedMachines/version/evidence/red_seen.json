@@ -11,5 +11,18 @@
   "patch_sha": "4120377da4982bd9",
   "rc": 1,
   "test_blob": "8fc35ab495221aa2f9f5f6d16e9742fd296ddad0"
+ },
+ "T_REPAIR_STATE_WALK": {
+  "at": "2026-11-27T14:16:10Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
+  "file": "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
+  "last": "T_REPAIR_STATE_WALK: FAIL",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesRepair.cs\n+++ b/src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesRepair.cs\n@@ -142,7 +142,7 @@\n             var back = new List<KeyValuePair<string, int>>();\n             if (rec == null) return back;\n             for (int i = 0; i < rec.defs.Length; i++)\n-                if (rec.delivered[i] > 0) back.Add(new KeyValuePair<string, int>(rec.defs[i], rec.delivered[i]));\n+                if (rec.delivered[i] > 0 && i < 0) back.Add(new KeyValuePair<string, int>(rec.defs[i], rec.delivered[i]));\n             Clear(rec);\n             return back;\n         }\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesRepair.cs"
+  ],
+  "patch_sha": "ce191cf8987a8689",
+  "rc": 1,
+  "test_blob": "a20d682aedc61973a29cb90221983125b4b5911e"
  }
 }

@@ -1,5 +1,5 @@
 # project: RimMandrake/WreckedMachines/Source/RM_WreckedMachines.csproj
-# dll: 7df87a3f67d91b2a063f26e948005b0f1665f24597eb614e40539c13006eb253
+# dll: 83854bca78af8bb9119f1e096af3819741552c989871ca4f221288a257e22594
 0fd45b249cf6a043b3463a2ba1ff501895bfaf55dcdd0203d963ed170cb46db7 ../../_Shared/SalvageRule/RM_SalvageRuleKernel.cs
 1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../_Shared/HarmonyResilience/PatchApplier.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs
@@ -8,4 +8,5 @@
 994d68f2f62c16f6a2b35b8e3ebc08bb9a4540643268f08a6e171b462cf470ee Kernel/RM_WreckedMachinesKernel.cs
 9af86ffec8cc8b6824be0a5d643790eb87087bec9fbdee2f18477d3d7ed91c57 WreckedMachinesSalvage.cs
 b338c8a809bd13c7e9ca39b53e0a81f94c2d058a1c996f5f8eeeaa49b008ebae ../../_Shared/SalvageRule/RM_SalvageRule.cs
+b6866a1bc21fee673234e36689c4f35539246fa4a36935082e4a7558b668386f Kernel/RM_WreckedMachinesRepair.cs
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../_Shared/SettingsKit/SettingsKitDrawer.cs

@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesRepair.cs
++++ b/src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesRepair.cs
+@@ -142,7 +142,7 @@
+             var back = new List<KeyValuePair<string, int>>();
+             if (rec == null) return back;
+             for (int i = 0; i < rec.defs.Length; i++)
+-                if (rec.delivered[i] > 0) back.Add(new KeyValuePair<string, int>(rec.defs[i], rec.delivered[i]));
++                if (rec.delivered[i] > 0 && i < 0) back.Add(new KeyValuePair<string, int>(rec.defs[i], rec.delivered[i]));
+             Clear(rec);
+             return back;
+         }

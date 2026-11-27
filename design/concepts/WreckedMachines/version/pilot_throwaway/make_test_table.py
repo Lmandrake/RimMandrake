@@ -105,7 +105,7 @@ CHECK_TESTS = [
     ("C_onboarding_complete", "T_ONBOARDING_COMPLETE", WM + "/selftest_wm_onboarding_complete.py", None, False, "offline"),
     ("C_onboarding_table_offline", "T_ONBOARDING_TABLE_OFFLINE", WM + "/selftest_wm_onboarding_table.py", None, False, "offline"),
     ("C_level_numbers", "T_LEVEL_NUMBERS", WM + "/selftest_wm_level_numbers.py", None, False, "offline"),
-    ("C_repair_state_walk", "T_REPAIR_STATE_WALK", "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py", None, False, "offline"),
+    ("C_repair_state_walk", "T_REPAIR_STATE_WALK", "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py", None, True, "offline"),
     ("C_neighbour_names", "T_NEIGHBOUR_NAMES", WM + "/selftest_wm_neighbour_names.py", None, False, "offline"),
     ("C_forge_gates_gone", "T_FORGE_GATES_GONE", WM + "/selftest_wm_forge_gates_gone.py", None, False, "offline"),
     ("C_distillation_loads", "T_DISTILLATION_LOADS", WM + "/selftest_wm_distillation_loads.py", None, True, "offline"),
@@ -113,6 +113,7 @@ CHECK_TESTS = [
 ]
 # What a check test that Stage 3 built reads beside its own file (the change relation reads `reads`).
 BUILT_READS = {
+    "T_REPAIR_STATE_WALK": [WM + "/Source/Kernel", WM + "/Source/SelfTest"],
     "T_DISTILLATION_LOADS": [WM + "/Patches/WreckedMachines_DistillationModule.xml", "src/RimMandrake/FlowWorks/About/About.xml",
                              "src/RimMandrake/FlowWorks/Defs", "src/RimMandrake/FlowWorks/Patches",
                              "src/RimMandrake/FlowWorks/Source"],

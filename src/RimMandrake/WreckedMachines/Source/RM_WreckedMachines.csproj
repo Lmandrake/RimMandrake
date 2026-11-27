@@ -43,6 +43,7 @@
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="WreckedMachinesLadder.cs" />
     <Compile Include="Kernel\RM_WreckedMachinesKernel.cs" />
+    <Compile Include="Kernel\RM_WreckedMachinesRepair.cs" />
     <Compile Include="WreckedMachinesSalvage.cs" />
     <Compile Include="..\..\_Shared\SalvageRule\RM_SalvageRule.cs" Link="Shared\RM_SalvageRule.cs" />
     <Compile Include="..\..\_Shared\SalvageRule\RM_SalvageRuleKernel.cs" Link="Shared\RM_SalvageRuleKernel.cs" />
