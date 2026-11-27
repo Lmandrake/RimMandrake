@@ -1,0 +1,2 @@
+art.py install --why on a picture that is already live returns already-live and writes no ledger event, so a delegated judge KEEP of an installed picture has no ledger record; the committed verdict file (infrastructure/state/delegated/<date>/*.json, picture_sha256) is the record, and selftest_drawn_art_ruled.delegated_keeps reads it. A selftest that hashes PNGs reads 0 violations in a slim clone (no media): make it say UNMEASURED, never PASS.
+item: ALT_GRAPHICS_FIX_SIX_SECOND_FACES
