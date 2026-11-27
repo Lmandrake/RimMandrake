@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "687c20112538870c66f923b601677696419b056b8812a5fa55b0c2bcde3ee581",
+  "body_sha256": "0545ae3a6a16241628b8170ec72aa7d6d3d21ef17855a25a139a306e3143f02d",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 22971,
+   "HOLDER.run-1795693138": 25193,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1295,10 +1295,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795693138",
-   "done": "restart 4: CLASS_SEVEN_THIRST closed, REFRESH_LABEL_FADE dropped stale, SLOW_RAIN_FILL closed (a0d0227542, 3bfb4cb53f), SCENARIOS_MAP_FIX_PIPE_LONG_RUN_HOMELESS dropped done (cb5dd12686)",
-   "next": "Stage and judge the Scrapper pipe long run for SCRAPPER_PIPE_REDRAW_BLURRY_AT_ZOOM on a free game",
-   "ruled_out": "Ensure-missing SyncParams; label fade defect after SetLevel",
-   "ts": "2026-11-27T04:01:01Z"
+   "done": "RIMMANDRAKE_EXPLAIN_BRIM_POUR_LITRES_WITH_NOWHERE_TO_GO closed at e4ca2be630: reply names the measured cause; OL_pour_never_no_room reads the wet cap first; live ArchSmall row PASS (1f900b93f6)",
+   "next": "Work SCRAPPER_PIPE_REDRAW_BLURRY_AT_ZOOM, then the bundle list from SIGNS_BARRELS_VERIFY_ON_REBUILT_WALK_OWED on",
+   "ruled_out": "DrainAll leaving the wet-square cap used; the 64-miss give-up",
+   "ts": "2026-11-27T04:55:31Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1805,
+  "events": 1810,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-27T04:01:01Z",
+   "last": "2026-11-27T04:55:48Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61
@@ -8498,6 +8498,14 @@
     "ts": "2026-11-19T23:57:40Z",
     "version": "0.1.0",
     "where": "steve.sh up, quicktest map"
+   },
+   "trap:a-full-wet-cap-anywhere-refuses-every-spill": {
+    "by": "HOLDER.run-1795693138",
+    "status": "noted",
+    "text": "The map's wet-square cap (4000 by default) is map-wide: one big spill anywhere makes later spills on the map place 0 L, and a drain near the pour frees nothing unless it reaches that sheet. A live scene that spills reads ProofSheetLedger wet/maxWet first.",
+    "ts": "2026-11-27T04:55:48Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs ResolveSpills; owner_look_regressions.acts"
    },
    "trap:a-green-entry-with-no-step-4-record": {
     "by": "BACKFILL",
