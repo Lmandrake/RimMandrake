@@ -45,6 +45,25 @@ def t_the_fixing_run_files_one_reader_ticket():
     assert "--not-now" in argv and argv[argv.index("--not-now") + 1].startswith("independent:"), argv
     assert f.parse_title(it["title"]) == ([PATH], SHA, MAKER), f.parse_title(it["title"])
     assert f.is_reader(it) and not f.is_reader({"title": "Fix the pump"})
+    # the check is `fresh_reader.py holds <sha> <paths>`, and its words reach `holds` with that sha and those files (a
+    # check that drops the files exits 2 at the parser, so the ticket could never close; no test read it before)
+    import shlex
+    import contextlib
+    import io
+    assert it["effect"].startswith("cmd:"), it["effect"]
+    words = shlex.split(it["effect"][len("cmd:"):])
+    assert words[1:3] == ["src/RimMandrake/rimflow/fresh_reader.py", "holds"], words
+    real, seen = f.holds, []
+    try:
+        f.holds = lambda sha, paths, **kw: seen.append((sha, paths)) or 0
+        with contextlib.redirect_stderr(io.StringIO()):
+            rc = f.main(words[2:])
+    except SystemExit as e:
+        rc = "the parser refused the check's words (exit %s)" % e.code
+    finally:
+        f.holds = real
+    assert rc == 0 and seen == [(SHA, [PATH])], "the check does not run holds on the fix's sha and files: %s %s" % (
+        rc, seen)
     import time_budget
     r = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", argv[3]], capture_output=True,
                        text=True, timeout=time_budget.CALL_S)
