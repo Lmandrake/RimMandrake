@@ -24,6 +24,7 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.join(HERE, "Textures")
+REASON = "script:src/RimMandrake/Pyrelands/wither_look_gen.py"
 
 # (source graphic path, its dead-grass folder or None). Every graphic path a plant with CompWithersUnderRoof can show
 # while alive and not leafless: ember grass (Graphic_Random), quickgrass tall, and quickgrass's staged art
@@ -126,8 +127,10 @@ def main(argv=None):
                 bad += 1
                 print("STALE or MISSING %s" % os.path.relpath(dst, HERE))
             continue
+        sys.path.insert(0, os.path.join(HERE, "..", "Utils", "art"))
+        import artledger  # noqa: E402  the only sanctioned writer into Textures (ART_VERSION_WRANGLING_1)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
-        want.save(dst, optimize=True)
+        artledger.install_image(dst, want, reason=REASON)
         print("wrote %s" % os.path.relpath(dst, HERE))
     n = len(plan())
     print("%d outputs, %d stale or missing" % (n, bad) if a.check else "%d outputs written" % n)
