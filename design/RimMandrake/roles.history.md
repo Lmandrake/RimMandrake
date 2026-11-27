@@ -400,7 +400,7 @@ fire off items into the background to complete instead? Or is the systems load s
 secretly I should know about?"*
 
 What made the rule: that afternoon the window waited about 9 minutes in the foreground for a publish in the tree-check
-line, wrote two long worker briefs before it answered, and repaired five launches that the prose check returned.
+line, wrote two long worker briefs before it answered, and repaired three launches that the prose check returned.
 Machine load was 30.8 on 14 cores; the load added seconds to a command, not the minutes that he waited.
 
 The costs that the Conductor told him with the rule, at about 5:25 PM PST:
@@ -411,4 +411,4 @@ The costs that the Conductor told him with the rule, at about 5:25 PM PST:
 - A background command can hold a window restart. On 2026-11-26 one launch held a restart for over an hour.
 - Background results interrupt the conversation as they end.
 - A brief returned by the prose check starts as written when it is launched again unchanged, with its faults as a
-  note. The Conductor used that path three times that day so that he did not wait. The path is not part of the rule.
+  note. The Conductor used that path two times that day so that he did not wait. The path is not part of the rule.
