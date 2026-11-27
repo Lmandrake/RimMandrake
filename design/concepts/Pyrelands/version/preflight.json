@@ -2,7 +2,7 @@
  "mod": "Pyrelands",
  "version": "0.2.0",
  "program": "design/concepts/Pyrelands/version/pilot_throwaway/preflight_pyre_0_2_0.py (throwaway, no model)",
- "at": "2026-11-26T13:44:38-08:00",
+ "at": "2026-11-26T17:42:21-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -16,7 +16,7 @@
    "defs_total": "59262"
   }
  },
- "seconds": 8.53,
+ "seconds": 13.94,
  "verdict": "refuse",
  "refusals": 1,
  "checks": [
@@ -80,7 +80,7 @@
    "evidence": "0 deciding tests not runnable; 9 specified for Stage 3 (new: T_FIRE_PACE_MODEL_OFFLINE, sc_fire_catches_and_runs, T_ROOF_WITHER_OFFLINE, sc_roofed_grass_declines, T_SMOKE_WEATHER_ACCEPT, sc_smoke_weather_chokes, T_CONDITIONS_NOT_BIOME_OFFLINE, T_CRESTFEATHER_OWN_ART_OFFLINE, sc_grass_seen_under_ash)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.019
+   "seconds": 0.017
   },
   {
    "id": "C7_game_reason_written",
@@ -100,7 +100,7 @@
    "evidence": "0 held rows name this mod's words",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.003
+   "seconds": 0.004
   },
   {
    "id": "C9_defs_real",
@@ -110,7 +110,7 @@
    "evidence": "51 names checked; dump defs.sqlite (captured 2026-11-12T08:10:06Z, 51081 defs, 316 mods); 618 of our repo defs are newer than the dump",
    "smallest_fix": null,
    "route": null,
-   "seconds": 6.832
+   "seconds": 11.376
   },
   {
    "id": "C10_mods_real",
@@ -120,7 +120,7 @@
    "evidence": "1 named: mandrake.rm.biomes",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.003
+   "seconds": 0.05
   },
   {
    "id": "C11_settings_fields_real",
@@ -140,7 +140,7 @@
    "evidence": "9 pins",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.011
+   "seconds": 0.014
   },
   {
    "id": "C13_corrections_hold",
@@ -160,7 +160,7 @@
    "evidence": "7 of our types named",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.131
+   "seconds": 0.124
   },
   {
    "id": "C16_scenes_wired",
@@ -180,7 +180,7 @@
    "evidence": "14 items",
    "smallest_fix": null,
    "route": null,
-   "seconds": 1.453
+   "seconds": 2.308
   }
  ]
 }

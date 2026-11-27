@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 2, preflight, since 2026-11-26 1:25 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-26 5:42 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 7:13 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 5:42 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -609,3 +609,12 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - `record.json`: four 0.2.0 bars (`fire_catches_and_runs`, `roofed_grass_declines_visibly`, `pyre_smoke_weather_chokes`, `mechanics_switch_plain_no_biome`) read `scope: opened_by_owner`; each row's own `scope_source`, his card OWNER:1795722774284846701, opened them. They read `open_question`, and the Designer's showcase gate refused them.
 - `scenes.json`: the `post_approval_art` row of the deleted `RM_StruckGlassRing` texture is gone (removed from the game 2026-10-23, f100b170dc); `coverage_rest[crestfeather_has_its_own_look]` names `sc_firehawk_rewards` in `by` (the gate needs a scene; the decider stays T_CRESTFEATHER_OWN_ART_OFFLINE).
 - Why the meaning is the same: the fields record what already happened (his card; a deletion) or which scene stages the item; T_ROUND6_GAPS read 5 gate refusals before and 0 after. Pins and the corrected count (50, not 51) are in `version/bars.md`.
+
+### 2026-11-26 5:42 PM PST, stage change: Preflight (Stage 2) to Offline build (Stage 3) (by BENCH)
+
+- Why: Stage 2 preflight of 0.2.0 ran (design/concepts/Pyrelands/version/pilot_throwaway/preflight_pyre_0_2_0.py, no model, 14 s): 16 checks, 15 pass, 1 refusal left that is Stage 3 build work, not a spec fault; spec facts fixed and re-pinned at 2694fc7b4d
+- Checks passed: order, by, version, hold, preflight_record, steward_confirms.
+- Steward confirms: Read version/preflight.json (0.2.0, verdict refuse, 1 refusal), VERSION.json, locked_bars.json (50), test_table.json (50 bars, 80 tests, 12 new: Stage 3), scenes.json, record.json, bars.md pins, polish.md, the spec's Stage 2 exit. The one refusal, C5 (T_CRESTFEATHER_OWN_ART_OFFLINE reads Textures/Things/Item/Special/RM_PristineFirehawkCrestfeather, absent), is unbuilt behaviour: the crestfeather's own picture is the bar crestfeather_has_its_own_look's Stage 3 art work (VERSION.json art_items: one render, an art judge, art install), not a spec fault. The 24 other first-run refusals were sorted: CRITERION FLAW in the 0.1.0 program (C1 counted a coverage leaf, C6 refused new rows, C9 read keys/textures/patch files as defs, C16 ignored recorded table removals), repaired and seen red on planted faults; fault of form (sc_full_list_smoke's removal had no record line, written); spec facts (4 record.json scopes open_question though his card opened them, a deleted texture listed in post_approval_art, crestfeather coverage with no scene, T_ROUND6_GAPS stage 3), fixed as bookkeeping and re-pinned with a journal line; no bar moved.
+- Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-26 1:25 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 7:13 PM PST).
+- Record: `version/stage_record.json`.

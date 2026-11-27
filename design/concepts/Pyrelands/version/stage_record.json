@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "Pyrelands",
   "version": "0.2.0",
-  "stage": "preflight",
-  "stage_label": "Preflight (Stage 2)",
-  "since": "2026-11-26T13:25:45-08:00",
-  "since_from": "next-version by CONDUCTOR",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-26T17:42:37-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-26T13:25:45-08:00",
@@ -28,6 +28,26 @@
       "why": "0.2.0 on his two scope cards (OWNER:1795722774284846701, OWNER:1795725937729027309): faster fire, roofed grass dies visibly, smoke weather, mechanics by conditions, crestfeather picture, grass under ash (look first), 23 polish lines, part one's Problems; item RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE",
       "version_from": "0.1.0",
       "version_to": "0.2.0"
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-26T17:42:37-08:00",
+      "by": "BENCH",
+      "why": "Stage 2 preflight of 0.2.0 ran (design/concepts/Pyrelands/version/pilot_throwaway/preflight_pyre_0_2_0.py, no model, 14 s): 16 checks, 15 pass, 1 refusal left that is Stage 3 build work, not a spec fault; spec facts fixed and re-pinned at 2694fc7b4d",
+      "unit": "rm-detached-bench-rimmandrake-steward-pyrelands-preflight-1795728640",
+      "item": "RIMMANDRAKE_STEWARD_PYRELANDS_PREFLIGHT_STAGE",
+      "confirmed": {
+        "steward_confirms": "Read version/preflight.json (0.2.0, verdict refuse, 1 refusal), VERSION.json, locked_bars.json (50), test_table.json (50 bars, 80 tests, 12 new: Stage 3), scenes.json, record.json, bars.md pins, polish.md, the spec's Stage 2 exit. The one refusal, C5 (T_CRESTFEATHER_OWN_ART_OFFLINE reads Textures/Things/Item/Special/RM_PristineFirehawkCrestfeather, absent), is unbuilt behaviour: the crestfeather's own picture is the bar crestfeather_has_its_own_look's Stage 3 art work (VERSION.json art_items: one render, an art judge, art install), not a spec fault. The 24 other first-run refusals were sorted: CRITERION FLAW in the 0.1.0 program (C1 counted a coverage leaf, C6 refused new rows, C9 read keys/textures/patch files as defs, C16 ignored recorded table removals), repaired and seen red on planted faults; fault of form (sc_full_list_smoke's removal had no record line, written); spec facts (4 record.json scopes open_question though his card opened them, a deleted texture listed in post_approval_art, crestfeather coverage with no scene, T_ROUND6_GAPS stage 3), fixed as bookkeeping and re-pinned with a journal line; no bar moved."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record",
+        "steward_confirms"
+      ]
     }
   ]
 }
