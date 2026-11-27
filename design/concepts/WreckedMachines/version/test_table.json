@@ -1,7 +1,7 @@
 {
  "mod": "WreckedMachines",
  "version": "0.1.0",
- "made": "2026-11-27T10:33:34-0800",
+ "made": "2026-11-27T15:04:46-0800",
  "made_by": "design/concepts/WreckedMachines/version/pilot_throwaway/make_test_table.py (throwaway, no model), steward run RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
  "stages": {
   "2": "preflight (a program)",
@@ -82,9 +82,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.97,
-    "last": "wreckedmachines fuzz: 21000 cases, 358003 steps, 0.72s total -> OK",
-    "at": "2026-11-27T18:33:36Z",
+    "seconds": 2.62,
+    "last": "wreckedmachines fuzz: 21000 cases, 358003 steps, 0.67s total -> OK",
+    "at": "2026-11-27T23:04:49Z",
     "result": "PASS",
     "build": "99584c539a544d2cf2e4",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py",
@@ -105,9 +105,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.88,
+    "seconds": 6.22,
     "last": "salvage rule: OK (fuzz salvage: 3000 cases, 8003 steps, 0.04s, 0 failures; 41 variants executed, 40 red)",
-    "at": "2026-11-27T18:33:40Z",
+    "at": "2026-11-27T23:04:56Z",
     "result": "PASS",
     "build": "cabb57a6ab84527ec6bd",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py",
@@ -129,11 +129,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.92,
+    "seconds": 11.81,
     "last": "T_ONBOARDED_SET: PASS (4 rows, 0 not PASS)",
-    "at": "2026-11-27T18:33:45Z",
+    "at": "2026-11-27T23:05:07Z",
     "result": "PASS",
-    "build": "8a5c4d9d3675721b2fa9",
+    "build": "8d80c0454496e0a85fef",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
     "margins": []
    }
@@ -157,11 +157,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.54,
+    "seconds": 4.71,
     "last": "T_ONBOARDING_COMPLETE: PASS (7 rows, 0 not PASS, 20 lines)",
-    "at": "2026-11-27T18:33:48Z",
+    "at": "2026-11-27T23:05:12Z",
     "result": "PASS",
-    "build": "d37010cb602bcc31f7d2",
+    "build": "7a04d658a3c3811ac5ce",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
     "margins": []
    }
@@ -182,11 +182,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.05,
+    "seconds": 2.46,
     "last": "T_ONBOARDING_TABLE_OFFLINE: PASS (17 lines read)",
-    "at": "2026-11-27T18:33:49Z",
+    "at": "2026-11-27T23:05:15Z",
     "result": "PASS",
-    "build": "fc8c908c4f5418c0f698",
+    "build": "5d6a7d3ab2e20d9b724e",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
     "margins": []
    }
@@ -212,11 +212,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.05,
     "last": "T_LEVEL_NUMBERS: PASS",
-    "at": "2026-11-27T18:33:49Z",
+    "at": "2026-11-27T23:05:15Z",
     "result": "PASS",
-    "build": "eec08da45eb5731180f0",
+    "build": "48c2d4046a14b5f7fcfb",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
     "margins": []
    }
@@ -237,9 +237,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.95,
+    "seconds": 2.94,
     "last": "T_REPAIR_STATE_WALK: PASS",
-    "at": "2026-11-27T18:33:51Z",
+    "at": "2026-11-27T23:05:18Z",
     "result": "PASS",
     "build": "311be82d9418063b8b0e",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
@@ -268,11 +268,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.89,
+    "seconds": 2.8,
     "last": "T_NEIGHBOUR_NAMES: PASS (5 rows, 0 not PASS)",
-    "at": "2026-11-27T18:33:54Z",
+    "at": "2026-11-27T23:05:22Z",
     "result": "PASS",
-    "build": "3ad5f35c22fb06d14f50",
+    "build": "79cb25ccd2b736c6a4a3",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
     "margins": []
    }
@@ -296,11 +296,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.06,
     "last": "T_FORGE_GATES_GONE: PASS (5 rows, 0 not PASS)",
-    "at": "2026-11-27T18:33:54Z",
+    "at": "2026-11-27T23:05:22Z",
     "result": "PASS",
-    "build": "ccb97d4f5afe5a3c3b1f",
+    "build": "51ba1c2ebb8e79d00940",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py",
     "margins": []
    }
@@ -324,11 +324,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.68,
+    "seconds": 0.99,
     "last": "T_DISTILLATION_LOADS: PASS (7 rows, 0 not PASS)",
-    "at": "2026-11-27T18:33:54Z",
+    "at": "2026-11-27T23:05:23Z",
     "result": "PASS",
-    "build": "e9a645068abb9152b38b",
+    "build": "2343abbf6816f228bcff",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py",
     "margins": []
    }
@@ -376,9 +376,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.54,
+    "seconds": 2.09,
     "last": "wreckedmachines lint (data): 60 graded defs, 20 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
-    "at": "2026-11-27T18:33:56Z",
+    "at": "2026-11-27T23:05:25Z",
     "result": "PASS",
     "build": "4ffc4bb4c6e047cc35b8",
     "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py",
@@ -399,9 +399,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 32.89,
+    "seconds": 41.09,
     "last": "WreckedMachines lint planted-defect selftest: 19/19 ok",
-    "at": "2026-11-27T18:34:29Z",
+    "at": "2026-11-27T23:06:06Z",
     "result": "PASS",
     "build": "f46d819e513c5fbc2201",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py",
@@ -423,11 +423,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.08,
     "last": "STATIC: PASS (0 findings)",
-    "at": "2026-11-27T18:34:29Z",
+    "at": "2026-11-27T23:06:06Z",
     "result": "PASS",
-    "build": "1073224a6a0702b3589e",
+    "build": "acd2ed543173b9eada29",
     "command": "python3 src/RimMandrake/WreckedMachines/validation.py",
     "margins": []
    }
@@ -1037,11 +1037,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.36,
+    "seconds": 0.38,
     "last": "sc_text_names_no_setting: PASS 3 components, 0 not PASS",
-    "at": "2026-11-27T18:34:29Z",
+    "at": "2026-11-27T23:06:07Z",
     "result": "PASS",
-    "build": "d4b36f57221cba789643",
+    "build": "b7ff1aa64516e7206e86",
     "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\"",
     "margins": []
    }
@@ -1066,11 +1066,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.55,
+    "seconds": 0.56,
     "last": "wrecked_links: 26 wrecked defs judged, 5 owe pipes, 25 owe conduit, 0 problems",
-    "at": "2026-11-27T18:34:30Z",
+    "at": "2026-11-27T23:06:07Z",
     "result": "PASS",
-    "build": "9a59dd66964bf33ce37c",
+    "build": "e9a2496e4ca1dd677b04",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
     "margins": []
    },
@@ -1427,9 +1427,9 @@
     "rc": 0,
     "seconds": 0.06,
     "last": "T_LATER_STAYS_OUT: PASS",
-    "at": "2026-11-27T18:34:30Z",
+    "at": "2026-11-27T23:06:07Z",
     "result": "PASS",
-    "build": "96fc492860c09d557e18",
+    "build": "347b26bccab92e650c56",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py",
     "margins": []
    }

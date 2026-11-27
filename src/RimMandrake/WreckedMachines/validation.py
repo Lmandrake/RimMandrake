@@ -429,6 +429,7 @@ PLAIN_FLOOR = "WoodPlankFloor"
 FACTORY_RESEARCH = ("VFE_BasicFactories", "VFE_ComplexFactories")
 FACTORY_PARTS = ("VFEFactory_Conveyor", "VFEFactory_FactoryHopper", "VFEFactory_Booster", "VFEFactory_Heatsink")
 CONDUIT = "PowerConduit"
+HOPPER = "VFEFactory_FactoryHopper"
 LAMPS_PER_NET = 8                       # "more lamps than the Kludged cell can light" (sc_cell_and_emanator)
 TAKE_APART_REPEATS = 3                  # sc_no_handouts: take-aparts of each level, written before the first run
 RR_PACKAGE = "petetimessix.researchreinvented"
@@ -591,9 +592,17 @@ def _items(t, defname, x, z, count):
     t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,%d" % (defname, x, z, count))
 
 
+FLOOR_OPS_MAX = 4096    # jawa/set_terrain_batch refuses more cells in one call ("Too many ops: 10000 > 4096", read live 2026-11-27)
+
+
 def _floor(t, terrain, x, z, w, h):
-    ops = ";".join("%d,%d" % (x + i, z + j) for i in range(w) for j in range(h))
-    t.bridge_call("jawa/set_terrain_batch", terrainDef=terrain, ops=ops)
+    """Lay `terrain` on the w x h cells at (x, z), in calls the bridge accepts; a refused call fails the staging. One call of
+    100 x 100 cells was refused whole and silently, and every factory machine then stood on sand (seen live, 2026-11-27)."""
+    cells = ["%d,%d" % (x + i, z + j) for i in range(w) for j in range(h)]
+    for k in range(0, len(cells), FLOOR_OPS_MAX):
+        r = t.bridge_call("jawa/set_terrain_batch", terrainDef=terrain, ops=";".join(cells[k:k + FLOOR_OPS_MAX]))
+        if _live(t) and not (r or {}).get("success"):
+            raise ExpectationFailed("staging: %s could not be laid at (%d,%d) %dx%d: %s" % (terrain, x, z, w, h, str(r)[:200]))
 
 
 def _colonist(t, x, z, research=True):
@@ -741,7 +750,8 @@ def scene_menu_and_research(t):
                 raise ExpectationFailed("levels of ancient machines in the build menu after every project: %s" % shown)
     with t.component("factory_parts_and_base_smelter_in_menu"):
         if _live(t):
-            missing = [d for d in FACTORY_PARTS if not _menu_visible(t, d)]
+            # The locked expect names the factory floor with the four parts ("... the heatsink and the factory floor are there").
+            missing = [d for d in FACTORY_PARTS + (FACTORY_FLOOR,) if not _menu_visible(t, d)]
             if not _menu_visible(t, "ElectricSmelter"):
                 missing.append("ElectricSmelter")
             if missing:
@@ -1393,6 +1403,13 @@ def scene_repair_cancelled(t):
                 raise ExpectationFailed("the fourth, uncancelled repair ended %r: no repair could complete in this scene" % lvl)
 
 
+def _inspect(t, tid):
+    """One thing's inspect text, its lines joined by " / "."""
+    r = t.bridge_call("jawa/inspect_string", thingIds=tid) or {}
+    rows = r.get("things") or r.get("results") or []
+    return " / ".join((rows[0].get("inspect") or []) if rows else [])
+
+
 def _proc_names(t, tid):
     """The processes a machine offers in its tab (jawa/processor_fill `available`, on a reply or on a refusal), not the bills
     already added; [] for a machine with no PipeSystem processor (a wreck), with the reply beside it."""
@@ -1418,13 +1435,29 @@ def scene_levels_do_their_work(t):
                 for col, lvl in enumerate(("wrecked", "kludged", "refurbished", "original")):
                     d = m.get(lvl) if lvl != "original" else (m.get("original") or ORIGINAL[key])
                     st["ids"][(key, lvl)] = _build(t, d, x - 18 + col * 10, z - 8 + row * 12)
-            _build(t, "VanometricPowerCell", x + 20, z)   # one powered net for all eight (the cell is the base game's)
+                    if lvl != "wrecked":
+                        # a factory process puts its product only into a factory hopper on the machine's interaction cell
+                        # (spawnOnInteractionCell, onlyGrabAndOutputToFactoryHoppers; south-facing: offset (0,-2) turns to
+                        # z+2), and a new hopper's filter allows nothing; without it a finished run holds at 100% (read live
+                        # 2026-11-27: "Output factory hopper absent or not accepting item due to storage configuration")
+                        st.setdefault("hop", {})[(key, lvl)] = (x - 18 + col * 10, z - 8 + row * 12 + 2)
+                        _build(t, HOPPER, *st["hop"][(key, lvl)])
+            # one powered net for all eight: a conduit line between the rows (each machine is 5 cells from it) and four
+            # of the base game's cells; one cell (~1000 W) left the six working machines (300-360 W each) unpowered and
+            # unconnected, read live 2026-11-27 (jawa/power_net connected false)
+            t.bridge_call("jawa/build_batch", faction="player",
+                          ops=";".join("%s:%d,%d" % (CONDUIT, cx, z - 2) for cx in range(x - 20, x + 24)))
+            for cx, cz in ((x + 20, z), (x + 21, z - 1), (x + 22, z - 1), (x + 23, z - 1)):
+                _build(t, "VanometricPowerCell", cx, cz)
             st["origdef"], _ = _def_field(t, "ThingDef/" + ORIGINAL["smelter"], "comps")
             for k, tid in st["ids"].items():
                 if k[1] != "wrecked":
                     pn = t.bridge_call("jawa/power_net", thing=tid) or {}
-                    if not pn.get("powerOn", pn.get("isPowered", True)):
-                        raise ExpectationFailed("start: %s is not powered: %s" % (k, str(pn)[:120]))
+                    net = pn.get("net") or {}
+                    if not (pn.get("connected") and net.get("hasPowerSource") and (net.get("currentEnergyGainRate") or 0) > 0):
+                        raise ExpectationFailed("start: %s is not on a powered net: %s" % (k, str(pn)[:200]))
+                    if "broken down" in _inspect(t, tid).lower():
+                        raise ExpectationFailed("start: %s is broken down: %s" % (k, _inspect(t, tid)[:160]))
             START_MARK(t, "sc_levels_do_their_work")
     with t.component("wrecked_offers_nothing_draws_nothing"):
         if _live(t):
@@ -1442,16 +1475,44 @@ def scene_levels_do_their_work(t):
             if not k or not set(k) < set(o) or set(r) != set(o):
                 raise ExpectationFailed("processes: Kludged %s, Refurbished %s, Original %s" % (k, r, o))
 
-    def run_ticks(tid, proc):
-        f = t.bridge_call("jawa/processor_fill", thing=tid, process=proc, add=True) or {}
-        if not f.get("allFull"):
-            raise ExpectationFailed("the inputs of %s could not be placed in %s: %s" % (proc, tid, str(f)[:200]))
-        for i in range(240):              # the clock is counted by the scene's own waits, 250 ticks a read
+    def run_ticks(runs):
+        """Make one product on each machine of `runs` {(key, lvl): process} at once, and return {(key, lvl): ticks}: the ticks
+        until the product lies in the machine's hopper, to the 250-tick read step (None for a run that did not finish). The end
+        is read on the product itself, not on the inputs: the drill's process has no inputs to watch. The ceiling is 400 reads
+        (100000 ticks): the Kludged drill at the shipped kludgedRatio 0.2 needs about 70000 ticks (read live 2026-11-27, 86% at
+        60000), and all the machines run together so the scene pays one ceiling, not five."""
+        cells, done, prods = {}, {}, {}
+        for k, proc in runs.items():
+            res, _ = _def_field(t, "PipeSystem.ProcessDef/" + proc, "results")
+            prod = prods[k] = ((res or [{}])[0] or {}).get("thing")
+            if not prod:
+                raise ExpectationFailed("the product of %s could not be read: %s" % (proc, str(res)[:120]))
+            hx, hz = st["hop"][k]
+            cells[k] = "%d,%d,1,1" % (hx, hz)
+            hop = (t.bridge_call("jawa/list_things", defName=HOPPER, rect=cells[k]) or {}).get("things") or []
+            ss = t.bridge_call("jawa/storage_settings", target=hop[0]["id"], allow=prod) if hop else {}
+            if not (ss or {}).get("success"):
+                raise ExpectationFailed("the hopper of %s could not be set to take %s: %s" % (k, prod, str(ss)[:160]))
+            # runs=1: a process that made its count of 1 stays in the machine's list and does not run again when refilled
+            # (the control's second run stood still, live 2026-11-27); the tool sets its target to made + 1 and reads it back
+            f = t.bridge_call("jawa/processor_fill", thing=st["ids"][k], process=proc, add=True, runs=1) or {}
+            if not f.get("allFull"):
+                raise ExpectationFailed("the inputs of %s could not be placed in %s: %s" % (proc, k, str(f)[:200]))
+            if f.get("willRun") is not True:
+                raise ExpectationFailed("the process %s on %s is not set to run: made %s of %s, repeat mode %s, willRun %s, %s"
+                                        % (proc, k, f.get("made"), f.get("target"), f.get("repeatMode"), f.get("willRun"), f.get("runsSkip")))
+        base = {k: _count(t, prods[k], cells[k]) for k in runs}
+        for i in range(400):              # the clock is counted by the scene's own waits, 250 ticks a read
             t.wait_ticks(250)
-            again = t.bridge_call("jawa/processor_fill", thing=tid, process=proc, dryRun=True) or {}
-            if not again.get("allFull"):
-                return (i + 1) * 250
-        return None
+            for k in runs:
+                if k not in done and _count(t, prods[k], cells[k]) > base[k]:
+                    done[k] = (i + 1) * 250
+            if len(done) == len(runs):
+                break
+        left = {"%s %s" % k: _inspect(t, st["ids"][k])[-160:] for k in runs if k not in done}
+        if left:
+            st.setdefault("left", {}).update(left)
+        return {k: done.get(k) for k in runs}
 
     with t.component("slower_by_level"):
         if _live(t):
@@ -1461,32 +1522,45 @@ def scene_levels_do_their_work(t):
                 raise ExpectationFailed("no product the Kludged smelter and the Original share")
             p = shared[0]
             st["p"] = p
-            times = {lvl: run_ticks(st["ids"][("smelter", lvl)], p) for lvl in ("refurbished", "original")}
             dk, _ = _proc_names(t, st["ids"][("drill", "kludged")])
             dp = dk[0] if dk else None
-            dtimes = {lvl: run_ticks(st["ids"][("drill", lvl)], dp) for lvl in ("kludged", "refurbished", "original")} if dp else {}
+            runs = {("smelter", lvl): p for lvl in ("refurbished", "original")}
+            runs.update({("drill", lvl): dp for lvl in ("kludged", "refurbished", "original")} if dp else {})
+            got = run_ticks(runs)
+            times = {k[1]: v for k, v in got.items() if k[0] == "smelter"}
+            dtimes = {k[1]: v for k, v in got.items() if k[0] == "drill"}
             st["times"] = times
             t._current.detail = "smelter %s %s; drill %s %s" % (p, times, dp, dtimes)
             if None in list(times.values()) + list(dtimes.values()) or not dtimes:
-                raise ExpectationFailed("a run did not finish: smelter %s, drill %s" % (times, dtimes))
+                raise ExpectationFailed("a run did not finish: smelter %s, drill %s; unfinished read %s"
+                                        % (times, dtimes, st.get("left")))
             if not times["refurbished"] > times["original"] or not dtimes["kludged"] > dtimes["refurbished"] > dtimes["original"]:
                 raise ExpectationFailed("the levels are not slower in order: smelter %s, drill %s" % (times, dtimes))
     with t.component("control_second_run_same_original_unchanged"):
         if _live(t):
-            again = run_ticks(st["ids"][("smelter", "refurbished")], st["p"])
             first = st["times"]["refurbished"]
-            if again is None or abs(again - first) > 250:     # "the same time", to the one read step of run_ticks
-                raise ExpectationFailed("the Refurbished smelter's two runs: %s and %s ticks" % (first, again))
+            again = run_ticks({("smelter", "refurbished"): st["p"]})[("smelter", "refurbished")] if first else None
+            if again is None or first is None or abs(again - first) > 250:     # "the same time", to the one read step
+                raise ExpectationFailed("the Refurbished smelter's two runs: %s and %s ticks; unfinished read %s"
+                                        % (first, again, st.get("left")))
             now, _ = _def_field(t, "ThingDef/" + ORIGINAL["smelter"], "comps")
             if str(now) != str(st["origdef"]):
                 raise ExpectationFailed("the Original smelter's def changed during the scene")
 
 
 def _level_reading(t, key, tid):
-    """The applied work of one machine: a power cell's output (W), else its first process's ticks from its def (read live)."""
-    pn = t.bridge_call("jawa/power_net", thing=tid) or {}
+    """The applied work of one machine: a power cell's output per tick, else its applied work speed (the proof's Speed).
+    A machine with no processor at all (the Wrecked smelter: comps CompMachineStudy and CompWreckedMachine only, MEASURED
+    live 2026-11-27) can do no work, so it reads 0; the Speed proof answers 1 for any level that is not Kludged or Refurbished.
+    A cell's output reaches its CompPowerPlant only on its next tick (MEASURED 2026-11-27: Kludged 0.00333 -> 0.000833 per
+    tick five ticks after kludgedRatio 0.2 -> 0.05 and Apply, unchanged before), so the caller ticks before it reads."""
     if key == "powercell":
+        pn = t.bridge_call("jawa/power_net", thing=tid) or {}
         return pn.get("energyOutputPerTick")
+    f = t.bridge_call("jawa/processor_fill", thing=tid, dryRun=True) or {}
+    comps = (f.get("details") or {}).get("comps")
+    if isinstance(comps, list) and "CompAdvancedResourceProcessor" not in comps:
+        return 0.0
     rows = _proof(t, "Speed", tid)
     return float(rows[0]["_word"]) if rows else None
 
@@ -1509,6 +1583,7 @@ def scene_levels_under_settings(t):
                 for col, lvl in enumerate(("wrecked", "kludged", "refurbished", "original")):
                     d = m.get(lvl) if lvl != "original" else (m.get("original") or ORIGINAL[key])
                     st["ids"][(key, lvl)] = _build(t, d, x - 18 + col * 10, z - 8 + row * 12)
+            t.wait_ticks(5)
             st["shipped"] = {k: _level_reading(t, k[0], v) for k, v in st["ids"].items()}
             st["old"] = {f: _setting(t, "get", f).get("value") for f in fields}
             START_MARK(t, "sc_levels_under_settings")
@@ -1520,11 +1595,15 @@ def scene_levels_under_settings(t):
     with t.component("order_holds_at_every_value"):
         if _live(t):
             bad = []
+            # each setting's own lowest and highest value: its slider bounds (Source/WreckedMachinesMod.cs:246 and :250).
+            # A value outside them is not one a player can set (0.01 on refurbishedRatio pulls Kludged down to equal it).
+            bounds = {"kludgedRatio": ("0.05", "0.6"), "refurbishedRatio": ("0.3", "0.95")}
             try:
                 for f in fields:
-                    for v in ("0.01", "0.99"):
+                    for v in bounds[f]:
                         _setting(t, "set", f, v)
                         _apply(t)
+                        t.wait_ticks(5)
                         read = {k: _level_reading(t, k[0], tid) for k, tid in st["ids"].items()}
                         for key in ("smelter", "powercell"):
                             if not order_holds(read, key):
@@ -1532,12 +1611,16 @@ def scene_levels_under_settings(t):
                         lvl = "kludged" if f == "kludgedRatio" else "refurbished"
                         for key in ("smelter", "powercell"):
                             a, s = abs(read[(key, lvl)] or 0), abs(st["shipped"][(key, lvl)] or 0)
-                            if (v == "0.01" and not a < s) or (v == "0.99" and not a > s):
+                            if (v == bounds[f][0] and not a < s) or (v == bounds[f][1] and not a > s):
                                 bad.append("%s=%s: %s %s reads %s against shipped %s" % (f, v, key, lvl, a, s))
+                    # one setting at a time, the other at its shipped value: left at 0.6, kludgedRatio would pull
+                    # Kludged up to equal refurbishedRatio 0.3 (Normalize keeps Kludged <= Refurbished; run2 2026-11-27)
+                    _setting(t, "set", f, st["old"][f])
             finally:
                 for f in fields:
                     _setting(t, "set", f, st["old"][f])
                 _apply(t)
+                t.wait_ticks(5)
             if bad:
                 raise ExpectationFailed("; ".join(bad[:6]))
     with t.component("control_shipped_reads_equal_after_restore"):
@@ -1564,6 +1647,21 @@ def scene_forge_plasteel(t):
             _floor(t, FACTORY_FLOOR, x - 16, z - 6, 32, 12)
             st["ids"] = {lvl: _build(t, m[lvl], x - 12 + 9 * i, z) for i, lvl in enumerate(("wrecked", "kludged", "refurbished"))}
             _build(t, "VanometricPowerCell", x + 16, z)
+            # powered (asserted): a lone cell beside the forges connected to nothing (read live 2026-11-27: "Not connected
+            # to power", 550 W needed), so a conduit row 2 cells below the 5 x 5 forges and three more cells feed them
+            t.bridge_call("jawa/build_batch", faction="player",
+                          ops=";".join("%s:%d,%d" % (CONDUIT, cx, z - 4) for cx in range(x - 16, x + 20)))
+            for cx in (x + 17, x + 18, x + 19):
+                _build(t, "VanometricPowerCell", cx, z - 3)
+            # plasteel comes out only into a factory hopper on the forge's interaction cell (VFEFactory_AlloyPlasteel:
+            # spawnOnInteractionCell, onlyGrabAndOutputToFactoryHoppers; offset (0,-3) turns to z+3 facing south)
+            st["hop"] = (x - 12 + 9 * 2, z + 3)
+            _build(t, HOPPER, *st["hop"])
+            for lvl in ("kludged", "refurbished"):
+                pn = t.bridge_call("jawa/power_net", thing=st["ids"][lvl]) or {}
+                net = pn.get("net") or {}
+                if not (pn.get("connected") and net.get("hasPowerSource") and (net.get("currentEnergyGainRate") or 0) > 0):
+                    raise ExpectationFailed("start: the %s forge is not on a powered net: %s" % (lvl, str(pn)[:200]))
             if not all(_researched(t, p) for p in FACTORY_RESEARCH):
                 raise ExpectationFailed("start: not every project finished")
             START_MARK(t, "sc_forge_plasteel")
@@ -1579,13 +1677,23 @@ def scene_forge_plasteel(t):
             pl = [p for p in r if "Plasteel" in p]
             if not pl or not any("Gravlite" in p for p in r):
                 raise ExpectationFailed("Refurbished forge processes: %s" % r)
-            before = _count(t, "Plasteel")
+            cell = "%d,%d,1,1" % st["hop"]
+            hop = (t.bridge_call("jawa/list_things", defName=HOPPER, rect=cell) or {}).get("things") or []
+            ss = t.bridge_call("jawa/storage_settings", target=hop[0]["id"], allow="Plasteel") if hop else {}
+            if not (ss or {}).get("success"):
+                raise ExpectationFailed("the forge's hopper could not be set to take plasteel: %s" % str(ss)[:160])
+            before = _count(t, "Plasteel", cell)
             f = t.bridge_call("jawa/processor_fill", thing=st["ids"]["refurbished"], process=pl[0], add=True) or {}
             if not f.get("allFull"):
                 raise ExpectationFailed("plasteel's inputs could not be placed: %s" % str(f)[:200])
-            _wait_days(t, 1)
-            if _count(t, "Plasteel") <= before:
-                raise ExpectationFailed("the Refurbished forge made no plasteel in a day")
+            # 20000 ticks at refurbishedRatio 0.75 and "Not in factory: 50% work speed" is ~53000 ticks, inside a day (60000;
+            # the smelter ran 5% over its own reckoning in sc_levels_do_their_work); read every 1000 ticks, stop on the first
+            for _i in range(60):
+                t.wait_ticks(1000)
+                if _count(t, "Plasteel", cell) > before:
+                    break
+            else:
+                raise ExpectationFailed("the Refurbished forge made no plasteel in a day: %s" % _inspect(t, st["ids"]["refurbished"])[-200:])
     with t.component("old_forge_projects_and_settings_gone"):
         if _live(t):
             left = [p for p in OLD_FORGE_PROJECTS if (_research_row(t, p) or {}).get("success")]
@@ -1605,6 +1713,17 @@ def scene_forge_plasteel(t):
 
 
 # --------------------------------------------------------------------------- showcase 3: relics in the house
+
+def _net_rows(t, ids):
+    """One row per id from jawa/get_power_nets_batch: netIndex (-1 unconnected), powerOn, energyOutputPerTick, ok."""
+    if not ids:
+        return []
+    r = t.bridge_call("jawa/get_power_nets_batch", things=",".join(ids)) or {}
+    rows = r.get("rows") or []
+    if len(rows) != len(ids):
+        raise ExpectationFailed("get_power_nets_batch answered %d rows for %d things: %s" % (len(rows), len(ids), str(r)[:200]))
+    return rows
+
 
 @suite.chain("scene_cell_and_emanator")
 def scene_cell_and_emanator(t):
@@ -1628,14 +1747,29 @@ def scene_cell_and_emanator(t):
                 _many(t, [(LAMP, cx + 1 + k, cz + 1) for k in range(LAMPS_PER_NET)])
                 lamps = (t.bridge_call("jawa/list_things", defName=LAMP, rect="%d,%d,%d,1" % (cx + 1, cz + 1, LAMPS_PER_NET)) or {}).get("things") or []
                 st["lamps"].append([l["id"] for l in lamps])
+            # Rooms 20 apart: the soothe reaches 15 tiles through walls (ThoughtWorker_SalvagedEmanatorSoothe Radius,
+            # InHorDistOf, no room test), so at 13 apart a pawn felt its neighbour's emanator. Every emanator draws power
+            # (Power needed: 200-260 W, MEASURED 2026-11-27), so each room has its own base-game cell on a conduit row.
             for i, d in enumerate(ems):
-                cx = x - 30 + 13 * i
+                cx = x - 30 + 20 * i
                 ring = [(WALL, wx, wz) for wx in range(cx - 4, cx + 5) for wz in (z + 2, z + 10)]
                 ring += [(WALL, wx, wz) for wz in range(z + 3, z + 10) for wx in (cx - 4, cx + 4)]
                 _many(t, ring)
+                _many(t, [(CONDUIT, wx, z + 9) for wx in range(cx - 3, cx + 4)])
+                _build(t, ORIGINAL["powercell"], cx - 3, z + 8)
                 st["ems"].append(_build(t, d, cx, z + 6) if d else None)
                 st["pawns"].append(_colonist(t, cx + 2, z + 4))
-            nets = [str((t.bridge_call("jawa/power_net", thing=l[0]) or {}).get("netId")) if l else None for l in st["lamps"]]
+            live = [e for e in st["ems"][1:4] if e]
+            off = [r_.get("query") for r_ in _net_rows(t, live) if not (r_.get("ok") and r_.get("connected"))]
+            if len(live) != 3 or off:
+                raise ExpectationFailed("start: emanators %s, not connected to power %s" % (st["ems"], off))
+            # jawa/power_net answers no net id and no powerOn (powerOnBefore/After); the batch read answers both (netIndex,
+            # powerOn), and it never forces PowerOn (JawaBenchBatchReadTools.cs get_power_nets_batch)
+            # netIndex is numbered within one call, so the first lamp of every row goes in the same call
+            firsts = [l[0] for l in st["lamps"] if l]
+            idx = dict(zip(firsts, (r_.get("netIndex") for r_ in _net_rows(t, firsts))))
+            nets = [idx.get(l[0]) if l else None for l in st["lamps"]]
+            nets = [None if n is None or n < 0 else n for n in nets]
             if None in nets or len(set(nets)) != len(nets) or any(len(l) != LAMPS_PER_NET for l in st["lamps"]):
                 raise ExpectationFailed("start: lamp rows %s, nets %s (want %d lamps on each of 5 nets apart)"
                                         % ([len(l) for l in st["lamps"]], nets, LAMPS_PER_NET))
@@ -1644,7 +1778,7 @@ def scene_cell_and_emanator(t):
         if _live(t):
             t.wait_ticks(500)
             out = [abs((t.bridge_call("jawa/power_net", thing=c) or {}).get("energyOutputPerTick") or 0) if c else 0 for c in st["cells"]]
-            lit = [sum(1 for l in ls if (t.bridge_call("jawa/power_net", thing=l) or {}).get("powerOn")) for ls in st["lamps"]]
+            lit = [sum(1 for r in _net_rows(t, ls) if r.get("powerOn")) for ls in st["lamps"]]
             st["lit"] = lit
             t._current.detail = "output %s lamps lit %s of %d" % (out, lit, LAMPS_PER_NET)
             if out[0] or lit[0] or not out[1] < out[2] < out[3] or not lit[1] < lit[2] or lit[1] >= LAMPS_PER_NET:
@@ -2460,11 +2594,14 @@ def scene_every_machine_onboarded(t):
             _floor(t, FACTORY_FLOOR, x - 50, z - 50, 100, 100)
             _build(t, "VanometricPowerCell", x + 48, z + 48)
             st["ids"] = {}
+            # Pitch 8 between levels and 12 between rows: the widest machine is the autofarmer (7 x 3), the deepest 5. A pitch of
+            # 4 let build_batch put each level over the one before it, and six lines lost three of their four machines (seen live
+            # on a fresh map, 2026-11-27: alloyforge, assembler, autofarmer, granulator, machiningbay, neutroamine).
             for i, (key, m) in enumerate(sorted(ms.items())):
                 for j, lvl in enumerate(("wrecked", "kludged", "refurbished", "original")):
                     d = m.get(lvl) if lvl != "original" else m.get("original")
-                    st["ids"][(key, lvl)] = _build(t, d, x - 46 + (i % 5) * 18 + j * 4, z - 46 + (i // 5) * 12)
-            st["elec"] = _build(t, "ElectricSmelter", x + 40, z - 40)
+                    st["ids"][(key, lvl)] = _build(t, d, x - 46 + (i % 3) * 32 + j * 8, z - 46 + (i // 3) * 12)
+            st["elec"] = _build(t, "ElectricSmelter", x + 40, z + 40)
             started = [p for k in ms for _, p in _projects(t, k) if _researched(t, p)]
             if started:
                 raise ExpectationFailed("start: restoration projects already finished: %s" % started)
@@ -2493,7 +2630,9 @@ def scene_every_machine_onboarded(t):
                 o, _ = _proc_names(t, ids["original"])
                 if w or abs(pn.get("energyOutputPerTick") or 0) > 0:
                     bad.append("%s: Wrecked offers %s or gives power" % (key, w))
-                if o and (not k or not set(k) < set(o) or set(r) != set(o)):
+                # "a non-empty strict part of the donor's (or its one product)": a donor of one process keeps it at Kludged.
+                part = set(k) < set(o) or (len(set(o)) == 1 and set(k) == set(o))
+                if o and (not k or not part or set(r) != set(o)):
                     bad.append("%s: processes Kludged %s, Refurbished %s, Original %s" % (key, k, r, o))
                 sr, so = _proof(t, "Speed", ids["refurbished"]), _proof(t, "Speed", ids["original"])
                 if not (sr and so and float(sr[0]["_word"]) < float(so[0]["_word"])):
@@ -2502,7 +2641,7 @@ def scene_every_machine_onboarded(t):
                 st["rows"][key] = (row, k, r)
                 bad += ["%s: %s" % (key, d) for d in _row_disagrees(row, k, r)]
             if bad:
-                raise ExpectationFailed("%d machines off their rows: %s" % (len(bad), bad[:5]))
+                raise ExpectationFailed("%d machines off their rows: %s" % (len(bad), bad[:20]))
     with t.component("control_electric_smelter_and_planted_row"):
         if _live(t):
             g = [g_[0] for g_ in _gizmos(t, st["elec"]) if "study" in g_[0].lower() or any(w_ in g_[0].lower() for w_ in REPAIR_GIZMO)]

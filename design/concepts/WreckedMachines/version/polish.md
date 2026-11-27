@@ -24,3 +24,8 @@ that refuse nothing. Each needs a new drawing and a new judgement, so each stays
 - `src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Kludged/Autofarmer_east.png`: four strapped-on boxes where the other facings have one. risk: a player who turns the machine sees the bodge change between facings.
 - `src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Kludged/`: the chute's arrow mark is white on east and yellow on west. risk: the same change between facings.
 - `src/RimMandrake/WreckedMachines/Source/judge_packet.py`: the packet makes true-scale strips for the south and east facings only, so a machine with north and east files (the power cell) gets one strip, and the sibling sheet has no donor column. The run did not change this file.
+
+A note of the live sitting of 2026-11-27 (run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT_RUN_TWO). The run did
+not change this file.
+
+- `src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs` (the two ratio sliders): Kludged goes up to 0.6 and Refurbished down to 0.3, and the kernel orders the two without keeping them apart. risk: a player who sets Kludged high and Refurbished low gets a Kludged machine as fast as a Refurbished one, and the levels no longer differ in speed.

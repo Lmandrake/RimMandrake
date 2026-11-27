@@ -177,22 +177,43 @@ without one.
 
 ## The checks
 
-`design/concepts/WreckedMachines/version/test_table.md` lists them. Offline, built: `T_KERNEL_FUZZ`, `T_REPAIR_STATE_WALK`,
-`T_SALVAGE_RULE`, `T_DISTILLATION_LOADS`, `T_LATER_STAYS_OUT`, `T_ONBOARDED_SET`, `T_ONBOARDING_COMPLETE`. The live
-scenes are the chains `scene_*` of `validation.py`, read through the proof type.
+`design/concepts/WreckedMachines/version/test_table.md` lists them. Offline, built: `T_KERNEL_FUZZ` (its family `process`
+reads the two process-list rules), `T_REPAIR_STATE_WALK`, `T_SALVAGE_RULE`, `T_DISTILLATION_LOADS`, `T_LATER_STAYS_OUT`,
+`T_ONBOARDED_SET`, `T_ONBOARDING_COMPLETE`, `T_ONBOARDING_TABLE_OFFLINE`, `T_LEVEL_NUMBERS`, `T_NEIGHBOUR_NAMES`,
+`T_FORGE_GATES_GONE`, `T_STATIC`, the two lints and the two offline scenes. The live scenes are the chains `scene_*` of
+`validation.py`, read through the proof type. Each live run a builder makes is a row of
+`design/concepts/WreckedMachines/version/in_game/early_rows.jsonl`.
 
 ## Not built yet
 
-As of 2026-11-27 10:00 AM PST (the run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT, stopped by an order):
+As of 2026-11-27 3:00 PM PST (the run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT_RUN_TWO). The mod stands at
+the exit of the offline build (Stage 3): every exit test passes. The parts below are not built, and the exit tests pass
+without them because their scenes are written; those scenes fail in the game until the parts exist.
 
-- **Lines.** 17 of 20 are on the table. Staged, waiting for pictures: `granulator` (8 pictures made, not judged), `fishfarm`
-  (Wrecked made, Kludged not), `autofarmer` (5 of 6 made). The fish farm's and the autofarmer's Kludged level is filled by
-  the C# at startup (no process list in the donor's XML): not yet seen in the game.
-- **Pictures of the two carried machines.** The power cell's and the emanator's Wrecked and Kludged defs still tint the base
-  game's picture (`Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml`). When their pictures land, each def names
-  its own `texPath` and `graphicClass` and loses its `color`. The component still tints the base game's icon.
-- **In the game.** Loaded clean on tier `wreckedmachines_solo`; the repair on the machine, its cancel, the component gate and
-  the uninstall during a repair pass their scenes. Not run yet: every other scene (study, levels, menu, placement, settings).
-- **Not started.** Placement in ruin rooms and on ordinary maps (the three placement proof methods answer "not built yet"),
-  the stop of the base game's hand-outs, the autofarmer's Kludged speed, who may lift a wreck as data (rule `R_lift`), the
-  scene `sc_old_save`.
+- **Placement** (plan.md, order, step 5; rule `R_placement`). Wrecks and the Ancient Component in ruin rooms, the rare wreck
+  on ordinary maps, the two placement switches in Mod Settings. The three placement proof methods (`Placement`,
+  `InRuinRoom`, `PlantLighterWrecked`) answer "REFUSED not built yet". Scenes that fail on it: `sc_ruin_holds_wrecks`,
+  `sc_rare_wreck_ordinary_map`, and `sc_switch_machine_off`, whose start reads the placement list back (seen failing in the
+  game on 2026-11-27).
+- **The stop of the base game's hand-outs** (plan.md, order, step 6; bar `only_by_repair`). Nothing yet keeps a working
+  power cell, a working emanator or an Ancient Component out of the reward, loot and trader generators while their lines are
+  on. The scene `sc_no_handouts` also needs one generic bridge function that is not built: run a ThingSetMakerDef or a
+  TraderKindDef's stock N times and list the defs.
+- **A Refurbished machine taken apart** (rule `R_destroyable`). The Refurbished defs' cost list holds the Ancient Component,
+  so the game's refund can give one back. Nothing stops that yet.
+- **The autofarmer's Kludged speed.** The autofarmer has no processor comp, so the speed postfix does not reach it.
+- **Who may lift a wreck, as data** (rule `R_lift`).
+- **The scene `sc_old_save`.**
+- **The component's picture.** `RM_WM_AncientComponent` still tints the base game's icon.
+
+Seen in the game on 2026-11-27, on ArchBig, tier `wreckedmachines_solo` (rows in
+`design/concepts/WreckedMachines/version/in_game/early_rows.jsonl`): the 20 lines load with no error; these scenes pass on a
+fresh map: `sc_every_machine_onboarded`, `sc_menu_and_research`, `sc_levels_do_their_work`, `sc_levels_under_settings`,
+`sc_cell_and_emanator`, `sc_forge_plasteel`, `sc_repair_cancelled`, `sc_component_gate`, `sc_uninstall_during_repair` (the
+last three on the build of that morning, 12 lines). Not run yet: the study scenes, `sc_repair_on_machine`,
+`sc_repair_needs_ground`, the carry and caravan scenes, the two whole-journey scenes, `sc_three_looks_rows`,
+`sc_marks_agree`, `sc_all_switches_off`, and the scenes on the two other tiers.
+
+One run is not explained: in one run of `sc_levels_do_their_work` the Refurbished smelter stood at 100% of a slag job and
+gave no product, with no hopper message; it did not happen in the two runs after. Its row is UNRESOLVED and holds the
+scene's pass until someone classes it.

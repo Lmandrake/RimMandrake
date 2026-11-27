@@ -130,7 +130,7 @@
   "test_blob": "446daa21f60317bd25cbdd408151238054cadec6"
  },
  "T_STATIC": {
-  "at": "2026-11-27T17:50:53Z",
+  "at": "2026-11-27T23:00:05Z",
   "command": "python3 src/RimMandrake/WreckedMachines/validation.py",
   "file": "src/RimMandrake/WreckedMachines/validation.py",
   "last": "- autoloom: project 'RM_WM_AutoloomKludging' is not opened by the study of its wrecked def",
@@ -140,10 +140,10 @@
   ],
   "patch_sha": "9ea3880ef26674b1",
   "rc": 1,
-  "test_blob": "db9764c3508762c9d4fb81ad70ca7e04e14eec5b"
+  "test_blob": "8645fa9be96a81590e695f6ac51990a235495dce"
  },
  "sc_text_names_no_setting": {
-  "at": "2026-11-27T18:32:38Z",
+  "at": "2026-11-27T23:00:08Z",
   "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\"",
   "file": "src/RimMandrake/WreckedMachines/validation.py",
   "last": "sc_text_names_no_setting: FAIL 3 components, 1 not PASS",
@@ -153,7 +153,7 @@
   ],
   "patch_sha": "33ce2284ecb76c6d",
   "rc": 1,
-  "test_blob": "db9764c3508762c9d4fb81ad70ca7e04e14eec5b"
+  "test_blob": "8645fa9be96a81590e695f6ac51990a235495dce"
  },
  "sc_wreck_link_tags": {
   "at": "2026-11-27T15:23:03Z",

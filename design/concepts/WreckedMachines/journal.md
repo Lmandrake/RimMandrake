@@ -18,7 +18,8 @@ beautifully. Of course it should intelligently subagent fanout as needed."
 
 ## The mod as it stands
 
-- **Waiting on:** the offline build (Stage 3), which the Dispatch tick launches; nothing waits on him
+- **Waiting on:** the Conductor: the mod stands at the Stage 3 exit and parks there (his order of 2026-11-27, item
+  RIMMANDRAKE_PARK_WRECKED_MACHINES_AT_STAGE_THREE_EXIT_HE_SAID_BREAKPOINTS); nothing waits on him
 - **Stage now:** Stage 3, offline build, since 2026-11-27 5:35 AM PST (`version/stage_record.json`).
 - **Mod:** `src/RimMandrake/WreckedMachines` (mandrake.rm.wreckedmachines, namespace RimMandrake.WreckedMachines,
   prefix RM_), the generic RimMandrake tier. The Utinni layer and ship parts are later work.
@@ -29,8 +30,10 @@ beautifully. Of course it should intelligently subagent fanout as needed."
 - **Design input:** `design/specs/2026-11-26-wrecked-machines-fable/tickets_bundle.md` (the 10 open tickets, read
   against the code). The old `DESIGN.md`, `MACHINES.md`, `V2.md` and the north-star walk are input, not settled.
 - **Small list:** `version/small_list.json`, tier `wreckedmachines_solo`.
-- **Next:** the offline build (Stage 3). It builds the 10 specified tests of `version/test_table.json`
-  (`stage3_build_list`) red first, does the build work that `version/preflight.json` names, and remakes the table.
+- **Next:** when the mod is taken up again: the parts in `src/RimMandrake/WreckedMachines/DESIGN.md` "Not built yet"
+  (placement, the stop of the base game's hand-outs, the Refurbished take-apart, the autofarmer's Kludged speed, who may lift
+  a wreck, `sc_old_save`). Every Stage 3 exit test passes without them, because their scenes are written; a move to the
+  blind challenge before they are built sends the mod back from the in-game stage.
 
 ## History
 
@@ -164,4 +167,29 @@ beautifully. Of course it should intelligently subagent fanout as needed."
   tick advances by discovery as live.
 - **Known and open.** A mod fault in `RM_ProcessLists.cs` (a neighbour's process that is also on the donor is dropped from the
   Kludged level); the scenes not yet run; the picture check counts stray pixels of a donor (the granulator's east facing).
+
+### 2026-11-27 3:05 PM PST, Offline build (Stage 3), third run: 20 of 20 lines, the Stage 3 exit reached, six more scenes pass in the game (by BENCH)
+
+- Run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT_RUN_TWO. Bars not runnable: 7 before, 0 after. `maturation.py
+  next` reads every exit test passing; the certificate reads OK (15 bars' offline deciders green and seen red).
+- **Lines and pictures.** The granulator, the autofarmer and the fish farm landed: 20 of 20. The power cell's and the emanator's
+  Wrecked and Kludged levels draw pictures of their own. Every picture was kept by an art judge that did not make it
+  (`version/evidence/art`). The art judge refused the emanator at the base game's 128 px (rule D2), so the two carried machines'
+  pictures are fitted at twice the base game's canvas from their 1408 px drawings.
+- **Mod faults fixed, each test first.** A Kludged level dropped a neighbour's process that the donor also has (the Armoury's
+  durasteel): the two process-list rules moved into the kernel, read by the fuzz family `process`. The Kludged fish farm had no
+  process list at all (the stamp removed the element): the factory framework's config check threw at the first load;
+  `T_ONBOARDING_TABLE_OFFLINE` has the row `list_exists`.
+- **In the game** (ArchBig, tier `wreckedmachines_solo`, now 22 mods: the six Vanilla Expanded mods that the lines name with
+  MayRequire). The 20 lines load with no error. Pass on a fresh map: `sc_every_machine_onboarded`, `sc_menu_and_research`,
+  `sc_levels_do_their_work`, `sc_levels_under_settings`, `sc_cell_and_emanator`, `sc_forge_plasteel`. Fails: `sc_switch_machine_off`,
+  on the placement step that is not built. Every other non-pass was a fault of a scene's staging or of a test tool, repaired in
+  `validation.py` and in the bridge (`jawa/processor_fill` takes `runs`).
+- **Not explained.** One run of `sc_levels_do_their_work`: the Refurbished smelter stood at 100% and gave no product. Its row is
+  UNRESOLVED.
+- **Not built, by the park order.** Placement, the stop of the base game's hand-outs, the Refurbished take-apart, the autofarmer's
+  Kludged speed, who may lift a wreck as data, `sc_old_save` (`DESIGN.md` "Not built yet").
+- **Tools.** A donor's small detached pieces are left out of the picture reference. The offline model: the process-list decision
+  has its generator (6000 situations); the repair state machine had its walk; the mod's other decisions are the game's own
+  machinery and are read live.
 

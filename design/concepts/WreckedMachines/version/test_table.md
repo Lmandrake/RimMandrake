@@ -1,6 +1,6 @@
 # WreckedMachines 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T10:33:34-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T15:04:46-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
 
 ## How a pair is made
 
