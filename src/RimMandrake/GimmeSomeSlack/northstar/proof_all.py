@@ -902,10 +902,11 @@ class Proof(object):
             "runStyles(S9e)": (VS._s9_snap(s9_a), VS._s9_snap(s9_b)),
             # the floor cords themselves (GPT review 8.2): cords_a/cords_b were read and never compared, so a load
             # that dropped or moved every laid cord still read SL3 PASS on the aerial + style sets alone
-            "floorCords": (dict(V._cord_set(cords_a), edgeHashes=sorted(hash_a), geometryHash=None), dict(V._cord_set(cords_b), edgeHashes=sorted(hash_b), geometryHash=None)),
+            # at the level of play (V._cord_set): which cords exist, their ends and the grid; the lay may differ
+            "floorCords": (V._cord_set(cords_a), V._cord_set(cords_b)),
         }
         empty = [k for k, (a, b) in parts.items() if not a or (isinstance(a, tuple) and not a[0])
-                 or (k == "floorCords" and not a.get("edgeHashes"))]
+                 or (k == "floorCords" and not a.get("cords"))]
         differ = {}
         for k, (a, b) in parts.items():
             if a != b:

@@ -503,5 +503,40 @@ check("12 control: linux has no refusal", PA.offline_gate_refusal("linux") is No
 check("13 gate: every census decider exists and is in the offline gate's list",
       len(PA.OFFLINE_CENSUS_TESTS) == 2 and all(os.path.exists(os.path.join(PA.HERE, c)) for c in PA.OFFLINE_CENSUS_TESTS))
 
+# 14. SL3's floor cords at the level of play (RIMMANDRAKE_LOOSEN_REPEAT_COMPARISONS_TO_GAMEPLAY_FISH_TRIPPED; CHARTER §A test is as
+#     strict as the harm it guards). After a load GSS lays every cord again; the exact curve it picks costs nothing (owner 2026-10-22
+#     "Strike that"; 2026-11-27 "the precise curves chosen by GSS"). Which cords exist, each end's cell and live state, the grid and the
+#     decals that carry meaning must match. Green: a re-lay with the same ends. Red: each planted change of play.
+def cord_census(**kw):
+    c = {"edgeHashes": {"1,1|9,1": "aaaa000000000001", "9,1|9,9": "aaaa000000000002"}, "geometryHash": "ffff000000000001",
+         "nodeTypes": {"battery": 1, "lamp": 1}, "decals": {"Plug": 2, "FrayDead": 0, "CableTie": 3}, "conduitCells": 17,
+         "cordEdges": 2, "strands": 2,
+         "ends": [{"cell": [1, 1], "wall": False, "netLive": True, "registryLive": True},
+                  {"cell": [9, 9], "wall": False, "netLive": True, "registryLive": True}]}
+    c.update(kw)
+    return c
+
+
+def floor_cords_differ(a, b):
+    sa, sb = PA.V._cord_set(a), PA.V._cord_set(b)
+    return sorted(k for k in set(sa) | set(sb) if sa.get(k) != sb.get(k))
+
+
+base = cord_census()
+relaid = cord_census(edgeHashes={"1,1|9,1": "bbbb000000000001", "9,1|9,9": "bbbb000000000002"}, geometryHash="0123000000000009",
+                     strands=3, decals={"Plug": 2, "FrayDead": 0, "CableTie": 5})
+check("14 SL3 green: the same cords re-laid on another curve (edge hashes, geometry hash, strands, cable ties) do not differ",
+      floor_cords_differ(base, relaid) == [], floor_cords_differ(base, relaid))
+gone = cord_census(edgeHashes={"1,1|9,1": "aaaa000000000001"}, cordEdges=1)
+check("14 SL3 red: a cord gone after the load differs", floor_cords_differ(base, gone) != [], floor_cords_differ(base, gone))
+dead = cord_census(ends=[dict(base["ends"][0]), dict(base["ends"][1], netLive=False)])
+check("14 SL3 red: an end that was live reads dead after the load differs", floor_cords_differ(base, dead) != [], floor_cords_differ(base, dead))
+cell = cord_census(conduitCells=16)
+check("14 SL3 red: a conduit cell lost by the load differs", floor_cords_differ(base, cell) != [])
+fray = cord_census(decals={"Plug": 2, "FrayDead": 1, "CableTie": 3})
+check("14 SL3 red: a fray (a dead end shown) gained by the load differs", floor_cords_differ(base, fray) != [])
+node = cord_census(nodeTypes={"battery": 0, "lamp": 1})
+check("14 SL3 red: a grid node lost by the load differs", floor_cords_differ(base, node) != [])
+
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)

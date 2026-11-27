@@ -1864,11 +1864,20 @@ def _frame_poll_census(B):
     return B.probe("census")
 
 
+# CableTie: the tie on a slack lead, placed along the lay's own curve (CordBuilder slackTies), so its count follows the curve.
+LAY_ONLY_DECALS = ("CableTie",)
+
+
 def _cord_set(c):
-    """The comparable cord set: everything about the laid cords that must survive a save/load."""
-    return {"geometryHash": c.get("geometryHash"), "edgeHashes": c.get("edgeHashes"), "nodeTypes": c.get("nodeTypes"),
-            "decals": c.get("decals"), "conduitCells": c.get("conduitCells"), "cordEdges": c.get("cordEdges"),
-            "strands": c.get("strands"),
+    """What a save and load of laid cords must keep, at the level of play (CHARTER §A test is as strict as the harm it guards):
+    which cords exist (each edge by its two ends), the grid's node kinds and conduit cells, the cord count, each end's cell, wall
+    and live state, and the decals that carry meaning (plugs, junctions, stubs, strips, frays, outlets). May differ: the lay, which
+    GSS makes again after every load (geometryHash, each edge's hash value, the strand count, the CableTie count). Owner 2026-10-22
+    on identical polylines after a load: "Strike that"; 2026-11-27: "the precise curves chosen by GSS" do not matter. A field not
+    named here is not read."""
+    return {"cords": sorted(c.get("edgeHashes") or {}), "nodeTypes": c.get("nodeTypes"),
+            "decals": {k: v for k, v in sorted((c.get("decals") or {}).items()) if k not in LAY_ONLY_DECALS},
+            "conduitCells": c.get("conduitCells"), "cordEdges": c.get("cordEdges"),
             "ends": sorted((tuple(e["cell"]), e.get("wall"), e.get("netLive"), e.get("registryLive")) for e in c.get("ends") or [])}
 
 
@@ -1920,8 +1929,8 @@ def run_save_load(args):
 def run_triplet(args):
     """--triplet (PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET): on whatever scene the current map holds (run after --live), one save and
     three arms -- live, load, reload -- read at the same measured tick (validation_core.saveload_triplet). The reading is
-    _cord_set of a framed census; verdict IDENTICAL is PASS, SAVE_DROPS_STATE / LOAD_NONDETERMINISTIC are MOD FAILs that
-    say WHICH side lost the state, anything unread is UNMEASURED."""
+    _cord_set of a framed census (the cords at the level of play; the lay may differ); verdict IDENTICAL is PASS,
+    SAVE_DROPS_STATE / LOAD_NONDETERMINISTIC are MOD FAILs that say WHICH side lost the state, anything unread is UNMEASURED."""
     B = Bridge()
     rows = []
     res = {"mod": MOD, "mode": "triplet", "tier": TIER, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
