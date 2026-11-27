@@ -53,3 +53,60 @@ Reviewed by rm-judge a467e768ff82de4be (fresh Opus, not the author): all three p
 - `root_draft`: the paragraph and its judged-first line. It is not the root. Stage 1 ends only on his approval.
 - `c_factory_mod_required` (core): the mod does not load without the factory mod, and the paragraph says "any
   RimWorld game". His answer to a_root settles the word.
+
+## 2026-11-26 turn 1, his answers (recorded by the Conductor 9:00 to 9:01 PM PST; taken in by run rm-role-designer-1795756411)
+
+He answered all three asks on the Conductor's cards of 8:29 PM PST. He did not answer the offer of a look.
+
+### a_root: he typed his own statement (OWNER:1795755622961436106)
+
+> Add this (you may rephrase for efficiency or clarity) "The mod changes specified furniture-installable machines such
+> as Vanilla Factory Enhanced into advanced, ancient machines that can no longer simply be researched and built like
+> normal. Instead, they must be found and retrieved to a safe location, studied to enable research, and then slowly
+> repaired through several levels of functionality: wrecked (nonfunctional), Kludged (minimal), Refurbished (full
+> functionality but slower than original), Original (no longer attainable through research or repair, used only for
+> comparison). Each repair requires machine study, research bench time, and considerable resources. The final
+> refurbishment requires a rare ancient component. While the concept may be applied to any game tree, the mod's initial
+> version will only support Vanilla Factory Enhanced in this fashion." This is the original intention of this mod and
+> remains true. Please revise with the current version's detail while maintaining the truth of this statement.
+> remember: we must first prioritize Utinni service, and VFE plus some versions of vanilla expanded items like
+> archotech power supplies and psychic emitters will be the only supported options.
+
+What became of it: his statement is the root (`record.json` `root`; `words` holds the statement word for word, `text`
+its rephrasing, `agent_words` each wording that is not his). A fresh Opus reader (a90c3d35ce434f40d, not the
+author) compared the two; six wordings in the record that said more than his words were corrected on its findings. The paragraph of turn 1 is not the mod and is gone from
+`record.json`; `turn_01.md` keeps it as sent.
+
+### a_how_found: by card (OWNER:1795755647483442186)
+
+> Ruins, plus a rare wreck (Recommended)
+
+### a_riders: he typed an answer and picked no option (OWNER:1795755673273656447)
+
+> This is confounded. Giving the "smelter first" is an Utinni-tier decision independent of this mod about machine
+> availability. Each machine Certainly Will need specific recipies blessed per repair tier, production rates, etc...
+> that will be the normal onboarding process for any device into the Wrecked Machines mod. We may be able to
+> semi-automate this to support other machines, but not in 0.1.0. Water Distillation is definitely a FlowWorks machine
+> that would then be onboarded into this mod to become Wrecked if we so desired (and without this, it would remain a
+> fully functional machine in FlowWorks).
+
+The ask was a defect of this role: it put three unlike things under one choice and did not ask first whose decision
+each was. A lesson is filed.
+
+### Where his statement differs from the built mod and from his earlier words (the Designer's reading, not his words)
+
+| His statement | Built today, or said earlier | Taken as |
+|---|---|---|
+| "found and retrieved to a safe location" | The smelter's Wrecked and Kludged grades cannot be picked up. 2026-09-15: "repairing big machines in place, and that's excellent." | Both hold: carry the wreck to safety, then repair it where it stands (`d_reading_retrieve_then_repair`). Open for stage 2: `c_wreck_cannot_be_carried`. |
+| "wrecked (nonfunctional)" | The power-cell wreck gives a faint current. 2026-09-15: "Their batteries just slowly lose capacity over millenia yet still work." | A Wrecked machine gives nothing; the sagging battery is the Kludged and Refurbished levels. Open for stage 2: `c_wreck_gives_a_trickle`. |
+| "Refurbished (full functionality but slower than original)" | The refurbished smelter runs five of six recipes. | His words settle it; a build item (`c_kludged_and_refurbished_levels`). |
+| "Each repair requires machine study, research bench time, and considerable resources" | Kludged needs no study and no research. | His words settle it, and they give `c_study_fights_build_over` its direction: study comes before every repair. |
+| "Original (no longer attainable through research or repair, used only for comparison)" | A Mod Setting, off as shipped, brings the original-grade smelter back. | Shipped behaviour matches; one line at stage 3 (`c_full_restoration_switch`). |
+| "the mod's initial version will only support Vanilla Factory Enhanced" | One factory machine, the smelter, is onboarded. | A question for him at stage 2: how many of the factory's machines (`a_which_factory_machines`, draft). |
+
+### Decisions taken in this run (each can be undone by him)
+
+- `d_root_is_his_statement`: no second approval is asked for the rephrasing.
+- `d_riders_fate`: 0.1.0 has no bar for the forge's steps, the distillation machine or the salvage rule. He did not
+  speak of the salvage rule; that part is the Designer's call.
+- `d_reading_retrieve_then_repair`: a position for stage 2, not yet a line.
