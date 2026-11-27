@@ -108,6 +108,7 @@
     {"match": "role:*", "route": "role", "reader": "Operations", "cause": "roles"},
     {"match": "bundle_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "remove_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "clone_outside_pool", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "run_store remove_clone refused a clone whose real path is not under the pool's clones dir: neither bundled nor removed (RIMMANDRAKE_RETURN_CLONE_UNDER_OLD_POOL_NAME_KEPT_SILENT); as remove_failed"},
     {"match": "publish:*", "route": "role", "reader": "Operations", "cause": "publish"},
     {"match": "budget:*", "route": "role", "reader": "Operations", "cause": "helpers"},
     {"match": "dry:*", "route": "program"},
