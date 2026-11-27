@@ -1,0 +1,9 @@
+ArchSmall: held for `python.exe \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_FIX_STAGE_MAKE_WHEN_TERRAIN_DOES_NOT_READ_BACK_ON_NEW_TILE.det\src\RimMandrake\Utils\stage_map.py --inner make ArchSmall --kind settlement --save RM_Stage_fixcheck_clearoverlays` (gen 327)
+the game stands at Entry: starting a quicktest for the green room
+green room: map 0, tile 90692, RM_TheRot, 4 colonist(s)
+green room fed: 90 meal(s) beside 3 colonist(s), food need full
+made the settlement map on tile 90632 (SeaIce): map 1, 100x100, 1.3 s
+emptied: 1 pawn(s) vanished, 23 thing(s) cleared, terrain Granite_Rough on 10000 cell(s) (read-back ok=True), fog lifted, 0 pawn(s) left, 0.8 s
+MADE settlement stage RM_Stage_fixcheck_clearoverlays: 100x100, map 1 current, green room map 0; make 1.3 s, total 3.6 s; stage file D:\ClaudeWork\rimmandrake\scratch\scene_stages\made\RM_Stage_fixcheck_clearoverlays.json
+[bridge split] 47.3 s wall: load 8.6 / ticks 0.0 / reads 2.8 / other 1.6 / outside calls 34.3 s
+make_rc=0
