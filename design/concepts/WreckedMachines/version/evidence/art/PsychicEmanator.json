@@ -1,0 +1,53 @@
+{
+ "subject": "PsychicEmanator",
+ "line": "emanator",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/PsychicEmanator/Kludged/PsychicEmanator.png",
+   "sha": "4c7165e9612a95d6d982aa914839f928a97544243bd0bd39ff47fc6776e52392",
+   "tier": "kludged",
+   "facing": "single",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/PsychicEmanator/Wrecked/PsychicEmanator.png",
+   "sha": "7f84d87f36f5efcc13dba7a5a07eb35247e357ae70ab277a0fa8381066bfac1a",
+   "tier": "wrecked",
+   "facing": "single",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:25:06Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "Both pictures keep the donor's outline, facing and parts: two fan-shaped plates spread from a central node over a splayed three-legged stand, at the same size and place on the 2x2 canvas as the donor. Both are painted, weathered metal in the register of the smelter set, with no drawn keyline and no ground shadow or backdrop. The Wrecked picture has torn, holed plates, a bent stand and nothing lit; the Kludged picture carries patch plates, straps and spliced cable, a strapped-on box at the node and one small lit lamp, sealed and running with no open fiery breach. At 32 px per cell both read as a dark winged X on legs, clearly apart from the tan ground, so neither is grey mud. Neither picture overflows its canvas or floats: the plates rise above the one-cell base box exactly as the donor's do, which is the thing standing up in the building camera.",
+ "notes": []
+}

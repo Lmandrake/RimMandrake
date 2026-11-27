@@ -744,8 +744,14 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
         return None                                   # nothing supplied for this facing yet
 
     print("  %s / %s" % (tier, filename))
-    sw, sh, s_rgba = read_png(src_path)
+    # The donor's body: its drawn pixels without small detached pieces (check_sprite.donor_body, one rule for
+    # the check and the fit: the granulator's east donor has a 158 px stray stripe 63 px below the machine,
+    # which stretched the reference box and so the skew and the stretch decision). A donor with none is read as is.
+    sw, sh, s_rgba, donor_dropped = _check_bar().read_donor(src_path)
     cw, ch, c_rgba = read_png(cand_path)
+    if donor_dropped:        # stderr: the fit's stdout lines are the same with or without strays (selftest_donor_specks.py)
+        print("     donor body: left out %d px of detached pieces of the donor (under %.1f%% of its body)"
+              % (donor_dropped, _check_bar().DONOR_SPECK_SHARE_PCT), file=sys.stderr)
     print("     canvas   %dx%d  ->  %dx%d" % (cw, ch, sw, sh))
 
     notes = []

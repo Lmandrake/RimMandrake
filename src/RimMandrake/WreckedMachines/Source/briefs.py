@@ -114,6 +114,16 @@ def _kind_line(man, facing, wrecked=False):
     return L
 
 
+# A machine with no conveyor (the power cell, the emanator; MANIFEST "belts" false). With the belt lines in its prompt the
+# image model drew belts and arrow marks on both small machines' first tries (2026-11-27).
+NO_BELTS = ("- this machine has no conveyor belt, no intake and no arrow mark: draw no belt, slat, arrow or chevron "
+            "anywhere;")
+
+
+def _belts(man):
+    return bool(man.get("belts", True))
+
+
 def _common(man, gw, gh):
     return [
         "The camera is the game's building camera: orthographic, looking down "
@@ -121,8 +131,8 @@ def _common(man, gw, gh):
         "The machine fills the same footprint as in image 1, at the same size "
         "and in the same place. Every edge of the machine sits on or inside "
         "the outline of image 1. Wherever image 1 is transparent, the output "
-        "is transparent too: the notches and gaps in image 1's outline, such "
-        "as the empty corners beside a belt that juts out, stay empty.",
+        "is transparent too: the notches and gaps in image 1's outline%s "
+        "stay empty." % (", such as the empty corners beside a belt that juts out," if _belts(man) else ""),
         "The background is fully transparent: only the machine's own pixels "
         "are drawn, and its edges are drawn the same way as the edges of "
         "image 1.",
@@ -148,7 +158,7 @@ def prompt_wrecked(man, facing, gw, gh, has_anchor):
           "- %s;" % (man.get("dead") or "its working parts are seized and dull"),
           "- the damage takes material away: the wreck is the original shape "
           "with pieces gone;",
-          "- the conveyor ends stay in their places, dusty and still.",
+          "- the conveyor ends stay in their places, dusty and still." if _belts(man) else NO_BELTS,
           ""]
     L += _common(man, gw, gh)
     return "\n".join(L)
@@ -176,7 +186,7 @@ def prompt_kludged(man, facing, gw, gh, has_anchor):
           "- the conveyor belts and the intake are clear and running: their "
           "slats are clean and run the same way as in image 1, and the arrow "
           "mark beside each belt is bright and points exactly the way it "
-          "points in image 1; the belts carry no other arrows or chevrons;",
+          "points in image 1; the belts carry no other arrows or chevrons;" if _belts(man) else NO_BELTS,
           "- bent frames stay bent and rust stays wherever no patch covers it.",
           ""]
     L += _common(man, gw, gh)

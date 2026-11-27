@@ -56,6 +56,20 @@ _tw = _TextureWriter(__file__)
 _atexit.register(_tw.report)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def _check_sprite():
+    """This folder's check_sprite.py, loaded by path (the general Utils/check_sprite.py is also on sys.path)."""
+    global _CHECK
+    if _CHECK is None:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("wm_check_sprite_grab", os.path.join(HERE, "check_sprite.py"))
+        _CHECK = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(_CHECK)
+    return _CHECK
+
+
+_CHECK = None
 MOD_ROOT = os.path.dirname(HERE)
 ART_SOURCE = os.environ.get("WM_ART_ROOT") or os.path.join(MOD_ROOT, "art_source")
 
@@ -216,8 +230,11 @@ TREATED = {
         kind="fish farm: an open ring-shaped tank inside a square steel frame "
              "with corner bolts, an intake chute at the top",
         dead="the ring tank is dry and cracked, a frame bar is missing",
-        alive="the ring tank holds clear water and the missing frame bar is "
-              "replaced with a mismatched beam"),
+        alive="the cracks of the ring tank are sealed with patches, the "
+              "missing frame bar is replaced with a mismatched beam, the "
+              "open middle of the ring stays empty and transparent as in "
+              "image 1, and every added box, cable and lamp sits on the frame, "
+              "the lower ring or the chute and never over that open middle"),
     "VFEFactory_AutomatedCannery": dict(
         line="cannery", short="AutomatedCannery",
         kind="cannery: a rack of jars between two coiled spring columns, a "
@@ -231,12 +248,19 @@ TREATED = {
 # texture dump, not a Workshop mod. Fields read from our Defs on 2026-11-27:
 # Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml and
 # Defs/ThingDefs_Items/Items_WreckedMachines.xml.
+# The base game draws these two at 64 px per cell (the emanator: 128 x 128 for a 2 x 2 drawSize; the power cell: 128 px
+# across for 2 cells). The art judge brief's D2 asks drawSize x 128 px per cell and "never down-resolve", and the art
+# judge refused the emanator's 128 px pictures for it on 2026-11-27. So the reference copy in restored/ is the base game's
+# picture enlarged by this factor, and our own pictures are fitted from the image model's 1408 px drawing onto that canvas.
+# Only the reference is enlarged; no picture of ours is ever made by enlarging a small one.
+SMALL_CANVAS_SCALE = 2
 SMALL = {
     "RM_WM_PowerCellBase": dict(
         line="powercell", short="VanometricPowerCell", tiers=TIERS,
         def_file="Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml",
         label="vanometric power cell", texPath="Things/Building/Special/VanometricPowerCell",
         graphicClass="Graphic_Multi", drawSize="(2,3)", size="(1,2)",
+        belts=False, canvas_scale=SMALL_CANVAS_SCALE,
         kind="power cell: a rounded olive-grey housing round a glass core "
              "cylinder held by four clamps, with a row of small indicator lamps "
              "along its base",
@@ -249,6 +273,7 @@ SMALL = {
         def_file="Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml",
         label="psychic emanator", texPath="Things/Building/Special/PsychicEmanator",
         graphicClass="Graphic_Single", drawSize="(2,2)", size=None,
+        belts=False, canvas_scale=SMALL_CANVAS_SCALE,
         kind="psychic emanator: two fan-shaped emitter plates spread like "
              "wings from a central node, held up on a three-legged stand",
         dead="one emitter plate is bent and torn, the central node is dark and "
@@ -426,6 +451,15 @@ def _donor(key, spec):
     return td, {"packageId": "Ludeon.RimWorld", "mod_dir": _VANILLA_DUMP}, srcs, []
 
 
+def enlarged(src, by):
+    """The donor picture `by` times as large, as a PIL image: colour is resampled premultiplied by alpha, so the
+    transparent pixels' colour does not bleed into the edge. It is the reference for the fit and the check, not art."""
+    from PIL import Image
+    im = Image.open(src).convert("RGBA")
+    big = im.convert("RGBa").resize((im.width * by, im.height * by), Image.BICUBIC)
+    return big.convert("RGBA")
+
+
 def grab(key, quiet=False):
     spec = ALL.get(key)
     if not spec:
@@ -445,11 +479,21 @@ def grab(key, quiet=False):
         if not os.path.isfile(src):
             continue
         dst = os.path.join(restored, fn)
-        _tw.copy(src, dst)
+        scale_by = int(spec.get("canvas_scale", 1))
+        if scale_by > 1:
+            _tw.save(enlarged(src, scale_by), dst)
+        else:
+            _tw.copy(src, dst)
         present.append(fn)
         try:
             m = measure(dst)
             m["file"] = fn
+            # The donor's body (check_sprite.donor_body: small detached pieces left out): the box the check
+            # and the fitter take as the reference. Equal to bbox when the donor has no such piece.
+            _w, _h, _body, m["detached_px"] = _check_sprite().read_donor(dst)
+            m["body_bbox"] = _check_sprite().body_bbox(_w, _h, _body) if m["detached_px"] else m["bbox"]
+            m["body_bbox_wh"] = [m["body_bbox"][2] - m["body_bbox"][0] + 1,
+                                 m["body_bbox"][3] - m["body_bbox"][1] + 1]
             measurements[fn] = m
         except PngError as e:
             measurements[fn] = {"file": fn, "error": str(e)}
@@ -487,6 +531,8 @@ def grab(key, quiet=False):
         "kind": spec["kind"],
         "dead": spec.get("dead", ""),
         "alive": spec.get("alive", ""),
+        "belts": bool(spec.get("belts", True)),
+        "canvas_scale": int(spec.get("canvas_scale", 1)),
         "owner": {"packageId": owner["packageId"],
                   "mod_dir": os.path.basename(owner["mod_dir"])},
         "thingDef": {k: (os.path.relpath(td[k], owner["mod_dir"]) if k == "def_file"

@@ -1,0 +1,95 @@
+{
+ "subject": "VanometricPowerCell",
+ "line": "powercell",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Kludged/VanometricPowerCell_east.png",
+   "sha": "d0291cf1db4cec074d79deba8d39a1dfa990a83b935ccb07d24deb3589219100",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Kludged/VanometricPowerCell_north.png",
+   "sha": "3d7a1e1dfde36aaf3dfe99db29dd3cd9e55d96115db1b294770d6d9493d4ff9f",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Kludged/VanometricPowerCell_south.png",
+   "sha": "3d7a1e1dfde36aaf3dfe99db29dd3cd9e55d96115db1b294770d6d9493d4ff9f",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": "VanometricPowerCell_north.png"
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Kludged/VanometricPowerCell_west.png",
+   "sha": "0b21640797c553615253786bcd7f5f8b8a83ca50f5163fbc03cc2ebc32c1c969",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": "VanometricPowerCell_east.png"
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Wrecked/VanometricPowerCell_east.png",
+   "sha": "3566c8aab56fd25de0f2ed233587232c6b22e3a6350363c8e15c40723c2674bb",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Wrecked/VanometricPowerCell_north.png",
+   "sha": "10fb5d5245e62183f94f1acc22a2d166657724fba60b2187fdb8b2d6e4baf988",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Wrecked/VanometricPowerCell_south.png",
+   "sha": "10fb5d5245e62183f94f1acc22a2d166657724fba60b2187fdb8b2d6e4baf988",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": "VanometricPowerCell_north.png"
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/VanometricPowerCell/Wrecked/VanometricPowerCell_west.png",
+   "sha": "43f351328fc23be6c3e06b63476bc1493e3cdab412d0e3eadd130f6898d8be9e",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": "VanometricPowerCell_east.png"
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:23:06Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "Both tiers keep the donor's outline and parts: a housing round a capped glass core, side clamps and the lamp row (4 lamps north, 5 east), in the painted rusted-steel register of the smelter set, with no drawn keyline and real alpha. Wrecked is plainly dead: torn holes in the housing, cracked dark glass, unlit lamps. Kludged is sealed and running, per his smelter note: patch plates over the old holes (one plate over the glass on east), spliced cables, one strapped-on box, lit lamps and a glowing green core, and no open breach or fire. North and east agree in palette, detail density and proportion; at 32 px per cell both read as a framed cylinder clearly apart from the tan floor, the Kludged one helped by the green core. The picture overhangs the 1x2 footprint as the def's 2x3 drawSize makes the base game's own picture do, so it is neither overflow of our making nor floating.",
+ "notes": []
+}

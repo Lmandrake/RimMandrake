@@ -106,6 +106,18 @@ ALPHA_DRAWN = 32
 # approved smelter pictures: 95.89% (Wrecked north) to 99.32%. Below the
 # lowest approved value is a warn: it asks for a look at true size.
 FILL_WARN_PCT = 95.8
+# THE DONOR'S BODY. The donor picture is the reference for the bounding box (centre drift), the outline and
+# the fill. A detached piece of a few pixels is not part of the machine and must not move those references:
+# the Medicine Granulator's donor east picture has one of 158 px at its bottom edge (a 66 x 3 stripe, 63 px below
+# the body), which moved the reference centre 4.9% and failed both of its east pictures however well drawn.
+# donor_body() leaves out every 8-connected piece of drawn pixels (alpha > 0, as pnglib.measure counts) that is
+# smaller than DONOR_SPECK_SHARE_PCT of the largest piece. Measured 2026-11-27 over all 73 donor files under
+# $W/*/restored/ (specks/pieces.txt, measure_pieces.py): exactly one has a second piece, the granulator's east,
+# 159 px = 0.064% of its 248,723 px body; the other 72 are one piece, so no donor has a real separate part and
+# nothing real is dropped at any limit. 0.5% is about eight times the stray (room for a stray twice or
+# three times as big) and half the 1% share that selftest_donor_specks.py proves is kept (a real part).
+# A donor whose strays are dropped reads from the body; one with none is read exactly as before.
+DONOR_SPECK_SHARE_PCT = 0.5
 
 
 class Result:
@@ -141,9 +153,75 @@ def _grow(mask, w, h, r):
     return b
 
 
+def donor_body(w, h, rgba):
+    """(rgba, dropped): the donor's body. Pieces of drawn pixels (alpha > 0, 8-connected) smaller than
+    DONOR_SPECK_SHARE_PCT of the largest piece get alpha 0 in a copy; `dropped` counts those pixels. With no
+    such piece the input is returned itself and dropped is 0."""
+    n = w * h
+    solid = bytes(rgba[3::4]).translate(_SOLID)
+    seen = bytearray(n)
+    pieces = []
+    for start in range(n):
+        if not solid[start] or seen[start]:
+            continue
+        seen[start] = 1
+        stack, px = [start], []
+        while stack:
+            i = stack.pop()
+            px.append(i)
+            x = i % w
+            for dy in (-w, 0, w):
+                for dx in (-1, 0, 1):
+                    j = i + dy + dx
+                    if (dy or dx) and 0 <= j < n and not seen[j] and solid[j] \
+                            and 0 <= x + dx < w:
+                        seen[j] = 1
+                        stack.append(j)
+        pieces.append(px)
+    if len(pieces) < 2:
+        return rgba, 0
+    limit = max(len(p) for p in pieces) * DONOR_SPECK_SHARE_PCT / 100.0
+    small = [p for p in pieces if len(p) < limit]
+    if not small:
+        return rgba, 0
+    out = bytearray(rgba)
+    for p in small:
+        for i in p:
+            out[i * 4 + 3] = 0
+    return out, sum(len(p) for p in small)
+
+
+_SOLID = bytes([0] + [1] * 255)
+_BODY = {}
+
+
+def read_donor(path):
+    """(w, h, rgba, dropped): the donor file with donor_body() applied. Cached per file version."""
+    st = os.stat(path)
+    key = (os.path.abspath(path), st.st_mtime_ns, st.st_size, DONOR_SPECK_SHARE_PCT)
+    if key not in _BODY:
+        w, h, rgba = read_png(path)
+        body, dropped = donor_body(w, h, rgba)
+        _BODY.clear()                      # one donor at a time: the batch goes picture by picture
+        _BODY[key] = (w, h, body, dropped)
+    return _BODY[key]
+
+
+def body_bbox(w, h, rgba):
+    """[x0, y0, x1, y1] (inclusive) of the pixels with alpha > 0, as pnglib.measure gives bbox."""
+    xs0, ys0, xs1, ys1 = w, h, -1, -1
+    for y in range(h):
+        row = rgba[y * w * 4 + 3:(y + 1) * w * 4:4]
+        if any(row):
+            xs = [i for i, v in enumerate(row) if v]
+            xs0, xs1 = min(xs0, xs[0]), max(xs1, xs[-1])
+            ys0, ys1 = min(ys0, y), max(ys1, y)
+    return [xs0, ys0, xs1, ys1] if xs1 >= 0 else None
+
+
 def outside_outline_pct(cand_path, src_path, grow=OUTLINE_GROW_PX):
-    """Share (%) of the picture's drawn pixels outside the donor's grown outline."""
-    sw, sh, s = read_png(src_path)
+    """Share (%) of the picture's drawn pixels outside the donor's grown outline (the donor's body)."""
+    sw, sh, s, _ = read_donor(src_path)
     cw, ch, c = read_png(cand_path)
     if (sw, sh) != (cw, ch):
         return None
@@ -158,8 +236,8 @@ def outside_outline_pct(cand_path, src_path, grow=OUTLINE_GROW_PX):
 
 
 def donor_fill_pct(cand_path, src_path):
-    """Share (%) of the donor's drawn pixels that the picture also draws."""
-    sw, sh, s = read_png(src_path)
+    """Share (%) of the donor's drawn pixels (its body) that the picture also draws."""
+    sw, sh, s, _ = read_donor(src_path)
     cw, ch, c = read_png(cand_path)
     if (sw, sh) != (cw, ch):
         return None
@@ -212,6 +290,15 @@ def check_file(src_meta, cand_path, src_path):
     # 4. alignment: centre drift of the drawn mass
     if (c["width"], c["height"]) == (src_meta["width"], src_meta["height"]):
         sx0, sy0, sx1, sy1 = src_meta["bbox"]
+        sw, sh = src_meta["bbox_wh"]
+        if os.path.isfile(src_path):             # the donor's body, not its strays
+            dw, dh, drgba, dropped = read_donor(src_path)
+            if dropped and (dw, dh) == (src_meta["width"], src_meta["height"]):
+                sx0, sy0, sx1, sy1 = body_bbox(dw, dh, drgba)
+                sw, sh = sx1 - sx0 + 1, sy1 - sy0 + 1
+        elif src_meta.get("body_bbox"):          # grab_source_art.py's own reading of the body
+            sx0, sy0, sx1, sy1 = src_meta["body_bbox"]
+            sw, sh = src_meta["body_bbox_wh"]
         cx0, cy0, cx1, cy1 = c["bbox"]
         s_cx, s_cy = (sx0 + sx1) / 2.0, (sy0 + sy1) / 2.0
         c_cx, c_cy = (cx0 + cx1) / 2.0, (cy0 + cy1) / 2.0
@@ -222,7 +309,6 @@ def check_file(src_meta, cand_path, src_path):
                    "— it will sit off its footprint"
                    % (dx * 100, dy * 100, CENTRE_DRIFT_TOLERANCE * 100))
         # 5. damaged art should not grow
-        sw, sh = src_meta["bbox_wh"]
         cw, ch = c["bbox_wh"]
         if cw > sw * MAX_BBOX_GROWTH or ch > sh * MAX_BBOX_GROWTH:
             r.warn("drawn area grew (%s -> %s); damage should remove mass, not add it"

@@ -119,7 +119,19 @@ the repo; without it they use `art_source/`.
 The image is generated with its long edge at 1408 px, at the donor facing's
 proportions, both edges a multiple of 16, because gpt-image-2 needs edges in
 multiples of 16 and a total of 655,360 to 8,294,400 px. `fit_sprite.py`
-brings it down to the donor's canvas; nothing is ever sized up.
+brings it down to the donor's canvas; no picture of ours is ever sized up.
+
+The two carried machines (the power cell and the psychic emanator) draw the
+base game's pictures, which the base game ships at 64 px per cell (the
+emanator: 128 x 128 for a drawSize of 2 x 2). The art judge brief's D2 asks
+drawSize x 128 px per cell, and the art judge refused the emanator's 128 px
+pictures for it on 2026-11-27. So for these two `grab_source_art.py` writes the
+reference copy in `restored/` at twice the base game's size
+(`SMALL_CANVAS_SCALE`), and our pictures are fitted from the 1408 px drawing
+onto that canvas: 256 x 256 for the emanator, 256 x 512 and 512 x 256 for the
+power cell. Only the reference is enlarged. Their prompts carry no belt lines
+(MANIFEST `belts` false): with the belt lines the image model drew belts and
+arrow marks on both machines' first tries.
 
 ### What fit_sprite.py does
 
@@ -162,6 +174,17 @@ A FAIL blocks; a warn asks for a look.
 | not byte-identical to the donor | FAIL |
 | the general sprite checks (`src/RimMandrake/Utils/check_sprite.py`) | FAIL or warn |
 | drawn area grew | warn |
+
+Every donor measure (centre, outline, fill) reads the donor's body: its drawn
+pixels without small detached pieces (`check_sprite.donor_body`; a piece of
+connected pixels under 0.5% of the largest piece is left out). The fitter reads
+the same body. Measured 2026-11-27 on the 73 donor files of the factory machines and the
+power cell: one has such a piece, the Medicine Granulator's east, 159 px
+(0.064% of its body) 63 px below the machine; the other 72 are one piece, so
+no real part of a machine is dropped. The base game's emanator picture, read
+later the same day, has two faint specks of shadow under one foot (6 px, alpha
+17 at most, under the alpha the outline reads). A donor with no such piece is
+read as before.
 
 The outline limit comes from a measurement: on the 12 approved smelter
 pictures the worst share outside the outline is 0.08% (Kludged west). The limit

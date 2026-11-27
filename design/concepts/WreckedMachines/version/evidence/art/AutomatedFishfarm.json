@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedFishfarm",
+ "line": "fishfarm",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Kludged/AutomatedFishfarm_east.png",
+   "sha": "cd40240aba30d25254ec64d5dafe7118b28ad044ebf3d65fa4b8d3d0456b9614",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Kludged/AutomatedFishfarm_north.png",
+   "sha": "cdf2841413dff272496369631c4477681a49513e738204cc97b296687ba18f65",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Kludged/AutomatedFishfarm_south.png",
+   "sha": "50c60f6a77dd30765156b609b03fa936bac8c46c35a7ff5601b01e45439c1a0a",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Kludged/AutomatedFishfarm_west.png",
+   "sha": "ad6bbe5c2db62b458a76657655be2e09c22096316b10a738b32d2ea287e9beeb",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Wrecked/AutomatedFishfarm_east.png",
+   "sha": "289309be853e4ef8de265139d268c67a9697e5cdb20324ee39ce1b745862cfc9",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Wrecked/AutomatedFishfarm_north.png",
+   "sha": "b430e4bc7ded754a6f1dc7a5bb8242374abee8b9aa9588de7208834e20c8116f",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Wrecked/AutomatedFishfarm_south.png",
+   "sha": "6314d8812191e35ecf9d29884426e9fadbbcbe91dff148d694261b4798bd51c4",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Wrecked/AutomatedFishfarm_west.png",
+   "sha": "2b18fdb45632d427b4c524a81b7780b31cdc7722d2375ec500e6873c815258f8",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:25:26Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's square bolted frame, open ring tank and intake chute or conveyor in the same place on every facing. The middle of the ring stays empty, so the ground shows through it as it does under the donor. They are painted weathered steel with rust and no drawn keyline, in the same register and palette as the smelter keeps. Wrecked is holed, torn and unlit on every facing. Kludged is plated over, cable-spliced and carries one strapped-on pump or box per facing, with a few amber lamps; it has no open breach or fire, and the conveyor and chute stay clear (E4). At 32 px per cell both levels read as a dark frame and ring, clearly apart from the sand ground, with no grey mud. The silhouette sits on the donor's own 4x4 draw: the top bar stands about a third of a cell above the 3x3 footprint, as the donor's does.",
+ "notes": []
+}

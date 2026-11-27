@@ -1,0 +1,95 @@
+{
+ "subject": "MedicineGranulator",
+ "line": "granulator",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Kludged/MedicineGranulator_east.png",
+   "sha": "efdc0508e15ede971cf1cbbbf12f8561cd3f4be2e9783ad7d3baf700589d4c57",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Kludged/MedicineGranulator_north.png",
+   "sha": "8392e1c7ebecc5bbfb4abd88914f57ee2777b3b98016b0a3f71319c8041ecdbe",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Kludged/MedicineGranulator_south.png",
+   "sha": "dae7329613c3aa34d71aa54f784e5b2f9bac7c8c1d661665e0d7519c76f5e043",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Kludged/MedicineGranulator_west.png",
+   "sha": "857b10cf800611be35d6233c4f8bcdfebbc65aa16c5cf46af628d30550554d3e",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Wrecked/MedicineGranulator_east.png",
+   "sha": "e041f1cefc01a36a02fb3f1fa53563bd1156fe612262772ca3bf0da8d52fe4dd",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Wrecked/MedicineGranulator_north.png",
+   "sha": "da37ab82b69ea6f7ceb0633656b9f18bfe9e1c1d564682300a52789ec02f13d8",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Wrecked/MedicineGranulator_south.png",
+   "sha": "f70798482b824caf0950cf76a1d66e166cb6228b0c1d60ad651e85afed757dfa",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/MedicineGranulator/Wrecked/MedicineGranulator_west.png",
+   "sha": "4b14ac3f215c33b98556cf8b86d7d5aa6ac59873b340667a688d9ec90c478441",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:18:05Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's outline, facing and parts (drum with rotor, side canisters, coil posts, ring pairs, three output belts plus input belt) in a painted, weathered register with no drawn keyline, matching the smelter sibling set. Wrecked reads as dead and broken open (shattered empty drum, torn plates, nothing lit); Kludged reads as patched and running (riveted plates, spliced cables, one strapped-on box, a few amber lamps, glowing cyan drum). The owner's Kludged corrections hold on every facing: the belts are clear and the machine is sealed with no fire-filled breach. At 32 px/cell both tiers sit as bold dark shapes clearly apart from the tan ground, and every facing fills the 5x3 footprint box at the same size, with only the donor's own belt tabs reaching past it. No backdrop, halo or ground shadow; the donor art is not copied.",
+ "notes": []
+}

@@ -17,7 +17,9 @@
   so the watts written here are only the defaults. The wreck has no power comp (a dead machine; owner ruling 2026-08-12); its
   small indicator glow stays, because it is light, not power.
 
-  PLACEHOLDER ART: every level reuses the base game's texture, tinted darker the lower the level. Real sprites pass the art judge first.
+  PICTURES: the Wrecked and the Kludged level of both machines draw pictures of their own (Textures/WreckedMachines/Mobile/<Short>,
+  at twice the base game's pixel size, kept by the art judge: design/concepts/WreckedMachines/version/evidence/art; MACHINES.md
+  "How a picture is made"). The Refurbished level draws the base game's picture (rule R_whole_picture).
   Where wrecks are found is not wired: nothing spawns them yet. Dev-spawn only.
 -->
 <Defs>
@@ -54,7 +56,8 @@
     <label>wrecked vanometric power cell</label>
     <description>A vanometric power cell, ancient and broken. The housing is cracked and the field lattice is dark. Only a faint glow still shows at an indicator. It is not producing any power.\n\nA researcher can study it where it stands, and what they learn opens the research to coax it back into a trickle of power. It can be carried. The repair itself is ordered on the machine, once the research is done.</description>
     <graphicData>
-      <color>(105,98,90)</color>
+      <texPath>WreckedMachines/Mobile/VanometricPowerCell/Wrecked/VanometricPowerCell</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <thingCategories>
       <li>BuildingsSpecial</li>
@@ -116,7 +119,8 @@
     <label>kludged vanometric power cell</label>
     <description>A wrecked vanometric power cell coaxed back into a fraction of its old output. The cracked housing is strapped shut, the dead lattice segments are bypassed with ordinary cable, and it hums unevenly. It makes a fifth of what an intact cell would: free power, forever, just not much of it.\n\nA researcher can study it further, and what they learn opens the research to refurbish it properly. The refurbishment is ordered on the machine and needs an ancient component. It can be carried.</description>
     <graphicData>
-      <color>(160,152,140)</color>
+      <texPath>WreckedMachines/Mobile/VanometricPowerCell/Kludged/VanometricPowerCell</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <thingCategories>
       <li>BuildingsSpecial</li>
@@ -261,7 +265,8 @@
     <label>wrecked psychic emanator</label>
     <description>An ancient psychic emanator, long dead. The field coil is fused and the casing is pitted through. Whatever it once did to the minds around it, it does nothing now.\n\nA researcher can study it where it stands, and what they learn opens the research to patch it back into a weak field. It can be carried. The repair itself is ordered on the machine, once the research is done.</description>
     <graphicData>
-      <color>(105,98,90)</color>
+      <texPath>WreckedMachines/Mobile/PsychicEmanator/Wrecked/PsychicEmanator</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>BuildingsSpecial</li>
@@ -314,7 +319,8 @@
     <label>kludged psychic emanator</label>
     <description>A wrecked psychic emanator patched back into a weak, uneven field. It soothes the people around it a little, draws more power than it should, and breaks down often.\n\nA researcher can study it further, and what they learn opens the research to refurbish it properly. The refurbishment is ordered on the machine and needs an ancient component. It can be carried.</description>
     <graphicData>
-      <color>(160,152,140)</color>
+      <texPath>WreckedMachines/Mobile/PsychicEmanator/Kludged/PsychicEmanator</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <thingCategories>
       <li>BuildingsSpecial</li>

@@ -1,0 +1,95 @@
+{
+ "subject": "Autofarmer",
+ "line": "autofarmer",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Kludged/Autofarmer_east.png",
+   "sha": "6ac457f0187a7c89520d4fade64290a4301066b114e01b95f71c301a09746824",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Kludged/Autofarmer_north.png",
+   "sha": "c46cdc8c406eab657b90acbdd1f8e9b86b644a7931c366bd26186908ff97b624",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Kludged/Autofarmer_south.png",
+   "sha": "a932ec63ed51216769642f6df447c841f9a11b8895b0d0830e46cbf7381f3fc7",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Kludged/Autofarmer_west.png",
+   "sha": "c68295324e14166996e77b3b8a907774c0da321c3dfb73e143238d670eed597d",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": "Autofarmer_east.png"
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Wrecked/Autofarmer_east.png",
+   "sha": "c480336e09a9f11c2b623f215cf77c9a31102821ef1a0eec2a41e93bddb6e751",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Wrecked/Autofarmer_north.png",
+   "sha": "241fa35420d22431782a2d8156a165e4c410362f356f77983c14c36d5456781f",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Wrecked/Autofarmer_south.png",
+   "sha": "34aa2600f5bdb560b9271e01c650ee12eabf17b14706bed06e764ce2586fdb84",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Wrecked/Autofarmer_west.png",
+   "sha": "3991a9690db897a4ecb2ec483653f7ca431afaa668dd744bcf3b108fe68591e7",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": "Autofarmer_east.png"
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:12:27Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All six drawn files keep the donor's outline, facing and parts (long soil hopper, two dispenser heads, front belt run, wheels on east) and repaint them in the same painted, rust-weathered steel register as the owner-corrected smelter set, with no drawn keyline. Wrecked reads as a dead wreck: torn holes, dead stalks in dry soil, no lamp lit. Kludged reads as patched and running: riveted patch plates, clamped spliced cables, a strapped-on box, a few amber lamps, live seedlings, and no open breach or fire. The belts stay clear on every Kludged facing (front slats on south, back slats on north, the long dark track on east), as the owner's smelter note requires. At true scale beside the vanilla human, the pictures fill the 7x3 (3x7 on east) footprint without overflow, the cell ground shows through the alpha around the wheels, and at 32 px/cell both levels read as a few bold shapes clearly apart from the tan ground; Wrecked is plainer but its hopper, heads and belt bands stay distinct, so it is not grey mud.",
+ "notes": []
+}
