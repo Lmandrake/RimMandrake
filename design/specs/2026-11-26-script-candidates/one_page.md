@@ -27,6 +27,8 @@ over all calls; wall 43.5 h, of which 15.2 h is the owner thinking on cards.
   only that a named sha, item or path is real.
 - **Size:** small for the read; medium for the claim check. **First step, before any build:** find why 460 hand reads
   follow a wake that already holds the message (UNMEASURED; guess ~50%: reads after a restart, or for cost and end state).
+  Done 2026-11-27: `run_result_why.md`. 19 of 20 sampled reads came before the wake carried the result (commit
+  `c45e242f32`); since then about 2 a day. Do not build the read part.
 - **Rigour:** removes the mistake "the report names a sha that is not on origin/main". How often a report was wrong:
   UNMEASURED (the data does not say).
 

@@ -8,7 +8,7 @@ turns=open(OUT+"turns.jsonl","w")
 def P(ts): return datetime.fromisoformat(ts.replace('Z','+00:00')).timestamp()
 nsess=0
 for f in sorted(glob.glob(root+"*.jsonl")):
-    if now-os.path.getmtime(f)>7.2*86400: continue
+    if now-os.path.getmtime(f)>float(os.environ.get("SCAN_DAYS","7.2"))*86400: continue  # 7.2: the window of one_page.md
     sid=os.path.basename(f)[:8]
     name=None; pend={}; lastts=None
     rows=[]
