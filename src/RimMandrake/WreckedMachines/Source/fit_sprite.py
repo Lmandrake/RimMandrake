@@ -382,8 +382,6 @@ def appendage_load(mask, w, h):
     bw, bh, tot = core_span(mask, w, h)
     inside = 0
     # count mass within the core box
-    cols = [0] * w
-    x0 = y0 = None
     # recompute the box corners the same way core_span did
     colsum = [0] * w; rowsum = [0] * h; t = 0
     for y in range(h):
@@ -734,7 +732,6 @@ def choose_stretch(crop, tw, th, smask, sw, sh, box, skew):
 # ------------------------------------------------------------------------ main
 def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, inside=False):
     machine_dir = os.path.join(ART_SOURCE, short)
-    man = json.load(open(os.path.join(machine_dir, "MANIFEST.json"), encoding="utf-8"))
     src_path = os.path.join(machine_dir, "restored", filename)
     cand_path = os.path.join(machine_dir, tier, filename)
 
@@ -757,7 +754,7 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
     notes = []
     keyed_tol = None
 
-    # 1. alpha
+    # 1/2. restore alpha, seal
     opaque = all(c_rgba[i * 4 + 3] == 255 for i in range(0, cw * ch, 97))   # cheap sample
     if opaque:
         c_rgba, removed, tol, bstats = key_background(cw, ch, c_rgba)
@@ -783,7 +780,7 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
 
         keyed_tol = tol
 
-    # 2/3. mask, despeckle, trim
+    # 3/4. mask, despeckle, trim
     cmask = build_mask(cw, ch, c_rgba)
     cmask, dropped = despeckle(cmask, cw, ch)
     if dropped:
@@ -849,7 +846,7 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
         src_off = ((cy0 + y) * cw + cx0) * 4
         crop[y * tw * 4:(y + 1) * tw * 4] = c_rgba[src_off:src_off + tw * 4]
 
-    # 4/5. stretch, register
+    # 5/6. coarse fit (stretch), register
     aspect = choose_stretch(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1), skew)
     if aspect != 1.0:
         notes.append("stretched x/y %.4f to correct skew %.1f%%" % (aspect, (skew - 1) * 100))
@@ -866,7 +863,7 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
         notes.append("LOW overlap %.2f — check the result by eye" % reg["iou"])
         print("     ! low overlap; the damaged shape differs a lot from the original")
 
-    # 6. compose at full resolution
+    # 7. compose at full resolution
     scaled = resize_rgba(tw, th, crop, nw, nh)
     out = bytearray(sw * sh * 4)
     for y in range(nh):

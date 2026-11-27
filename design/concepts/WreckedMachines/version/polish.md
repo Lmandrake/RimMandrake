@@ -15,8 +15,12 @@ Run rm-role-designer-1795780944 did not change `scenes.json`. The next run that 
 
 - `design/concepts/WreckedMachines/scenes.json` (scene `sc_levels_under_settings`): the range of bar `switch_gives_machine_back` names "the costs" at their lowest and highest values, and no scene moves a cost setting. Add an arm that sets each cost setting (repair cost, study length) to its lowest and its highest value, reads the applied repair cost or study length, and puts it back. risk: a cost slider that changes nothing passes every scene.
 
-- `src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py` (row `conditions_kept`, `_conds`): it reads only `MayRequire` on a process entry, not `MayRequireAnyOf`, which the factory mod also writes (the biofuel refinery's `VFEFactory_MakeChemfuelFromRedWood`). `onboard.py check` now compares both before a line lands (7765521a7b). Read both in `_conds`, with a planted fault of each. risk: a landed Kludged def hand-edited to drop a `MayRequireAnyOf` passes T_ONBOARDING_TABLE_OFFLINE and fails at load on a list without those mods.
+Notes of the art judges of 2026-11-27 on the last five machines (run on
+RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT_RUN_TWO). Each judge kept every picture and wrote these as proposals
+that refuse nothing. Each needs a new drawing and a new judgement, so each stays here with its risk.
 
-A note of the fresh reader of 03134d6507 (2026-11-27). The next run that changes `fit_sprite.py` takes the line.
-
-- `src/RimMandrake/WreckedMachines/Source/fit_sprite.py`: the step numbers in `fit_one`'s comments ("2/3. mask, despeckle, trim", "4/5. stretch, register", "6. compose") do not match the module docstring's eight steps (3 despeckle, 4 trim, 5 coarse fit, 6 register, 7 compose); `fit_one` loads `man` and never reads it; `appendage_load` sets `cols`, `x0`, `y0` and never reads them.
+- `src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Mobile/PsychicEmanator/Wrecked/PsychicEmanator.png`: its colour is close to tan ground. risk: at his walk on sand the wrecked emanator reads slowly when zoomed out; slightly darker plates would fix it.
+- `src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Wrecked/`: low contrast at 18 px per cell. risk: zoomed far out, the wrecked autofarmer's parts merge into one brown shape.
+- `src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autofarmer/Kludged/Autofarmer_east.png`: four strapped-on boxes where the other facings have one. risk: a player who turns the machine sees the bodge change between facings.
+- `src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedFishfarm/Kludged/`: the chute's arrow mark is white on east and yellow on west. risk: the same change between facings.
+- `src/RimMandrake/WreckedMachines/Source/judge_packet.py`: the packet makes true-scale strips for the south and east facings only, so a machine with north and east files (the power cell) gets one strip, and the sibling sheet has no donor column. The run did not change this file.
