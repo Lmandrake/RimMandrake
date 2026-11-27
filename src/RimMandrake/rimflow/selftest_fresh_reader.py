@@ -161,9 +161,10 @@ def t_a_reviewed_file_is_owed_no_reader():
     f = FR()
     rec = {"a.py": 0, "b.py": 1}
     assert f.owed_paths(SHA, ["a.py", "b.py"], holds_fn=lambda sha, ps: rec[ps[0]]) == ["b.py"]
-    real = (f.holds, f.subprocess.run)
+    real = (f.holds, f.subprocess.run, f.reader_tickets)
     filed = []
     try:
+        f.reader_tickets = lambda: {}    # no reader ticket yet: the test never reads the real ledger
         f.holds = lambda sha, ps, **kw: 0
         f.subprocess.run = lambda argv, **kw: filed.append(argv) or types.SimpleNamespace(returncode=0)
         out = io.StringIO()
@@ -175,7 +176,7 @@ def t_a_reviewed_file_is_owed_no_reader():
             rc = f.main(["file", "--fix", SHA, PATH, "src/b.py"])
         assert rc == 0 and len(filed) == 1 and PATH not in filed[0][filed[0].index("--title") + 1], filed
     finally:
-        f.holds, f.subprocess.run = real
+        f.holds, f.subprocess.run, f.reader_tickets = real
 
 
 def t_a_second_filing_for_one_fix_is_not_a_refusal():
