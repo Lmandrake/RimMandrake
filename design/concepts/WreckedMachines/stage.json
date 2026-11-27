@@ -128,10 +128,17 @@
     "ref": "run rm-role-designer-1795770708",
     "stage": 3,
     "tokens": 7940000
+   },
+   {
+    "at": "2026-11-27T09:18:42Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1795770911",
+    "stage": 3,
+    "tokens": 7940000
    }
   ],
   "reserve": 60000,
-  "spent": 22386344
+  "spent": 30326344
  },
  "history": [
   {
@@ -267,6 +274,31 @@
    "stage": 3,
    "what": "void_system",
    "why": "run rm-role-designer-1795770708: the unit ended with no claude result of its own; its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-27T09:16:06Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "22386344 of 8000000 spent; run rm-role-designer-1795770911 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T09:16:06Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795770911, stage 3, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T09:18:42Z",
+   "stage": 3,
+   "void_system": "the unit ended with no claude result of its own",
+   "what": "retry",
+   "why": "run rm-role-designer-1795770911 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-27T09:18:42Z",
+   "stage": 3,
+   "what": "void_system",
+   "why": "run rm-role-designer-1795770911: the unit ended with no claude result of its own; its rejection spends no retry"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -484,6 +516,16 @@
    "at": "2026-11-27T09:15:16Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1795770708",
+   "stage": 3,
+   "void_system": "the unit ended with no claude result of its own",
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
+  },
+  {
+   "at": "2026-11-27T09:18:42Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1795770911",
    "stage": 3,
    "void_system": "the unit ended with no claude result of its own",
    "why": [
