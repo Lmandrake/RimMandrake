@@ -1,11 +1,13 @@
 """win_reexec.py -- run a Windows-only tool (system_screenshot.py, system_click.py) from WSL.
 
 Under WSL's python3, ctypes.windll does not exist. The tool calls reexec_or_exit(), which re-runs the
-same script through Windows python.exe, with each path argument translated by `wslpath -w`, and
+same script through Windows python.exe, with each Linux path argument translated by `wslpath -w` (a path that
+is already Windows-native, `D:\\...`, `D:/...` or `\\\\host\\...`, passes unchanged), and
 returns that run's exit code. With no Windows python.exe on PATH it returns 2 (could not look) and
 says so: never 0, because an exit 0 with no picture once read as success (selftest_system_tools_wsl.py).
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -16,10 +18,19 @@ def _wslpath_w(p):
     return subprocess.run(["wslpath", "-w", p], capture_output=True, text=True, check=True, timeout=60).stdout.strip()
 
 
+_WINDOWS_NATIVE = re.compile(r"^([A-Za-z]:[\\/]|\\\\)")
+
+
+def _to_windows(a, to_win):
+    # A Windows-native path made "absolute" as a Linux path became cwd + "D:\\..." and landed in the cwd under a
+    # mangled name (selftest_system_tools_wsl.py, 2026-11-27).
+    return a if _WINDOWS_NATIVE.match(a) else to_win(os.path.abspath(a))
+
+
 def windows_argv(script, args, path_args, to_win=_wslpath_w, py="python.exe"):
     out = [py, to_win(os.path.abspath(script))]
     for i, a in enumerate(args):
-        out.append(to_win(os.path.abspath(a)) if i in path_args else a)
+        out.append(_to_windows(a, to_win) if i in path_args else a)
     return out
 
 

@@ -7,6 +7,10 @@ Failure that happened (RIMMANDRAKE_RENEW_STEVEN_LOGIN_ARCHMAGI_DIES_THURSDAY_AFT
 brief said `python3 src/RimMandrake/Utils/system_screenshot.py <out.bmp>`. Under WSL's python3 the tool
 printed "nothing to do" and exited 0 with no picture: a could-not-look reported as success.
 Now, under WSL, each tool re-runs itself through Windows python.exe; with no Windows Python it exits 2.
+Failure that happened (RIMMANDRAKE_RENEW_STEVEDESKTOP_CODEX_LOGIN_REFRESH_REVOKED, 2026-11-27, and a Conductor
+sitting 2026-11-22): `system_screenshot.py 'D:\\...\\s1.bmp'` (a Windows-native path, the form CLAUDE.md asks for)
+was made "absolute" as a Linux path and sent through `wslpath -w`, so a 24 MB picture landed in the cwd under a
+mangled name and the tool then crashed printing it. Now a Windows-native path passes through unchanged.
 Checks: the argv that the re-run builds (offline, both tools), and one real capture when python.exe exists.
 """
 import os
@@ -51,6 +55,13 @@ def offline(W):
     # relative out path becomes absolute before translation (python.exe's cwd differs)
     argv = W.windows_argv("/s.py", ["rel.bmp"], path_args=(0,), to_win=lambda p: p, py="py")
     check(argv[2] == os.path.abspath("rel.bmp"), "relative out path is made absolute", argv)
+    # a Windows-native path (drive letter or UNC, either slash) is already a Windows path: it passes unchanged
+    for native in ("D:\\ClaudeWork\\scratch\\s1.bmp", "d:/ClaudeWork/s1.bmp", "\\\\wsl.localhost\\Ubuntu\\tmp\\s.bmp"):
+        argv = W.windows_argv("/s.py", [native], path_args=(0,), to_win=lambda p: "WIN:" + p, py="py")
+        check(argv[2] == native, "Windows-native out path passes unchanged: %s" % native, argv)
+    # a Linux path that only looks odd stays a Linux path
+    argv = W.windows_argv("/s.py", ["/mnt/d/x.bmp"], path_args=(0,), to_win=lambda p: "WIN:" + p, py="py")
+    check(argv[2] == "WIN:/mnt/d/x.bmp", "a /mnt/d path is still translated", argv)
     # no Windows Python: exit 2 by name, never 0
     rc = W.reexec_or_exit("/s.py", [], path_args=(), py_finder=lambda: None, runner=None, stream=open(os.devnull, "w"))
     check(rc == 2, "no python.exe -> exit 2 (could not look), not 0", rc)
@@ -67,6 +78,17 @@ def live():
         check(ok, "python3 system_screenshot.py <out> under WSL writes a picture", (r.returncode, r.stdout, r.stderr))
         if os.path.exists(out):
             os.unlink(out)
+        # the failure that happened: a Windows-native out path, run from a cwd that must stay clean
+        cwd = tempfile.mkdtemp()
+        out = os.path.join(cwd, "native.bmp")
+        win = subprocess.run(["wslpath", "-w", out], capture_output=True, text=True, timeout=60).stdout.strip()
+        r = subprocess.run([sys.executable, os.path.join(HERE, "system_screenshot.py"), win], cwd=cwd,
+                           capture_output=True, text=True, timeout=120)  # hang guard: a capture takes ~2 s
+        stray = sorted(set(os.listdir(cwd)) - {"native.bmp"})
+        ok = r.returncode == 0 and os.path.exists(out) and os.path.getsize(out) > 1000 and not stray
+        check(ok, "a Windows-native out path writes the picture there, and nothing else in the cwd",
+              (r.returncode, stray, r.stderr[-300:]))
+        shutil.rmtree(cwd, ignore_errors=True)
     else:
         print("SKIP live capture: no Windows python.exe on PATH (UNMEASURED here)")
 
