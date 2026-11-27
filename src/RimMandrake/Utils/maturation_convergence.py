@@ -274,7 +274,27 @@ def read_all(root=None):
             continue
         mods[name] = read_mod(os.path.join(cd, name))
     return {"source": SOURCE, "rule": "CONVERGING open falling or 0; FLAT open unchanged; DIVERGING open rising or new "
-            "not falling over the last three rounds; UNMEASURED fewer than two measured rounds", "mods": mods}
+            "not falling over the last three rounds; UNMEASURED fewer than two measured rounds", "mods": mods,
+            "quiet": quiet_mods(root, mods)}
+
+
+HOLD_FILE = os.path.join("src", "RimMandrake", "rimflow", "mod_owner_hold.json")
+
+
+def quiet_mods(root, mods):
+    """-> {mod: why} for the mods whose DIVERGING stage asks the Conductor nothing: a passed version
+    (stage_record.json stage "passed") or an owner hold (mod_owner_hold.json). A record that cannot be read
+    quiets nothing, so an unreadable stage never hides an ask (RIMMANDRAKE_HUSH_DIVERGING_ASKS_ON_PASSED_AND_HELD_MODS)."""
+    out = {}
+    held, _ = _json(os.path.join(root, HOLD_FILE))
+    for h in (held or {}).get("holds") or [] if isinstance(held, dict) else []:
+        if isinstance(h, dict) and h.get("mod") in mods:
+            out[h["mod"]] = "held by the owner"
+    for name in mods:
+        rec, _ = _json(os.path.join(root, CONCEPTS, name, "version", "stage_record.json"))
+        if name not in out and isinstance(rec, dict) and rec.get("stage") == "passed":
+            out[name] = "version %s passed" % rec.get("version", "?")
+    return out
 
 
 def _seq(rows, key):
@@ -282,10 +302,14 @@ def _seq(rows, key):
 
 
 def needs_lines(d):
-    """-> one Needs Conductor line, with the numbers, per DIVERGING stage. It pauses nothing and changes no bar."""
+    """-> one Needs Conductor line, with the numbers, per DIVERGING stage of a mod that is neither passed nor held
+    (d["quiet"], quiet_mods). It pauses nothing and changes no bar."""
     out = []
     names = dict(STAGES)
+    quiet = d.get("quiet") or {}
     for mod, st in sorted((d.get("mods") or {}).items()):
+        if mod in quiet:
+            continue
         for key, _ in STAGES:
             s = st.get(key) or {}
             if s.get("verdict") != DIV:

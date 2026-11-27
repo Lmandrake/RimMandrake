@@ -207,6 +207,20 @@ def main():
         check("8 the line carries the numbers", any("3 -> 5 -> 8" in x and "3 -> 3 -> 4" in x for x in rising), lines)
         check("8 the line says it pauses nothing", all("pauses nothing" in x for x in lines), lines)
 
+        # 8b: a passed or held mod asks nothing (RIMMANDRAKE_HUSH_DIVERGING_ASKS_ON_PASSED_AND_HELD_MODS)
+        hold = os.path.join(root, "src", "RimMandrake", "rimflow")
+        os.makedirs(hold, exist_ok=True)
+        with open(os.path.join(hold, "mod_owner_hold.json"), "w") as f:
+            json.dump({"holds": [{"mod": "Churn"}]}, f)
+        with open(os.path.join(root, MC.CONCEPTS, "Rising", "version", "stage_record.json"), "w") as f:
+            json.dump({"mod": "Rising", "version": "0.1.0", "stage": "passed"}, f)
+        d2 = MC.read_all(root)
+        check("8b held Churn and passed Rising raise no line", MC.needs_lines(d2) == [] and
+              d2["quiet"] == {"Churn": "held by the owner", "Rising": "version 0.1.0 passed"}, d2.get("quiet"))
+        os.remove(os.path.join(hold, "mod_owner_hold.json"))
+        os.remove(os.path.join(root, MC.CONCEPTS, "Rising", "version", "stage_record.json"))
+        check("8b the lines return once the hold and the pass are gone", len(MC.needs_lines(MC.read_all(root))) == 3)
+
         # 9: the Dispatch tick (a dry pass, no mods advancing) carries the line and the JSON
         os.environ["RM_MATURATION_DISPATCH_DIR"] = sd
         import maturation_dispatch as MD
