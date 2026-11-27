@@ -72,10 +72,72 @@ def hold_of(rs):
     return h if isinstance(h, dict) else None
 
 
+# The ticket lane routes an ask through a Shape split (parts[].route.who), not through `needs`
+# (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 1: on 2026-11-26 the lane routed 14 asks to him and this list
+# showed 2, because routed() read only needs=owner and an owner block). "review" is his review.
+HIS_ROUTES = ("owner", "review")
+# One of his five acts (CLAUDE.md §Only five acts stay his), said in the ask: a program can tell the ask is his.
+FIVE_ACTS_RX = re.compile(r"\b(?:his|owner|your) act [1-5]\b|\bflight (?:test|session)\b|\bone you kept\b|"
+                          r"\byour kept\b|\bPROTECTED\b|\bhis walk\b|\byour walk\b|\bmoney\b|\bpurchase\b|"
+                          r"\bpublish(?:ed|ing)? outside\b|\bat the desk\b|\bphysical act\b|\bblind quiz\b", re.I)
+# The Conductor's read of a lane ask against now (CLAUDE.md §Old work is filtered): a note that starts "ASK HIS:".
+VET_RX = re.compile(r"^\s*ASK HIS:", re.I)
+
+
+def lane_route(it):
+    """-> the lane's open route to him ({"who", "ask", "resumes"}) when the item's Shape split routes a part with no
+    check to the owner or to review (list_shape.first_route, the lane's own reader), else None."""
+    try:
+        import list_shape as LS
+        r = LS.first_route(((getattr(it, "shape", None) or {}).get("parts")))
+    except Exception:       # noqa: BLE001  a split that cannot be read routes nothing here; the lane names it blind
+        return None
+    return r if isinstance(r, dict) and r.get("who") in HIS_ROUTES else None
+
+
 def routed(it):
-    """The ledger sends it to him."""
-    return bool(it is not None and it.open and (it.needs == "owner" or
+    """The ledger sends it to him: needs=owner, an owner block, or the lane's Shape route (lane_route)."""
+    return bool(it is not None and it.open and (it.needs == "owner" or lane_route(it) is not None or
                                                 (getattr(it, "blocked", False) and getattr(it, "blocked_kind", None) == "owner")))
+
+
+def _routing_event(e, it):
+    return ((e.get("event") == "needs" and e.get("to") == "owner")
+            or (e.get("event") in ("file", "spawn") and e.get("needs") == "owner")
+            or (e.get("event") == "block" and e.get("kind") == "owner")
+            or (e.get("event") == "shape" and isinstance(e.get("parts"), list) and lane_route(it) is not None))
+
+
+def ask_since(it, evs):
+    """-> the epoch of the first event that routed the item to him since his last note (a re-shape that routes to him
+    again does not make the ask younger), else its filing time, else None."""
+    t = None
+    for i in reversed(getattr(it, "history", None) or []):
+        e = (evs[i] if evs and 0 <= i < len(evs) else {}) or {}
+        if e.get("event") == "note" and e.get("seat") == "OWNER":
+            break
+        if _routing_event(e, it):
+            t = _epoch(e.get("ts")) or t
+    if t is not None:
+        return t
+    return _epoch(getattr(it, "created_at", None)) if getattr(it, "created_at", None) else None
+
+
+def vetted(it, evs):
+    """-> True when a lane ask is his by program (its ask names one of his five acts) or by the Conductor's read (an
+    `ASK HIS:` note after the routing). Only a lane route is filtered: a needs=owner ask keeps its old rule."""
+    r = lane_route(it)
+    if r is None:
+        return True
+    if FIVE_ACTS_RX.search(str(r.get("ask") or "")):
+        return True
+    for i in reversed(getattr(it, "history", None) or []):
+        e = (evs[i] if evs and 0 <= i < len(evs) else {}) or {}
+        if _routing_event(e, it):
+            return False
+        if e.get("event") == "note" and VET_RX.search(str(e.get("text") or "")):
+            return True
+    return False
 
 
 def phase_wait(it):
@@ -103,9 +165,7 @@ def answered(it, evs):
         e = evs[i] if 0 <= i < len(evs) else {}
         if e.get("event") == "note" and e.get("seat") == "OWNER":
             said = True
-        elif ((e.get("event") == "needs" and e.get("to") == "owner")
-              or (e.get("event") in ("file", "spawn") and e.get("needs") == "owner")
-              or (e.get("event") == "block" and e.get("kind") == "owner")):
+        elif _routing_event(e, it):
             return said
     return False        # no routing event on record: nothing says his turn came, so nothing says it ended
 
@@ -288,8 +348,10 @@ def is_his(it, rs, evs=None, turns=None, passes=None, certs=None, items=None, no
     passes: designer_passes(), read here when not given (only for a first-touch row); certs: certified_ids(), likewise."""
     if turns and getattr(it, "id", None) in turns:
         return True
+    lane = lane_route(it) is not None   # the lane routes before any wait (list_dispatch.decide): a helper's wait hides nothing
     return routed(it) and tooling_hold(rs) is None and not answered(it, evs) and not awaiting_designer(it, passes) \
-        and not certified(it, certs) and not later(it, items, now) and not phase_wait(it)
+        and not certified(it, certs) and (lane or not later(it, items, now)) and not phase_wait(it) \
+        and (evs is None or vetted(it, evs))
 
 
 def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, certs=None, now=None):
@@ -300,11 +362,22 @@ def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, cer
     turns = turns or {}
     def line(iid, it):      # his own plain line, else the owner block's reason (the act it waits for), else the title
         why = str(getattr(it, "blocked_reason", None) or "") if getattr(it, "blocked_kind", None) == "owner" else ""
-        return {"item": iid, "q": (turns.get(iid) or questions.get(iid) or why or it.title or iid).strip()}
-    lines = [line(iid, it) for iid, it in sorted(items.items()) if is_his(it, rel.get(iid), evs, passes=passes,
+        ask = str((lane_route(it) or {}).get("ask") or "")      # the lane's own question to him
+        return {"item": iid, "q": (turns.get(iid) or questions.get(iid) or why or ask or it.title or iid).strip()}
+    t_now = time.time() if now is None else now
+
+    def aged(iid, it):      # oldest ask first, with the age of the ask (part 1 of the stuck-items repairs)
+        x = line(iid, it)
+        t = ask_since(it, evs)
+        x["since"], x["age"] = t, _days(t, t_now)
+        return x
+    lines = [aged(iid, it) for iid, it in sorted(items.items()) if is_his(it, rel.get(iid), evs, passes=passes,
              certs=certs, items=items, now=now) or iid in turns]
-    lines += [{"item": iid, "q": q} for iid, q in sorted(turns.items()) if iid not in items]
-    lines.sort(key=lambda x: x["item"])
+    lines += [{"item": iid, "q": q, "since": None, "age": UNM} for iid, q in sorted(turns.items()) if iid not in items]
+    lines.sort(key=lambda x: (x["since"] if isinstance(x.get("since"), (int, float)) else 9e18, x["item"]))
+    unvetted = [aged(iid, it) for iid, it in sorted(items.items()) if iid not in turns and lane_route(it) is not None
+                and routed(it) and tooling_hold(rel.get(iid)) is None and not answered(it, evs)
+                and evs is not None and not vetted(it, evs)]
     gone = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and routed(it)
             and tooling_hold(rel.get(iid)) is None and answered(it, evs)]
     waiting = [line(iid, it) for iid, it in sorted(items.items()) if iid not in turns and routed(it)
@@ -319,7 +392,7 @@ def needs_you(items, rel, questions=None, evs=None, turns=None, passes=None, cer
     text = "" if not lines else "%d %s: %s" % (len(lines), "thing" if len(lines) == 1 else "things",
                                                " · ".join(x["q"] for x in lines))
     return {"count": len(lines), "lines": lines, "text": text, "topics": fold(lines), "answered": gone,
-            "awaiting_designer": waiting, "certified": sealed, "later": ahead, "phase": phased}
+            "awaiting_designer": waiting, "certified": sealed, "later": ahead, "phase": phased, "unvetted": unvetted}
 
 
 # ---- the owner's one view (design/specs/2026-11-23-owner-one-view/boundary.md) ------------------------------------
@@ -392,7 +465,7 @@ def one_view(his, ours_rows, home, fmt="md", phase=None):
     hl = home_line(home)
     if fmt == "html":
         e = H.escape
-        rows = "".join("<div>• %s <span style=\"color:#98a1af;font-size:11px\">%s</span>%s</div>" % (e(x["q"][:130]), e(x["item"]), e(minutes_note(x["q"])))  # cut-ok: compact dashboard display of the saved question
+        rows = "".join("<div>• %s <span style=\"color:#98a1af;font-size:11px\">%s%s</span>%s</div>" % (e(x["q"][:130]), e(x["item"]), e((", asked %s ago" % x["age"]) if x.get("age") and x["age"] != UNM else ""), e(minutes_note(x["q"])))  # cut-ok: compact dashboard display of the saved question
                        for x in his) or "<div>Nothing waits on you.</div>"
         tail = ""
         if ours_rows:
@@ -404,7 +477,9 @@ def one_view(his, ours_rows, home, fmt="md", phase=None):
         return ('<div style="font-weight:bold">NEEDS YOU, %d</div>%s%s<div style="font-size:12px;margin-top:6px">%s</div>'
                 % (len(his), rows, tail, e(hl)))
     out = ["**Needs you (%d)** · %s" % (len(his), hl), ""]
-    out += ["- %s (`%s`)%s" % (_clip(x["q"], 200), x["item"], minutes_note(x["q"])) for x in his] or ["- Nothing waits on you."]
+    out += ["- %s (`%s`)%s%s" % (_clip(x["q"], 200), x["item"], minutes_note(x["q"]),
+                                 (", asked %s ago" % x["age"]) if x.get("age") and x["age"] != UNM else "")
+            for x in his] or ["- Nothing waits on you."]
     if pn is not None:
         out += ["", "**%s (%d)**: no act of yours clears these today" % (PHASE_TITLE, pn)]
     if ours_rows:

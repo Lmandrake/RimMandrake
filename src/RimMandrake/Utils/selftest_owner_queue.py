@@ -425,5 +425,6 @@ check("repo questions file: every real owner ask on the live books states its mi
       all(re.search(r"\d+ ?min", q.get(i, "")) for i in ("FLYERFRAMES_PROVE_JOINT_SESSION",
                                                            "RIMMANDRAKE_HEAR_DROID_NIGHT_QUIZ_THEN_AUDITION_CLAUDE_IS_DEAF")))
 
+
 print("RESULT %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))
 sys.exit(1 if FAILS else 0)

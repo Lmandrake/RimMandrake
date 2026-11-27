@@ -250,12 +250,73 @@ def t_the_live_promise_follows_the_shared_view_file():
     assert "old" in live_line.check(line, now=NOW + OQ.VIEW_FRESH_S + 1, runner=systemctl)
 
 
+# RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 1: the ticket lane routes an ask to him through a Shape split
+# (parts[].route.who owner or review), not through `needs`. On 2026-11-26 the lane routed 14 asks to him and "Needs
+# Mandrake" showed 2: routed() read only needs=owner and an owner block, and a helper's dated wait hid the rest.
+def _ev(verb, ts="2026-11-01T12:00:00Z", seat="BENCH", **kw):
+    return dict({"event": verb, "seat": seat, "ts": ts}, **kw)
+
+
+def _shaped(iid, who="owner", ask="Pick A or B on the sheet", ts="2026-11-20T12:00:00Z"):
+    return [_ev("file", id=iid, title=iid, kind="task", needs="offline", **{"for": "BENCH"}),
+            _ev("shape", ts=ts, id=iid, parts=[{"name": "look", "effect": None, "fooled_by": None,
+                                                "route": {"who": who, "ask": ask, "resumes": "his pick"}}])]
+
+
+def _lane_evs():
+    return (_shaped("LANE_OLD", ts="2026-11-10T12:00:00Z", ask="The north picture is one you kept; replace it? 3 min")
+            + _shaped("LANE_NEW", ts="2026-11-25T12:00:00Z", ask="sit for one live flight test (his act 1), 20 min")
+            + _shaped("LANE_REVIEW", who="review", ts="2026-11-24T12:00:00Z", ask="read the pages at the desk, 10 min")
+            + _shaped("LANE_CONDUCTOR", who="conductor") + _shaped("LANE_UNVETTED", ask="Is the quest owed v1 work?"))
+
+
+def _lane_needs(evs):
+    import model as D
+    w = D.replay(evs, strict=True)
+    w.items["LANE_NEW"].wait_until = "2026-12-30T00:00:00Z"     # a helper's wait that names his act (the launcher's rule)
+    return OQ.needs_you(w.items, {}, {}, evs, now=D.iso_epoch("2026-11-26T12:00:00Z"))
+
+
+def t_lane_route_is_his():
+    evs = _lane_evs()
+    got = [x["item"] for x in _lane_needs(evs)["lines"]]
+    assert {"LANE_OLD", "LANE_NEW", "LANE_REVIEW"} <= set(got), got
+    assert "LANE_CONDUCTOR" not in got, "a route to the Conductor is not his"
+    assert "LANE_NEW" in got, "a helper's dated wait hid a lane ask"
+    evs.append(_ev("note", ts="2026-11-26T02:00:00Z", seat="OWNER", id="LANE_OLD", text="keep B"))
+    n = _lane_needs(evs)
+    assert "LANE_OLD" not in [x["item"] for x in n["lines"]] and "LANE_OLD" in [x["item"] for x in n["answered"]], \
+        "his note after the Shape routing answers a lane ask"
+
+
+def t_asks_oldest_first_with_age():
+    n = _lane_needs(_lane_evs())
+    assert [x["item"] for x in n["lines"]][:3] == ["LANE_OLD", "LANE_REVIEW", "LANE_NEW"], n["lines"]
+    assert [x["age"] for x in n["lines"]][:3] == ["16d", "2d", "1d"], [x["age"] for x in n["lines"]]
+    assert n["lines"][0]["q"].startswith("The north picture is one you kept"), "the line is the lane's own question"
+    assert "asked 16d ago" in OQ.one_view(n["lines"], [], None)
+    assert "asked 16d ago" in OQ.one_view(n["lines"], [], None, fmt="html")
+
+
+def t_lane_ask_filter():
+    evs = _lane_evs()
+    n = _lane_needs(evs)
+    assert "LANE_UNVETTED" not in [x["item"] for x in n["lines"]], "an unread ask that names none of his acts showed"
+    assert [x["item"] for x in n["unvetted"]] == ["LANE_UNVETTED"], n["unvetted"]
+    evs.append(_ev("note", ts="2026-11-26T01:00:00Z", id="LANE_UNVETTED", text="ASK HIS: he set the goal; no ruling answers it"))
+    assert "LANE_UNVETTED" in [x["item"] for x in _lane_needs(evs)["lines"]], "the Conductor's ASK HIS read did not count"
+    evs.append(_ev("shape", ts="2026-11-26T03:00:00Z", id="LANE_UNVETTED", parts=[{"name": "look", "effect": None,
+               "fooled_by": None, "route": {"who": "owner", "ask": "Is the quest owed v1 work?", "resumes": "x"}}]))
+    assert "LANE_UNVETTED" not in [x["item"] for x in _lane_needs(evs)["lines"]], "a read before a new routing still counted"
+
+
 def main():
     tests = [t_count_sums_the_readable_sources, t_no_readable_source_is_none_never_zero, t_an_unanswered_card_is_a_need,
              t_an_ended_run_with_no_later_act_is_a_need, t_the_reading_is_shared_and_cached,
              t_a_test_never_writes_the_shared_files,
              t_one_view_shows_his_ours_and_the_count, t_not_his_before_its_turn, t_the_page_builds_from_one_view,
-             t_the_live_promise_follows_the_shared_view_file, t_each_limit_names_its_danger]
+             t_the_live_promise_follows_the_shared_view_file, t_each_limit_names_its_danger,
+             t_lane_route_is_his, t_asks_oldest_first_with_age, t_lane_ask_filter]
     failed = 0
     for t in tests:
         try:

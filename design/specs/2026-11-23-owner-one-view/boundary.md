@@ -59,6 +59,16 @@ Why: on 2026-11-23 Fleet Now listed 4 things for him and Maturation Now's "Needs
   ticket that is still open (`later`); `needs_you` names it under `later`. A date that cannot be read and a blocker that
   was never filed keep the row on his list. A Designer turn that waits on him is his whatever the wait. Tested in
   `src/RimMandrake/Utils/selftest_owner_queue.py`.
+- **lane-route-is-his.** `owner_queue.routed` is True for a ticket whose Shape split routes a part with no check to the
+  owner or to review (`lane_route`, the lane's own `list_shape.first_route`), as for `needs=owner`. A lane ask is not
+  hidden by a dated wait (the lane routes before any wait, `list_dispatch.decide`). His note after the Shape event that
+  routed it answers it. Why: on 2026-11-26 the lane routed 14 asks to him and "Needs Mandrake" showed 2.
+- **asks-oldest-first-with-age.** `needs_you` lines carry `since` (the first routing since his last note) and `age`
+  (whole days), oldest first; `one_view` prints "asked <age> ago". A lane ask's line is the route's own question.
+- **lane-ask-filter.** A lane ask is on his page only when a program can tell it is his (its ask names one of his five
+  acts or a physical act, `FIVE_ACTS_RX`) or the Conductor read it against now (a note `ASK HIS: <why>` after the
+  routing). Every other lane ask is under `needs_you()["unvetted"]`, which the Conductor's owed view lists
+  (`owed.view`). A STALE ask loses its route; a NOT HIS ask is re-shaped to the Conductor.
 - **the-page-builds-from-one-view.** `maturation_now` (its "Needs Mandrake" block on MATURATION_DETAIL; the short block on
   MATURATION_NOW draws the same rows and counts) calls `owner_queue.one_view`. `maturation_now.live_facts` writes the
   view it built (`write_view`).
