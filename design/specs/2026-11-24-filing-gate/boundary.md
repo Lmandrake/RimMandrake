@@ -28,7 +28,7 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
   state folder files as a window: it writes no record into the real state. A test that brings its own state folder
   and sets a unit of its own gets the whole gate; the unit it inherited from its run (the `RM_ROLE_UNIT` in the launch
   env of its nearest test program, `/proc/<pid>/environ`) is not its own.
-- **the-live-runs.** The units that `detached_helper` shows launching or running, or `None` when they cannot be read.
+- **the-live-runs.** The units that `detached_helper` shows launching or running, and the Dispatcher roles' runs that its state shows running (`rm-role-<name>-<n>`), or `None` when the detached records cannot be read.
 - **the-mod-folders.** A function that says if a folder of that name is in `design/concepts/` or `src/RimMandrake/`.
 - **the-mod-of-the-run.** `RM_CONTROL_MOD` in the env of the filing unit's launch record (`detached_helper.py`; every
   maturation and Dispatch launch sets it), or `None` when the record cannot be read, has no such key, or says `none`.
@@ -70,6 +70,7 @@ there is of a promise here. The hook has its own selftest, `.claude/hooks/selfte
 - **an-unknown-class-is-refused.** A class outside the list is refused, "it is large" and "my work would not finish"
   included. The refusal does not list the classes.
 - **files-held-names-a-live-run.** Class `files-held` passes only when its evidence names a unit that is live.
+- **a-live-role-run-is-a-live-run.** A Dispatcher role's run (a Designer run `rm-role-designer-<n>`) that the Dispatcher's state shows running is live for every door, so a wait or a note set down on it names a live run (2026-11-26: a wait on the live Designer run of WreckedMachines was refused as naming nothing live). A state that cannot be read adds no role run, and the detached runs still count.
 - **other-mod-names-a-mod-folder.** Class `other-mod` passes only when its evidence names a mod folder that exists. A mod folder is one
   of `design/concepts/<Mod>`, `src/RimMandrake/<Mod>`, `src/RimStarWars/<Mod>` or `src/RimUtinni/<Mod>` (all three shipping tiers).
 - **other-mod-refuses-the-mod-of-the-run.** Class `other-mod` whose evidence names only the mod of the filing run (any

@@ -250,13 +250,35 @@ def own_mod_read(answer):
                   "could not look: %s" % answer.cause)
 
 
-def facts(repo, unit=None):
-    """-> (live_units or None, mod_exists, the run's own mod or None) read from this machine, for the door."""
+def live_role_units(st):
+    """-> the units of the Dispatcher roles' runs that the Dispatcher state `st` shows running (a Designer run
+    rm-role-designer-<n>). Pure; a state that is not a dict, or rows of any other shape, add nothing."""
+    roles = st.get("roles") if isinstance(st, dict) else None
+    if not isinstance(roles, dict):
+        return set()
+    return {x["unit"] for rs in roles.values() if isinstance(rs, dict) for x in (rs.get("runs") or [])
+            if isinstance(x, dict) and x.get("state") == "running" and isinstance(x.get("unit"), str)}
+
+
+def _dispatcher_state():
+    import dispatcher as D
+    return D.load_state(D.state_root(True))
+
+
+def facts(repo, unit=None, roles_state=None):
+    """-> (live_units or None, mod_exists, the run's own mod or None) read from this machine, for the door. The live
+    units are the detached runs and the Dispatcher roles' running runs (a wait on a live Designer run names a live run,
+    2026-11-26); roles_state: a stand-in for the Dispatcher state's reader."""
     try:
         import detached_helper as DH
         live = {r["unit"] for r in DH.all_records() if DH.live_status(r) in ("launching", "running")}
     except Exception:  # noqa: BLE001 - could not look: the door files the ticket and says so
         live = None
+    if live is not None:
+        try:
+            live |= live_role_units((roles_state or _dispatcher_state)())
+        except Exception:  # noqa: BLE001 - an unreadable Dispatcher state adds no role run; the detached runs count
+            pass
 
     def mod_exists(name):
         return any(os.path.isdir(os.path.join(repo, d, name))       # each shipping tier holds mods (NAMING_SCHEME_PLAN)

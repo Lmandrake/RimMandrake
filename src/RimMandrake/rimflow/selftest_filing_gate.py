@@ -91,6 +91,26 @@ def t_files_held_names_a_live_run():
     check("its own unit is not another run", not gate(not_now="files-held: %s edits cli.py" % UNIT, live=LIVE | {UNIT}).ok)
 
 
+def t_a_live_role_run_is_a_live_run():
+    st = {"roles": {"Designer": {"runs": [{"unit": "rm-role-designer-1795748853", "state": "running"},
+                                          {"unit": "rm-role-designer-1795291426", "state": "done"}]},
+                    "Operations": {"runs": []}}}
+    lr = getattr(FG, "live_role_units", lambda st: set())
+    got = lr(st)
+    check("a running role run is live, a done one is not", got == {"rm-role-designer-1795748853"}, got)
+    check("a state that cannot be read adds no role run", lr(None) == set() and lr({"roles": "torn"}) == set(), "")
+    live = FG.facts(REPO, None, roles_state=lambda: st)[0] if "roles_state" in FG.facts.__code__.co_varnames else set()
+    check("facts carries the live role run with the detached ones", "rm-role-designer-1795748853" in (live or set()), live)
+    text = ("waits on the live Designer run rm-role-designer-1795748853; when it ends, the Conductor reads the readiness "
+            "list and the Designer's result, and tells the owner")
+    d = FG.at_defer("wait", "ITEM", text, unit=UNIT, owner=False, program="", state_dir=scratch("role_run_wait"),
+                    live_units=(LIVE | lr(st)))
+    check("a wait set down on a live role run passes", d.go, d)
+    d = FG.at_defer("wait", "ITEM", text.replace("1795748853", "1795291426"), unit=UNIT, owner=False, program="",
+                    state_dir=scratch("role_run_wait_done"), live_units=(LIVE | lr(st)))
+    check("a wait on a role run that ended is still refused", not d.go and d.rc == 6, d)
+
+
 def t_other_mod_names_a_mod_folder():
     check("a mod folder passes", gate(not_now="other-mod: FlowWorks, the pit cover scene").ok)
     # 2026-11-25, ExplosiveKnockback visit 2: Armoury (src/RimStarWars/Armoury) was refused as "no mod folder"; every tier counts
@@ -894,6 +914,7 @@ def main():
         t_evidence_of_a_known_class_files_the_ticket,
         t_an_unknown_class_is_refused,
         t_files_held_names_a_live_run,
+        t_a_live_role_run_is_a_live_run,
         t_other_mod_names_a_mod_folder,
         t_other_mod_refuses_the_mod_of_the_run,
         t_a_run_mod_that_cannot_be_read_is_not_a_refusal,
