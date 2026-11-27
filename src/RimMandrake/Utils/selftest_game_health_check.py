@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """selftest_game_health_check.py - the standing game health check (HEALTH_CHECK_MONITOR_MEMORY_TPS_OVER_TIME).
 
-Synthetic TPS-record sessions in a temp dir: full-list filter, curves over time, Theil-Sen growth, decay at the
-dominant speed, long-event stalls kept out of the stall limit, UNMEASURED (never 0) for absent sources, breaches
+Synthetic TPS-record sessions in a temp dir: full-list filter, curves over time, Theil-Sen growth inside one game (a
+reload is not a leak rate), attribution of each breach, decay at the dominant speed, long-event stalls kept out of the stall limit, UNMEASURED (never 0) for absent sources, breaches
 against the shipped thresholds, idempotent record, open sessions held back, the live-proof `fields` verb, and the
 ops_watch tps family reading a breach as a MEASURED count (what rings OPS_GAME_HEALTH_DEBUG). Offline, no game.
 """
@@ -595,8 +595,6 @@ with tempfile.TemporaryDirectory() as tmp:
     check("debugged verb: refuses an empty why (exit 2)",
           verb(["debugged", "--session", "9" * 8, "--item", "X_ITEM", "--why", " "]) == 2)
     lat = None
-    import io
-    import contextlib
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
         verb(["latest", "--json"])
