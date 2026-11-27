@@ -6,17 +6,22 @@ never a flood." Owner: "The fire barely catches... I had expected faster spread.
   fire_catches_and_runs  A fresh load of the registered Pyrelands site (the suite's fresh map), weather forced clear, the
                          wind pointed east (MapComponent_BurnLine.SetWindForTest), wind carries on, Fire pace at the
                          shipped default. The spark: one cell lit by jawa/map_fire start (FireUtility.TryStartFireIn) at
-                         fire size 0.1 on the row whose downwind corridor holds the most standing ember grass. When no
-                         row reaches COVER_MIN the stage grows ember grass over that corridor (set_plants, plantable
-                         cells only) and reads it again; the manifest names what it planted.
+                         fire size 0.1 on the row whose downwind corridor holds the most standing ember grass among the
+                         rows whose plants (jawa/list_things group=Plant) carry a line a day's reach (fuel_walk). When
+                         no such row reaches COVER_MIN, or none walks, the stage grows ember grass over the best clean
+                         corridor (set_plants, plantable cells only) and reads it again; the manifest names what it
+                         planted. A firebreak still there (bare ground nothing grows on) is UNMEASURED, no spark lit.
     valid opportunity    the spark cell holds ember grass, the corridor downwind of it to the edge is at least COVER_MIN
-                         ember grass, the weather stayed clear, no pawn and no building lies in the corridor a day's front
+                         ember grass, its plants let a carried line walk a day's reach from the spark (fuel_walk: no
+                         firebreak; live 2026-11-27 a bare patch 4 cells downwind stopped both builds at head 5), the
+                         weather stayed clear, no pawn and no building lies in the corridor a day's front
                          can reach (DAY_REACH x 2 HALF_W). Otherwise UNMEASURED, never a verdict on the mod.
     success              the spark burns at hour 1; a front FLANK_WIDTH wide by FRONT_HOURS; the day-end head beats the
                          0.1.0 reading (READING_010, taken once on the mod/Pyrelands/v0.1.0 tag, kept beside the row);
                          a blind judge reads a walking line on the captures (the manifest lists them).
     forbidden            the burning or black share of open ground over SHARE_MAX at the day end; a fire on a cell that no
-                         carry reached (the spark's own cell aside); a new Player.log error line.
+                         carry reached (no chain of carry steps from the spark: unreached()); a fire the wind does not carry
+                         (burning uncarried at two hourly reads: ungoverned()); a new Player.log error line.
     end                  one game day, or the head at the map edge. Reads every hour, captures at CAPTURE_HOURS.
 
 Run (the pyrelands tier, a free game, python.exe, the bridge env of that game):
@@ -39,6 +44,8 @@ SPARK_SIZE = 0.1                        # the contract: FireUtility.TryStartFire
 BEARING = 90                            # east: SetWindForTest's bearing, the burn line's own (90 = +x)
 FLANK_WIDTH = 10                        # RM_BurnKernel.FlankWidth (the selftest reads it from the C# file)
 HEAL_REACH = 5                          # RM_BurnKernel.HealReach: the front's gaps passed (the selftest reads it too)
+CARRY_REACH = 2                         # RM_BurnKernel.WindCarryReach: a carry lights at most 2 cells on (the selftest
+                                        # reads it); a heal or a flank lights one cell beside the carry's target
 FRONT_HOURS = 24                        # bar: "on the day it is lit it is a front" (selftest_pyrelands_fire_pace.FRONT_HOURS)
 SHARE_MAX = 0.5                         # bar "never a flood": the decider's "burned share of open ground at or under half"
 COVER_MIN = 0.70                        # the lowest cover T_FIRE_PACE_MODEL_OFFLINE reads: the live corridor stays inside it
@@ -48,6 +55,8 @@ HALF_W = 30                             # MEASURED: the model's worst day-one |a
                                         # by the selftest)
 SPARK_X = 12                            # cells in from the west edge: room behind the spark, the head's whole map ahead
 ROW_STEP = 10                           # candidate spark rows, every 10 cells, HALF_W off the north and south edges
+FUEL_ROWS = 50                          # map rows per jawa/list_things read of the plants (live 2026-11-27: 5 reads, 2.8 s)
+FUEL_LIMIT = (DAY_REACH + 1) * FUEL_ROWS      # one plant a cell at most: a read never truncates (isCompleteList is checked too)
 CAPTURE_HOURS = (1, 6, 12, 24)          # one capture of the burn per quarter day, and the hour-1 spark
 SHOT_PX = 1500                          # a capture's long side at most (the agents' image limit)
 PLAY_PPC = 64                           # validation.R6_PLAY_PPC, the cap
@@ -123,9 +132,69 @@ def share(read):
     return len(cells) / float(max(1, read["open"]))
 
 
-def uncarried(read, spark):
-    """Pure. Fire cells that no carry reached: carriedAt < 0, the spark's own cell aside."""
-    return [(f[0], f[1]) for f in read["fires"] if f[2] < 0 and (f[0], f[1]) != tuple(spark)]
+def carry_steps(bearing, alone=False):
+    """Pure. Every offset from a fire at which the wind can light a cell, from RM_BurnKernel's geometry: the carry's target
+    T (WindProbes: d = 1..CARRY_REACH on, straight or on either diagonal), a flank (FlankPlan) or a heal (HealDirs at 90
+    degrees) one cell beside T, a heal at 135 degrees one cell back beside T. alone=True keeps the carry's targets only:
+    the walk of the line by its carry alone (a flank opens on the ground's noise, a heal only toward another lane).
+    A wind on a compass quarter only (the scene's 90)."""
+    if bearing % 90:
+        raise ValueError("carry_steps: bearing %r is not on a compass quarter" % bearing)
+    wx, wz = (int(round(v)) for v in axes(bearing))
+    out = set()
+    for d in range(1, CARRY_REACH + 1):
+        for e in (0, d, -d):
+            for da, dc in ((0, 0),) if alone else ((0, 0), (0, 1), (0, -1), (-1, 1), (-1, -1)):
+                al, ac = d + da, e + dc
+                if (al, ac) != (0, 0):
+                    out.add((al * wx + ac * wz, al * wz - ac * wx))
+    return sorted(out)
+
+
+def flood(cells, start, bearing, keep=None, alone=False):
+    """Pure. The cells of `cells` that a chain of carry steps reaches from `start` (start itself in), each inside keep(c)."""
+    cells, steps = set(cells), carry_steps(bearing, alone)
+    seen, todo = {tuple(start)}, [tuple(start)]
+    while todo:
+        x, z = todo.pop()
+        for dx, dz in steps:
+            c = (x + dx, z + dz)
+            if c in cells and c not in seen and (keep is None or keep(c)):
+                seen.add(c)
+                todo.append(c)
+    return seen
+
+
+def unreached(read, spark, bearing):
+    """Pure. Burning or black cells that no chain of carry steps reaches from the spark: a fire no carry lit (vanilla's own
+    spread, a stray). MapComponent_BurnLine.CarriedAt stamps the SOURCE of a carry (WindCarriedFire.Carry -> MarkCarried
+    of the fire that carries), so a cell's carriedAt cannot say what lit it; where it lies can."""
+    cells = set(read["burned"]) | set((f[0], f[1]) for f in read["fires"])
+    return sorted(cells - flood(cells, spark, bearing))
+
+
+def ungoverned(hourly):
+    """Pure. hourly: [(hour, parse_burn read)]. Cells burning with carriedAt -1 at two successive reads: a fire the wind does
+    not carry (every governed fire carries once, at most CarryTicks + CarryExtraTicks after it is lit, under an hour at
+    the slider's low end; the selftest reads it), so it spreads by vanilla's rule."""
+    out, prev = set(), set()
+    for _, r in hourly:
+        now = set((f[0], f[1]) for f in r["fires"] if f[2] < 0)
+        out |= now & prev
+        prev = now
+    return sorted(out)
+
+
+def fuel_walk(fuel, spark, bearing, reach, half_w):
+    """Pure. The furthest along-wind distance a carried line could walk from the spark over these fuel cells (plants), in
+    the corridor (0..reach along, |across| <= half_w): every lit cell lies a carry step from its source. Less than reach
+    is a firebreak the head cannot pass, on either build."""
+    def keep(c):
+        al, ac = along_across(c, spark, bearing)
+        return 0 <= al <= reach and abs(ac) <= half_w
+    if tuple(spark) not in set(fuel):   # a spark on bare ground lights nothing
+        return 0
+    return int(round(head(flood(fuel, spark, bearing, keep, alone=True), spark, bearing)))
 
 
 def cover(corr):
@@ -146,18 +215,19 @@ def candidate_rows(size, half_w=HALF_W, step=ROW_STEP):
     return list(range(half_w, size[1] - half_w, step))
 
 
-def pick_row(reads):
-    """Pure. [(z, Corridor dict)] -> (z, dict) with the most ember grass per corridor cell, no pawn and no building; ties to
-    the lowest z; None when no row is clean."""
-    ok = [(z, d) for z, d in reads if d and int(d["pawns"]) == 0 and int(d["buildings"]) == 0 and int(d["cells"]) > 0]
+def pick_row(reads, walks=None, need=None):
+    """Pure. [(z, Corridor dict)] -> (z, dict) with the most ember grass per corridor cell, no pawn and no building, and
+    (walks given: {z: fuel_walk}) a walk of at least `need`; ties to the lowest z; None when no row is clean."""
+    ok = [(z, d) for z, d in reads if d and int(d["pawns"]) == 0 and int(d["buildings"]) == 0 and int(d["cells"]) > 0
+          and (walks is None or walks.get(z, -1) >= need)]
     if not ok:
         return None
     return max(ok, key=lambda r: (cover(r[1]), -r[0]))
 
 
-def opportunity(corr, weathers):
-    """Pure. (the picked corridor's Corridor dict, [weather at each hourly read]) -> (ok, why, rows). ok False is no valid
-    opportunity (UNMEASURED)."""
+def opportunity(corr, weathers, walk=None, need=DAY_REACH):
+    """Pure. (the picked corridor's Corridor dict, [weather at each hourly read], its fuel_walk, the walk it needs) ->
+    (ok, why, rows). ok False is no valid opportunity (UNMEASURED)."""
     rows = []
 
     def row(name, ok, worst, limit, cases):
@@ -167,6 +237,8 @@ def opportunity(corr, weathers):
     cov = cover(corr)
     row("spark cell holds ember grass", bool(corr) and corr.get("emberAt") == "1", corr and corr.get("emberAt"), "1", 1)
     row("corridor ember grass to the edge", cov >= COVER_MIN, round(cov, 3), ">= %.2f" % COVER_MIN, cells)
+    row("the plants carry a line a day's reach", walk is not None and walk >= need, walk,
+        ">= %d cells on (fuel_walk)" % need, 1)
     row("pawns in a day's front", bool(corr) and int(corr["pawns"]) == 0, corr and corr.get("pawns"), "== 0", cells)
     row("buildings in a day's front", bool(corr) and int(corr["buildings"]) == 0, corr and corr.get("buildings"), "== 0", cells)
     notclear = [w for w in weathers if w != "Clear"]
@@ -203,8 +275,10 @@ def verdict(hourly, spark, bearing, reading_010, judge=None):
     worst_share = max([share(r) for _, r in hourly] or [0.0])
     row("burning or black share of open ground", bool(hourly) and worst_share <= SHARE_MAX, round(worst_share, 4),
         "<= %.2f" % SHARE_MAX, len(hourly))
-    stray = sorted(set(c for _, r in hourly for c in uncarried(r, spark)))
+    stray = sorted(set(c for _, r in hourly for c in unreached(r, spark, bearing)))
     row("fire on a cell no carry reached", not stray and bool(hourly), len(stray), "== 0 (first %r)" % stray[:3], len(hourly))
+    free = ungoverned(hourly)
+    row("a fire the wind does not carry", not free and bool(hourly), len(free), "== 0 (first %r)" % free[:3], len(hourly))
     row("a blind judge reads a walking line", judge, judge, "True (judge on the manifest's captures)", 1)
     return rows
 
@@ -270,6 +344,17 @@ def register(suite, V):
         r = t.bridge_call("jawa/static_call", type=cls, method=method, args=str(args))
         return (r or {}).get("result") if V._live(t) else None
 
+    def plants(t, size):
+        """The cells holding a plant along the corridors' reach, every row; None for an incomplete read."""
+        fuel = set()
+        for z0 in range(0, size[1], FUEL_ROWS):
+            r = t.bridge_call("jawa/list_things", rect=V._rs((SPARK_X, z0, DAY_REACH + 1, min(FUEL_ROWS, size[1] - z0))),
+                              group="Plant", limit=FUEL_LIMIT)
+            if not r or r.get("isCompleteList") is not True:
+                return None
+            fuel |= set((int(p["x"]), int(p["z"])) for p in r.get("things") or [])
+        return fuel
+
     def weather(t):
         a = V._ash(t, "0,0,1,1")
         return a.get("weather") if a else None
@@ -298,15 +383,23 @@ def register(suite, V):
             reads = []
             for z in candidate_rows(size):
                 reads.append((z, kv(call(t, PROBE, "Corridor", "%d,%d,%d,%d,%d" % (SPARK_X, z, BEARING, DAY_REACH, HALF_W)))))
-            pick = pick_row(reads) if V._live(t) else (size[1] // 2, None)
+            need = min(DAY_REACH, size[0] - 1 - SPARK_X)
+            fuel = plants(t, size) if V._live(t) else set()
+            if fuel is None:
+                V._unmeasured(t, "the corridor's plants unreadable (jawa/list_things incomplete)")
+            walks = dict((z, fuel_walk(fuel, (SPARK_X, z), BEARING, need, HALF_W)) for z, _ in reads)
+            # a row whose plants carry a line a day's reach first (live 2026-11-27: z 40, the best cover, holds a bare patch
+            # 4 cells downwind; both builds stopped at head 5 and its fuel_walk reads 5); a clean row else, planted below
+            pick = (pick_row(reads, walks, need) or pick_row(reads)) if V._live(t) else (size[1] // 2, None)
             if pick is None:
                 V._unmeasured(t, "no spark row holds a corridor clear of pawns and buildings (%d rows)" % len(reads))
             z, corr = pick
             spark = (SPARK_X, z)
             planted = None
-            if V._live(t) and corr and cover(corr) < COVER_MIN:
-                # staging: the site's own grass is too thin on every row; grow ember grass over the corridor's plantable
-                # cells (set_plants skips the rest) so the opportunity is the contract's, then read it again
+            if V._live(t) and corr and (cover(corr) < COVER_MIN or walks.get(z, -1) < need):
+                # staging: the site's own grass is too thin, or broken by a firebreak, on every clean row; grow ember grass
+                # over the corridor's plantable cells (set_plants skips the rest) so the opportunity is the contract's,
+                # then read it again
                 planted = corridor_rect(spark, size)
                 V._plants(t, GRASS, planted, growth=1.0)
             elif V._live(t) and corr and corr.get("emberAt") != "1":   # staging: the spark cell's own blade, grown
@@ -314,10 +407,18 @@ def register(suite, V):
                 V._plants(t, GRASS, planted, growth=1.0)
             if planted:
                 corr = kv(call(t, PROBE, "Corridor", "%d,%d,%d,%d,%d" % (SPARK_X, z, BEARING, DAY_REACH, HALF_W)))
+                fuel = plants(t, size)
+                if fuel is None:
+                    V._unmeasured(t, "the planted corridor's plants unreadable (jawa/list_things incomplete)")
+            walk = fuel_walk(fuel, spark, BEARING, need, HALF_W) if V._live(t) else None
+            print("[fcr-check] stage: wind set %r (asked %d); spark %r; corridor %r; rows read %d; fuel_walk %r of %d "
+                  "(walkable rows %d of %d)" % (wind, BEARING, spark, corr, len(reads), walk, need,
+                                                sum(1 for w in walks.values() if w >= need), len(walks)), flush=True)
+            if V._live(t) and walk < need:
+                V._unmeasured(t, "a firebreak: the plants carry a line %d of %d cells from the spark %r" % (walk, need, spark))
+            # set only past every stage check: the burn lights no spark on an UNMEASURED stage
             state.update(spark=spark, corr=corr, wind=wind, size=size, edge=int((corr or {}).get("edge") or size[0]),
-                         planted=planted)
-            print("[fcr-check] stage: wind set %r (asked %d); spark %r; corridor %r; rows read %d" % (
-                wind, BEARING, spark, corr, len(reads)), flush=True)
+                         planted=planted, walk=walk, need=need)
             V._note(t, "the spark row and its corridor", {"spark": spark, "corridor": corr, "rows": len(reads), "wind": wind})
             state["mark"] = V._log_mark(t)
         V._independent(t)
@@ -349,15 +450,15 @@ def register(suite, V):
                 r["burned"] -= pre["burned"]
                 hourly.append((hour, r))
                 weathers.append(weather(t))
-                print("[fcr-check] hour %d: fires %d, burned %d, head %.1f, width %d, share %.4f, uncarried %d" % (
+                print("[fcr-check] hour %d: fires %d, burned %d, head %.1f, width %d, share %.4f, unreached %d" % (
                     hour, len(r["fires"]), len(r["burned"]), head(r["burned"] | set((f[0], f[1]) for f in r["fires"]), spark,
                                                                    BEARING),
-                    front_width([(f[0], f[1]) for f in r["fires"]], BEARING), share(r), len(uncarried(r, spark))),
+                    front_width([(f[0], f[1]) for f in r["fires"]], BEARING), share(r), len(unreached(r, spark, BEARING))),
                     flush=True)
                 cells = r["burned"] | set((f[0], f[1]) for f in r["fires"])
-                print("[fcr-check] hour %d: the head cell %s, uncarried %s, tick %d" % (
+                print("[fcr-check] hour %d: the head cell %s, unreached %s, tick %d" % (
                     hour, max(cells, key=lambda c: along_across(c, spark, BEARING)[0]) if cells else None,
-                    uncarried(r, spark)[:4], r["tick"]), flush=True)
+                    unreached(r, spark, BEARING)[:4], r["tick"]), flush=True)
                 done = end_reached(hour, r, spark, BEARING, state["edge"])
                 if hour in CAPTURE_HOURS or done:
                     rect = shot_rect(r["burned"] | set((f[0], f[1]) for f in r["fires"]), state["size"])
@@ -378,11 +479,11 @@ def register(suite, V):
             if not state.get("ended"):   # a burn cut short (an UNMEASURED read or capture) is no reading and no verdict
                 V._unmeasured(t, "the burn stopped at hour %d, before its end (a day or the edge): no %s" % (
                     len(state["hourly"]), "0.1.0 reading" if take else "verdict"))
-            ok, why, orows = opportunity(state["corr"], state["weathers"])
+            ok, why, orows = opportunity(state["corr"], state["weathers"], state.get("walk"), state.get("need", DAY_REACH))
             last = state["hourly"][-1][1] if state["hourly"] else None
             hd = head(last["burned"] | set((f[0], f[1]) for f in last["fires"]), spark, BEARING) if last else None
             man = {"scene": "sc_fire_catches_and_runs", "spark": spark, "corridor": state["corr"], "valid": ok, "why": why,
-                   "opportunity": orows, "planted": state.get("planted"), "shots": state["shots"], "head": hd,
+                   "opportunity": orows, "planted": state.get("planted"), "walk": state.get("walk"), "shots": state["shots"], "head": hd,
                    "hours": len(state["hourly"]), "taken010": take}
             if take:
                 if ok and hd is not None:

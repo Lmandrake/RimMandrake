@@ -1,0 +1,27 @@
+--- a/src/RimMandrake/Pyrelands/fire_catches_live.py
++++ b/src/RimMandrake/Pyrelands/fire_catches_live.py
+@@ -388,13 +388,13 @@
+             walks = dict((z, fuel_walk(fuel, (SPARK_X, z), BEARING, need, HALF_W)) for z, _ in reads)
+             # a row whose plants carry a line a day's reach first (live 2026-11-27: z 40, the best cover, holds a bare patch
+             # 4 cells downwind; both builds stopped at head 5 and its fuel_walk reads 5); a clean row else, planted below
+-            pick = (pick_row(reads, walks, need) or pick_row(reads)) if V._live(t) else (size[1] // 2, None)
++            pick = pick_row(reads) if V._live(t) else (size[1] // 2, None)
+             if pick is None:
+                 V._unmeasured(t, "no spark row holds a corridor clear of pawns and buildings (%d rows)" % len(reads))
+             z, corr = pick
+             spark = (SPARK_X, z)
+             planted = None
+-            if V._live(t) and corr and (cover(corr) < COVER_MIN or walks.get(z, -1) < need):
++            if V._live(t) and corr and (cover(corr) < COVER_MIN):
+                 # staging: the site's own grass is too thin, or broken by a firebreak, on every clean row; grow ember grass
+                 # over the corridor's plantable cells (set_plants skips the rest) so the opportunity is the contract's,
+                 # then read it again
+@@ -412,7 +412,7 @@
+             print("[fcr-check] stage: wind set %r (asked %d); spark %r; corridor %r; rows read %d; fuel_walk %r of %d "
+                   "(walkable rows %d of %d)" % (wind, BEARING, spark, corr, len(reads), walk, need,
+                                                 sum(1 for w in walks.values() if w >= need), len(walks)), flush=True)
+-            if V._live(t) and walk < need:
++            if False and walk < need:
+                 V._unmeasured(t, "a firebreak: the plants carry a line %d of %d cells from the spark %r" % (walk, need, spark))
+             # set only past every stage check: the burn lights no spark on an UNMEASURED stage
+             state.update(spark=spark, corr=corr, wind=wind, size=size, edge=int((corr or {}).get("edge") or size[0]),

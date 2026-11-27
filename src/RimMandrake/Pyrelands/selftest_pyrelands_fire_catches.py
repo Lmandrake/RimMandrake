@@ -67,7 +67,50 @@ check("parse_burn of an empty burn", W.parse_burn("tick=1;open=5;stamps=1;fires=
     "tick": 1, "open": 5, "stamps": True, "fires": [], "burned": set()})
 check("parse_burn of an error line is None", W.parse_burn("error=no current map") is None)
 check("parse_burn of a non-string is None", W.parse_burn(None) is None)
-check("uncarried: the spark's own cell aside, a -1 fire is one", W.uncarried(r, (12, 40)) == [(20, 41)], W.uncarried(r, (12, 40)))
+# the carry's geometry (RM_BurnKernel: WindProbes, FlankPlan, HealDirs), east and north
+east = W.carry_steps(90, alone=True)
+check("carry_steps alone east: the carry's targets, d 1..CARRY_REACH straight or diagonal",
+      east == sorted((d, e) for d in range(1, W.CARRY_REACH + 1) for e in (0, d, -d)), east)
+full = set(W.carry_steps(90))
+check("carry_steps east: a flank or heal lights one cell beside or one back beside the target, never behind the source",
+      set(east) <= full and (0, 1) in full and (0, -1) in full and (1, 3) in full and (2, -3) in full
+      and all(dx >= 0 for dx, dz in full) and (0, 0) not in full and max(abs(dz) for dx, dz in full) == W.CARRY_REACH + 1,
+      sorted(full))
+north = W.carry_steps(0, alone=True)
+check("carry_steps alone north (bearing 0 = +z) is east turned", sorted((dz, -dx) for dx, dz in north) == east
+      or sorted((dz, dx) for dx, dz in north) == east, north)
+try:
+    W.carry_steps(45)
+    check("carry_steps refuses a wind off a compass quarter", False)
+except ValueError:
+    check("carry_steps refuses a wind off a compass quarter", True)
+lane = set((x, 40) for x in range(12, 30))
+check("flood follows a lane of fuel from the start", W.flood(lane, (12, 40), 90) == lane)
+gap = lane - {(16, 40), (17, 40), (18, 40)}
+check("flood stops at a gap wider than CARRY_REACH", W.flood(gap, (12, 40), 90) == set((x, 40) for x in range(12, 16)))
+check("flood never steps upwind", W.flood({(12, 40), (11, 40), (10, 40)}, (12, 40), 90) == {(12, 40)})
+check("unreached: a burn walked from the spark is all reached", W.unreached(burn_read0 := {
+    "fires": [(14, 41, 5)], "burned": {(12, 40), (13, 40)}}, (12, 40), 90) == [], burn_read0)
+check("unreached: an upwind stray and a far stray are unreached", W.unreached(
+    {"fires": [(10, 40, -1), (40, 40, 3)], "burned": {(12, 40), (13, 40)}}, (12, 40), 90) == [(10, 40), (40, 40)])
+check("unreached: the source stamped, the fire it lit at -1 in reach is no stray; one out of reach is",
+      W.unreached(r, (12, 40), 90) == [(20, 41)] and W.unreached(
+          {"fires": [(13, 40, 2600), (15, 40, -1)], "burned": {(12, 40)}}, (12, 40), 90) == [])
+check("ungoverned: -1 at one read only is a fire not yet carried", W.ungoverned(
+    [(1, {"fires": [(13, 40, -1)]}), (2, {"fires": [(13, 40, 2600), (15, 40, -1)]})]) == [])
+check("ungoverned: -1 at two successive reads is a fire the wind does not carry", W.ungoverned(
+    [(1, {"fires": [(13, 40, -1)]}), (2, {"fires": [(13, 40, -1)]}), (3, {"fires": []})]) == [(13, 40)])
+check("ungoverned: -1 at two reads with one between is not successive", W.ungoverned(
+    [(1, {"fires": [(13, 40, -1)]}), (2, {"fires": []}), (3, {"fires": [(13, 40, -1)]})]) == [])
+band = set((x, z) for x in range(12, 163) for z in range(30, 51))
+check("fuel_walk: an unbroken band walks the reach", W.fuel_walk(band, (12, 40), 90, 150, 30) == 150)
+brk = band - set((x, z) for x in (18, 19, 20) for z in range(30, 51))
+check("fuel_walk: a firebreak 3 cells wide across the band stops it", W.fuel_walk(brk, (12, 40), 90, 150, 30) == 5)
+# live 2026-11-27 z 40: bare ground 4 cells downwind, grass around it to the north; both builds stopped at head 5
+patch = band - set((x, z) for x in range(15, 22) for z in range(34, 47))
+check("fuel_walk: a bare patch ahead of the spark stops the lone line though grass goes round it",
+      W.fuel_walk(patch, (12, 40), 90, 150, 30) <= 3, W.fuel_walk(patch, (12, 40), 90, 150, 30))
+check("fuel_walk: no fuel at the spark walks 0", W.fuel_walk(band - {(12, 40)}, (12, 40), 90, 150, 30) == 0)
 check("share counts burning or black cells over open ground", abs(W.share(r) - 3 / 9.0) < 1e-9, W.share(r))
 check("head along east", abs(W.head({(12, 40), (30, 2)}, (12, 40), 90) - 18) < 1e-9)
 check("head along north", abs(W.head({(12, 40), (12, 55)}, (12, 40), 0) - 15) < 1e-9)
@@ -93,19 +136,27 @@ c_pawn = dict(c_ok, ember="99", pawns="1")
 check("pick_row: the most ember grass, no pawn", W.pick_row([(30, c_lo), (40, c_ok), (50, c_pawn)]) == (40, c_ok))
 check("pick_row: ties to the lowest row", W.pick_row([(60, c_ok), (40, c_ok)])[0] == 40)
 check("pick_row: none clean is None", W.pick_row([(30, c_pawn), (40, None)]) is None)
+check("pick_row: walks given, a row short of the reach is passed over", W.pick_row(
+    [(40, c_ok), (50, c_lo)], {40: 5, 50: 150}, 150) == (50, c_lo))
+check("pick_row: walks given, no row walks is None", W.pick_row([(40, c_ok)], {40: 5}, 150) is None)
 check("corridor_rect stays inside the map", W.corridor_rect((12, 20), (250, 250)) == (12, 0, W.DAY_REACH + 1, 51)
       and W.corridor_rect((200, 230), (250, 250)) == (200, 200, 50, 50), W.corridor_rect((12, 20), (250, 250)))
-ok, why, orows = W.opportunity(c_ok, ["Clear"] * 24)
-check("opportunity: a valid corridor and a clear day hold", ok and len(orows) == 5, why)
+ok, why, orows = W.opportunity(c_ok, ["Clear"] * 24, 150)
+check("opportunity: a valid corridor and a clear day hold", ok and len(orows) == 6, why)
 for name, corr, wx in (("spark cell holds ember grass", dict(c_ok, emberAt="0"), None),
                        ("corridor ember grass to the edge", c_lo, None),
                        ("pawns in a day's front", dict(c_ok, pawns="2"), None),
                        ("buildings in a day's front", dict(c_ok, buildings="1"), None),
                        ("weather clear at every read", c_ok, ["Clear"] * 5 + ["Rain"])):
-    ok, why, orows = W.opportunity(corr, wx or ["Clear"] * 24)
+    ok, why, orows = W.opportunity(corr, wx or ["Clear"] * 24, 150)
     bad = [x["check"] for x in orows if not x["ok"]]
     check("opportunity: planted %r breaks only its own check" % name, not ok and bad == [name], (bad, why))
-check("opportunity of no corridor is invalid", not W.opportunity(None, ["Clear"])[0])
+check("opportunity of no corridor is invalid", not W.opportunity(None, ["Clear"], 150)[0])
+for walk in (5, None):
+    ok, why, orows = W.opportunity(c_ok, ["Clear"] * 24, walk)
+    bad = [x["check"] for x in orows if not x["ok"]]
+    check("opportunity: a walk of %r breaks only the walk check" % walk, not ok and bad == [
+        "the plants carry a line a day's reach"], (bad, why))
 
 
 def burn_read(fires, burned, open_=1000):
@@ -117,7 +168,7 @@ good = [(1, burn_read([(12, 100, -1), (13, 100, 2)], [SP])),
         (5, burn_read([(30, z, 9) for z in range(95, 108)], [(x, 100) for x in range(12, 30)])),
         (24, burn_read([(90, z, 9) for z in range(90, 110)], [(x, 100) for x in range(12, 90)]))]
 rows = W.verdict(good, SP, 90, {"head": 49.0}, judge=True)
-check("verdict: a good day holds every row", all(x["ok"] is True for x in rows) and len(rows) == 6, rows)
+check("verdict: a good day holds every row", all(x["ok"] is True for x in rows) and len(rows) == 7, rows)
 check("verdict rows carry worst, limit and cases", all(set(x) == {"check", "ok", "worst", "limit", "cases"} for x in rows))
 fh = [x for x in rows if x["check"].startswith("a front")][0]
 check("verdict: the front's hour is the first with FlankWidth across", fh["worst"] == 5, fh)
@@ -134,7 +185,12 @@ faults = (("the spark burns at hour 1", [(1, burn_read([], [SP]))] + good[1:], {
           ("burning or black share of open ground", good[:2] + [(24, burn_read(good[2][1]["fires"], good[2][1]["burned"],
                                                                                 open_=150))], {"head": 49.0}),
           ("fire on a cell no carry reached", good[:2] + [(24, burn_read(good[2][1]["fires"] + [(200, 10, -1)],
-                                                                         good[2][1]["burned"]))], {"head": 49.0}))
+                                                                         good[2][1]["burned"]))], {"head": 49.0}),
+          ("fire on a cell no carry reached", good[:2] + [(24, burn_read(good[2][1]["fires"] + [(10, 100, 9)],   # upwind,
+                                                                         good[2][1]["burned"]))], {"head": 49.0}),  # carried
+          ("a fire the wind does not carry", [good[0], (5, burn_read(good[1][1]["fires"] + [(31, 100, -1)], good[1][1]["burned"])),
+                                              (24, burn_read(good[2][1]["fires"] + [(31, 100, -1)], good[2][1]["burned"]))],
+           {"head": 49.0}))
 for name, hourly, reading in faults:
     rows = W.verdict(hourly, SP, 90, reading, judge=True)
     check("verdict: planted fault breaks only %r" % name, only_false(rows, name), [(x["check"], x["ok"]) for x in rows])
@@ -161,6 +217,13 @@ check("FLANK_WIDTH is RM_BurnKernel.FlankWidth", W.FLANK_WIDTH == FP.kconst("Fla
 check("HEAL_REACH is RM_BurnKernel.HealReach", W.HEAL_REACH == FP.kconst("HealReach"), (W.HEAL_REACH, FP.kconst("HealReach")))
 check("PACE_DEFAULT is RM_BurnKernel.FirePacePercentDefault", W.PACE_DEFAULT == FP.kconst("FirePacePercentDefault"),
       (W.PACE_DEFAULT, FP.kconst("FirePacePercentDefault")))
+check("CARRY_REACH is RM_BurnKernel.WindCarryReach", W.CARRY_REACH == FP.kconst("WindCarryReach"),
+      (W.CARRY_REACH, FP.kconst("WindCarryReach")))
+slow = (FP.kconst("WindCarryTicks") + FP.kconst("WindCarryExtraTicks")) * 100 / float(FP.kconst("FirePacePercentMin"))
+print("[fcr-self] a governed fire's latest carry: worst %.0f ticks (pace %d) limit < HOUR %d cases 1" % (
+    slow, FP.kconst("FirePacePercentMin"), W.HOUR))
+check("ungoverned's two successive hourly reads: every governed fire carries inside an hour, the slider's low end too",
+      slow < W.HOUR, slow)
 check("FRONT_HOURS and SHARE_MAX are the decider's", (W.FRONT_HOURS, W.SHARE_MAX) == (FP.FRONT_HOURS, FP.SHARE_MAX))
 check("SPARK_SIZE is the decider's lit size", W.SPARK_SIZE == FP.LIT_SIZE, (W.SPARK_SIZE, FP.LIT_SIZE))
 check("DIRS8 is the model's", W.DIRS8 == M.DIRS8)
@@ -183,6 +246,9 @@ check("the probe block reads nothing the burn writes (no assignment to a burn fi
 
 DAY = W.DAY
 worst_al = worst_ac = 0.0
+worst_over = -999.0     # the model's day-one head less the fuel_walk of its map: a firebreak the model passes is > 0
+worst_stray = 0         # model burn cells no chain of carry steps reaches from its spark
+min_walk = 999
 cases = 0
 for cover in (0.70, 0.97):                      # the model's day-one burn at the slider's high end, east wind (the chain's)
     for blobs in (0, 14):
@@ -199,11 +265,46 @@ for cover in (0.70, 0.97):                      # the model's day-one burn at th
             zb, xb = np.nonzero((s.burn >= 0) | (s.size > 0))
             worst_al = max(worst_al, float((xb - x0).max()))
             worst_ac = max(worst_ac, float(np.abs(zb - z0).max()))
+            fz, fx = np.nonzero(plant != 0)
+            walk = W.fuel_walk(set(zip(fx.tolist(), fz.tolist())), (x0, z0), 90, W.DAY_REACH, W.HALF_W)
+            min_walk = min(min_walk, walk)
+            worst_over = max(worst_over, float((xb - x0).max()) - walk)
+            worst_stray = max(worst_stray, len(W.unreached({"burned": set(zip(xb.tolist(), zb.tolist())), "fires": []},
+                                                           (x0, z0), 90)))
             cases += 1
 print("[fcr-self] model day-one reach at pace %d: along worst %.1f limit DAY_REACH %d, |across| worst %.1f limit HALF_W %d, "
       "cases %d" % (FP.kconst("FirePacePercentMax"), worst_al, W.DAY_REACH, worst_ac, W.HALF_W, cases))
 check("DAY_REACH holds the model's day-one head at the high end", worst_al <= W.DAY_REACH, worst_al)
 check("HALF_W holds the model's day-one spread across at the high end", worst_ac <= W.HALF_W, worst_ac)
+print("[fcr-self] model burn against fuel_walk: head less walk worst %.1f limit <= 0; unreached cells worst %d limit 0; "
+      "walk least %d (the maps' own); cases %d" % (worst_over, worst_stray, min_walk, cases))
+check("no model burn passes its map's firebreak (head <= fuel_walk)", worst_over <= 0, worst_over)
+# firebreaks carved: live 2026-11-27 z 40 (bare ground 3..9 cells downwind, grass round it; the model on the dumped live
+# plants and both builds stop at head 5, fuel_walk reads 5) and a bare band 2 cells wide across the whole corridor. Bare
+# and unplantable: the model sprouts grass on plantable bare ground within the day (37 sprouts in a plantable band by hour
+# 12), which the stage's planting fills before the burn; fuel_walk is a bound over the ground nothing grows on
+worst_cut, cut_walks = -999.0, []
+for name, cut in (("patch", lambda x0, z0: (slice(z0 - 6, z0 + 7), slice(x0 + 3, x0 + 10))),
+                  ("band", lambda x0, z0: (slice(None), slice(x0 + 40, x0 + 42)))):
+    for pace in (FP.kconst("FirePacePercentDefault"), FP.kconst("FirePacePercentMax")):
+        plant, plantable = M.synthetic_map(250, 1, cover=0.97, blobs=0)
+        x0, z0 = W.SPARK_X, 125
+        plant[z0, x0] = 1
+        plant[cut(x0, z0)], plantable[cut(x0, z0)] = 0, False
+        fz, fx = np.nonzero(plant != 0)
+        walk = W.fuel_walk(set(zip(fx.tolist(), fz.tolist())), (x0, z0), 90, W.DAY_REACH, W.HALF_W)
+        s = M.Sim(plant, plantable, 1, weather=False, clock=False, keepalive=False, wind=90.0, carried=True, fire_pace=pace)
+        s.start(z0, x0, W.SPARK_SIZE)
+        while s.tick < DAY:
+            s.beat()
+        zb, xb = np.nonzero((s.burn >= 0) | (s.size > 0))
+        worst_cut = max(worst_cut, float((xb - x0).max()) - walk)
+        cut_walks.append((name, pace, walk, int((xb - x0).max())))
+print("[fcr-self] carved firebreaks: head less walk worst %.1f limit <= 0, (case, pace, walk, head) %r, cases %d" % (
+    worst_cut, cut_walks, len(cut_walks)))
+check("a carved firebreak stops the model where fuel_walk says (head <= walk < DAY_REACH)", worst_cut <= 0 and all(
+    w < W.DAY_REACH for _, _, w, _ in cut_walks), cut_walks)
+check("every model burn cell lies a chain of carry steps from the spark (unreached empty)", worst_stray == 0, worst_stray)
 
 
 # ---- 3. the shipped chain on a game scripted by the burn model
@@ -219,6 +320,17 @@ class Game(object):
         self.stray, self.shots, self.lit, self.settings = [], [], [], {}
         self.unread_at = None   # the hour from which the probe's Burn answers unreadably (a read cut short)
         self.put_out = []       # cells of the site's own burn that the stage's extinguish blackens at the spark's tick
+        self.plant_reads, self.plants_cut = [], False   # jawa/list_things group=Plant: the rects read; an incomplete read
+        self.upwind_at = self.ungov_at = None   # planted: a carried fire upwind of the spark; the spark cell burning uncarried
+        self.extra = []                         # (x, z, carriedAt) fires those plant
+
+    def cut(self, x0, x1, plantable=False):
+        """A bare band across the whole map over columns x0..x1-1 (unplantable: a firebreak nothing grows over)."""
+        for arr in (self.plant, self.sim.plant):
+            arr[:, x0:x1] = 0
+        self.sim.hp[:, x0:x1] = 0.0
+        self.plantable[:, x0:x1] = plantable
+        self.sim.plantable[:, x0:x1] = plantable
 
     @property
     def tick(self):
@@ -237,8 +349,11 @@ class Game(object):
         if self.unread_at is not None and s.tick // 2500 >= self.unread_at:
             return "error=planted unreadable"
         zs, xs = np.nonzero(s.size > 0)
-        fires = ["%d:%d:%d" % (x, z, s.born[z, x]) for z, x in zip(zs, xs)]   # with carried on, every fire but the spark is a carry's
+        # the C#'s MapComponent_BurnLine.CarriedAt: the tick this cell's fire carried (WindCarriedFire.Carry stamps its
+        # source), -1 for a fire that has not carried yet; the model keeps the same stamp (pyre_burn_sim.carried_at)
+        fires = ["%d:%d:%d" % (x, z, s.carried_at[z, x]) for z, x in zip(zs, xs)]
         fires += ["%d:%d:-1" % c for c in self.stray]
+        fires += ["%d:%d:%d" % c for c in self.extra]
         zb, xb = np.nonzero(s.burn >= since)
         return "tick=%d;open=%d;stamps=1;fires=%s;burned=%s" % (s.tick, int(self.plantable.sum()), "|".join(fires),
                                                                  "|".join("%d:%d" % (x, z) for z, x in zip(zb, xb)))
@@ -254,6 +369,9 @@ class Game(object):
             self.stray = [(200, 10)]
         if self.rain_at is not None and h >= self.rain_at:
             self.weather = "Rain"
+        sz = self.lit[0][1] if self.lit else 125
+        self.extra = ([(W.SPARK_X - 2, sz, 9)] if self.upwind_at is not None and h >= self.upwind_at else []) + (
+            [(W.SPARK_X, sz, -1)] if self.ungov_at is not None and h >= self.ungov_at else [])
 
 
 def run(game, env=None, reading=None):
@@ -291,6 +409,15 @@ def run(game, env=None, reading=None):
             elif tool == "jawa/static_call" and p.get("type") == W.PROBE:
                 return {"success": True, "result": getattr(game, {"Corridor": "corridor", "Burn": "burn"}[p["method"]])(
                     p["args"] if p["method"] == "Corridor" else int(p["args"]))}
+            elif tool == "jawa/list_things" and p.get("group") == "Plant":
+                x, z, w, h = (int(v) for v in p["rect"].split(","))
+                zs, xs = np.nonzero(game.sim.plant[z:z + h, x:x + w] != 0)
+                th = [{"def": W.GRASS if game.sim.plant[z + a, x + b] == 1 else "Plant_Grass", "x": x + int(b), "z": z + int(a)}
+                      for a, b in zip(zs, xs)]
+                game.plant_reads.append(tuple((x, z, w, h)))
+                full = len(th) <= int(p.get("limit") or 0) and not game.plants_cut
+                return {"success": True, "things": th[:int(p.get("limit") or 0)], "countMatched": len(th),
+                        "isCompleteList": full}
             elif tool == "jawa/static_call" and p.get("method") == "SetWindForTest":
                 return {"success": True, "result": int(p["args"])}
             elif tool == "jawa/map_fire" and p.get("action") == "start":
@@ -384,6 +511,12 @@ check("... the biome's other fire sources held off, the burn line on (one spark;
       all(g.settings.get(k) is False for k in ("fireClockEnabled", "fireHawkSpreadEnabled", "scorchFruitEnabled"))
       and g.settings.get("burnLineEnabled") is True and all(g0.settings.get(k) == v for k, v in W.HOLD_OFF.items()),
       (g.settings, g0.settings))
+covered = set((x0 + i, z0 + j) for x0, z0, w, h in g.plant_reads for i in range(w) for j in range(h))
+check("... the stage reads every plant from the spark column a day's reach on, every map row, in FUEL_ROWS reads",
+      covered >= set((x, z) for x in range(W.SPARK_X, W.SPARK_X + W.DAY_REACH + 1) for z in range(250))
+      and max(h for _, _, _, h in g.plant_reads) <= W.FUEL_ROWS, g.plant_reads[:6])
+check("... the stage's fuel_walk is the map's: a day's reach", (x["manifest"] or {}).get("walk") == W.DAY_REACH,
+      (x["manifest"] or {}).get("walk"))
 check("... one spark, one cell, at SPARK_SIZE", g.lit == [(W.SPARK_X, g.lit[0][1], W.SPARK_SIZE)] if g.lit else False, g.lit)
 check("... captures named by hour, each at or under SHOT_PX", g.shots and all(max(s[1][2], s[1][3]) * s[2] <= W.SHOT_PX
       for s in g.shots) and [s[0] for s in g.shots][0] == "fcr_h01", g.shots)
@@ -423,6 +556,33 @@ gm = Game(pace=200, cover=0.40)
 y = run(gm, reading=reading)
 check("thin grass on every row: the stage grows the corridor and the opportunity is valid", y["manifest"] and
       y["manifest"]["planted"] and y["manifest"]["valid"], (y["manifest"] or {}).get("why"))
+for label, setup, name in (("a carried fire upwind of the spark", lambda gm: setattr(gm, "upwind_at", 4),
+                            "fire on a cell no carry reached"),
+                           ("the spark cell burning uncarried from hour 3", lambda gm: setattr(gm, "ungov_at", 3),
+                            "a fire the wind does not carry")):
+    gm = Game(pace=200)
+    setup(gm)
+    y = run(gm, reading=reading)
+    rows = (y["manifest"] or {}).get("rows") or []
+    check("planted %s: the verdict FAILs on that row alone" % label, y["verdicts"].get("fire_catches_verdict") == "FAIL"
+          and [rw["check"] for rw in rows if rw["ok"] is False] == [name], ([(rw["check"], rw["ok"]) for rw in rows], y["why"]))
+gm = Game(pace=200)
+gm.cut(W.SPARK_X + 40, W.SPARK_X + 42)
+y = run(gm, reading=reading)
+check("planted a firebreak across every row (bare, unplantable, 2 cells): the stage is UNMEASURED, a firebreak, no burn",
+      y["verdicts"].get("fire_catches_stage") == "UNMEASURED" and "firebreak" in y["why"].get("fire_catches_stage", "")
+      and not gm.lit, (y["verdicts"], y["why"], gm.lit))
+gm = Game(pace=200)
+gm.cut(W.SPARK_X + 40, W.SPARK_X + 42, plantable=True)
+y = run(gm, reading=reading)
+check("planted a bare plantable band across every row: the stage grows it over and the opportunity is valid", y["manifest"]
+      and y["manifest"]["planted"] and y["manifest"]["valid"] and y["manifest"]["walk"] == W.DAY_REACH,
+      (y["verdicts"], y["why"], (y["manifest"] or {}).get("walk")))
+gm = Game(pace=200)
+gm.plants_cut = True
+y = run(gm, reading=reading)
+check("planted an incomplete plant read: the stage is UNMEASURED and lights nothing", y["verdicts"].get("fire_catches_stage")
+      == "UNMEASURED" and "plants unreadable" in y["why"].get("fire_catches_stage", "") and not gm.lit, (y["verdicts"], y["why"]))
 
 # ---- 4. the record
 check("validation.py registers fire_catches_and_runs", any(

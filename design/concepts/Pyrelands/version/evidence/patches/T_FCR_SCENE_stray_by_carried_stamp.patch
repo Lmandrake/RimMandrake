@@ -1,0 +1,12 @@
+--- a/src/RimMandrake/Pyrelands/fire_catches_live.py
++++ b/src/RimMandrake/Pyrelands/fire_catches_live.py
+@@ -167,8 +167,7 @@
+     """Pure. Burning or black cells that no chain of carry steps reaches from the spark: a fire no carry lit (vanilla's own
+     spread, a stray). MapComponent_BurnLine.CarriedAt stamps the SOURCE of a carry (WindCarriedFire.Carry -> MarkCarried
+     of the fire that carries), so a cell's carriedAt cannot say what lit it; where it lies can."""
+-    cells = set(read["burned"]) | set((f[0], f[1]) for f in read["fires"])
+-    return sorted(cells - flood(cells, spark, bearing))
++    return sorted((f[0], f[1]) for f in read["fires"] if f[2] < 0 and (f[0], f[1]) != tuple(spark))   # 0.2.0's uncarried
+ 
+ 
+ def ungoverned(hourly):
