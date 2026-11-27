@@ -64,6 +64,10 @@ MIN_PATCH = 150                # the selftest's Monte Carlo (printed): the small
 #                                in every trial of a fair kernel is 143 at its seeds; 150 with room. A holds 188 plant cells.
 B_MIN = 20                     # our own rule: the control holds at least 20 of its 25 cells
 LIT = 0.3                      # GlowGrid.cs:201 GameGlowLitThreshold (0.3): a cell reads Lit above it
+CAL_CELLS = 6                  # our own rule: the first capture's zoom probe, a rect this small at A's middle.
+#                                play_zoom.shoot probes its first rect at the zoom the last call left and refuses when that
+#                                rect does not fit the screen (ArchSmall 2026-11-27, smoke_weather_live's 50 x 50 sky:
+#                                'Requested cell rectangle does not fit in the viewport'); a 6 x 6 rect fit there
 LIT_SHARE = 0.9                # our own rule: a capture counts when 90% of A's cells are lit
 CUT_TARGETS = 3                # dead grass the colonist is ordered to cut (the rest are the control)
 CUT_WAIT = HOUR                # ticks for three cuts: harvestWork 40 each (DeadGrass.xml) and a ~15-cell walk
@@ -360,6 +364,12 @@ def judge_crumble(first_seen, reads, last_death, numbers, fire):
     return opp, ver, noted
 
 
+def calibration_rect(rect, cells=None):
+    """Pure. The zoom probe's rect: `cells` (CAL_CELLS) square at the middle of `rect`."""
+    c = cells or CAL_CELLS
+    return (rect[0] + (rect[2] - c) // 2, rect[1] + (rect[3] - c) // 2, c, c)
+
+
 def judge_captures(shots):
     """Pure. shots [{"label", "path", "lit", "cells"}] -> opportunity rows (a dark or missing capture is no picture)."""
     opp = []
@@ -435,6 +445,8 @@ def register(suite, V):
 
     def shot(t, label):
         g = state["geo"]
+        if CAL_CELLS and not state.get("zoomProbe"):   # learns the zoom on a rect that fits; never judged, never listed
+            state["zoomProbe"] = t.screenshot(name="rgd_zoomprobe", rect=calibration_rect(g["A"]), ppc=V.R6_PLAY_PPC)
         glow = t.bridge_call("jawa/glow_at", rect=V._rs(g["A"]))
         path = V._r6_shot(t, g["A"], "rgd_%s" % label)
         state["shots"].append({"label": label, "path": path, "lit": lit_share(glow, g["plantCells"]) if V._live(t) else None,

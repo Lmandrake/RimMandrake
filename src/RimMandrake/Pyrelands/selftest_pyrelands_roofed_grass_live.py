@@ -192,6 +192,7 @@ class Game(object):
         self.fault, self.rng = fault, random.Random(seed)
         self.clock, self.next_id = 500000, 40000
         self.things, self.roof, self.kills, self.cut_orders, self.notes = {}, set(), [], [], []
+        self.calibrated, self.shot_rects = False, []
 
     def spawn(self, d, x, z, hp=None):
         self.next_id += 1
@@ -337,6 +338,10 @@ FAULTS = {"one_clock": "roofed_grass_withers_unevenly", "no_remains": "roofed_gr
           "error_line": "roofed_grass_no_error_line"}
 
 
+PROBE_FITS = 10   # the twin's screen, cells: under A's 12 x 16, so an unprobed first capture of A is refused (the live
+#                   refusal was the smoke scene's 50 x 50; how small a screen can get is not measured, so the twin is strict)
+
+
 def run(game, env=None):
     verdicts, calls = {}, []
 
@@ -371,6 +376,15 @@ def run(game, env=None):
         def spawn_pawn(self, kind, hostile=False, beyond=None):
             return "Colonist1"
 
+        def screenshot(self, name=None, rect=None, ppc=None):
+            # play_zoom.shoot's refusal: its first rect is probed at the zoom the last call left, and a rect over
+            # PROBE_FITS cells does not fit there (ArchSmall 2026-11-27: the smoke scene's 50 x 50 sky refused)
+            if not game.calibrated and max(rect[2], rect[3]) > PROBE_FITS:
+                stop("UNMEASURED")("play-zoom calibration: rect %r does not fit the viewport" % (rect,))
+            game.calibrated = True
+            game.shot_rects.append(tuple(rect))
+            return "/fake/%s.png" % name
+
     def stop(v):
         def f(*a):
             raise Stop(v, a[-1])
@@ -391,7 +405,8 @@ def run(game, env=None):
         _open_ground=lambda t, rect, margin=0, soil=None: None, _things=things,
         _count=lambda t, d, rect=None: game.call("jawa/list_things", defName=d, rect=rect)["countMatched"],
         _plants=lambda t, p, rect, growth=1.0: game.call("jawa/set_plants", ops="%s:%s" % (p, V._rs(rect))),
-        _r6_shot=lambda t, rect, name: "/fake/%s.png" % name, _log_mark=lambda t: 0,
+        _r6_shot=lambda t, rect, name: t.screenshot(name=name, rect=tuple(rect), ppc=V.R6_PLAY_PPC),
+        R6_PLAY_PPC=V.R6_PLAY_PPC, _log_mark=lambda t: 0,
         _log_since=lambda t, m, limit=1000: ([{"type": "Error", "text": "planted"}] if game.fault == "error_line"
                                              else [{"type": "Message", "text": "ok"}]))
     chains = {}
@@ -424,6 +439,23 @@ for fault, comp in sorted(FAULTS.items()):
     print("[rgd-st] planted %s: %s=%s, other reds %r" % (fault, comp, v.get(comp), others))
     check("planted %s turns %s red (FAIL or UNMEASURED)" % (fault, comp), v.get(comp) in ("FAIL", "UNMEASURED"), v)
     check("planted %s: no component crashes" % fault, not any(str(x).startswith("CRASH") for x in v.values()), v)
+gm = Game()
+v, _ = run(gm)
+print("[rgd-st] zoom probe: first capture rect %r (limit <= %d cells), %d captures" % (
+    gm.shot_rects[0] if gm.shot_rects else None, PROBE_FITS, len(gm.shot_rects)))
+check("the first capture is the small zoom probe at A's middle, A's captures follow it",
+      gm.shot_rects and gm.shot_rects[0][2:] == (R.CAL_CELLS, R.CAL_CELLS) and len(gm.shot_rects) > 1
+      and all(max(r[2:]) > PROBE_FITS for r in gm.shot_rects[1:]) and v.get("roofed_grass_stage") == "PASS", (gm.shot_rects, v))
+real_cal = R.CAL_CELLS
+R.CAL_CELLS = 0   # the planted fault: the pre-repair scene, A's capture first
+try:
+    v, _ = run(Game())
+finally:
+    R.CAL_CELLS = real_cal
+print("[rgd-st] planted no zoom probe: stage %r" % v.get("roofed_grass_stage"))
+check("planted no zoom probe: the stage reads UNMEASURED (the smoke scene's live reading)",
+      v.get("roofed_grass_stage") == "UNMEASURED", v)
+check("the probe rect lies at the middle of A", R.calibration_rect((81, 117, 12, 16)) == (84, 122, 6, 6))
 v, _ = run(Game(), env="mass_kill")
 print("[rgd-st] planted scene %s=mass_kill: %r" % (R.PLANT_ENV, v))
 check("the live twin's planted mass_kill fails the wither", v.get("roofed_grass_withers_unevenly") == "FAIL", v)
