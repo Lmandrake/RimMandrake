@@ -808,6 +808,50 @@ namespace RimMandrake.LuminousPigment.SelfTest
             return fails;
         }
 
+        // ════════════════════════ testhooks ════════════════════════
+        // RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW: the [RMDigest] hook (DeepfireTestHooks.cs) renders the
+        // per-game counters that its [RMReset] clears through RM_DeepfireSceneDigest.Render. The stamp-again repeat compares two renders,
+        // so equal states must render equal whatever the insertion order, every change of a count or a key must render different
+        // (keys may hold the separators), and the empty state renders Clean, the state right after a reset.
+        public static int DigestDirtyCaught;
+        private static List<string> TestHooks(int n, int baseSeed) { return Family("testhooks", n, baseSeed, RunTestHooks); }
+
+        private static string RunTestHooks(int seed)
+        {
+            var r = new Random(seed);
+            string[] alphabet = { "thing:", "floor:", "RM_Deepfire", ";", "=", "]", "[", ":", "0", "a", " " };
+            var god = new Dictionary<string, int>();
+            var imp = new Dictionary<int, int>();
+            int gn = r.Next(0, 6), inn = r.Next(0, 4);
+            for (int k = 0; k < gn; k++)
+            {
+                string key = "";
+                for (int c = r.Next(0, 4); c >= 0; c--) key += alphabet[r.Next(alphabet.Length)];
+                god[key] = r.Next(1, 4);
+            }
+            for (int k = 0; k < inn; k++) imp[r.Next(0, 50)] = r.Next(0, 20);
+            if (gn == 0 && inn == 0 && RM_DeepfireSceneDigest.Render(god, imp) != RM_DeepfireSceneDigest.Clean) return "an empty state does not render Clean";
+            if (RM_DeepfireSceneDigest.Render(null, null) != RM_DeepfireSceneDigest.Clean) return "no state does not render Clean";
+            string a = RM_DeepfireSceneDigest.Render(god, imp);
+            var god2 = new Dictionary<string, int>();
+            foreach (var kv in god.Reverse()) god2[kv.Key] = kv.Value;
+            var imp2 = new Dictionary<int, int>();
+            foreach (var kv in imp.Reverse()) imp2[kv.Key] = kv.Value;
+            Steps++;
+            if (RM_DeepfireSceneDigest.Render(god2, imp2) != a) return "the same state rendered two ways: " + a;
+            // one dirtying change: a count up (NoteGodCoatEvent), a new key, a key gone (ResetGodCoatEvents), an impress mark
+            int pick = r.Next(4);
+            string what;
+            if (pick == 0 && god2.Count > 0) { string k0 = god2.Keys.ElementAt(r.Next(god2.Count)); god2[k0]++; what = "count up " + k0; }
+            else if (pick == 1 && god2.Count > 0) { string k0 = god2.Keys.ElementAt(r.Next(god2.Count)); god2.Remove(k0); what = "key gone " + k0; }
+            else if (pick == 2) { imp2[r.Next(0, 50)] = 20 + r.Next(5); what = "impress mark"; }
+            else { string k0 = "thing:" + alphabet[r.Next(alphabet.Length)] + seed; god2[k0] = god2.TryGetValue(k0, out int was) ? was + 1 : 1; what = "new key " + k0; }
+            Steps++;
+            if (RM_DeepfireSceneDigest.Render(god2, imp2) == a) return "a dirty state (" + what + ") renders like the clean one: " + a;
+            DigestDirtyCaught++;
+            return null;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -821,6 +865,7 @@ namespace RimMandrake.LuminousPigment.SelfTest
                 ("cuisine", () => Cuisine(N(1500), S(1))),
                 ("water", () => Water(N(2000), S(1))),
                 ("familykeys", () => FamilyKeys(N(3000), S(1))),
+                ("testhooks", () => TestHooks(N(2000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -840,10 +885,11 @@ namespace RimMandrake.LuminousPigment.SelfTest
             {
                 if (MultiGroups == 0 || OwnLights == 0 || ClusteredThings == 0 || FloorAdds == 0 || BlockChangesWithThings == 0 || Reloads == 0 || MatChill == 0 || MatAge == 0 || FirstCoatEvents == 0
                     || ImpressBlocked == 0 || DiminishedEvents == 0 || DodgeReach == 0 || DodgeClamp == 0 || Steered == 0 || Missed == 0 || VermilionLands == 0 || Bumps == 0 || Adds == 0 || CapBlocks == 0
-                    || KeyRoundTrips == 0 || KeyReorders == 0 || LegacyMigrations == 0 || LegacyIgnored == 0)
+                    || KeyRoundTrips == 0 || KeyReorders == 0 || LegacyMigrations == 0 || LegacyIgnored == 0 || DigestDirtyCaught == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"reached: familykeys round trips {KeyRoundTrips}, reorders {KeyReorders}, legacy migrations {LegacyMigrations}, legacy ignored {LegacyIgnored}");
+            Console.WriteLine($"reached: testhooks dirty states caught {DigestDirtyCaught}");
             if (only == "familykeys" && !oneSeed.HasValue && (KeyRoundTrips == 0 || KeyReorders == 0 || LegacyMigrations == 0 || LegacyIgnored == 0))
             { Console.WriteLine("FAIL familykeys never reached one of its key transitions (blind)"); ok = false; }
             Console.WriteLine($"luminouspigment fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

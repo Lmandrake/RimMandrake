@@ -79,6 +79,24 @@ namespace RimMandrake.LuminousPigment
             Instance?.godCoatEvents.Remove(defKey);
         }
 
+        // Test hooks only (DeepfireTestHooks.cs, item RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW): the two
+        // per-game counters above carry over from one staged scene to the next, so a scene repeat digests and clears them.
+        internal static string SceneDigest()
+        {
+            GameComponent_Deepfire gc = Instance;
+            return gc == null ? "no game" : RM_DeepfireSceneDigest.Render(gc.godCoatEvents, gc.impressedQuadrum);
+        }
+
+        internal static string ClearSceneCounters()
+        {
+            GameComponent_Deepfire gc = Instance;
+            if (gc == null) return "no game";
+            string what = "godCoat " + gc.godCoatEvents.Count + ", impressed " + gc.impressedQuadrum.Count;
+            gc.godCoatEvents.Clear();
+            gc.impressedQuadrum.Clear();
+            return what;
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();

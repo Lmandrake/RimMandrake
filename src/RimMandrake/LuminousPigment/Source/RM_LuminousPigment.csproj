@@ -47,6 +47,7 @@
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="..\..\_Shared\LightLedger\LightLedger.cs" Link="Shared\LightLedger.cs" />
     <Compile Include="..\..\_Shared\LightLedger\LightLedgerKernel.cs" Link="Shared\LightLedgerKernel.cs" />
+    <Compile Include="..\..\_Shared\TestHooks\RMTestHooks.cs" Link="Shared\RMTestHooks.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="LuminousPigmentMod.cs" />
@@ -125,6 +126,8 @@
     <Compile Include="Kernel\RM_DeepfireCuisine.cs" />
     <Compile Include="Kernel\RM_GlowTankWater.cs" />
     <Compile Include="Kernel\RM_DeepfireFamilyKeys.cs" />
+    <Compile Include="Kernel\RM_DeepfireSceneDigest.cs" />
+    <Compile Include="DeepfireTestHooks.cs" />
     <Compile Include="RM_LuminousFamilySettingsProbe.cs" />
     <Compile Include="FlowWorksWaterBridge.cs" />
   </ItemGroup>

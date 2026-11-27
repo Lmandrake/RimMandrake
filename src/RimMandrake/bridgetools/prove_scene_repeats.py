@@ -19,8 +19,11 @@ ticks at Normal; SUCCESS when the victim then lies in its own spot.
   R2 a planted cross-talk: copy 1's rescuer ordered onto copy 2's victim is a BREACH, and both ledger lines read UNRESOLVED;
   R3 a mod state left dirty on purpose changes the reset digest and stops the repeat RESET_DIGEST_DIFFERS. It needs a loaded
      mod of ours with a digest hook ([RMDigest], jawa/mod_hooks list) and a reset hook ([RMReset]), and that mod's dirtying act
-     (--dirty-tool, --dirty-args); without them the row reads UNRUN and names what is missing. The hook is proven and reset first,
-     then stamped, dirtied and stamped again: a digest not proven reads None, so a first stamp before the proof compares nothing.
+     (DIRTY_ACTS below, or --dirty-tool and --dirty-args); without them the row reads UNRUN and names what is missing. The first
+     such mod is LuminousPigment (its per-game god-coat and impress counters). The hook is proven and reset first, then stamped,
+     dirtied and stamped again: a digest not proven reads None, so a first stamp before the proof compares nothing.
+Every series (R1, R2, R3) first proves and resets each hooked mod with its act in DIRTY_ACTS; a hooked mod with no known act
+makes the row COULD NOT LOOK by name, never a stop RESET_UNVERIFIED on the first stamp.
 Exit 0 every row PASS, 1 a row FAIL, 2 no verdict (no game, no stage, no jawa/order, a row that could not look), 3 no row failed
 and a row is UNRUN."""
 import argparse
@@ -44,6 +47,16 @@ DISTANCE = 12                 # cells kept between two copies (the allocator's m
 TICKS = 1500                  # a rescue over 3 cells and back took well under this on the ordered-rescue stage
 COPIES, SINGLES = 20, 3
 LINES = []
+# The dirtying act of each hooked mod of ours that this proof knows: (bridge tool, its args). The act changes the state that the
+# mod's [RMReset] clears and its [RMDigest] reads, the way the mod's own code changes it. A hooked mod's digest that is not proven
+# reads None, and a first stamp with a None digest stops RESET_UNVERIFIED (scene_repeats.Series.stamp), so every series here proves
+# each hooked mod first, with this act. LuminousPigment: one first-coat god event, the call DeepfireGodDeltas makes at a first coat
+# (DeepfireTestHooks.cs; item RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW).
+DIRTY_ACTS = {
+    "RimMandrakeLuminousPigment": ("jawa/static_call", {"type": "RimMandrake.LuminousPigment.GameComponent_Deepfire",
+                                                        "method": "NoteGodCoatEvent", "args": "thing:RM_StampAgainProbe"}),
+}
+NO_DIGEST = (None, "", False, "no digest hook")
 
 
 def log(s):
@@ -153,6 +166,8 @@ class FakeHooks(object):
         if tool == "dirty":
             self.state += 1 if self.dirties else 0
             return {"success": True}
+        if a.get("action") == "list":
+            return {"success": True, "mods": [{"mod": "M", "digest": "X.Digest"}, {"mod": "N", "digest": SR_NO_HOOK}]}
         if a.get("action") == "digest":
             return {"success": True, "digests": [{"mod": "M", "digest": d, "proven": self.proven, "why": None},
                                                  {"mod": "N", "digest": None, "why": SR_NO_HOOK}]}
@@ -208,7 +223,7 @@ def selfcheck():
     # pass); a dirtying act that changes nothing, or a reset that clears nothing, is never a PASS
     def r3(**kw):
         try:
-            return r3_reading(FakeHooks(**kw), "M", "dirty", "{}", lambda i, series: {"rect": (10 * i, 10, 7, 5), "digest": ("st", None)})
+            return r3_reading(FakeHooks(**kw), "M", "dirty", {}, lambda i, series: {"rect": (10 * i, 10, 7, 5), "digest": ("st", None)})
         except Exception as e:  # noqa: BLE001  a judge that throws is a red selfcheck case
             return "threw %s: %s" % (type(e).__name__, e), ""
     got = r3()
@@ -216,6 +231,16 @@ def selfcheck():
     ok.append(got[0] is None)
     ok.append(str(r3(dirties=False)[0]).startswith("COULD NOT LOOK"))
     ok.append(str(r3(resets=False)[0]).startswith("COULD NOT LOOK"))
+    # the proof before a series: a hooked mod with a known act is proven and reset (must pass); a hooked mod with no known act, or
+    # an act that changes nothing, is a named COULD NOT LOOK, never a series that stops RESET_UNVERIFIED on its first stamp
+    ok.append(hooked_mods(FakeHooks()) == ["M"])
+    ok.append(prove_hooked(FakeHooks(), {"M": ("dirty", {})})[0] is None)
+    ok.append(str(prove_hooked(FakeHooks(), {})[0]).startswith("COULD NOT LOOK: M has a digest hook and no dirtying act"))
+    ok.append(str(prove_hooked(FakeHooks(dirties=False), {"M": ("dirty", {})})[0]).startswith("COULD NOT LOOK"))
+    ok.append(prove_hooked(FakeHooks(), {}, skip=("M",))[0] is None)
+    fh = FakeHooks()
+    prove_hooked(fh, {"M": ("dirty", {})})
+    ok.append(SR.read_mod_digests(fh).get("M") == "d0")                                    # proven and clean: a stamp can compare it
     print("prove_scene_repeats selfcheck: %d of %d" % (sum(ok), len(ok)))
     return 0 if all(ok) else 1
 
@@ -330,6 +355,11 @@ def row1(game, save, rows):
     t0 = time.time()
     launches, stopped, breaches, digests = [], None, [], set()
     with open_stage(game, save) as s:
+        bad, proofs = prove_hooked(s)
+        if bad:
+            rows.append(("R1 20 stamped copies of the rescue finish in less wall time than 3 single runs", bad, proofs))
+            return
+        log("  the hooked mods before the series: %s" % proofs)
         series = SR.Series("ordered_rescue_copies", claim=_h(CLAIM), build=build_key(s), plan=_h(PLAN), distance=DISTANCE)
         cl = series.cluster()
         blk = Blocks(s)
@@ -377,6 +407,10 @@ def row1(game, save, rows):
 def row2(game, save, rows):
     import scene_repeats as SR
     with open_stage(game, save) as s:
+        bad, proofs = prove_hooked(s)
+        if bad:
+            rows.append(("R2 a planted cross-talk between two copies is a BREACH and both copies read UNRESOLVED", bad, proofs))
+            return
         series = SR.Series("ordered_rescue_crosstalk", claim=_h(CLAIM), build=build_key(s), plan=_h(PLAN), distance=DISTANCE)
         cl = series.cluster()
         blk = Blocks(s)
@@ -403,33 +437,16 @@ def row2(game, save, rows):
                  "; the planted rescuer's cells %s; before the breach the victims read %s" % (cells.get(a["rescuer"], [])[:8], raw_out)))
 
 
-def row3(game, save, rows, tool, args):
-    name = "R3 a mod state left dirty on purpose changes the reset digest and stops the repeat RESET_DIGEST_DIFFERS"
-    with open_stage(game, save) as s:
-        lst = reply(s.raw("jawa/mod_hooks", action="list"))
-        mods = [m for m in lst.get("mods") or [] if isinstance(m, dict)]
-        hooked = [m for m in mods if m.get("digest") not in (None, "", False, "no digest hook")]
-        if not hooked or not tool:
-            cmd = "python.exe src\\RimMandrake\\bridgetools\\prove_scene_repeats.py --game %s --rows R3 --dirty-tool <tool> --dirty-args '<json>'" % game
-            rows.append((name, "UNRUN", "%d mod(s) of ours loaded, %d with a digest hook (%s); dirtying act %s. Needs a mod with an "
-                         "[RMDigest] hook, an [RMReset] hook and its dirtying act. Command: %s" % (
-                             len(mods), len(hooked), [m.get("mod") for m in hooked] or "none",
-                             tool or "not given", cmd)))
-            return
-        mod = hooked[0]["mod"]
-        blk = Blocks(s)
-        bad, info = r3_reading(s, mod, tool, args, lambda i, series: stage_copy(s, i, series, blk))
-    rows.append((name, bad, info))
+def hooked_mods(s):
+    """The mods of ours that jawa/mod_hooks lists with a digest hook, in its order."""
+    lst = reply(s.raw("jawa/mod_hooks", action="list"))
+    return [m["mod"] for m in lst.get("mods") or [] if isinstance(m, dict) and m.get("mod") and m.get("digest") not in NO_DIGEST]
 
 
-def r3_reading(s, mod, tool, args, stage):
-    """R3 on an open session: `mod` has a digest hook, `tool`/`args` dirty its state, stage(i, series) stages copy i (-> its
-    rect and digest). -> (bad, info): bad None when the dirty state stops the repeat RESET_DIGEST_DIFFERS on that mod.
-    The digest is proven first (step=clean, the dirtying act, step=dirty) and the mod's reset hook clears the state: a digest that
-    is not proven reads None (scene_repeats.mod_digests), and step=clean sets the proof false (JawaBenchModHooksCore.Prove), so a
-    first stamp taken before the proof would stop RESET_UNVERIFIED and compare nothing."""
-    import scene_repeats as SR
-    act = json.loads(args or "{}")
+def prove_digest(s, mod, tool, act):
+    """Prove `mod`'s digest and reset it: step=clean, the dirtying act (`tool` with `act`), step=dirty, then the reset hook.
+    -> (bad, info): bad None when the digest is proven and the reset brought it back to its clean read. A digest that is not
+    proven reads None (scene_repeats.mod_digests), and step=clean sets the proof false (JawaBenchModHooksCore.Prove)."""
     clean = reply(s.raw("jawa/mod_hooks", action="prove", mod=mod, step="clean"))
     dirty = reply(s.raw(tool, **act))
     proof = reply(s.raw("jawa/mod_hooks", action="prove", mod=mod, step="dirty"))
@@ -440,6 +457,59 @@ def r3_reading(s, mod, tool, args, stage):
     info += "; reset %s" % short(reset, 160)
     if reset.get("reset") != "verified":
         return "COULD NOT LOOK: the reset hook of %s did not bring the digest back to its clean read" % mod, info
+    return None, info
+
+
+def prove_hooked(s, acts=None, skip=()):
+    """Before a series: prove and reset every hooked mod of ours (but `skip`) with its act in `acts` (default DIRTY_ACTS), so the
+    first stamp compares real digests. -> (bad, info): bad names the first mod that could not be proven."""
+    acts = DIRTY_ACTS if acts is None else acts
+    infos = []
+    for mod in hooked_mods(s):
+        if mod in skip:
+            continue
+        if mod not in acts:
+            return ("COULD NOT LOOK: %s has a digest hook and no dirtying act is known, so its digest is unproven and every first "
+                    "stamp would stop RESET_UNVERIFIED: add its act to DIRTY_ACTS in prove_scene_repeats.py" % mod), "; ".join(infos)
+        tool, act = acts[mod]
+        bad, info = prove_digest(s, mod, tool, act)
+        infos.append(info)
+        if bad:
+            return bad, "; ".join(infos)
+    return None, "; ".join(infos) or "no hooked mod"
+
+
+def row3(game, save, rows, tool, args):
+    name = "R3 a mod state left dirty on purpose changes the reset digest and stops the repeat RESET_DIGEST_DIFFERS"
+    with open_stage(game, save) as s:
+        hooked = hooked_mods(s)
+        known = [m for m in hooked if m in DIRTY_ACTS]
+        if not hooked or not (tool or known):
+            cmd = "python.exe src\\RimMandrake\\bridgetools\\prove_scene_repeats.py --game %s --rows R3 --dirty-tool <tool> --dirty-args '<json>'" % game
+            rows.append((name, "UNRUN", "%d mod(s) of ours with a digest hook (%s); dirtying act %s. Needs a mod with an "
+                         "[RMDigest] hook, an [RMReset] hook and its dirtying act (DIRTY_ACTS, or --dirty-tool). Command: %s" % (
+                             len(hooked), hooked or "none", tool or "not given", cmd)))
+            return
+        mod, act = (hooked[0], json.loads(args or "{}")) if tool else (known[0], DIRTY_ACTS[known[0]][1])
+        tool = tool or DIRTY_ACTS[mod][0]
+        bad, others = prove_hooked(s, skip=(mod,))
+        if bad:
+            rows.append((name, bad, others))
+            return
+        blk = Blocks(s)
+        bad, info = r3_reading(s, mod, tool, act, lambda i, series: stage_copy(s, i, series, blk))
+    rows.append((name, bad, info + ("; the other hooked mods: %s" % others if others != "no hooked mod" else "")))
+
+
+def r3_reading(s, mod, tool, act, stage):
+    """R3 on an open session: `mod` has a digest hook, `tool` with `act` dirties its state, stage(i, series) stages copy i (-> its
+    rect and digest). -> (bad, info): bad None when the dirty state stops the repeat RESET_DIGEST_DIFFERS on that mod.
+    The digest is proven and reset first (prove_digest): a first stamp taken before the proof would stop RESET_UNVERIFIED and
+    compare nothing."""
+    import scene_repeats as SR
+    bad, info = prove_digest(s, mod, tool, act)
+    if bad:
+        return bad, info
     series = SR.Series("ordered_rescue_dirty", claim=_h(CLAIM), build=build_key(s), plan=_h(PLAN), distance=DISTANCE)
     k1 = stage(301, series)
     try:
