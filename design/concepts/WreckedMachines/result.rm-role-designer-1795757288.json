@@ -1,0 +1,14 @@
+{
+ "run": "rm-role-designer-1795757288",
+ "stage": 2,
+ "outcome": "waiting_owner",
+ "summary": "Stage 2, turn 2 sent (design/concepts/WreckedMachines/turn_02.md): two asks wait for him. a_which_factory_machines: how many of the factory mod's 18 production machines 0.1.0 onboards: one (the smelter, built today), all 18, or a proven handful of three; recommended the handful, judged on whether a second machine can go through onboarding by the written steps; the cost is 0, 136 or 16 new pictures. a_component_source: where an Ancient Component comes from: out of another wreck that is taken apart, a rare find in ruins, or both; recommended both. A fresh Opus judge (a15c1525ac03b2c3f) passed both asks with no rewording, measured the count of 18 again, and had three sentences of the page corrected that said more than his words. Seven calls were taken without asking, each shown to him on the page as a reading he can refuse: a wreck of any size is carried home and repaired where it stands (his newer statement decides over his 2026-09-15 sentence); a Wrecked machine has no function; study comes before each repair, with two research projects for each machine; a found machine is always Wrecked and which wrecks lie where is data a layer above can change; Wrecked, Kludged and whole are told apart by eye; the three rules outside the promise work as today until each move lands; a relic's value outside colony wealth waits for the next version. Five contradictions are resolved (c_wreck_cannot_be_carried, c_wreck_gives_a_trickle, c_study_fights_build_over, c_grades_share_one_picture, c_riders_in_the_folder). Two core contradictions stay open, each on one of the asks: c_half_ancient_factory and c_no_way_in. a_how_study_feels is struck: his statement settled it. The offer of a look at the running mod has no answer from him and is repeated.",
+ "quick_look": {
+  "offer": true,
+  "settles": [
+   "d_three_looks",
+   "d_study_before_each_repair"
+  ],
+  "scene": "One save on the mod's small list: the smelter at its grades side by side, the power cell and the psychic emanator at theirs, and a colonist sent to study a wreck. He sees whether the grades can be told apart by eye at play zoom, and what study at a machine looks like. Neither of the two asks waits for the look."
+ }
+}
