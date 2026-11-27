@@ -1,16 +1,16 @@
 {
  "PY_FLOWWORKS_NORTHSTAR": {
-  "at": "2026-11-23T18:23:19Z",
+  "at": "2026-11-27T12:36:15Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
   "file": "src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py",
   "last": "FAIL: 3 failure(s): ['settings RimMandrakeFlowWorksSettings: same field set as the C#', 'every Scribed settings field is in site_spec.SETTINGS', '217 toggles: every registry bool (S.toggles), not the harness floor']",
-  "patch": "--- a/src/RimMandrake/FlowWorks/northstar/site_spec.py\n+++ b/src/RimMandrake/FlowWorks/northstar/site_spec.py\n@@ -104,7 +104,7 @@\n         \"rainDousesLiquidFireEnabled\": True,                    # Phase 6 owed (ignition by explosion, extinguishing)\n         \"chemfuelInfernoEnabled\": True, \"chemfuelIntensity\": 1.0, \"chemfuelSpreadSpeed\": 1.0, \"chemfuelBurnRate\": 1.0,\n         \"astrofuelDetonationEnabled\": True, \"astrofuelBlastScale\": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires\n-        \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"pitLipMeleeDeniedEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n+        \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n         \"excavationWallFacesEnabled\": True,                     # EXCAVATION_WALL_ART_1 carrier\n         \"pitSteppedReliefEnabled\": True,                        # stepped pit relief (52182cca96): shadows and depth shading\n         \"bottleRevertEnabled\": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer\n",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/northstar/site_spec.py b/src/RimMandrake/FlowWorks/northstar/site_spec.py\nindex 86e53581be..36f185a885 100644\n--- a/src/RimMandrake/FlowWorks/northstar/site_spec.py\n+++ b/src/RimMandrake/FlowWorks/northstar/site_spec.py\n@@ -105,7 +105,7 @@ SETTINGS = {\n         \"chemfuelInfernoEnabled\": True, \"chemfuelIntensity\": 1.0, \"chemfuelSpreadSpeed\": 1.0, \"chemfuelBurnRate\": 1.0,\n         \"chemfuelIgnitionBlastEnabled\": True,   # RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK\n         \"astrofuelDetonationEnabled\": True, \"astrofuelBlastScale\": 1.0,   # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL fuel fires\n-        \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"pitLipMeleeDeniedEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n+        \"pitStuckAlertEnabled\": True, \"superdeepRoomsEnabled\": True, \"captureDownEnabled\": True, \"wardenFromLipEnabled\": True, \"pitRoomMinDepthMetres\": 3.0,   # PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER (3.0 m for a person);   # SUPERDEEP_PRISON_ROOM_1\n         \"excavationWallFacesEnabled\": True,                     # EXCAVATION_WALL_ART_1 carrier\n         \"pitSteppedReliefEnabled\": True,                        # stepped pit relief (52182cca96): shadows and depth shading\n         \"bottleRevertEnabled\": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer\n",
   "patch_files": [
    "src/RimMandrake/FlowWorks/northstar/site_spec.py"
   ],
-  "patch_sha": "5a91252a224d5a3d",
+  "patch_sha": "20064d552aaa586b",
   "rc": 1,
-  "test_blob": "6b704bc23c333fd738906e63350cea4f61ffa854"
+  "test_blob": "af0fd5c9c5a5e3c500f1be790a7d61dd52334068"
  },
  "PY_FLOWWORKS_PIT_DRAW_CENSUS": {
   "at": "2026-11-23T10:12:40Z",
@@ -26,7 +26,7 @@
   "test_blob": "eb3976321dea0f57b124484d0f1763da8f563f3e"
  },
  "PY_FLOWWORKS_UNDERLIQUID_PARITY": {
-  "at": "2026-11-23T10:12:39Z",
+  "at": "2026-11-27T12:36:17Z",
   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_underliquid_parity.py",
   "last": "RESULT RED 4",
@@ -36,7 +36,7 @@
   ],
   "patch_sha": "bb58287ae3b64a62",
   "rc": 1,
-  "test_blob": "cb0e55742b60bdcac1bb98c254cf25c3c0d6680b"
+  "test_blob": "5526b2cf27f4172e3088493d8a6e6fa124f93ebe"
  },
  "PY_FW_OFFLINE_ART": {
   "at": "2026-11-24T01:13:59Z",
@@ -91,7 +91,7 @@
   "test_blob": "c98dcc50c1ed08d663f3e2df95a86047afe128ce"
  },
  "PY_VALIDATION_V2_OFFLINE": {
-  "at": "2026-11-24T22:21:57Z",
+  "at": "2026-11-27T12:38:12Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
   "file": "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
   "last": "O-LIVE-NEG PASS   clean mock run green (62 rows, 4830 ticks); all 60 faults turned their rows red",
@@ -101,7 +101,7 @@
   ],
   "patch_sha": "f146acb23446fed9",
   "rc": 1,
-  "test_blob": "9b980ff3656547fcd6cda8c36ccb42892076f4c3"
+  "test_blob": "341c089f6a7fdc1734c294df893126a63a89c156"
  },
  "T_BRIDGES": {
   "at": "2026-11-23T04:09:50Z",
