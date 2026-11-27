@@ -138,6 +138,12 @@ def facings(tex, tex_dirs):
 def census(src_root=None):
     src_root = src_root or os.path.join(REPO, "src")
     by_name, by_def, tex_dirs, nfiles = load(src_root)
+    if tex_dirs and not any(next(glob.iglob(os.path.join(d, "**", "*.png"), recursive=True), None) for d in tex_dirs):
+        # a clone with no media (a slim helper clone): every facing reads absent and a check over this census passes
+        # blind. Refuse, unmeasured: `scratch_clone.py shape . --full` gives the clone its PNGs.
+        print("UNMEASURED: no PNG under any Textures folder of %s (a slim clone?); run "
+              "src/RimMandrake/Utils/scratch_clone.py shape . --full" % src_root, file=sys.stderr)
+        raise SystemExit(2)
     rows = []
     for dn in sorted(by_def):
         k = by_def[dn]

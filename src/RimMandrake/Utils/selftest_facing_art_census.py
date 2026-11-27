@@ -128,6 +128,22 @@ def fixture():
               and any(b.startswith("UNLISTED MULTI_GAP") for b in bad2), bad2)
 
 
+def blind():
+    """A clone with no media (a slim helper clone) holds Textures folders but no PNG: every Single then reads OWED-free
+    and every facing absent, so a check over the census would pass blind. The census must refuse (exit 2, unmeasured)."""
+    with tempfile.TemporaryDirectory() as src:
+        mod = os.path.join(src, "RimMandrake", "Fx")
+        os.makedirs(os.path.join(mod, "Defs"))
+        os.makedirs(os.path.join(mod, "Textures", "A"))
+        with open(os.path.join(mod, "Defs", "fx.xml"), "w") as fh:
+            fh.write(DEFS)
+        try:
+            F.census(src)
+            check("a clone with Textures folders and no PNG is refused (exit 2), not read", False, "census answered")
+        except SystemExit as e:
+            check("a clone with Textures folders and no PNG is refused (exit 2), not read", e.code == 2, e.code)
+
+
 def repo():
     rows, stats = F.census()
     check("sanity: the repo loader sees the bestiary", stats["kinds"] >= 200, stats)
@@ -141,6 +157,7 @@ def repo():
 
 if __name__ == "__main__":
     fixture()
+    blind()
     repo()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     sys.exit(1 if FAILS else 0)
