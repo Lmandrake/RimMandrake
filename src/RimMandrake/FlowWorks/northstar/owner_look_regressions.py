@@ -227,11 +227,13 @@ def judge_pour(reply, ledger=None):
         return "UNMEASURED", "spilled %s of %s L and the sheet ledger before the pour is unreadable: %s" % (
             got, want, str(ledger)[:80])
     wet, max_wet, cap = int(kv["wet"]), int(kv["maxWet"]), int(kv["cap"])
-    need = -(-int(round((want - got) * UNITS_PER_LITRE)) // cap)      # dry squares the shortfall needs, one square holds cap dL
+    # dry squares the WHOLE spill needs (one square holds cap dL): the ledger is read before the pour, so squares the spill
+    # itself filled were free then (fresh reader of e4ca2be630: cap 1000 dL, 5 free, 1 kL spills 500 L and fills them)
+    need = -(-int(round(want * UNITS_PER_LITRE)) // cap)
     if max_wet - wet >= need:
-        return "FAIL", "spilled %g of %g L with %d of the map's %d wet squares free (the rest needs %d): open ground refused it; %s" % (
+        return "FAIL", "spilled %g of %g L with %d of the map's %d wet squares free (the spill needs %d): open ground refused it; %s" % (
             got, want, max_wet - wet, max_wet, need, r[:120])
-    return "UNMEASURED", "the map's wet-square cap had %d free of %d and the rest needs %d: a spill elsewhere spoiled the scene" % (
+    return "UNMEASURED", "the map's wet-square cap had %d free of %d and the spill needs %d: a spill elsewhere spoiled the scene" % (
         max_wet - wet, max_wet, need)
 
 

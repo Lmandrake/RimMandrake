@@ -593,6 +593,13 @@ def main():
            "ground around it; 6001 kL had nowhere to go (walls, other liquids or the map's cap on wet squares)")
     check("pour: 10,000 kL that needs more squares than the cap has left is UNMEASURED, not FAIL",
           O.judge_pour(big, "wet=0 cap=10000 maxWet=4000")[0] == "UNMEASURED", O.judge_pour(big, "wet=0 cap=10000 maxWet=4000"))
+    # fresh reader of e4ca2be630: at the 5 cm sheet cap (1000 dL a square) the pour itself fills the last 5 free squares
+    small = ("OK poured 0 L of 1 kL RM_Fluid_Water at (66, 66) into a pit of 9 squares; spilled 500 L of 1 kL on the ground "
+             "around it; 500 L had nowhere to go (the map's cap of 4000 wet squares is full, 4000 wet)")
+    check("pour: the spill that used the last free squares itself is UNMEASURED, not FAIL",
+          O.judge_pour(small, "wet=3995 cap=1000 maxWet=4000")[0] == "UNMEASURED", O.judge_pour(small, "wet=3995 cap=1000 maxWet=4000"))
+    check("pour: the same shortfall with room for the whole spill before it is FAIL",
+          O.judge_pour(small, "wet=3990 cap=1000 maxWet=4000")[0] == "FAIL", O.judge_pour(small, "wet=3990 cap=1000 maxWet=4000"))
     check("pour: a pit that took it all (no spill phrase) is PASS", O.judge_pour("OK poured 1 kL of 1 kL RM_Fluid_Water at (1, 1)"
           " into a pit of 9 squares", room)[0] == "PASS")
     # screenshot mode (owner 18:15: "no longer allowing me to select objects at all")
