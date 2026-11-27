@@ -1,0 +1,11 @@
+# plants in a copy of ruling_fast.py, run by selftest_ruling_fast.py (RULING_FAST_UNDER_TEST)
+ok   control: the unmutated copy is green
+ok   caught guesses-a-ticket: FAIL only-what-the-caller-names: with no --hold and no --park, nothing is held or parked ([('note', 'ITEM_A', 'We are not ready to do faction work yet. The tribes sleep u
+ok   caught takes-the-first-of-two-sections: FAIL a-bad-call-does-nothing: two sections is refused before any act, naming the repair (rc 0, acts [('note', 'ITEM_A', 'We are not ready to do faction work yet. The trib
+ok   caught dirty-rules-file-ignored: FAIL a-bad-call-does-nothing: dirty rules file is refused before any act, naming the repair (rc 0, acts [('note', 'ITEM_A', 'We are not ready to do faction work yet. The 
+ok   caught words-not-word-for-word: FAIL his-words-go-in-word-for-word-with-the-event-date: his words are in the file exactly (rc 0)
+ok   caught date-of-now-not-the-event: FAIL his-words-go-in-word-for-word-with-the-event-date: the bullet carries the event's Pacific time, tsn and item (['- (owner, Thu 2026-11-26 5:59 PM PST, OWNER event `17
+ok   caught text-before-ledger-landing: FAIL the-acts-run-in-order: the ledger acts land before the text is written
+ok   caught follow-up-forgets-mirror: FAIL the-follow-up-holds-the-slow-part: the follow-up names the rule line, the opposite lines, the unnamed tickets and the hold mirror ('Carry the slow part of his ruling
+ok   caught no-undo-line: FAIL at-most-five-lines: 3 lines, with both shas, the follow-up and the undo ('LANDED his words on ITEM_A (OWNER event 1795725958667522790, Thu 2026-11-26 12:45 PM PST); 
+8 of 8 plants caught

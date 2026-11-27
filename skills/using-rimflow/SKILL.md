@@ -230,6 +230,9 @@ nothing lands in `ownerSaid` by mistake:
   ("yes") as he typed it. For a bare assent with no `--why`, rimflow prints a note that asks for one (owner 2026-11-20).
 - `note --owner-said` stamps the WHOLE event as OWNER-authored. For your own text, use a bare `note` (plus `--why` if
   useful).
+- To carry a new ruling of his at once, with no model, use `python3 src/RimMandrake/rimflow/ruling_fast.py <ITEM> --said
+  "<his words>" --section "<standing_rulings.md heading>" [--hold <Mod>]... [--park <ID>]...`. It records his words,
+  holds or parks what you name, lands his words in `standing_rulings.md`, and files the slow part as one owed item.
 - `rimflow show <ID>` prints each field with a label (`owner said “…”`, `decided by card:`, `per standing ruling`,
   `agent's reason:`).
 - `./game` takes the same four flags. `--said` is its spelling of `--owner-said`. Stamp a restart that you decide with

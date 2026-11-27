@@ -1,0 +1,8 @@
+# selftest_ruling_fast.py on the parent 40c99b070d, before ruling_fast.py exists, 2026-11-26 05:56 PM PST
+FAIL the-acts-run-in-order crashed: FileNotFoundError(2, 'No such file or directory')
+FAIL his-words-go-in-word-for-word-with-the-event-date crashed: FileNotFoundError(2, 'No such file or directory')
+FAIL only-what-the-caller-names crashed: FileNotFoundError(2, 'No such file or directory')
+FAIL a-bad-call-does-nothing crashed: FileNotFoundError(2, 'No such file or directory')
+FAIL the-follow-up-holds-the-slow-part crashed: FileNotFoundError(2, 'No such file or directory')
+FAIL at-most-five-lines crashed: FileNotFoundError(2, 'No such file or directory')
+RED: 6 red
