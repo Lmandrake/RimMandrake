@@ -362,7 +362,11 @@ def main():
     bad = 0
     saved = {k: os.environ.get(k) for k in CL.SANDBOX_KEYS}
     try:
-        for t in TESTS:
+        for t in (t_room_short_sends_a_proven_ticket_to_codex, t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
+                  t_a_result_that_fails_its_check_is_not_landed, t_his_codex_share_is_left,
+                  t_a_passing_result_gets_one_sonnet_lander, t_one_try_per_ticket,
+                  t_the_codex_child_reads_no_real_state, t_review_goes_by_code_review_brief,
+                  t_the_scratch_clone_is_freed_when_the_patch_is_saved):
             try:
                 t()
                 print("PASS %s" % t.__name__)
