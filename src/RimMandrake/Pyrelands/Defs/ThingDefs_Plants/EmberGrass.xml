@@ -39,7 +39,10 @@
       <texPath>Things/Plant/RM_FE_EmberGrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
-    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <!-- No hideAtSnowOrSandDepth (vanilla default 99999, ThingDef.cs:195): ash is stored as sand depth (PyrelandsAshSand.cs), and
+         at 0.5 vanilla stopped drawing the grass under deep ash (SectionLayer_Things.cs:66) and stopped grazing it (Plant.cs:193
+         IngestibleNow). Bar grass_still_seen_under_ash: standing grass is drawn under the ash, so it stays drawn and grazeable
+         at every ash and snow depth. -->
     <!-- Open-sky grass: under a roof it withers in about a day (CompWithersUnderRoof), so a room built on the grass carpet clears. -->
     <comps>
       <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof" />
