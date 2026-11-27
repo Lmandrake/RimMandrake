@@ -40,8 +40,8 @@
     "four strips of ember grass on deep ash, each 61 x 21 and ringed bare, a 9-cell line marked across the wind in the middle of each, so as much grass lies upwind of it as downwind",
     "asserted before each line is lit: SetWindForTest returned the bearing asked, ProbeWind reads that bearing back with carries= matching the wind switch, and the strip holds no fire"
    ],
-   "action": "set the wind east (90) and light the first strip's line with windCarriesFireEnabled on; reverse the wind to west (270) and light the second; set it east again with the setting off and light the third; burn each 10,000 ticks, reading every 500 how far the fires reach downwind and upwind of the lit column and how many burn in the outer three lanes each side; then light the fourth strip's line under the wind and bring black rain",
-   "expect": "at both bearings, east and the opposite (reversed) west, the burn runs further downwind than upwind of the lit line, so it turns when the wind turns; nothing burns in the lanes beside it and the fires at once stay a few times the cells lit; black rain puts the line out",
+   "action": "set the wind east (90) and light the first strip's line with windCarriesFireEnabled on; reverse the wind to west (270) and light the second; set it east again with the setting off and light the third; at the shipped Fire pace (read back), burn each wind strip over the window in which the line walks what 0.1.0 walked in 10,000 ticks (10,000 x 100 / pace ticks) and the wind-off strip 10,000 ticks, reading 20 samples of how far the fires reach downwind and upwind of the lit column, how many burn at once in each lane, and how many burn in the outer three lanes each side; then light the fourth strip's line under the wind and bring black rain",
+   "expect": "at both bearings, east and the opposite (reversed) west, the burn runs further downwind than upwind of the lit line, so it turns when the wind turns; nothing burns in the outer lanes beside it, and the fires at once stay a line one fire-life deep (fire life over the carry interval), in the strip and in each lane, never a flood; black rain puts the line out",
    "control": {
     "case": "the same line with the wind setting (windCarriesFireEnabled) off, the wind east",
     "expect": "the burn spreads into the outer lanes and runs both ways along the strip, leaning less than either wind run",
@@ -1163,6 +1163,76 @@
      "judge": "keep design/concepts/Pyrelands/version/evidence/art/crestfeather_judge_verdict.json",
      "item": "RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN",
      "note": "RM_PristineFirehawkCrestfeather's own picture (it replaced the borrowed, tinted vanilla ThrumboHorn of 2026-11-14), kept by an art judge that did not make it; guarded by T_CRESTFEATHER_OWN_ART_OFFLINE"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_EmberGrass_Wilting/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_EmberGrass_Withered/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_DeadGrass/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_Quickgrass_Wilting/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_Quickgrass_Withered/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_DeadQuickgrass/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_QuickgrassStages/Half_Wilting/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_QuickgrassStages/Half_Withered/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_QuickgrassStages/Sprout_Wilting/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
+    },
+    {
+     "tex": "Things/Plant/RM_FE_QuickgrassStages/Sprout_Withered/",
+     "added": "2026-11-27",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/wither_looks_judge_verdict.json",
+     "item": null,
+     "note": "baked wilting, withered or dead look of the shipped grass under a roof (bar roofed_grass_declines_visibly; wither_look_gen.py, 29a624db2c and bfd82bde52), kept by an art judge that did not make it; the in-game blind judge of row rgd_6 read the ember grass sets as wilting, then dead"
     },
     {
      "text": "RM_PristineFirehawkCrestfeather label and description; RM_FurnaceHideBank label and description; the RM_FireHawkSighted letter's keyed text",

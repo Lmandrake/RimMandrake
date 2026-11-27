@@ -1,0 +1,71 @@
+{
+ "judge": "rm-judge, opus, did not make the art",
+ "at": "2026-11-27 09:27:23 PST",
+ "brief": "design/RimMandrake/art_judge_brief.md",
+ "folders": {
+  "RM_FE_EmberGrass_Wilting": {
+   "verdict": "keep",
+   "why": "All three variants (A plumed, B broadleaf, C sprig) are the living sprites desaturated toward straw with the orange fading and a first sag, clean alpha on dark and pale ground, 256 canvas, and they read at 32 px and in-game (captures M, O) as the same ember grass starting to wilt."
+  },
+  "RM_FE_EmberGrass_Withered": {
+   "verdict": "keep",
+   "why": "Grey-tan, lower and wider than the wilting stage with the same blade shapes, no halo, no fringe, still inside the canvas, and it reads as the same grass further gone (captures K, M)."
+  },
+  "RM_FE_DeadGrass": {
+   "verdict": "keep",
+   "why": "Flattened dark-grey clumps of the same three ember-grass forms read as dead, matted grass at play zoom and in capture N, not a different plant or a render fault; the only edge contact is a 1-2 px leaf tip on B (polish)."
+  },
+  "RM_FE_Quickgrass_Wilting": {
+   "verdict": "keep",
+   "why": "QuickgrassA, B and _b keep their silhouettes with olive-to-khaki colour and a first sag, with clean alpha, and they read as the same quickgrass wilting at 32 px."
+  },
+  "RM_FE_Quickgrass_Withered": {
+   "verdict": "keep",
+   "why": "Grey, lower, splayed versions of the same clumps with no halo or clipping; a clear middle step between wilting and dead."
+  },
+  "RM_FE_DeadQuickgrass": {
+   "verdict": "keep",
+   "why": "Dark flattened tufts of the same quickgrass read as dead at play zoom, lie inside the canvas, and have clean edges."
+  },
+  "RM_FE_QuickgrassStages/Half_Wilting": {
+   "verdict": "keep",
+   "why": "Half-grown A and B tufts, muted and slightly sagged, matching their living Half sources with clean alpha."
+  },
+  "RM_FE_QuickgrassStages/Half_Withered": {
+   "verdict": "keep",
+   "why": "Grey, squashed versions of the same half tufts read as withering, with no fringe and no cut-off."
+  },
+  "RM_FE_QuickgrassStages/Sprout_Wilting": {
+   "verdict": "keep",
+   "why": "Small sprouts with the same blade layout, muted and slightly lowered, with clean alpha, inside the source footprint."
+  },
+  "RM_FE_QuickgrassStages/Sprout_Withered": {
+   "verdict": "keep",
+   "why": "Grey, lower sprouts read as the same seedling withered, with no rendering artefacts."
+  }
+ },
+ "polish": [
+  "RM_FE_DeadGrass/RM_FE_EmberGrassB_Dead.png: the splay pushes one leaf tip onto the right canvas column (x=255, rows 157-159, alpha 236), so about 1-2 px of the tip is clipped; this cannot be seen at 32 px/cell. The splay could be clamped about 4 px inside the canvas.",
+  "The splayed withered and dead stages are wider than the living source's alpha bounding box (EmberGrassB 26..245 grows to 2..255; QuickgrassB 24..231 grows to 11..244), but they stay within the one-cell canvas. Matted grass spreads, so this is intended.",
+  "Inherited from the living art, not this work: RM_FE_EmberGrassB.png has a straight vertical cut on its left edge at x~26, and it carries through to every derived stage. The living B and C ember sprites and Quickgrass B have drawn keylines (B1a), which the derived stages inherit. RM_FE_Quickgrass_b.png has the same pixels as RM_FE_QuickgrassA.png, so its derived stages duplicate A.",
+  "On dark ash ground, the dead quickgrass stage is low in contrast (dark grey on dark brown). That is apt for dead grass, but it is close to fading out at play zoom.",
+  "The in-game captures (rgd_judge3 K-O) show ember grass only. The quickgrass and stage sets were judged from the textures at full size and at a 32 px/cell composite, not from a live capture."
+ ],
+ "looked_at": [
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/m_ember_dark.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/m_ember_pale.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/edgeB.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/m_quick_dark.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/m_half_dark.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/m_sprout_dark.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/pz_ember.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/judge_wither/pz_quick.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/rgd_judge3/K.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/rgd_judge3/L.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/rgd_judge3/M.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/rgd_judge3/N.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/rgd_judge3/O.png",
+  "/mnt/d/ClaudeWork/scratch/pyre020/sag_preview.png"
+ ],
+ "looked_at_note": "The judge_wither/*.png files are composites that this judge built (tools/montage.py) from every PNG in the ten folders and their living sources, on dark and pale ground and at 32 px/cell. Per-file alpha and bounding-box measurements are in judge_wither/measure.txt."
+}

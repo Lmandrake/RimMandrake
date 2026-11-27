@@ -1,7 +1,7 @@
 {
  "mod": "Pyrelands",
  "version": "0.2.0",
- "made": "2026-11-16T21:27:29-08:00",
+ "made": "2026-11-27T09:35:31-08:00",
  "made_by": "rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -10,7 +10,7 @@
   "8": "his live walk"
  },
  "rule": "a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing",
- "settings_move": "inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_fire_sense keeps the gate-off read live, as support (sc_walk, which also read it, is gone: RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS). No bar text is edited.",
+ "settings_move": "inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_walk keeps only the gate-off read in play, as support. No bar text is edited.",
  "coverage_leaves": {
   "firehawk_hunt_rewards": {
    "bar": "inv_firehawk_hunt_rewards",
@@ -102,11 +102,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 17.92,
-    "last": "pyrelands fuzz: 16269 cases, 1080805098 steps, 14.88s total -> OK",
-    "at": "2026-11-23T21:58:31Z",
+    "seconds": 18.42,
+    "last": "pyrelands fuzz: 23029 cases, 1083512091 steps, 15.31s total -> OK",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "bcb37d3a7e77de6fa534",
+    "build": "2b4937ba1143e6be938b",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
     "margins": []
    }
@@ -127,11 +127,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 166.95,
+    "seconds": 125.11,
     "last": "PASS: 15 of 15 rows hold",
-    "at": "2026-11-23T22:01:18Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "add7f6c0cef230aef81a",
+    "build": "0cae7cb51e78c721f4c4",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_burn_ecology.py",
     "margins": []
    }
@@ -153,11 +153,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 336.1,
+    "seconds": 340.94,
     "last": "PASS: 15 of 15 rows hold",
-    "at": "2026-11-23T22:06:54Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "ba5bc2cc5fa1279f27c5",
+    "build": "69e142d311e29947e750",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_burn_front_lanes.py",
     "margins": []
    }
@@ -177,11 +177,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 89.69,
+    "seconds": 79.4,
     "last": "Pyrelands lint planted-defect selftest: 30/30 ok",
-    "at": "2026-11-24T14:43:06Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "a9cefc447eb4f03cab32",
+    "build": "2f9bbff033c22ace16fc",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_lint.py",
     "margins": []
    }
@@ -200,11 +200,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.58,
+    "seconds": 1.44,
     "last": "PASS: the real Postfix meets the spec, 15 mutants red",
-    "at": "2026-11-21T16:21:40Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "52a862da7b3d72e12372",
+    "build": "e5030b5df4b1080f4c0c",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_allowlist_postfix.py",
     "margins": []
    }
@@ -225,9 +225,9 @@
     "rc": 0,
     "seconds": 0.09,
     "last": "selftest_pyrelands_burn_cost: PASS (fire postfix closure-free, burrow scan throttled x30 and disc-bounded)",
-    "at": "2026-11-24T14:43:06Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "456c532a00610def65d1",
+    "build": "e1dd10eb76e775d2abc2",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_burn_cost.py",
     "margins": []
    }
@@ -246,11 +246,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.43,
-    "last": "PASS",
-    "at": "2026-11-23T22:08:14Z",
+    "seconds": 0.29,
+    "last": "  px = list(im.getdata())",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "4a772dcdc92e1d3b24b4",
+    "build": "6b0d6b0404d811356820",
     "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_track_contrast.py",
     "margins": []
    }
@@ -269,12 +269,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.01,
+    "seconds": 2.58,
     "last": "8/8 passed",
-    "at": "2026-11-17T20:30:10Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
     "build": "62555189ee75d10c5fec",
-    "command": "python3 src/RimMandrake/Utils/selftest_furnace_warmth.py"
+    "command": "python3 src/RimMandrake/Utils/selftest_furnace_warmth.py",
+    "margins": []
    }
   },
   "T_SITE": {
@@ -292,11 +293,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.0,
-    "last": "PASS: 0 failure(s)",
-    "at": "2026-11-24T20:29:34Z",
+    "seconds": 4.83,
+    "last": "[pyre] 09:15:49 scorchfruit_produces PASS",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "4d7bda9c8b234e4a35b1",
+    "build": "126d12544da6276b3a97",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
     "margins": []
    }
@@ -315,33 +316,11 @@
     "ran": true,
     "rc": 0,
     "seconds": 0.03,
-    "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-24T20:29:34Z",
+    "last": "[pyre-note] ScorchFruit left on the map after the cap-budget clear: 0",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "3bed2d1f916e7aed6536",
+    "build": "21ba7be994ce980e4aac",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py",
-    "margins": []
-   }
-  },
-  "T_FIREFOAM_SCENE": {
-   "id": "T_FIREFOAM_SCENE",
-   "kind": "offline",
-   "stage": "4-5",
-   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
-   "observes": "the sc_firefoam_sprayer harness: every cell beside the fruit burns or the row is UNMEASURED, the planted gap holds no fuel, and the sprayer row needs a fruit taken while the ring burns (harness, not mod)",
-   "reads": [
-    "src/RimMandrake/Pyrelands/validation.py"
-   ],
-   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
-   "runs_today": {
-    "ran": true,
-    "rc": 0,
-    "seconds": 0.31,
-    "last": "selftest_pyrelands_firefoam_scene: PASS  cases {'geometry': 1, 'verdicts': 36, 'staging': 396, 'timelines': 1352, 'challenges': 3}",
-    "at": "2026-11-24T20:29:35Z",
-    "result": "PASS",
-    "build": "d90d5692ecebf4351981",
-    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
     "margins": []
    }
   },
@@ -359,11 +338,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.14,
-    "last": "settings screens selftest: 14/14 ok (mods: Pyrelands)",
-    "at": "2026-11-24T14:43:12Z",
+    "seconds": 0.18,
+    "last": "settings screens selftest: 14/14 ok (mods: Pyrelands); 14 rows for this mod, 0 red",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "70e8f2ca74fa94083052",
+    "build": "2ae52dff44a570e0aba3",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
     "margins": []
    }
@@ -382,11 +361,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.05,
     "last": "PASS barbslinger two tails",
-    "at": "2026-11-23T22:08:14Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "fc1d2ae9cbbf5f47ce43",
+    "build": "04fa64c33e2704bc353f",
     "command": "python3 src/RimMandrake/Utils/selftest_barbslinger_two_tails.py",
     "margins": []
    }
@@ -404,12 +383,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
+    "seconds": 0.35,
     "last": "ALL PASS",
-    "at": "2026-11-17T20:30:17Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
     "build": "679502de67d15169f624",
-    "command": "python3 src/RimMandrake/Pyrelands/review/selftest_pyre_review_map.py"
+    "command": "python3 src/RimMandrake/Pyrelands/review/selftest_pyre_review_map.py",
+    "margins": []
    }
   },
   "T_FH_LETTER": {
@@ -427,11 +407,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "selftest_pyrelands_firehawk_letter: PASS",
-    "at": "2026-11-24T14:43:12Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "52df8f89e851a1f7c770",
+    "build": "d9375612f3bb0ab7c49e",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py",
     "margins": []
    }
@@ -453,9 +433,9 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "selftest_pyrelands_firehawk_crestfeather: PASS",
-    "at": "2026-11-23T22:08:14Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "7de8c781df03eafc14ea",
+    "build": "897844b4cdf00fbae173",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py",
     "margins": []
    }
@@ -465,7 +445,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
-   "observes": "source checks for Scribe defaults matching initializers and shipped behaviour, setting readers in the mechanics, and entry points consulting PyrelandsMechanicsGate.On. Burrowing ends and clears its protection when the gate or burrow switch turns off. Disabled furnace bed ignition discards the rest clock. Reset all restores writable settings. The opening scar obeys the ash dusting and fresh-burn fertility switches independently. The ash-field tick refreshes the Clear and Ash Drift weights on either effective gate transition. A live fire can roll for fruit only on a cell with its own recent burn record, including when the fertility bonus is off.",
+   "observes": "the settings sweep moved off the game: every Scribe field of RM_PyrelandsSettings has its default equal to its initializer and to shipped behaviour; every mechanic switch has a reader in its mechanic outside the settings file; every mechanic entry point consults PyrelandsMechanicsGate.On (static half of g10); a mutant dropping a reader or flipping a default goes red",
    "reads": [
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
     "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
@@ -476,11 +456,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 9.24,
-    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 48 of 48 mutants red, the clean copy green",
-    "at": "2026-11-24T14:43:22Z",
+    "seconds": 12.16,
+    "last": "PASS: every Pyrelands setting scribed, shipped as ruled, read and gated; 64 of 64 mutants red, the clean copy green",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "490e6e1367c013a7261d",
+    "build": "dbb40eb08e47eaee0946",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
     "margins": []
    }
@@ -501,11 +481,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 121.19,
+    "seconds": 154.95,
     "last": "PASS: 14 def facts hold, 26 of 26 mutants red, the clean copy green",
-    "at": "2026-11-23T23:33:26Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "61f0dffed79392cf9011",
+    "build": "4da0fe76584f7adfc1b8",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
     "margins": []
    }
@@ -527,11 +507,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.0,
+    "seconds": 1.09,
     "last": "PASS: the three cut legs stay cut, 9 of 9 mutants red, the clean copy green",
-    "at": "2026-11-23T23:33:27Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "4abeb622a84ff7fd1949",
+    "build": "d6f501b8f89466e5bd79",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py",
     "margins": []
    }
@@ -552,12 +532,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.33,
+    "seconds": 8.23,
     "last": "PASS: RM_Ullai is a herd vanilla herd migration can pick, 12 of 12 mutants red, the clean copy green",
-    "at": "2026-11-17T20:31:16Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "da68352b3d6018a38f1d",
-    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py"
+    "build": "7813339080e9baa90c7f",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py",
+    "margins": []
    }
   },
   "T_ASH_PROBE_OFFLINE": {
@@ -575,12 +556,37 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.68,
+    "seconds": 1.61,
     "last": "PASS: the probe reads cells part by part and refuses with the ash field off; 8 mutants red",
-    "at": "2026-11-24T14:43:23Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "567b2107a49bbb5928fe",
+    "build": "6ede24115fc79b93b0f1",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_ash_probe.py",
+    "margins": []
+   }
+  },
+  "T_WIND_BURN_ROWS_OFFLINE": {
+   "id": "T_WIND_BURN_ROWS_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_wind_burn_rows.py",
+   "observes": "sc_fire_walks_with_wind's rows driven by pyre_burn_sim.py's model of the shipped carry over the pace range and 40 seeds: the burn leans downwind at both bearings, the outer lanes stay unburnt, no lane and no strip holds more fires at once than one fire-life deep; a planted flood and a planted fire that ignores the wind are both red",
+   "reads": [
+    "src/RimMandrake/Pyrelands/selftest_pyrelands_wind_burn_rows.py",
+    "src/RimMandrake/Pyrelands/wind_burn_live.py",
+    "src/RimMandrake/Pyrelands/pyre_burn_sim.py",
+    "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_wind_burn_rows.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 18.21,
+    "last": "44 of 44 ok",
+    "at": "2026-11-27T09:32:55-08:00",
+    "result": "PASS",
+    "build": "d279f8540e90c0969c6f",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_wind_burn_rows.py",
     "margins": []
    }
   },
@@ -595,15 +601,11 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burn_line",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live burn_line   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
@@ -611,7 +613,34 @@
     ],
     "by": "testq_blocks.py"
    },
-   "cheaper_why": "only the burned share plays days, four with the wind on and four with it off: what the fire spreads over a few days is the claim, and no bridge call stages a spread the fire did not make. The relight, the eight-hour walk and the switch control are staged and need about 43,000 ticks (chains burn_line_walk and burn_line_off_control, in burn_line too)."
+   "cheaper_why": "only the burned share plays days, four with the wind on and four with it off: what the fire spreads over a few days is the claim, and no bridge call stages a spread the fire did not make. The relight, the eight-hour walk and the switch control are staged and need about 43,000 ticks (chains burn_line_walk and burn_line_off_control, in burn_line too).",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   }
+  },
+  "sc_fire_walks_with_wind": {
+   "id": "sc_fire_walks_with_wind",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Pyrelands/wind_burn_live.py",
+   "entry": "main",
+   "observes": "at both bearings, east and the opposite (reversed) west, the burn runs further downwind than upwind of the lit line, so it turns when the wind turns; nothing burns in the outer lanes beside it, and the fires at once stay a line one fire-life deep (fire life over the carry interval), in the strip and in each lane, never a flood; black rain puts the line out",
+   "reads": [
+    "src/RimMandrake/Pyrelands/wind_burn_live.py",
+    "src/RimMandrake/Pyrelands/validation.py",
+    "design/concepts/Pyrelands/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live main   (minimal list + mandrake.rm.biomes)",
+   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE",
+   "command_note": "pyrelands tier, a Pyrelands map current, bridge held",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in wind_burn_live.py"
+   }
   },
   "sc_ash_watered": {
    "id": "sc_ash_watered",
@@ -619,26 +648,26 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "ash_fertility_watered",
-   "observes": "the dry strip takes the sowing and grows, and the watered strip is clearly ahead of it; at each of five reads over one day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
+   "observes": "the dry strip takes the sowing and grows, and the watered strip is clearly ahead of it; each day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ash_fertility_watered",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ash_fertility_watered   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "ash_fertility_watered"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_burn_compounds": {
@@ -652,15 +681,11 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fresh_burn_bonus",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live fresh_burn_bonus   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
@@ -668,7 +693,11 @@
     ],
     "by": "testq_blocks.py"
    },
-   "cheaper_why": "the claim is a bonus that ends on its own clock of days while rain feeds it: the decay kernel is already decided offline (T_FUZZ), and the stamp, the Black Rain watering and the plants' growth meet only in a game. The scene plays past the clock's end, and the same days show no raid, death or stray fire. Tier list, three pads on one map."
+   "cheaper_why": "the claim is a bonus that ends on its own clock of days while rain feeds it: the decay kernel is already decided offline (T_FUZZ), and the stamp, the Black Rain watering and the plants' growth meet only in a game. The scene plays past the clock's end, and the same days show no raid, death or stray fire. Tier list, three pads on one map.",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   }
   },
   "sc_grass_regreens": {
    "id": "sc_grass_regreens",
@@ -681,15 +710,11 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains grass_cover,embergrass_regrow",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live embergrass_regrow   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
@@ -697,7 +722,11 @@
     ],
     "by": "testq_blocks.py"
    },
-   "cheaper_why": "only the burned patch's re-greening plays its seven days: the bar is that a scar is largely green within about a week by the plants' own spread, and a patch staged green would show nothing. The sown patches (dry, watered, vanilla, bursts) are one staged growth step of about 16,000 ticks (chain regrow_growth, in embergrass_regrow too)."
+   "cheaper_why": "only the burned patch's re-greening plays its seven days: the bar is that a scar is largely green within about a week by the plants' own spread, and a patch staged green would show nothing. The sown patches (dry, watered, vanilla, bursts) are one staged growth step of about 16,000 ticks (chain regrow_growth, in embergrass_regrow too).",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   }
   },
   "sc_scorchfruit": {
    "id": "sc_scorchfruit",
@@ -710,21 +739,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains plant_census,scorchfruit_fire_born",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live scorchfruit_fire_born   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "scorchfruit_fire_born"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_populations": {
@@ -733,26 +762,26 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "plant_census",
-   "observes": "every defName in the manifest, grazers outnumber predators, at least two fire-hawks and at least eight ashwallows (GenStep_PyrelandsFireCast tops each kind up by its shortfall), no red error; no plant outside the manifest appears over a day of wild-plant spawning with the allowlist on",
+   "observes": "every defName in the manifest, grazers outnumber predators, at least two fire-hawks and at least eight ashwallows (GenStep_PyrelandsFireCast tops each kind up by its shortfall; its grazer balance may add ashwallow groups), no red error; no plant outside the manifest appears over the allowlist-on day",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains plant_census",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live plant_census   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "plant_census"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_ruins": {
@@ -766,21 +795,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ruins",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ruins   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "ruins"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_firehawk": {
@@ -794,21 +823,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live firehawk   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "firehawk"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_furnace": {
@@ -822,21 +851,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains furnace_warmth",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live furnace_warmth   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "furnace_warmth"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_ashwallow": {
@@ -850,21 +879,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains burrowers",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live burrowers   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "burrowers"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_ullai": {
@@ -878,21 +907,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ullai_and_giant",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live herd_follows_drive   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "ullai_and_giant"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_three_skies": {
@@ -906,21 +935,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains cinderfall",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live cinderfall   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "cinderfall"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_no_rain": {
@@ -929,26 +958,26 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "no_ordinary_rain",
-   "observes": "no ordinary rain listed or chosen; under a Rain lock (GameCondition_ForceWeather) the weather WeatherDecider gives the map is black rain, never Rain (PyrelandsNoOrdinaryRain turns an ordinary rain the decider picks into black rain); with pyrelandsEnabled off the same roll gives Rain",
+   "observes": "no ordinary rain listed or chosen; under the forced-Rain condition the weather the map gets is black rain, never Rain (PyrelandsNoOrdinaryRain turns an ordinary rain the decider picks into black rain)",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains no_ordinary_rain",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live no_ordinary_rain   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "no_ordinary_rain"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_reload_keeps_the_burn": {
@@ -958,29 +987,29 @@
    "file": "src/RimMandrake/Pyrelands/walk_small_live.py",
    "entry": "reload_keeps_the_burn",
    "observes": "after the reload the front burns in the same cells, the same fruit stands, and each scar cell has the same burn stamp, bonus and fertility",
-   "claims": [
-    "a reload gives back the front, the scar's age and bonus, and the fruit exactly as they were at the save"
-   ],
    "reads": [
     "src/RimMandrake/Pyrelands/walk_small_live.py",
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains reload_keeps_the_burn",
-   "why_game": "the game's own save and load",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live reload_keeps_the_burn   (minimal list + mandrake.rm.biomes)",
+   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
-   "cheaper_why": "no offline test writes and reads a game save, so the mod's scribed burn stamps, vanilla's fires and the plants meet only in a load; one staged pad on the tier list, two saves, about 5,500 ticks; a smaller pad or no lit front would leave the front or the bonus unread",
    "entry_exists": true,
-   "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in walk_small_live.py"
-   },
+   "item": null,
+   "claims": [
+    "a reload gives back the front, the scar's age and bonus, and the fruit exactly as they were at the save"
+   ],
+   "cheaper_why": "no offline test writes and reads a game save, so the mod's scribed burn stamps, vanilla's fires and the plants meet only in a load; one staged pad on the tier list, two saves, about 5,500 ticks; a smaller pad or no lit front would leave the front or the bonus unread",
    "testq": {
     "chains": [
      "reload_keeps_the_burn"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in walk_small_live.py"
    }
   },
   "sc_fire_sense": {
@@ -990,29 +1019,29 @@
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "fire_sense",
    "observes": "P's job turns RM_PyreStepAwayFromFire within the window and P ends on a cell at least 3 cells (PyrelandsFireSense.SafeClear) from every fire, with no Fire attached to P at any poll; H's first job is Ingest of the meal (RM_PyreEatBeforeFireDuty) and only after it a firefight job (BeatFire); log clean",
-   "claims": [
-    "a colonist beside a fire steps away from it",
-    "an urgently hungry colonist eats before it fights a fire"
-   ],
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fire_sense",
-   "why_game": "pawn think trees run only in a game",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live fire_sense   (minimal list + mandrake.rm.biomes)",
+   "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
-   "cheaper_why": "the two job orders are vanilla think-tree decisions with the mod's two givers inserted, which no offline test runs; one spawned colonist and one lit plot each, under 5,000 ticks on the tier list; the two halves share one pad because a load costs more than the second half",
    "entry_exists": true,
-   "item": "RIMMANDRAKE_SPLIT_PYRELANDS_SEASON_WALK_TO_MINIMUM_TESTS",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
+   "item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
+   "claims": [
+    "a colonist beside a fire steps away from it",
+    "an urgently hungry colonist eats before it fights a fire"
+   ],
+   "cheaper_why": "the two job orders are vanilla think-tree decisions with the mod's two givers inserted, which no offline test runs; one spawned colonist and one lit plot each, under 5,000 ticks on the tier list; the two halves share one pad because a load costs more than the second half",
    "testq": {
     "chains": [
      "fire_sense"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_firefoam_sprayer": {
@@ -1026,21 +1055,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firefoam_sprayer",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live firefoam_sprayer   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "firefoam_sprayer"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_sand_shovel": {
@@ -1054,21 +1083,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains sand_shovel",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live sand_shovel   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "sand_shovel"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_rite_hook_alone": {
@@ -1082,21 +1111,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains rite_hook_alone",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live rite_hook_alone   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "rite_hook_alone"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_heat_dome": {
@@ -1110,15 +1139,11 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains heat_dome",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live heat_dome   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
@@ -1126,7 +1151,11 @@
     ],
     "by": "testq_blocks.py"
    },
-   "cheaper_why": "the clauses are one sequence of one act on one pawn, about 300 ticks and 70 s of the tier list: hit, dome, drawn body, surface, with the switch as its control. Splitting it would load the site once for each clause and read the same pawn again. The drawn body and the job exist only in a running game."
+   "cheaper_why": "the clauses are one sequence of one act on one pawn, about 300 ticks and 70 s of the tier list: hit, dome, drawn body, surface, with the switch as its control. Splitting it would load the site once for each clause and read the same pawn again. The drawn body and the job exist only in a running game.",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   }
   },
   "sc_fire_dusts_ash": {
    "id": "sc_fire_dusts_ash",
@@ -1139,21 +1168,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fire_tick_effects",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live fire_tick_effects   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "fire_tick_effects"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_flamefang_venom": {
@@ -1167,21 +1196,21 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains flamefang_venom",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live flamefang_venom   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "PYRELANDS_SCENES_BUILD_VENOM_GIANT_DUST_DOME",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "flamefang_venom"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_foreign_arrivals": {
@@ -1195,49 +1224,50 @@
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains foreign_arrivals",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live foreign_arrivals   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
    "item": "RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "foreign_arrivals"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "sc_firehawk_rewards": {
    "id": "sc_firehawk_rewards",
    "kind": "live_minimal",
    "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/validation.py",
+   "file": "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
    "entry": "firehawk_first_sighting_letter",
    "observes": "exactly one letter after the first carry, targeting the hawk, and still one after the second; butchered hawks sometimes give a crestfeather, a butchered non-hawk never does; the letter's label is RM_FireHawkSightedLabel's text and its text names the hawk (its LabelShortCap) and the ember it carries (RM_FireHawkEmberFromPlant with the source plant's label, or RM_FireHawkEmberFromBurn); the crestfeather's live MarketValue is above the fire-hawk's own and its Beauty above 0",
    "reads": [
+    "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_first_sighting_letter",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live firehawk_first_sighting_letter   (minimal list + mandrake.rm.biomes)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
-   "entry_exists": false,
+   "entry_exists": true,
    "item": null,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry ABSENT in validation.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes",
    "testq": {
     "chains": [
      "firehawk_first_sighting_letter"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
    }
   },
   "P_startup_and_def_wiring": {
@@ -1250,19 +1280,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains startup_and_def_wiring",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live startup_and_def_wiring",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "startup_and_def_wiring"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_mapgen_log": {
@@ -1275,19 +1305,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains mapgen_log",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live mapgen_log",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "mapgen_log"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_grass_cover": {
@@ -1300,19 +1330,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains grass_cover",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live grass_cover",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "grass_cover"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_animal_census": {
@@ -1325,19 +1355,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains animal_census",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live animal_census",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "animal_census"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_ambient_ash_drift": {
@@ -1350,19 +1380,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ambient_ash_drift",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ambient_ash_drift",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "ambient_ash_drift"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_scorchfruit_produces": {
@@ -1375,19 +1405,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains scorchfruit_produces",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live scorchfruit_produces",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "scorchfruit_produces"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_scorchfruit_spoils": {
@@ -1400,19 +1430,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains scorchfruit_spoils",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live scorchfruit_spoils",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "scorchfruit_spoils"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_furnace_room": {
@@ -1425,19 +1455,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains furnace_room",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live furnace_room",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "furnace_room"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_ashfall_weather_accumulation": {
@@ -1450,19 +1480,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ashfall_weather_accumulation",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ashfall_weather_accumulation",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "ashfall_weather_accumulation"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_ashfall_drifts": {
@@ -1475,19 +1505,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ashfall_drifts",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live ashfall_drifts",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "ashfall_drifts"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_blackrain": {
@@ -1500,19 +1530,19 @@
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains blackrain",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live blackrain",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in validation.py"
-   },
    "testq": {
     "chains": [
      "blackrain"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   },
   "P_firefoam_aim": {
@@ -1524,20 +1554,20 @@
    "reads": [
     "src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py"
    ],
-   "command": "python.exe src/RimMandrake/Pyrelands/firefoam_aim_live_proof.py",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\firefoam_aim_live_proof.py",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in firefoam_aim_live_proof.py"
-   },
    "testq": {
     "check": {
      "tier": "pyrelands",
      "build": "release"
     },
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firefoam_aim_live_proof.py"
    }
   },
   "P_gate": {
@@ -1549,20 +1579,20 @@
    "reads": [
     "src/RimMandrake/Pyrelands/gate_live_proof.py"
    ],
-   "command": "python.exe src/RimMandrake/Pyrelands/gate_live_proof.py",
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\gate_live_proof.py",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in gate_live_proof.py"
-   },
    "testq": {
     "check": {
      "tier": "pyrelands",
      "build": "release"
     },
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in gate_live_proof.py"
    }
   },
   "firehawk_first_sighting_letter": {
@@ -1575,20 +1605,20 @@
    "reads": [
     "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_first_sighting_letter",
+   "command": "modcheck run Pyrelands --chains firehawk_first_sighting_letter   (minimal list + mandrake.rm.biomes; state reads only, flight never watched)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched",
    "testq": {
     "chains": [
      "firehawk_first_sighting_letter"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
    }
   },
   "firehawk_crestfeather_yield": {
@@ -1597,24 +1627,24 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
    "entry": "firehawk_crestfeather_yield",
-   "observes": "fire-hawks butchered through the patched Pawn.ButcherProducts under a fixed seed: some give the crestfeather, a non-hawk gives none; the trophy's Beauty and MarketValue in the running game equal the def's",
+   "observes": "400 fire-hawks butchered through the patched Pawn.ButcherProducts under a fixed seed: the 35 % yield within 4 sigma; the trophy's Beauty and MarketValue in the running game equal the def's",
    "reads": [
     "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
    ],
-   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains firehawk_crestfeather_yield",
+   "command": "modcheck run Pyrelands --chains firehawk_crestfeather_yield   (minimal list + mandrake.rm.biomes; state reads only, flight never watched)",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
-   },
    "command_note": "minimal list + mandrake.rm.biomes; state reads only, flight never watched",
    "testq": {
     "chains": [
      "firehawk_crestfeather_yield"
     ],
     "by": "testq_blocks.py"
+   },
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in firehawk_rewards_live.py"
    }
   },
   "RECORD_ART_SHEET": {
@@ -1631,12 +1661,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.06,
     "last": "RECORD PASS OWNER.jsonl:646 tsn=1792122659817386516 id=PYRELANDS_SHIP_READINESS_1 sha256=4eb301cd2630a7ba40509cb886aac377a500cde7fdfc38edb77053003bba26c8",
-    "at": "2026-11-17T20:31:17Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
     "build": "e3b0c44298fc1c149afb",
-    "command": "python3 src/RimMandrake/rimflow/record_check.py --seat OWNER --tsn 1792122659817386516 --id PYRELANDS_SHIP_READINESS_1 --said-contains \"approving this whole sheet\" --sha256 4eb301cd2630a7ba40509cb886aac377a500cde7fdfc38edb77053003bba26c8"
+    "command": "python3 src/RimMandrake/rimflow/record_check.py --seat OWNER --tsn 1792122659817386516 --id PYRELANDS_SHIP_READINESS_1 --said-contains \"approving this whole sheet\" --sha256 4eb301cd2630a7ba40509cb886aac377a500cde7fdfc38edb77053003bba26c8",
+    "margins": []
    }
   },
   "LOOK_STAGE8": {
@@ -1649,6 +1680,28 @@
    "runs_today": {
     "ran": false,
     "why": "Stage 8"
+   }
+  },
+  "T_FIREFOAM_SCENE": {
+   "id": "T_FIREFOAM_SCENE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
+   "observes": "the sc_firefoam_sprayer harness: every cell beside the fruit burns or the row is UNMEASURED, the planted gap holds no fuel, and the sprayer row needs a fruit taken while the ring burns (harness, not mod)",
+   "reads": [
+    "src/RimMandrake/Pyrelands/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.35,
+    "last": "selftest_pyrelands_firefoam_scene: PASS  cases {'geometry': 1, 'verdicts': 36, 'staging': 396, 'timelines': 1352, 'challenges': 3}",
+    "at": "2026-11-27T09:06:16-08:00",
+    "result": "PASS",
+    "build": "b2f26e436048edbcf3d0",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_firefoam_scene.py",
+    "margins": []
    }
   },
   "T_SELF_CONTAINED_OFFLINE": {
@@ -1669,11 +1722,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.72,
-    "last": "PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, cross-biome labelled unsupported; 8 of 8 mutants red, the clean copy green",
-    "at": "2026-11-24T14:43:24Z",
+    "seconds": 0.91,
+    "last": "PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, no cross-biome section; 9 of 9 mutants red, the clean copy green",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "b2a30f802b62db046311",
+    "build": "3b6eaf6b821b8c36e772",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py",
     "margins": []
    }
@@ -1691,37 +1744,15 @@
    "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 3.65,
-    "last": "FAIL: 1 of 18 checks failed",
-    "at": "2026-11-24T20:29:39Z",
-    "result": "FAIL",
-    "build": "fa6aa3dce96199e1af62",
+    "rc": 0,
+    "seconds": 6.61,
+    "last": "PASS: 0 of 18 checks failed",
+    "at": "2026-11-27T09:35:31-08:00",
+    "result": "PASS",
+    "build": "197a25b203ae38f7abf7",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
     "margins": []
    }
-  },
-  "sc_fire_walks_with_wind": {
-   "id": "sc_fire_walks_with_wind",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/Pyrelands/wind_burn_live.py",
-   "entry": "main",
-   "observes": "with the wind on, the burn reaches downwind of the lit line, nothing burns in the lanes beside it and the fires at once stay a few times the cells lit; black rain puts the line out",
-   "reads": [
-    "src/RimMandrake/Pyrelands/wind_burn_live.py",
-    "design/concepts/Pyrelands/scenes.json"
-   ],
-   "command": "python.exe src/RimMandrake/Pyrelands/wind_burn_live.py",
-   "why_game": "a running Pyrelands map with the biome's clocks and the bridge (tier_reason of the leaf)",
-   "why_full_list": null,
-   "entry_exists": true,
-   "item": "RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE",
-   "runs_today": {
-    "ran": false,
-    "why": "live: this run is offline only; entry exists in wind_burn_live.py (5 of 5 PASS live on 2026-11-16, before this bar existed)"
-   },
-   "command_note": "pyrelands tier, a Pyrelands map current, bridge held"
   },
   "T_FURNACE_ART_OFFLINE": {
    "stage": "4-5",
@@ -1735,9 +1766,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.4,
+    "seconds": 1.51,
     "last": "PASS",
-    "at": "2026-11-21T01:45:41Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
     "build": "5295c015c8bfc3cd8d04",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_furnace_beast_art.py",
@@ -1762,11 +1793,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.15,
+    "seconds": 4.19,
     "last": "selftest_pyrelands_venom_staging: 0 of 46 checks failed",
-    "at": "2026-11-24T20:29:45Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "18873739565e37b7b743",
+    "build": "fa8839999dae6aa41911",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_staging.py",
     "margins": []
    }
@@ -1787,11 +1818,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.17,
+    "seconds": 0.15,
     "last": "selftest_pyrelands_venom_dose: 0 of 9 checks failed",
-    "at": "2026-11-23T22:10:43Z",
+    "at": "2026-11-27T09:06:16-08:00",
     "result": "PASS",
-    "build": "a9480944eede928a911a",
+    "build": "60e7b9dcb83d72339ea8",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_venom_dose.py",
     "margins": []
    }
@@ -1812,11 +1843,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.05,
     "last": "selftest_pyrelands_walk_small: 0 of 61 checks failed",
-    "at": "2026-11-24T20:29:45Z",
+    "at": "2026-11-27T09:32:55-08:00",
     "result": "PASS",
-    "build": "b1fb36fe123ef0aa9d8d",
+    "build": "bfb8fd86148db6521e88",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_walk_small.py",
     "margins": []
    }
@@ -1833,14 +1864,20 @@
     "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs",
     "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fire_pace.py",
-   "runs_today": {
-    "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
-   },
    "built_in_stage": "3",
-   "for_bar": "fire_catches_and_runs"
+   "for_bar": "fire_catches_and_runs",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 259.49,
+    "last": "PASS: 10 of 10 rows hold",
+    "at": "2026-11-27T09:06:16-08:00",
+    "result": "PASS",
+    "build": "f5c7db32ccb8222bab38",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fire_pace.py",
+    "margins": []
+   }
   },
   "sc_fire_catches_and_runs": {
    "id": "sc_fire_catches_and_runs",
@@ -1849,8 +1886,6 @@
    "tier": "pyrelands",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "fire_catches_and_runs",
-   "entry_exists": false,
-   "new": true,
    "observes": "a quicktest Pyrelands map on the small list, weather held clear, wind on, no pawn near: one spark (a fire of size 0.1, as a lightning strike or a fire-hawk's twig starts) in open standing ember grass far from the colony; the burning cells are read every game hour for a day with a capture at each read; the spark is still burning at hour 1, the burning width reaches a front within the hours the check names, and the head's travel at the day end is larger than the 0.1.0 build's on the same map and spark (that reading is taken once on the 0.1.0 tag and kept beside the row: the red-first reading); a judge shown the captures confirms a grass fire that runs as a line, not a flood",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
@@ -1868,15 +1903,11 @@
     "claim": "a spark in standing grass catches and is a front the player must answer the same day, walking downwind faster than 0.1.0's",
     "entry_point": "validation.py chain fire_catches_and_runs: a fresh quicktest Pyrelands map, weather forced clear for the whole run, the spark lit by FireUtility.TryStartFireIn at size 0.1",
     "valid_opportunity": "the spark cell and the cells downwind of it to the map edge hold standing ember grass, the weather stayed clear, no pawn or building within the reach of a day's front",
-    "success": "the spark burns at hour 1; a front of the width the check names by the hours it names; the day-end head travel beats the 0.1.0 reading; the judge reads a walking line",
+    "success": "the spark burns at hour 1; a front of the width the check names by the hours it names; the day-end head travel beats the head read in the same session on the same site at firePacePercent = FirePacePercentMin (100, the 0.1.0 carry clock; Conductor ruling 2026-11-27 5:28 AM PST); the judge reads a walking line",
     "forbidden_effects": "the burning or black share of open ground over half at the day end; fire on a cell that no carry reached (a flood); a new error line in Player.log",
     "end": "one game day after the spark, or the front at the map edge"
    },
-   "cheaper_why": "the offline model (T_FIRE_PACE_MODEL_OFFLINE) decides the pace from a caught fire; it cannot decide that a spark catches on a live plant, which is half of his complaint ('The fire barely catches'); one short staged burn is the cheapest test of that half",
-   "runs_today": {
-    "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 writes the entry, Stage 6 runs it (UNRUN until then)"
-   },
+   "cheaper_why": "the offline model (T_FIRE_PACE_MODEL_OFFLINE) decides the pace from a caught fire; it cannot decide that a spark catches on a live plant, which is half of his complaint ('The fire barely catches'); one short staged burn is the cheapest test of that half. The baseline of \"faster than 0.1.0's\" is read in the same game session at pace 100 on the current build, with no stop and no swap (Conductor ruling 2026-11-27 5:28 AM PST): the overlay take of the 0.1.0 build cost a game stop, a full overlay and a relaunch for each reading. Cross-check, once (ArchSmall, 2026-11-27, e7f7ea5956, site 1, spark (12,50)): pace-100 head 46.0 on the current build against the 0.1.0 build's head 47.0 (take 6), difference -1.0, within the 1-cell run-to-run spread at pace 200 (85..86); the pace-100 spread is not measured.",
    "test_kind": "B",
    "tag_evidence": "spoiled by: vanilla Fire's own random rolls on a live plant (whether a size 0.1 fire grows or gutters, and where it spreads) and the weather. Tried: the weather forced clear for the whole run, the wind set by SetWindForTest, no pawn or building within a day's reach, standing grown ember grass checked at staging. Not enough: whether one spark takes is a random roll by design, which the scene must leave to the game (Minimum Force), so the result is random by design.",
    "x_of_y": [
@@ -1884,7 +1915,12 @@
     3
    ],
    "budget": 3,
-   "x_of_y_why": "the bar says a spark takes hold; a spark that sometimes gutters is allowed, one that mostly gutters is his complaint ('The fire barely catches'). 2 of 3 is the Designer's first value, written before the first run; a shortfall goes to the Conductor (shortfall.py call)"
+   "x_of_y_why": "the bar says a spark takes hold; a spark that sometimes gutters is allowed, one that mostly gutters is his complaint ('The fire barely catches'). 2 of 3 is the Designer's first value, written before the first run; a shortfall goes to the Conductor (shortfall.py call)",
+   "entry_exists": true,
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in validation.py"
+   }
   },
   "T_ROOF_WITHER_OFFLINE": {
    "id": "T_ROOF_WITHER_OFFLINE",
@@ -1896,14 +1932,20 @@
     "src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs",
     "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_roof_wither.py",
-   "runs_today": {
-    "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
-   },
    "built_in_stage": "3",
-   "for_bar": "roofed_grass_declines_visibly"
+   "for_bar": "roofed_grass_declines_visibly",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 8.1,
+    "last": "PASS",
+    "at": "2026-11-27T09:06:16-08:00",
+    "result": "PASS",
+    "build": "89ca3396fcc38873443f",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_roof_wither.py",
+    "margins": []
+   }
   },
   "sc_roofed_grass_declines": {
    "id": "sc_roofed_grass_declines",
@@ -1912,8 +1954,6 @@
    "tier": "pyrelands",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "roofed_grass_declines",
-   "entry_exists": false,
-   "new": true,
    "observes": "a quicktest Pyrelands map on the small list: a patch of standing ember grass is roofed by the bridge; every few game hours over the wither time the probe reads each roofed plant (hit points, its wilt stage, its inspect line) and a capture at play zoom is taken; the plants die at spread times, each dead plant's cell holds dead grass at its next read, and a colonist ordered to cut it cuts it; a plant set to 1 hit point on a roofed cell is gone one long tick later; Player.log gains 0 lines 'Exception ticking RM_FE_Plant_EmberGrass' over the scene (on the 0.1.0 build: one per plant, the red-first reading); a judge shown the captures confirms grass that reads as wilting, then dead grass",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
@@ -1934,11 +1974,12 @@
     "end": "every roofed plant dead and its dead grass crumbled or cut, or the wither time and the crumble time passed"
    },
    "cheaper_why": "the offline rule (T_ROOF_WITHER_OFFLINE) decides the spread and the remains; the look, the cut job and the log line exist only in the game; the scene reads all three in one staged patch",
+   "test_kind": "A",
+   "entry_exists": true,
    "runs_today": {
     "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 writes the entry, Stage 6 runs it (UNRUN until then)"
-   },
-   "test_kind": "A"
+    "why": "live: this run is offline only; entry exists in validation.py"
+   }
   },
   "T_SMOKE_WEATHER_ACCEPT": {
    "id": "T_SMOKE_WEATHER_ACCEPT",
@@ -1951,13 +1992,19 @@
     "src/RimMandrake/Pyrelands/Defs",
     "src/RimMandrake/Pyrelands/Source"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py",
+   "for_bar": "pyre_smoke_weather_chokes",
    "runs_today": {
-    "ran": false,
-    "why": "built; not run by the opening run (Designer, offline text only)"
-   },
-   "for_bar": "pyre_smoke_weather_chokes"
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.07,
+    "last": "PASS 6/6",
+    "at": "2026-11-27T09:06:16-08:00",
+    "result": "PASS",
+    "build": "72aca5089d8209e566b8",
+    "command": "python3 src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py",
+    "margins": []
+   }
   },
   "sc_smoke_weather_chokes": {
    "id": "sc_smoke_weather_chokes",
@@ -1966,8 +2013,6 @@
    "tier": "pyrelands",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "smoke_weather_chokes",
-   "entry_exists": false,
-   "new": true,
    "observes": "a quicktest Pyrelands map on the small list: the smoke weather forced; one colonist standing outdoors and one under a roof, both idle; after the hours the check names the outdoor colonist carries the smoke's hediff or thought with its label and reads lower breathing and moving, the roofed one carries none; a grass fire lit before the smoke is still burning; a capture of the sky; a judge shown it confirms smoke, not ash fall or rain; on the 0.1.0 build no smoke weather exists to force (the red-first reading)",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
@@ -1989,11 +2034,12 @@
     "end": "the hours the check names after the smoke was forced"
    },
    "cheaper_why": "the offline acceptance test decides the defs; whether a colonist is hampered and the sky reads as smoke is only in the game; one short forced weather is the cheapest test",
+   "test_kind": "A",
+   "entry_exists": true,
    "runs_today": {
     "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 writes the entry, Stage 6 runs it (UNRUN until then)"
-   },
-   "test_kind": "A"
+    "why": "live: this run is offline only; entry exists in validation.py"
+   }
   },
   "T_CONDITIONS_NOT_BIOME_OFFLINE": {
    "id": "T_CONDITIONS_NOT_BIOME_OFFLINE",
@@ -2005,14 +2051,20 @@
     "src/RimMandrake/Pyrelands/Source",
     "design/specs/2026-11-21-guiding-principles/conversion_list.md"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_conditions_not_biome.py",
-   "runs_today": {
-    "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
-   },
    "built_in_stage": "3",
-   "for_bar": "mechanics_switch_plain_no_biome"
+   "for_bar": "mechanics_switch_plain_no_biome",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.16,
+    "last": "PASS: every mechanic gate reads its conditions, not the biome; each has its own default-on switch; biome data reads the biome's traits; 9 of 9 mutants red, the clean copy green",
+    "at": "2026-11-27T09:32:55-08:00",
+    "result": "PASS",
+    "build": "923053f5fbef9c7b9867",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_conditions_not_biome.py",
+    "margins": []
+   }
   },
   "T_SCENARIO_FIRE_DUTY": {
    "id": "T_SCENARIO_FIRE_DUTY",
@@ -2025,13 +2077,13 @@
     "src/RimMandrake/Pyrelands/Defs/ThinkTreeDefs/RM_PyreEatBeforeFireDuty.xml",
     "design/RimMandrake/2026-11-07-pocock-design/pilot_realtypes/Scenario.cs"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_fire_duty.py",
+   "built_in_stage": "3",
+   "new": true,
    "runs_today": {
     "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
-   },
-   "built_in_stage": "3"
+    "why": "specified, not built (Stage 3)"
+   }
   },
   "T_SCENARIO_FIRE_NO_FLEE": {
    "id": "T_SCENARIO_FIRE_NO_FLEE",
@@ -2043,13 +2095,13 @@
     "src/RimMandrake/Pyrelands/Source/PyrelandsFireSense.cs",
     "src/RimMandrake/Pyrelands/Defs/JobDefs/RM_PyreStepAwayFromFire.xml"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_fire_no_flee.py",
+   "built_in_stage": "3",
+   "new": true,
    "runs_today": {
     "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
-   },
-   "built_in_stage": "3"
+    "why": "specified, not built (Stage 3)"
+   }
   },
   "T_SCENARIO_BURROWER_FLEES": {
    "id": "T_SCENARIO_BURROWER_FLEES",
@@ -2060,13 +2112,13 @@
    "reads": [
     "src/RimMandrake/Pyrelands/Source/RM_JobGiver_BurrowOnFire.cs"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_scenario_burrower_flees.py",
+   "built_in_stage": "3",
+   "new": true,
    "runs_today": {
     "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
-   },
-   "built_in_stage": "3"
+    "why": "specified, not built (Stage 3)"
+   }
   },
   "T_CRESTFEATHER_OWN_ART_OFFLINE": {
    "id": "T_CRESTFEATHER_OWN_ART_OFFLINE",
@@ -2079,14 +2131,20 @@
     "src/RimMandrake/Pyrelands/Textures/Things/Item/Special/RM_PristineFirehawkCrestfeather",
     "infrastructure/artpipe"
    ],
-   "new": true,
    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_crestfeather_own_art.py",
-   "runs_today": {
-    "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); Stage 3 builds it and records it red first"
-   },
    "built_in_stage": "3",
-   "for_bar": "crestfeather_has_its_own_look"
+   "for_bar": "crestfeather_has_its_own_look",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 9.1,
+    "last": "T_CRESTFEATHER_OWN_ART_OFFLINE: PASS: 0 of 9 checks failed (worst: none)",
+    "at": "2026-11-27T09:06:16-08:00",
+    "result": "PASS",
+    "build": "5c735e4e0dc6ed7db842",
+    "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_crestfeather_own_art.py",
+    "margins": []
+   }
   },
   "sc_grass_seen_under_ash": {
    "id": "sc_grass_seen_under_ash",
@@ -2096,8 +2154,6 @@
    "tier": "pyrelands",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "grass_seen_under_ash",
-   "entry_exists": false,
-   "new": true,
    "first_run": "his card of 2026-11-26 orders one live look on a fresh map after an ash fall as the first step of this work: the scene's first run is on the 0.1.0 build, before any code, and is also its red-first reading",
    "observes": "a fresh quicktest Pyrelands map on the small list, no fire on it: the ash fall forced for the hours the check names, then the weather forced clear for 600 ticks (so no weather overlay is read); the probe lists each cell of two frames, its grown ember grass (jawa/list_things) and its ash depth (SandGrid): frame G, where most open cells hold grass under ash, and frame B, where the scene cleared the grass before the fall; a capture of each frame at play zoom (modcheck/play_zoom.py's measured rootSize); a judge shown the two captures, not told which is which, says which frame holds grass, and reads grass in G and bare ash in B. Red-first reading: the 0.1.0 build (2026-11-16: 685 grass plants in 777 cells drawn as bare ash); if the 0.1.0 run reads green, the check is seen red on a planted fault (the ash sheet's altitude raised above the plants) before it counts",
    "reads": [
@@ -2120,9 +2176,10 @@
     "end": "the two captures and the judge's reading, after the ash fall and 600 ticks of clear"
    },
    "cheaper_why": "no offline model of the renderer exists, and the defect of 2026-11-16 was a picture that disagreed with every count; a static read of draw altitudes could not show what the player sees",
+   "entry_exists": true,
    "runs_today": {
     "ran": false,
-    "why": "specified at the 0.2.0 opening (2026-11-26); its first run is the look on the 0.1.0 build (UNRUN until a game takes it)"
+    "why": "live: this run is offline only; entry exists in validation.py"
    }
   }
  },
@@ -2146,24 +2203,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "covered_by_leaves": []
-  },
-  {
-   "id": "fire_walks_with_wind",
-   "source": "tree.json",
-   "kind": "experience",
-   "proves_at": "6",
-   "decides": [
-    "sc_fire_walks_with_wind"
-   ],
-   "supports": [
-    "T_BURN_ECOLOGY"
-   ],
-   "held": [],
-   "offline_decides": [],
-   "offline_green_today": false,
-   "every_decider_runnable_today": true,
-   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2185,6 +2225,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2203,6 +2244,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2222,6 +2264,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2243,6 +2286,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2266,6 +2310,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2290,6 +2335,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2306,6 +2352,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2324,6 +2371,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2348,6 +2396,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2368,6 +2417,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2386,6 +2436,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2407,6 +2458,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2426,6 +2478,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2447,6 +2500,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2475,6 +2529,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2494,6 +2549,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2512,6 +2568,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2528,6 +2585,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2546,6 +2604,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2566,6 +2625,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2590,6 +2650,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2613,6 +2674,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2631,6 +2693,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2651,6 +2714,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2674,6 +2738,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2697,6 +2762,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2717,6 +2783,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2733,6 +2800,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2751,6 +2819,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2775,6 +2844,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2794,6 +2864,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2813,6 +2884,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2837,6 +2909,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2855,6 +2928,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2874,6 +2948,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2892,6 +2967,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2910,6 +2986,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2926,6 +3003,7 @@
    "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2952,6 +3030,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -2978,6 +3057,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -3003,6 +3083,7 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": [
     "firehawk_hunt_rewards"
    ]
@@ -3026,6 +3107,29 @@
    "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "covered_by_leaves": []
+  },
+  {
+   "id": "fire_walks_with_wind",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_fire_walks_with_wind",
+    "T_WIND_BURN_ROWS_OFFLINE"
+   ],
+   "supports": [
+    "T_BURN_ECOLOGY"
+   ],
+   "held": [],
+   "offline_decides": [
+    "T_WIND_BURN_ROWS_OFFLINE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
    "covered_by_leaves": []
   },
   {
@@ -3052,11 +3156,12 @@
    "offline_decides": [
     "T_FIRE_PACE_MODEL_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false,
-   "new_in": "0.2.0"
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "new_in": "0.2.0",
+   "covered_by_leaves": []
   },
   {
    "id": "roofed_grass_declines_visibly",
@@ -3077,11 +3182,12 @@
    "offline_decides": [
     "T_ROOF_WITHER_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false,
-   "new_in": "0.2.0"
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "new_in": "0.2.0",
+   "covered_by_leaves": []
   },
   {
    "id": "pyre_smoke_weather_chokes",
@@ -3102,17 +3208,18 @@
    "offline_decides": [
     "T_SMOKE_WEATHER_ACCEPT"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false,
-   "new_in": "0.2.0"
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "new_in": "0.2.0",
+   "covered_by_leaves": []
   },
   {
    "id": "mechanics_switch_plain_no_biome",
    "source": "record.json",
    "kind": "inventory",
-   "proves_at": "6",
+   "proves_at": "4-5",
    "decides": [
     "T_CONDITIONS_NOT_BIOME_OFFLINE",
     "T_SETTINGS_SWEEP_OFFLINE",
@@ -3135,11 +3242,12 @@
     "T_SETTINGS_SWEEP_OFFLINE",
     "T_SETTINGS_SCREENS"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false,
-   "new_in": "0.2.0"
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "new_in": "0.2.0",
+   "covered_by_leaves": []
   },
   {
    "id": "crestfeather_has_its_own_look",
@@ -3156,11 +3264,12 @@
    "offline_decides": [
     "T_CRESTFEATHER_OWN_ART_OFFLINE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false,
-   "new_in": "0.2.0"
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "new_in": "0.2.0",
+   "covered_by_leaves": []
   },
   {
    "id": "grass_still_seen_under_ash",
@@ -3178,17 +3287,17 @@
    ],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false,
-   "any_decider_runnable_today": false,
-   "new_in": "0.2.0"
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "new_in": "0.2.0",
+   "covered_by_leaves": []
   }
  ],
  "unlisted_suites": {
   "selftest_pyrelands_round6_parts.py": "proof-harness completeness: asserts the round-6 scenes have their parts in validation.py and firehawk_rewards_live.py, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
   "selftest_pyrelands_ten_scenes_parts.py": "proof-harness completeness: asserts the ten gap scenes have their parts in validation.py, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_pyrelands_walk_digest.py": "proof-harness: asserts validation.walk_digest compares only state that survives a reload, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
-  "selftest_pyrelands_wind_burn_rows.py": "proof-harness: asserts wind_burn_live.verdict_rows refuses planted wrong games (a test of the live scene's verdict), not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  "selftest_pyrelands_walk_digest.py": "proof-harness: asserts validation.walk_digest compares only state that survives a reload, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
  },
  "opened_0_2_0": {
   "at": "2026-11-26",

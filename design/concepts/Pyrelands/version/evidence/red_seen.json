@@ -171,7 +171,7 @@
   "test_blob": "e6944721861b142773dbe8eaf09cca211a8a14ca"
  },
  "T_SETTINGS_SCREENS": {
-  "at": "2026-11-27T10:54:41Z",
+  "at": "2026-11-27T17:05:05Z",
   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
   "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
   "last": "settings screens selftest: 13/14 ok (mods: Pyrelands)",
@@ -181,7 +181,7 @@
   ],
   "patch_sha": "c11f948ae6047c4c",
   "rc": 1,
-  "test_blob": "ac99b7208f3c72b69762ed40175ae8b9dd92fd17"
+  "test_blob": "d484f52faa79097be70bb8cde13a9f755f7f3ad1"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
   "at": "2026-11-27T10:54:34Z",
@@ -234,5 +234,18 @@
   "patch_sha": "4dcbf0dfb4acc07c",
   "rc": 1,
   "test_blob": "9bfb3ce8492223ad37fbf5b03b75597d43ffaa71"
+ },
+ "T_WIND_BURN_ROWS_OFFLINE": {
+  "at": "2026-11-27T17:34:55Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_wind_burn_rows.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_wind_burn_rows.py",
+  "last": "40 of 44 ok",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/pyre_burn_sim.py b/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n+++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n@@ -559,7 +559,7 @@\n                             stamp = max(int(self.burn[tz, tx]) if P[\"burn_stamps\"] else -1, int(self.carried_at[tz, tx]))\n                             return bool(self.size[tz, tx] > 0 or (stamp >= 0 and self.tick - stamp <= P[\"heal_recent\"]))\n                         roll1, roll2, roll_side = rng.random(), rng.random(), rng.random()\n-                        plan, healed = carry_plan(self.wind, roll1, roll2, roll_side, P[\"carry_reach\"],\n+                        plan, healed = carry_plan(90.0, roll1, roll2, roll_side, P[\"carry_reach\"],\n                                                   P[\"heal_reach\"], cell, anchor, P[\"carry_splits\"], P[\"carry_merge\"])\n                         opened = 0\n                         if P[\"flank\"]:\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/pyre_burn_sim.py"
+  ],
+  "patch_sha": "a59808cba0692b81",
+  "rc": 1,
+  "test_blob": "7faf082fae30668a219f1e6272caff4be4dcce0a"
  }
 }

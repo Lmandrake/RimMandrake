@@ -618,3 +618,10 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-26 1:25 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-24 7:13 PM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-27 9:35 AM PST, Stage 3 build: every bar has a check that runs (by BENCH, detached runs RIMMANDRAKE_AUTOBUILD_PYRELANDS_SEVEN_BARS_LEFT and RIMMANDRAKE_AUTOBUILD_PYRELANDS_SEVEN_BARS_LEFT_RUN_TWO)
+
+- Built: the six 0.2.0 bars' checks (crestfeather art and T_CRESTFEATHER_OWN_ART_OFFLINE; the conversion and T_CONDITIONS_NOT_BIOME_OFFLINE; Fire pace default 200 and T_FIRE_PACE_MODEL_OFFLINE; roof wither, baked wilting and dead looks and T_ROOF_WITHER_OFFLINE; smoke weather and T_SMOKE_WEATHER_ACCEPT; the grass depth fix), their four in-game scenes, and T_WIND_BURN_ROWS_OFFLINE (new decider of fire_walks_with_wind).
+- Conductor rulings carried out: 4:36 AM PST (the wind rows read in distance walked at the shipped pace, peak against burning depth, pin removed: d1aaf04e43) and 5:28 AM PST (the fire baseline read in the same session at pace 100: e7f7ea5956; cross-check 46.0 against 0.1.0's 47.0).
+- In game on ArchSmall, early rows: sc_grass_seen_under_ash PASS, sc_smoke_weather_chokes PASS, sc_roofed_grass_declines PASS (row rgd_6, blind judge YES after the sag fix), sc_fire_catches_and_runs PASS (pace-100 head 46.0, shipped 85.0), sc_fire_walks_with_wind PASS 11/11 at pace 200.
+- Test table remade with its maker at 0.2.0 (the maker now reads VERSION.json, keeps the previous table's keys and bars, finds scenes registered with @suite.chain, and stamps runs as the certificate does): bars not runnable 6 before, 0 after; 33 of 33 built offline tests green; certificate OK.

@@ -1,12 +1,30 @@
 """Throwaway (Maturation advance row 2, Pyrelands): build version/test_table.json + .md.
 The bar -> test mapping is hand judgment written here; runs_today is MEASURED by running every offline test and by
-checking every live scene's entry function exists in validation.py. Columns match ExplosiveKnockback's table."""
+checking every live scene's entry exists: a top-level def, or a chain registered with @suite.chain("<entry>") in its file
+(for validation.py, also in the files its _register_firehawk_rewards loads). Columns match ExplosiveKnockback's table.
+The version is VERSION.json's; a bar or test of the previous table that this file does not define is carried (0.2.0's six
+bars and their tests were written into the table by the Designer's opening run), and so is every top-level key it does
+not write."""
 import json, re, subprocess, time, datetime, sys
+sys.path.insert(0, 'src/RimMandrake/rimflow')
+import judge_certificate as JC, check_margin as CM   # the certificate's own stamp (build of reads + file) and margin reader
 P = 'design/concepts/Pyrelands/'; V = P + 'version/'; SRC = 'src/RimMandrake/Pyrelands/'; VAL = SRC + 'validation.py'
 NOW = datetime.datetime.now().astimezone().isoformat(timespec='seconds')
 tree = json.load(open(P + 'tree.json')); rec = json.load(open(P + 'record.json')); scn = json.load(open(P + 'scenes.json'))
 leaves = {l['id']: l for l in tree['leaves']}; inv = {i['id']: i for i in rec['inventory']}
-valdefs = set(re.findall(r'^def (\w+)\(', open(VAL).read(), re.M))
+VER = json.load(open(V + 'VERSION.json'))['version']
+def entries(f):
+    """-> the live entries one file holds: top-level defs and @suite.chain names; validation.py adds the modules it loads."""
+    import os
+    if not os.path.exists(f): return set()
+    txt = open(f).read(); out = set(re.findall(r'^def (\w+)\(', txt, re.M)) | set(re.findall(r'\.chain\("(\w+)"\)', txt))
+    if os.path.basename(f) == 'validation.py':
+        m = re.search(r'for name in \(([^)]*)\):\s*\n\s*spec = importlib', txt)
+        for n in re.findall(r'"(\w+)"', m.group(1)) if m else []:
+            sub = os.path.join(os.path.dirname(f), n + '.py')
+            if os.path.exists(sub): out |= set(re.findall(r'\.chain\("(\w+)"\)', open(sub).read()))
+    return out
+valdefs = entries(VAL)
 K = SRC + 'Source/Kernel/'
 T = {}
 def off(tid, f, observes, reads, cmd=None, new=False, item=None, mod_rows=None):
@@ -38,16 +56,19 @@ off('T_CUT_STAYS_CUT', SRC + 'selftest_pyrelands_cut_stays_cut.py', 'the cut leg
 # his card 2026-11-14 on ullai crossing the map in vanilla herd migrations: "Yes, let them cross"
 off('T_ULLAI_HERD_MIGRATES', SRC + 'selftest_pyrelands_ullai_herd_migration.py', 'RM_Ullai stays a herd vanilla herd migration can pick: herdAnimal true, an animal (not a tool user, organic flesh), herdMigrationAllowed never false through its parents or any patch, a PawnKindDef for it, and RM_Pyrelands lists it with commonality above 0 (IncidentWorker_HerdMigration.IsValidBiomeAnimal); 12 mutants red', [SRC + 'Defs/ThingDefs_Races/RM_Ullai.xml', SRC + 'Defs/BiomeDefs/Pyrelands.xml', 'src/RimMandrake/Pyrelands/Patches/', '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml'])
 off('T_ASH_PROBE_OFFLINE', SRC + 'selftest_pyrelands_ash_probe.py', 'PyrelandsAshField.ProbeCell reports fertility part by part (dry, watered, burn bonus) from RM_FireEcoKernel.AshFertility, and refuses with ashWaterFertilityEnabled off', [SRC + 'Source/PyrelandsAshField.cs', K + 'RM_FireEcoKernel.cs'], new=True, item='RIMMANDRAKE_PIN_PYRE_ASH_PROBE_OFFLINE (to file at Stage 3)')
+# the offline rows of sc_fire_walks_with_wind at the shipped pace (Conductor ruling 2026-11-27 4:36 AM PST: rows in distance walked,
+# peak against burning depth); built and seen red on its two planted faults by RIMMANDRAKE_AUTOBUILD_PYRELANDS_SEVEN_BARS_LEFT_RUN_TWO
+off('T_WIND_BURN_ROWS_OFFLINE', SRC + 'selftest_pyrelands_wind_burn_rows.py', "sc_fire_walks_with_wind's rows driven by pyre_burn_sim.py's model of the shipped carry over the pace range and 40 seeds: the burn leans downwind at both bearings, the outer lanes stay unburnt, no lane and no strip holds more fires at once than one fire-life deep; a planted flood and a planted fire that ignores the wind are both red", [SRC + 'selftest_pyrelands_wind_burn_rows.py', SRC + 'wind_burn_live.py', SRC + 'pyre_burn_sim.py', K + 'RM_BurnKernel.cs'])
 GAME = 'a running Pyrelands map with the biome\'s clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s'
 for c in scn['scenes']:
-    fn = c['entry_point'].split('::')[1]; full = c['id'] == 'sc_walk'
+    ef, fn = c['entry_point'].split('::'); full = c['id'] == 'sc_walk'
     reqs = c.get('requirement') or []
-    T[c['id']] = dict(id=c['id'], kind='live_full' if full else 'live_minimal', stage='6', file=VAL, entry=fn,
-        observes=c['expect'] if isinstance(c['expect'], str) else json.dumps(c['expect']), reads=[VAL, P + 'scenes.json'],
+    T[c['id']] = dict(id=c['id'], kind='live_full' if full else 'live_minimal', stage='6', file=ef, entry=fn,
+        observes=c['expect'] if isinstance(c['expect'], str) else json.dumps(c['expect']), reads=[ef] + ([VAL] if ef != VAL else []) + [P + 'scenes.json'],
         command='python.exe src\\RimMandrake\\Pyrelands\\validation.py --live %s   (%s)' % (fn, 'full list' if full else 'minimal list + mandrake.rm.biomes'),
         why_game='two weeks of ordinary play with a mid-way reload: clocks, saves and the whole list together' if full else GAME,
         why_full_list='the walk is ordinary play on his list (leaf walk_season_on_the_pyre, tier live_full)' if full else None,
-        entry_exists=fn in valdefs, item=c.get('entry_point_item'))
+        entry_exists=fn in entries(ef), item=c.get('entry_point_item'))
 for fn in ['startup_and_def_wiring', 'mapgen_log', 'grass_cover', 'animal_census', 'ambient_ash_drift', 'opening_front', 'scorchfruit_produces', 'scorchfruit_spoils', 'furnace_room', 'ashfall_weather_accumulation', 'ashfall_drifts', 'blackrain']:
     T['P_' + fn] = dict(id='P_' + fn, kind='live_minimal', stage='6', file=VAL, entry=fn, observes='older north-star proof function cited by record.json proof_evidence', reads=[VAL],
         command='python.exe src\\RimMandrake\\Pyrelands\\validation.py --live %s' % fn, why_game=GAME, why_full_list=None, entry_exists=fn in valdefs)
@@ -66,12 +87,19 @@ T['LOOK_STAGE8'] = dict(id='LOOK_STAGE8', kind='look', stage='8', file='(his wal
 import os
 PREV = json.load(open(V + 'test_table.json')) if os.path.exists(V + 'test_table.json') else {}
 MADE = set(T)
+# The previous table is the record for its tests too: later runs rewrote commands (the northstar driver), texts, items and
+# files there, so its every key wins over this file's definition except the three this file measures (runs_today, new,
+# entry_exists); a definition here only seeds a test the previous table lacks. A scene this run rewrote in scenes.json
+# takes its observes from there (SCENE_TEXT_FROM_SCENES).
+MEASURED = ('runs_today', 'new', 'entry_exists')
+SCENE_TEXT_FROM_SCENES = {'sc_fire_walks_with_wind'}    # rows in distance walked (Conductor ruling 2026-11-27 4:36 AM PST)
 for tid, t in (PREV.get('tests') or {}).items():
-    if tid not in T:
-        T[tid] = {k: v for k, v in t.items() if k != 'runs_today'}
-    else:
-        for k, v in t.items():
-            if k not in T[tid] and k not in ('runs_today', 'new'): T[tid][k] = v
+    seeded = T.get(tid, {})
+    T[tid] = dict(seeded, **{k: v for k, v in t.items() if k not in MEASURED})
+    if tid in SCENE_TEXT_FROM_SCENES and seeded.get('observes'): T[tid]['observes'] = seeded['observes']
+    T[tid].pop('new', None)
+    if T[tid]['kind'] == 'offline' and not os.path.exists(T[tid]['file']): T[tid]['new'] = True   # specified, not built
+    if T[tid]['kind'].startswith('live') and T[tid].get('entry'): T[tid]['entry_exists'] = T[tid]['entry'] in entries(T[tid]['file'])
 # ---- bars: decides / supports (hand judgment)
 B = [
  ('burn_line_walks', ['sc_burn_line_walks'], ['T_FUZZ', 'T_BURN_ECOLOGY', 'T_BURN_LANES', 'P_opening_front', 'LOOK_STAGE8']),
@@ -125,9 +153,24 @@ COVERAGE = {'firehawk_hunt_rewards': 'inv_firehawk_hunt_rewards'}
 PB = {b['id']: b for b in PREV.get('bars') or [] if isinstance(b, dict)}
 B = [(bid, dec + [x for x in PB.get(bid, {}).get('decides', []) if x not in MADE and x not in dec],
       sup + [x for x in PB.get(bid, {}).get('supports', []) if x not in MADE and x not in sup]) for bid, dec, sup in B]
+# The previous table is the record: later runs moved tests in and out of bars there (a check no bar needs leaves the table
+# with a record line in polish.md; the two-week walk sc_walk was replaced by the small walk scenes), so a bar it holds keeps
+# exactly its decides and supports; the list above only seeds a bar the previous table lacks.
+B = [(bid, list(PB[bid].get('decides', [])), list(PB[bid].get('supports', []))) if bid in PB else (bid, dec, sup) for bid, dec, sup in B]
+# a bar of the previous table this file does not list (0.2.0's six, written by the Designer's opening run) is carried whole
+B += [(bid, list(pb.get('decides', [])), list(pb.get('supports', []))) for bid, pb in PB.items() if bid not in {b[0] for b in B}]
+# deciders added after the previous table (each built and seen red in the run that added it)
+ADD_DECIDES = {'fire_walks_with_wind': ['T_WIND_BURN_ROWS_OFFLINE']}
+B = [(bid, dec + [x for x in ADD_DECIDES.get(bid, []) if x not in dec], sup) for bid, dec, sup in B]
+WRITTEN_BAR_KEYS = {'id', 'source', 'kind', 'proves_at', 'decides', 'supports', 'held', 'offline_decides', 'offline_green_today',
+                    'every_decider_runnable_today', 'any_test_runnable_today', 'any_decider_runnable_today', 'covered_by_leaves'}
+# a test this file defines that the previous table had dropped, and that no bar names, stays dropped
+NAMED = {x for _, dec, sup in B for x in dec + sup}
+for tid in [x for x in MADE if PREV.get('tests') and x not in PREV['tests'] and x not in NAMED]:
+    del T[tid]
 # ---- measure: run every built offline test
 for t in T.values():
-    if t['kind'] != 'offline': 
+    if t['kind'] != 'offline' and not (t['kind'] == 'record' and t.get('command')):   # a record with a command runs it, stamped
         if t['kind'].startswith('live'):
             t['runs_today'] = {'ran': False, 'why': 'live: this run is offline only; entry %s in %s' % ('exists' if t['entry_exists'] else 'ABSENT', t['file'].split('/')[-1])}
         elif t['kind'] == 'record':
@@ -136,14 +179,29 @@ for t in T.values():
         continue
     if t.get('new'):
         t['runs_today'] = {'ran': False, 'why': 'specified, not built (Stage 3)'}; continue
-    s = time.time(); r = subprocess.run(['python3', t['file']], capture_output=True, text=True, timeout=600); d = round(time.time() - s, 2)
-    lines = (r.stdout + r.stderr).strip().splitlines(); last = lines[-1][:200] if lines else ''
-    res = 'PASS' if r.returncode == 0 else 'FAIL'
-    if t.get('mod_rows'):
+    # Only the checks a change touches run again (standing rulings): a green run stamped by this file or by the certificate
+    # (judge_certificate.run_offline) on the build and command the test has now is kept; any other runs its command, and is
+    # stamped the way the certificate stamps it (build, command, margins), so the certificate reads this table as its own.
+    build = JC.test_build('.', t)
+    old = ((PREV.get('tests') or {}).get(t['id']) or {}).get('runs_today') or {}
+    if old.get('ran') and old.get('rc') == 0 and old.get('result') == 'PASS' and old.get('build') == build \
+            and old.get('command') == t['command']:
+        t['runs_today'] = old; continue
+    s = time.time()
+    try:
+        r = subprocess.run(t['command'], shell=True, capture_output=True, text=True, timeout=JC.RUN_TIMEOUT_S, env=JC._run_env())
+        rc, out_txt, cut = r.returncode, r.stdout + r.stderr, False
+    except subprocess.TimeoutExpired:      # no verdict: UNMEASURED, never FAIL (JC.RUN_TIMEOUT_S names its danger)
+        rc, out_txt, cut = -1, 'timed out after %d s' % JC.RUN_TIMEOUT_S, True
+    d = round(time.time() - s, 2)
+    lines = out_txt.strip().splitlines(); last = lines[-1][:200] if lines else ''
+    res = 'PASS' if rc == 0 else 'UNMEASURED' if cut else 'FAIL'
+    if t.get('mod_rows') and not cut:
         rows = [l for l in lines if t['mod_rows'] in l and l.split()[0] in ('ok', 'FAIL')]
         bad = [l for l in rows if l.startswith('FAIL')]
         res = 'PASS' if rows and not bad else 'FAIL'; last = '%s; %s rows for this mod, %d red' % (last, len(rows), len(bad))
-    t['runs_today'] = {'ran': True, 'rc': r.returncode, 'seconds': d, 'last': last, 'at': NOW, 'result': res}
+    t['runs_today'] = {'ran': True, 'rc': rc, 'seconds': d, 'last': last, 'at': NOW, 'result': res, 'build': build, 'command': t['command']}
+    if not cut: t['runs_today']['margins'] = CM.parse(r.stdout)
 def runnable(tid):
     t = T[tid]; rt = t.get('runs_today', {})
     if t['kind'] in ('offline', 'record'): return rt.get('ran') and rt.get('result') == 'PASS'
@@ -155,9 +213,12 @@ for bid, dec, sup in B:
     src = 'tree.json' if bid in leaves else 'record.json'
     kind = leaves[bid]['leaf_kind'] if bid in leaves else ('inventory, scope out (absence)' if inv[bid].get('scope') == 'out' else 'inventory')
     offd = [x for x in dec if T[x]['kind'] in ('offline', 'record')]
-    bars.append(dict(id=bid, source=src, kind=kind, proves_at=max((T[x]['stage'] for x in dec), key=lambda s: SO[s]), decides=dec, supports=sup, held=[],
+    bars.append(dict(id=bid, source=src, kind=kind, proves_at=max((T[x]['stage'] for x in dec), key=lambda s: SO[s]), decides=dec, supports=sup,
+        held=list(PB.get(bid, {}).get('held') or []),
         offline_decides=offd, offline_green_today=bool(offd) and all(runnable(x) for x in offd),
-        every_decider_runnable_today=all(runnable(x) for x in dec), any_test_runnable_today=any(runnable(x) for x in dec + sup)))
+        every_decider_runnable_today=all(runnable(x) for x in dec), any_test_runnable_today=any(runnable(x) for x in dec + sup),
+        any_decider_runnable_today=any(runnable(x) for x in dec),
+        **{k: v for k, v in PB.get(bid, {}).items() if k not in WRITTEN_BAR_KEYS}))
 LOCKED = json.load(open(V + 'locked_bars.json'))['ids']
 assert set(COVERAGE) <= set(leaves) and set(COVERAGE.values()) <= set(LOCKED) and not set(COVERAGE) & set(LOCKED), 'a coverage leaf must map onto a locked bar'
 assert set(b['id'] for b in bars) == (set(leaves) - set(COVERAGE)) | set(inv) == set(LOCKED) and len(bars) == len(LOCKED), 'bar set differs from locked_bars.json (bars.md)'
@@ -168,13 +229,18 @@ lost = [(tid, k) for tid, t in (PREV.get('tests') or {}).items() for k in t if k
 lost += [(bid, x) for bid, pb in PB.items() for x in pb.get('decides', []) + pb.get('supports', []) if x not in MADE and bid in {b['id'] for b in bars}
          and x not in next(b for b in bars if b['id'] == bid)['decides'] + next(b for b in bars if b['id'] == bid)['supports']]
 assert not lost, 'the remake would lose what the previous table held: %s' % lost[:5]
-out = dict(mod='Pyrelands', version='0.1.0', made=NOW, made_by='rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)',
+CORR = '/mnt/d/ClaudeWork/scratch/pyrelands_advance/corrections.json'   # the 0.1.0 judge's sorted gaps; carried once that file is gone
+out = dict(mod='Pyrelands', version=VER, made=NOW, made_by='rm-builder, Maturation advance row 2 beside the pilot (throwaway make_test_table.py)',
     stages={'2': 'preflight (a program)', '4-5': 'blind offline challenge and game-logic testing', '6': 'in-game acceptance', '8': 'his live walk'},
     rule='a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing',
     settings_move='inv_settings_gate was proven only by the two-week walk (coverage_rest). Its defaults, readers and gate checks are now decided offline by T_SETTINGS_SWEEP_OFFLINE (specified), T_SETTINGS_SCREENS and T_SITE (built); sc_walk keeps only the gate-off read in play, as support. No bar text is edited.',
     coverage_leaves={l: dict(bar=t, why='the leaf states the bar\'s promise; it is that bar\'s coverage, not a bar') for l, t in COVERAGE.items()},
     held_statements=[], held_note='0 held look statements name Pyrelands (grep of design/RimMandrake/validation_holding/*.md for pyre|ember|scorch|ash, 2026-11-14; the same grep for knockback finds 7 lines)',
-    corrections=json.load(open('/mnt/d/ClaudeWork/scratch/pyrelands_advance/corrections.json')), tests=T, bars=bars)
+    corrections=json.load(open(CORR)) if os.path.exists(CORR) else PREV.get('corrections', []), tests=T, bars=bars)
+out.update({k: v for k, v in PREV.items() if k not in out})   # keys another run wrote (opened_0_2_0, unlisted_suites)
+if isinstance(out.get('unlisted_suites'), dict):   # a suite the table now lists as a test is no longer unlisted
+    listed = {os.path.basename(t['file']) for t in T.values() if t.get('file')}
+    out['unlisted_suites'] = {k: v for k, v in out['unlisted_suites'].items() if k not in listed}
 json.dump(out, open(V + 'test_table.json', 'w'), indent=1, ensure_ascii=False); open(V + 'test_table.json', 'a').write('\n')
 # ---- read view
 live = [t for t in T.values() if t['kind'].startswith('live')]; offl = [t for t in T.values() if t['kind'] == 'offline']
@@ -184,7 +250,7 @@ cnt = dict(bars=len(bars), any=sum(b['any_test_runnable_today'] for b in bars), 
     offonly_built=sum(all(T[x]['kind'] in ('offline', 'record') and not T[x].get('new') for x in b['decides']) for b in bars),
     sc=len(sc), sc_ok=sum(t['entry_exists'] for t in sc), built=sum(not t.get('new') for t in offl), spec=sum(bool(t.get('new')) for t in offl),
     green=sum(t['runs_today'].get('result') == 'PASS' for t in offl if not t.get('new')))
-md = ['# Pyrelands 0.1.0: test-and-stage table', '', 'Generated %s from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Same columns as Explosive Knockback\'s table.' % NOW, '', '## Counts (measured)', '',
+md = ['# Pyrelands %s: test-and-stage table' % VER, '', 'Generated %s from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Same columns as Explosive Knockback\'s table.' % NOW, '', '## Counts (measured)', '',
  '- bars: %(bars)d' % cnt,
  '- with at least one test runnable today (a built offline test that ran green, or an in-game scene whose entry exists in validation.py): %(any)d' % cnt,
  '- with every deciding test runnable today: %(every)d' % cnt,
