@@ -17,3 +17,7 @@ Setting default (owner rule: defaults = shipped behaviour); the realism case is 
 
 Related, not the same: `PIT_RAIN_FIX_FRACTIONAL_HEADROOM_FULL` (fractional headroom), `EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE`
 (the per-pulse slice).
+
+## refs
+file: src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs
+file: src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs
