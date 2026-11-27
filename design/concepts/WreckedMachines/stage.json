@@ -240,10 +240,17 @@
     "ref": "run rm-role-designer-1795777997",
     "stage": 5,
     "tokens": 7940000
+   },
+   {
+    "at": "2026-11-27T12:09:19Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795780944",
+    "stage": 3,
+    "tokens": 1333717
    }
   ],
   "reserve": 60000,
-  "spent": 55794252
+  "spent": 57127969
  },
  "coverage_rounds": [
   {
@@ -578,6 +585,31 @@
    "stage": 5,
    "what": "judge_look",
    "why": "run rm-role-designer-1795777997: the stage-5 coverage judge rm-coverage-judge-1795778084 answered not_covered; next: a fresh judge look (the judge fixed scenes.json itself); its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-27T12:02:32Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-27T12:02:32Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "55794252 of 8000000 spent; run rm-role-designer-1795780944 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T12:02:32Z",
+   "parent": "rm-detached-bench-rimmandrake-class-unsigned-judge-look-as-1795779097",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795780944, stage 3, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T12:09:19Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1795780944: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -832,73 +864,6 @@
    ]
   },
   {
-   "at": "2026-11-27T10:58:43Z",
-   "inputs": {
-    "exam": null,
-    "floor": "e1538f124ba31c45f00e55dbd41247e6ba60b1244f260ff0a092c8fd0558d67d",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
-    "scenes": "78f814932feba5cc08610426ae676b4646b0991748aea6031ce827d36b42e28a",
-    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
-    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc"
-   },
-   "manifest": {
-    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
-    "designer_scene_contract.md": "09226da911e86bf1a7e5930a39dd7b7afb416df68b4ff54fffd2e5b090b629b8",
-    "designer_write.md": "c97c5bac20083d5d6c474f01c6c1ff1de9db66915ea20e709a6ba1a384dbf026"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "pinned_at": {
-    "exam": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
-    "floor": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
-    "root": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
-    "scenes": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
-    "sheet": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
-    "tree": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f"
-   },
-   "quick_look": {
-    "offer": false,
-    "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
-   },
-   "run": "rm-role-designer-1795776308",
-   "stage": 3,
-   "summary": "Stage 3 closed. Run rm-role-designer-1795773471 wrote the design and died on an API 529 before its result; this run finished it. On disk: sheet.md, tree.json (12 six-part bars, whole bar whole_journey, 12 checks, 17 rules, 17 meetings), plan.md (with the offline-simulation answer: yes for the repair state machine and the onboarding table, no for the rest), scenes.json (22 acceptance, 2 interaction and 4 exploration scenes; 3 showcases, flagship smelter_comes_home by a delegated pick), floor.json, models.md and root.md. Gate A lint passes and the showcase set is accepted. This run: (1) filed the build item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL with its acceptance test, seen red (23 entry points missing), published at 694c69f167; (2) wrote version/next_version/README.md, the eight 'later' lines of the sheet as pre-written tickets, which opens no version; (3) ran one fresh reader (rm-judge, opus) over the whole design: all 18 quotes of the sheet are word for word in their events, and four significant faults were found and fixed here. The largest: the repair bar promised the repair of a found wreck where it stands, and the ground rule refused it on a ruin's floor. The game's source (GenConstruct.CanPlaceBlueprintOver) and the factory mod's floor def settle the rule: a wreck names no ground need, the colony lays factory floor under it or carries it onto floor, and the scene sc_repair_needs_ground must show both ways in play. The others: the whole bar's first picture now matches the one Ancient Component of its scenes; the settings scene can no longer pass on settings that never apply; rule R_lift says what a narrowing of the lift does. No bar was added and no bar's 'says' changed. Open for later stages: one meeting is unknown (study on a building; the spike is built first); his reaction to the 9 captures of the first look is not on the ledger, and a word from him reopens stage 2."
-  },
-  {
-   "at": "2026-11-27T11:13:26Z",
-   "inputs": {
-    "exam": "d1aa652a76d26df2327f378f3604af2f88c919585daa8ad346cace50a01a93e6",
-    "floor": "e1538f124ba31c45f00e55dbd41247e6ba60b1244f260ff0a092c8fd0558d67d",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
-    "scenes": "78f814932feba5cc08610426ae676b4646b0991748aea6031ce827d36b42e28a",
-    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
-    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc"
-   },
-   "manifest": {
-    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
-    "designer_exam.md": "6ec8760e9b57a40efe589a6ee69489f9405c25bde9f9dec22493ecf975807ed2"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "pinned_at": {
-    "exam": "aa9d14c66971e7f079231ee4264783794c9f01c8",
-    "floor": "aa9d14c66971e7f079231ee4264783794c9f01c8",
-    "root": "aa9d14c66971e7f079231ee4264783794c9f01c8",
-    "scenes": "aa9d14c66971e7f079231ee4264783794c9f01c8",
-    "sheet": "aa9d14c66971e7f079231ee4264783794c9f01c8",
-    "tree": "aa9d14c66971e7f079231ee4264783794c9f01c8"
-   },
-   "quick_look": {
-    "offer": false,
-    "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
-   },
-   "run": "rm-role-designer-1795777120",
-   "stage": 4,
-   "summary": "Stage 4, the Cold Reader exam, passed on tree 480772ae49ee and sheet 54d5b95f8740. A fresh Examiner wrote 14 scenarios and a fresh Challenger wrote 6 (14 reject, 6 accept; every one of the 12 bars read at least once), frozen before any Reader started. Two fresh Readers, who saw only the sheet, the tree and the scenario text, both matched the expected verdict on 20 of 20 (measured from their answer files). No Reader accepted what a core bar rejects, and no Challenger scenario was missed. The control Reader read the program's copy without the bar wrecks_join_lines, accepted the one scenario that the bar rejects (e13) and matched the other 19. On disk: exam.json, exam_control/, exam_reads.json (the read map, 20 scenarios over 12 bars) and exam_evidence/ (the helpers' scenario and answer files). No bar, rule or sheet line changed. Five wording notes on which no verdict turned are lines in version/polish.md for the next run that changes the tree. Not done by this run: nothing was asked of him, and his reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2."
-  },
-  {
    "at": "2026-11-27T11:27:50Z",
    "judge_look": {
     "at": "2026-11-27T11:14:44Z",
@@ -912,12 +877,53 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-27T12:02:32Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-27T12:09:19Z",
+   "inputs": {
+    "exam": "d1aa652a76d26df2327f378f3604af2f88c919585daa8ad346cace50a01a93e6",
+    "floor": "e1538f124ba31c45f00e55dbd41247e6ba60b1244f260ff0a092c8fd0558d67d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
+    "scenes": "e0140af7d38bcafbf78b867dbef6fc24eb07e9168a6d29839cb2623695979db3",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc"
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_scene_contract.md": "09226da911e86bf1a7e5930a39dd7b7afb416df68b4ff54fffd2e5b090b629b8",
+    "designer_write.md": "c97c5bac20083d5d6c474f01c6c1ff1de9db66915ea20e709a6ba1a384dbf026"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "parent": "rm-detached-bench-rimmandrake-class-unsigned-judge-look-as-1795779097",
+   "pinned_at": {
+    "exam": "312141e05e80c55c991a68dc6154ac8183529c8f",
+    "floor": "312141e05e80c55c991a68dc6154ac8183529c8f",
+    "root": "312141e05e80c55c991a68dc6154ac8183529c8f",
+    "scenes": "312141e05e80c55c991a68dc6154ac8183529c8f",
+    "sheet": "312141e05e80c55c991a68dc6154ac8183529c8f",
+    "tree": "312141e05e80c55c991a68dc6154ac8183529c8f"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
+   },
+   "run": "rm-role-designer-1795780944",
+   "stage": 3,
+   "summary": "Stage 3 closed again on the scenes that the stage-5 coverage judge repaired. The judge rm-coverage-judge-1795778084 answered not_covered with seven gaps and fixed each one itself in scenes.json: four new acceptance scenes (study without Research Reinvented, the cannery on a list with Vanilla Cooking Expanded, a state read of every onboarded machine, a wreck brought home by caravan) and edits to five scenes. This run read each repair against the tree and changed no scene, bar, rule or sheet line; a judge's fix is checked by the next judge, a fresh one, so no coverage_fixes.json was written. Measured in this run: Gate A lint passes and the showcase set is accepted on the changed scenes (26 acceptance, 2 interaction and 4 exploration scenes). Each new expectation rests on words that the tree already holds. The one repair on a criterion that the second reader called flawed (a Refurbished machine taken apart gives no component) stays, because rule R_destroyable already says it. The control of the caravan scene holds on measured values (the autoloom has Mass 65; one colonist carries 35 kg). The bridge functions that the new scenes need exist (commits 626876a561 and 16d9d38315). The build item's acceptance test prints 'missing 4', the four new entry points; another run is working that item, and its file was not changed. Written by this run: record decision d_stage5_judge_fix_read, a note in plan.md on the four scenes, their instruments and two new mod-list tiers, and one line in version/polish.md for the judge's advisory note on cost settings, which no scene moves. Not done by this run: no live look and no judge look; the next act is stage 5's fresh judge look. His reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

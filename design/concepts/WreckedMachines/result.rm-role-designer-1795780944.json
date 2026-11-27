@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1795780944",
+ "stage": 3,
+ "outcome": "done",
+ "summary": "Stage 3 closed again on the scenes that the stage-5 coverage judge repaired. The judge rm-coverage-judge-1795778084 answered not_covered with seven gaps and fixed each one itself in scenes.json: four new acceptance scenes (study without Research Reinvented, the cannery on a list with Vanilla Cooking Expanded, a state read of every onboarded machine, a wreck brought home by caravan) and edits to five scenes. This run read each repair against the tree and changed no scene, bar, rule or sheet line; a judge's fix is checked by the next judge, a fresh one, so no coverage_fixes.json was written. Measured in this run: Gate A lint passes and the showcase set is accepted on the changed scenes (26 acceptance, 2 interaction and 4 exploration scenes). Each new expectation rests on words that the tree already holds. The one repair on a criterion that the second reader called flawed (a Refurbished machine taken apart gives no component) stays, because rule R_destroyable already says it. The control of the caravan scene holds on measured values (the autoloom has Mass 65; one colonist carries 35 kg). The bridge functions that the new scenes need exist (commits 626876a561 and 16d9d38315). The build item's acceptance test prints 'missing 4', the four new entry points; another run is working that item, and its file was not changed. Written by this run: record decision d_stage5_judge_fix_read, a note in plan.md on the four scenes, their instruments and two new mod-list tiers, and one line in version/polish.md for the judge's advisory note on cost settings, which no scene moves. Not done by this run: no live look and no judge look; the next act is stage 5's fresh judge look. His reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2.",
+ "quick_look": {
+  "offer": false,
+  "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
+ }
+}
