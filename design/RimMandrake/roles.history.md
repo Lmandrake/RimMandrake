@@ -390,3 +390,25 @@ The two bullets as they stood at base; the rules stay in `designer.md`, his word
   there is no share-built threshold. Before you add design or send him a question on such a concept, propose the walk
   (which save or scene, what it would show, which open questions it settles), and never ask him to predict what a look
   at the running mod would measure.
+
+## conductor.md: FIRST RULE, "Reply first, then work in the background" (owner, 2026-11-26)
+
+His words, in the Conductor window on 2026-11-26, about 4:50 PM and 5:20 PM PST: *"This is taking an extraordinarily
+long time. I would like to chat with you. Is there a way to reconfigure yourself to be more responsive to me while you
+fire off items into the background to complete instead? Or is the systems load simply too great to respond?"* and
+*"Could we modify the definition of conductor to keep this faster response method of interaction? Does it cost anything
+secretly I should know about?"*
+
+What made the rule: that afternoon the window waited about 9 minutes in the foreground for a publish in the tree-check
+line, wrote two long worker briefs before it answered, and repaired five launches that the prose check returned.
+Machine load was 30.8 on 14 cores; the load added seconds to a command, not the minutes that he waited.
+
+The costs that the Conductor told him with the rule, at about 5:25 PM PST:
+- A reply comes before its checks. He reads more "not read yet", and sometimes a correction one turn later.
+- Each short reply and each background result is its own turn, and each turn reads the whole conversation again. The
+  size of that spend was UNMEASURED when the rule was written.
+- The window reaches its context limit sooner and restarts more often.
+- A background command can hold a window restart. On 2026-11-26 one launch held a restart for over an hour.
+- Background results interrupt the conversation as they end.
+- A brief returned by the prose check starts as written when it is launched again unchanged, with its faults as a
+  note. The Conductor used that path three times that day so that he did not wait. The path is not part of the rule.
