@@ -127,3 +127,18 @@ Each of these three ledger tickets held only an idea: nothing built, no failure,
 - **Prose of the ticket:** none (the ticket had no prose file).
 - **Sweep:** home `mod:FlowWorks`, group `pits-and-trenches` (2026-11-24). It stages a raid, so its test waits for the raid pause (`raid_pause.py show`).
 - **Acceptance test:** none, parked, not built.
+
+## RIMMANDRAKE_DESIGN_FLUID_THIN_SHEETS_TAR_SHOWED_MISTY_GREY (FlowWorks 0.2.0, his walk 2026-11-25: "NEXT VERSION")
+- **What:** the look and the flow of each fluid as a thin sheet on the ground. At station 75 poured tar spread as misty grey squares (picture `D:\ClaudeWork\rimmandrake\showings\FLOWWORKS_WALK3_20261125\8.png`). Folds in RIMMANDRAKE_ANIMATE_POUR_SPILL_SHEET_ARRIVES_ALL_AT_ONCE ("I wanted to watch the water bulge and move", 2026-11-12) and the thin-film wetness ruling of 2026-11-14.
+- **Design draft (2026-11-27, Designer pass of work bundle WB-mod-FlowWorks-20261127-063415):** `design/specs/2026-11-27-fluid-thin-sheets/design.md`: the measured cause of the grey tar, one look source for pit and ground, pours that arrive over several pulses, per-liquid spread speed, proposed bars with their cheapest tests, and his open questions.
+- **Acceptance test:** none, a design for his look (as filed); the draft proposes the 0.2.0 bars and tests.
+
+## RIMMANDRAKE_DESIGN_TAR_SMOKE_AND_GAS_ON_THE_WIND (FlowWorks 0.2.0, his walk 2026-11-25)
+- **What:** burning tar makes choking smoke that blows with the wind; gas that flows in the air with and without wind and sealed in rooms, and its effects. His words: "That's a big area likely for the next version of FlowWorks".
+- **Design draft (2026-11-27, same pass):** `design/specs/2026-11-27-tar-smoke-gas-on-wind/design.md`: a FlowWorks-owned gas field beside vanilla's gas grid, one shared wind direction, one "smoke in the lungs" condition, proposed bars with their cheapest tests, and four questions for him with recommendations.
+- **Acceptance test:** none, a design for his look (as filed).
+
+## RIMMANDRAKE_BUILD_BLACK_RAIN_FILLS_MOATS_TANKS_STAY_DRY (FlowWorks next version, by the Pyrelands 0.2.0 sort of 2026-11-26)
+- **What:** heavy rain (black rain included) fills an open-sky tank and a dug moat or channel. His words 2026-11-13: black rain is "a rare chance to fill your moat against the fire and fill your water tanks". Today tanks fill only over the liquid net.
+- **Why here:** the Pyrelands 0.2.0 sort (`design/concepts/Pyrelands/version/next_version/README.md`, entry "Black rain fills the moat and the water tanks") ruled it a water mechanic that works by its conditions, so it is FlowWorks' design work when FlowWorks opens its next version.
+- **Acceptance test:** none yet, a Designer pass owes it (how much a heavy rain fills, a Mod Setting, a live look).
