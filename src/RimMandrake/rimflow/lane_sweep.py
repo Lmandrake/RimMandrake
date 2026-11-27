@@ -48,9 +48,11 @@ if HERE not in sys.path:
 T0 = calendar.timegm((2026, 11, 27, 0, 0, 0))     # a fixed day: the sweep is the same on every run
 TICK_S = 600        # src/RimMandrake/Utils/systemd/rm-list-dispatch.timer: OnUnitActiveSec=10min
 TICKS = 144         # one day of ticks
+# budget: danger=a simulated run that never ends would leave the sweep's fake day with no run end to read; ends no work: a simulated run ends at this simulated time
 RUN_S = 2400        # a sim run's length (40 min); the death regime's first run ends at DEATH_S
 DEATH_S = 600
 STEP_S = 60         # finish kicks the continuation step; the step runs this much later
+# budget: danger=a Conductor stand-in that never acts would leave a stopped ticket stopped for the whole fake day; ends no work: the stand-in's dated wait passes in sim time
 HAND_WAIT_S = 86400     # the Conductor stand-in's dated wait, when it neither clears nor ends a load
 CLEARS = 2          # list_dispatch.py clear, this many times per ticket, then a dated wait
 CORES = 14          # Archmagi (list_dispatch.json _machine_load_per_core_doc: "28 on 14")
