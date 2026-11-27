@@ -84,11 +84,11 @@ for two options per kind, built on this geometry, is on its own sheets: `generat
 - **Bridges.** The same posts become towers at both anchors. The main cable is a curve that sags between the two tower
   heads (printed as short straight runs), and hangers drop from it to the deck edge every half cell. East/west, this
   reads as a suspension bridge seen from the side. North/south, the sag shows in the shadow.
-- **Over pawns, except the far side.** Cables and post heads print at `AltitudeLayer.PawnUnused` (24), directly above
+- **Over pawns, except the far side.** Cables print at `AltitudeLayer.PawnUnused` (24), directly above
   `Pawn` (23) [measured: the engine enum]. A colonist on the deck is under the cables, as in the mockups. The map is seen
   from the south, so on an east/west deck the ropes, hangers, backstays and rails NORTH of the deck are behind him: they
   print at `AltitudeLayer.PawnRope` (21), under `Pawn` (`RM_SuspensionMath.RopeOverPawns`). A north/south deck's side
-  ropes stay over him. The post shafts print at `Building`. What covers a pawn is the depth test of each vertex's
+  ropes stay over him. The posts print whole at `AltitudeLayer.BuildingOnTop`, under pawns (`RM_DeckArt.PrintEnd`). What covers a pawn is the depth test of each vertex's
   altitude against the pawn's drawn nodes, not the draw order: every section sub-mesh sorts as one draw at y 0
   (`MapDrawLayer.RefreshSubMeshBounds`), before the pawn, and a cable material moved after the pawn changed only blended
   edges [measured: SteveDesktop, 2026-11-27, `jawa/material_queue`; the colonist's nodes at y 8.40 to 8.44].
