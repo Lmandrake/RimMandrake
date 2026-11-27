@@ -55,7 +55,21 @@ def to_win(p) -> str:
     return _to_win(str(p))
 
 
+def _to_posix(p: str) -> str:
+    """`D:\\X\\y` or `D:/X/y` -> `/mnt/d/X/y`; anything else unchanged (POSIX python under WSL)."""
+    m = re.match(r"^([a-zA-Z]):[\\/](.*)$", p)
+    if not m:
+        return p
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+
+
 def _check(p: str) -> str:
+    if not IS_WIN:
+        # A Windows-form root (AGENT_STORAGE_ROOT='D:\\ClaudeWork' passed for python.exe) is a RELATIVE path here:
+        # live 2026-11-26 it made game_lock write a claim into a 'D:\\ClaudeWork' folder inside a clone.
+        p = _to_posix(p)
+        if not os.path.isabs(p):
+            raise RmDataRootUnset(f"data root {p!r} is not an absolute path")
     low = p.replace("\\", "/").lower().rstrip("/")
     if re.search(r"(^|/)luke/dev(/|$)", low) or "/home/mandrake/dev" in low:
         raise RmDataRootUnset(f"data root {p!r} is inside the owner's dev tree (D:\\Luke\\dev / ~/dev), "
@@ -78,8 +92,11 @@ def _resolve(env_value: str, lodestar_value: str) -> str:
     hit = _cache_read(key)
     if hit:
         return _check(hit)
+    env = dict(os.environ)
+    if lodestar_value:                  # the helper abspaths a raw 'D:\\X' against cwd: hand it the /mnt/<d> form
+        env[LODESTAR_ENV] = _to_posix(lodestar_value)
     r = subprocess.run([sys.executable or "python3", AGENT_STORAGE, PROJECT],
-                       capture_output=True, text=True, timeout=30)
+                       capture_output=True, text=True, timeout=30, env=env)
     out = r.stdout.strip()
     if r.returncode != 0 or not out:
         raise RmDataRootUnset(f"{ENV_VAR} unset and agent_storage.py failed: {r.stderr.strip()}")

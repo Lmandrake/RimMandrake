@@ -49,6 +49,38 @@ if os.path.isfile(rmpaths.AGENT_STORAGE) or os.environ.get(rmpaths.ENV_VAR):
     r = str(rmpaths.rm_data_root())
     check("live root resolves outside dev", "luke/dev" not in r.replace("\\", "/").lower(), r)
 
+# A Windows-form root under POSIX python (live 2026-11-26: AGENT_STORAGE_ROOT='D:\\ClaudeWork' in a WSL shell made the
+# root the RELATIVE path 'D:\\ClaudeWork/rimmandrake'; game_lock then wrote an ArchSmall claim into that folder inside the
+# clone, a lock no other process reads). POSIX translates a drive path to /mnt/<d>/...; a relative root is refused.
+if not rmpaths.IS_WIN:
+    check("posix: a drive-form env root becomes /mnt/<d>",
+          resolve("D:\\ClaudeWork\\rimmandrake") == "/mnt/d/ClaudeWork/rimmandrake", resolve("D:\\ClaudeWork\\rimmandrake"))
+    check("posix: a drive-form helper answer becomes /mnt/<d>",
+          rmpaths._check("D:\\ClaudeWork/rimmandrake") == "/mnt/d/ClaudeWork/rimmandrake")
+    try:
+        resolve("scratch/rimmandrake")
+        check("posix: a relative root is refused", False, "accepted")
+    except rmpaths.RmDataRootUnset:
+        check("posix: a relative root is refused", True)
+    if os.path.isfile(rmpaths.AGENT_STORAGE):
+        # the live shape: Lodestar's helper abspaths the raw value against cwd, so the env goes in translated
+        _keep = {k: os.environ.get(k) for k in (rmpaths.CACHE_ENV, rmpaths.LODESTAR_ENV)}
+        os.environ[rmpaths.CACHE_ENV] = ""
+        os.environ[rmpaths.LODESTAR_ENV] = "D:\\ClaudeWork"
+        try:
+            got = resolve("", "D:\\ClaudeWork")
+        except rmpaths.RmDataRootUnset as e:
+            got = "refused: %s" % e
+        finally:
+            for k, v in _keep.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+        check("posix: a drive-form AGENT_STORAGE_ROOT reaches the helper as /mnt/<d>",
+              got == "/mnt/d/ClaudeWork/rimmandrake", got)
+rmpaths._resolve.cache_clear()
+
 DEV = "/mnt/d/Luke/dev"
 if os.path.isdir(DEV):
     left = sorted(n for n in os.listdir(DEV) if n.startswith("_"))
