@@ -106,7 +106,6 @@
    "author": "rm-role-designer-1795748853",
    "decision": "what the player sees when a colonist studies a wreck, and so which mechanism carries it",
    "evidence_against": "The obvious answer is the base game's own study mechanism, because it works in any game. But the item's ruling 9 names Research Reinvented as the route, and the two feel different: the base game's study is a few sessions at the wreck that open a locked project, which is then researched at a bench as usual; Research Reinvented's study fills the project's bar at the wreck and leaves the bench slow. Your 2026-08-12 words ('teach them ... slowly') fit the second.",
-   "held": "Held until after the look (turn_01.md offers it): the look shows today's study with Research Reinvented, and no ask may have him predict what a look would measure.",
    "id": "a_how_study_feels",
    "note_for_stage_2": "The root now settles most of this ask (OWNER:1795755622961436106): a wreck is 'studied to enable research', and 'Each repair requires machine study, research bench time, and considerable resources'. That is option (a), the base game's own study (d_feasible_study_in_vanilla): study at the machine opens the locked project, and the project is then researched at a bench. It also settles c_study_fights_build_over: study comes before every repair, Kludged included, so the colonist studies the machine as it stands (the wreck before Kludged, the kludged machine before Refurbished) and nothing is built over a machine that was not studied. What is left for him, and only after the look: with Research Reinvented loaded (it is on the small list, and the campaign runs it), whether its study-fills-the-bar opportunity stays on top of the base-game study. His words of 2026-08-12, 'and the associated research item it is part of, slowly' (OWNER:1795749555968288570), fit that. If nothing argues against it, stage 2 takes 'both' as a delegated call and does not send this ask.",
    "offers_removal": false,
@@ -118,8 +117,10 @@
    "source": [
     "src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml"
    ],
-   "status": "draft",
-   "text": "A colonist walks up to a wrecked machine and studies it. What happens next in your picture? (a) After a few sessions at the wreck a letter says they understand it, and the restoration project opens; the rest is ordinary research at a bench. This works in any game with no other mod. (b) Every hour at the wreck fills the restoration project itself, and a bench barely moves it: the wreck is the bench. This needs Research Reinvented, or a study job of our own. (c) Both: (a) in any game, and (b) on top when Research Reinvented is loaded."
+   "status": "struck",
+   "text": "A colonist walks up to a wrecked machine and studies it. What happens next in your picture? (a) After a few sessions at the wreck a letter says they understand it, and the restoration project opens; the rest is ordinary research at a bench. This works in any game with no other mod. (b) Every hour at the wreck fills the restoration project itself, and a bench barely moves it: the wreck is the bench. This needs Research Reinvented, or a study job of our own. (c) Both: (a) in any game, and (b) on top when Research Reinvented is loaded.",
+   "struck_by": "rm-role-designer-1795757288",
+   "struck_why": "His statement settled it (OWNER:1795755622961436106): 'studied to enable research' and 'Each repair requires machine study, research bench time, and considerable resources' are option (a), the base game's own study, before each repair (d_study_before_each_repair). What was left, Research Reinvented's study on top when that mod is loaded, is built today and nothing argues against it; taken as a delegated call in the same decision. No ask about it goes to him."
   },
   {
    "about": [
@@ -164,12 +165,10 @@
    "about": [
     "inv_ancient_component_source"
    ],
-   "author": "rm-role-designer-1795752087",
+   "author": "rm-role-designer-1795757288",
    "decision": "where a player comes by an Ancient Component",
-   "evidence_against": "The obvious answer is loot in the ruins where wrecks are found, as Cold Storage places its locker. But that makes the component one more pickup. Your words call it 'a truly scarce and valuable resource', and a second source changes how many wrecks a map must hold: if a component comes out of a wreck that is taken apart, a colony needs more wrecks than machines.",
-   "held": "Stage 2 (an edge, and it leans on his answer to a_how_found).",
+   "evidence_against": "The obvious answer is loot in the ruins where wrecks are found, as Cold Storage places its locker. But that makes the component one more pickup, and nothing is given up for it. Your words call it 'a truly scarce and valuable resource' and 'rare'. And the source sets how many wrecks a colony must find: if a component comes out of a wreck that is taken apart, a colony needs two wrecks for one Refurbished machine, so a colony that never leaves home, with its one rare wreck, stops at Kludged.",
    "id": "a_component_source",
-   "note_for_stage_2": "His answers of this turn bear on it. The root calls the component 'rare' and charges it only for 'the final refurbishment' (OWNER:1795755622961436106). Wrecks lie in ruins and, rarely, on an ordinary map (OWNER:1795755647483442186), so option (a), a component out of a second wreck that is taken apart, needs a colony to find two wrecks. Check that against how many wrecks a colony meets before sending.",
    "offers_removal": false,
    "owner_cites": [
     "OWNER:1795749476635482102",
@@ -178,22 +177,32 @@
    ],
    "source": [
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml",
-    "ITEM:RAKATAN_ARCHOTECH_MACHINES_1"
+    "ITEM:RAKATAN_ARCHOTECH_MACHINES_1",
+    "design/concepts/WreckedMachines/turn_02.md"
    ],
-   "status": "draft",
-   "text": "The Ancient Component is the price of every Refurbished grade, and nothing gives one today. Where does a colony get one? (a) Out of another wreck: a colonist takes a wrecked machine apart and it is gone for good, so each wreck found is a choice between a machine and parts. (b) Only as rare loot in ancient ruins. (c) Both. I recommend (a) with a rare find in ruins on top, judged on one test: does the component make the player choose?"
+   "status": "sent",
+   "text": "The last repair, to Refurbished, costs an Ancient Component, and nothing gives one today. Where does a colony get one? (a) Out of another wreck: colonists take a wrecked machine apart, the wreck is gone for good, and one Ancient Component is left. Each wreck found is a choice between a machine and a part. (b) Only as a rare find in the rooms of ancient ruins. (c) Both: (a), and now and then one lies in a ruin. I recommend (c), judged on one test: does the component make the player choose?",
+   "turn": "design/concepts/WreckedMachines/turn_02.md",
+   "sent": {
+    "at": "2026-11-27T05:43:53Z",
+    "run": "rm-role-designer-1795757288",
+    "turn": "design/concepts/WreckedMachines/turn_02.md"
+   },
+   "review": {
+    "by": "rm-judge a15c1525ac03b2c3f (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Nothing gives an Ancient Component today: every reference in src/ is a cost. His card note about relics at ancient ruin sites is about found machines, not this part. The evidence against the obvious answer is real ('truly scarce and valuable'; nothing is given up for loot). The options are distinct. No rewording."
+   }
   },
   {
    "about": [
     "inv_more_factory_machines",
     "inv_smelter_line"
    ],
-   "author": "rm-role-designer-1795756411",
+   "author": "rm-role-designer-1795757288",
    "decision": "how many of the factory mod's machines 0.1.0 onboards",
-   "evidence_against": "The obvious answer is (a): the smelter is the one machine built and drawn today. Against it: your statement says the first version supports 'Vanilla Factory Enhanced', the mod and not one machine, and in (a) a stranger's factory is half ancient: one machine must be dug out of a ruin while its neighbours on the same production line come from the build menu. Against (b): each machine is an onboarding by hand (recipes and rates for each level) and about twelve pictures (three states in four facings); the factory mod has about 17 machines (MACHINES.md says 'about'; count it before sending).",
-   "held": "Stage 2 (the edge of the first version). Draft of run rm-role-designer-1795756411; not reviewed, not sent.",
+   "evidence_against": "The obvious answer is (a): the smelter is the one machine built and drawn today, and one machine proves the whole ladder. Against it: your statement says the first version supports 'Vanilla Factory Enhanced', the mod and not one machine, and it says the mod changes 'specified' machines; with one machine nothing shows that a second machine can be specified by the written onboarding steps, and a stranger's factory is ancient in one corner only. Against (b): each big machine is an onboarding by hand and 8 new pictures (Wrecked and Kludged in four facings), so all 18 are 136 new pictures. Measured 2026-11-26 from the factory mod's own defs (workshop folder 3686924415): 18 production machines, each with a minified form.",
    "id": "a_which_factory_machines",
-   "note_for_stage_2": "Count the factory mod's machines with `measure` before sending. Say which machines the campaign needs first (s_utinni_service_first) so that (c) names them. His sentence 'Giving the smelter first is an Utinni-tier decision' means this mod does not order the machines; the ask is only about how many are onboarded.",
    "offers_removal": false,
    "owner_cites": [
     "OWNER:1795755622961436106",
@@ -202,10 +211,23 @@
    ],
    "source": [
     "src/RimMandrake/WreckedMachines/MACHINES.md",
-    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
+    "design/concepts/WreckedMachines/turn_02.md"
    ],
-   "status": "draft",
-   "text": "A stranger installs Wrecked Machines beside the factory mod and opens the build menu. Which picture is 0.1.0? (a) One ancient machine: the automated smelter is gone from the menu and must be found and repaired; every other factory machine is researched and built as before. (b) An ancient factory: every machine of the factory mod is gone from the menu and must be found and repaired. (c) A named handful: the smelter and the few machines that the campaign needs first; the others are built as before until a later version onboards them."
+   "status": "sent",
+   "text": "A stranger installs Wrecked Machines beside the factory mod and opens the build menu. The factory mod has 18 production machines. Which picture is 0.1.0? (a) One ancient machine: the automated smelter must be found and repaired; the other 17 are researched and built as before. (b) An ancient factory: all 18 must be found and repaired. (c) A proven handful: the smelter and two more, taken in the order in which the campaign repairs them; the other 15 are built as before until a later version onboards them. I recommend (c), judged on one test: can a second machine go through onboarding by the written steps alone?",
+   "measured": "2026-11-26, parsed from the factory mod's Defs: 24 buildable ThingDefs, of which 18 are production machines (autofarmer, drill platform, smelter, biofuel refinery, masonry saw, mincer, conveyor oven, assembler, neutroamine synthesizer, ammunition press, autoloom, alloy forge, distillery, medicine granulator, machining bay, crematorium, fish farm, cannery); all 18 carry minifiedDef MinifiedThing. The cannery's def is in a file that loads only with Vanilla Cooking Expanded. MACHINES.md says 'about 17' and its candidate queue omits the autofarmer.",
+   "turn": "design/concepts/WreckedMachines/turn_02.md",
+   "sent": {
+    "at": "2026-11-27T05:43:53Z",
+    "run": "rm-role-designer-1795757288",
+    "turn": "design/concepts/WreckedMachines/turn_02.md"
+   },
+   "review": {
+    "by": "rm-judge a15c1525ac03b2c3f (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "His words do not settle how many machines ('specified' machines and 'will only support Vanilla Factory Enhanced' leave it open); the answer changes the build by 0, 16 or 136 new pictures; the evidence against the obvious answer is real; every option leaves the built smelter line as it is; nothing asks him to predict a look. No rewording. The count of 18 was measured again by the reviewer (17 without Vanilla Cooking Expanded)."
+   }
   }
  ],
  "built_reviewed": [
@@ -270,7 +292,7 @@
   {
    "core": true,
    "id": "c_no_way_in",
-   "position": "Half answered: wrecks are found in ruins and, rarely, on an ordinary map (OWNER:1795755647483442186). Still open: nothing gives an Ancient Component.",
+   "position": "Half answered: wrecks are found in ruins and, rarely, on an ordinary map (OWNER:1795755647483442186). Still open: nothing gives an Ancient Component; a_component_source is sent in turn 2.",
    "routed": "stage 2: a_component_source",
    "source": [
     "OWNER:1795755647483442186",
@@ -333,8 +355,11 @@
     "src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml",
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
    ],
-   "status": "open",
-   "text": "Study and repair pull against each other. Kludged needs no study and no research, and building it removes the wreck that the smelter's study points at; so the cheapest play is to never study at all, and a player who kludges first has nothing left to study. The mobile lines let the kludged grade be studied too; the smelter does not. The design has to say when study happens and what it buys."
+   "status": "resolved",
+   "text": "Study and repair pull against each other. Kludged needs no study and no research, and building it removes the wreck that the smelter's study points at; so the cheapest play is to never study at all, and a player who kludges first has nothing left to study. The mobile lines let the kludged grade be studied too; the smelter does not. The design has to say when study happens and what it buys.",
+   "resolved": true,
+   "resolution": "d_study_before_each_repair: study comes before each repair, the kludged machine is studied for the second, and no repair can be made on a machine that was not studied.",
+   "resolved_by": "rm-role-designer-1795757288"
   },
   {
    "core": true,
@@ -345,8 +370,11 @@
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
     "design/validation_walks/RimMandrake/WreckedMachines.md"
    ],
-   "status": "open",
-   "text": "His old north star opens with grades told apart at a glance. On disk the power cell's three grades share the vanilla cell picture, the emanator's three share the vanilla emanator picture, the refurbished smelter shares the original grade's picture, and the Ancient Component is a tinted vanilla component. Only the smelter's wrecked and kludged grades have a picture that no other grade uses. Until the art exists, eight of the ten machine defs share their picture with another grade, so the grade cannot be read without a click. This is the 'much larger lift in terms of art generation' he named; it is build work with an art judge, not a question."
+   "status": "resolved",
+   "text": "His old north star opens with grades told apart at a glance. On disk the power cell's three grades share the vanilla cell picture, the emanator's three share the vanilla emanator picture, the refurbished smelter shares the original grade's picture, and the Ancient Component is a tinted vanilla component. Only the smelter's wrecked and kludged grades have a picture that no other grade uses. Until the art exists, eight of the ten machine defs share their picture with another grade, so the grade cannot be read without a click. This is the 'much larger lift in terms of art generation' he named; it is build work with an art judge, not a question.",
+   "resolved": true,
+   "resolution": "d_three_looks: Wrecked, Kludged and whole are told apart by eye for each onboarded machine; the pictures are build work with an art judge. How many big machines need pictures follows his answer to a_which_factory_machines.",
+   "resolved_by": "rm-role-designer-1795757288"
   },
   {
    "id": "c_old_north_star",
@@ -384,8 +412,11 @@
     "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml",
     "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_SalvageRule.xml"
    ],
-   "status": "open",
-   "text": "Three finished rules in the folder are not about finding and repairing a wreck: the alloy forge's steps, the one salvage rule, and the distillation module. Four of the mod's fourteen settings and most of its offline tests belong to them. Under his first-version card they are extras; other mods lean on all three today. Whether 0.1.0's promise covers them is his (a_riders)."
+   "status": "resolved",
+   "text": "Three finished rules in the folder are not about finding and repairing a wreck: the alloy forge's steps, the one salvage rule, and the distillation module. Four of the mod's fourteen settings and most of its offline tests belong to them. Under his first-version card they are extras; other mods lean on all three today. Whether 0.1.0's promise covers them is his (a_riders).",
+   "resolved": true,
+   "resolution": "d_riders_fate and d_riders_move_no_interim: outside the promise, no bar, each moves by a ticket written at stage 3, and works as today until then.",
+   "resolved_by": "rm-role-designer-1795757288"
   },
   {
    "core": false,
@@ -423,8 +454,11 @@
     "OWNER:1795749529567808948",
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
    ],
-   "status": "open",
-   "text": "The root says a wreck is 'found and retrieved to a safe location'. The built smelter wreck and the kludged smelter have no minified form, so neither can be picked up, and a place rule refuses an upper grade on open ground. His words of 2026-09-15 praised 'repairing big machines in place'. Position: d_reading_retrieve_then_repair (carry the wreck home, then repair it where it stands). Stage 2 shows him that reading and resolves this."
+   "status": "resolved",
+   "text": "The root says a wreck is 'found and retrieved to a safe location'. The built smelter wreck and the kludged smelter have no minified form, so neither can be picked up, and a place rule refuses an upper grade on open ground. His words of 2026-09-15 praised 'repairing big machines in place'. Position: d_reading_retrieve_then_repair (carry the wreck home, then repair it where it stands). Stage 2 shows him that reading and resolves this.",
+   "resolved": true,
+   "resolution": "d_wreck_is_carried: a wreck of any size is carried home, and each repair is made where the machine stands. The build gives the smelter wreck a carried form.",
+   "resolved_by": "rm-role-designer-1795757288"
   },
   {
    "core": true,
@@ -435,8 +469,11 @@
     "OWNER:1795749512608610645",
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml"
    ],
-   "status": "open",
-   "text": "The root says 'wrecked (nonfunctional)'. The built power-cell wreck gives a faint current and glows; an agent drew that from his words of 2026-09-15, 'Their batteries just slowly lose capacity over millenia yet still work', which he said of the campaign's ship. Position: his statement of the levels is the newer and the exact one, so a Wrecked machine gives nothing; the sagging battery of his older words is the Kludged and Refurbished levels. A wreck may still show a sign that it is not scrap (a faint light), which is a look and not a function. Stage 2 shows him that reading and resolves this."
+   "status": "resolved",
+   "text": "The root says 'wrecked (nonfunctional)'. The built power-cell wreck gives a faint current and glows; an agent drew that from his words of 2026-09-15, 'Their batteries just slowly lose capacity over millenia yet still work', which he said of the campaign's ship. Position: his statement of the levels is the newer and the exact one, so a Wrecked machine gives nothing; the sagging battery of his older words is the Kludged and Refurbished levels. A wreck may still show a sign that it is not scrap (a faint light), which is a look and not a function. Stage 2 shows him that reading and resolves this.",
+   "resolved": true,
+   "resolution": "d_wrecked_gives_nothing: a Wrecked machine has no function; a faint light is a look.",
+   "resolved_by": "rm-role-designer-1795757288"
   },
   {
    "core": false,
@@ -458,7 +495,8 @@
     "src/RimMandrake/WreckedMachines/MACHINES.md"
    ],
    "status": "open",
-   "text": "The root says the first version supports the factory mod. One of its machines, the automated smelter, is onboarded. In a stranger's game the smelter must be found in a ruin while every other machine of the same factory comes from the build menu. How many machines 0.1.0 onboards is his (a_which_factory_machines); it is also the size of the art work."
+   "text": "The root says the first version supports the factory mod. One of its machines, the automated smelter, is onboarded. In a stranger's game the smelter must be found in a ruin while every other machine of the same factory comes from the build menu. How many machines 0.1.0 onboards is his (a_which_factory_machines); it is also the size of the art work.",
+   "position": "a_which_factory_machines is sent in turn 2, with the measured count: 18 production machines, one onboarded."
   },
   {
    "core": false,
@@ -568,6 +606,114 @@
    ],
    "speaker": "agent",
    "what": "Position for stage 2, on two of his sentences that pull apart: 'found and retrieved to a safe location' (2026-11-26) and 'repairing big machines in place, and that's excellent' (2026-09-15). Reading: both hold. A wreck of any size can be taken up and carried, like the furniture-installable machine it was; the colony sets it down where it is safe; each repair is then made on the machine where it stands, with no workbench. 'In place' is where the machine stands, not where it was found. A wreck found on the colony's own map may be repaired where it lies. What the build changes: the smelter's Wrecked and Kludged grades cannot be picked up today. Whether a Kludged machine may be moved is not settled by his words; stage 2 settles it."
+  },
+  {
+   "date": "2026-11-26",
+   "delegated": "evidence-for-ask",
+   "id": "d_wreck_is_carried",
+   "kind": "call",
+   "source": [
+    "OWNER:1795755622961436106",
+    "OWNER:1795749529567808948",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
+    "design/concepts/WreckedMachines/turn_02.md"
+   ],
+   "speaker": "agent",
+   "what": "A Wrecked machine of any size can be taken up and carried, like the furniture-installable machine it was, and each repair is made on the machine where it stands, with no workbench. His statement says 'found and retrieved to a safe location'; his sentence of 2026-09-15, 'The existing mod is about repairing big machines in place, and that's excellent', was said of a mod whose smelter wreck cannot be picked up, so the two sentences conflict on where a wreck is repaired, and the newer statement decides. 'Where the machine stands, with no workbench' is the Designer's gloss of what stays of the older sentence, not his words (review a15c1525ac03b2c3f). Measured from the factory mod's defs: all 18 of its production machines have a minified form, the 3 by 4 smelter included. The built smelter wreck cannot be picked up; the build changes that. Whether a Kludged machine can be moved is onboarding data of each machine and stays as built: the kludged smelter cannot (its def: 'a bodge does not survive being uninstalled and moved'), the kludged cell and emanator can. No ask: his newest statement is explicit, and nothing found argues against the reading. Shown to him as reading 1 of turn_02.md.",
+   "run": "rm-role-designer-1795757288"
+  },
+  {
+   "date": "2026-11-26",
+   "delegated": "evidence-for-ask",
+   "id": "d_wrecked_gives_nothing",
+   "kind": "call",
+   "source": [
+    "OWNER:1795755622961436106",
+    "OWNER:1795749512608610645",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml",
+    "design/concepts/WreckedMachines/turn_02.md"
+   ],
+   "speaker": "agent",
+   "what": "A Wrecked machine has no function: no power, no work, no effect on pawns. His statement says 'wrecked (nonfunctional)', the newer and the exact sentence. The battery that sags and still works (2026-09-15) is the Kludged and Refurbished levels. A wreck may show a sign that it is not scrap (a faint light); that is a look, not a function. The built power-cell wreck's faint current goes at the build. Shown to him as reading 2 of turn_02.md.",
+   "run": "rm-role-designer-1795757288"
+  },
+  {
+   "date": "2026-11-26",
+   "delegated": "evidence-for-ask",
+   "id": "d_study_before_each_repair",
+   "kind": "call",
+   "source": [
+    "OWNER:1795755622961436106",
+    "OWNER:1795749426260848822",
+    "OWNER:1795749555968288570",
+    "src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml",
+    "design/concepts/WreckedMachines/turn_02.md"
+   ],
+   "speaker": "agent",
+   "what": "Study comes before each repair, and each machine has two research projects. Study of the wreck opens the first project; a research bench finishes it; resources make the machine Kludged. Study of the kludged machine opens the second project; a bench finishes it; resources and an Ancient Component make it Refurbished. His words: 'studied to enable research' and 'Each repair requires machine study, research bench time, and considerable resources'. The carrier is the base game's own study (d_feasible_study_in_vanilla), so it works in any game. With Research Reinvented loaded, its study opportunities at the machine (built today) stay on top; the campaign runs that mod and the small list holds it, so the first live look at study is made with it loaded. Research is knowledge of the colony: a second machine of the same kind needs no new study. Built today: Kludged needs no study and no research; the build changes that. Shown to him as reading 3 of turn_02.md.",
+   "run": "rm-role-designer-1795757288"
+  },
+  {
+   "date": "2026-11-26",
+   "delegated": "evidence-for-ask",
+   "id": "d_found_is_wrecked",
+   "kind": "call",
+   "source": [
+    "OWNER:1795755622961436106",
+    "OWNER:1795755647483442186",
+    "OWNER:1795755673273656447",
+    "design/concepts/WreckedMachines/turn_02.md"
+   ],
+   "speaker": "agent",
+   "what": "A machine that a colony finds is always at the Wrecked level in 0.1.0. His statement gives one order: found, studied, repaired through the levels. 'The ruins hold the good ones' (the card option he picked) is read as the kinds of machine, not their level. Which wrecks lie where is data (a list with weights) that a layer above can change, so the campaign can give one machine first without this mod knowing (his words: 'an Utinni-tier decision independent of this mod about machine availability'). Shown to him as readings 4 and 8 of turn_02.md.",
+   "run": "rm-role-designer-1795757288"
+  },
+  {
+   "date": "2026-11-26",
+   "delegated": "evidence-for-ask",
+   "id": "d_three_looks",
+   "kind": "call",
+   "source": [
+    "OWNER:1795755622961436106",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml",
+    "design/validation_walks/RimMandrake/WreckedMachines.md",
+    "design/concepts/WreckedMachines/turn_02.md"
+   ],
+   "speaker": "agent",
+   "what": "For each onboarded machine a player tells three levels apart by eye at play zoom: Wrecked, Kludged and whole. Those are the levels a colony can hold at once. A Refurbished machine may share the Original's picture, because no colony holds an Original (no research and no repair reaches it; the Mod Setting that brings it back is a player's override that no bar judges). So a big machine needs 8 pictures of its own (Wrecked and Kludged in four facings) and a carried machine needs its Wrecked and Kludged pictures; the Ancient Component needs a picture of its own. The pictures are build work with an art judge, not a question for him. Shown to him as reading 5 of turn_02.md.",
+   "run": "rm-role-designer-1795757288"
+  },
+  {
+   "date": "2026-11-26",
+   "delegated": "evidence-for-ask",
+   "id": "d_riders_move_no_interim",
+   "kind": "call",
+   "source": [
+    "OWNER:1795755673273656447",
+    "OWNER:1794896960342841440",
+    "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
+    "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml",
+    "design/concepts/WreckedMachines/turn_02.md"
+   ],
+   "speaker": "agent",
+   "what": "What each of the three rules outside the promise does until its move lands: it works as today, and nothing is switched off first. The distillation machine's working form is FlowWorks' (his words); that the forge's steps move to the Utinni tier is the Designer's reading of his 'smelter first' sentence (d_riders_fate); the salvage rule is shared code already (the Designer's call, d_riders_fate). Each move is a ticket with its acceptance test, written at stage 3; after a move, this mod alone no longer carries the rule, which is what his first-version card's 'switched off' asks of an extra. The evidence against a switch-off before the move: the Armoury's durasteel is made on that forge, and the salvage rule acts on every smelter and crematorium of the campaign. No bar of 0.1.0 judges any of the three. Shown to him as reading 6 of turn_02.md.",
+   "run": "rm-role-designer-1795757288"
+  },
+  {
+   "date": "2026-11-26",
+   "delegated": "evidence-for-ask",
+   "id": "d_wealth_next_version",
+   "kind": "call",
+   "source": [
+    "ITEM:RAKATAN_ARCHOTECH_MACHINES_1",
+    "OWNER:1794896960342841440",
+    "OWNER:1795755622961436106",
+    "design/concepts/WreckedMachines/turn_02.md"
+   ],
+   "speaker": "agent",
+   "what": "A relic's value outside colony wealth is for the next version, not 0.1.0. The bench's note of his card of 2026-10-03 records the ruling and names no version; his statement of the mod does not need it; calling it an extra is the Designer's call; his first-version card then sends an extra to the next version. It is not built, so there is nothing to switch off. Feasibility stands (d_feasible_wealth). Shown to him as reading 7 of turn_02.md.",
+   "run": "rm-role-designer-1795757288"
   }
  ],
  "failure_modes": [
@@ -816,24 +962,26 @@
    "id": "inv_wealth_exclusion",
    "impl": "absent",
    "proof": "missing",
-   "scope": "open_question",
+   "scope": "later",
    "search_scope": "src/RimMandrake/WreckedMachines/Source (*.cs) for WealthWatcher, wealth and MarketValue: the only Harmony patch in the assembly is the salvage one",
    "source": [
     "ITEM:RAKATAN_ARCHOTECH_MACHINES_1"
    ],
-   "what": "A relic's value left out of colony wealth, so restoring machines does not raise raids. Not built: the cell and emanator grades carry market values that count like any building's."
+   "what": "A relic's value left out of colony wealth, so restoring machines does not raise raids. Not built: the cell and emanator grades carry market values that count like any building's.",
+   "scope_why": "d_wealth_next_version"
   },
   {
    "id": "inv_grade_changed_signal",
    "impl": "absent",
    "proof": "missing",
-   "scope": "open_question",
+   "scope": "approved",
    "search_scope": "src/RimMandrake/WreckedMachines/Source (*.cs) for event, Action, signal and Notify: none",
    "source": [
     "CONDUCTOR:1795106994878118341",
     "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md"
    ],
-   "what": "A neutral signal when a machine changes grade, which a layer above can listen to without this mod knowing who listens. Not built."
+   "what": "A neutral signal when a machine changes grade, which a layer above can listen to without this mod knowing who listens. Not built.",
+   "scope_why": "d_utinni_separate (CONDUCTOR:1795106994878118341): 0.1.0 leaves this one opening for the layer above"
   },
   {
    "id": "inv_turret_line",
@@ -1218,5 +1366,5 @@
    "start": "not a live scene"
   }
  ],
- "stage": 1
+ "stage": 2
 }

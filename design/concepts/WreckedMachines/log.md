@@ -110,3 +110,47 @@ each was. A lesson is filed.
 - `d_riders_fate`: 0.1.0 has no bar for the forge's steps, the distillation machine or the salvage rule. He did not
   speak of the salvage rule; that part is the Designer's call.
 - `d_reading_retrieve_then_repair`: a position for stage 2, not yet a line.
+
+## 2026-11-26 turn 2 (run rm-role-designer-1795757288), sent 9:43 PM PST
+
+Text: `design/concepts/WreckedMachines/turn_02.md`. It repeats the offer of a look, says what was taken from his three
+answers, shows eight readings that the Designer took itself, and sends two asks.
+
+### Asks sent (two)
+
+1. **a_which_factory_machines:** A stranger installs Wrecked Machines beside the factory mod and opens the build menu. The factory mod has 18 production machines. Which picture is 0.1.0? (a) One ancient machine: the automated smelter must be found and repaired; the other 17 are researched and built as before. (b) An ancient factory: all 18 must be found and repaired. (c) A proven handful: the smelter and two more, taken in the order in which the campaign repairs them; the other 15 are built as before until a later version onboards them. I recommend (c), judged on one test: can a second machine go through onboarding by the written steps alone?
+2. **a_component_source:** The last repair, to Refurbished, costs an Ancient Component, and nothing gives one today. Where does a colony get one? (a) Out of another wreck: colonists take a wrecked machine apart, the wreck is gone for good, and one Ancient Component is left. Each wreck found is a choice between a machine and a part. (b) Only as a rare find in the rooms of ancient ruins. (c) Both: (a), and now and then one lies in a ruin. I recommend (c), judged on one test: does the component make the player choose?
+
+### Review
+
+Reviewed by rm-judge a15c1525ac03b2c3f (fresh Opus, not the author): both asks pass with no rewording. It measured the
+factory mod's machines again: 18 production machines, all with a minified form (17 without Vanilla Cooking Expanded).
+Three sentences of the page said more than the sources and were corrected:
+
+- Reading 1 said that his two sentences "both hold". The mod he praised on 2026-09-15 had a smelter wreck that cannot
+  be picked up, so they conflict; the newer statement decides, and "where the machine stands" is the Designer's gloss.
+- Reading 6 put the forge's move on his words. He spoke of "smelter first"; the forge's steps are a reading.
+- Reading 7 put the wealth rule's deferral on his first-version card. The card says what happens to an extra; calling
+  it an extra is the Designer's call.
+
+### Calls taken in this run (each can be undone by him; shown to him as readings on the page)
+
+- `d_wreck_is_carried`: a wreck of any size is carried home; each repair is made where the machine stands.
+- `d_wrecked_gives_nothing`: a Wrecked machine has no function; a faint light is a look.
+- `d_study_before_each_repair`: two research projects for each machine, each opened by study of the machine at its
+  present level; Research Reinvented's study stays on top when that mod is loaded.
+- `d_found_is_wrecked`: a found machine is always Wrecked; which wrecks lie where is data a layer above can change.
+- `d_three_looks`: Wrecked, Kludged and whole are told apart by eye; Refurbished may share the Original's picture.
+- `d_riders_move_no_interim`: the three rules outside the promise work as today until each move lands.
+- `d_wealth_next_version`: a relic's value outside colony wealth waits for the next version.
+
+### Resolved in this run
+
+`c_wreck_cannot_be_carried`, `c_wreck_gives_a_trickle`, `c_study_fights_build_over`, `c_grades_share_one_picture`,
+`c_riders_in_the_folder`. Still open and core, each waiting for one of the two asks: `c_half_ancient_factory`
+(a_which_factory_machines), `c_no_way_in` (a_component_source).
+
+### Struck, not sent
+
+- a_how_study_feels: his statement settled it; the part about Research Reinvented is taken in
+  `d_study_before_each_repair`.
