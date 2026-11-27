@@ -29,6 +29,8 @@ Code: `src/RimMandrake/rimflow/conductor_stops.py` (all of it), `src/RimMandrake
 
 - **the-four-kinds-go-to-the-conductor.** `rows` lists each item whose decision is `chain_stop`, `stopped`,
   `no_bundle`, `adopt_too_heavy` or `close_refused` (its reason names the cause and repair, part 6), at once (no clock first), with its kind, its reason and its age in the kind.
+  Each kind's hint names an act that lifts that stop: `clear` for `chain_stop` and `stopped`; for `no_bundle` the
+  host's own reason (a clear of the lane's state cannot change what the host's sort read).
 - **a-resting-mod-sorts-after-an-hour.** When a mod has rested `REST_S` (1 hour) and open `mod_work` tickets wait on
   it, `rows` gives one line for that mod with its tickets and the rest's age. A ticket with a dated wait of its own
   ahead, and a ticket on the mod's sorted list, is not on the line.

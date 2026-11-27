@@ -68,6 +68,10 @@ def t_the_four_kinds_go_to_the_conductor():
     assert h1["age"] == "1m", "no clock comes first: a minute-old stop is listed (%s)" % h1["age"]
     c1 = [r for r in rows if r["items"] == ["C1"]][0]
     assert c1["age"] == "31h00" and "chain" in c1["why"], c1
+    n1 = [r for r in rows if r["items"] == ["N1"]][0]
+    # a clear of the lane's state cannot change what the host's sort read (a refusal note, a hold, a lease): the hint
+    # names the host's reason, never `clear` (2026-11-27, item RIMMANDRAKE_LET_CLEAR_PASS_CHAIN_STOP_THREE_CLEARS_NO_LAUNCH)
+    assert "list_dispatch.py clear" not in n1["why"] and "reason" in n1["why"], n1
     assert [r["items"][0] for r in rows][0] == "C1", "oldest first"
     assert CS().rows(reading({"X": {"decision": "chain_stop", "why": "w"}}), NOW, rests={})[0]["age"] == "age?", \
         "a row with no since says so, never 0"

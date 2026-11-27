@@ -213,6 +213,17 @@ def spent(attempts):
     return [a for a in attempts or [] if not a.get("failed") and not a.get("void")]
 
 
+def chain_grant(s, done):
+    """-> the item's newest `cleared` record when no spent run launched after it, else None. A clear by a hand grants one
+    lane run past the chain stop; the run spends it at launch (its attempt's `at` is the launch time). A launch that
+    never started, or a run that did not count (void), spends nothing (boundary a-clear-grants-one-run-past-the-chain-stop)."""
+    c = (s or {}).get("cleared") or []
+    last = c[-1] if c and isinstance(c[-1], dict) else None
+    if not last:
+        return None
+    return None if any((a.get("at") or 0) >= (last.get("at") or 0) for a in done) else last
+
+
 def chain_depth(iid, parent_of, st, filed_by=None):
     """-> the lane runs (spent attempts) on the item's caused_by ancestors, the item itself excluded. filed_by(id) -> the
     role unit that filed the item (None: a hand): a link counts only when a lane run on the parent filed the child, so a
@@ -222,7 +233,9 @@ def chain_depth(iid, parent_of, st, filed_by=None):
     child, cur = iid, parent_of(iid)
     while cur and cur not in seen:
         seen.add(cur)
-        runs = spent((items.get(cur) or {}).get("attempts"))
+        par = items.get(cur) or {}
+        # the runs that a clear moved under `cleared` still filed children (boundary a-clear-keeps-the-runs-in-the-chain)
+        runs = spent([a for c in par.get("cleared") or [] for a in c.get("attempts") or []] + (par.get("attempts") or []))
         if filed_by is not None and filed_by(child) not in set(a.get("unit") for a in runs if a.get("unit")):
             break
         n += len(runs)
@@ -708,10 +721,16 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if not account[0]:
             put("account_hold", account[1] or "the account gate holds launches")
             continue
+        grant = None
         if int(it.get("depth") or 0) >= int(cfg.get("max_chain_depth", 2)):
-            put("chain_stop", "its chain of causes already holds %s lane runs; %s is the most" % (
-                it.get("depth"), cfg.get("max_chain_depth", 2)))
-            continue
+            grant = chain_grant(s, done)
+            if not grant:
+                spent_by = (s.get("cleared") or [{}])[-1].get("at")
+                put("chain_stop", "its chain of causes already holds %s lane runs; %s is the most%s" % (
+                    it.get("depth"), cfg.get("max_chain_depth", 2),
+                    "; the clear of %s was spent by run %s" % (pac(spent_by), done[-1].get("unit"))
+                    if spent_by and done else ""))
+                continue
         over, owhy, ocnl = machine_load(cfg, facts.get("load"), facts.get("cores"))
         if ocnl:
             row["load_could_not_look"] = ocnl
@@ -785,6 +804,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 ", past a stale block" if row.get("stale_block") else "", model, mwhy,
                 "its live check cannot look until a game runs what it reads (%s); it takes %s"
                 % (_one(it.get("out"), 120), game) if game else "the check fails: %s" % _one(it.get("out"), 120)))
+        if grant:
+            row["chain_grant"] = grant.get("at")
+            row["why"] = "%s; past the chain stop (depth %s) by the clear of %s: %s" % (
+                row.get("why", ""), it.get("depth"), pac(grant.get("at")), _one(grant.get("why"), 160))
         if host:
             row["why"] = "%s; on %s: the host goes first and has room" % (row.get("why", ""), host)
         elif hwhy:
@@ -1976,7 +1999,9 @@ def launch_bundle_row(cfg, st, row, items, now, do_launch, remote=None, rows=())
             r.update(decision="host_left_out", why="the sort on %s left it out of the bundle: %s" % (
                 b["host"], rec["left_out"][r["item"]]))
     if rc == 3:         # the host launched nothing and said why (its own live bundle, its sort closed all, a refusal)
-        row.update(decision=rec["decision"], why=_one(rec["launch_out"], 300))
+        own = (rec.get("left_out") or {}).get(row["item"])     # the lead left out too: its own row names the host's reason
+        row.update(decision=rec["decision"], why=_one(rec["launch_out"], 300) + (
+            "; its own: %s" % own if own else ""))
         return
     if b.get("host"):
         cap = None

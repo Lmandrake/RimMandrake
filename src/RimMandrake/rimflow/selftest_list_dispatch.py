@@ -425,6 +425,64 @@ def t_a_chain_counts_only_links_that_a_lane_run_filed():
     chk(lambda: LD().chain_depth("C", par, st) == 2, "no filing reading: every ancestor counts, as before")
 
 
+def t_a_clear_grants_one_run_past_the_chain_stop():
+    """2026-11-27 5:54 AM PST: three Conductor clears of chain_stop items printed CLEARED and no run started in 50 min;
+    the gate read depth and never read `cleared`. A clear by a hand grants one lane run past the chain stop, spent
+    when that run launches; a run that never started or did not count (void) spends nothing."""
+    clr = lambda at, why="Conductor: one more run": {"at": at, "why": why, "attempts": []}  # noqa: E731
+    st = lambda **s: {"items": {"A": dict(s)}}  # noqa: E731
+    chk(lambda: dec({"A": it(depth=2)}, st=st(cleared=[clr(NOW - 60)], attempts=[])) == ("launch", ["A"]),
+        "cleared at the chain limit: one launch")
+    rows, _, _ = run({"A": it(depth=2)}, st=st(cleared=[clr(NOW - 60, "the gravship call")], attempts=[]))
+    chk(lambda: "clear" in rows["A"]["why"] and "the gravship call" in rows["A"]["why"],
+        "and the row names the clear and its why (%s)" % rows["A"].get("why"))
+    ran = {"at": NOW - 30, "unit": "u9", "failed": None, "next": "LEFT OPEN: more"}
+    chk(lambda: dec({"A": it(depth=2)}, st=st(cleared=[clr(NOW - 60)], attempts=[dict(ran)]),
+                    runs={"A": {"live": [], "ended": ["u9"]}}) == ("chain_stop", []),
+        "the tick after that run ended: chain_stop again, the grant is spent")
+    chk(lambda: dec({"A": it(depth=2)}, st=st(cleared=[clr(NOW - 60)], attempts=[dict(ran)]),
+                    runs={"A": {"live": ["u9"], "ended": []}}) == ("live", []),
+        "while the granted run is live: live, no second launch")
+    chk(lambda: dec({"A": it(depth=2)}) == ("chain_stop", []), "never cleared: chain_stop")
+    old = {"at": NOW - 300, "unit": "u1", "failed": None, "next": "LEFT OPEN: more"}
+    chk(lambda: dec({"A": it(depth=2)}, st=st(cleared=[clr(NOW - 600)], attempts=[dict(old)]),
+                    runs={"A": {"live": [], "ended": ["u1"]}}) == ("chain_stop", []),
+        "a cleared record older than the item's last run grants nothing")
+    chk(lambda: dec({"A": it(depth=2)}, st=st(attempts=[])) == ("chain_stop", []), "a state with no `cleared` key")
+    chk(lambda: dec({"A": it(depth=2)}, st={}) == ("chain_stop", []), "a state with no items at all")
+    never = {"at": NOW - 30, "unit": None, "failed": "never started: pool full"}
+    chk(lambda: dec({"A": it(depth=2)}, st=st(cleared=[clr(NOW - 60)], attempts=[dict(never)])) == ("launch", ["A"]),
+        "a granted launch that never started spends no grant")
+    void = {"at": NOW - 7200, "unit": "u9", "failed": None, "void": "killed by a reboot", "void_at": NOW - 7000}
+    chk(lambda: dec({"A": it(depth=2)}, st=st(cleared=[clr(NOW - 7300)], attempts=[dict(void)]),
+                    runs={"A": {"live": [], "ended": ["u9"]}}) == ("launch", ["A"]),
+        "a granted run that did not count (void) spends no grant")
+    rows, l, _ = run({"A": it(depth=2), "B": it(depth=2)}, st=st(cleared=[clr(NOW - 60)], attempts=[]))
+    chk(lambda: l == ["A"] and rows["B"]["decision"] == "chain_stop", "the grant is the cleared item's only")
+    # the command itself: `clear` writes the record that the next tick reads
+    p = os.path.join(os.environ["RM_LIST_DISPATCH_DIR"], "state.json")
+    with patch.object(LD().time, "time", return_value=NOW - 5):
+        LD().main(["clear", "A", "--why", "Conductor: one more run"])
+    with open(p) as f:
+        disk = json.load(f)
+    chk(lambda: dec({"A": it(depth=2)}, st=disk) == ("launch", ["A"]), "`list_dispatch.py clear` then a tick: launch")
+    os.remove(p)
+
+
+def t_a_clear_keeps_the_runs_in_the_chain():
+    """A clear moves an item's attempts under `cleared`. Those runs still filed its children: a clear of the parent
+    must not shorten a child's chain, or one clear lets the lane feed itself again through every child."""
+    w = {"A": {"caused_by": None}, "B": {"caused_by": "A"}, "C": {"caused_by": "B"}}
+    par = lambda i: w.get(i, {}).get("caused_by")  # noqa: E731
+    st = {"items": {"A": {"attempts": [{"unit": "u1", "failed": None}]},
+                    "B": {"attempts": [], "cleared": [{"at": NOW, "why": "w",
+                                                       "attempts": [{"unit": "u2", "failed": None}]}]}}}
+    chk(lambda: LD().chain_depth("C", par, st, filed_by={"C": "u2", "B": "u1"}.get) == 2,
+        "the parent's cleared runs still count in the child's chain")
+    st["items"]["B"]["cleared"][0]["attempts"][0]["void"] = "killed"
+    chk(lambda: LD().chain_depth("C", par, st) == 1, "a cleared run that did not count still does not count")
+
+
 def t_the_tick_counts_recent_lane_launches_before_taking_spare_room():
     import detached_helper as DH
     import list_effect as LE
@@ -1423,6 +1481,7 @@ def main():
               t_the_lane_has_its_own_slots_and_chain_rule,
               t_a_ready_ticket_goes_to_a_host_with_room_first, t_a_ticket_of_an_archmagi_only_home_runs_on_archmagi,
               t_a_chain_counts_only_links_that_a_lane_run_filed,
+              t_a_clear_grants_one_run_past_the_chain_stop, t_a_clear_keeps_the_runs_in_the_chain,
               t_the_reading_says_each_machines_room,
               t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
               t_an_unreadable_record_blinds_only_what_it_can_change,

@@ -1132,6 +1132,13 @@ def t_a_bundle_on_another_host_launches_there():
                                         "sort, 0 left out)\n")})
     chk(lambda: rows4[0]["decision"] == "no_bundle" and not st2["items"].get("H1", {}).get("attempts"),
         "execute: a host whose sort closed every member launched nothing, and no attempt is spent (%s)" % rows4[0])
+    rows5, l5 = W.group([{"item": "H1", "decision": "launch", "model": "opus", "cap": 120, "run_n": 1,
+                          "host": "SteveDesktop"}], ["H1"], {"H1": "pipeline:fifth"}, {})
+    LD.execute({"enabled": True}, st2, rows5, l5, {"items": items}, NOW, fx={"remote": lambda a, **k: types.SimpleNamespace(
+        returncode=2, stderr="", stdout="left out: H1  its lease is live: BENCH.pid1\nNO BUNDLE: pipeline:fifth has no "
+                                        "ready member (0 closed by the sort, 1 left out)\n")})
+    chk(lambda: rows5[0]["decision"] == "no_bundle" and "its lease is live" in rows5[0]["why"],
+        "execute: a lead that the host's sort left out names the host's reason in its own row (%s)" % rows5[0])
 
     def boom(a, **k):
         raise OSError("ssh: connect refused")

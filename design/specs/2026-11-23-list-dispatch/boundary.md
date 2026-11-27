@@ -165,6 +165,16 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   a lane run on that parent filed the child (the filing's role unit is one of the parent's attempts); a child filed by a
   hand, the Conductor or another run ends the chain there. A tick that cannot read the filings counts every ancestor.
   Measured 2026-11-25 10:52 PM PST: 2 of 5 `chain_stop` items had been filed by no lane run.
+- **a-clear-grants-one-run-past-the-chain-stop.** `list_dispatch.py clear <ID> --why ...` grants the item ONE lane run
+  past `chain_stop`: the gate reads the item's newest `cleared` record, and grants the run while no spent attempt
+  (launched, not `failed`, not `void`) has a launch time at or after that record. The run spends the grant when it
+  launches; after it ends, the item reads `chain_stop` again, naming the clear that run spent, until a hand clears it
+  again. A launch that never started, or a run that did not count, spends nothing. The launch row names the clear and
+  its why. An item that nobody cleared, and a state with no `cleared` key, keep the chain rule unchanged. Measured
+  2026-11-27: three Conductor clears at 5:54 AM PST printed `CLEARED` and no run started in 50 minutes, because the gate
+  read only `depth`.
+- **a-clear-keeps-the-runs-in-the-chain.** A clear moves an item's attempts under `cleared`, and those runs still count
+  in its children's chains (`chain_depth`): a clear of a parent gives the parent one run, never its children.
 - **the-tick-counts-recent-lane-launches-before-taking-spare-room.** For the load gate, the tick counts live detached
   records marked `next_act_owner=list_dispatch` whose launch time is within `load_lag_s` before the tick, including
   records outside the tick's item selection. An unreadable launch time, or an unreadable record that could hold a

@@ -90,7 +90,9 @@ bundle began). A member with none of these is **open**.
   `refresh_remote` copies the host's own record (state, step, restarts, units, outcomes) into the marker; when the
   host's record ends, the marker ends, and each member's attempt reads ended (`overlay`), never unseen. A host that
   refuses (its own live bundle of the system) reads `bundle_live` and spends no attempt; only the members the host
-  took get the attempt. The page shows the bundle with its host. Test: `t_a_bundle_on_another_host_launches_there`.
+  took get the attempt. A host whose sort leaves every member out reads `no_bundle`; the lead's row names its own
+  reason from the host, as each other member's `host_left_out` row does. The page shows the bundle with its host.
+  Test: `t_a_bundle_on_another_host_launches_there`.
 - **a-bundle-on-another-machine-is-live-here.** A bundle that another machine's store holds (`./pipe bundle` run on
   SteveDesktop) is live in this lane while a ledger event cites its id within `REMOTE_QUIET_S`; its system gets no
   second bundle.
