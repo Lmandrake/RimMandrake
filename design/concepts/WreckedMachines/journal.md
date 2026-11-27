@@ -121,3 +121,25 @@ beautifully. Of course it should intelligently subagent fanout as needed."
 - Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-27 4:54 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** the Preflight run (Stage 2), which the Dispatch tick launches; nothing waits on him
 - Record: `version/stage_record.json`.
+
+### 2026-11-27 7:40 AM PST, Offline build (Stage 3), first run: 15 bars not runnable to 7; the mechanism compiled and not yet run in the game (by BENCH)
+
+- Run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_FIFTEEN_BARS_LEFT, stopped by the account line; its `LEFT OPEN:` note holds the
+  exact state and the next steps. Last code sha `bc2612d8ac`.
+- **Checks built.** Green, each seen red on a planted fault: `T_DISTILLATION_LOADS`, `T_REPAIR_STATE_WALK` (8 rows, 416 states
+  by 16 events on 2 machines and 4000 random strings; 17 of 17 faults planted in the kernel went red), `T_LATER_STAYS_OUT`,
+  `T_NEIGHBOUR_NAMES`, `T_LEVEL_NUMBERS`, `T_ONBOARDING_TABLE_OFFLINE`. Red first, by design: `T_ONBOARDED_SET` and
+  `T_ONBOARDING_COMPLETE` (3 of 20 lines on the table; pictures and the judge's records owed) and `T_FORGE_GATES_GONE` (the
+  forge is not onboarded). The two scene tiers are defined. `sc_old_save` is not written.
+- **Build.** `src/RimMandrake/WreckedMachines/DESIGN.md` is the build's contract. The repair record and its transitions are in
+  the Verse-free kernel. The C# of the repair on the machine, the study toggle and its work giver, the process and speed
+  sync, `machineLines` in Mod Settings and the proof type compile; none of it has run in the game. The smelter, the power cell
+  and the emanator are on the onboarding table in the new shape; 17 machines are stamped and staged under
+  `Source/onboarding_staged`, to land when their pictures pass the judge.
+- **A check that was wrong.** The text scene's Star Wars name list read one word, `None`, from `biome_rulings.md`; it now
+  reads the canon library (244 names) and was seen to fail on a planted name. Its label read missed a lower-case "repaired".
+- **Neighbours.** The Armoury no longer names the deleted `RM_WM_AutomatedSmelter_Repaired` (same landing, rule
+  `R_neighbour_names`). Cold Storage's and the Cuisine mod's names are kept as they read them.
+- **Not tested, with the reason.** No in-game check ran: ArchBig was taken and the mod deployed at 7:35 AM PST, and the account
+  line came before the first load. The offline model: the repair state machine has its generator (the walk); the mod's other
+  decisions (study, placement, pictures) are the game's own machinery and are read live.
