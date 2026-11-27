@@ -1,4 +1,4 @@
-# BOUNDARY: levelling a role clone that holds a stranded commit, Design Version 0.1.0
+# BOUNDARY: levelling a role clone that holds a stranded commit, Design Version 0.2.0
 
 Code: `src/RimMandrake/rimflow/role_clones.py` (`level`, `land` at the unit's ExecStopPost, `ensure` and
 `make_in_background`), `seat_sync.unlanded` (`src/RimMandrake/Utils/seat_sync.py`), `src/RimMandrake/Utils/land.sh`'s
@@ -72,5 +72,13 @@ PST. Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_ro
   (`refused` text or none, and `level`'s result); `launch` handed it as `_prepared` uses it and does not make or level
   again. The dispatcher runs it before it records the run, so a beat cut there tracks no run and gives the slot back
   (`selftest_dispatcher_beat.py`, `test_cut_in_clone_prep_tracks_no_run`).
+
+- **a-run-now-on-a-concept-the-clone-lacks-levels-it-first.** `role_launch.py run-now --concept <c> --apply` on a
+  concept whose `stage.json` is not in the role's clone syncs that clone first (`role_clones.sync`, `./sync` there),
+  then reads it again; the concept a clone already holds is never levelled; a sync that fails, or a run of the role
+  live in the clone, refuses with its words; a concept on origin nowhere is still refused "no stage.json". A dry run
+  moves nothing. Test file `selftest_run_now_levels_role_clone.py` (its five tests). Version 0.2.0 (item
+  `RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO`, 2026-11-26: WreckedMachines' first run-now was refused
+  because the Designer's clone stood at a commit of 2026-11-21).
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

@@ -383,6 +383,15 @@ def t_a_stranded_launch_raises_one_not_running_alarm():
     check(good, "a-stranded-launch-raises-one-not-running-alarm")
 
 
+def t_a_run_now_on_a_concept_the_clone_lacks_levels_it_first():
+    """The promise's five cases live in selftest_run_now_levels_role_clone.py (fakes only, about 1 s): run it whole."""
+    r = subprocess.run([sys.executable, os.path.join(HERE, "selftest_run_now_levels_role_clone.py")],
+                       capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)  # budget: class=call
+    tail = (r.stdout or "").strip().splitlines()[-1:] or ["(no output)"]
+    check(r.returncode == 0 and "0 failed" in tail[0], "a run-now on a concept the clone lacks levels it first",
+          tail[0] + (r.stderr or "")[-300:])
+
+
 def main():
     t_a_level_clone_launches_without_a_fetch()
     t_a_stranded_ledger_commit_is_landed_and_the_clone_levelled()
@@ -398,6 +407,7 @@ def main():
     t_a_missing_clone_is_made_in_its_own_unit_and_the_launch_waits()
     t_a_clone_is_made_under_a_hidden_name_and_renamed()
     t_the_launch_takes_the_prep_done_before_its_run_record()
+    t_a_run_now_on_a_concept_the_clone_lacks_levels_it_first()
     print("%d check(s) failed" % len(FAILS) if FAILS else "all checks passed")
     return 1 if FAILS else 0
 

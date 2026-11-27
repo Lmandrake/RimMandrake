@@ -2038,9 +2038,26 @@ def run_now_cap(cfg, mode):
 
 
 
-def run_now_request(sch, a, now):
-    """Pure. A run-now request from its CLI fields (role, by, why, mode, concept) -> the
-    record kept in st["roles"][role]["run_now"]. Raises ValueError naming the bad field."""
+def level_for_concept(st, name):
+    """-> the leveller a run-now hands run_now_request: (clone) -> (ok, words). It holds while a run of role `name` is
+    live in the dispatcher state `st` (the clone is that run's working tree: nothing moves under it), else syncs the
+    clone (role_clones.sync)."""
+    live = [x.get("unit") or "?" for x in ((st.get("roles") or {}).get(name) or {}).get("runs") or []
+            if isinstance(x, dict) and x.get("state") == "running"]
+
+    def bring(clone):
+        if live:
+            return False, "a %s run is live in it (%s); ask again when it ends" % (name, ", ".join(live))
+        return role_clones.sync(clone)
+    return bring
+
+
+def run_now_request(sch, a, now, bring=None):
+    """A run-now request from its CLI fields (role, by, why, mode, concept) -> the
+    record kept in st["roles"][role]["run_now"]. Raises ValueError naming the bad field. bring (level_for_concept):
+    a concept on origin/main that the role's own clone does not hold yet levels that clone first (the Designer's
+    clone moves only at a unit's own ./sync, so a concept admitted after the last run could never start: 2026-11-26,
+    WreckedMachines); with no bring, nothing is levelled."""
     role = next((r for r in sch.get("roles") or [] if isinstance(r, dict) and r.get("name") == a.get("role")), None)
     if role is None:
         raise ValueError("no role %r in the schedule" % (a.get("role"),))
@@ -2060,8 +2077,15 @@ def run_now_request(sch, a, now):
             raise ValueError("--concept: %s runs one concept's recorded stage (design/concepts/<Mod>)" % role["name"])
         if role_clones.is_role_clone(cfg.get("clone")) and role_clones.missing_why(cfg["clone"]):
             raise ValueError(role_clones.missing_why(cfg["clone"]))     # not "no stage.json": nothing was looked in
-        if not os.path.isfile(os.path.join(concept_dir(cfg, concept), "stage.json")):
-            raise ValueError("--concept %s has no stage.json (designer_stage.py init it first)" % concept)
+        sj = os.path.join(concept_dir(cfg, concept), "stage.json")
+        if not os.path.isfile(sj) and bring is not None and role_clones.is_role_clone(cfg.get("clone")):
+            ok, words = bring(cfg["clone"])
+            if not ok:
+                raise ValueError("--concept %s has no stage.json in the role clone %s, and levelling the clone with "
+                                 "origin/main failed: %s" % (concept, cfg["clone"], words))
+        if not os.path.isfile(sj):
+            raise ValueError("--concept %s has no stage.json%s (designer_stage.py init it first, and land it on "
+                             "origin/main)" % (concept, " in the role clone, levelled with origin/main" if bring else ""))
         concept = concept_dir(cfg, concept)
     elif concept:
         raise ValueError("--concept is for a stage-machine role, not %s" % role["name"])
@@ -3823,8 +3847,12 @@ def main(argv=None):
     if not a.cancel:
         try:
             sch = D.load_schedule(a.schedule)
+            bring = None
+            if a.concept and a.apply:      # only a run-now that writes may move the role's clone (a dry run reads)
+                st0 = D.load_state(root) if os.path.exists(os.path.join(root, "state.json")) else {}
+                bring = level_for_concept(st0, a.role)
             req = run_now_request(sch, {"role": a.role, "by": a.by, "why": a.why, "mode": a.mode,
-                                        "concept": a.concept, "runner": a.runner}, now)
+                                        "concept": a.concept, "runner": a.runner}, now, bring=bring)
             if a.covers_slot:
                 req["covers_slot"] = True
             req = with_parent(req, os.environ)

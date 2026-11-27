@@ -180,6 +180,24 @@ def _git(clone, *a, timeout=300):
                           stdin=subprocess.DEVNULL)
 
 
+def sync(clone, runner=subprocess.run, timeout=None):
+    """`./sync` (seat_sync.py --repo <clone>) on a role clone: fetch, and move it to origin/main when that is safe.
+    -> (ok, its words); never raises. A run-now on a concept the clone does not hold yet levels it with this
+    (role_launch.level_for_concept; item RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO, 2026-11-26)."""
+    if timeout is None:     # a clone's sync is launch work: time_budget's launch class names its danger and record
+        if UTILS not in sys.path:
+            sys.path.insert(0, UTILS)
+        import time_budget as TB
+        timeout = TB.LAUNCH_S
+    try:
+        r = runner([sys.executable, SEAT_SYNC, "--repo", clone], capture_output=True, text=True, timeout=timeout,
+                   stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return False, "%s: %s" % (type(e).__name__, e)
+    words = " ".join(((r.stdout or "") + " " + (r.stderr or "")).split())    # whole: the refusal reads its cause
+    return r.returncode == 0, words or "exit %s" % r.returncode
+
+
 def fix_line(clone, rows):
     """The one shell line that lands each stranded commit (in order) and then levels the clone. --superseded names each
     commit the line just landed: seat_sync cannot always prove a twin by its bytes (a union shard plus a file origin
