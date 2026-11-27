@@ -371,8 +371,10 @@ def conversion_owed(repo, d, st):
     except (OSError, UnicodeDecodeError) as e:
         return "unmeasured", "%s could not be read: %s" % (CONVERSION_LIST, e), None
     st = st if isinstance(st, dict) else {}
-    names = [n for n in [st.get("mod") or (os.path.basename(os.path.abspath(d)) if d else None)]
-             + list(st.get("aliases") or []) if CT.txt(n)]
+    # the heading is the bare concept folder name (page, ACCEPTS one-section-per-mod); a real stage.json names its mod
+    # "<tier>/<Name>", so the folder is looked up first, then the stage's mod and its aliases
+    names = list(dict.fromkeys(n for n in [os.path.basename(os.path.abspath(d)) if d else None, st.get("mod")]
+                               + list(st.get("aliases") or []) if CT.txt(n)))
     secs = conversion_sections(text)
     head = next((n for n in names if n in secs), None)
     if head is None:

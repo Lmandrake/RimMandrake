@@ -101,6 +101,11 @@ def t_owed_at_next_version():
     d = concept("Alpha2", "0.1.1")
     check(DS.conversion_owed(TMP, d, st("Alpha2", aliases=["Alpha"]))[0] == "owed",
           "an alias in stage.json finds the section")
+    # a real stage.json names its mod as "<tier>/<Name>" (design/concepts/Pyrelands/stage.json): the concept folder's
+    # name still finds the section
+    d = concept("Alpha", "0.2.0")
+    state, why, _ = DS.conversion_owed(TMP, d, st("RimMandrake/Alpha"))
+    check(state == "owed", "a stage.json mod \"RimMandrake/Alpha\" in folder Alpha finds the section", (state, why))
 
 
 def t_current_version_not_owed():
@@ -164,7 +169,9 @@ def t_real_list_is_readable():
     # the real Pyrelands moves on (0.2.0 opened 2026-11-26 and owes the conversion): the reading must agree with its
     # VERSION.json, never with a version pinned here
     pd = os.path.join(ROOT, "design", "concepts", "Pyrelands")
-    state, why, _ = DS.conversion_owed(ROOT, pd, {"mod": "Pyrelands"})
+    with open(os.path.join(pd, "stage.json"), encoding="utf-8") as f:
+        pst = json.load(f)                # the stage the real packet reads, never a dict made here
+    state, why, _ = DS.conversion_owed(ROOT, pd, pst)
     with open(os.path.join(pd, "version", "VERSION.json"), encoding="utf-8") as f:
         cur = tuple(int(x) for x in json.load(f)["version"].split("-")[0].split("."))
     want = "owed" if cur > (0, 1, 0) else "not_yet"
