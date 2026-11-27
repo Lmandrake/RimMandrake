@@ -137,6 +137,13 @@ This file is unbudgeted, like everything in `facts/`.
 - **A repair item that holds chains must have a cause that closes itself or an owner.**
   - A stale companion item sat 2 days and held 59 FlowWorks chains. So the fixed lane read EXHAUSTED ("nothing to test").
   - When the filler says exhausted, group `gaps.settled()`'s held chains by repair item before you believe the filler.
+- **A scene that leaves a mod's test table still runs while a live chain calls its rows.**
+  - The SteveDesktop filler runs the mod's chains, not its test table. A removal recorded only in `polish.md` or the
+    test table leaves the rows in the chain. They fail again on each run and file findings that the judge retires.
+  - Week of 2026-11-21: Pyrelands `sc_ash_ground` (chain `ground_deep_ash`, 7 retires) and `sc_furnace_bed` (chain
+    `furnace_sleep`, 3 retires). Both scenes had left the table.
+  - When a scene leaves the table, take its rows out of the chain in the same change. If you cannot take them out,
+    write a polish line that names the chain.
 
 ## Supervisor designs need an executor
 - **Build and 48 h-prove an unattended executor before any supervisor (auditor, COO, producer, board, inspector) gets authority.**
