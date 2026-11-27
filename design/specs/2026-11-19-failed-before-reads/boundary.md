@@ -68,4 +68,4 @@ Owner, by card 2026-11-19: a rare failure that breaks a promise is listed below 
   `_fold_tick_own` folds, once, an open `hand_run` act for such a unit, naming the lane. A run that no lane attempt and
   no tick book holds stays an open hand act; a lane state that cannot be read (`None`) folds nothing.
 
-Later lists beside this page: `polish.md` and `next_version.md` (none yet).
+Later lists beside this page: `polish.md`, and `next_version.md` (none yet).
