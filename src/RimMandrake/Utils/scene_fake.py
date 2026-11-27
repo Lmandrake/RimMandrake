@@ -57,6 +57,7 @@ class FakeGame(object):
         self.rect_values = []           # what a rect read gives: [{of, path, state, v}]
         self.kind_made = {}             # kindDef -> the kind the game makes instead (a replaced pawn kind)
         self.style_made = {}            # ThingStyleDef -> the style the game stores instead (None: none stored)
+        self.overlay_ignored = False    # planted: a session overlay that is reported but not applied
         self.echo = False               # planted: a staging tool whose block echoes the request (no readBack)
         self.serial_id, self.acts_done, self.bound, self.pictures = 20000, {}, {}, {}
         self.map_size = (250, 250)
@@ -320,7 +321,16 @@ class FakeGame(object):
     def _session(self, a):
         if a["action"] == "open":
             self.session = {"session": "g1", "driver": a["driver"], "stage": "open"}
-            return {"success": True, "session": "g1", "state": "open"}
+            ov = a.get("overlay")
+            if ov is None:
+                return {"success": True, "session": "g1", "state": "open"}
+            ov = json.loads(ov) if isinstance(ov, str) else ov       # a settings overlay: its static fields read the set value
+            for e in ov.get("entries") or []:
+                if not self.overlay_ignored:
+                    v = {"True": True, "False": False}.get(e["value"], e["value"])
+                    self.values[("static:" + e["typeName"], e["field"])] = ("ok", v)
+            self.session["deviation"] = {"name": ov.get("name"), "entries": ov.get("entries") or []}
+            return {"success": True, "session": "g1", "state": "open", "deviation": self.session["deviation"]}
         if a["action"] == "take":
             if not self.session or self.session["stage"] != "open":
                 return {"success": False, "refused": "NO_SESSION", "message": "no session is open"}

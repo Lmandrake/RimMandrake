@@ -227,14 +227,17 @@ def t_wall_lamps_plays_to_its_end():
     v = judged(folder)
     must(v.outcome == "MOD FAILURE", "a lamp that draws the vanilla art was judged %s" % v.outcome)
     off = ("static:RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings", "enabled")
-    W = lamp_world(drawn_vanilla=True)      # the plant, and the switch reads off: the run goes on to its judge
+    W = lamp_world(drawn_vanilla=True)      # the plant as the session's overlay: the switch reads off, the run goes to its judge
     scene.LAUNCH.update(plant="master_switch_off")
-    W.game.values[off] = ("ok", False)
+    W.game.values[off] = ("ok", True)
     folder, _text = play(SCENES["wall_lamps"], W)
+    opened = [a for t, a in W.game.log if t == "jawa/session" and a.get("action") == "open"]
+    must(opened and "enabled" in json.dumps(opened[-1].get("overlay")), "the plant was not the session's overlay: %s" % opened[-1:])
     must(judged(folder).outcome == "MOD FAILURE", "a planted run whose switch held off")
     W = lamp_world()                        # the plant did not hold (the switch reads on): a staging fault, never a verdict
     scene.LAUNCH.update(plant="master_switch_off")
     W.game.values[off] = ("ok", True)
+    W.game.overlay_ignored = True
     try:
         play(SCENES["wall_lamps"], W)
     except scene.Fault as e:
