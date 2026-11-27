@@ -29,6 +29,9 @@ Code: `src/RimMandrake/rimflow/fresh_reader.py` (all of it), `src/RimMandrake/ri
   bytes, or FLAGGED (by the reader that fixed, on its present bytes; or before a later fix changed it, since nobody
   reviews a FLAGGED file again and its weekly examination reads it), 1 when one lacks it, 2 when the record could not be
   read.
+- **a-reviewed-file-is-owed-no-reader.** `file` leaves out each file whose `holds` is 0 already (READ-CLEAN on its
+  present bytes, or FLAGGED). When no file is left, it files nothing, prints `no reader owed`, and exits 0. The filing
+  gate would refuse that ticket, because its check holds when it is filed.
 - **the-rule-is-in-every-brief.** `fixer_rule.READER_RULE` is in `detached_helper.FOOTER`; `READER_LINE` is word for word
   in `CLAUDE.md` and `design/RimMandrake/standing_rulings.md`.
 

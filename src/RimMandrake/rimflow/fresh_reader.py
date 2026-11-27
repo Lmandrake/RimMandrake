@@ -7,6 +7,7 @@ RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX, part 7. His answer by card, 2
 reader. Why: 5 of 6 fresh-reader runs in the 7 days to 2026-11-26 were launched by hand.
 
     python3 src/RimMandrake/rimflow/fresh_reader.py file --fix <sha> <path>...   the fixing run, before it ends
+                                                    (a file with a review record already, FLAGGED included, is left out)
     python3 src/RimMandrake/rimflow/fresh_reader.py holds <sha> <path>...        the ticket's outcome check
 
 The ticket's check holds when each fixed file carries a review record: `code_review_status.py mark-clean` on its
@@ -162,6 +163,12 @@ def holds(sha, paths, runner=None, flagged=None):
     return worst
 
 
+def owed_paths(sha, paths, holds_fn=None):
+    """-> the paths that still owe a fresh read: those whose `holds` is not 0. A file READ-CLEAN on its present bytes, or
+    FLAGGED (nobody reviews it again), owes none, and a ticket for it is refused by the filing gate (its check holds)."""
+    return [p for p in paths if (holds_fn or holds)(sha, [p]) != 0]
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -175,7 +182,12 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.cmd == "holds":
         return holds(a.sha, a.paths)
-    argv = file_argv(a.fix, a.paths, a.maker)
+    owed = owed_paths(a.fix, a.paths)
+    if not owed:
+        print("no reader owed: each file already has a review record (READ-CLEAN on its bytes, or FLAGGED: nobody "
+              "reviews it again); nothing filed")
+        return 0
+    argv = file_argv(a.fix, owed, a.maker)
     print(" ".join(argv[1:3]) + " " + ticket_id(a.fix))
     return subprocess.run(argv, cwd=REPO, timeout=6 * 3600).returncode    # budget: danger=a publish that never returns; longest=1800s (a publish in the door's line, 2026-11-26)
 

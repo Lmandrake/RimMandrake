@@ -133,10 +133,37 @@ def t_the_rule_is_in_every_brief():
             assert fixer_rule.READER_LINE in " ".join(fh.read().split()), "%s lacks the reader line" % p
 
 
+def t_a_reviewed_file_is_owed_no_reader():
+    """A fix to a FLAGGED file (nobody reviews it again) owes no reader: `file` files nothing and says why, and with two
+    files only the one with no review record is filed (RIMMANDRAKE_SPARE_CONDUCTOR_PROBE_WAKES_FIVE_IN_ELEVEN_MINUTES:
+    the filing gate refused a reader ticket whose check already held on detached_helper.py, FLAGGED, 2026-11-27)."""
+    import contextlib
+    import io
+    f = FR()
+    rec = {"a.py": 0, "b.py": 1}
+    assert f.owed_paths(SHA, ["a.py", "b.py"], holds_fn=lambda sha, ps: rec[ps[0]]) == ["b.py"]
+    real = (f.holds, f.subprocess.run)
+    filed = []
+    try:
+        f.holds = lambda sha, ps, **kw: 0
+        f.subprocess.run = lambda argv, **kw: filed.append(argv) or types.SimpleNamespace(returncode=0)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = f.main(["file", "--fix", SHA, PATH])
+        assert rc == 0 and filed == [] and "no reader owed" in out.getvalue(), (rc, filed, out.getvalue())
+        f.holds = lambda sha, ps, **kw: 0 if ps == [PATH] else 1
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = f.main(["file", "--fix", SHA, PATH, "src/b.py"])
+        assert rc == 0 and len(filed) == 1 and PATH not in filed[0][filed[0].index("--title") + 1], filed
+    finally:
+        f.holds, f.subprocess.run = real
+
+
 def main():
     failed = 0
     tests = [t_the_fixing_run_files_one_reader_ticket, t_the_lane_offers_the_reader_ticket,
-             t_the_check_holds_on_a_review_record, t_the_rule_is_in_every_brief]
+             t_the_check_holds_on_a_review_record, t_the_rule_is_in_every_brief,
+             t_a_reviewed_file_is_owed_no_reader]
     for t in tests:
         try:
             t()
