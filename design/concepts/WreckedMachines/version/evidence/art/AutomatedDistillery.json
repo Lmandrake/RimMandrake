@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedDistillery",
+ "line": "distillery",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Kludged/AutomatedDistillery_east.png",
+   "sha": "0b5c1d1f74bfbb31212adaafc29527ec0f2aad7c85f356a7aef93791881b47db",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Kludged/AutomatedDistillery_north.png",
+   "sha": "e67bcb18d9146ad5b29ee32fb13300e788b3a60858edc367c7a442cb1dcd9aa6",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Kludged/AutomatedDistillery_south.png",
+   "sha": "c27efd92105daca97965285f8b20aa555b06be393517e556d905cf5cfdc259c1",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Kludged/AutomatedDistillery_west.png",
+   "sha": "23886e17935d215b1327af54c5346ff7cadad9e0a3b537e8d294623eb5ac8f18",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Wrecked/AutomatedDistillery_east.png",
+   "sha": "ac0b0ab83126481483074987226a108f40a722eb5b6120b011bfbdf8cdc37701",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Wrecked/AutomatedDistillery_north.png",
+   "sha": "61fbb67aaad75052c9066cdf2ef36f93bb2ad74682aa26f9db262ea977c0e071",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Wrecked/AutomatedDistillery_south.png",
+   "sha": "2537e0a5ae64a69e348942af756532624c1e16475a69bdc8b62b672428144f4e",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDistillery/Wrecked/AutomatedDistillery_west.png",
+   "sha": "834e7314449afe0de0b3634c777837065a4f5e7008c7573a925bac154976af8e",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T17:16:31Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's outline, facing and main parts (pot-still dome with riveted collar, cylindrical tank, chute, belts) in a painted, weathered register with no drawn keyline, matching the smelter sibling's style and scale. Wrecked reads as dead and broken open with dark breaches and nothing lit; Kludged reads as patched and running, with plates, spliced cables, a strapped-on box, a few amber lamps, and clear belts and no open fire breach, which keeps both owner notes on the smelter. At 32 px per cell both tiers read as a dome and a tank in a darker block, clearly apart from the tan ground. The four facings agree on size and palette; the belts overhang the 3x3 footprint only as far as the donor's own belts do within the 4x4 draw size. Real alpha, no ground shadow or scenery.",
+ "notes": []
+}

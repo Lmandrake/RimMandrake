@@ -16,6 +16,9 @@ another operation class is COULD NOT LOOK, never skipped). Then each line of the
   refurbished_is_whole  the Refurbished def's processes are the donor's, in the donor's order
   row_names_real        every process the row names is one the donor lists (a name that only another mod adds, and that is not
                         installed, cannot be checked here and is printed as not read)
+  conditions_kept       a process that the donor lists only when another mod is loaded (MayRequire on its entry) carries the same
+                        condition on the Kludged and the Refurbished def; a bare entry names a process that is not loaded on a
+                        list without that mod, and the game reports a config error (seen live on the alloy forge, 2026-11-27)
 
 With --staged the lines waiting in Source/onboarding_staged/<key>/ are read too and printed apart; they decide nothing until
 they land. Left out, and read live instead (scene sc_levels_do_their_work): what the C# sets at startup: the processes that the
@@ -37,7 +40,7 @@ LINE_TAG = "RimMandrake.WreckedMachines.RM_MachineLineDef"
 PROC = 'comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]'
 STEAM = "/mnt/c/Program Files (x86)/Steam/steamapps"
 VFEF_DEFAULT = os.environ.get("RM_VFEF_DIR") or STEAM + "/workshop/content/294100/3686924415"
-ROWS = ("kludged_is_a_part", "refurbished_is_whole", "row_names_real")
+ROWS = ("kludged_is_a_part", "refurbished_is_whole", "row_names_real", "conditions_kept")
 
 
 class CouldNotLook(Exception):
@@ -153,6 +156,13 @@ def _procs(tree, defname):
     return [li.text.strip() for li in comp[0].xpath("processes/li") if li.text], True
 
 
+def _conds(tree, defname):
+    """{process: the MayRequire on its entry, or None} of a def's processor."""
+    d = tree.xpath('/Defs/ThingDef[defName="%s"]' % defname)
+    comp = d[0].xpath(PROC) if d else []
+    return {li.text.strip(): (li.get("MayRequire") or None) for li in comp[0].xpath("processes/li") if li.text} if comp else {}
+
+
 def read_line(tree, key, row):
     """-> ({row name: [faults]}, note) for one line; note says why a line was not read."""
     bad = {r: [] for r in ROWS}
@@ -183,6 +193,11 @@ def read_line(tree, key, row):
         bad["kludged_is_a_part"].append("%s: the row names %s and the Kludged def lacks it" % (key, [p for p in named if p in D and p not in K]))
     if R != D:
         bad["refurbished_is_whole"].append("%s: Refurbished %s is not the donor's list %s" % (key, R, D))
+    dc = _conds(tree, donor)
+    for nm, dn in (("Kludged", kl), ("Refurbished", rf)):
+        for p, c in sorted(_conds(tree, dn).items()):
+            if p in dc and dc[p] != c:
+                bad["conditions_kept"].append("%s: the %s def names %s with MayRequire %r, the donor has %r" % (key, nm, p, c, dc[p]))
     known = {d.text.strip() for d in tree.xpath("/Defs/PipeSystem.ProcessDef/defName")}
     for p in named:
         if p not in D and p in known:
@@ -226,6 +241,8 @@ def _plant(tree, how):
         r.remove(r[-1])
     elif how == "refurbished_out_of_order":
         r.insert(0, r[-1])
+    elif how == "kludged_drops_a_condition":
+        [li for li in d if li.text == k[0].text][0].set("MayRequire", "Some.OtherMod")
     elif how == "row_names_a_foreign_process":
         row = [x for x in t.getroot().iter(LINE_TAG) if x.findtext("key") == "smelter"][0]
         LX.SubElement(row.find("kludgedProcesses"), "li").text = "VFEFactory_MakeKibble"
@@ -234,7 +251,8 @@ def _plant(tree, how):
 
 PLANTS = (("kludged_empty", "kludged_is_a_part"), ("kludged_is_everything", "kludged_is_a_part"),
           ("kludged_makes_what_the_donor_cannot", "kludged_is_a_part"), ("refurbished_lacks_one", "refurbished_is_whole"),
-          ("refurbished_out_of_order", "refurbished_is_whole"), ("row_names_a_foreign_process", "row_names_real"))
+          ("refurbished_out_of_order", "refurbished_is_whole"), ("row_names_a_foreign_process", "row_names_real"),
+          ("kludged_drops_a_condition", "conditions_kept"))
 
 
 def main():

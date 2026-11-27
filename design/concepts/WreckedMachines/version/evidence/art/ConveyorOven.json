@@ -1,0 +1,95 @@
+{
+ "subject": "ConveyorOven",
+ "line": "conveyoroven",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Kludged/ConveyorOven_east.png",
+   "sha": "0c3a27c127c83dbfe583ecfa9fcd32ce1a6859b8a99297326a4d031076274041",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Kludged/ConveyorOven_north.png",
+   "sha": "faf00ecc1ef877b83ad7dffc955a6423e33a179d91f76f0dfbae29e23ff19eef",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Kludged/ConveyorOven_south.png",
+   "sha": "4720ff7914d6857b9805056529bd4965c5eb785d796311455d88278edca45cf8",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Kludged/ConveyorOven_west.png",
+   "sha": "a4ebf709285bbde5d0a9c624cd99f25ce7404d5349698e3ce4e904971d7bc84a",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Wrecked/ConveyorOven_east.png",
+   "sha": "00ca7d05206d4b65f170ad562df8b08486c1a7c950586722211bbc9b377462a9",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Wrecked/ConveyorOven_north.png",
+   "sha": "15cec6c28c8164eaf47a81603acd787c04cb7915b0313bfadea1dc7bafae1a40",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Wrecked/ConveyorOven_south.png",
+   "sha": "a877fb8cc0d79e6c1705beaffba16010a5572fc9d077f51a444bef0d12be4a4a",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorOven/Wrecked/ConveyorOven_west.png",
+   "sha": "cab68fbe310158054f1c54220a0efb0bc58111db6b5cfb1373a1814856de5a87",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:25:00Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All four facings of both tiers keep the donor's layout (the hooded oven body with three banks of vent slats, the two belt windows, the control panels, the three output belts and the single input belt) in the painted, rusted register of the smelter set, with no drawn keyline. Wrecked has the plating torn back in ragged sheets, holes in the belts and housing, loose wire ends and nothing lit; Kludged has patch plates, cable runs clipped along the frame, one bolted-on box, a few lamps, and the heated strip glowing orange, with every belt mouth clear and no open breach or fire, as the owner's smelter corrections require. The four facings agree in scale and palette, and the east and west are true side views. At 32 px per cell both tiers read as a long box with slatted panels over a row of belt bays, darker than the sand ground; the Kludged orange strip is a clear accent. The silhouette fills the footprint as the donor's does, with only the donor's own input belt and hopper ends past its edge, and alpha is clean.",
+ "notes": []
+}

@@ -5,6 +5,10 @@ by `src/RimMandrake/Utils/modset_builder.py` into TIERS["wreckedmachines"] (`mod
 dependency CLOSURE of this mod's About.xml `<modDependencies>`, resolved from the installed About.xml files on
 2026-11-02; `selftest_modcheck_donor_envs.py` re-checks it.
 
+GimmeSomeSlack is not on the list: jawa/get_defs was measured to TypeLoad-fail without it on 2026-10-07, and on 2026-11-27
+it answers on the load wreckedmachines_solo, which has no GimmeSomeSlack (the scenes run on that list with
+MODCHECK_KEEP_MODLIST=1 after `modset_builder.py --tier wreckedmachines_solo --apply` and a restart).
+
 No other Vanilla Expanded mod is needed. The 2026-09-13 wave blamed VFEFactory's auto-process generator for a
 `RecipeDefGenerator.SetIngredients` NRE and asked for a bisection of VE siblings. The decompiled prefix
 (VanillaFurnitureExpandedFactory_DefGenerator_GenerateImpliedDefs_PreResolve_Patch.GenerateAutoProcesses,
@@ -16,7 +20,6 @@ is what proves the list loads clean.
 """
 
 EXTRA_IDS = [
-    "mandrake.rm.gimmesomeslack",                   # JawaBench get_defs TypeLoad-fails without it (MEASURED 2026-10-07)
     "oskarpotocki.vanillafactionsexpanded.core",
     "vanillaexpanded.vfefactory",
     "mandrake.rm.wreckedmachines",

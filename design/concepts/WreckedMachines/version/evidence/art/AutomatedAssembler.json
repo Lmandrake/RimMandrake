@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedAssembler",
+ "line": "assembler",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Kludged/AutomatedAssembler_east.png",
+   "sha": "98d0be3bff729e105a4918fcca0ed21a25bf2f60045be3f9dedded4dd0cd4b59",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Kludged/AutomatedAssembler_north.png",
+   "sha": "efd657eab10a0e206919ccdbebb047df4266b88d4dd9eea42ba37eaefa474b94",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Kludged/AutomatedAssembler_south.png",
+   "sha": "4036df1efd5ae3aa25b9f56480c29d1680052d448e9ea4d48e081649d2bf09ed",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Kludged/AutomatedAssembler_west.png",
+   "sha": "abc3c836b7536be9faf88b1ddf95ef3bb6d05a6bb962f9bf7b0bb3743afe7afd",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Wrecked/AutomatedAssembler_east.png",
+   "sha": "7c6c7d93ac044f72d0a4a3633ec303414e43c2ae72273df595b157fa91f1762b",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Wrecked/AutomatedAssembler_north.png",
+   "sha": "f4afde787b642dff23f12e97ac8c2cd77312eb1c746a016af18b757eb579e53b",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Wrecked/AutomatedAssembler_south.png",
+   "sha": "2a0ca98e23088b6c23f541a383250821b20eda78238978d2f940c4d76b9cf3f2",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAssembler/Wrecked/AutomatedAssembler_west.png",
+   "sha": "737fddb0725def9feb6cf2f0e91236d2ce1b30dd2afe5d1f472af8e20da71fca",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T17:16:58Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's outline, facing and parts (central rail, two rows of jointed arm segments, side ports, belts) in the painted, weathered register of the smelter sibling, with no drawn keyline and a metal-and-rust colour that reads as material. Wrecked reads as dead and broken open, with torn housings, dark breaches and nothing lit. Kludged reads as patched and running, with plates, spliced cables, one strapped-on box per facing and a few amber lamps; the belts are clear and nothing is an open fire breach, so both owner notes are kept. At 32 px per cell both tiers read as a few bold grey blocks and a dark rail, clearly apart from the tan ground. The facings agree on size and palette, the belts overhang the 5x5 footprint only as far as the donor's do within the 6x6 draw size, and the alpha is clean with no shadow or scenery.",
+ "notes": []
+}

@@ -310,6 +310,36 @@ def main():
         rc, out = run(["stamp", "smelter", "--mod", m, "--vfef", v])
         say(rc == 1 and "own label" in out, "PLANT a row label that is not the donor's: stamp refuses", "exit %d" % rc, "exit 1")
 
+        # ---- a donor process that needs another mod keeps that condition on every level (the failure that happened, 2026-11-27:
+        # the Kludged alloy forge named VFEFactory_AlloyBronze bare, the donor has it MayRequire VFE Classical, and the load said
+        # "Could not resolve cross-reference to PipeSystem.ProcessDef named VFEFactory_AlloyBronze")
+        def conditional_donor(v):
+            f = os.path.join(v, "1.6", "Defs", "ThingDefs_Buildings", "Buildings_Factories.xml")
+            body = open(f).read()
+            assert "<li>VFEFactory_SmeltMetalFromSlag</li>" in body
+            open(f, "w").write(body.replace("<li>VFEFactory_SmeltMetalFromSlag</li>", '<li MayRequire="Some.OtherMod">VFEFactory_SmeltMetalFromSlag</li>'))
+
+        def conditions(m_):
+            out = {}
+            for d in etree.parse(staged(m_, "levels.xml")).getroot():
+                if isinstance(d.tag, str) and d.findtext("defName"):
+                    for li in d.findall("comps/li/processes/li"):
+                        if li.text == "VFEFactory_SmeltMetalFromSlag":
+                            out[d.findtext("defName").rsplit("_", 1)[-1]] = li.get("MayRequire")
+            return out
+        m, v = fresh()
+        conditional_donor(v)
+        rc, out = run(["stamp", "smelter", "--mod", m, "--vfef", v])
+        got = conditions(m) if rc == 0 else {}
+        say(got == {"Kludged": "Some.OtherMod", "Refurbished": "Some.OtherMod"}, "a donor process that needs another mod keeps its MayRequire on the Kludged and the Refurbished level",
+            "exit %d, %s" % (rc, got), "Some.OtherMod on both")
+        if rc == 0:
+            edit(staged(m, "levels.xml"), lambda r: [li.attrib.pop("MayRequire", None) for li in r.iter("li")
+                                                      if li.text == "VFEFactory_SmeltMetalFromSlag" and li.getparent().getparent().find("canOverclock") is not None][:1])
+        res, _ = faults(m, v)
+        say(any("MayRequire" in f for f in res["donor_fidelity"]), "PLANT that condition dropped from the Kludged level: check faults donor_fidelity",
+            "%d faults" % len(res["donor_fidelity"]), "at least 1 that names MayRequire")
+
         # ---- land
         m, v = fresh()
         run(["stamp", "smelter", "--mod", m, "--vfef", v])

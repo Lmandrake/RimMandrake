@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedBiofuelRefinery",
+ "line": "biofuelrefinery",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Kludged/AutomatedBiofuelRefinery_east.png",
+   "sha": "6d7f772e39535b871a5a2eceb1da848c96821e28bcd2090395995a0c37741ef5",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Kludged/AutomatedBiofuelRefinery_north.png",
+   "sha": "f6303ce66faeb3f2eb52b149b424b1657c973927619e4258b45197c4730cad48",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Kludged/AutomatedBiofuelRefinery_south.png",
+   "sha": "5f1b1a2d36f65d75ac7c45cedc1b417ba1186bd0bf7abbdb0c0f3c0d9ce4f5d6",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Kludged/AutomatedBiofuelRefinery_west.png",
+   "sha": "55f9913937dd8eb6476f39c17ee3d5ca374494302b1c4d07af06e6b2e2a19a27",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Wrecked/AutomatedBiofuelRefinery_east.png",
+   "sha": "b93d3846c4922964946c5f97b1e7e34fee9d03378ca6491b34d9f3e4aa74e9d8",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Wrecked/AutomatedBiofuelRefinery_north.png",
+   "sha": "ebd42c2581b778cbb36664a75ff5ba66305fc06a72f5d8a8f2a855d3467efdc3",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Wrecked/AutomatedBiofuelRefinery_south.png",
+   "sha": "691116b2e1119c7d548a0b388110aea993e1d7226994f54842135bcc4ee99000",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedBiofuelRefinery/Wrecked/AutomatedBiofuelRefinery_west.png",
+   "sha": "6fa7e110e8336e1f4835bc94c3c9f7cde8e3272cb029c7ea773c8b88b17ec8af",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:15:00Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "Every facing of both tiers keeps the donor's parts and layout (two big domed tanks, two small end-capped cylinders, copper riser and elbow pipes, the round vat, the three belts and the input belt) in the painted, rusted register of the smelter set, with no drawn keyline. Wrecked has torn and holed tanks, one tank ripped open to its ribs, an empty dried vat and no light; Kludged has patch plates, strapped bands round the worst tank, spliced cables, one bolted-on control box, a few lit lamps and a refilled green vat, with every belt mouth clear and no open breach or fire, as the owner's smelter corrections require. The four facings agree in scale and palette, and the east and west are true side views. At 32 px per cell both tiers read as two round tanks over a row of belt bays, clearly apart from the sand ground; the Kludged green vat is a strong accent. The silhouette fills the footprint as the donor's does, with only the donor's own tank top and input belt standing past its edge, and alpha is clean.",
+ "notes": []
+}

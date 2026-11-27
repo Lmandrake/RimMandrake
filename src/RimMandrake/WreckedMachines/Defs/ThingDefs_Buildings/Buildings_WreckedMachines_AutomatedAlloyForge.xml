@@ -168,8 +168,8 @@
         <alwaysShowProgressBar>true</alwaysShowProgressBar>
         <!-- Part of the donor's list: the row's kludgedProcesses. -->
         <processes>
-          <li>VFEFactory_CreateObsidian</li>
-          <li>VFEFactory_AlloyBronze</li>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">VFEFactory_CreateObsidian</li>
+          <li MayRequire="OskarPotocki.VFE.Classical">VFEFactory_AlloyBronze</li>
         </processes>
         <hideSettings>true</hideSettings>
       </li>

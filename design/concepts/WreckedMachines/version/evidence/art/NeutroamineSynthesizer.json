@@ -1,0 +1,95 @@
+{
+ "subject": "NeutroamineSynthesizer",
+ "line": "neutroamine",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Kludged/NeutroamineSynthesizer_east.png",
+   "sha": "f03fe34f82f07a44442d138f1c9b4f018fc45ac890901f5487c420c7ba20a061",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Kludged/NeutroamineSynthesizer_north.png",
+   "sha": "659bcae25313135b4a0e2efb50bd475f0cef1e7e9992b613a7cef837722a9dba",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Kludged/NeutroamineSynthesizer_south.png",
+   "sha": "6f61d2d81ac2978f6de07a65ad77aae027a6a4a46808abe953a82d8443a1bbe1",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Kludged/NeutroamineSynthesizer_west.png",
+   "sha": "532597a8dcd2aa3073289e482d9f1ca1d135bf30de80f0f644965c2437ee6b0c",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Wrecked/NeutroamineSynthesizer_east.png",
+   "sha": "9581b1699c3f2d395d95d1b46cae18c34102bcebf37175203963da59f0b48b7a",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Wrecked/NeutroamineSynthesizer_north.png",
+   "sha": "1e01bfb59cd2be98b3b40b0879e6c15eff7b5371486018fc7f8ce800551d5235",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Wrecked/NeutroamineSynthesizer_south.png",
+   "sha": "9790a867fc0d3f08e272829cec1e95cd2674446c29a9780fd8349b34cb051cb2",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/NeutroamineSynthesizer/Wrecked/NeutroamineSynthesizer_west.png",
+   "sha": "638207df633d45c7600b223c1a3078f26928136bdea386e835ba38cdee4aeb35",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T18:05:00Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All four facings of both tiers keep the donor's outline and parts (two round centrifuge domes, ribbed central column, belts, bottle racks, side tubing) and redraw them in the painted, rusted register of the smelter set, with no drawn keyline. Wrecked shows torn plating, dark holes, cracked empty domes and no light; Kludged shows patch plates, spliced red cables, one strapped-on box, a couple of lit lamps and refilled cyan domes, with every belt mouth clear and no open fiery breach, which honours both of the owner's smelter corrections. The four facings agree in size, palette and proportion, and the east and west are true side views, not rotated tops. At 32 px per cell both tiers read as a few bold shapes (two domes, two door bays) darker than the sand ground; the Kludged cyan domes read strongly. The silhouettes fill the footprint box as the donor does, with only the donor's own belt and hopper ends standing past its edge; alpha is clean, with no shadow or backdrop.",
+ "notes": []
+}

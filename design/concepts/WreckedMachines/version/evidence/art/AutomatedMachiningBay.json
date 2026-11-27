@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedMachiningBay",
+ "line": "machiningbay",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Kludged/AutomatedMachiningBay_east.png",
+   "sha": "a3aad59385ce147c703401e891f96e25a6622a444ea001016a42c44965bfd5fb",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Kludged/AutomatedMachiningBay_north.png",
+   "sha": "baf3d233c37571f0fb5bbd8dd5bec972260d80eda3647f64018a3275ac793ed2",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Kludged/AutomatedMachiningBay_south.png",
+   "sha": "ef9bf07e815242fd25a8c408facd400c39ed1fcf487e7ecf35fdc5983eb07641",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Kludged/AutomatedMachiningBay_west.png",
+   "sha": "8051f1cd05e0092a34deff428b43bc3f0231c5f9a3b6deb31580317599938822",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Wrecked/AutomatedMachiningBay_east.png",
+   "sha": "49ad65770b4d155eb6228f8e9fd0fa971920f6ffbffeebf922bbc2dfd727ae37",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Wrecked/AutomatedMachiningBay_north.png",
+   "sha": "0184362b0ef5646810817a132e5d2588d3c916419cedcb43f62873e3c013e7cc",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Wrecked/AutomatedMachiningBay_south.png",
+   "sha": "4ca712bef08d643ed6c8b97bc7a1b4dcd011d24442da81980c11a8d9901e5918",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMachiningBay/Wrecked/AutomatedMachiningBay_west.png",
+   "sha": "070f425a53bd0bc5a1eb910d9222e99f8ab853247ea258cf1613efa08fbc5e34",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T17:41:53Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's 5x5 plate, the central rail, the two jointed arms, the side ports and the top and bottom belts, so the machine stays recognisable in every facing. They are painted, weathered and outline-free, in the same rusted-steel register and size class as the owner-corrected smelter set. Wrecked is torn open with dark voids and nothing lit; Kludged is sealed with patch plates, spliced cables, one strapped-on bodge and a few small lamps, with every belt clear and no fire, which meets both of his smelter corrections. At 32 px per cell each picture reads as a few bold dark shapes clearly apart from the sand ground, and all facings agree in size and palette. The art is our own painted art, not donor or script stand-ins, and the canvas carries no backdrop, halo or ground shadow.",
+ "notes": []
+}

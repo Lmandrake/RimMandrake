@@ -568,8 +568,12 @@ def derive(donor, row, level, key, number, tx, procs_kl):
                     pr.append(etree.Comment(" The donor's XML lists no processes; the C# fills the Kludged list at startup (the row's kludgedProcessCount). "))
             else:
                 lst = mk("processes")
+                # a donor process that needs another mod keeps that condition, or the def names a process that is not loaded
+                needs = {(li.text or "").strip(): li.get("MayRequire") for li in (old.findall("li") if old is not None else [])}
                 for p in want:
-                    sub(lst, "li", p)
+                    e = sub(lst, "li", p)
+                    if needs.get(p):
+                        e.set("MayRequire", needs[p])
                 if old is not None:
                     old.addprevious(etree.Comment(" Part of the donor's list: the row's kludgedProcesses. "))
                     pr.replace(old, lst)
@@ -787,6 +791,13 @@ def own_checks(mod, key, vfef, other_ids):
             bad["donor_fidelity"].append("Kludged processes %s are not the donor's first %s" % (kp, text(row, "kludgedProcessCount")))
         if rp != dprocs:
             bad["donor_fidelity"].append("Refurbished runs %s, not the donor's %s" % (rp, dprocs))
+        dp = comp_of(donor, PROCESSOR)
+        needs = {(li.text or "").strip(): li.get("MayRequire") for li in (dp.findall("processes/li") if dp is not None else [])}
+        for nm, d in (("Kludged", k), ("Refurbished", r)):
+            for li in d.findall("comps/li/processes/li"):
+                if needs.get((li.text or "").strip()) != li.get("MayRequire"):
+                    bad["donor_fidelity"].append("%s names the process %s with MayRequire %r, the donor has %r (a process of a mod that is not loaded is a config error)"
+                                                 % (nm, (li.text or "").strip(), li.get("MayRequire"), needs.get((li.text or "").strip())))
         for nm, d in (("Kludged", k), ("Refurbished", r)):
             if text(comp_of(d, PROCESSOR), "canOverclock") != "false":
                 bad["donor_fidelity"].append("%s can be overclocked" % nm)

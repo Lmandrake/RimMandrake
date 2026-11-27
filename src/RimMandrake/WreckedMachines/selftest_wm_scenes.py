@@ -244,6 +244,14 @@ class StalledSession(FakeSession):
         if tool == "jawa/list_things" and kw.get("defName") == "RM_WM_AncientComponent":
             self.calls.append((tool, kw))
             return {"success": True, "things": []}
+        if tool == "jawa/set_terrain_batch":         # the ground a scene lays is the ground it reads back
+            self.calls.append((tool, kw))
+            self.laid = kw.get("terrainDef")
+            return {"success": True}
+        if tool == "jawa/get_terrain_batch":
+            self.calls.append((tool, kw))
+            laid = getattr(self, "laid", None) or "Soil"
+            return {"success": True, "distinctTerrains": [laid], "ops": "%s:%s" % (laid, kw.get("rects"))}
         if tool == "rimworld/list_selected_gizmos":
             self.calls.append((tool, kw))
             return {"success": True, "gizmos": [{"label": "Repair", "disabled": False, "gizmoId": "g_repair"},

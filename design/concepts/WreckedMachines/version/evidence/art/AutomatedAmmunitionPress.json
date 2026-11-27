@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedAmmunitionPress",
+ "line": "ammopress",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Kludged/AutomatedAmmunitionPress_east.png",
+   "sha": "a4788fc4fe45fb1c24d5095655f8879b43322c825157a69765f7971eb6d09ab0",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Kludged/AutomatedAmmunitionPress_north.png",
+   "sha": "aa536f7a33db59e1b5922f0882ca44c3ae52466af38a69b413feccbe06387c9a",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Kludged/AutomatedAmmunitionPress_south.png",
+   "sha": "f8ac24d86d5a199d36a0419f97f6ea3bf19e2e244a0c36c04209e10b1a91a637",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Kludged/AutomatedAmmunitionPress_west.png",
+   "sha": "8e76a48d43b2b6329b63e6efed053e59b0b01e3c49b8d38ec84d50b6a3418c3a",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Wrecked/AutomatedAmmunitionPress_east.png",
+   "sha": "5b58e0f84445e3684e99794b37c30d8b3b79e75fab7f12a40f2376bfd61c1d95",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Wrecked/AutomatedAmmunitionPress_north.png",
+   "sha": "d27d193677811037b626015f02d9b0f6b8213fb3f37a7a1aca1895eefdc65812",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Wrecked/AutomatedAmmunitionPress_south.png",
+   "sha": "d576565e01d01368079f4a1c27918c587874bb0dab6b6d001f7ed7e573afffb0",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAmmunitionPress/Wrecked/AutomatedAmmunitionPress_west.png",
+   "sha": "e2d8e7a62e5cf04f5e4f55af82cac1740795d09783d4bf2436cda886c058f2ff",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T17:42:33Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's press frame, central ram, the shot tray and the brass tray on their donor sides, and the belt ports in the donor's places, on the donor's 4x5 (south/north) and 5x4 (east/west) canvases. They are painted, weathered and outline-free in the rusted-steel register and size class of the owner-corrected smelter set, with some of the donor's teal left in the steel. Wrecked is torn open with dark voids, empty trays and nothing lit. Kludged is sealed with patch plates, spliced cables, one strapped-on bodge and small lamps, the trays refilled, every belt clear and no fire, which meets both of his smelter corrections. At 32 px per cell each facing reads as bold dark shapes clearly apart from the sand ground, and the four facings agree in size and palette.",
+ "notes": []
+}

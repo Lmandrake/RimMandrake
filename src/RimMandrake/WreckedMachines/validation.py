@@ -509,6 +509,10 @@ def _start(t, sid, lines_on=True):
     loaded = _proof(t, "Loaded")
     if not loaded or loaded[0]["_verb"] != "LOADED":
         raise ExpectationFailed("start of %s: the proof type answered %r, not LOADED" % (sid, loaded))
+    # No project finished at a start, whatever ran before in this game: three scenes finish every research project as their
+    # action, and a scene run after one of them read every order as researched (seen live, 2026-11-27). Each scene then
+    # finishes what its own start names (_finish_first). The base game's study progress (AnalysisManager) is not reset here.
+    t.bridge_call("jawa/research_bulk", mode="reset_all")
     off_shipped = ["%s=%s (shipped %s)" % (s["_word"], s.get("value"), s.get("shipped"))
                    for s in _proof(t, "Settings") if s["_verb"] == "SETTING" and s.get("value") != s.get("shipped")]
     ms = _machines(t)
@@ -543,13 +547,27 @@ def _set_switch(t, field, on):
 
 
 def _build(t, defname, x, z, rot="south", faction="player"):
-    """Place one finished building (scene staging, before START_MARK) and return its id, read back from the map."""
+    """Place one finished building (scene staging, before START_MARK) and return its id, read back from the map. The ground
+    of the 7 x 7 cells around it is left as it was: build_batch clears natural rock that stands in the way, and the game then
+    leaves rough-hewn stone under those cells, which wiped the floor a scene had just laid (seen live on a fresh map,
+    2026-11-27: a wreck stood on Limestone_RoughHewn and its repair order was rightly unavailable)."""
+    rect = "%d,%d,7,7" % (x - 3, z - 3)
+    ground = (t.bridge_call("jawa/get_terrain_batch", rects=rect) or {}).get("ops") if _live(t) else None
     r = t.bridge_call("jawa/build_batch", ops="%s:%d,%d,%s" % (defname, x, z, rot), faction=faction)
     if not t._guard():
         return None
-    rows = (t.bridge_call("jawa/list_things", defName=defname, rect="%d,%d,7,7" % (x - 3, z - 3)) or {}).get("things") or []
+    rows = (t.bridge_call("jawa/list_things", defName=defname, rect=rect) or {}).get("things") or []
     if not rows:
         raise ExpectationFailed("staging: %s did not stand at (%d,%d) after build_batch: %s" % (defname, x, z, str(r)[:160]))
+    if ground and (t.bridge_call("jawa/get_terrain_batch", rects=rect) or {}).get("ops") != ground:
+        for run in ground.split(";"):                       # "<terrain>:x,z,w,h", the reply's own run form
+            terr, cells = run.split(":")
+            x0, z0, w, h = [int(n) for n in cells.split(",")]
+            _floor(t, terr, x0, z0, w, h)
+        now = (t.bridge_call("jawa/get_terrain_batch", rects=rect) or {}).get("ops")
+        if now != ground:
+            raise ExpectationFailed("staging: the ground around %s at (%d,%d) could not be put back after the build: %s, was %s"
+                                    % (defname, x, z, str(now)[:200], ground[:200]))
     t.__dict__.setdefault("_wm_pos", {})[rows[0]["id"]] = (x, z)
     return rows[0]["id"]
 
@@ -1235,8 +1253,17 @@ def scene_second_study(t):
 
 
 def _ground_wreck(t, key, x, z, terrain=FACTORY_FLOOR, rot="south"):
+    """A wreck placed on a 7 x 7 patch of TERRAIN, the patch read back. The floor is laid again after the build: build_batch
+    clears natural rock that stands in the way, and the game then leaves rough-hewn stone under those cells (seen live on a fresh
+    map, 2026-11-27: the first scene's wreck stood on Limestone_RoughHewn and its repair order was rightly unavailable)."""
     _floor(t, terrain, x - 3, z - 3, 7, 7)
-    return _build(t, _line(t, t._wm_ms, key)["wrecked"], x, z, rot=rot)
+    wid = _build(t, _line(t, t._wm_ms, key)["wrecked"], x, z, rot=rot)
+    _floor(t, terrain, x - 3, z - 3, 7, 7)
+    if _live(t):
+        got = (t.bridge_call("jawa/get_terrain_batch", rects="%d,%d,7,7" % (x - 3, z - 3)) or {}).get("distinctTerrains")
+        if got != [terrain]:
+            raise ExpectationFailed("staging: the ground under the %s wreck at (%d,%d) reads %s, not %s alone" % (key, x, z, got, terrain))
+    return wid
 
 
 @suite.chain("scene_repair_on_machine")
@@ -1677,6 +1704,9 @@ def scene_component_gate(t):
     with t.component("delivered_component_comes_back_on_cancel"):
         if _live(t):
             _items(t, COMPONENT, x + 6, z - 8, 1)
+            # the control's read, taken here: a component is in stock and the cell's second project is not finished. Read at the
+            # end of the scene it could never name the research: the last row finishes every project and the component is used.
+            st["cell_order"] = _repair_order(t, st["cell"])
             _give_repair(t, st["k"])
             for _ in range(60):
                 t.wait_ticks(500)
@@ -1721,9 +1751,10 @@ def scene_component_gate(t):
         if _live(t):
             if not st.get("kludged_order_seen"):
                 raise ExpectationFailed("the gizmo read never saw the Kludged smelter's order: 'no further repair' proves nothing")
-            present, ok, reason, _ = _repair_order(t, st["cell"])
-            if not present or ok or "research" not in reason.lower():
-                raise ExpectationFailed("the cell's last order: present %s, available %s, reason %r (want research)" % (present, ok, reason))
+            present, ok, reason, _ = st.get("cell_order") or (False, False, "not read", None)
+            if not present or ok or "research" not in reason.lower() or "component" in reason.lower():
+                raise ExpectationFailed("the cell's last order, read with a component in stock: present %s, available %s, reason %r "
+                                        "(want the research and not the component)" % (present, ok, reason))
 
 
 # --------------------------------------------------------------------------- telling the levels apart
@@ -2205,14 +2236,25 @@ def scene_uninstall_during_repair(t):
     with t.component("uninstall_cancels_and_gives_back"):
         if _live(t):
             _designate(t, "Uninstall", st["c"])
-            t.wait_ticks(3000)
+            mini = None
+            for _ in range(5):                 # the wait ends at the reading: the colonist may be mid-haul when the order is given
+                t.wait_ticks(1500)
+                mini = ((t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or [{}])[0].get("id")
+                if mini:
+                    break
             near = {d: _count(t, d, "%d,%d,7,7" % (x - 9, z - 3)) for d in ("Steel", "ComponentIndustrial")}
-            mini = ((t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or [{}])[0].get("id")
             if not mini:
                 raise ExpectationFailed("the cell was not carried")
             r = t.bridge_call("jawa/install_blueprint", thing=mini, x=x - 6, z=z + 10) or {}
-            t.wait_ticks(6000)
-            stood = [th for th in (t.bridge_call("jawa/list_things", rect="%d,%d,5,5" % (x - 8, z + 8), limit=10) or {}).get("things") or []]
+            # the machine of this mod that stands there, not the first thing listed in the rect: on a fresh map a rock or a
+            # chunk lies there too, and its level reads 'none' (seen live, 2026-11-27). The wait ends at the reading.
+            stood = []
+            for _ in range(5):
+                t.wait_ticks(2000)
+                stood = [th for th in (t.bridge_call("jawa/list_things", rect="%d,%d,5,5" % (x - 8, z + 8), limit=30) or {}).get("things") or []
+                         if str(th.get("def") or th.get("defName") or "").startswith("RM_WM_")]
+                if stood:
+                    break
             lvl = _level(t, stood[0]["id"]) if stood else None
             if not any(near.values()) or lvl != "Wrecked":
                 raise ExpectationFailed("delivered %s; near the old cell %s; installed level %r (%s)" % (st["deliv"], near, lvl, str(r)[:80]))
@@ -2226,8 +2268,13 @@ def scene_uninstall_during_repair(t):
                 raise ExpectationFailed("the control cell's repair did not complete")
             before = _count(t, "Steel")
             _designate(t, "Uninstall", st["c2"])
-            t.wait_ticks(3000)
-            rows = (t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or []
+            rows = []
+            for _ in range(5):                 # the wait ends at the reading, as in the row above
+                t.wait_ticks(1500)
+                rows = [r for r in (t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or []
+                        if "Kludged" in str(r)]
+                if rows:
+                    break
             if _count(t, "Steel") != before or not any("Kludged" in str(r) for r in rows):
                 raise ExpectationFailed("a complete repair gave materials back or was not carried Kludged: %s" % str(rows)[:160])
 
