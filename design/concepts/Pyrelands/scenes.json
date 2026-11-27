@@ -1148,11 +1148,11 @@
      "note": "black-rain streaks (PyrelandsWeatherOverlays)"
     },
     {
-     "tex": "Things/Item/Special/ThrumboHorn",
-     "added": "2026-11-14",
-     "judge": null,
+     "tex": "Things/Item/Special/RM_PristineFirehawkCrestfeather/RM_PristineFirehawkCrestfeather",
+     "added": "2026-11-26",
+     "judge": "keep design/concepts/Pyrelands/version/evidence/art/crestfeather_judge_verdict.json",
      "item": "RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN",
-     "note": "borrowed vanilla art: RM_PristineFirehawkCrestfeather's PLACEHOLDER texPath; its own art is owed"
+     "note": "RM_PristineFirehawkCrestfeather's own picture (it replaced the borrowed, tinted vanilla ThrumboHorn of 2026-11-14), kept by an art judge that did not make it; guarded by T_CRESTFEATHER_OWN_ART_OFFLINE"
     },
     {
      "text": "RM_PristineFirehawkCrestfeather label and description; RM_FurnaceHideBank label and description; the RM_FireHawkSighted letter's keyed text",

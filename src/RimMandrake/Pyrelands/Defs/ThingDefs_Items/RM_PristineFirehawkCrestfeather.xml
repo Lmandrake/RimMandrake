@@ -18,12 +18,12 @@
     Flammability   0   grown on a bird that carries live embers; on a map that is always burning anything less is ash.
     HitPoints, DeteriorationRate as the thrumbo horn (Core's animal trophy): left outdoors it slowly loses its "pristine".
 
-  PLACEHOLDER ART: no crestfeather art exists (artpipe searched 2026-11-13: no job, no sheet). The texPath below borrows
-  vanilla's thrumbo horn tinted ember-orange until the queued sprite lands
-  (infrastructure/artpipe/art_lists/pyrelands_firehawk_crestfeather_2026-11-13.csv, filed against this vanilla slot, the
-  route the art gate allows for a def drawing a vanilla stand-in); on acceptance the render installs at the def's own path
-  (regen_eligibility.own_path: Things/Item/Special/RM_PristineFirehawkCrestfeather/RM_PristineFirehawkCrestfeather), texPath
-  moves there and the colour line goes.
+  ART: our own picture at the def's own path, Things/Item/Special/RM_PristineFirehawkCrestfeather/
+  RM_PristineFirehawkCrestfeather (the render of infrastructure/artpipe/art_lists/pyrelands_firehawk_crestfeather_2026-11-13.csv,
+  sha 38d0ed3b), kept by an art judge that did not make it (design/concepts/Pyrelands/version/evidence/art/
+  crestfeather_judge_verdict.json) and installed by art.py install. It replaced the tinted vanilla thrumbo horn that stood
+  in until 0.2.0; the picture carries its own colours, so the def has no colour line. Guarded by
+  selftest_pyrelands_crestfeather_own_art.py (T_CRESTFEATHER_OWN_ART_OFFLINE).
 -->
 <Defs>
 
@@ -43,10 +43,9 @@
     <pathCost>14</pathCost>
     <stackLimit>5</stackLimit>
     <graphicData>
-      <!-- PLACEHOLDER ART: vanilla thrumbo horn, tinted. See the header. -->
-      <texPath>Things/Item/Special/ThrumboHorn</texPath>
+      <!-- our own judged picture; no colour line (see the header) -->
+      <texPath>Things/Item/Special/RM_PristineFirehawkCrestfeather/RM_PristineFirehawkCrestfeather</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(230,120,40)</color>
     </graphicData>
     <statBases>
       <Beauty>40</Beauty>
