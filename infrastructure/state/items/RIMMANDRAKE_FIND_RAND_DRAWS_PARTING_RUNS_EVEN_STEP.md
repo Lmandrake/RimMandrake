@@ -31,3 +31,9 @@ phase. Seen red on 2026-11-24 (`play_vs_step_rand_result.md`: every run diverges
 
 - The draws that part the runs are named by caller and phase, with the run that shows them.
 - A fix, if one is built, is shown both ways: the three STEP runs equal on `iterations` with it, and parted without it.
+
+## refs
+
+file: src/RimMandrake/Utils/scene_compare_plans/colony_drift_rand.py
+file: src/RimMandrake/bridgetools/HOOKS.md
+file: design/specs/2026-11-23-bridge-v2/experiments/play_vs_step_rand_draws.md
