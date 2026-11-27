@@ -100,6 +100,13 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
+# budget: danger=a hung selftest or art check holds the offline gate, and the game of a live run, for ever; evidence=none
+# recorded, a hang guard only; longest=533s (selftest_gimmesomeslack.py on Archmagi; on SteveDesktop it ran past the old
+# 600 s in 4 jobs of 2026-11-24 and made 196 rows UNMEASURED: RIMMANDRAKE_RAISE_SLACK_GATE_DEADLINE_SIXTY_SECONDS_FROM_ITS_RUN)
+OFFLINE_CALL_S = 6000
+# budget: danger=a hung WSL hop holds the bridge-side gate for ever; it wraps every OFFLINE_CALL_S call of the tier, so it
+# is twice that guard and never cuts a slow, live call first; longest=473s (the whole offline tier, Archmagi, 2026-11-27)
+OFFLINE_TIER_S = 2 * OFFLINE_CALL_S
 if UTILS not in sys.path:
     sys.path.insert(0, UTILS)
 from modcheck import Suite, ExpectationFailed  # noqa: E402
@@ -233,18 +240,18 @@ def o2_defaults(rows):
 
 def o3_csharp_selftest(rows):
     r = subprocess.run([sys.executable, os.path.join(UTILS, "selftest_gimmesomeslack.py")], capture_output=True, text=True,
-                       timeout=600)
+                       timeout=OFFLINE_CALL_S)
     tail = [ln for ln in r.stdout.splitlines() if "checks passed" in ln or ln.startswith("FAIL")]
     row(rows, "O3_core_selftest", "PASS" if r.returncode == 0 else "FAIL", "MOD", tail[-6:] or r.stderr[-300:])
     r2 = subprocess.run([sys.executable, os.path.join(UTILS, "selftest_gimmesomeslack.py"), "--probe", "--no-export"],
-                        capture_output=True, text=True, timeout=600)
+                        capture_output=True, text=True, timeout=OFFLINE_CALL_S)
     pl = [ln for ln in r2.stdout.splitlines() if ln.startswith("PROBE")]
     row(rows, "O3n_selftest_can_fail", "PASS" if r2.returncode == 0 and pl else "FAIL", "HARNESS", pl or r2.stdout[-300:])
 
 
 def o4_oracle(rows):
     r = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "selftest.py")],
-                       capture_output=True, text=True, timeout=600)
+                       capture_output=True, text=True, timeout=OFFLINE_CALL_S)
     last = (r.stdout.strip().splitlines() or ["?"])[-1]
     row(rows, "O4_python_oracle", "PASS" if r.returncode == 0 else "FAIL", "HARNESS", last)
 
@@ -444,7 +451,7 @@ def o6_review_round1(rows):
     # B8/B22 (hose fittings and binding wrap) moved with the hose to FlowWorks/validation_hose_offline.py HO6 (hose port)
     # B14: the recoloured pieces are current, and their cord pixels carry the cord colour (hue within 15 deg)
     rc = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "recolor_extcord_pieces.py"), "--check"],
-                        capture_output=True, text=True, timeout=600)
+                        capture_output=True, text=True, timeout=OFFLINE_CALL_S)
     if rc.returncode != 0:
         probs.append("B14: recoloured pieces stale: %s" % rc.stdout.strip()[-200:])
     ext = os.path.join(tex, "Styles", "ExtCord")
@@ -477,18 +484,19 @@ def o6_review_round1(rows):
         probs.append("B14: the section layer does not draw pieces per cord variant")
     # B6/B16/B19: the per-look pole geometry table matches the wired art
     rp = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "wire_pole_art.py"), "--check"],
-                        capture_output=True, text=True, timeout=600)
+                        capture_output=True, text=True, timeout=OFFLINE_CALL_S)
     if rp.returncode != 0:
         probs.append("B6: pole geometry table stale (re-run wire_pole_art.py)")
     wired = [ln.split(":")[0] for ln in rp.stdout.splitlines() if "crossarm row" in ln]
     info.append("real pole art: %s" % (wired or "none yet (tinted stand-ins)"))
     # per-build style stage 1: the 12 pole style defs, their art on disk, no ideo category lists them, no shared-def edit
+    # budget: danger=a hung style check holds the gate; longest=1s (validation_style.py --offline, Archmagi, 2026-11-27)
     rs = subprocess.run([sys.executable, os.path.join(HERE, "validation_style.py"), "--offline"], capture_output=True, text=True, timeout=300)
     if rs.returncode != 0:
         probs.append("style stage 1 (validation_style.py --offline): %s" % rs.stdout.strip()[-200:])
     # B7 round 2: the wall bracket's per-look, per-facing art and its measured insulator table are current
     rb = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "wire_bracket_art.py"), "--check"],
-                        capture_output=True, text=True, timeout=600)
+                        capture_output=True, text=True, timeout=OFFLINE_CALL_S)
     if rb.returncode != 0:
         probs.append("B7: bracket art / geometry table stale (re-run wire_bracket_art.py): %s" % rb.stdout.strip()[-200:])
     info.append("bracket art: %s" % [ln.split(":")[0] for ln in rb.stdout.splitlines() if ": wired" in ln])
@@ -2098,7 +2106,7 @@ def offline_rows():
             "validation.py was loaded from the read-only mirror (%s); the offline tier re-exports into its own tree, "
             "so it runs only from a seat clone" % me)
         return rows
-    r = subprocess.run(["wsl.exe", "python3", me, "--rows-json", "-"], capture_output=True, text=True, timeout=3600)
+    r = subprocess.run(["wsl.exe", "python3", me, "--rows-json", "-"], capture_output=True, text=True, timeout=OFFLINE_TIER_S)
     for ln in reversed(r.stdout.splitlines()):
         if ln.startswith("ROWS_JSON "):
             return json.loads(ln[len("ROWS_JSON "):])
