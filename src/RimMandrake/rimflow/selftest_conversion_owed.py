@@ -172,6 +172,61 @@ def t_real_list_is_readable():
           % (".".join(map(str, cur)), want), (state, why))
 
 
+ROW = re.compile(r"^\| ([^|]+?) \| ([^|]*) \|", re.M)
+ROW_PATH = re.compile(r"`([^`]+?)(?::[0-9][0-9-]*)?`")
+
+
+def read_by_a_concept(repo):
+    """-> the names a Designer packet finds a section by: each concept folder and each alias in its stage.json."""
+    base = os.path.join(repo, "design", "concepts")
+    names = set()
+    for n in os.listdir(base):
+        if not os.path.isdir(os.path.join(base, n)):
+            continue
+        names.add(n)
+        try:
+            with open(os.path.join(base, n, "stage.json"), encoding="utf-8") as f:
+                names.update(a for a in (json.load(f).get("aliases") or []) if isinstance(a, str))
+        except (OSError, ValueError, AttributeError):
+            pass
+    return names
+
+
+def engine_rows_unread(repo, text):
+    """-> ["<section> <row id> <path>", ...]: each path of a row in a section that no concept reads (an engine section)
+    that no section a concept reads lists under the same row id. Empty: every engine row reaches a Designer."""
+    secs = DS.conversion_sections(text)
+    readers = read_by_a_concept(repo)
+    read = set()
+    for h, body in secs.items():
+        if h in readers:
+            for rid, cell in ROW.findall(body):
+                read.update((rid.strip(), p) for p in ROW_PATH.findall(cell))
+    out = []
+    for h, body in secs.items():
+        if h in readers or " " in h:          # a read section, or one of the two notes sections
+            continue
+        for rid, cell in ROW.findall(body):
+            if rid.strip() in ("census row", "---"):
+                continue
+            out += ["%s %s %s" % (h, rid.strip(), p) for p in ROW_PATH.findall(cell) if (rid.strip(), p) not in read]
+    return out
+
+
+def t_every_engine_row_has_a_reader():
+    """A row of a section that no concept reads (an engine mod: CreatureBehaviors, EnvironmentalHazards, ...) is also a
+    row, same id and each of its paths, in a section that a concept reads, so some Designer's packet carries it."""
+    with open(os.path.join(ROOT, LIST), encoding="utf-8") as f:
+        text = f.read()
+    left = engine_rows_unread(ROOT, text)
+    check(not left, "every engine row reaches a biome section that a Designer reads (%d unread)" % len(left), left)
+    # the check can fail: a planted engine row with no reader is named
+    planted = text + "\n## PlantedEngine\n\n- Version on 2026-11-21: `none`\n\n| census row | file:line | what | class |\n" \
+                     "|---|---|---|---|\n| code 999 | `src/Planted/X.cs:1` | planted | MECHANIC-GATE |\n"
+    check(engine_rows_unread(ROOT, planted)[-1:] == ["PlantedEngine code 999 src/Planted/X.cs"],
+          "a planted engine row with no reader is named", engine_rows_unread(ROOT, planted)[-1:])
+
+
 def t_rule_texts_corrected():
     """The reversed rule texts are gone and the ruled text is in place (red on the base commit)."""
     def read(rel):
@@ -217,9 +272,16 @@ def t_rule_texts_corrected():
 
 def main(argv):
     only = argv[argv.index("--only") + 1:] if "--only" in argv else None
+    tests = (t_owed_at_next_version, t_current_version_not_owed, t_no_section_is_none_owed,
+             t_unreadable_is_unmeasured, t_real_list_is_readable, t_every_engine_row_has_a_reader,
+             t_rule_texts_corrected)
+    unknown = sorted(set(only or ()) - {f.__name__ for f in tests})
+    if unknown:     # a named test that is gone must not read as a pass
+        print("selftest_conversion_owed: no test named %s" % ", ".join(unknown))
+        shutil.rmtree(TMP, ignore_errors=True)
+        return 2
     try:
-        for f in (t_owed_at_next_version, t_current_version_not_owed, t_no_section_is_none_owed,
-                  t_unreadable_is_unmeasured, t_real_list_is_readable, t_rule_texts_corrected):
+        for f in tests:
             if only and f.__name__ not in only:
                 continue
             print("--", f.__name__)

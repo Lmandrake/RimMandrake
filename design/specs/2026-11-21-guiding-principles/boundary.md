@@ -38,6 +38,10 @@ no current version's bars move. The list of what each mod converts is
 - **unreadable-is-unmeasured.** An absent or unreadable list, a section with no readable version line, or a
   VERSION.json that does not parse returns `unmeasured` with its cause; the packet says UNMEASURED and never "none".
 - **real-list-is-readable.** Every section of the committed list has exactly one readable version line, and the real
-  Pyrelands concept (0.1.0 on 2026-11-21) reads `not_yet`.
+  Pyrelands concept (0.1.0 on 2026-11-21) reads `owed` while its VERSION.json is newer than 0.1.0, else `not_yet`.
+- **every-engine-row-has-a-reader.** Each path of each row in a section that no concept reads (an engine mod with no
+  concept folder and no alias: CreatureBehaviors, DivingInteraction, EnvironmentalHazards, ExplosiveGrowth, BiomesShell,
+  Minerals) is also listed, under the same row id, in a section that a concept reads. So some Designer's packet carries
+  every row. A planted engine row with no reader is named.
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).
