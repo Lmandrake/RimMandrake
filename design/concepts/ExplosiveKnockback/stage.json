@@ -821,10 +821,17 @@
     "ref": "run rm-role-designer-1795755201",
     "stage": 5,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-27T05:03:43Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1795755392",
+    "stage": 5,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 104008014
+  "spent": 107948014
  },
  "coverage_releases": [
   {
@@ -1878,6 +1885,31 @@
    "stage": 5,
    "what": "void_system",
    "why": "run rm-role-designer-1795755201: the unit ended with no claude result of its own; its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-27T05:00:26Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "104008014 of 4000000 spent; run rm-role-designer-1795755392 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T05:00:27Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1795755392, stage 5, budget 3940000"
+  },
+  {
+   "at": "2026-11-27T05:03:43Z",
+   "stage": 5,
+   "void_system": "the unit ended with no claude result of its own",
+   "what": "retry",
+   "why": "run rm-role-designer-1795755392 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-27T05:03:43Z",
+   "stage": 5,
+   "what": "void_system",
+   "why": "run rm-role-designer-1795755392: the unit ended with no claude result of its own; its rejection spends no retry"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -2240,6 +2272,16 @@
    "at": "2026-11-27T04:56:39Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1795755201",
+   "stage": 5,
+   "void_system": "the unit ended with no claude result of its own",
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
+  },
+  {
+   "at": "2026-11-27T05:03:43Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1795755392",
    "stage": 5,
    "void_system": "the unit ended with no claude result of its own",
    "why": [
