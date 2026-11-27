@@ -190,6 +190,12 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
      shows a drawn `size` 18.64, not the max).
    - Then the planet screenshot at the `worldview` zoom.
 8. Save under a **new** name, `ASHKARR_DEV_START_2026-10-21_REPAINT.rws`. Never overwrite R3.
+   **Done 2026-11-26** on ArchBig (steps 6, 7, 8, 9, 10, 11): `repaint_stamp.py --source <a byte copy of R3> --apply`,
+   every bar held; `verify-save --canon` PASS; one load of the new save reached the map with 0 reference errors.
+   Step 6a (the VEE rename) stays with `VEE_WORLD_RENAME_ONE_STAMP_AT_END`. The record is
+   `infrastructure/state/CANONICAL_SAVE.md` "Which save is current — the repaint, 2026-11-26". Two things the plan did
+   not know: R3 is canonical, so the companion runs CAMPAIGN on it and refuses `jawa/world_mutators_audit` (load a copy
+   under another name); R3's 325-mod list names 7 ids that are not installed (load with `ignoreModCompatibility`).
 9. **Offline proof:**
    - Capture a new dump, then run `repaint_biomes.py census` on the new save. Bar: fingerprint MATCH,
      0 unresolved, 0 not-ours, and a histogram that equals `tiles_biome.csv.provenance.json` exactly.

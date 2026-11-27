@@ -85,11 +85,15 @@ planet:
   # the campaign."
   # Repointed 2026-10-25 by owner card "Which saved world should the project treat as the canonical start? -> Repoint to the 10-20 save".
   # The frozen 09-12 file is kept as the record (see CANONICAL_SAVE.md), no longer the default.
-  start_savegame: ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws
+  # Repointed 2026-11-26 to the big repaint of R3 (BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL; plan section 3 step 11).
+  start_savegame: ASHKARR_DEV_START_2026-10-21_REPAINT.rws
   start_savegame_src: >
-    Owner card 2026-10-25, "Which saved world should the project treat as the
-    canonical start? -> Repoint to the 10-20 save". Lineage and evidence for R3:
-    infrastructure/state/CANONICAL_SAVE.md, "Which save is current".
+    R3 (ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws, owner card 2026-10-25
+    "Repoint to the 10-20 save") with its biome layer re-stamped onto the renamed
+    defs (RM_SleepingIce, RM_Wastes), per the owner's order of 2026-10-21 ("Do this
+    rename. All def renaming. Then fix the world map right now.") and
+    design/Jawa/worldbuilding/big_repaint_plan_2026-10-21.md section 3. Lineage and
+    evidence: infrastructure/state/CANONICAL_SAVE.md, "Which save is current".
   # The file the owner froze on 2026-09-12: the record, not the default start.
   frozen_record_savegame: CANONICAL_ASHKARR_START_2026-09-12.rws
   frozen_record_savegame_src: >

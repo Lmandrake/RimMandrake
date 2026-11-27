@@ -1,8 +1,9 @@
 # The canonical savegames
 
 **The canonical start, what tools load by default:
-`ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`**, the value of `planet.start_savegame` in
-`infrastructure/state/canon.yml` (owner card 2026-10-25, last section below). This doc's frozen
+`ASHKARR_DEV_START_2026-10-21_REPAINT.rws`**, the value of `planet.start_savegame` in
+`infrastructure/state/canon.yml` (since 2026-11-26: R3 with its biome layer re-stamped, `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL`;
+R3 itself was the start by owner card 2026-10-25, last section below). This doc's frozen
 block is the owner's 09-12 record, a different file, which is no longer `planet.start_savegame`.
 
 ## What the companion guards (a program reads this)
@@ -14,6 +15,7 @@ When a new save becomes canonical, add its name here and run `python3 src/RimMan
 Do not write the `.rws` name of a test save in this document. Rules: `design/specs/2026-11-23-canonical-save-guard/boundary.md`.
 
 ```guard
+ASHKARR_DEV_START_2026-10-21_REPAINT
 ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3
 CANONICAL_*
 ```
@@ -66,7 +68,28 @@ on it, last resaved after the 2026-09-10 gravship thruster-bay repair) was
 superseded as canon by the start save on 2026-09-12. It is kept, with one `.bak`,
 in `Saves/_cleanup_archive_2026-09-14/` (measured 2026-10-15), never loaded as canon.
 
-## Which save is current — measured 2026-10-24
+## Which save is current — the repaint, 2026-11-26
+
+**Current world save: `Saves\ASHKARR_DEV_START_2026-10-21_REPAINT.rws`** (13,496,611 bytes, sha256 `bf6040b7382a52f4…`,
+written 2026-11-26 22:25 PST on ArchBig; repo copy `world/ASHKARR_DEV_START_2026-10-21_REPAINT.rws`, byte-identical).
+It is R3 (sha256 `0a4f2eee6338ad34…`, unchanged, still guarded) with its biome layer re-stamped by
+`src/RimMandrake/Utils/remake/repaint_stamp.py --apply` from `world/repaint_2026-10-21/tiles_biome.csv`: the 1,853 tiles of
+`RM_Wasteland` now read `RM_Wastes` and the 1,506 tiles of `RM_NightsideIce` read `RM_SleepingIce` (in R3 those 3,359 tiles
+held two hashes that no current def has). The Scald's 312 tiles took the ruled temperature
+(`world/repaint_2026-10-21/scald_temperature.csv`, owner card 2026-10-22). The game loaded a byte copy of R3 under another name
+on R3's own 325-mod list (7 ids not installed, so the save lists 318). Every bar of the stamp held: dry import with no
+unknown biome, 21,872 tiles applied and validated with 0 mismatches, mutators audit 0 offenders, 71 labels.
+Offline: `repaint_biomes.py verify-save --canon` PASS on both copies; census 0 unresolved, 0 not ours; `banned_factions.py
+check-save` PASS; things 6,604 and pawns 22, the same as R3. One load of it on ArchBig (log
+`D:\ClaudeWork\rimmandrake\scratch\Player.repaint_reload_ArchBig_2026-11-26.log`) reached the map with 0 "Could not load
+reference" lines (R3: 7) and 0 abstract-class errors (R3: 11). The first exception after the load line is the pre-existing
+`Could not do PostLoadInit on RimWorld.RitualOutcomeEffectWorker_FromQuality` (R3 has the same 2 lines).
+The save took what any save on today's mods takes: renamed components (`RimMandrake.Wasteland.*` -> `RimMandrake.Wastes.*`,
+`NightsideIce` -> `SleepingIce`), `RM_Thirst` on 20 pawns, aliased defs (`RSW_Ikee` -> `RM_Ikee`), filter rows of defs that no
+longer load dropped, and the empty `VREArchon.GameComponent_TranscendentPawns` back (VRE Archon is on R3's 325 list).
+The VEE world layers (14,413 mutators, 805 landmarks) are unchanged: `VEE_WORLD_RENAME_ONE_STAMP_AT_END` owns them.
+
+## Which save was current — measured 2026-10-24, R3
 
 Appended by FOUNDRY (offline read, no game). The frozen block above is unchanged; only
 the owner unfreezes it. This section records which file the evidence says is the newest
@@ -121,12 +144,10 @@ Evidence, in order:
 - `design/Jawa/worldbuilding/big_repaint_plan_2026-10-21.md` §1a measured R3 as "the de facto dev start":
   mod set MATCH with the 325 list, 21,872 tiles on our defs, 0 not ours, 0 unresolved.
 - Re-read today: R3 has 325 `<modIds>`, `<worldPresetName>TidallyLocked`, `<initialMapSize>(325, 1, 325)`.
-- **No repaint save exists.** `ASHKARR_DEV_START_2026-10-21_REPAINT.rws` is not in the Saves folder or the backups.
-  `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL` and `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS` are still `proposed`
-  (filed 2026-10-21, no later events). When the repaint lands, its save replaces R3 as current.
-- **Repo copy:** `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` is byte-identical to the Saves file (sha256
-  `0a4f2eee6338ad34…`; `landmark_names_check.py` fails if they part); it replaced the stale PAINT copy `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) in the same folder on
-  2026-11-02. When the repaint save lands it replaces this copy too. The one dev-start pointer is `canon.yml`
+- The repaint save landed 2026-11-26 and replaced R3 as current (section above).
+- **Repo copy:** `world/ASHKARR_DEV_START_2026-10-21_REPAINT.rws` replaced the R3 copy on 2026-11-26 (`landmark_names_check.py`
+  fails if the canonical start's two copies part); the R3 copy had replaced the stale PAINT copy
+  `ASHKARR_DEV_START_2026-10-20.rws` (unlocked, map 250) on 2026-11-02. The one dev-start pointer is `canon.yml`
   `planet.start_savegame`, read through `src/RimMandrake/Utils/canon_save.py`.
 - Saves written after 10-21 (Autosave-*, `RM_fw_hose_proof_*`, `rm_proof_*`) are test sites, not world saves.
 
