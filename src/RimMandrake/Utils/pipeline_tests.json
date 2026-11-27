@@ -212,7 +212,8 @@
     "pipe",
     "design/specs/*/boundary.md",
     "infrastructure/state/judge_calibration.json",
-    "src/RimMandrake/rimflow/evidence_gate_corpus.json"
+    "src/RimMandrake/rimflow/evidence_gate_corpus.json",
+    "src/RimMandrake/Utils/clone_pack.py", "src/RimMandrake/Utils/selftest_clone_pack.py", "src/RimMandrake/Utils/systemd/rm-clone-pack.*"
   ],
   "tests": [
     {
@@ -499,7 +500,9 @@
     {"test": "src/RimMandrake/Utils/modcheck/selftest_restart_onto_list.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/modcheck/runner.py", "src/RimMandrake/rimflow/game_lock.py", "design/specs/2026-11-26-modcheck-restart-onto-list/boundary.md"]},
     {"test": "src/RimMandrake/Utils/testq/selftest_ask_lane.py", "seconds": 60, "inputs": ["src/RimMandrake/Utils/testq/host_facts.py", "src/RimMandrake/Utils/testq/ask.py", "src/RimMandrake/Utils/testq/visit_feed.py", "design/specs/2026-11-24-ask-lane-after-host-facts/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/selftest_stop_resume.py", "seconds": 5},
-    {"test": "src/RimMandrake/rimflow/selftest_rule_homes_in_briefs.py", "seconds": 0.3, "inputs": ["CLAUDE.md", "src/RimMandrake/rimflow/roles/designer.md", "design/RimMandrake/biome_rulings.md", "design/RimMandrake/standing_rulings.md", "design/specs/2026-11-19-rule-homes-in-briefs/boundary.md"]}
+    {"test": "src/RimMandrake/rimflow/selftest_rule_homes_in_briefs.py", "seconds": 0.3, "inputs": ["CLAUDE.md", "src/RimMandrake/rimflow/roles/designer.md", "design/RimMandrake/biome_rulings.md", "design/RimMandrake/standing_rulings.md", "design/specs/2026-11-19-rule-homes-in-briefs/boundary.md"]},
+    {"test": "src/RimMandrake/Utils/selftest_clone_pack.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/clone_pack.py", "design/specs/2026-11-27-timer-clone-packing/boundary.md"], "_why": "RIMMANDRAKE_UNHOOK_GIT_PACKING_FROM_TICK_TOOK_13_MIN: git packed the dispatch clone inside the tick's 1 GB unit (13 min 24 s, 7.1 GB swap, 2026-11-27)"},
+    {"test": "src/RimMandrake/rimflow/selftest_dispatch_clone_sync.py", "seconds": 2, "inputs": ["src/RimMandrake/rimflow/maturation_dispatch.py", "src/RimMandrake/Utils/seat_sync.py", "src/RimMandrake/Utils/clone_pack.py", "design/specs/2026-11-26-tick-clone-sync/boundary.md"], "_why": "RIMMANDRAKE_UNHOOK_GIT_PACKING_FROM_TICK_TOOK_13_MIN: the tick's clone sync, its hold before the fetch included, had no test at the door"}
   ],
   "live_excluded": {
     "src/RimMandrake/Utils/selftest_maturation_now.py": "runs on the live tree: the real concept journals, ledger shards and run records (its point 6)",

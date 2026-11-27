@@ -39,4 +39,9 @@ shard, and the clone moved only when some other landing from it happened to run.
 - **sync-clone-moves-past-a-dirty-view.** Nothing is unlanded, but a derived view in the clone is dirty and origin
   rewrites it, so `git pull --ff-only` refuses. `sync_clone` still moves the clone level with origin/main.
 
+- **sync-clone-holds-before-it-fetches.** Before its `seat_sync` fetches, `sync_clone` writes `gc.auto=0` and
+  `maintenance.auto=false` into the clone's own config (`clone_pack.hold`), so no git command of the tick starts
+  git's automatic packing inside the tick's 1 GB unit. The packing runs in `rm-clone-pack.timer`
+  (`design/specs/2026-11-27-timer-clone-packing/boundary.md`).
+
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

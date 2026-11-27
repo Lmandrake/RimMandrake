@@ -1,0 +1,9 @@
+[Unit]
+Description=Hold and pack the timer clones every hour (clone_pack.py run --apply)
+
+[Timer]
+OnBootSec=20min
+OnUnitInactiveSec=1h
+
+[Install]
+WantedBy=timers.target

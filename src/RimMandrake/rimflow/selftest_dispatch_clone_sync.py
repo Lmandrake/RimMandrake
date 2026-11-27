@@ -183,6 +183,32 @@ def t_sync_clone_moves_past_a_dirty_view():
         fx.close()
 
 
+def t_sync_clone_holds_before_it_fetches():
+    """A git fetch or commit in the tick's clone started git's automatic packing inside the tick's 1 GB unit: one tick
+    took 13 min 24 s and swapped 7.1 GB (2026-11-27 12:47 AM PST). sync_clone writes the hold (gc.auto=0,
+    maintenance.auto=false) into the clone before its seat_sync fetches (RIMMANDRAKE_UNHOOK_GIT_PACKING_FROM_TICK_TOOK_13_MIN)."""
+    fx = Fixture("CloneSyncHoldFixture")
+    seen = {}
+    real = MD.seat_sync
+
+    def spy(root):
+        seen["at_fetch"] = (fx.git(root, "config", "--local", "gc.auto"), fx.git(root, "config", "--local",
+                                                                                  "maintenance.auto"))
+        return real(root)
+    try:
+        MD.seat_sync = spy
+        got = MD.sync_clone(fx.root)
+        print("     sync_clone -> %s" % got)
+        ok(seen.get("at_fetch") == ("0", "false"),
+           "sync_clone_holds_before_it_fetches: the clone holds gc.auto=0 and maintenance.auto=false when seat_sync "
+           "fetches (read %r)" % (seen.get("at_fetch"),))
+        ok((fx.git(fx.root, "config", "--local", "gc.auto"), fx.git(fx.root, "config", "--local", "maintenance.auto"))
+           == ("0", "false"), "sync_clone_holds_before_it_fetches: the hold stays after sync_clone")
+    finally:
+        MD.seat_sync = real
+        fx.close()
+
+
 def main(argv):
     global MD
     if "--at" in argv:
@@ -194,6 +220,7 @@ def main(argv):
         t_land_ledger_lands_beside_a_peer_append()
         t_sync_clone_lands_unlanded_lines_and_moves()
         t_sync_clone_moves_past_a_dirty_view()
+        t_sync_clone_holds_before_it_fetches()
     finally:
         for k, v in saved.items():
             if v is not None:

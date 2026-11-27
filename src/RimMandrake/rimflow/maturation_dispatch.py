@@ -2953,7 +2953,15 @@ def sync_clone(root, fx=None):
         return "could not look: git rev-parse: %s" % e
     if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
         return "skipped: %s is not a clone's top" % root
-    out = ["sync: %s" % seat_sync(root)]
+    out = []
+    try:        # before the fetch: git's automatic packing never runs inside the tick's unit (clone_pack.py's page)
+        import clone_pack
+        wrote = clone_pack.hold(root)
+        if wrote:
+            out.append("hold wrote %s" % ",".join(wrote))
+    except (ImportError, RuntimeError, OSError, subprocess.SubprocessError) as e:
+        out.append("hold failed: %s: %s" % (type(e).__name__, e))
+    out.append("sync: %s" % seat_sync(root))
     mods = unlanded_ledger_mods(root)
     if not mods.ok:
         out.append("unlanded lines: %s" % mods)

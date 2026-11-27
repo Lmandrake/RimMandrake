@@ -1,0 +1,24 @@
+# Git packs the timer clones in its own unit, never inside a timer's run (clone_pack.py; page
+# design/specs/2026-11-27-timer-clone-packing/boundary.md; item RIMMANDRAKE_UNHOOK_GIT_PACKING_FROM_TICK_TOOK_13_MIN).
+# Each run holds every clone that a unit file names (gc.auto=0, maintenance.auto=false), deletes the tmp_* files that
+# killed git runs left, and packs a clone when git itself would have. Without it git packed the dispatch clone inside
+# the tick's 1 GB unit: 13 min 24 s and 7.1 GB of swap for one tick (2026-11-27 12:47 AM PST).
+# Reading: ~/.local/state/rimmandrake/clone_pack/reading.json
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-clone-pack --apply --enable
+[Unit]
+Description=RimMandrake clone_pack: hold and pack the timer clones outside the timers' units
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/clone_pack.py run --apply
+Nice=15
+IOSchedulingClass=idle
+# No MemoryMax: the first run (2026-11-27 1:07 AM PST) peaked at 15.8 G, page cache included (anon about 1.7 G sampled
+# mid-pack), with 373 M swap; ten times that is more than the machine. pack.windowMemory x pack.threads in
+# clone_pack.py bounds the delta search.
+# budget: danger=a hung git holds this unit, and systemd starts no second run, so no clone is held or packed again;
+# budget: longest=1231 s (the first run: bench 765 s and pulse-deploy 463 s, 2026-11-27); 10x rounded up
+TimeoutStartSec=14400

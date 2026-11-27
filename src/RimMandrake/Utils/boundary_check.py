@@ -81,6 +81,7 @@ PAGES = {
     "design/specs/2026-11-26-door-reads/boundary.md": "src/RimMandrake/Utils/selftest_door_reads.py",
     "design/specs/2026-11-25-treecheck-kept-tree/boundary.md": "src/RimMandrake/Utils/selftest_treecheck_kept.py",
     "design/specs/2026-11-26-borrowers-dedupe/boundary.md": "src/RimMandrake/Utils/selftest_scratch_dedupe.py",
+    "design/specs/2026-11-27-timer-clone-packing/boundary.md": "src/RimMandrake/Utils/selftest_clone_pack.py",
     "design/specs/2026-11-24-quiet-scan/boundary.md": "src/RimMandrake/rimflow/selftest_quiet_scan.py",
     "design/specs/art-x-delete/boundary.md": "src/RimMandrake/Utils/art/selftest_art_x_ban_hardening.py",
     "design/specs/art-install-authority/boundary.md": "src/RimMandrake/Utils/art/selftest_art_install_authority.py",
