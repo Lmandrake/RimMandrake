@@ -360,7 +360,7 @@ def run_many(texts, root, world=None, write=True, workers=WORKERS, store=None):
     shaped = {}
     if world is not None:
         import list_shape as LS
-        for t in texts:
+        for t in list(texts):      # a copy: the parts added here are not expanded again (a part may name its item)
             iid = shape_id(t)
             if iid and iid in world.items:
                 parts = (world.items[iid].shape or {}).get("parts") or []

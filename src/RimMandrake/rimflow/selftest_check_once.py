@@ -305,6 +305,14 @@ def t_a_shape_check_is_answered_in_the_beat_with_its_parts_in_the_batch():
     c2, x2 = LS.holds_text("NO_SUCH_ITEM_X", world2, X["root"])
     chk(c2 == 2 and x2.startswith("UNMEASURED"), "shape: an item never filed is unmeasured")
     chk(co.shape_id(t) == "SOME_ITEM_X" and co.shape_id(t2 + " extra") is None, "shape: only the exact form is taken")
+    # a part that is the item's own check is not run (it would start itself without end)
+    loop = types.SimpleNamespace(shape={"parts": [{"name": "self", "effect": t.replace("SOME_ITEM_X", "LOOP_ITEM_X")}]})
+    world3 = types.SimpleNamespace(items={"LOOP_ITEM_X": loop})
+    t3 = "cmd:python3 src/RimMandrake/rimflow/list_shape.py holds LOOP_ITEM_X"
+    t0 = time.time()
+    r3 = co.run_many([t3], X["root"], world=world3, store=store)[0][t3]
+    chk(r3[0] == "unmeasured" and "its own item's check" in r3[1] and time.time() - t0 < 30,
+        "shape: a part that is its own item's check is unmeasured, not run (%s)" % r3[0])
 
 
 def t_the_hook_and_the_beat_key_a_path_alike():

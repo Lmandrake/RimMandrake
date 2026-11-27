@@ -19,6 +19,7 @@ A part: {"name", "effect": check or None, "fooled_by": str or None, "route": Non
 """
 import argparse
 import json
+import shlex
 import os
 import sys
 import time
@@ -229,9 +230,20 @@ def write_fields(iid, parts, size, gate):
 
 # ---- the item check -------------------------------------------------------------------------------------------------
 
-def holds_parts(parts, root, run=None):
+def own_check(effect, iid):
+    """-> True when the check is `cmd:python3 src/RimMandrake/rimflow/list_shape.py holds <iid>`: the item's own check."""
+    if not iid or not isinstance(effect, str) or not effect.startswith("cmd:"):
+        return False
+    try:
+        return shlex.split(effect[4:]) == ["python3", "src/RimMandrake/rimflow/list_shape.py", "holds", iid]
+    except ValueError:
+        return False
+
+
+def holds_parts(parts, root, run=None, iid=None):
     """-> (code, lines): 0 every part holds; 1 one fails or is routed; 2 none fails and one could not be looked at, or
-    no parts. A routed part never holds: it keeps the item open until it is re-shaped."""
+    no parts. A routed part never holds: it keeps the item open until it is re-shaped. A part that runs its own item's
+    check (iid) could not be looked at: run, it would start itself without end."""
     if not parts:
         return 2, ["the item has no parts to check"]
     if run is None:
@@ -244,6 +256,10 @@ def holds_parts(parts, root, run=None):
         if not isinstance(p, dict):
             blind += 1
             lines.append("%s: unreadable part" % n)
+        elif own_check(p.get("effect"), iid):
+            blind += 1
+            lines.append("%s: runs its own item's check (%s): not run, it would start itself without end" % (
+                n, p["effect"]))
         elif _check_ok(p.get("effect")):
             v, out = run(p["effect"], root)
             fails += v == "fails"
@@ -265,7 +281,7 @@ def holds_text(iid, w, root, run=None):
     it = w.items.get(iid)
     if it is None:
         return 2, "UNMEASURED: %s has never been filed" % iid
-    code, lines = holds_parts((it.shape or {}).get("parts"), root, run=run)
+    code, lines = holds_parts((it.shape or {}).get("parts"), root, run=run, iid=iid)
     return code, "\n".join(list(lines) + [{0: "HOLDS", 1: "FAILS", 2: "UNMEASURED"}[code] + ": %s" % iid])
 
 

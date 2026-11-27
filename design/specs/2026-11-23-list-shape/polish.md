@@ -4,8 +4,6 @@
   Nothing decides on that reading.
 - `effect --clear` on a shaped item leaves it "shaped already", so `shape --enter` says it needs no Shape run. Shape it
   again with `--parts`, or give it a check.
-- A part whose check is the item's own `holds` command runs itself without end. On a first shape the gate refuses it; on
-  a re-shape it does not.
 - A live Shape run whose split is all routed fills no lane slot until it ends.
 - A malformed `shape_from` raises in `due`, so the tick fails with a traceback.
 - A part that holds both a check and a full route keeps the check; its route is dropped at the write and no note says so.
