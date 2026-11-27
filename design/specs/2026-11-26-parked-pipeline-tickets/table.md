@@ -84,7 +84,8 @@ after the replan)` of 2026-11-01.
 - `SELFTEST_UNMEASURED_FOUR_REBUILD_DEFDUMP_DB`
   - Repairs: def-content checks that read no defs today, because no usable `defs.sqlite` exists.
   - Evidence: run 2026-11-26: `selftest_ecosystem_pyramid_check.py` and `selftest_label_collision_check.py` read
-    UNMEASURED ("no usable defs.sqlite at ...\DefDump"). The repair needs a DefDump capture from a game (needs game-up).
+    UNMEASURED ("no usable defs.sqlite at ...\DefDump"). The repair needs no game: the db was built from a pruned capture, and `measure build` from the newest capture on
+    disk (28.7 s) fixes it.
 - `WARMTIMER_HARDEN_SPARE_LIVE`
   - Repairs: the daily warm of the live Claude login when no claude process runs (the "auto log out" he banned).
   - Evidence: on SteveDesktop, claude-account-warm.timer is enabled (system unit) and `~/.local/bin/claude-account`

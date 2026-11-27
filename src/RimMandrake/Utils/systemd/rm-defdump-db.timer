@@ -1,0 +1,12 @@
+# Every 30 min - see rm-defdump-db.service. A capture lands at each game load with RimDefDump.
+[Unit]
+Description=RimMandrake: keep the live DefDump defs.sqlite current, every 30 min
+
+[Timer]
+OnBootSec=8min
+OnUnitActiveSec=30min
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

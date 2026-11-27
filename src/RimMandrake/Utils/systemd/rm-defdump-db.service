@@ -1,0 +1,21 @@
+# The DefDump db tick (Utils/defdump_db_tick.py; item SELFTEST_UNMEASURED_FOUR_REBUILD_DEFDUMP_DB; page
+# design/specs/2026-11-26-defdump-db-tick/boundary.md): when the live DefDump's defs.sqlite is absent or stale against
+# its newest capture, runs `measure build` once. No game, no bridge, no model. Runs from the dispatch clone.
+# Reading: D:\ClaudeWork\rimmandrake\dispatcher\defdump_db\reading.json
+# Install:  python3 src/RimMandrake/Utils/ops_clocks.py install rm-defdump-db --apply --enable
+# Off:      systemctl --user disable --now rm-defdump-db.timer
+[Unit]
+Description=RimMandrake: keep the live DefDump defs.sqlite current with its newest capture
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_ROLE_UNIT=rm-defdump-db.service
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/defdump_db_tick.py tick
+Nice=10
+# Danger: a runaway build starves the game machine. Measured 2026-11-26: one build peaked at 173 MB.
+MemoryMax=2G
+# budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=68.7s (the first tick, 2026-11-26); the build itself is cut at 900 s in code
+TimeoutStartSec=20min
