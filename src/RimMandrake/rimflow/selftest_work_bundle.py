@@ -1146,7 +1146,10 @@ def t_a_bundle_on_another_host_launches_there():
 
 OLD_AT = "2026-11-01T00:00:00Z"
 ON = {"pipeline": "on", "machine": "on", "mod": "on", "game": "off"}     # the cases' world: a game class that is off
-SHIPPED = {"pipeline": "on", "machine": "on", "mod": "on", "game": "on"}   # list_dispatch.json since 2026-11-26
+SHIPPED = {"pipeline": "on", "machine": "on", "mod": "on", "game": "on"}   # every class on: the world the lane tests run in
+# list_dispatch.json as shipped: game is off from 2026-11-26 7:35 PM PST by the owner's card answer
+# (RIMMANDRAKE_THROTTLE_GAME_WORK_WHEN_REPAIRS_END_ROOM_SHORT); change this line together with the settings file.
+SHIPPED_NOW = {"pipeline": "on", "machine": "on", "mod": "on", "game": "off"}
 
 
 def old(iid, home=None, **kw):
@@ -1355,7 +1358,7 @@ def t_the_onboard_classes_are_data():
         % by["-onboard"]["onboard"].get("not_started"))
     import list_dispatch as LD
     cfg = LD.load_cfg()
-    chk(lambda: cfg.get("onboard_classes") == SHIPPED and cfg.get("_onboard_classes_doc"),
+    chk(lambda: cfg.get("onboard_classes") == SHIPPED_NOW and cfg.get("_onboard_classes_doc"),
         "list_dispatch.json: onboard_classes is data, with its doc (%s)" % cfg.get("onboard_classes"))
 
 
