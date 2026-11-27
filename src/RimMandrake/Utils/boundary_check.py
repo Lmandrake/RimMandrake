@@ -165,6 +165,7 @@ PAGES = {
     "design/specs/2026-11-21-one-game-lock/boundary.md": "src/RimMandrake/rimflow/selftest_game_lock.py",
     "design/specs/2026-11-23-one-failure-classifier/boundary.md": "src/RimMandrake/rimflow/selftest_failure_class.py",
     "design/specs/2026-11-22-game-names/boundary.md": "src/RimMandrake/rimflow/selftest_game_names.py",
+    "design/specs/2026-11-27-list-drift-at-launch/boundary.md": "src/RimMandrake/Utils/selftest_list_drift_at_launch.py",
     "design/specs/2026-11-27-judge-start-keeps-pass/boundary.md": "src/RimMandrake/Utils/selftest_judge_start_keeps_pass.py",
     "design/specs/2026-11-23-tick-names-steve-games/boundary.md": "src/RimMandrake/rimflow/selftest_tick_names_steve_games.py",
     "design/specs/2026-11-23-raid-tests-paused/boundary.md": "src/RimMandrake/rimflow/selftest_raid_pause.py",

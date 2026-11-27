@@ -1756,6 +1756,21 @@ def atomic_copy(src, dst):
     os.replace(tmp, dst)
 
 
+def journal(config, act, tier=None, by=None):
+    """One row in this game's list journal (list_journal.py) per verified write of the LIVE list, so that a launch can
+    tell modset_builder's last write from a list someone else put back (RIMMANDRAKE_TRACE_ARCHSMALL_TIER_SWAP_UNDONE_
+    BEFORE_LAUNCH). A list at any other path (a selftest's temp file) is not journaled. Never fails the write."""
+    if os.path.normcase(os.path.abspath(config)) != os.path.normcase(os.path.abspath(CONFIG)):
+        return
+    try:
+        import list_journal
+        why = list_journal.record(config, _GAME or "a", act, tier=tier, by=by)
+    except Exception as e:      # noqa: BLE001
+        why = "list journal not written: %s: %s" % (type(e).__name__, e)
+    if why:
+        print("  " + why)
+
+
 def _md5(path):
     import hashlib
     with open(path, "rb") as f:
@@ -1801,6 +1816,7 @@ def repair_game_reset(config, backups):
     atomic_copy(before, config)
     if _md5(config) != want:
         raise RestoreRefused("wrote %s but its md5 is not the before-copy's %s" % (config, want[:8]))
+    journal(config, "repair-reset", by=os.path.basename(backups))
     os.remove(marker)
     return "REPAIRED a game-reset ModsConfig (Core+DLC, md5 %s): restored %s (md5 %s), swap %r over" % (
         live[:8], m["before"], want[:8], m.get("tier"))
@@ -1918,6 +1934,7 @@ def restore_own(config, backups):
     atomic_copy(before, config)
     if _md5(config) != want:
         raise RestoreRefused("wrote %s but its md5 is not the before-copy's %s" % (config, want[:8]))
+    journal(config, "restore-own", by=os.path.basename(backups))
     os.remove(marker)
     return "restored %s (md5 %s, tier %s) -> ModsConfig.xml, verified" % (m["before"], want[:8], m.get("tier"))
 
@@ -2002,6 +2019,7 @@ def restore_before(config, backups):
     got = _md5(config)
     if got != want:
         raise RestoreRefused("wrote %s but live md5 %s != before-copy %s" % (config, got, want))
+    journal(config, "restore", by=os.path.basename(backups))
     os.remove(marker)
     return "restored %s (md5 %s, tier %s) -> ModsConfig.xml, verified" % (m["before"], want[:8], m["tier"])
 
@@ -2096,6 +2114,7 @@ def main():
                     raise RestoreRefused("RimWorld looks live (rechecked under the lock). Exit first.")
                 if a.restore_full:
                     atomic_copy(FULL_BACKUP, CONFIG)
+                    journal(CONFIG, "restore-full", by="clone %s" % os.path.basename(ROOT))
                     if clear_swap_marker(BACKUPS):
                         print("cleared the active-swap marker (the swap is over)")
                     print("restored FULL.LATEST (explicit --restore-full) from %s"
@@ -2150,6 +2169,7 @@ def main():
             stamp = take_before_copy(CONFIG, backups, a.tier)
             write_config(ordered, CONFIG, before_replace=lambda h: record_tier_written(CONFIG, backups, h))
             record_tier_written(CONFIG, backups)
+            journal(CONFIG, "apply", tier=a.tier, by=a.by or "clone %s" % os.path.basename(ROOT))
     except RestoreRefused as e:
         print("\n  REFUSING TO WRITE: %s" % e)
         return 1

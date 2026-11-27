@@ -970,9 +970,35 @@ def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.ti
     if not _steam_running():
         raise Refused("Steam is not running, and a game started now would have no Workshop mods (rw_game.sh up starts it)")
     if name == DEFAULT:
-        return _launch_a(wait, wait_s, sleep, clock)
+        line = list_line(name)
+        rc, text = _launch_a(wait, wait_s, sleep, clock)
+        return rc, "%s; %s" % (text, line)
     d = prepare(name)
     _need_appid("game %s" % name, name)
+    line = list_line(name)
+    rc, text = _launch_named(name, d, wait, wait_s, sleep, clock)
+    return rc, "%s; %s" % (text, line)
+
+
+def mods_config(name=None):
+    """The ModsConfig.xml that the named game's next load reads: ArchBig's LocalLow Config, else <root>/<letter>/Config."""
+    name = check_name(name or current())
+    if name == DEFAULT:
+        return os.path.join(a_config_dir(), "ModsConfig.xml")
+    return os.path.join(data_dir(name), "Config", "ModsConfig.xml")
+
+
+def list_line(name):
+    """The launch's list line (list_journal.launch_line): what the load reads, against modset_builder's last write of
+    it (RIMMANDRAKE_TRACE_ARCHSMALL_TIER_SWAP_UNDONE_BEFORE_LAUNCH). Never raises: a launch never fails on its line."""
+    try:
+        import list_journal
+        return list_journal.launch_line(mods_config(name), name, label=_n(name))
+    except Exception as e:      # noqa: BLE001
+        return "list: COULD NOT LOOK (%s: %s)" % (type(e).__name__, e)
+
+
+def _launch_named(name, d, wait, wait_s, sleep, clock):
     log = log_path(name)
     if os.path.exists(log):
         os.replace(log, log + ".prev")
