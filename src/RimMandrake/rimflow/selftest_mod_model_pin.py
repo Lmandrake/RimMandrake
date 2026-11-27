@@ -22,6 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 TMP = tempfile.mkdtemp(prefix="selftest-mod-model-pin-")
 os.environ["RM_CONTROL_DB"] = os.path.join(TMP, "control.db")     # never the live store
+os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(TMP, "maturation_dispatch")    # never the live tick state (its builder watch stopped WreckedMachines here, 2026-11-27)
 os.environ.setdefault("RM_UNDER_SELFTEST", "1")
 HOLDS = os.path.join(TMP, "mod_owner_hold.json")       # no live hold reaches these tests (Graffiti is held live)
 with open(HOLDS, "w") as _f:
