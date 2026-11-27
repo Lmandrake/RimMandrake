@@ -685,6 +685,15 @@ TIERS["pyrelands"] = {
     "dlc": True,
 }
 
+TIERS["direct_sun_fixed"] = {
+    "why": "DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME L1: the pyrelands tier plus the Weather Suite and Ash'karr's "
+           "PlanetGeometryDef (fixedSun), so a quicktest world has a fixed sun and Direct Sun runs on its maps "
+           "(the Long Shade, the Pyrelands and the Forge are members of the composed mandrake.rm.biomes).",
+    "want": list(TIERS["pyrelands"]["want"]) + ["mandrake.rm.weathersuite", "mandrake.rut.weathersuite"],
+    "forbid": list(TIERS["pyrelands"]["forbid"]),
+    "dlc": True,
+}
+
 # sc_rite_hook_alone (bar fire_rite_hook_silent_alone) runs on a list WITHOUT the Tribes mechanics, so the rite hook is
 # null. Visits 1 and 2 built this list by hand from the pyrelands tier, so build_match could never count its row. Since the
 # pyrelands tier forbids the Tribes too, the two lists are the same; this name stays so rows recorded under it still resolve.

@@ -334,7 +334,7 @@ namespace JawaBench.BridgeTools
                 "Invoke a PUBLIC STATIC method by type FullName + method name, for pure helpers a mod " +
                 "script needs to exercise (e.g. RM_ZennaqLightning.Redirect). args = '|'-separated, " +
                 "coerced by the parameter type: int/long and every integer width, float/double/decimal, bool, string, an enum by name or number, IntVec3 as 'x,y,z' (or 'x,z'), " +
-                "Map as 'current' or a map index, ThingDef/any Def by defName, Thing/Pawn (or any Thing " +
+                "Map as 'current' or a map index, a MapComponent subclass as 'current' or a map index (that map's component), ThingDef/any Def by defName, Thing/Pawn (or any Thing " +
                 "subclass) by exact ThingID ('Human123') or bare thingIDNumber, current map first then every " +
                 "map - refused with candidates when absent or not of the parameter's type; a void delegate (Action, " +
                 "Action<T>) as 'noop', a callback that does nothing, or 'null'. Instance methods and " +
@@ -380,6 +380,15 @@ namespace JawaBench.BridgeTools
                         {
                             vals[i] = a == "current" ? Find.CurrentMap : Find.Maps[int.Parse(a)];
                             if (vals[i] == null) return Fail("No map for argument " + i);
+                        }
+                        else if (typeof(MapComponent).IsAssignableFrom(pt))
+                        {
+                            // a map component arg ('current' or a map index): that map's component of the parameter's type
+                            // (RM_SunHeatPatches.SunOffsetFor(Pawn, RM_MapComponent_ShadeGrid), DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME)
+                            Map m = a == "current" ? Find.CurrentMap : Find.Maps[int.Parse(a)];
+                            if (m == null) return Fail("No map for argument " + i);
+                            vals[i] = m.GetComponent(pt);
+                            if (vals[i] == null) return Fail("Map " + m.uniqueID + " has no " + pt.Name + " (arg " + i + ").");
                         }
                         else if (typeof(Def).IsAssignableFrom(pt))
                         {
