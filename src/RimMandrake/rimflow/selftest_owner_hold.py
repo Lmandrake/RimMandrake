@@ -156,6 +156,9 @@ class World:
                         RIMFLOW_OWNER_ACT_STAMP=os.path.join(self.tmp, "OWNER_LAST_ACT.json"),
                         RIMFLOW_DISPATCH_LOCK=os.path.join(self.tmp, "dispatch.lock"),
                         RIMFLOW_BRIDGE_LOCK=os.path.join(self.tmp, "bridge.lock"))
+        # the bridge's default host is archmagi: pin it, so a run on SteveDesktop reads these locks as this machine's
+        # and not as another machine's game (21 FAIL there, 2026-11-27, RIMMANDRAKE_FIX_OWNER_HOLD_SELFTEST_ASSUMES_ARCHMAGI)
+        self.env["RM_HOST"] = "archmagi"
         if self.lock:
             self.env["RIMFLOW_DRIVER_LOCK"] = self.lock
 
@@ -706,8 +709,7 @@ def test_driver_lock_owner_hold():
     def world(identity, age, seat="OWNER", chat_age=None):
         w = World([])
         w.lock = os.path.join(w.tmp, "DRIVER_LOCK.json")
-        w.env.update(RIMFLOW_DRIVER_LOCK=w.lock)
-        w.env.pop("RM_HOST", None)
+        w.env.update(RIMFLOW_DRIVER_LOCK=w.lock, RM_HOST="archmagi")
         t = iso(age)
         with open(w.lock, "w") as f:
             json.dump({"seat": seat, "purpose": "playing", "identity": identity, "acquired": t, "heartbeat": t,
