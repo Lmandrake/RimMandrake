@@ -2287,6 +2287,17 @@ def stage5_judge(concept, runner=None):
     if stage != 5:
         print("stage5-judge: %s is at stage %s, not 5: no judge, nothing held" % (os.path.basename(concept), stage))
         return 0
+    # A tree that is already signed needs no judge, and coverage_judge.run would hand back its old advisory verdict on that
+    # skip and exit STOP_EXIT: the unit ended before stage5-program and the Designer, and was voided void_system, in a loop
+    # (ExplosiveKnockback 2026-11-26, OPS_DESIGNER_STAGE5_ALREADY_SIGNED_JUDGE_STOPS_THE_RUN). Exit 0 lets the chain go on.
+    try:
+        import coverage_judge as CJ
+        what, why = CJ.plan(concept)
+    except Exception:  # noqa: BLE001 - the judge reads the concept itself and says why it cannot
+        what, why = None, None
+    if what == "skip" and str(why).startswith("already signed"):
+        print("stage5-judge: %s: %s: no judge, nothing held" % (os.path.basename(concept), why))
+        return 0
     run = runner or subprocess.run
     judge = os.path.join(os.path.dirname(os.path.abspath(__file__)), "coverage_judge.py")
     # the judge bounds its own claude (coverage_judge.TIMEOUT_S); this bound only stops a hung step from holding the unit

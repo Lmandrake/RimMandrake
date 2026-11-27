@@ -127,6 +127,27 @@ def test_pre_steps(root):
     finally:
         RL.subprocess.run = real_run
     check(rc == 0 and not called, "stage5-judge at stage 3: exit 0 and no judge run (rc %r, calls %r)" % (rc, called))
+    # ExplosiveKnockback 2026-11-26 (OPS_DESIGNER_STAGE5_ALREADY_SIGNED_JUDGE_STOPS_THE_RUN): at stage 5 on a tree that is
+    # already signed, coverage_judge.run skips but hands back the old advisory verdict, so the unit exited STOP (3) before
+    # stage5-program and the Designer, and each run was voided void_system: three runs in 13 minutes. An already-signed
+    # tree needs no judge and stops nothing: exit 0, the program step and the Designer follow. Any other skip stays as it was.
+    import coverage_judge as CJ
+    d5s = concept(root, "Signed", dict(NC, advisory="UNTESTED brief"))
+    real_plan = CJ.plan
+    for what, why, want_rc, want_calls in (("skip", "already signed at tree 2f443fba60", 0, 0),
+                                           ("skip", "the exam does not pass: x", 3, 1),
+                                           ("judge", "unsigned", 3, 1)):
+        called = []
+        CJ.plan = lambda *a, _w=what, _y=why, **k: (_w, _y)
+        RL.subprocess.run = lambda *a, **k: called.append(a) or type("P", (), {"returncode": 3})()
+        try:
+            rc = RL.main(["stage5-judge", d5s])
+        finally:
+            RL.subprocess.run = real_run
+            CJ.plan = real_plan
+        check(rc == want_rc and len(called) == want_calls,
+              "stage5-judge, plan %s %r: exit %d with %d judge call(s) (rc %r, calls %d)" % (
+                  what, why[:20], want_rc, want_calls, rc, len(called)))
     role = {"name": "Designer", "clone": "/c", "model": "opus", "seat": "BENCH"}
     with tempfile.TemporaryDirectory() as td:
         mark = os.path.join(td, "claude-ran")
