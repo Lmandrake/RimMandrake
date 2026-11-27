@@ -67,8 +67,8 @@ run before PAUSE, a blind tick or a disabled role can end the tick (review round
 
 How it launches (proved 2026-10-27, D:\\ClaudeWork\\rimmandrake\\role_launch_2026-10-27\\proof\\RESULT.md): as its OWN
 transient user service, `systemd-run --user --collect --unit rm-role-<name>-<epoch>`, which runs
-`claude_bounded.sh -p <prompt> --model <alias> --output-format json` in the role's clone. The dispatcher tick is a
-oneshot unit whose cgroup systemd kills when it exits; a child started there (even setsid) died before
+`claude_bounded.sh -p --model <alias> --output-format json` in the role's clone, its prompt on stdin (launch_argv).
+The dispatcher tick is a oneshot unit whose cgroup systemd kills when it exits; a child started there (even setsid) died before
 claude_bounded made its scope, while the transient unit ran on and finished. PATH gets claude's directory: the user
 manager's PATH has no ~/.local/bin. The model is the schedule's alias; claude resolves it from its own settings
 (the GenAiSwitch route vars, genai_env.py's MODEL_VARS), and the id actually used is read back from the result.
