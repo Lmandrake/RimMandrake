@@ -160,7 +160,7 @@ GIT_NAME = re.compile(r"(%s)[a-z0-9_]{8}" % "|".join(GIT_FIXTURES))
 GIT_FIXTURE_MAX = 2 * 1024 * 1024                                              # the fixtures are a few KB
 
 
-def git_fixture(p: Path) -> str | None:
+def git_fixture(p: Path, *, time_child=contextlib.nullcontext) -> str | None:
     """None = a seed/wall selftest's git fixture; else why not. Read-only: git log reads, never writes."""
     m = GIT_NAME.fullmatch(p.name)
     if not m:
@@ -181,7 +181,7 @@ def git_fixture(p: Path) -> str | None:
     if tree_bytes(p) > GIT_FIXTURE_MAX:
         return "too big for the fixture"
     try:
-        return _git_fixture_history(repo, f)
+        return _git_fixture_history(repo, f, time_child)
     except (subprocess.SubprocessError, ValueError) as e:            # a hung or undecodable git keeps it, never aborts
         return f"git unreadable: {e!r}"[:200]
 
@@ -192,14 +192,16 @@ def _git(repo: Path, *a: str) -> subprocess.CompletedProcess:
                           capture_output=True, text=True, errors="replace", env=env, timeout=60)
 
 
-def _git_fixture_history(repo: Path, f: dict) -> str | None:
-    r = _git(repo, "log", "--all", "--format=%an <%ae>%n%cn <%ce>")
+def _git_fixture_history(repo: Path, f: dict, time_child) -> str | None:
+    with time_child("git log"):
+        r = _git(repo, "log", "--all", "--format=%an <%ae>%n%cn <%ce>")
     who = {x for x in r.stdout.splitlines() if x}
     if r.returncode or not who:
         return "no readable history"
     if not who <= f["who"]:
         return f"someone else committed here: {sorted(who - f['who'])[:2]}"
-    st = _git(repo, "status", "--porcelain", "-z", "--ignored", "--untracked-files=all")
+    with time_child("git status"):
+        st = _git(repo, "status", "--porcelain", "-z", "--ignored", "--untracked-files=all")
     if st.returncode:
         return "no readable status"
     dirty = {e[3:] for e in st.stdout.split("\0") if len(e) > 3}

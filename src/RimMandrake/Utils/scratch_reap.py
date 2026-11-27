@@ -99,6 +99,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from contextvars import ContextVar
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -225,6 +226,21 @@ def read_objects() -> list[str]:
 
 
 _FORMATS: dict[str, str] = {}
+_CHILD_TIMES: ContextVar[dict[str, list[float]] | None] = ContextVar("_CHILD_TIMES", default=None)
+
+
+@contextlib.contextmanager
+def child_time(command: str):
+    """Measure elapsed time in a synchronous child call, including launch and cleanup on failure."""
+    times = _CHILD_TIMES.get()
+    if times is None:
+        yield
+        return
+    start = time.perf_counter()
+    try:
+        yield
+    finally:
+        times.setdefault(command, []).append(time.perf_counter() - start)
 
 
 def object_format(repo: Path) -> str:
@@ -233,8 +249,9 @@ def object_format(repo: Path) -> str:
     if k not in _FORMATS:
         env = {k2: v for k2, v in os.environ.items() if not k2.startswith("GIT_") or k2 in ("GIT_CONFIG_GLOBAL", "GIT_CONFIG_SYSTEM")}
         try:
-            r = subprocess.run(["git", "-C", k, "rev-parse", "--show-object-format"], capture_output=True, text=True,
-                               env=env, timeout=60)
+            with child_time("git rev-parse"):
+                r = subprocess.run(["git", "-C", k, "rev-parse", "--show-object-format"], capture_output=True, text=True,
+                                   env=env, timeout=60)
             _FORMATS[k] = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else "sha1"
         except (subprocess.TimeoutExpired, OSError):
             _FORMATS[k] = "sha1"
@@ -253,8 +270,11 @@ def git(repo: Path, *a, stdin: str | None = None, timeout: int = 600) -> subproc
     if ro:
         env["GIT_ALTERNATE_OBJECT_DIRECTORIES"] = os.pathsep.join(ro)
     try:
-        r = subprocess.run(["git", "-C", str(repo), *HONEST_STATUS, *a], capture_output=True, env=env, timeout=timeout,
-                           input=None if stdin is None else stdin.encode("utf-8", "surrogateescape"))
+        # The --git-dir=.git probe passes a global option before its subcommand.
+        command = next((arg for arg in a if not arg.startswith("-")), "")
+        with child_time(f"git {command}" if command else "git"):
+            r = subprocess.run(["git", "-C", str(repo), *HONEST_STATUS, *a], capture_output=True, env=env, timeout=timeout,
+                               input=None if stdin is None else stdin.encode("utf-8", "surrogateescape"))
         return subprocess.CompletedProcess(a, r.returncode, r.stdout.decode("utf-8", "surrogateescape"),
                                            r.stderr.decode("utf-8", "surrogateescape"))     # bytes: text mode eats a \r
     except subprocess.TimeoutExpired:
@@ -310,7 +330,7 @@ def inside_selftest_litter(root: Path, c: Path) -> bool:
         with contextlib.suppress(OSError):
             if O.TMP_NAME.fullmatch(d.name) and O.shaped(d):
                 return True
-            if O.GIT_NAME.fullmatch(d.name) and O.git_fixture(d) is None:
+            if O.GIT_NAME.fullmatch(d.name) and O.git_fixture(d, time_child=child_time) is None:
                 return True
     return False
 
@@ -870,9 +890,10 @@ class Borrows:
 
     @staticmethod
     def _walk(tops: list[str]) -> tuple[int, bytes, list[str]]:
-        p = progress_guard.run(["find", *tops, "(", "-path", "*.git/objects/[0-9a-f][0-9a-f]", "-o", "-path", "*.git/objects/pack",
-                            ")", "-prune", "-o", "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
-                            "-type", "f", ")", ")", "-print0"], text=False)
+        with child_time("find"):
+            p = progress_guard.run(["find", *tops, "(", "-path", "*.git/objects/[0-9a-f][0-9a-f]", "-o", "-path", "*.git/objects/pack",
+                                ")", "-prune", "-o", "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
+                                "-type", "f", ")", ")", "-print0"], text=False)
         return p.returncode, p.stdout, [ln for ln in p.stderr.decode("utf-8", "replace").splitlines() if ln.strip()]
 
     def __init__(self):
@@ -2328,8 +2349,9 @@ def committed_saves() -> dict[int, set[str]]:
         repo = os.environ.get("SCRATCH_REAP_SAVE_REPO") or str(Path(__file__).resolve().parents[3])
         _COMMITTED_SAVES = {}
         try:
-            r = subprocess.run(["git", "-C", repo, "ls-tree", "-r", "-l", "origin/main"], capture_output=True,
-                               text=True, timeout=60)
+            with child_time("git ls-tree"):
+                r = subprocess.run(["git", "-C", repo, "ls-tree", "-r", "-l", "origin/main"], capture_output=True,
+                                   text=True, timeout=60)
         except (OSError, subprocess.SubprocessError):
             return _COMMITTED_SAVES
         for line in r.stdout.splitlines() if r.returncode == 0 else []:
@@ -2384,11 +2406,18 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
         if apply and deadline and time.time() > deadline:
             out["deferred"] += 1
             continue
-        tree = None if guard(p) else Tree(p)
-        if tree is not None and handed_over(p):
-            out["held"] += 1                        # a mkdtemp name proves nothing: clones and saves get the full judgment
+        try:
+            st = p.lstat() if not guard(p) else None
+        except OSError:
+            st = None
+        if st is None or not stat.S_ISDIR(st.st_mode):
+            out["held"] += 1
             continue
-        if tree is None or tree.capped or tree.errors:
+        if ctx.now - max(touched(st)) < FIXTURE_TTL_S:
+            out["young"] += 1
+            continue
+        tree = Tree(p)
+        if tree.capped or tree.errors or tree.vanished or handed_over(p):
             out["held"] += 1
         elif ctx.now - tree.newest < FIXTURE_TTL_S:
             out["young"] += 1
@@ -2401,6 +2430,7 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
                         ctx.refresh()
                         again = Tree(p)
                         if ctx.global_holds() or ctx.live.users(p) or ctx.borrows.of(p) or again.errors \
+                                or again.capped or again.vanished \
                                 or ctx.now - again.newest < FIXTURE_TTL_S:
                             out["held"] += 1
                             continue
@@ -2464,8 +2494,7 @@ def tmp_idle_s() -> float:
 def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]:
     """The /tmp backstop (TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP): what agents and tools write to literal /tmp paths,
     which no per-run TMPDIR reaches. A top-level entry of OUR uid goes when nothing inside it was touched for
-    TMP_IDLE_H (the newest mtime/ctime of anything inside, not the entry's own stamps: a dir's mtime moves only when a
-    top-level name is added or removed, and relatime atime is a day coarse) and nothing holds it: no process uses,
+    TMP_IDLE_H (the newest mtime/ctime of anything inside) and nothing holds it: no process uses,
     names or listens under it, no mount, no borrower, and the walk read it whole. Sockets, fifos, devices, protected
     names, selftest fixtures (sweep_fixtures, 24 h) and anything holding a git repo or a save (the clone judgment,
     bundle unique first) are not this sweep's. Nothing is archived: /tmp is a tmpfs, lost whole at every reboot, so
@@ -2505,22 +2534,34 @@ def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]
             out["deferred"] += 1
             continue
         isdir = stat.S_ISDIR(st.st_mode)
-        tree = Tree(p) if isdir else None               # capped: walked before keeps_work, which is not
-        if tree is not None and (tree.capped or tree.errors):
-            out["held"] += 1
+        if stat.S_ISREG(st.st_mode) and name.endswith(".rws") and not is_committed_save(p):
+            out["work"] += 1
             continue
-        if (isdir and keeps_work(p)) or (stat.S_ISREG(st.st_mode) and name.endswith(".rws") and not is_committed_save(p)):
-            out["work"] += 1                            # a clone or a save: the clone judgment's, bundle first
-            continue
-        newest = tree.newest if tree else max(touched(st))
-        size = tree.size if tree else st.st_size
+        newest, size = max(touched(st)), st.st_size
         if ctx.now - newest < idle:
             out["young"] += 1
             continue
         orig = tr / PIN.sub("", name)                   # a crash's pin answers to its original name too
-        if ctx.mounted(p) or _tmp_used(ctx, p, orig):
+        if _tmp_used(ctx, p, orig) or ctx.mounted(p):
             out["held"] += 1
             continue
+        # A recent top stamp or an independent hold is enough to keep the tree. An old top stamp
+        # says nothing about in-place writes below it. Walk every potential removal.
+        if isdir:
+            if os.path.lexists(p / ".git"):             # already the clone judgment's, as in keeps_work
+                out["work"] += 1
+                continue
+            tree = Tree(p)                              # cap the walk before keeps_work, which is uncapped
+            if tree.capped or tree.errors or tree.vanished:
+                out["held"] += 1
+                continue
+            if keeps_work(p):
+                out["work"] += 1                        # a clone or a save: the clone judgment's, bundle first
+                continue
+            newest, size = tree.newest, tree.size
+            if ctx.now - newest < idle:
+                out["young"] += 1
+                continue
         row = {"kind": "tmp", "path": str(p), "bytes": size, "age_h": round((ctx.now - newest) / 3600, 1),
                "verdict": "DELETE", "why": [f"nothing inside touched for {idle / 3600:g} h; no process, mount or borrower"]}
         if not apply:
@@ -2534,7 +2575,7 @@ def sweep_tmp(ctx: Ctx, apply: bool, deadline: float) -> tuple[dict, list[dict]]
             again = Tree(p) if isdir else None
             st2 = os.lstat(p)
             newest2 = again.newest if again else max(touched(st2))
-            if ctx.global_holds() or _tmp_used(ctx, p, orig) or (again and (again.errors or again.capped)) \
+            if ctx.global_holds() or _tmp_used(ctx, p, orig) or (again and (again.errors or again.capped or again.vanished)) \
                     or ctx.now - newest2 < idle or (st2.st_ino, st2.st_dev) != (st.st_ino, st.st_dev):
                 out["held"] += 1
                 continue
@@ -3057,6 +3098,10 @@ def run(a, sd: Path) -> int:
         sanity_end(sd, end, rows, rec)
         record(sd, rec)
     else:
+        rec["child_commands"] = {
+            command: {"calls": len(times), "seconds": round(sum(times), 6)}
+            for command, times in sorted((_CHILD_TIMES.get() or {}).items(), key=lambda item: -sum(item[1]))
+        }
         write_json(sd / "last_dry_run.json", rec)
     if a.json:
         print(json.dumps(rows, indent=1))
@@ -3064,6 +3109,8 @@ def run(a, sd: Path) -> int:
         report(rows, a, sd, freed)
         print(f"selftest fixtures: {fixtures}")
         print(f"/tmp backstop: {dict(tmp, errors=tmp['errors'][:3])}")
+        for command, timing in rec.get("child_commands", {}).items():
+            print(f"child {command}: {timing['seconds']:.6f} s over {timing['calls']} call(s)")
         for f in failures:      # the journal keeps these; last_run.json is overwritten by the next run
             print(f"FAILED {f}")
     return 1 if failures else 0
@@ -3093,6 +3140,7 @@ def main(argv=None) -> int:
         except OSError:
             print("another reaper run holds the lock")
             return 0
+        token = _CHILD_TIMES.set(None if a.apply else {})
         try:
             return run(a, sd)
         except Exception as e:      # the record must say so; re-raised, so the unit fails and signal_watch sees it
@@ -3101,6 +3149,8 @@ def main(argv=None) -> int:
                 record(sd, {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "end_epoch": time.time(),
                             "apply": True, "ok": False, "failures": [f"{type(e).__name__}: {e}"]})
             raise
+        finally:
+            _CHILD_TIMES.reset(token)
 
 
 if __name__ == "__main__":

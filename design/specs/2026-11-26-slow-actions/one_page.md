@@ -16,13 +16,67 @@ The index cannot catch an edit that keeps both size and modified time (`touch -r
 the listing misses. `deploy_custom_mods.py --full-read` reads every file and rewrites the index. Page:
 `design/specs/2026-11-26-deploy-index/boundary.md`.
 
+### Scratch reap dry run (2026-11-27)
+
+The `/tmp` sweep and fixture sweep keep a folder immediately when its own mtime or ctime proves it is young.
+The `/tmp` sweep also skips the age walk for an old folder already held by a process, borrower, mount, or top-level
+`.git` entry. An in-place write can leave every parent stamp old. A possible removal still needs a complete age
+walk, and the `/tmp` sweep checks again during apply.
+
+Paired dry runs of `scratch_reap.py`'s normal entry point, first at the clone's HEAD and then with the fix. A
+generated root inside the clone held 55,000 files in five folders: one old and busy, one with a recent top stamp,
+one old Git worktree, one recent selftest fixture, and one idle. The clock used for age was advanced 48 h and the
+process scan was limited to the test process holding the busy folder. External elapsed time and Python call counts
+were measured with `perf_counter` and `cProfile`.
+
+| | before | after |
+|---|---:|---:|
+| wall time | 5.692 s | 2.926 s |
+| `DirEntry.stat` calls | 80,324 | 30,097 |
+| Python `os.lstat` calls | 2,851 | 2,512 |
+
+Both runs reported one idle folder eligible for removal and one worktree eligible for archive. The fixed run
+recorded 1.943 s across 13 synchronous child calls in `last_dry_run.json` under `child_commands`.
+
+| command | calls | elapsed seconds |
+|---|---:|---:|
+| `git ls-tree` (tracked saves) | 1 | 1.720 |
+| `find` (borrowers) | 1 | 0.084 |
+| `git rev-parse` | 3 | 0.048 |
+| `git status` | 1 | 0.035 |
+| `git ls-files` | 3 | 0.029 |
+| `git cat-file` | 1 | 0.014 |
+| `git symbolic-ref` | 1 | 0.007 |
+| `git for-each-ref` | 1 | 0.003 |
+| `git check-attr` | 1 | 0.002 |
+
+These timings cover the generated tree.
+
+A real dry run of the same entry point on the live machine (2026-11-27, `python3 scratch_reap.py`, run after the
+hourly `--apply` run ended, because the two share one lock) took 814 s wall and named its child commands in
+`last_dry_run.json` under `child_commands`. Only a dry run records them; an `--apply` run does not.
+
+| command | calls | elapsed seconds |
+|---|---:|---:|
+| `find` (borrower map over `/home/mandrake`, `/tmp`, `pulse-deploy`) | 1 | 327.1 |
+| `git ls-tree` (tracked saves) | 1 | 15.7 |
+| `git log` (selftest fixtures) | 8 | 9.2 |
+| `git rev-list` | 14 | 0.57 |
+| other `git` commands (`ls-files`, `check-attr`, `rev-parse`, `status`, `cat-file`, `for-each-ref`, `remote`, `symbolic-ref`) | 120 | 0.90 |
+
+The borrower `find` is the 309 s wait of the first dry run (327 s here). The remaining 461 s of the 814 s (the child commands total 353 s) is the
+reaper's own walks and stats, which this change cuts only for folders it can keep from their own time. Timed per subtree (same `find`, 2026-11-27): `.seat-tmp` 129 s, `.cache` 41 s, `/tmp` 30 s, `walled` 25 s. `.seat-tmp/BENCH`
+holds about 2.0 M entries, mostly 286 `publish_check_*` and `wrong_check_*` folders of 100 to 214 k entries, the oldest
+from 2026-11-19. The `find` must keep walking `.seat-tmp`, which holds real borrowers; the fix is to stop leaving that
+residue (item `RIMMANDRAKE_SPEED_SCRATCH_REAP_SEAT_TMP_PUBLISH_CHECK_RESIDUE_2M`).
+
 ## The ranking (wall hours in 7 days = runs × usual duration)
 
 | # | action | runs | usual (median / p90) | total | cause (named, with its evidence in `evidence.md`) |
 |---|---|---|---|---|---|
 | 1 | helper run (detached) | 892 | 32 min / 130 min | 833 h | A model call and the work between calls. The split is UNMEASURED for the 7 days: no record keeps it. One run timed by parts: this one (see evidence §3). In-game runs are 141 h of it. |
 | 2 | pipeline tick (`rm-maturation-dispatch`) | 7,602 | 47 s / 119 s | 136 h | Repeated work. One run: 51 s wall, 31 s user CPU, 8,706 file opens, 11.9 M dict reads, `last_words` called 716 times. Wall is 1.9× CPU: the load of the machine. |
-| 3 | scratch reap (`rm-scratch-reap`) | 160 | 9 min / 57 min | 61 h | Reads of many files: one dry run, 639 s, 2.44 M `lstat` calls (176 s), and 309 s waiting for child commands (which ones: UNMEASURED). |
+| 3 | scratch reap (`rm-scratch-reap`) | 160 | 9 min / 57 min | 61 h | Reads of many files: one dry run, 639 s, 2.44 M `lstat` calls (176 s), and 309 s waiting for child commands (the borrower `find`: see the dry-run section). |
 | 4 | publish (`./publish`) | ≥94 waits, ≥371 check runs | wait 7 min / 39 min; checks 4.7 min / 9.7 min | ≥57 h | A wait in a line (19.9 h) and the real work of the checks (31.3 h pipeline checks, 6.2 h tree checks). One run of mine: 1,811 s = 1,084 s in the line + 596 s pipeline checks + 26 s tree checks. Counts are lower bounds. |
 | 5 | metronome beat and sense | 13,445 | 9 s / 25 s | 37 h | The child commands of the phases, about 95% of each run; the metronome program itself about 0.4 s. Three repeated costs: small-file reads on `/mnt/d`, the ledger replayed again by each reader (2.3 to 4.9 s each time), and every sense pass reading 8 days of all 20 series. The 0.26 s timed alone was a duplicate exit, not a pass. Full split: `metronome_profile.md`. |
 | 6 | status page (`rm-maturation-page`) | 3,273 | 32 s / 57 s | 33 h | Repeated work. One run 43 s: 12.4 s encoding 285 PNG images and 11.5 M dict reads; the whole page is built again every minute. |
@@ -47,7 +101,7 @@ window run median 167 s over 64 runs, 6.4 h; wake of the Conductor window UNMEAS
 | 3 | Pipeline tick: done. Index ending notes once, fill last words once per mod, and reuse unchanged file reads. | | recorded-state tick profile below |
 | 4 | Status page: done. Share file reads with the tick and encode only phone images whose rendered content changed. | | recorded-state page profile below |
 | 5 | Stream collect: memoize `subject_aliases` (3.1 M calls). | S | profile of one run |
-| 6 | Scratch reap: stop at a folder's own time, not at each file (2.44 M `lstat`); find the child commands that it waits for. | M | dry run of 639 s |
+| 6 | Scratch reap: done for folders kept from their own time or an independent hold; the child commands are named (the borrower `find` is 327 s of 814 s). Open: the borrower `find`. | S | [Dry runs and child command timings](#scratch-reap-dry-run-2026-11-27) |
 | 7 | Publish line: slot wait median 7 min and p90 39 min with 2 slots on 14 cores at load 22+. The slot count guards a named danger (`2026-11-24-treecheck-slots`); measure the danger before a change. Pipeline checks re-run 145 of 231 tests per publish. | L | needs the page's own measurement |
 | 8 | Metronome: done (`metronome_profile.md`); its five fixes are on that page. | | |
 | 9 | Helper runs: record model seconds and tool seconds per run (today UNMEASURED); then the 833 h can be split. | S | any run's record |
