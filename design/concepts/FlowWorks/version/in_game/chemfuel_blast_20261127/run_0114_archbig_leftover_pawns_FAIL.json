@@ -1,0 +1,664 @@
+{
+ "script": "live_chemfuel_blast.py",
+ "started": "20261127T011432",
+ "rows": {
+  "A1": {
+   "status": "FAIL",
+   "detail": {
+    "pid": "Human37585",
+    "start": [
+     123,
+     150
+    ],
+    "end": [
+     126,
+     146
+    ],
+    "gain": 4.66,
+    "throw": 0.0,
+    "walk": 4.66,
+    "rows": [
+     "request",
+     "bruise",
+     "blocked"
+    ],
+    "skips": []
+   }
+  },
+  "A2": {
+   "status": "PASS",
+   "detail": {
+    "pid": "Human37588",
+    "start": [
+     122,
+     153
+    ],
+    "end": [
+     122,
+     153
+    ],
+    "gain": 0.0,
+    "throw": 0.0,
+    "walk": 0.0,
+    "rows": [
+     "request",
+     "skip"
+    ],
+    "skips": [
+     "too_weak"
+    ],
+    "insideThrow": 0.0
+   }
+  },
+  "A3": {
+   "status": "FAIL",
+   "detail": {
+    "pid": "Human37591",
+    "start": [
+     122,
+     145
+    ],
+    "end": [
+     122,
+     146
+    ],
+    "gain": -1.0,
+    "throw": 0.0,
+    "walk": -1.0,
+    "rows": [],
+    "skips": []
+   }
+  }
+ },
+ "log": [
+  [
+   "ProofResetRect",
+   "118;143;13;14",
+   "RESET cells=9 levels=36 rolled=0 released=0 bodies=0 swim=0 left=0"
+  ],
+  [
+   "ProofFillWithFluid",
+   "120,149,2.0,RM_Fluid_Chemfuel",
+   "FILLED (120, 0, 149) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "120,150,2.0,RM_Fluid_Chemfuel",
+   "FILLED (120, 0, 150) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "120,151,2.0,RM_Fluid_Chemfuel",
+   "FILLED (120, 0, 151) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "121,149,2.0,RM_Fluid_Chemfuel",
+   "FILLED (121, 0, 149) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "121,150,2.0,RM_Fluid_Chemfuel",
+   "FILLED (121, 0, 150) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "121,151,2.0,RM_Fluid_Chemfuel",
+   "FILLED (121, 0, 151) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "122,149,2.0,RM_Fluid_Chemfuel",
+   "FILLED (122, 0, 149) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "122,150,2.0,RM_Fluid_Chemfuel",
+   "FILLED (122, 0, 150) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "122,151,2.0,RM_Fluid_Chemfuel",
+   "FILLED (122, 0, 151) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofReport",
+   "x",
+   "FIRE burning 0 | front pending 0 | burned levels 7 | detonations 0 cells 0 queued 0"
+  ],
+  [
+   "Clear",
+   "x",
+   "CLEARED"
+  ],
+  [
+   "ProofIgnite",
+   "122,150",
+   "LIT (122, 0, 150) | FIRE burning 1 | front pending 3 | burned levels 7 | detonations 0 cells 0 queued 0"
+  ],
+  [
+   "ProofIgnitionBlasts",
+   "x",
+   "IGNITIONBLASTS 122,150 r=3.45 t=473 fired"
+  ],
+  [
+   "Journal",
+   "4000",
+   "{\"type\":\"request\",\"tick\":474,\"exp\":37595,\"thing\":\"Human37585\",\"def\":\"Human\",\"from\":[123,150],\"centre\":[122,150],\"radius\":3.448,\"force\":0.5,\"damType\":\"Flame\",\"source\":\"damageDef\",\"shieldAbsorbed\":false,\"typeForce\":0.5,\"damage\":10,\"damageRatio\":1}\n{\"type\":\"bruise\",\"tick\":474,\"exp\":37595,\"thing\":\"Human"
+  ]
+ ],
+ "settingsBefore": {
+  "canalFireEnabled": "True",
+  "chemfuelIgnitionBlastEnabled": "True",
+  "rainDousesLiquidFireEnabled": "True"
+ },
+ "bodyDl": 360000,
+ "draft": {
+  "inside": {
+   "success": true,
+   "drafted": true,
+   "fireAtWill": true,
+   "wasDrafted": false,
+   "changed": true,
+   "operation": {
+    "OperationId": "op_cd8f92b5a0604b628c249aaf364f6d7e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 23
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 473
+   }
+  },
+  "edge": {
+   "success": true,
+   "drafted": true,
+   "fireAtWill": true,
+   "wasDrafted": false,
+   "changed": true,
+   "operation": {
+    "OperationId": "op_bd6d6f06a24e47649e544f8452594213",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 473
+   }
+  },
+  "outside": {
+   "success": true,
+   "drafted": true,
+   "fireAtWill": true,
+   "wasDrafted": false,
+   "changed": true,
+   "operation": {
+    "OperationId": "op_bb1e0b1c33734be5bd4c679e2045e28c",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 36
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 473
+   }
+  }
+ },
+ "pawns": {
+  "ids": {
+   "inside": "Human37585",
+   "edge": "Human37588",
+   "outside": "Human37591"
+  },
+  "start": {
+   "inside": [
+    123,
+    150
+   ],
+   "edge": [
+    122,
+    153
+   ],
+   "outside": [
+    122,
+    145
+   ]
+  }
+ },
+ "trace": [
+  [
+   0,
+   {
+    "inside": [
+     123,
+     150
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     145
+    ]
+   }
+  ],
+  [
+   20,
+   {
+    "inside": [
+     123,
+     150
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   40,
+   {
+    "inside": [
+     123,
+     150
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   60,
+   {
+    "inside": [
+     123,
+     150
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   80,
+   {
+    "inside": [
+     123,
+     150
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   100,
+   {
+    "inside": [
+     123,
+     150
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   120,
+   {
+    "inside": [
+     124,
+     149
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   140,
+   {
+    "inside": [
+     126,
+     147
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   160,
+   {
+    "inside": [
+     126,
+     146
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ],
+  [
+   180,
+   {
+    "inside": [
+     126,
+     146
+    ],
+    "edge": [
+     122,
+     153
+    ],
+    "outside": [
+     122,
+     146
+    ]
+   }
+  ]
+ ],
+ "blast": [
+  "PASS",
+  {
+   "blasts": [
+    {
+     "x": 122,
+     "z": 150,
+     "r": 3.45,
+     "t": 473,
+     "fired": true
+    }
+   ],
+   "rWant": 3.448,
+   "rTol": 0.01
+  }
+ ],
+ "end": {
+  "inside": [
+   126,
+   146
+  ],
+  "edge": [
+   122,
+   153
+  ],
+  "outside": [
+   122,
+   146
+  ]
+ },
+ "journalRows": 13,
+ "journal": [
+  {
+   "type": "request",
+   "tick": 474,
+   "exp": 37595,
+   "thing": "Human37585",
+   "def": "Human",
+   "from": [
+    123,
+    150
+   ],
+   "centre": [
+    122,
+    150
+   ],
+   "radius": 3.448,
+   "force": 0.5,
+   "damType": "Flame",
+   "source": "damageDef",
+   "shieldAbsorbed": false,
+   "typeForce": 0.5,
+   "damage": 10,
+   "damageRatio": 1
+  },
+  {
+   "type": "bruise",
+   "tick": 474,
+   "exp": 37595,
+   "thing": "Human37585",
+   "def": "Human",
+   "how": "path",
+   "other": "Human37561",
+   "otherId": 37561,
+   "mass": 60.75,
+   "otherMass": 60.75,
+   "amount": 4,
+   "otherAmount": 4
+  },
+  {
+   "type": "blocked",
+   "tick": 474,
+   "exp": 37595,
+   "thing": "Human37585",
+   "def": "Human",
+   "from": [
+    123,
+    150
+   ],
+   "planned": 2,
+   "stop": "Pawn",
+   "impact": 4,
+   "otherImpact": 4,
+   "door": false
+  },
+  {
+   "type": "request",
+   "tick": 476,
+   "exp": 37595,
+   "thing": "Human37561",
+   "def": "Human",
+   "from": [
+    124,
+    150
+   ],
+   "centre": [
+    122,
+    150
+   ],
+   "radius": 3.448,
+   "force": 0.5,
+   "damType": "Flame",
+   "source": "damageDef",
+   "shieldAbsorbed": false,
+   "typeForce": 0.5,
+   "damage": 10,
+   "damageRatio": 1
+  },
+  {
+   "type": "skip",
+   "tick": 476,
+   "exp": 37595,
+   "thing": "Human37561",
+   "def": "Human",
+   "reason": "immune",
+   "recoversAt": 657
+  },
+  {
+   "type": "request",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37544",
+   "def": "Human",
+   "from": [
+    122,
+    153
+   ],
+   "centre": [
+    122,
+    150
+   ],
+   "radius": 3.448,
+   "force": 0.5,
+   "damType": "Flame",
+   "source": "damageDef",
+   "shieldAbsorbed": false,
+   "typeForce": 0.5,
+   "damage": 10,
+   "damageRatio": 1
+  },
+  {
+   "type": "request",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37564",
+   "def": "Human",
+   "from": [
+    122,
+    153
+   ],
+   "centre": [
+    122,
+    150
+   ],
+   "radius": 3.448,
+   "force": 0.5,
+   "damType": "Flame",
+   "source": "damageDef",
+   "shieldAbsorbed": false,
+   "typeForce": 0.5,
+   "damage": 10,
+   "damageRatio": 1
+  },
+  {
+   "type": "request",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37588",
+   "def": "Human",
+   "from": [
+    122,
+    153
+   ],
+   "centre": [
+    122,
+    150
+   ],
+   "radius": 3.448,
+   "force": 0.5,
+   "damType": "Flame",
+   "source": "damageDef",
+   "shieldAbsorbed": false,
+   "typeForce": 0.5,
+   "damage": 10,
+   "damageRatio": 1
+  },
+  {
+   "type": "request",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37519",
+   "def": "Human",
+   "from": [
+    125,
+    150
+   ],
+   "centre": [
+    122,
+    150
+   ],
+   "radius": 3.448,
+   "force": 0.5,
+   "damType": "Flame",
+   "source": "damageDef",
+   "shieldAbsorbed": false,
+   "typeForce": 0.5,
+   "damage": 10,
+   "damageRatio": 1
+  },
+  {
+   "type": "skip",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37544",
+   "def": "Human",
+   "reason": "too_weak",
+   "dist": 3,
+   "mass": 60.75
+  },
+  {
+   "type": "skip",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37564",
+   "def": "Human",
+   "reason": "too_weak",
+   "dist": 3,
+   "mass": 60.75
+  },
+  {
+   "type": "skip",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37588",
+   "def": "Human",
+   "reason": "too_weak",
+   "dist": 3,
+   "mass": 60.75
+  },
+  {
+   "type": "skip",
+   "tick": 477,
+   "exp": 37595,
+   "thing": "Human37519",
+   "def": "Human",
+   "reason": "too_weak",
+   "dist": 3,
+   "mass": 60.75
+  }
+ ],
+ "exps": [
+  37595
+ ]
+}

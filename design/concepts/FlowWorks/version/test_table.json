@@ -5071,6 +5071,28 @@
     "entry_exists": true,
     "why": "red on the parent 73ecd94b31, green on 049e36e37c, ArchSmall 2026-11-25"
    }
+  },
+  "LCB_LIT_CHEMFUEL_BLAST_THROWS": {
+   "id": "LCB_LIT_CHEMFUEL_BLAST_THROWS",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/FlowWorks/northstar/live_chemfuel_blast.py",
+   "entry": "__main__",
+   "observes": "a 3x3 pit of 2 m chemfuel lit beside three drafted colonists: one flame blast at the lit square sized like a vanilla chemfuel stack; Explosive Knockback throws the inside colonist away from it, reaches the edge colonist no harder, and leaves the outside colonist untouched (rows blast, A1, A2, A3)",
+   "reads": [
+    "src/RimMandrake/FlowWorks/northstar/live_chemfuel_blast.py",
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetFire.cs",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs"
+   ],
+   "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\live_chemfuel_blast.py  (bridge held; explosiveknockback_visit tier; the EK proof build, RmProofs=true)",
+   "why_game": "the throw is Explosive Knockback's response to FlowWorks' real GenExplosion in a played map; the blast's rule is decided offline by FuelFire_chemfuel_ignition_blast_once_sized_like_a_vanilla_stack",
+   "cheaper_why": "the offline FuelFire case proves the radius and the once-per-light rule but cannot run EK's Harmony hook on a real explosion; only the game shows the pawn thrown",
+   "owed_under": "RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK",
+   "runs_today": {
+    "ran": true,
+    "entry_exists": true,
+    "why": "PASS 4/4 on ArchBig 2026-11-27 02:31 PST (FlowWorks 9f8c5d6de9, EK proof build). Red readings by hand (red-seen cannot plant in the scene or in game-loaded C#): the parent scene on planted leftover colonists FAIL (A1 blocked, A3 moved), the repaired scene on the same PASS; chemfuelIgnitionBlastEnabled off FAIL on every row (evidence: design/concepts/FlowWorks/version/in_game/chemfuel_blast_20261127/)"
+   }
   }
  },
  "bars": [

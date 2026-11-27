@@ -65,6 +65,22 @@ def main():
     check(P.v_pawn("outside", "H3", (122, 145), (122, 144), [], {7}, LIT)[0] == "FAIL", "outside moved fails")
     check(P.v_pawn("outside", "H3", (122, 145), (122, 145), [{"exp": 9, "thing": "H3"}], {7}, LIT)[0] == "PASS",
           "another explosion's row is not this blast's")
+    site = (118, 143, 13, 14)
+    pw = [{"id": "Old1", "x": 124, "z": 150}, {"id": "Old2", "x": 122, "z": 145, "isPlayer": True},
+          {"id": "Dead", "x": 124, "z": 150, "dead": True}, {"id": "Gone", "x": 124, "z": 150, "spawned": False},
+          {"id": "Far", "x": 200, "z": 150}, {"id": "Rim", "x": 115, "z": 140}, {"id": "Out", "x": 114, "z": 150},
+          {"id": "NoPos", "x": None, "z": None}]
+    check(P.squatters(pw, site) == ["Old1", "Old2", "Rim"], "squatters: live spawned pawns of any faction on site+margin: %r"
+          % P.squatters(pw, site))
+    check(P.squatters([], site) == [], "no pawns, no squatters")
+    col = {"isPlayer": True, "intelligence": "Humanlike"}
+    mine = [dict(col, id="H1"), dict(col, id="H2"), dict(col, id="H3")]
+    check(P.own_to_remove(mine + [dict(col, id="Map1")], ["H1", "H2", "H3"]) == ["H1", "H2", "H3"],
+          "own pawns go while a map colonist stays")
+    check(P.own_to_remove(mine, ["H1", "H2", "H3"]) == [], "own pawns stay when they are the last colonists")
+    check(P.own_to_remove(mine + [dict(col, id="Dead", dead=True), {"id": "Dog", "isPlayer": True,
+                                                                     "intelligence": "Animal"}], ["H1", "H2", "H3"]) == [],
+          "a dead colonist or a colony animal does not keep the colony")
     print("selftest_live_chemfuel_blast: %d/%d cases hold%s" % (n[0] - len(bad), n[0], "" if not bad else ": " + "; ".join(bad)))
     return 1 if bad else 0
 

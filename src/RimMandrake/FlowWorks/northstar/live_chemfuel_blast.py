@@ -28,6 +28,9 @@ expected radius; no blast is a FAIL of the mod (the lit body should have explode
 
     python3 live_chemfuel_blast.py [--origin 120,150] [--ticks 180]
 
+Before it spawns, it vanishes every pawn (any faction) on its site plus SQUAT_MARGIN and reads back none; at the end it vanishes
+its own three while another colonist stays on the map, so a rerun at the same origin starts clean.
+
 Exit 0 when all three hold, 1 when one fails, 2 when it could not measure. Settings it touches are restored.
 """
 import argparse
@@ -62,6 +65,10 @@ FIRE_CHECK_TICKS = 30   # RM_FireMath.FireCheckIntervalTicks: the fire state is 
 # The blast burns and throws the colonists by design: the governor's hurt/downed latch is waived for the ticks after the
 # light only (the narrowing pit_exposure_raised_ladder_live.py uses); a modal, a clock jump or the colony lost still stop.
 BLAST_STOP_ON = "clock_discontinuity,modal_stuck,colony_loss,cancel"
+# A pawn left on the site by an earlier run stood in the inside pawn's flight lane and EK blocked the launch ("blocked, stop:
+# Pawn"), and one sharing the outside pawn's square walked it off by one (live 2026-11-27 01:14, ArchBig): destroy_batch never
+# removes pawns and remove_intruders never matches colonists, so the scene vanishes every pawn on its site plus this margin.
+SQUAT_MARGIN = 3    # squares: a burning pawn runs about (A2's walk was 5.6 squares in 180 ticks, live 2026-11-27 01:08)
 TRACE_STEP = 20     # ticks between position reads: a colonist walks ~4.6 squares/s = ~1.5 squares in 20 ticks
                     # (Human MoveSpeed 4.6, Races_Humanlike.xml)
 
@@ -107,6 +114,25 @@ def v_blast(blasts, lit, r_want):
 def blast_exps(rows, lit):
     """EK explosion ids whose request rows are centred on the lit square."""
     return {r.get("exp") for r in rows if r.get("type") == "request" and r.get("centre") == list(lit)}
+
+
+def squatters(pawn_rows, rect, margin=SQUAT_MARGIN):
+    """Ids of live, spawned pawns of ANY faction standing on rect (x, z, w, h) widened by margin: an earlier run's colonists
+    included, which no site sweep matches."""
+    rx, rz, rw, rh = rect
+    return sorted(r["id"] for r in pawn_rows
+                  if not r.get("dead") and r.get("spawned", True) and r.get("x") is not None and r.get("z") is not None
+                  and rx - margin <= r["x"] < rx + rw + margin and rz - margin <= r["z"] < rz + rh + margin)
+
+
+def own_to_remove(pawn_rows, own_ids):
+    """The scene's own pawns to vanish at the end: all of them while another live colonist stays on the map, else none
+    (the sweep can take the map's starting colonists, and a map left with no colonist ends the colony; the next run's sweep
+    clears what stays)."""
+    own = set(own_ids)
+    others = [r for r in pawn_rows if r.get("id") not in own and r.get("isPlayer") and r.get("intelligence") == "Humanlike"
+              and not r.get("dead") and r.get("spawned", True)]
+    return sorted(own) if others else []
 
 
 def dist(a, b):
@@ -197,6 +223,8 @@ def main(argv=None):
     places = {"inside": (ox + 3, oz), "edge": (ox + 2, oz + 3), "outside": (ox + 2, oz - 5)}
     site = (ox - 2, oz - 7, 13, 14)
     saved = {}
+    pids = {}
+    H = V._helpers()
     if (B.call("rimworld/get_ui_state") or {}).get("programState") != "Playing":
         print("UNMEASURED: the game is not Playing")
         return 2
@@ -233,7 +261,13 @@ def main(argv=None):
         cold = sc(FIRE, "ProofReport", "x") or ""
         if not cold.startswith("FIRE burning 0 | front pending 0"):
             return unmeasured("the map holds fire before the light (%r): a fresh light is not testable" % cold[:120])
-        pids = {}
+        squat = squatters(H.read_pawns(B, health=False), site)
+        if squat:
+            H._kill_ids(B, set(squat), "cfb_squatters", lambda x: True, action="vanish")
+        left = squatters(H.read_pawns(B, health=False), site)
+        res["squatters"] = {"vanished": squat, "left": left}
+        if left:
+            return unmeasured("pawns still on the site after the sweep: %s" % left)
         for role, c in places.items():
             got = B.call("jawa/spawn_pawn", kindDef="Colonist", x=c[0], z=c[1], faction="player", count=1) or {}
             pid = ((got.get("pawns") or [{}])[0]).get("id")
@@ -277,6 +311,14 @@ def main(argv=None):
         sts = [st for st, _ in verdicts.values()]
         return 0 if all(s == "PASS" for s in sts) else (1 if "FAIL" in sts else 2)
     finally:
+        if pids:    # the next run finds a clean site (an earlier run's colonists blocked its lanes)
+            try:
+                gone = own_to_remove(H.read_pawns(B, health=False), pids.values())
+                res["ownPawnsVanished"] = gone
+                if gone:
+                    H._kill_ids(B, set(gone), "cfb_own_pawns", lambda x: True, action="vanish")
+            except Exception as ex:  # noqa: BLE001 - the next run's sweep still clears them; the verdict stands
+                res["ownPawnsLeft"] = repr(ex)
         for f, v in saved.items():
             if v is not None:
                 sset(f, v)

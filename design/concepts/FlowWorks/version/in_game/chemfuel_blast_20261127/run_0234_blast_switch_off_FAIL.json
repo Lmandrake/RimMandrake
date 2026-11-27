@@ -1,0 +1,442 @@
+{
+ "script": "live_chemfuel_blast.py",
+ "started": "20261127T023436",
+ "rows": {
+  "A1": {
+   "status": "FAIL",
+   "detail": {
+    "pid": "Human9326",
+    "start": [
+     163,
+     150
+    ],
+    "end": [
+     162,
+     154
+    ],
+    "gain": 3.0,
+    "throw": 0.0,
+    "walk": 3.0,
+    "rows": [],
+    "skips": [],
+    "why": "the can-see blast row is FAIL",
+    "own": "FAIL"
+   }
+  },
+  "A2": {
+   "status": "FAIL",
+   "detail": {
+    "pid": "Human9329",
+    "start": [
+     162,
+     153
+    ],
+    "end": [
+     162,
+     153
+    ],
+    "gain": 0.0,
+    "throw": 0.0,
+    "walk": 0.0,
+    "rows": [],
+    "skips": [],
+    "insideThrow": 0.0,
+    "why": "the can-see blast row is FAIL",
+    "own": "FAIL"
+   }
+  },
+  "A3": {
+   "status": "FAIL",
+   "detail": {
+    "pid": "Human9332",
+    "start": [
+     162,
+     145
+    ],
+    "end": [
+     162,
+     145
+    ],
+    "gain": 0.0,
+    "throw": 0.0,
+    "walk": 0.0,
+    "rows": [],
+    "skips": [],
+    "why": "the can-see blast row is FAIL",
+    "own": "PASS"
+   }
+  }
+ },
+ "log": [
+  [
+   "ProofResetRect",
+   "158;143;13;14",
+   "RESET cells=0 levels=0 rolled=0 released=0 bodies=0 swim=0 left=0"
+  ],
+  [
+   "ProofFillWithFluid",
+   "160,149,2.0,RM_Fluid_Chemfuel",
+   "FILLED (160, 0, 149) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "160,150,2.0,RM_Fluid_Chemfuel",
+   "FILLED (160, 0, 150) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "160,151,2.0,RM_Fluid_Chemfuel",
+   "FILLED (160, 0, 151) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "161,149,2.0,RM_Fluid_Chemfuel",
+   "FILLED (161, 0, 149) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "161,150,2.0,RM_Fluid_Chemfuel",
+   "FILLED (161, 0, 150) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "161,151,2.0,RM_Fluid_Chemfuel",
+   "FILLED (161, 0, 151) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "162,149,2.0,RM_Fluid_Chemfuel",
+   "FILLED (162, 0, 149) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "162,150,2.0,RM_Fluid_Chemfuel",
+   "FILLED (162, 0, 150) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofFillWithFluid",
+   "162,151,2.0,RM_Fluid_Chemfuel",
+   "FILLED (162, 0, 151) W=40000dL fluid=RM_Fluid_Chemfuel"
+  ],
+  [
+   "ProofReport",
+   "x",
+   "FIRE burning 0 | front pending 0 | burned levels 16 | detonations 0 cells 0 queued 0"
+  ],
+  [
+   "Clear",
+   "x",
+   "CLEARED"
+  ],
+  [
+   "ProofIgnite",
+   "162,150",
+   "LIT (162, 0, 150) | FIRE burning 1 | front pending 3 | burned levels 16 | detonations 0 cells 0 queued 0"
+  ],
+  [
+   "ProofIgnitionBlasts",
+   "x",
+   "IGNITIONBLASTS"
+  ],
+  [
+   "Journal",
+   "4000",
+   ""
+  ]
+ ],
+ "settingsBefore": {
+  "canalFireEnabled": "True",
+  "chemfuelIgnitionBlastEnabled": "True",
+  "rainDousesLiquidFireEnabled": "True"
+ },
+ "bodyDl": 360000,
+ "squatters": {
+  "vanished": [],
+  "left": []
+ },
+ "draft": {
+  "inside": {
+   "success": true,
+   "drafted": true,
+   "fireAtWill": true,
+   "wasDrafted": false,
+   "changed": true,
+   "operation": {
+    "OperationId": "op_45f8ffa07902464c8267633948d18c23",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 43
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 888
+   }
+  },
+  "edge": {
+   "success": true,
+   "drafted": true,
+   "fireAtWill": true,
+   "wasDrafted": false,
+   "changed": true,
+   "operation": {
+    "OperationId": "op_32ba2612321e442688a9eedb553344a8",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 38
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 888
+   }
+  },
+  "outside": {
+   "success": true,
+   "drafted": true,
+   "fireAtWill": true,
+   "wasDrafted": false,
+   "changed": true,
+   "operation": {
+    "OperationId": "op_09ce04ac0daa4cd6acec15438e75bc73",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 45
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 888
+   }
+  }
+ },
+ "pawns": {
+  "ids": {
+   "inside": "Human9326",
+   "edge": "Human9329",
+   "outside": "Human9332"
+  },
+  "start": {
+   "inside": [
+    163,
+    150
+   ],
+   "edge": [
+    162,
+    153
+   ],
+   "outside": [
+    162,
+    145
+   ]
+  }
+ },
+ "trace": [
+  [
+   0,
+   {
+    "inside": [
+     163,
+     150
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   20,
+   {
+    "inside": [
+     163,
+     150
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   40,
+   {
+    "inside": [
+     163,
+     150
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   60,
+   {
+    "inside": [
+     164,
+     151
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   80,
+   {
+    "inside": [
+     165,
+     152
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   100,
+   {
+    "inside": [
+     166,
+     153
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   120,
+   {
+    "inside": [
+     165,
+     153
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   140,
+   {
+    "inside": [
+     164,
+     153
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   160,
+   {
+    "inside": [
+     163,
+     153
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ],
+  [
+   180,
+   {
+    "inside": [
+     162,
+     154
+    ],
+    "edge": [
+     162,
+     153
+    ],
+    "outside": [
+     162,
+     145
+    ]
+   }
+  ]
+ ],
+ "blast": [
+  "FAIL",
+  {
+   "blasts": [],
+   "rWant": 3.448,
+   "rTol": 0.01
+  }
+ ],
+ "end": {
+  "inside": [
+   162,
+   154
+  ],
+  "edge": [
+   162,
+   153
+  ],
+  "outside": [
+   162,
+   145
+  ]
+ },
+ "journalRows": 0,
+ "journal": [],
+ "exps": [],
+ "ownPawnsVanished": [
+  "Human9326",
+  "Human9329",
+  "Human9332"
+ ]
+}
