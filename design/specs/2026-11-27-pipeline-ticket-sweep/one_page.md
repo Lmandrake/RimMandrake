@@ -26,8 +26,8 @@ the small list, a park lifted with the obvious answer). It re-reads every ticket
 | STALE, dropped | 1 |
 | NOT WORTH THE TOUCH, dropped | 1 |
 | KEEP, with an act in this run (un-parked or un-blocked for the ticket lane: 3; half of a check moved to the small list: 1; home corrected: 1) | 5 |
-| KEEP, no act (full list only 10; his act, his park or his word 6; a date, the pick of 2026-12-04 or a program ends it 16; raid pause, standing items and a Conductor read after a mod run 5) | 37 |
-| CONDUCTOR CALL (listed below) | 14 |
+| KEEP, no act (full list only 10; his act, his park, his hold or his word 7; a date, the pick of 2026-12-04 or a program ends it 16; raid pause, standing items and a Conductor read after a mod run 5) | 38 |
+| CONDUCTOR CALL (listed below) | 13 |
 | total | 62 |
 
 ## Tickets
@@ -58,7 +58,7 @@ the small list, a park lifted with the obvious answer). It re-reads every ticket
 | `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED` | STALE | dropped: 13b57e7bde | none. His card of 2026-11-14 ("Per mod, as it advances") made the placement of a mod's held statements in its test table the ingest. All four advancing mods placed theirs. The acceptance ("empty the holding store") now conflicts, because each mod's preflight reads that store. |
 | `RIMMANDRAKE_ENACT_GPT_STREAMLINE_REVIEW_TRUST_NOT_SUSPICION` | KEEP (dated wait) | none | Batches one and two and the ten contradictions are done. The prompt diet waits for his rule-file length review (2026-12-05). |
 | `RIMMANDRAKE_EVAL_CRYSTALLIZE_SKILL_ONCE_AFTER_EDITS_SETTLE` | KEEP (dated wait) | none | It waits for a fact: the end of the skill edits. His word of 2026-11-24 was "not finished", and the weekly pass still edits the skill. |
-| `SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP` | CONDUCTOR CALL | none | Steps 1 and 2 are done and hold. Step 3 is his hold of 2026-11-03 ("3 hold for later ... Let's not break ourselves for name correctness"). |
+| `SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP` | KEEP (his hold) | none | Steps 1 and 2 are done and hold. Step 3 is his hold of 2026-11-03 ("3 hold for later ... Let's not break ourselves for name correctness"): hold means keep for later, not drop, so nothing is owed now. The block of kind owner (2026-11-27) holds it. |
 | `RIMMANDRAKE_SETTLE_LANE_LEFTOVERS_OF_NOV_19_SITTING` | KEEP (program ends it) | none | Its check fails only on RIMMANDRAKE_CUTOVER_PILOT_MODS_TO_LEDGER_SAME_DAY. The list_effect tick closes it after the study. |
 | `RIMMANDRAKE_STUDY_WHAT_ONE_WEEK_OF_MODS_TAUGHT_ON_NOV_TWENTY_NINE` | KEEP (dated) | none | Owed on 2026-11-29. |
 | `RIMMANDRAKE_VERIFY_BIOME_CHOICES_BEFORE_OLD_FILES_GO` | KEEP (his word) | none | The Conductor already marked it ASK HIS (3:25 AM PST 2026-11-27). His card answer of 2026-11-18 ("let's do it carefully. We will need artifacts that let us deeply see what was chosen") is concrete evidence against deleting before he reads the pages. It deletes no file of ours by program. |
@@ -102,10 +102,6 @@ the small list, a park lifted with the obvious answer). It re-reads every ticket
 Each call gives the question, the obvious answer, the evidence and what a wrong call costs. None of them is one of his
 five acts.
 
-- `SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP`. Question: close the item on steps 1 and 2, and drop step 3? Obvious
-  answer: yes. Evidence: steps 1 and 2 hold and their test passes (run of 2026-11-26). Step 3 is his hold of 2026-11-03
-  ("3 hold for later ... Let's not break ourselves for name correctness"), and nothing else is owed. Wrong call costs:
-  a seat key that keeps an old name; a later rename is a new ticket.
 - `STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_JPMKTL_R3` and `STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_YVBFTB`. Question:
   should a lane-cause ticket that is seen in two incidents be offered to the ticket lane between incidents? Today the
   steward blocks it, and only the next incident lifts the block. Obvious answer: yes, a cause seen twice gets one
