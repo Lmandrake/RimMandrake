@@ -27,8 +27,10 @@ The word, read on the measured rounds alone (a missing round is shown as UNMEASU
               or open rose from the round before
   FLAT        otherwise (open the same as the round before)
 
-The one behaviour: needs_lines() gives a Needs Conductor line, with the numbers, for every DIVERGING stage, and
-annotate_reading() puts them in the Dispatch tick's reading. It pauses nothing and changes no bar.
+The one behaviour: needs_lines() gives a Needs Conductor line, with the numbers, for every DIVERGING stage of a mod
+that is neither passed nor held by the owner (quiet_mods), and annotate_reading() puts them in the Dispatch tick's
+reading. It pauses nothing and changes no bar. Page of the asks: design/specs/2026-11-27-maturation-convergence-asks/
+boundary.md; tests selftest_maturation_convergence_asks.py.
 
     python3 src/RimMandrake/Utils/maturation_convergence.py [--root DIR] [--json | --print]
 """
