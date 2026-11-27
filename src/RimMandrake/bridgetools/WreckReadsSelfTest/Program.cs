@@ -1,5 +1,5 @@
-// Units of JawaBenchWreckReadsCore.cs (the decisions of jawa/thing_set_sample, jawa/install_blueprint, jawa/study_record and
-// jawa/processor_fill). Prints "U <name> ok" or "U <name> FAIL <why>" per unit and "U-count <n>" last; driven by
+// Units of JawaBenchWreckReadsCore.cs (the decisions of jawa/thing_set_sample, jawa/install_blueprint, jawa/study_record,
+// jawa/processor_fill, jawa/caravan_mass, jawa/caravan_form_load and jawa/reach_edge). Prints "U <name> ok" or "U <name> FAIL <why>" per unit and "U-count <n>" last; driven by
 // src/RimMandrake/bridgetools/selftest_wreck_reads.py, which plants one fault per rule and sees its unit go red.
 using System;
 using System.Collections.Generic;

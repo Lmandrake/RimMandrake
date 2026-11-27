@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Selftest: the four wreck reads of the bridge (JawaBenchWreckReadsCore.cs and its game half JawaBenchWreckTools.cs).
+"""Selftest: the seven wreck reads and acts of the bridge (JawaBenchWreckReadsCore.cs and its game half JawaBenchWreckTools.cs).
 
 Item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL. The tools:
   jawa/thing_set_sample   run a ThingSetMakerDef, or a TraderKindDef's stock, N times; list the defs it produced
@@ -7,6 +7,7 @@ Item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL. The tools:
   jawa/study_record       read the game's study record for a kind of thing, and the projects that need it
   jawa/processor_fill     place the inputs of a factory process (PipeSystem's processor)
   jawa/caravan_mass       a caravan's load against its capacity; jawa/caravan_form_load starts the game's own formation
+  jawa/reach_edge         can a pawn walk from a cell to the map edge, by a named traverse mode
 
 Checks: (1) every unit of WreckReadsSelfTest passes on the production core; (2) each planted fault (one rule broken in a copy of
 the core) turns its named unit red; (3) each tool's game half calls its core rule inside its one main-thread hop, so a tool

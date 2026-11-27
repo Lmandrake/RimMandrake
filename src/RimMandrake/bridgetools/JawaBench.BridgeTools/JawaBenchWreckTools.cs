@@ -238,7 +238,7 @@ namespace JawaBench.BridgeTools
                 "def = a ThingDef defName, or thing = a ThingID whose def is read. Reads only; changes nothing.",
             ResultDescription =
                 "success, def, analysisID, status, timesDone, required, projects[] (defName, requiredDefs[] (def, status), completed, " +
-                "requiredCount, analyzedMet, finished).")]
+                "requiredCount, analyzedMet, gameSays (ResearchProjectDef.AnalyzedThingsCompleted), finished).")]
         public static async Task<object> StudyRecord(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -408,7 +408,6 @@ namespace JawaBench.BridgeTools
                 };
             }, cancellationToken);
         }
-    
 
         // ================================================================
         //  jawa/caravan_mass, jawa/caravan_form_load
@@ -466,8 +465,8 @@ namespace JawaBench.BridgeTools
             Description =
                 "Start forming a caravan the way the Form Caravan dialog does on accept (CaravanFormingUtility.StartFormingCaravan): " +
                 "the named pawns join a LordJob_FormAndSendCaravan, colonists haul the named things into it by their own jobs, and the " +
-                "caravan leaves at an edge cell that the first pawn can reach, bound for destTile. Refused by name: no pawn, a downed or " +
-                "non-player pawn, a thing not spawned on the pawns' map. Returns at once; advance the clock to watch the loading.",
+                "caravan leaves at an edge cell that the first pawn can reach, bound for destTile. Refused by name: no pawn, an id in pawns " +
+                "that is not a pawn, a downed or non-player pawn, a thing not spawned on the pawns' map. Returns at once; advance the clock to watch the loading.",
             ResultDescription = "success, lord (loadID), exit (x, z), startTile, destTile, things[], capacity, usage, over.")]
         public static async Task<object> CaravanFormLoad(
             IRimBridgeContext ctx,
@@ -520,7 +519,6 @@ namespace JawaBench.BridgeTools
                 };
             }, cancellationToken);
         }
-    
 
         // ================================================================
         //  jawa/reach_edge

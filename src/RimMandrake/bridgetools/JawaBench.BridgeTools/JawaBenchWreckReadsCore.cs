@@ -136,11 +136,11 @@ namespace JawaBench.BridgeTools
             return usage > capacity;
         }
 
-        // A formation needs at least one pawn that can walk, and every thing to load on the pawns' map; null when it may start.
+        // A formation needs at least one pawn that can walk (downedOrNotPlayer also counts ids that are not pawns), and every thing to load on the pawns' map; null when it may start.
         public static string FormRefusal(int pawns, int downedOrNotPlayer, int thingsElsewhere, int things)
         {
             if (pawns < 1) return "a caravan needs at least one pawn";
-            if (downedOrNotPlayer > 0) return downedOrNotPlayer + " pawn(s) are downed or not of the player's faction";
+            if (downedOrNotPlayer > 0) return downedOrNotPlayer + " of the named pawns are downed, not of the player's faction, or not pawns";
             if (things < 1) return "name at least one thing to load";
             if (thingsElsewhere > 0) return thingsElsewhere + " thing(s) are not spawned on the pawns' map";
             return null;
