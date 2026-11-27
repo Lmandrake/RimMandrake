@@ -122,6 +122,17 @@ def t_a_lock_over_unlanded_locked_files_is_refused():
           "the refusal names the locked file and the act that clears it (land it)", str(err))
     check(not (isinstance(v, dict) and str(v.get("state") or "").startswith("locked")),
           "the refused lock leaves no locked VERSION.json", v)
+    # each locked file, not tree.json alone: record.json's inventory also feeds the bars that lock_bars derives
+    missed = []
+    for f in M.LOCK_PINNED:
+        if f == "tree.json":
+            continue
+        r_f, _ = clone_with_landed_concept("ahead_" + f.replace(".", "_"))
+        unlanded_commit(r_f, M.rel(MOD, f), "{}\n", "an unlanded %s" % f)
+        v_f, landed_f, err_f = lock(r_f)
+        if err_f is None or landed_f or f not in str(err_f):
+            missed.append(f)
+    check(not missed, "an unlanded change of each other locked file refuses the lock and names that file", missed)
 
 
 def t_lock_bars_says_when_the_lock_commit_is_not_in_the_clone():
