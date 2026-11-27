@@ -402,8 +402,6 @@
   },
   {"key": "accounts.*.runway", "op": "<", "value": 1.0, "alarm": true, "worse": {"factor": 2}, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
    "why": "owner brief 2026-10-26: an account whose runway is below 1 runs out before its weekly reset"},
-  {"key": "accounts.*.loan_runway", "op": "<", "value": 1.0, "alarm": true, "worse": {"factor": 2}, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
-   "why": "a lent account is judged by its loan, not its week (LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK): below 1 its allowance runs out before the lent window ends; 0 is this machine on a closed loan"},
   {"key": "accounts.fleet_stop_h", "op": "<", "value": 4.0, "alarm": true, "tag": "FLEET_STOP_NEAR", "name": "OPS_FLEET_STOP_NEAR", "marks": ["MEASURED", "ESTIMATE"],
    "why": "RIMMANDRAKE_READ_FLEET_MOVED_RUNWAY_IDLE_ACCOUNT_READS_TEN (owner, by card 2026-11-19, 'Build it now'): at the fleet's measured burn the switching plan has no account to run on within 4 h. Nothing warned before the stops of 2026-11-17 03:35 and 05:50 PST; replayed on the recorded readings it reads under 4 from 22:50 PST the night before, 4.8 h ahead of the first. accounts.*.moved_runway has no target of its own: a candidate under 1 is the plan's normal drain, one account after another; the danger is the pool running dry, which is this reading"},
   {"key": "codex.runway", "op": "<", "value": 1.0, "alarm": true, "worse": {"factor": 2}, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],

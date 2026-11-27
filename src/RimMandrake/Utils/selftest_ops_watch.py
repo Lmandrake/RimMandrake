@@ -1085,20 +1085,27 @@ try:
         return (any(f.get("tag") == "RUNWAY_LOW" and f["key"] == key for f in OW.andon(pts, {}, {}, _AL, NOW)),
                 OW.target_state(pts, _AL).get("RUNWAY_LOW:" + key))
     _slope = {"lent": (0.7, 20, 6.0)}
-    check("lent: a rule row judges accounts.*.loan_runway", any(t["key"] == "accounts.*.loan_runway" for t in _AL["targets"]))
+    # RIMMANDRAKE_REAIM_LOAN_RUNWAY_ALARM_WAKES_OPS_AT_EVERY_RESET: the loan target rang at every reset of the lent seat
+    # (35 crossings 2026-11-03..11-26, each an Operations run that read no danger): the drain to the leave line is the
+    # plan's own work, and a run that finishes past it is the plan's account_end. The danger, the pool dry when the
+    # window ends, is accounts.fleet_stop_h. loan_runway stays a reading that judges the lent week runway (no alarm).
+    check("lent: no rule row rings on accounts.*.loan_runway (retired; the pool running dry is FLEET_STOP_NEAR)",
+          not any(t["key"] == "accounts.*.loan_runway" for t in RULES["targets"]))
+    check("lent: the danger stays guarded: FLEET_STOP_NEAR alarms on accounts.fleet_stop_h",
+          any(t["key"] == "accounts.fleet_stop_h" and t.get("alarm") and t["op"] == "<" for t in RULES["targets"]))
     # past the window, 52% used, burning at 0.7%/h: the week says 0.74, the loan is closed and we are not on it
     _o = _lent_pass({"lent": _acct(52.0, 93.0)}, _slope)
     check("lent: the week runway still reads the week (account_pick and role_launch use it)",
           _o["accounts.lent.runway"]["v"] == 0.74 and _o["accounts.lent.runway"]["m"] == "MEASURED", _o["accounts.lent.runway"])
     check("lent: outside the window, not on it: the loan reads closed, no alarm",
           _o["accounts.lent.loan_runway"]["v"] == 10.0 and _alarmed(_o, "accounts.lent.runway") == (False, False)
-          and _alarmed(_o, "accounts.lent.loan_runway") == (False, False), _o["accounts.lent.loan_runway"])
+          and not any(_alarmed(_o, "accounts.lent.loan_runway")), _o["accounts.lent.loan_runway"])
     _o = _lent_pass({"lent": _acct(49.0, 140.0)}, _slope)
     check("lent: over the cap inside the window, not on it: no alarm (the meter cannot tell his use from ours)",
           _o["accounts.lent.loan_runway"]["v"] == 10.0 and not _alarmed(_o, "accounts.lent.loan_runway")[0])
     _o = _lent_pass({"lent": _acct(52.0, 93.0)}, _slope, email="l@x")
-    check("lent: this machine still on a closed loan is the alarm, on the loan key only",
-          _o["accounts.lent.loan_runway"]["v"] == 0.0 and _alarmed(_o, "accounts.lent.loan_runway") == (True, True)
+    check("lent: this machine still on a closed loan reads 0 and rings nothing (a live run finishing past the line)",
+          _o["accounts.lent.loan_runway"]["v"] == 0.0 and not any(_alarmed(_o, "accounts.lent.loan_runway"))
           and _alarmed(_o, "accounts.lent.runway") == (False, False), _o["accounts.lent.loan_runway"])
     # open loan: 40% left to the cap, 20 h of window left. 1%/h lasts 40 h -> 2.0; the week reads 92/(1*140)=0.66
     _o = _lent_pass({"lent": {**_acct(8.0, 140.0)}}, {"lent": (1.0, 20, 6.0)})
@@ -1107,8 +1114,9 @@ try:
           and not _alarmed(_o, "accounts.lent.loan_runway")[0], _o["accounts.lent.loan_runway"])
     check("lent: the same burn would have alarmed against the week", _o["accounts.lent.runway"]["v"] == 0.66, _o["accounts.lent.runway"])
     _o = _lent_pass({"lent": _acct(8.0, 140.0)}, {"lent": (4.0, 20, 6.0)})
-    check("lent: a burn that eats the cap before the window ends alarms",
-          _o["accounts.lent.loan_runway"]["v"] == 0.5 and _alarmed(_o, "accounts.lent.loan_runway") == (True, True))
+    check("lent: a burn that eats the cap before the window ends reads under 1 and rings nothing (the plan's drain)",
+          _o["accounts.lent.loan_runway"]["v"] == 0.5 and not any(_alarmed(_o, "accounts.lent.loan_runway"))
+          and _alarmed(_o, "accounts.lent.runway") == (False, False))
     # 2026-11-25: the plan's temporary line (SYSTEM_THEN_STEVEN_TO_FLOOR_2026_11_20.steven) opened steven until his reset,
     # 8.3 h out, far past his 48 h window. The allowance gave 29 points, but the loan read 0 MEASURED ("this machine is on a
     # closed loan") and held a false RUNWAY_LOW on his rung for 12.8 h. Under a temporary line the window is that line's life.

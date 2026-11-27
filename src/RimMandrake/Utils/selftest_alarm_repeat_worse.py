@@ -326,9 +326,10 @@ def test_dispatcher_breaks_on_worse():
 # (arena.push_refused_24h left with the arena trial, owner card 2026-11-05, 1f0e666566; relentless.game_hold_idle_min left
 # with its reader, relentless_broker.py, in the retired-era split; relentless.books_behind_min and relentless.live_measured_pct
 # with c_relentless, 2026-11-18; companion.grant_hours_left with the grant's expiry,
-# RIMMANDRAKE_REMOVE_GRANT_EXPIRY_CHECKS_ONCE_FOUR_COMPANIONS_REDEPLOYED.)
+# RIMMANDRAKE_REMOVE_GRANT_EXPIRY_CHECKS_ONCE_FOUR_COMPANIONS_REDEPLOYED; accounts.*.loan_runway with its target,
+# RIMMANDRAKE_REAIM_LOAN_RUNWAY_ALARM_WAKES_OPS_AT_EVERY_RESET: the pool dry is FLEET_STOP_NEAR.)
 STATED_STEPS = {
-    "accounts.*.loan_runway", "accounts.*.runway", "codex.runway",
+    "accounts.*.runway", "codex.runway",
     "disk.c_free_gb", "disk.d_free_gb", "disk.pool_breach", "disk.root_free_gb", "disk.scratch_ok_age_h", "disk.tmp_free_gb",
     "disk.tmp_used_pct", "flow.untriaged_findings", "queues.artpipe.stalled_min",
     "queues.testq.stalled_min", "steve.incident_unclaimed_min", "steve.invalid_streak", "steve.seats_absent_min",

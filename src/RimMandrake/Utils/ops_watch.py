@@ -3744,9 +3744,20 @@ def good_targets(rules):
     return [t for t in rows if not target_problem(t)] if isinstance(rows, list) else []
 
 
+def target_retired(aid, rules):
+    """True when aid is TAG:key, some target row carries TAG, and no row with TAG has a key pattern matching key."""
+    tag, sep, key = aid.partition(":")
+    rows = [t for t in (rules.get("targets") or []) if isinstance(t, dict)] if isinstance(rules, dict) else []
+    if not sep or not key or not any(t.get("tag") == tag for t in rows):
+        return False
+    return not any(t.get("tag") == tag and isinstance(t.get("key"), str) and fnmatch.fnmatchcase(key, t["key"])
+                   for t in rows)
+
+
 def judged_elsewhere(p, points):
-    """A week runway of a lent account stays a reading (account_pick and role_launch use it) but raises no alarm: its
-    loan_runway point is the one judged, for as long as that point exists."""
+    """A week runway of a lent account stays a reading (account_pick and role_launch use it) but raises no alarm, for as
+    long as its loan_runway point exists. loan_runway rings nothing either: the drain to the leave line is the plan's
+    own work, and the pool running dry is accounts.fleet_stop_h (RIMMANDRAKE_REAIM_LOAN_RUNWAY_ALARM_WAKES_OPS_AT_EVERY_RESET)."""
     return p.get("judged_by") in points
 
 
@@ -4269,6 +4280,13 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
     for aid in [a for a in state if a.split(":", 1)[-1].split(".", 1)[0] in REMOVED_FAMILIES]:
         was = state.pop(aid)
         log.append({"ts": iso(now), "event": "family_removed", "aid": aid,
+                    "item": was.get("item") if isinstance(was, dict) else None})
+    # an alarm whose target row was retired gets no reading again (crossed None holds it OPEN for good): it leaves with
+    # its row (RIMMANDRAKE_REAIM_LOAN_RUNWAY_ALARM_WAKES_OPS_AT_EVERY_RESET). Only an id whose tag another row still
+    # carries: an id of any other shape is not a target's, and a malformed row still holds what it matches
+    for aid in [a for a in state if target_retired(a, rules)]:
+        was = state.pop(aid)
+        log.append({"ts": iso(now), "event": "target_removed", "aid": aid,
                     "item": was.get("item") if isinstance(was, dict) else None})
     # before any step: a line owed from an earlier pass is retried even when this pass clears its alarm
     retry_conductor_lines(state, now, log)
