@@ -1092,6 +1092,21 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 finish_slot_alarms(rs, run)
                 close_concept(name, rs, cfg, run, {}, 0, now, act, obs)
                 continue
+            look = judge_looked(run, now, obs)
+            if look:
+                # RIMMANDRAKE_CLASS_UNSIGNED_JUDGE_LOOK_AS_VERDICT_FOURTH_VOID: the unit ended at its stage-5 judge,
+                # which answered (Wrecked Machines 2026-11-27: not_covered, the judge's own fix, STOP_EXIT). That is
+                # the judge's result, never void_system: 0 tokens here (coverage_judge charges its own look)
+                run.update(state="done", tokens=0, raw_tokens=0, token_unit=TOKEN_UNIT, by="judge_look",
+                           judge_look=look)
+                act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
+                    why="%s run %s ended at the stage-5 coverage judge %s (%s, not signed): the judge's look, no "
+                        "system fault; no model started, 0 tokens; next: %s" % (
+                            name, run["unit"], look["judge"], look["verdict"], look["next"]),
+                    blind=blind(name, "completed", run.get("mode"), run["unit"]))
+                finish_slot_alarms(rs, run)
+                close_concept(name, rs, cfg, run, {}, 0, now, act, obs)
+                continue
         if run.get("concept") and isinstance(res, dict):
             try:
                 pc = (obs.get("program_closed") or program_closed)(run["concept"], run["unit"])
@@ -2370,6 +2385,45 @@ def judge_stopped(run, now, obs):
     return cs
 
 
+def coverage_verdict(concept):
+    """-> the concept's coverage_verdict.json (None when absent)."""
+    import designer_stage as DS
+    return DS.read_json(os.path.join(concept, "coverage_verdict.json"))
+
+
+def judge_looked(run, end, obs):
+    """-> the look {judge, verdict, at, next, chain} when the unit's stage-5 coverage judge answered inside this run's
+    window [run.at, end] with an unsigned verdict and no model started (no transcript), else None (harvested as
+    before: a unit killed before any verdict, a verdict an EARLIER unit left, and a judge round that died of a system
+    cause, coverage_judge.void_cause, stay void_system). `next` is the act the verdict names; `chain` says whether a
+    stage-5 run is that act (RIMMANDRAKE_CLASS_UNSIGNED_JUDGE_LOOK_AS_VERDICT_FOURTH_VOID)."""
+    import coverage_judge as CJ
+    try:
+        v = (obs.get("coverage_verdict") or coverage_verdict)(run["concept"])
+    except Exception:  # noqa: BLE001 - unread: harvested as before
+        return None
+    at = utc_epoch(v.get("at")) if isinstance(v, dict) else None
+    if at is None or v.get("signed") or CJ.void_cause(v) or not int(run["at"]) <= at <= end:
+        return None
+    if obs.get("transcript") and obs["transcript"](run) is not None:
+        return None
+    if v.get("stopped") or v.get("parked"):
+        nxt, chain = "nothing chained: the judge %s the concept" % ("stopped" if v.get("stopped") else "parked"), False
+    elif CJ.own_fix_only(v):
+        nxt, chain = "a fresh judge look (the judge fixed %s itself)" % ", ".join(v["judge_fixed"]["files"]), True
+    elif v.get("advisory") or (v.get("contract") or {}).get("advisory"):
+        nxt, chain = "nothing chained: the advisory verdict waits for a calibrated coverage brief", False
+    else:
+        nxt, chain = "the Designer's mend (stage5-program reads the refusal)", True
+    return {"judge": v.get("judge"), "verdict": v.get("verdict"), "at": v.get("at"), "next": nxt, "chain": chain}
+
+
+def stage_judge_look(concept, unit, look):
+    """designer_stage.judge_look_rejection: the run's no-result rejection marked judge_look -> True when marked."""
+    import designer_stage as DS
+    return DS.judge_look_rejection(concept, unit, look)
+
+
 def program_closed(concept, unit):
     """-> ("closed", its stage.json result entry) when stage5_program closed `unit`, ("error", why) when that step did
     not run on it, else None (the Designer ran, as today)."""
@@ -2457,6 +2511,9 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
                 why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
                     name, run["unit"], run["concept"], str(e)))
         return
+    if run.get("by") == "judge_look" and not ok:
+        judge_look_close(name, rs, cfg, run, now, act, obs)
+        return
     void = None if ok else void_cause(run, res, errs)
     if void:
         try:
@@ -2500,6 +2557,76 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
         act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
             why="%s run %s on %s: after its designer_stage close: %s: %s" % (name, run["unit"], run["concept"],
                                                                       type(e).__name__, str(e)))
+
+
+def judge_look_close(name, rs, cfg, run, now, act, obs):
+    """The close of a run that ended at its stage-5 judge's look (judge_looked): its no-result rejection is marked
+    judge_look (no retry, no rejection route, no void fault), the stage state lands, and stage 5 is chained again
+    when that is the act the verdict names. -> the chained request or None."""
+    look = run.get("judge_look") or {}
+    try:
+        if not (obs.get("stage_judge_look") or stage_judge_look)(run["concept"], run["unit"], look):
+            act(do="alarm", kind="role:%s:stage_judge_look" % name, ticket=run.get("item"), note=True,
+                why="%s run %s on %s: its judge look found no no-result rejection to mark; the record stands as the "
+                    "stage machine wrote it" % (name, run["unit"], run["concept"]))
+    except Exception as e:  # noqa: BLE001 - said: the rejection then counts as a retry, as before
+        act(do="alarm", kind="role:%s:stage_judge_look" % name, ticket=run.get("item"), note=True,
+            why="%s run %s on %s: its judge look could not be marked: %s: %s; the rejection counts" % (
+                name, run["unit"], run["concept"], type(e).__name__, str(e)))
+    try:
+        (obs.get("stage_land") or stage_land)(run["concept"], run["unit"])
+    except Exception as e:  # noqa: BLE001 - said; the files stay on disk and the next close lands them
+        act(do="alarm", kind="role:%s:stage_land" % name, ticket=run.get("item"), note=True,
+            why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
+                name, run["unit"], run["concept"], str(e)))
+    req = None
+    if look.get("chain") and cfg.get("chain_stages") is True:
+        try:
+            st = (obs.get("stage_status") or stage_status)(run["concept"])
+        except Exception as e:  # noqa: BLE001 - said; a hand run-now still works
+            st = None
+            act(do="alarm", kind="role:%s:chain" % name, ticket=run.get("item"), note=True,
+                why="%s run %s on %s: not chained, its stage.json is unreadable: %s" % (
+                    name, run["unit"], run["concept"], str(e)))
+        if isinstance(st, dict) and st.get("status") == "ready":
+            req = chain_ask(name, rs, dict(cfg, runner=run.get("runner", cfg.get("runner", "claude"))),
+                            run["concept"], st.get("stage"), now, act, run["unit"], run.get("item"),
+                            run.get("mode") or "run",
+                            "%s run %s was the stage-5 judge's look (%s %s): next, %s" % (
+                                name, run["unit"], look.get("judge"), look.get("verdict"), look.get("next")),
+                            "after its judge look %s" % run["unit"])
+    act(do="role_stage", kind="role:%s:judge_look" % name, ticket=run.get("item"), note=True,
+        why="%s run %s on %s: the stage-5 judge's look (%s %s), not a system fault; next: %s%s" % (
+            name, run["unit"], run["concept"], look.get("judge"), look.get("verdict"), look.get("next"),
+            "; chained" if req else ""))
+    return req
+
+
+def reclass_judge_look(rs, unit, why, now, obs):
+    """A run an earlier harvest classed void_system that was its stage-5 judge's look (judge_looked, over the window
+    [run.at, the void's time]): its void fault comes off the day's count, the run reads done by judge_look at 0 tokens,
+    and its stage.json rejection is re-marked judge_look (designer_stage.reclass_judge_look), then landed.
+    -> (look, None) or (None, refusal); a refusal writes nothing."""
+    if not str(why or "").strip():
+        return None, "a reclass says why (--why)"
+    run = next((r for r in rs.get("runs") or [] if isinstance(r, dict) and r.get("unit") == unit), None)
+    if not run or not run.get("concept"):
+        return None, "no concept run %s in the role's runs" % unit
+    fault = next((f for f in rs.get("void_faults") or [] if isinstance(f, dict) and f.get("unit") == unit), None)
+    if not fault:
+        return None, "run %s is not classed void_system (no void fault names it)" % unit
+    look = judge_looked(run, fault.get("at") or now, obs)
+    if not look:
+        return None, "run %s left no unsigned verdict of its own judge in [%s, %s]: it stays void_system" % (
+            unit, iso(run["at"]), iso(fault.get("at") or now))
+    import designer_stage as DS
+    if not (obs.get("stage_reclass") or DS.reclass_judge_look)(run["concept"], unit, look):
+        return None, "run %s has no void_system no-result rejection in its stage.json to reclass" % unit
+    rs["void_faults"] = [f for f in rs.get("void_faults") or [] if f is not fault]
+    run.update(state="done", tokens=0, raw_tokens=0, token_unit=TOKEN_UNIT, by="judge_look", judge_look=look,
+               reclassed={"at": now, "why": why.strip(), "was": fault.get("cause")})
+    (obs.get("stage_land") or stage_land)(run["concept"], unit)
+    return look, None
 
 
 def void_cause(run, res, errs):
@@ -3848,7 +3975,32 @@ def main(argv=None):
     g.add_argument("concept")
     j = sub.add_parser("stage5-judge", help="the stage-5 pre-launch judge step, only while still at stage 5 (stage5_judge)")
     j.add_argument("concept")
+    k = sub.add_parser("reclass-judge-look", help="a run classed void_system that was its stage-5 judge's look: "
+                       "reclass it (reclass_judge_look)")
+    k.add_argument("unit")
+    k.add_argument("--role", default="Designer")
+    k.add_argument("--root", help="the dispatcher state dir (default the live one)")
+    k.add_argument("--why", required=True)
     a = p.parse_args(argv)
+    if a.cmd == "reclass-judge-look":
+        import dispatcher as D
+        try:
+            lk, D, st = _cli_state(a.root or D.state_root(True))
+        except Exception as e:  # noqa: BLE001
+            print("UNMEASURED: %s; nothing written" % e, file=sys.stderr)
+            return 2
+        try:
+            rs = (st.get("roles") or {}).get(a.role) or {}
+            look, refused = reclass_judge_look(rs, a.unit, a.why, time.time(), {"transcript": transcript_usage})
+            if refused:
+                print("REFUSED: %s" % refused, file=sys.stderr)
+                return 1
+            D.save(st, a.root or D.state_root(True))
+            print("reclassed %s: the stage-5 judge's look (%s %s), not void_system; next: %s" % (
+                a.unit, look["judge"], look["verdict"], look["next"]))
+            return 0
+        finally:
+            lk.close()
     if a.cmd == "stage5-judge":
         return stage5_judge(os.path.abspath(a.concept))
     if a.cmd == "stage5-program":

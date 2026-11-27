@@ -2212,9 +2212,10 @@ NO_RESULT = "no result.json"     # result_errors' reason when the run left none
 
 
 def stage_retries(st):
-    """-> the rejected or unclosed runs at the current stage, a void_system one (void_rejection) not counted."""
+    """-> the rejected or unclosed runs at the current stage, a void_system one (void_rejection) and a judge look
+    (judge_look_rejection) not counted."""
     return sum(1 for h in st.get("history") or [] if isinstance(h, dict) and h.get("what") == "retry"
-               and h.get("stage") == st.get("stage") and not h.get("void_system"))
+               and h.get("stage") == st.get("stage") and not h.get("void_system") and not h.get("judge_look"))
 
 
 def void_rejection(d, run, cause):
@@ -2225,20 +2226,59 @@ def void_rejection(d, run, cause):
     no retry in the packet, no rejection for rejection_parked. Only a rejection whose every reason is NO_RESULT is
     marked (a result the run did write was judged on its merits). -> True when marked, False when there is nothing to
     mark."""
+    return _mark_no_result(d, run, "void_system", cause, "run %s: %s; its rejection spends no retry" % (run, cause))
+
+
+def judge_look_rejection(d, run, look):
+    """RIMMANDRAKE_CLASS_UNSIGNED_JUDGE_LOOK_AS_VERDICT_FOURTH_VOID: run ended at its stage-5 coverage judge
+    (role_launch.judge_looked: the judge answered with an unsigned verdict of this run's own, and no model started), so
+    its no-result rejection is the judge's look, not the Designer's work and not a machine failure. Its rejection row
+    and its retry row are marked `judge_look` with the look (judge, verdict, next act): no retry in the packet, no
+    rejection for rejection_parked, no loop spend for the run itself (the judge's look is charged by coverage_judge's
+    own rules). -> True when marked, False when there is nothing to mark (no all-NO_RESULT rejection, or already
+    marked either way)."""
+    look = {k: look.get(k) for k in ("judge", "verdict", "at", "next")} if isinstance(look, dict) else {}
+    return _mark_no_result(d, run, "judge_look", look, "run %s: the stage-5 coverage judge %s answered %s; next: %s; "
+                           "its rejection spends no retry" % (run, look.get("judge"), look.get("verdict"),
+                                                               look.get("next")), what="judge_look")
+
+
+def _mark_no_result(d, run, key, value, text, what=None):
+    """Mark run's last rejection (every reason NO_RESULT) and its retry rows `key`=value, with one history row."""
     st = load_state(d)
     res = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("run") == run
            and r.get("outcome") == "rejected"]
     why = [str(w) for w in (res[-1].get("why") or [])] if res else []
-    if not why or not all(w.startswith(NO_RESULT) for w in why) or res[-1].get("void_system"):
+    if not why or not all(w.startswith(NO_RESULT) for w in why) or res[-1].get("void_system") \
+            or res[-1].get("judge_look"):
         return False
-    res[-1]["void_system"] = cause
+    res[-1][key] = value
     pat = re.compile(r"run %s result rejected" % re.escape(run))
     for h in st.get("history") or []:
         if isinstance(h, dict) and h.get("what") == "retry" and pat.match(str(h.get("why") or "")):
-            h["void_system"] = cause
-    hist(st, "void_system", "run %s: %s; its rejection spends no retry" % (run, cause))
+            h[key] = value
+    hist(st, what or key, text)
     write_json(state_path(d), st)
     return True
+
+
+def reclass_judge_look(d, run, look):
+    """A rejection an earlier harvest marked void_system that was the judge's look (role_launch reclass-judge-look):
+    the void_system marks come off and judge_look_rejection marks it. -> True when reclassed, False when run has no
+    void_system no-result rejection."""
+    st = load_state(d)
+    res = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("run") == run
+           and r.get("outcome") == "rejected"]
+    if not res or not res[-1].get("void_system"):
+        return False
+    was = res[-1].pop("void_system")
+    pat = re.compile(r"run %s result rejected" % re.escape(run))
+    for h in st.get("history") or []:
+        if isinstance(h, dict) and h.get("what") == "retry" and pat.match(str(h.get("why") or "")):
+            h.pop("void_system", None)
+    hist(st, "void_reclassed", "run %s: was void_system (%s); reclassed as the stage-5 judge's look" % (run, was))
+    write_json(state_path(d), st)
+    return judge_look_rejection(d, run, look)
 
 
 def rejection_parked(st, repo=REPO):
@@ -2250,7 +2290,8 @@ def rejection_parked(st, repo=REPO):
     results are rejections at the same stage with the same reasons, run names masked (a retry already met it: the
     identical-rejection route goes to the arbiter). Every cited path landed after the rejection = not parked, even
     after two identical rejections (GSS: rejected 09:14Z and 10:13Z for the file that landed at 10:12Z)."""
-    res = [r for r in (st or {}).get("results") or [] if isinstance(r, dict) and not r.get("void_system")]
+    res = [r for r in (st or {}).get("results") or [] if isinstance(r, dict) and not r.get("void_system")
+           and not r.get("judge_look")]
     if not res or res[-1].get("outcome") != "rejected":
         return None
     why = [str(w) for w in (res[-1].get("why") or [])]
@@ -2349,7 +2390,8 @@ def loop_void_refs(st):
     """-> the charge refs whose spend is void (owner 2026-11-18: no system failure spends a counter): a hand-voided run's
     or judge's (run_void.sync_stage's spend_refs), a void_system judge round's and its second reader's
     (coverage_judge.void_cause), a second reader that died, and a Designer run whose rejection is void_system
-    (void_rejection). Their spend is true spend, shown apart; the loop ceiling counts none of it."""
+    (void_rejection) or judge_look (judge_look_rejection: the unit only ran the judge). Their spend is true spend,
+    shown apart; the loop ceiling counts none of it."""
     import coverage_judge as CJ
     import run_void
     refs = set(run_void.stage_spend_refs(st))
@@ -2360,7 +2402,7 @@ def loop_void_refs(st):
             elif r.get("reader_void_system"):
                 refs.add(r["judge"] + CJ.READER_SUFFIX)
     refs |= {"run %s" % r["run"] for r in st.get("results") or [] if isinstance(r, dict) and r.get("run")
-             and r.get("void_system")}
+             and (r.get("void_system") or r.get("judge_look"))}     # a judge look's own run did no work of its own
     return refs
 
 
@@ -2559,7 +2601,7 @@ def park_summary(d, st, kind, why):
         gaps = []       # his certificate stands past them: they are not refusals, and the line below says so
     sent = [a for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
     rejected = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "rejected"
-                and not r.get("void_system")]
+                and not r.get("void_system") and not r.get("judge_look")]
     code = code_present(rec)
     L = ["# %s: parked for you (%s)" % (mod, kind), "",
          "%s. Nothing runs on it, no Designer run and no judge, until your word on %s. Item %s, stage %s (%s)." % (

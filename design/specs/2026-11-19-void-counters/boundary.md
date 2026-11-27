@@ -2,9 +2,9 @@
 
 Code: `src/RimMandrake/rimflow/run_void.py` (`resolve`, `sync_system`, `heal_system`), the Designer chain count in
 `src/RimMandrake/rimflow/role_launch.py` (`refuse_now`, `give_back_chain`, `close_concept`, the chain sweep in
-`decide_roles`, `never_opened`), the certificate rerun in `src/RimMandrake/rimflow/maturation_dispatch.py` (`cert_rerun_decide`,
+`decide_roles`, `never_opened`; the stage-5 judge look: `judge_looked`, `judge_look_close`, `reclass_judge_look`), the certificate rerun in `src/RimMandrake/rimflow/maturation_dispatch.py` (`cert_rerun_decide`,
 `cert_rerun_launch`) and the Designer's loop ceiling in `src/RimMandrake/rimflow/designer_stage.py` (`loop_start`,
-`loop_spend`, `ceiling_crossed_at`, `loop_ceiling`). Item: `RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE`, written
+`loop_spend`, `ceiling_crossed_at`, `loop_ceiling`; `judge_look_rejection`, `reclass_judge_look`). Item: `RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE`, written
 2026-11-19. The owner, 2026-11-18: *"I will not accept ANY system that pointlessly expends such statistical measurements
 based on failed system calls or behavior."* Each promise has a test of its name in
 `src/RimMandrake/rimflow/selftest_void_counters.py`. This page covers only the six places a review named; the rest of
@@ -79,5 +79,23 @@ the void rule is `run_void.py`'s docstring and `design/RimMandrake/pipeline_tria
   chains the concept again the same day. A failed run, a done run launched before the last void, another concept's
   run, or a void unit lifts nothing. Added 2026-11-21 for incident queues-20261121133600 (Pyrelands sat ready 4.6 h
   after an accepted hand run-now).
+- **an-unsigned-judge-look-is-the-judges-result.** A stage-5 Designer unit that ended at its coverage judge step, with
+  no result.json, no claude result and no transcript, is the judge's look when the concept's `coverage_verdict.json`
+  is unsigned, its judge started inside the unit's window, and its round did not die of a system cause
+  (`coverage_judge.void_cause`). The run is not void_system and adds no void fault. It reads done at 0 tokens: the judge
+  charges its own look by its own rules. Its stage.json rejection is marked `judge_look`: no Designer retry, no
+  rejection for `rejection_parked`, no loop spend for the run. Stage 5 is chained again when that is the act the
+  verdict names: a fresh judge look after a judge's own fix, the Designer's mend after a plain refusal. A stop, a
+  park, or an advisory verdict that waits for a calibrated brief chains nothing. Added 2026-11-27 by
+  `RIMMANDRAKE_CLASS_UNSIGNED_JUDGE_LOOK_AS_VERDICT_FOURTH_VOID` (Wrecked Machines: the judge fixed `scenes.json`
+  itself, its step exited `STOP_EXIT`, and the fourth void of the day stopped the chain).
+- **a-unit-with-no-look-of-its-own-stays-void.** A unit killed before any verdict, a unit whose only verdict on file
+  was left by an EARLIER unit, and a verdict whose own judge call died stay void_system, as before. A unit whose model
+  started (a transcript) is harvested as before.
+- **a-void-judge-look-is-reclassed-by-its-verb.** `role_launch.py reclass-judge-look <unit> --why "..."` corrects a run
+  an earlier harvest classed void_system that was its judge's look, by the same rule over the window up to its void:
+  its void fault comes off the day's count, the run reads done by `judge_look` at 0 tokens, and its stage.json
+  rejection loses its void_system marks and takes `judge_look`. A unit with no look of its own, or one already
+  reclassed, is refused, and nothing is written.
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

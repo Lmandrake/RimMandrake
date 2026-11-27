@@ -342,6 +342,158 @@ def t_a_done_run_after_the_voids_lifts_the_void_hold(tmp):
         ok(RL.void_held(rs, C1, last + 120), "%s lifts nothing" % why)
 
 
+# ---- a stage-5 unit that ended at its coverage judge ----------------------------------------------------------------
+
+NO_RESULT_WHY = "no result.json (a closing message is not a result)"
+
+
+def judge_harvest(verdict, prior_voids=0, run_at=T0, transcript=None):
+    """One finished stage-5 Designer run on C1 that left no result.json and no claude result (the unit ended at its
+    stage5-judge step), with `verdict` on the concept's coverage_verdict.json. -> (rs, acts, seam calls)."""
+    import role_launch as RL
+    import selftest_designer_chain as SC
+    import run_void as RV
+    now = run_at + 900
+    day = RL.day_of(now)
+    rs = {"runs": [{"state": "running", "unit": "rm-role-designer-look", "at": run_at, "day": day, "budget": 400000,
+                    "mode": "run", "item": "X_ITEM", "concept": C1, "scope": "S.scope", "marker": "M"}],
+          "void_faults": [{"day": day, "concept": C1, "unit": "v%d" % i, "cause": "launch fault", "at": run_at - 900 + i}
+                          for i in range(min(prior_voids, RV.SYSTEM_FAULT_LIMIT - 1))]}
+    calls = {"close": [], "void": [], "look": []}
+    acts = []
+    obs = {"unit_state": lambda u: "inactive", "result": lambda r: None, "procs": lambda *a, **k: [],
+           "transcript": lambda r: transcript, "program_closed": lambda c, u: None,
+           "stage_close": lambda c, u, t: (calls["close"].append((u, t)), (False, [NO_RESULT_WHY]))[1],
+           "stage_void": lambda c, u, why: (calls["void"].append(why), True)[1],
+           "stage_judge_look": lambda c, u, look: (calls["look"].append(look), True)[1],
+           "coverage_verdict": lambda c: verdict, "stage_land": lambda c, u: None, "stage_turn": lambda c: None,
+           "stage_status": lambda c: {"stage": 5, "status": "ready"}}
+    RL._supervise_one("Designer", rs, dict(RL.ROLE_DEFAULTS, **SC.designer_row()), obs, now,
+                      lambda **kw: acts.append(kw), set())
+    return rs, acts, calls
+
+
+def look_verdict(at, fixed=True):
+    """A not_covered verdict as coverage_judge.run writes it: with the judge's own fix (advisory, stale_inputs: the
+    unit then exits STOP_EXIT) or a plain refusal."""
+    import role_launch as RL
+    v = {"verdict": "not_covered", "signed": False, "judge": "rm-coverage-judge-%d" % int(at), "at": RL.iso(at),
+         "gaps": [{"gid": "g1", "ids": ["c1"]}], "error": None}
+    if fixed:
+        v.update(judge_fixed={"files": ["scenes.json"], "what": ["added a scene"], "by": v["judge"]},
+                 stale_inputs=["scenes.json"], advisory="the judge fixed scenes.json itself: the next look, a fresh "
+                 "judge that did not make it, checks it as a repair")
+    return v
+
+
+def t_an_unsigned_judge_look_is_the_judges_result(tmp):
+    """Wrecked Machines 2026-11-27 (RIMMANDRAKE_CLASS_UNSIGNED_JUDGE_LOOK_AS_VERDICT_FOURTH_VOID): the stage-5 judge
+    answered not_covered and fixed scenes.json itself, its step exited STOP_EXIT, and the unit was classed void_system
+    as "the unit ended with no claude result of its own"; with three earlier voids that day the limit stopped the
+    chain. The look is the judge's result: no void fault, charged 0 (the judge's own look is charged by its rules), the
+    rejection marked judge_look, and the stage chained again for the act the verdict names."""
+    import designer_stage as DS
+    for fixed, nxt in ((True, "a fresh judge look"), (False, "the Designer's mend")):
+        rs, acts, calls = judge_harvest(look_verdict(T0 + 90, fixed), prior_voids=2)
+        run = rs["runs"][0]
+        what = "a judge's own fix" if fixed else "a plain refusal"
+        ok(not calls["void"] and len(rs["void_faults"]) == 2
+           and not any(a.get("kind") == "role:Designer:system_fault" for a in acts),
+           "%s: the unit is not void_system and adds no void fault (void marks %r, faults %d)" % (
+               what, calls["void"], len(rs["void_faults"])))
+        ok(run.get("by") == "judge_look" and run.get("state") == "done" and run.get("tokens") == 0
+           and calls["close"] == [("rm-role-designer-look", 0)],
+           "%s: the run is the judge's look, done, charged 0 and closed at 0 (by %r, state %r, tokens %r, closes %r)" % (
+               what, run.get("by"), run.get("state"), run.get("tokens"), calls["close"]))
+        look = (calls["look"] or [{}])[0]
+        ok(look.get("judge") == "rm-coverage-judge-%d" % int(T0 + 90) and str(look.get("next")).startswith(nxt),
+           "%s: the stage record names the judge and the next act, %r: %r" % (what, nxt, look))
+        req = rs.get("run_now") or {}
+        ok(req.get("concept") == C1 and req.get("chain_stage") == "5" and nxt in str(req.get("why")),
+           "%s: stage 5 is chained again for %s: %r" % (what, nxt, req))
+    # the stage file: the judge look's rejection spends no Designer retry, parks nothing, and its run spends no loop
+    d = os.path.join(tmp, "look_concept")
+    DS.init(d, "LookMod")
+    st = DS.load_state(d)
+    st.update(stage=5, status="ready")
+    st["results"].append({"stage": 5, "outcome": "rejected", "run": "U1", "at": "2026-11-18T18:00:00Z",
+                          "why": [NO_RESULT_WHY]})
+    st["results"].append({"stage": 5, "outcome": "rejected", "run": "U2", "at": "2026-11-18T18:30:00Z",
+                          "why": [NO_RESULT_WHY]})
+    for u in ("U1", "U2"):
+        DS.hist(st, "retry", "run %s result rejected: %s" % (u, NO_RESULT_WHY))
+    DS.write_json(DS.state_path(d), st)
+    look = {"judge": "rm-coverage-judge-1", "verdict": "not_covered", "next": "a fresh judge look"}
+    for u in ("U1", "U2"):
+        ok(DS.judge_look_rejection(d, u, look), "the judge look marks run %s's no-result rejection" % u)
+    st = DS.load_state(d)
+    ok(DS.stage_retries(st) == 0 and DS.rejection_parked(st) is None and {"run U1", "run U2"} <= DS.loop_void_refs(st),
+       "a judge look's rejection spends no retry, parks nothing, and its run's charge is no loop spend (retries %d, "
+       "parked %r)" % (DS.stage_retries(st), DS.rejection_parked(st)))
+    ok(not DS.judge_look_rejection(d, "U1", look), "a run already marked is not marked twice")
+
+
+def t_a_unit_with_no_look_of_its_own_stays_void(tmp):
+    """The two must-stay cases of the judge look: a unit killed before any verdict, and a unit that left only an
+    EARLIER unit's verdict on file, are void_system as before; so is a verdict whose own judge call died."""
+    void_round = {"verdict": None, "signed": False, "judge": "rm-coverage-judge-x", "at": None,
+                  "error": "the judge did not answer", "error_kind": "system"}
+    void_round["at"] = __import__("role_launch").iso(T0 + 90)
+    for verdict, what in ((None, "no verdict on file (killed before the judge answered)"),
+                          (look_verdict(T0 - 3600), "an earlier unit's verdict"),
+                          (void_round, "a verdict whose judge call died")):
+        rs, acts, calls = judge_harvest(verdict)
+        run = rs["runs"][0]
+        ok(calls["void"] and not calls["look"] and run.get("by") != "judge_look" and len(rs["void_faults"]) == 1,
+           "%s: still void_system (void marks %r, looks %r, faults %d)" % (what, calls["void"], calls["look"],
+                                                                         len(rs["void_faults"])))
+    rs, acts, calls = judge_harvest(look_verdict(T0 + 90), transcript={"usage": {}})
+    ok(not calls["look"] and rs["runs"][0].get("by") != "judge_look",
+       "a unit whose model started (a transcript) is not a judge look: harvested as before")
+
+
+def t_a_void_judge_look_is_reclassed_by_its_verb(tmp):
+    """The record an earlier harvest wrote (Wrecked Machines, rm-role-designer-1795777997) is corrected by the
+    program's own verb: role_launch.reclass_judge_look takes the void fault off and re-marks the stage file; a unit
+    with no look of its own is refused and nothing is written."""
+    import designer_stage as DS
+    import role_launch as RL
+    rs, _acts, _calls = judge_harvest(None)        # classed void_system on the base rule: no verdict was read
+    unit = rs["runs"][0]["unit"]
+    d = os.path.join(tmp, "reclass_concept")
+    DS.init(d, "ReclassMod")
+    st = DS.load_state(d)
+    st.update(stage=5, status="ready")
+    st["results"].append({"stage": 5, "outcome": "rejected", "run": unit, "at": "2026-11-18T18:15:00Z",
+                          "why": [NO_RESULT_WHY], "void_system": "the unit ended with no claude result of its own"})
+    DS.hist(st, "retry", "run %s result rejected: %s" % (unit, NO_RESULT_WHY))
+    st["history"][-1]["void_system"] = "the unit ended with no claude result of its own"
+    DS.write_json(DS.state_path(d), st)
+    rs["runs"][0]["concept"] = d
+    for f in rs["void_faults"]:
+        f["concept"] = d
+    landed = []
+    obs = {"coverage_verdict": lambda c: look_verdict(T0 + 90), "stage_land": lambda c, u: landed.append(u)}
+    look, refused = RL.reclass_judge_look(rs, unit, "selftest", T0 + 2000, obs)
+    st = DS.load_state(d)
+    res = [r for r in st["results"] if r.get("run") == unit][-1]
+    ok(look and not refused and not rs["void_faults"] and rs["runs"][0].get("by") == "judge_look"
+       and rs["runs"][0].get("tokens") == 0 and landed == [unit],
+       "the verb takes the void fault off and the run reads the judge's look at 0 tokens (refused %r, faults %r)" % (
+           refused, rs["void_faults"]))
+    ok(res.get("judge_look") and not res.get("void_system") and DS.stage_retries(st) == 0
+       and "run %s" % unit in DS.loop_void_refs(st),
+       "the stage file's rejection is re-marked judge_look, spends no retry and no loop spend: %r" % res)
+    look2, refused2 = RL.reclass_judge_look(rs, unit, "again", T0 + 2100, obs)
+    ok(look2 is None and "not classed void_system" in str(refused2), "a second reclass is refused: %r" % refused2)
+    rs3, _a, _c = judge_harvest(None)
+    before = json.dumps(rs3, sort_keys=True)
+    look3, refused3 = RL.reclass_judge_look(rs3, rs3["runs"][0]["unit"], "x", T0 + 2000,
+                                            {"coverage_verdict": lambda c: look_verdict(T0 - 3600)})
+    ok(look3 is None and "stays void_system" in str(refused3) and json.dumps(rs3, sort_keys=True) == before,
+       "a unit whose only verdict is an earlier unit's is refused and nothing is written: %r" % refused3)
+
+
 def main():
     import control as C
     tmp = tempfile.mkdtemp(prefix="selftest_void_counters_")
@@ -370,6 +522,9 @@ def main():
         t_a_concept_no_run_opened_is_not_swept(tmp)
         t_void_runs_spend_nothing_on_the_loop_ceiling(tmp)
         t_a_done_run_after_the_voids_lifts_the_void_hold(tmp)
+        t_an_unsigned_judge_look_is_the_judges_result(tmp)
+        t_a_unit_with_no_look_of_its_own_stays_void(tmp)
+        t_a_void_judge_look_is_reclassed_by_its_verb(tmp)
         claim_void_mark_that_raises()
     finally:
         for k, v in keep.items():
