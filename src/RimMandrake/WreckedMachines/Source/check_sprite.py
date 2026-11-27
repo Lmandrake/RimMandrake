@@ -31,8 +31,12 @@ test is on centre drift and on gross size change, not on an exact match.
 
 USAGE
   python Source/check_sprite.py AutomatedSmelter --tier wrecked
-  python Source/check_sprite.py AutomatedSmelter --tier kludged --strict
-  python Source/check_sprite.py ALL            # every machine, every tier
+  python Source/check_sprite.py Autoloom --tier kludged --strict --root /mnt/d/ClaudeWork/rimmandrake/art/wreckedmachines
+  python Source/check_sprite.py ALL            # every machine, every tier in its MANIFEST
+
+`--root DIR` (or env WM_ART_ROOT) picks the work folder; default art_source/.
+The last line prints the worst value of each measured bar, its limit and how
+many files were read.
 
 Exit code 0 = every required file present and sane. 1 = at least one FAIL.
 Warnings alone do not fail the run unless --strict is given.
@@ -45,18 +49,17 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pnglib import measure, PngError                         # noqa: E402
+from pnglib import measure, read_png, PngError               # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD_ROOT = os.path.dirname(HERE)
-ART_SOURCE = os.path.join(MOD_ROOT, "art_source")
+ART_SOURCE = os.environ.get("WM_ART_ROOT") or os.path.join(MOD_ROOT, "art_source")
 
 # --------------------------------------------------------------------------
 # The general validator, src/RimMandrake/Utils/check_sprite.py
 # --------------------------------------------------------------------------
 # This file keeps its own CLI and its own MANIFEST.json flow - those are what
-# briefs.py, sheet.py, README.md and the three BRIEF_*.md files call, and none
-# of them should have to change. What it does NOT keep is a private copy of the
+# grab_source_art.py, briefs.py and the per-facing briefs call. What it does NOT keep is a private copy of the
 # checks: saturation, value distribution and the fully-transparent-pixel test
 # live in the general tool, and are imported so both callers move together.
 #
@@ -78,7 +81,7 @@ except Exception:                                            # pragma: no cover
     GENERAL = None
     HAVE_GENERAL = False
 
-TIERS = ("wrecked", "kludged", "repaired")
+TIERS = ("wrecked", "kludged")      # default when a MANIFEST names no tiers
 
 # How far the drawn mass may drift, as a fraction of canvas, before it will
 # visibly sit off its footprint. 2% of a 512px canvas is ~10px — about a third
@@ -88,6 +91,21 @@ CENTRE_DRIFT_TOLERANCE = 0.02
 MAX_BBOX_GROWTH = 1.05
 # Below this, the image is suspiciously empty.
 MIN_COVERAGE_PCT = 5.0
+# Bar (owner): damage is subtractive and nothing projects past the donor's
+# outline. Measured as the share of the picture's drawn pixels (alpha >= 32)
+# that fall outside the donor's drawn pixels grown by OUTLINE_GROW_PX. Measured
+# 2026-11-27 on the 12 approved smelter pictures (Wrecked, Kludged, Repaired):
+# worst 0.08% at a 2 px grow (Kludged west). The limit is three times that.
+OUTLINE_GROW_PX = 2
+OUTSIDE_APPROVED_PCT = 0.08   # the measured worst of the 12 approved pictures
+OUTSIDE_LIMIT_PCT = 0.25
+ALPHA_DRAWN = 32
+# The share of the donor's drawn pixels that the picture also draws. A picture
+# placed small (fit_sprite --inside, or a model that drew the machine small)
+# leaves a band of the donor's footprint empty. Measured 2026-11-27 on the 12
+# approved smelter pictures: 95.89% (Wrecked north) to 99.32%. Below the
+# lowest approved value is a warn: it asks for a look at true size.
+FILL_WARN_PCT = 95.8
 
 
 class Result:
@@ -103,12 +121,64 @@ class Result:
         return "FAIL" if self.fails else ("warn" if self.warns else "ok")
 
 
+def _grow(mask, w, h, r):
+    """Square dilation of a boolean mask by r px (separable)."""
+    if r <= 0:
+        return mask
+    a = [False] * (w * h)
+    for y in range(h):
+        row = mask[y * w:(y + 1) * w]
+        run = [i for i, v in enumerate(row) if v]
+        for x in run:
+            for xx in range(max(0, x - r), min(w, x + r + 1)):
+                a[y * w + xx] = True
+    b = [False] * (w * h)
+    for x in range(w):
+        col = a[x::w]
+        for y in [i for i, v in enumerate(col) if v]:
+            for yy in range(max(0, y - r), min(h, y + r + 1)):
+                b[yy * w + x] = True
+    return b
+
+
+def outside_outline_pct(cand_path, src_path, grow=OUTLINE_GROW_PX):
+    """Share (%) of the picture's drawn pixels outside the donor's grown outline."""
+    sw, sh, s = read_png(src_path)
+    cw, ch, c = read_png(cand_path)
+    if (sw, sh) != (cw, ch):
+        return None
+    m = _grow([s[i * 4 + 3] >= ALPHA_DRAWN for i in range(sw * sh)], sw, sh, grow)
+    tot = out = 0
+    for i in range(cw * ch):
+        if c[i * 4 + 3] >= ALPHA_DRAWN:
+            tot += 1
+            if not m[i]:
+                out += 1
+    return 100.0 * out / tot if tot else 0.0
+
+
+def donor_fill_pct(cand_path, src_path):
+    """Share (%) of the donor's drawn pixels that the picture also draws."""
+    sw, sh, s = read_png(src_path)
+    cw, ch, c = read_png(cand_path)
+    if (sw, sh) != (cw, ch):
+        return None
+    tot = hit = 0
+    for i in range(sw * sh):
+        if s[i * 4 + 3] >= ALPHA_DRAWN:
+            tot += 1
+            if c[i * 4 + 3] >= ALPHA_DRAWN:
+                hit += 1
+    return 100.0 * hit / tot if tot else None
+
+
 def sha(path):
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
 
 def check_file(src_meta, cand_path, src_path):
     r = Result(os.path.basename(cand_path))
+    r.drift = r.outside = r.fill = None
 
     if not os.path.isfile(cand_path):
         r.fail("missing")
@@ -146,6 +216,7 @@ def check_file(src_meta, cand_path, src_path):
         s_cx, s_cy = (sx0 + sx1) / 2.0, (sy0 + sy1) / 2.0
         c_cx, c_cy = (cx0 + cx1) / 2.0, (cy0 + cy1) / 2.0
         dx, dy = abs(c_cx - s_cx) / c["width"], abs(c_cy - s_cy) / c["height"]
+        r.drift = max(dx, dy) * 100
         if max(dx, dy) > CENTRE_DRIFT_TOLERANCE:
             r.fail("silhouette centre drifted %.1f%%/%.1f%% of canvas (max %.0f%%) "
                    "— it will sit off its footprint"
@@ -156,6 +227,19 @@ def check_file(src_meta, cand_path, src_path):
         if cw > sw * MAX_BBOX_GROWTH or ch > sh * MAX_BBOX_GROWTH:
             r.warn("drawn area grew (%s -> %s); damage should remove mass, not add it"
                    % (src_meta["bbox_wh"], c["bbox_wh"]))
+
+        # 5b. nothing past the donor's outline (the subtractive-damage bar)
+        if os.path.isfile(src_path):
+            r.outside = outside_outline_pct(cand_path, src_path)
+            if r.outside is not None and r.outside > OUTSIDE_LIMIT_PCT:
+                r.fail("%.2f%% of the drawn pixels lie outside the donor's outline "
+                       "(+%d px; limit %.2f%%) - something projects past the machine"
+                       % (r.outside, OUTLINE_GROW_PX, OUTSIDE_LIMIT_PCT))
+            r.fill = donor_fill_pct(cand_path, src_path)
+            if r.fill is not None and r.fill < FILL_WARN_PCT:
+                r.warn("fills %.2f%% of the donor's drawn pixels (the approved smelter "
+                       "pictures fill at least %.1f%%) - placed small or drawn small"
+                       % (r.fill, FILL_WARN_PCT))
 
     # 6. colour mode consistency
     if c["is_greyscale"] != src_meta["is_greyscale"]:
@@ -179,12 +263,21 @@ def check_file(src_meta, cand_path, src_path):
     return r
 
 
-def check_machine(short, tiers, strict=False):
+STATS = {"files": 0, "drift": (0.0, ""), "outside": (0.0, ""), "fill": (101.0, "")}
+
+
+def _note(key, val, where):
+    if val is not None and val >= STATS[key][0]:
+        STATS[key] = (val, where)
+
+
+def check_machine(short, tiers=None, strict=False):
     man_path = os.path.join(ART_SOURCE, short, "MANIFEST.json")
     if not os.path.isfile(man_path):
         print("  %s: no MANIFEST.json — run grab_source_art.py first" % short)
         return 1
     man = json.load(open(man_path, encoding="utf-8"))
+    tiers = tiers or tuple(man.get("tiers") or TIERS)
     worst = 0
     for tier in tiers:
         tier_dir = os.path.join(ART_SOURCE, short, tier)
@@ -196,6 +289,11 @@ def check_machine(short, tiers, strict=False):
             r = check_file(src_meta,
                            os.path.join(tier_dir, fn),
                            os.path.join(ART_SOURCE, short, "restored", fn))
+            STATS["files"] += 1
+            _note("drift", r.drift, "%s/%s/%s" % (short, tier, fn))
+            _note("outside", r.outside, "%s/%s/%s" % (short, tier, fn))
+            if r.fill is not None and r.fill < STATS["fill"][0]:
+                STATS["fill"] = (r.fill, "%s/%s/%s" % (short, tier, fn))
             mark = {"ok": "  ok  ", "warn": " warn ", "FAIL": " FAIL "}[r.status]
             print("  [%s] %s" % (mark, r.name))
             for m in r.fails:
@@ -215,22 +313,34 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("machine", help="short name (e.g. AutomatedSmelter), or ALL")
-    ap.add_argument("--tier", help="wrecked | kludged | repaired (or any tier dir)")
+    ap.add_argument("--tier", help="wrecked | kludged | icon (default: the MANIFEST's tiers)")
     ap.add_argument("--strict", action="store_true", help="treat warnings as failures")
+    ap.add_argument("--root", help="work folder (default art_source/, or env WM_ART_ROOT)")
     args = ap.parse_args()
+    global ART_SOURCE
+    if args.root:
+        ART_SOURCE = os.path.abspath(args.root)
 
-    tiers = (args.tier,) if args.tier else TIERS
+    tiers = (args.tier,) if args.tier else None
     if args.machine == "ALL":
         if not os.path.isdir(ART_SOURCE):
             sys.exit("No art_source/ yet — run grab_source_art.py first.")
         machines = sorted(d for d in os.listdir(ART_SOURCE)
-                          if os.path.isdir(os.path.join(ART_SOURCE, d)))
+                          if os.path.isfile(os.path.join(ART_SOURCE, d, "MANIFEST.json")))
     else:
         machines = [args.machine]
 
     rc = 0
     for m in machines:
         rc |= check_machine(m, tiers, args.strict)
+    print("\nread %d file(s); worst centre drift %.2f%% (limit %.0f%%) at %s; "
+          "worst outside-outline %.2f%% (limit %.2f%%) at %s; "
+          "lowest donor fill %s (warn below %.1f%%) at %s"
+          % (STATS["files"], STATS["drift"][0], CENTRE_DRIFT_TOLERANCE * 100,
+             STATS["drift"][1] or "-", STATS["outside"][0], OUTSIDE_LIMIT_PCT,
+             STATS["outside"][1] or "-",
+             ("%.2f%%" % STATS["fill"][0]) if STATS["fill"][1] else "-",
+             FILL_WARN_PCT, STATS["fill"][1] or "-"))
     print("\n%s" % ("FAILED — fix the above before authoring defs." if rc
                     else "All required art present and sane."))
     return rc

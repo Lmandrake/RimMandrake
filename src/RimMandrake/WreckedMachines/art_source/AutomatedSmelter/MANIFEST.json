@@ -1,7 +1,15 @@
 {
+  "key": "VFEFactory_AutomatedSmelter",
   "defName": "VFEFactory_AutomatedSmelter",
+  "line": "smelter",
   "short": "AutomatedSmelter",
-  "why_treated": "Phase 2 of the ship_deck_plan repair ladder \u2014 the first machine the player restores, so it is the pilot for the whole pipeline.",
+  "tiers": [
+    "wrecked",
+    "kludged"
+  ],
+  "kind": "smelting furnace: a domed furnace on a square plinth with a heat ring round the dome, an intake belt at the top and three output belts along the bottom edge",
+  "dead": "the heat ring is cold black metal and the dome is rust-streaked with a section of its cap gone",
+  "alive": "the heat ring glows a dull working orange through its patched seams",
   "owner": {
     "packageId": "VanillaExpanded.VFEFactory",
     "mod_dir": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3686924415"
@@ -27,13 +35,15 @@
     "AutomatedSmelter_south.png",
     "AutomatedSmelter_west.png"
   ],
+  "facing_fallbacks": {},
+  "unfilled": [],
+  "other_layers": [],
   "restored_present": [
     "AutomatedSmelter_north.png",
     "AutomatedSmelter_east.png",
     "AutomatedSmelter_south.png",
     "AutomatedSmelter_west.png"
   ],
-  "restored_missing": [],
   "measurements": {
     "AutomatedSmelter_north.png": {
       "file": "AutomatedSmelter_north.png",

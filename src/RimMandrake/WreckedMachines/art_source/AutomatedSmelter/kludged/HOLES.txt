@@ -6,8 +6,8 @@ Files required in this folder (kludged tier of AutomatedSmelter)
   [x] AutomatedSmelter_south.png
   [x] AutomatedSmelter_west.png
 
-Each must match its restored/ counterpart exactly in canvas size,
-and closely in alpha bounding box, or it will not sit on its footprint
-in game. Validate with:
+Each must match its restored/ counterpart in canvas size and
+closely in alpha bounding box. Fit and check with:
 
-    python Source/check_sprite.py AutomatedSmelter --tier kludged
+    python Source/fit_sprite.py AutomatedSmelter --tier kludged --root /home/mandrake/rm/runs/clones/RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_FIFTEEN_BARS_LEFT.det/src/RimMandrake/WreckedMachines/art_source
+    python Source/check_sprite.py AutomatedSmelter --tier kludged --root /home/mandrake/rm/runs/clones/RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_FIFTEEN_BARS_LEFT.det/src/RimMandrake/WreckedMachines/art_source

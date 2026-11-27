@@ -36,6 +36,12 @@ WHAT IT DOES, IN ORDER
   7. **Compose** onto the reference's exact canvas with premultiplied,
      area-averaged resampling, so the downscale stays sharp and no dark fringe
      appears at the cut edge.
+  8. **Rim.** Every donor measured is drawn with a dark rim (edge luminance
+     median 0). When step 1 keyed a black background it took that rim too, so
+     registration compares the candidate with the donor keyed the same way,
+     and the rim is then given back from the donor, only inside the donor's
+     outline. On a thin-limbed sprite (the emanator) this is the difference
+     between a fit 10% too large that spills out of its outline and a pass.
 
 It refuses rather than guesses. Every failure names the measured number that
 caused it.
@@ -63,7 +69,7 @@ from pnglib import read_png, write_rgba, resize_rgba, PngError      # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD_ROOT = os.path.dirname(HERE)
-ART_SOURCE = os.path.join(MOD_ROOT, "art_source")
+ART_SOURCE = os.environ.get("WM_ART_ROOT") or os.path.join(MOD_ROOT, "art_source")
 
 ALPHA_THRESHOLD = 32        # what counts as "drawn" when measuring a silhouette
 KEY_TOLERANCE = 28          # luminance at/below which an edge pixel reads as background
@@ -73,7 +79,7 @@ REG_SCALES = [0.88 + 0.02 * i for i in range(13)]   # 0.88 .. 1.12
 REG_SHIFT = 10              # +/- this many low-res pixels
 MAX_ASPECT_SKEW = 1.35      # refuse beyond this ratio; the shape is simply wrong
 CLOSE_RADIUS = 6            # seal background channels narrower than this after keying
-TIERS = ("wrecked", "kludged", "repaired")   # the three states we author art for
+TIERS = ("wrecked", "kludged")   # default when a MANIFEST names no tiers
 
 
 class FitError(Exception):
@@ -243,6 +249,75 @@ def close_alpha(w, h, rgba, radius):
     return out, reclaimed
 
 
+def donor_rim(w, h, rgba, tol):
+    """How deep the donor's dark rim is, in donor pixels, and its typical alpha.
+
+    Every donor measured so far is drawn with a dark rim: its edge pixels have
+    median luminance 0 (emanator, power cell, component icon, crematorium; see
+    MACHINES.md). When the model returns an opaque black background, keying
+    cannot tell that rim from the background (both are luminance 0) and eats
+    it. On a thin-limbed sprite the rim is a large share of the drawing (13% of
+    the emanator), the eaten silhouette is too thin, and registration scales
+    it up 10% to compensate, so the fitted picture spills out of its outline.
+
+    The depth is read along every row and column: from each end, how many
+    drawn pixels in a row are dark (luminance <= tol). The median of those
+    runs is the rim depth. Returns (depth, median alpha of the rim pixels).
+    """
+    lum = lambda i: (rgba[i * 4] * 299 + rgba[i * 4 + 1] * 587 + rgba[i * 4 + 2] * 114) // 1000
+    drawn = lambda i: rgba[i * 4 + 3] >= ALPHA_THRESHOLD
+    runs, alphas = [], []
+
+    def walk(idx):
+        k = 0
+        while k < len(idx) and not drawn(idx[k]):
+            k += 1
+        if k == len(idx):
+            return                                  # nothing drawn on this line
+        n = 0
+        while k < len(idx) and drawn(idx[k]) and lum(idx[k]) <= tol:
+            alphas.append(rgba[idx[k] * 4 + 3])
+            n += 1; k += 1
+        runs.append(n)
+    for y in range(h):
+        row = [y * w + x for x in range(w)]
+        walk(row); walk(row[::-1])
+    for x in range(w):
+        col = [y * w + x for y in range(h)]
+        walk(col); walk(col[::-1])
+    if not runs:
+        return 0, 255
+    runs.sort(); alphas.sort()
+    return runs[len(runs) // 2], (alphas[len(alphas) // 2] if alphas else 255)
+
+
+def restore_rim(w, h, out, donor, depth, tol):
+    """Give back the dark rim that keying took, in place, at donor resolution.
+
+    A pixel is given back only when the DONOR has a dark (luminance <= tol)
+    drawn pixel there, the fitted picture has nothing there, and it lies within
+    `depth` px of the fitted picture. So the rim returns along the machine's
+    edge and along any break, and nothing is ever drawn outside the donor's
+    outline. The pixel takes the donor's own colour and alpha."""
+    if depth <= 0:
+        return 0
+    lum = lambda a, i: (a[i * 4] * 299 + a[i * 4 + 1] * 587 + a[i * 4 + 2] * 114) // 1000
+    pad = depth + 2
+    pad_w = w + 2 * pad
+    drawn = bytearray(1 if out[i * 4 + 3] >= ALPHA_THRESHOLD else 0 for i in range(w * h))
+    near = _dilate(_bits_from_mask(drawn, w, h, pad_w, pad), pad_w, depth)
+    added = 0
+    for y in range(h):
+        base = (pad + y) * pad_w + pad
+        for x in range(w):
+            i = y * w + x
+            if (not drawn[i] and donor[i * 4 + 3] >= ALPHA_THRESHOLD
+                    and lum(donor, i) <= tol and (near >> (base + x)) & 1):
+                out[i * 4:i * 4 + 4] = donor[i * 4:i * 4 + 4]
+                added += 1
+    return added
+
+
 def core_span(mask, w, h, frac=0.90):
     """Bounding box holding the central `frac` of drawn mass.
 
@@ -375,7 +450,7 @@ def mask_to_bits(mask, w, h, pad_w, ox, oy):
     return v
 
 
-def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box):
+def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box, scales=None):
     """Find the (scale, dx, dy) placing the candidate best over the reference.
 
     Returns a rectangle in reference-canvas coordinates plus the achieved IoU.
@@ -398,7 +473,7 @@ def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box):
     tgt_w, tgt_h = sx1 - sx0 + 1, sy1 - sy0 + 1
 
     best = None
-    for s in REG_SCALES:
+    for s in (scales or REG_SCALES):
         # candidate silhouette scaled to `s` of the reference silhouette box
         fit = min(tgt_w / float(cw), tgt_h / float(ch)) * s
         nw, nh = max(1, int(round(cw * fit * k))), max(1, int(round(ch * fit * k)))
@@ -441,8 +516,147 @@ def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box):
     return {"iou": iou, "scale_of_fit": s, "rect": (out_x, out_y, out_w, out_h)}
 
 
+def _check_bar():
+    """check_sprite.py's outline bar, loaded by path (a plain import could
+    find the general Utils/check_sprite.py first), so the fitter and the check
+    can never disagree about it."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "wm_check_sprite", os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                        "check_sprite.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def placed_outside_pct(crop, tw, th, rect, grown, sw, sh):
+    """Share (%) of the candidate's drawn px that land outside `grown` (the
+    donor's drawn px grown by the check's OUTLINE_GROW_PX) when placed at rect."""
+    ox, oy, ow, oh = rect
+    drawn = out = 0
+    for y in range(oh):
+        sy = y * th // oh
+        Y = oy + y
+        for x in range(ow):
+            if crop[(sy * tw + x * tw // ow) * 4 + 3] > ALPHA_THRESHOLD:
+                drawn += 1
+                X = ox + x
+                if not (0 <= X < sw and 0 <= Y < sh and grown[Y * sw + X]):
+                    out += 1
+    return 100.0 * out / drawn if drawn else 0.0
+
+
+def register_inside(crop, tw, th, smask, sw, sh, box, donor_mask):
+    """--inside: the best-overlap placement that keeps the picture inside the
+    donor's outline (check_sprite's bar). Used when the model drew a part (a
+    belt end, an intake) jutting a few per cent further than the donor: the
+    plain best overlap then scales the body to match and pushes that part past
+    the outline (the Autoloom south, 2026-11-27: best overlap at scale 1.04 put
+    2.59% outside; scale 1.00 put 0.00%). The cost is a slightly smaller body,
+    which check_sprite reports as the share of the donor the picture fills."""
+    bar = _check_bar()
+    grown = bar._grow(list(donor_mask), sw, sh, bar.OUTLINE_GROW_PX)
+    rows = []
+    for s in REG_SCALES:
+        r = register(crop, tw, th, smask, sw, sh, box, scales=[s])
+        rows.append((r["iou"], s, placed_outside_pct(crop, tw, th, r["rect"], grown, sw, sh), r))
+    free = max(rows, key=lambda t: t[0])
+    ok = [t for t in rows if t[2] <= bar.OUTSIDE_LIMIT_PCT]
+    print("     inside   best overlap: scale %.2f IoU %.3f, %.2f%% outside (limit %.2f%%); "
+          "read %d scales" % (free[1], free[0], free[2], bar.OUTSIDE_LIMIT_PCT, len(rows)))
+    if not ok:
+        raise FitError("no tested scale keeps the picture inside the donor's outline "
+                       "(least outside %.2f%%) - re-generate" % min(t[2] for t in rows))
+    best = max(ok, key=lambda t: t[0])
+    print("     inside   coarse: scale %.2f IoU %.3f, %.2f%% outside"
+          % (best[1], best[0], best[2]))
+    # The refine aims at the approved pictures' measured worst, not at the
+    # check's limit: aiming at the limit would make every fitted picture pass
+    # it by a hair (the Autoloom south refined to 0.22% against 0.25%).
+    return refine_inside(crop, tw, th, smask, grown, sw, sh, box, best[1], best[3]["rect"],
+                         min(bar.OUTSIDE_APPROVED_PCT, bar.OUTSIDE_LIMIT_PCT),
+                         bar.OUTSIDE_LIMIT_PCT)
+
+
+# The coarse search steps 2% in scale and REG_LONG_EDGE-sized pixels in offset
+# (6 full-res px on a 768 px canvas), so under the outline bar it can stop a
+# whole step short (the Autoloom east, 2026-11-27: coarse best inside the bar
+# IoU 0.934 at scale 0.98; scale 1.00 put 0.28% outside on the coarse grid).
+# refine_inside searches one coarse step either side of the chosen scale, at
+# full resolution, in 1 px offsets.
+REFINE_SCALE_STEP = 0.0025     # an eighth of the coarse step
+REFINE_SHIFT = 8               # full-res px each way: more than one coarse step
+
+
+def refine_inside(crop, tw, th, smask, grown, sw, sh, box, s0, rect0, target, limit):
+    """Full-res search around the coarse inside placement: scales s0-0.02 ..
+    s0+0.02 in REFINE_SCALE_STEP, offsets +/-REFINE_SHIFT px. Keeps the best IoU
+    against the registration mask among placements whose share outside `grown`
+    is at most `target`; when none is (the model drew a part a little past the
+    outline everywhere), the best among those at most `limit`, the check's bar.
+    Scale s0 at offset 0 is the coarse placement, which is within `limit`, so
+    the second tier is never empty (the Kludged Autoloom south, 2026-11-27:
+    coarse 0.19%, nothing at or under 0.08%)."""
+    P = REFINE_SHIFT + 64
+    pw = sw + 2 * P
+    src_bits = mask_to_bits(smask, sw, sh, pw, P, P)
+    src_pop = src_bits.bit_count()
+    ok_bits = mask_to_bits(bytearray(1 if g else 0 for g in grown), sw, sh, pw, P, P)
+    sx0, sy0, sx1, sy1 = box
+    base_fit = min((sx1 - sx0 + 1) / float(tw), (sy1 - sy0 + 1) / float(th))
+    cx = rect0[0] + rect0[2] / 2.0
+    cy = rect0[1] + rect0[3] / 2.0
+    best = None          # best IoU with outside <= target
+    best_lim = None      # best IoU with outside <= limit
+    n = 0
+    steps = int(round(0.02 / REFINE_SCALE_STEP))
+    for i in range(-steps, steps + 1):
+        s = s0 + i * REFINE_SCALE_STEP
+        ow = max(1, int(round(tw * base_fit * s)))
+        oh = max(1, int(round(th * base_fit * s)))
+        m = bytearray(ow * oh)
+        for y in range(oh):
+            row = (y * th // oh) * tw
+            for x in range(ow):
+                if crop[(row + x * tw // ow) * 4 + 3] > ALPHA_THRESHOLD:
+                    m[y * ow + x] = 1
+        bx = int(round(cx - ow / 2.0))
+        by = int(round(cy - oh / 2.0))
+        if bx + P - REFINE_SHIFT < 0 or by + P - REFINE_SHIFT < 0 \
+                or bx + ow + REFINE_SHIFT > sw + P or by + oh + REFINE_SHIFT > sh + P:
+            continue
+        cb = mask_to_bits(m, ow, oh, pw, bx + P, by + P)
+        cpop = cb.bit_count()
+        if not cpop:
+            continue
+        for dy in range(-REFINE_SHIFT, REFINE_SHIFT + 1):
+            for dx in range(-REFINE_SHIFT, REFINE_SHIFT + 1):
+                t = dy * pw + dx
+                mv = cb << t if t >= 0 else cb >> -t
+                n += 1
+                outside = 100.0 * (cpop - (mv & ok_bits).bit_count()) / cpop
+                if outside > limit:
+                    continue
+                inter = (mv & src_bits).bit_count()
+                iou = inter / float(src_pop + cpop - inter)
+                row = (iou, s, outside, (bx + dx, by + dy, ow, oh))
+                if best_lim is None or iou > best_lim[0]:
+                    best_lim = row
+                if outside <= target and (best is None or iou > best[0]):
+                    best = row
+    if best is None:
+        if best_lim is None:
+            raise FitError("refine found no placement inside the outline - re-generate")
+        print("     inside   no placement at or under the approved %.2f%%; using the "
+              "best under the check's %.2f%%" % (target, limit))
+        best = best_lim
+    print("     inside   refined: scale %.4f IoU %.3f, %.2f%% outside (aim %.2f%%, "
+          "limit %.2f%%); read %d placements" % (best[1], best[0], best[2], target, limit, n))
+    return {"iou": best[0], "scale_of_fit": best[1], "rect": best[3]}
+
+
 # ------------------------------------------------------------------------ main
-def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS):
+def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, inside=False):
     machine_dir = os.path.join(ART_SOURCE, short)
     man = json.load(open(os.path.join(machine_dir, "MANIFEST.json"), encoding="utf-8"))
     src_path = os.path.join(machine_dir, "restored", filename)
@@ -459,6 +673,7 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS):
     print("     canvas   %dx%d  ->  %dx%d" % (cw, ch, sw, sh))
 
     notes = []
+    keyed_tol = None
 
     # 1. alpha
     opaque = all(c_rgba[i * 4 + 3] == 255 for i in range(0, cw * ch, 97))   # cheap sample
@@ -484,6 +699,8 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS):
               "(auto tolerance %d; border median %d p95 %d p99 %d)"
               % (pct, tol, bstats["median"], bstats["p95"], bstats["p99"]))
 
+        keyed_tol = tol
+
     # 2/3. mask, despeckle, trim
     cmask = build_mask(cw, ch, c_rgba)
     cmask, dropped = despeckle(cmask, cw, ch)
@@ -494,6 +711,26 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS):
     tw, th = cx1 - cx0 + 1, cy1 - cy0 + 1
 
     smask = build_mask(sw, sh, s_rgba)
+    donor_mask = smask
+    if keyed_tol is not None:
+        # The candidate lost every background-dark pixel joined to its edge,
+        # including the donor's dark rim (every donor measured has one, edge
+        # luminance median 0). Put the donor through the same keying so the
+        # two silhouettes are compared like with like. Without this a
+        # thin-limbed sprite (the emanator: rim = 13% of its pixels) registers
+        # 10% too large and spills out of its outline.
+        flat = bytearray(s_rgba)
+        for i in range(sw * sh):
+            a = flat[i * 4 + 3]
+            for c in range(3):
+                flat[i * 4 + c] = flat[i * 4 + c] * a // 255
+            flat[i * 4 + 3] = 255
+        d_keyed = key_background(sw, sh, flat, tol=keyed_tol)[0]
+        kmask = build_mask(sw, sh, d_keyed)
+        if any(kmask):
+            print("     like     donor keyed the same way for registration "
+                  "(%d of %d drawn px kept)" % (sum(kmask), sum(smask)))
+            smask = kmask
     sx0, sy0, sx1, sy1 = mask_bbox(smask, sw, sh)
     src_ar = (sx1 - sx0 + 1) / float(sy1 - sy0 + 1)
     cand_ar = tw / float(th)
@@ -531,7 +768,10 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS):
         crop[y * tw * 4:(y + 1) * tw * 4] = c_rgba[src_off:src_off + tw * 4]
 
     # 4/5. register
-    reg = register(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1))
+    if inside:
+        reg = register_inside(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1), donor_mask)
+    else:
+        reg = register(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1))
     ox, oy, nw, nh = reg["rect"]
     print("     register IoU %.3f at scale %.2f, placed %dx%d at (%d,%d)"
           % (reg["iou"], reg["scale_of_fit"], nw, nh, ox, oy))
@@ -554,6 +794,14 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS):
             if scaled[si + 3]:
                 di = (ty * sw + tx) * 4
                 out[di:di + 4] = scaled[si:si + 4]
+
+    if keyed_tol is not None:
+        depth, _ = donor_rim(sw, sh, s_rgba, keyed_tol)
+        added = restore_rim(sw, sh, out, s_rgba, depth, keyed_tol)
+        if added:
+            print("     rim      gave back %d px of the donor's dark rim (depth %d), "
+                  "inside the donor outline only" % (added, depth))
+            notes.append("restored %d rim px" % added)
 
     if not apply_changes:
         print("     (dry run — pass --apply to write)")
@@ -582,22 +830,29 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("machine")
-    ap.add_argument("--tier", help="wrecked | kludged | repaired (or any tier dir)")
+    ap.add_argument("--tier", help="wrecked | kludged | icon (or any tier dir)")
     ap.add_argument("--all-tiers", action="store_true")
     ap.add_argument("--facing", help="just one facing, e.g. east")
     ap.add_argument("--apply", action="store_true", help="write (default is a dry run)")
     ap.add_argument("--close", type=int, default=CLOSE_RADIUS,
                     help="morphological seal radius after keying (default %d)" % CLOSE_RADIUS)
+    ap.add_argument("--root", help="work folder (default art_source/, or env WM_ART_ROOT)")
+    ap.add_argument("--inside", action="store_true",
+                    help="place at the best overlap that keeps the picture inside the "
+                         "donor's outline (see register_inside)")
     args = ap.parse_args()
+    global ART_SOURCE
+    if args.root:
+        ART_SOURCE = os.path.abspath(args.root)
 
     if not args.tier and not args.all_tiers:
         ap.error("choose --tier or --all-tiers")
-    tiers = TIERS if args.all_tiers else (args.tier,)
 
     man_path = os.path.join(ART_SOURCE, args.machine, "MANIFEST.json")
     if not os.path.isfile(man_path):
         sys.exit("No MANIFEST.json for %s — run grab_source_art.py first." % args.machine)
     man = json.load(open(man_path, encoding="utf-8"))
+    tiers = tuple(man.get("tiers") or TIERS) if args.all_tiers else (args.tier,)
     files = man["expected_files"]
     if args.facing:
         files = [f for f in files if f.lower().endswith("_%s.png" % args.facing.lower())]
@@ -609,7 +864,7 @@ def main():
     for tier in tiers:
         for fn in files:
             try:
-                r = fit_one(args.machine, tier, fn, args.apply, args.close)
+                r = fit_one(args.machine, tier, fn, args.apply, args.close, args.inside)
                 if r is None:
                     skipped += 1
                 else:
