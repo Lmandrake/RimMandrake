@@ -1,0 +1,3 @@
+A ModsConfig.xml whose mtime is a whole second that equals a clone's checkout time of infrastructure/state/modlists/ModsConfig.MINIMAL.xml (copy2 onto drvfs drops the fraction) was put there by a modcheck compose or swap, often from a selftest. Find the writer by the file's ctime: read which session ran a test or 'code_review_status.py check' at that second. A selftest that spawns the SteveDesktop worker with RM_GAME_INSTANCE=b reaches ArchSmall's real list on Archmagi, because WSLENV passes the variable to Windows python and game_paths ranks a named game above RM_GAME_USERDATA.
+item: RIMMANDRAKE_TRACE_ARCHSMALL_TIER_SWAP_UNDONE_BEFORE_LAUNCH
+home: skills/rimworld-load-round
