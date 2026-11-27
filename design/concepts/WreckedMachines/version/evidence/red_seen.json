@@ -64,6 +64,19 @@
   "rc": 1,
   "test_blob": "a20d682aedc61973a29cb90221983125b4b5911e"
  },
+ "T_STATIC": {
+  "at": "2026-11-27T16:28:47Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/validation.py",
+  "file": "src/RimMandrake/WreckedMachines/validation.py",
+  "last": "- autoloom: project 'RM_WM_AutoloomKludging' is not opened by the study of its wrecked def",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines_Autoloom.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines_Autoloom.xml\n@@ -13,7 +13,7 @@\n     <techLevel>Industrial</techLevel>\n     <tab>RM_WM_Restoration</tab>\n     <requiredAnalyzed>\n-      <li>RM_WM_Autoloom_Wrecked</li>\n+      <li>RM_WM_Autoloom_Kludged</li>\n     </requiredAnalyzed>\n     <researchViewX>0</researchViewX>\n     <researchViewY>4</researchViewY>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines_Autoloom.xml"
+  ],
+  "patch_sha": "9ea3880ef26674b1",
+  "rc": 1,
+  "test_blob": "89bcd3d09dde0a9ec3df905df5e9270cbf3e51f8"
+ },
  "sc_text_names_no_setting": {
   "at": "2026-11-27T15:23:02Z",
   "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\"",

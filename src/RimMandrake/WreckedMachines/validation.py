@@ -179,8 +179,11 @@ def static_checks():
         got = [li.text for li in d.findall("comps/li/processes/li")] if d is not None else []
         if kl != got:
             bad.append("the smelter row's Kludged part %s is not the Kludged def's list %s" % (kl, got))
-    rroot = ET.parse(os.path.join(HERE, "Defs", "ResearchProjectDefs", "ResearchProjects_WreckedMachines.xml")).getroot()
-    projects = {d.findtext("defName"): d for d in rroot.findall("ResearchProjectDef")}
+    projects = {}       # every project file: a landed line has a file of its own (Source/onboard.py, landing)
+    for pf in sorted(os.listdir(os.path.join(HERE, "Defs", "ResearchProjectDefs"))):
+        if pf.endswith(".xml"):
+            rroot = ET.parse(os.path.join(HERE, "Defs", "ResearchProjectDefs", pf)).getroot()
+            projects.update({d.findtext("defName"): d for d in rroot.findall("ResearchProjectDef")})
     for key, row in sorted(lines.items()):
         p1, p2 = (row.findtext("firstProject") or "").strip(), (row.findtext("secondProject") or "").strip()
         for pn, lvl in ((p1, "wrecked"), (p2, "kludged")):

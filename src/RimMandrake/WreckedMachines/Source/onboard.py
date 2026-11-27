@@ -21,8 +21,9 @@ VFEFactory_AutomatedSmelter 260 steel, 300 W, heat 14, breakdown 3, MaxHitPoints
   Wrecked      inert: no donor comp, no ground need, no interaction cell, no hopper link; a carried form (minifiedDef MinifiedThing
                and the donor's thingCategories); the donor's Mass and MaxHitPoints; Beauty x3 (-30); Flammability x0.5; WorkToBuild
                16% of the donor's (800), nearest 100; salvage costList = Steel 30/260 of the donor's, nearest 5; the study comp and the
-               machine comp; draw-in buildingTags RM_RuinDrawsConduit (donor has a power comp) and RM_RuinDrawsPipes (donor has a
-               PipeSystem.CompProperties_Resource).
+               machine comp; the draw-in buildingTag RM_RuinDrawsConduit (donor has a power comp). No RM_RuinDrawsPipes: that tag draws
+               FlowWorks liquid pipes in, and no factory donor takes those (a donor's PipeSystem net, such as the chemfuel net, is
+               another mod's pipe; FlowWorks/selftest_wrecked_links_draw_in.py refuses the tag on such a wreck).
   Kludged      the donor's def; cost and WorkToBuild from the row; Beauty x2 (-20); MaxHitPoints x2/3 (300), nearest 10; breakdown
                factor x2 of the donor's (default 1: the stat's own default); VEF_BuildingMaxOverclockFactor 1; power x1.2 (360 W),
                heat x1.4 (14 -> 20); canOverclock false and the overclock gizmo fields gone; the processes of the row; the study comp;
@@ -59,7 +60,6 @@ MACHINE_COMP = "RimMandrake.WreckedMachines.CompProperties_WreckedMachine"
 STUDY_COMP = "CompProperties_CompAnalyzableUnlockResearch"
 STUDY_CLASS = "RimMandrake.WreckedMachines.CompMachineStudy"
 PROCESSOR = "PipeSystem.CompProperties_AdvancedResourceProcessor"
-PIPE_RESOURCE = "PipeSystem.CompProperties_Resource"
 POWER = "CompProperties_Power"
 HEAT = "CompProperties_HeatPusher"
 COMPONENT = "RM_WM_AncientComponent"
@@ -462,8 +462,6 @@ def build_wrecked(donor, row, key, number, tx):
         sub(tags, "li", li.text)
     if comp_of(donor, POWER) is not None:
         sub(tags, "li", "RM_RuinDrawsConduit").addnext(etree.Comment(" draw only: it joins no net "))
-    if comp_of(donor, PIPE_RESOURCE) is not None:
-        sub(tags, "li", "RM_RuinDrawsPipes").addnext(etree.Comment(" draw only: it joins no pipe net "))
     comps = sub(d, "comps")
     comps.append(study_comp(1, number, tx))
     comps.append(machine_comp())
@@ -835,7 +833,15 @@ def check_key(mod, key, vfef, module, donors):
     tmp = tempfile.mkdtemp(prefix="wm_onboard_")
     try:
         base, _ = temp_copy(mod, key, tmp)
-        bad, n = module.rows_for(base, module.REPO if mod == MOD_DEFAULT else os.path.normpath(os.path.join(mod, "..", "..", "..")), donors)
+        # The acceptance rows name a picture by its path under the repo root, and the judge's records name it the same way.
+        # The copy stands at <tmp>/src/RimMandrake/WreckedMachines, so <tmp> is its repo root: the real records are linked
+        # in there. (Read against the real root, a picture of the copy has a path that no record names.)
+        repo = module.REPO if mod == MOD_DEFAULT else os.path.normpath(os.path.join(mod, "..", "..", ".."))
+        records = os.path.join(repo, module.ART_RECORDS)
+        if os.path.isdir(records):
+            os.makedirs(os.path.dirname(os.path.join(tmp, module.ART_RECORDS)))
+            os.symlink(records, os.path.join(tmp, module.ART_RECORDS))
+        bad, n = module.rows_for(base, tmp, donors)
         for r, fs in bad.items():
             res[r] = [f for f in fs if f.startswith(key + ":") or f.startswith(key + " ")]
             if r == "settings_line":

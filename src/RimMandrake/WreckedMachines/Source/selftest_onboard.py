@@ -136,6 +136,31 @@ def main():
         say(bool(res["pictures_of_its_own"]) and bool(res["pictures_judged"]), "the picture rows fail, as they must until the art is made and judged",
             "%d + %d faults" % (len(res["pictures_of_its_own"]), len(res["pictures_judged"])), "both above 0")
 
+        # ---- pictures made and judged: the check, which reads a temporary copy of the mod, finds the judge's record
+        import hashlib
+        import json
+        slots = []
+        for d in etree.parse(staged(mod, "levels.xml")).getroot():
+            if isinstance(d.tag, str) and d.findtext("defName", "").endswith(("_Wrecked", "_Kludged")):
+                for facing in ("north", "south", "east", "west"):
+                    f = os.path.join(mod, "Textures", *d.findtext("graphicData/texPath").split("/")) + "_%s.png" % facing
+                    os.makedirs(os.path.dirname(f), exist_ok=True)
+                    open(f, "wb").write(("picture %s %s" % (d.findtext("defName"), facing)).encode())
+                    slots.append({"slot": os.path.relpath(f, tmp), "sha": hashlib.sha256(open(f, "rb").read()).hexdigest()})
+        recs = os.path.join(tmp, "design", "concepts", "WreckedMachines", "version", "evidence", "art")
+        os.makedirs(recs)
+        json.dump({"verdict": "keep", "judge": {"made_it": False}, "slots": slots}, open(os.path.join(recs, "smelter.json"), "w"))
+        res2, _ = faults(mod, vfef)
+        say(len(slots) == 8 and not res2["pictures_of_its_own"] and not res2["pictures_judged"],
+            "with its 8 pictures made and a judge's record for each, the picture rows pass in the check's temporary copy",
+            "%d pictures, %d + %d faults%s" % (len(slots), len(res2["pictures_of_its_own"]), len(res2["pictures_judged"]),
+                                              (": " + res2["pictures_judged"][0]) if res2["pictures_judged"] else ""), "8 pictures, 0 + 0 faults")
+        open(os.path.join(mod, "Textures", *slots[0]["slot"].split(os.sep)[4:]), "wb").write(b"redrawn after the judge looked")
+        res3, _ = faults(mod, vfef)
+        say(bool(res3["pictures_judged"]), "a picture changed after the judge looked fails pictures_judged", "%d faults" % len(res3["pictures_judged"]), "above 0")
+        shutil.rmtree(os.path.join(mod, "Textures"))
+        shutil.rmtree(os.path.join(tmp, "design"))
+
         # ---- fidelity against the shipped smelter
         new = etree.parse(staged(mod, "levels.xml")).getroot()
         old = etree.parse(SHIPPED_LEVELS).getroot()

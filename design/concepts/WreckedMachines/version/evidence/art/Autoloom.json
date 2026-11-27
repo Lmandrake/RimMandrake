@@ -1,0 +1,95 @@
+{
+ "subject": "Autoloom",
+ "line": "autoloom",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Kludged/Autoloom_east.png",
+   "sha": "a5e8904dbc31fa71a9f52f7f6ac429ed941482dcec566928b7dade59d069d5fc",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Kludged/Autoloom_north.png",
+   "sha": "9051512d2d207578557aeca1739813adf16604b4e9421f1c8d46b2de4842e1a0",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Kludged/Autoloom_south.png",
+   "sha": "e139c2d5ce9781295457e18f1e0a853098bd4c48da79ca6a86d257635b645a7d",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Kludged/Autoloom_west.png",
+   "sha": "471584f2a099f5b7e0faac557b4d9623ef3706c0bef68a47bc738770994dd676",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Wrecked/Autoloom_east.png",
+   "sha": "ca4162d874371f841e9501d39ae54c7d2d4021944bf03614a53404237f957231",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Wrecked/Autoloom_north.png",
+   "sha": "74aad6f4217cd1a69e44af7b216d4adac56169740e8d2382a72822d9903b974b",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Wrecked/Autoloom_south.png",
+   "sha": "3e3ae0f7dfc9816cb003d1a9807e8ce268098297632316a1afa817151a8869ed",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/Autoloom/Wrecked/Autoloom_west.png",
+   "sha": "6e57d9247a80e68494890d57797a1ab682d6977c795caea75c0b14bb44182f44",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T16:21:19Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor loom's outline, facing and parts (spools, scissors, intake belt, three heddle boxes, cloth roller, output belts) and redraw them in the painted, rusted register of the owner-corrected smelter set, with no heavy keyline. Wrecked is broken open with torn cloth and holes and nothing lit; Kludged is sealed with patch plates, spliced cables, one strapped-on box and a few small lamps, with every conveyor belt left clear and no breach or fire, so both of the owner's smelter corrections (E4) are met. The four facings agree in size, proportion and palette, and at 32 px per cell each reads as bold red boxes and a pale roller on a dark frame well apart from the tan ground. Canvas is 512x768 (south/north) and 768x512 (east/west), which is drawSize x 128; holes show dark interior, with no backdrop or ground shadow. The intake belt and roller crest stand a fraction of a cell past the 3x5 footprint, but the donor's own picture overhangs in the same places at the same drawSize and these pictures were asked to keep its outline, so I do not count it as a D3 overflow.",
+ "notes": []
+}

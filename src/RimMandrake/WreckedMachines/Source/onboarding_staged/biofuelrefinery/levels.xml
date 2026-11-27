@@ -54,8 +54,6 @@
         <li>Production</li>
         <li>RM_RuinDrawsConduit</li>
         <!-- draw only: it joins no net -->
-        <li>RM_RuinDrawsPipes</li>
-        <!-- draw only: it joins no pipe net -->
       </buildingTags>
     </building>
     <comps>
