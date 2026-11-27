@@ -59,7 +59,12 @@ WIRING = [
     ("jawa/material_queue", "JawaBenchPawnRenderTools.cs",
      [r"JawaBenchDrawOrderCore\.QueueRefusal\(", r"JawaBenchDrawOrderCore\.Picks\(", r"\"sections\"", r"\.renderQueue = "]),
     ("jawa/pawn_render_nodes", "JawaBenchPawnRenderTools.cs",
-     [r"JawaBenchDrawOrderCore\.DrawPath\(", r"JawaBenchDrawOrderCore\.Relation\(", r"\"drawRequests\"", r"\"results\"",
+     [r"JawaBenchDrawOrderCore\.DrawPath\(", r"JawaBenchDrawOrderCore\.Relation\(", r"\"drawRequests\"",
+      # PawnRenderer.RenderPawnAt ends with `results = default`: a read between frames always saw valid=false (live,
+      # SteveDesktop 2026-11-27: drawPath=notPreRendered for a colonist drawn that frame). The path comes from the engine's
+      # own ParallelGetPreRenderResults at the last drawn body position (silhouettePos), and a node without a material
+      # (never drawn) stays out of nodesY.
+      r"\"ParallelGetPreRenderResults\"", r"\"silhouettePos\"", r"if \(m != null\) ys\.Add\(",
       r"preDrawnComputedMatrix", r"ZoomRootSize", r"renderQueue"]),
 ]
 

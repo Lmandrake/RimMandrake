@@ -4,7 +4,9 @@
 // a section material's renderQueue for a session: the experiment that tells a queue order from a depth order.
 //
 // ENGINE (decompiled 1.6, read 2026-11-27): PawnRenderer keeps `private PreRenderResults results` (valid, draw, useCached, bodyPos,
-// ...), set each frame by ParallelPreRenderPawnAt. useCached (a humanlike pawn with CameraDriver.ZoomRootSize > 18 and no
+// ...), set each frame by ParallelPreRenderPawnAt and RESET to default at the end of RenderPawnAt, so a read between frames sees
+// valid=false (live, SteveDesktop 2026-11-27). This read asks the engine's own ParallelGetPreRenderResults for the path instead,
+// at the last drawn body position (`silhouettePos`, written from results.bodyPos in the same draw). useCached (a humanlike pawn with CameraDriver.ZoomRootSize > 18 and no
 // animation, carry or crawl) draws ONE quad of the pawn's cached atlas frame (ShaderDatabase.Cutout) at bodyPos, and the render
 // nodes are not drawn; else PawnRenderTree keeps `private readonly List<PawnGraphicDrawRequest> drawRequests`, one per node,
 // each drawn by GenDraw.DrawMeshNowOrLater(mesh, preDrawnComputedMatrix, material): the matrix's translation is the drawn spot.
@@ -32,9 +34,11 @@ namespace JawaBench.BridgeTools
                 "zoom root size (the engine draws a humanlike pawn as cachedAtlas above 18), bodyPos, and for each draw request " +
                 "of the render tree: node label, tag, worker, material (name, id, shader, renderQueue) and the drawn spot (the " +
                 "translation of its matrix: y is its height, larger = nearer the camera). Under cachedAtlas the requests are the " +
-                "last ones built and are not drawn. framesSinceDraw (0..2 = drawn now) dates the reading. With probeY >= 0 (a " +
-                "mesh's bounds centre from jawa/cell_draw_census) each draw says vsProbe: above, below or level. Calls no " +
-                "DrawPos and dirties nothing.",
+                "last ones built and are not drawn. framesSinceDraw (0..2 = drawn now) dates the reading; a pawn never drawn reads " +
+                "notPreRendered. The requests are read first, as the last frame built them; then the path comes from the engine's " +
+                "own PawnRenderer.ParallelGetPreRenderResults at the last drawn body position, which rebuilds the requests as " +
+                "every frame does. nodesY spans the requests that have a material (the drawn ones). With probeY >= 0 (a vertex " +
+                "height from jawa/cell_draw_census) each draw says vsProbe: above, below or level. Calls no DrawPos.",
             ResultDescription =
                 "success, ticksGame, pawn{thingId, x, z}, framesSinceDraw (-1 = never drawn), cameraRootSize, drawPath, " +
                 "bodyPos[x,y,z], cachedQuad{shader, renderQueue, y, vsProbe} (cachedAtlas only), requests[] {node, tag, worker, " +
@@ -59,18 +63,15 @@ namespace JawaBench.BridgeTools
                 if (pawn == null) return Fail("no spawned pawn " + want + " on the current map");
                 PawnRenderer renderer = pawn.Drawer?.renderer;
                 if (renderer == null) return Fail(want + " has no renderer: the read cannot see");
-                FieldInfo resultsField = AccessTools.Field(typeof(PawnRenderer), "results");
+                MethodInfo preMethod = AccessTools.Method(typeof(PawnRenderer), "ParallelGetPreRenderResults");
+                FieldInfo silField = AccessTools.Field(typeof(PawnRenderer), "silhouettePos");
                 FieldInfo requestsField = AccessTools.Field(typeof(PawnRenderTree), "drawRequests");
                 FieldInfo lastFrame = AccessTools.Field(typeof(PawnTweener), "lastDrawFrame");
-                if (resultsField == null || requestsField == null)
-                    return Fail("Verse.PawnRenderer.results or PawnRenderTree.drawRequests not found: the read cannot see");
-                object res = resultsField.GetValue(renderer);
-                Type rt = resultsField.FieldType;
-                bool valid = (bool)rt.GetField("valid").GetValue(res);
-                bool draw = (bool)rt.GetField("draw").GetValue(res);
-                bool useCached = (bool)rt.GetField("useCached").GetValue(res);
-                Vector3 bodyPos = (Vector3)rt.GetField("bodyPos").GetValue(res);
-                string path = JawaBenchDrawOrderCore.DrawPath(valid, draw, useCached);
+                if (preMethod == null || silField == null || requestsField == null)
+                    return Fail("Verse.PawnRenderer.ParallelGetPreRenderResults, PawnRenderer.silhouettePos or " +
+                                "PawnRenderTree.drawRequests not found: the read cannot see");
+                int f = lastFrame != null && pawn.Drawer?.tweener != null ? (int)lastFrame.GetValue(pawn.Drawer.tweener) : -1;
+                Vector3 bodyPos = (Vector3)silField.GetValue(renderer);
                 bool probe = probeY >= 0f;
                 float eps = JawaBenchDrawOrderCore.Eps;
                 var rows = new List<object>();
@@ -82,7 +83,7 @@ namespace JawaBench.BridgeTools
                     {
                         Matrix4x4 mx = q.preDrawnComputedMatrix;
                         Material m = q.material;
-                        ys.Add(mx.m13);
+                        if (m != null) ys.Add(mx.m13);
                         rows.Add(new
                         {
                             node = q.node != null ? q.node.ToString() : null,
@@ -98,7 +99,17 @@ namespace JawaBench.BridgeTools
                     }
                 }
                 JawaBenchDrawOrderCore.YSpan nodes = JawaBenchDrawOrderCore.Span(ys);
-                int f = lastFrame != null && pawn.Drawer?.tweener != null ? (int)lastFrame.GetValue(pawn.Drawer.tweener) : -1;
+                // the path, after the requests are read (the engine's call rebuilds them, as every frame does)
+                bool valid = false, draw = false, useCached = false;
+                if (f >= 0)
+                {
+                    object res = preMethod.Invoke(renderer, new object[] { bodyPos, null, false, false });
+                    Type rt = preMethod.ReturnType;
+                    valid = (bool)rt.GetField("valid").GetValue(res);
+                    draw = (bool)rt.GetField("draw").GetValue(res);
+                    useCached = (bool)rt.GetField("useCached").GetValue(res);
+                }
+                string path = JawaBenchDrawOrderCore.DrawPath(valid, draw, useCached);
                 Shader cut = ShaderDatabase.Cutout;
                 return (object)new
                 {
