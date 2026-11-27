@@ -91,6 +91,33 @@ def t_a_failed_build_is_named(root):
     assert not ok and "no MEASURED line" in line, line
 
 
+def t_a_failed_build_is_named_cut_and_old_db_stays(root):
+    capture(root, "2026-01-01T00-00-00Z")
+    rc, r = T.tick(root)                              # a real db, built from the first capture
+    assert rc == 0 and r["state"] == "rebuilt", r
+    db = os.path.join(root, T.DB_NAME)
+    before = os.stat(db).st_ino
+    capture(root, recent_id(), names=("X", "Y"))      # stale now, so the next tick builds
+    keep = T.BUILD_TIMEOUT_S
+    T.BUILD_TIMEOUT_S = 0.001  # budget: fixture (the real build cannot start a Python in 1 ms: it is cut)
+    try:
+        rc, r = T.tick(root)
+    finally:
+        T.BUILD_TIMEOUT_S = keep
+    assert rc == 1 and r["state"] == "build_failed" and "cut at its limit" in r["why"], r
+    with open(T.reading_path(), encoding="utf-8") as fh:
+        assert json.load(fh)["state"] == "build_failed", "the cut must be written in the reading"
+    assert os.path.exists(db) and os.stat(db).st_ino == before, "the old db must stay after a failed build"
+    assert T.db_state(root)[0] == "stale", T.db_state(root)
+    # the real build on an unreadable newer capture fails, and the old db stays too
+    bad = os.path.join(root, "captures", recent_id(-60))
+    os.makedirs(bad)
+    open(os.path.join(bad, "manifest.json"), "w").write("{not json")
+    rc, r = T.tick(root)
+    assert rc == 1 and r["state"] == "build_failed", r
+    assert os.path.exists(db) and os.stat(db).st_ino == before, "the old db must stay after a failed build"
+
+
 def t_check_tells_the_cases_apart(root):
     rc, line = T.check(root)
     assert rc == 1 and "never run" in line, line
@@ -122,7 +149,8 @@ def main():
         return 2
     bad = 0
     tests = (t_a_stale_db_is_rebuilt, t_a_current_db_is_left_alone, t_no_capture_builds_nothing,
-             t_a_failed_build_is_named, t_check_tells_the_cases_apart)
+             t_a_failed_build_is_named, t_a_failed_build_is_named_cut_and_old_db_stays,
+             t_check_tells_the_cases_apart)
     for fn in tests:
         root = tempfile.mkdtemp(prefix="ddbt_")
         os.environ["RM_DEFDUMP_DB_DIR"] = os.path.join(root, "_state")
