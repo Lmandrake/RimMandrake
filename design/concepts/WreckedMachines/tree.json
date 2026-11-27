@@ -143,7 +143,7 @@
    "accept": [
     "A colonist uninstalls a wrecked smelter in a ruin, hauls it to the colony's workshop and installs it there. It stands as the same wreck.",
     "A caravan loads a wrecked autoloom that it found on another tile. Its weight takes the load of more than one colonist, or of a pack animal. It arrives, and colonists install it at home.",
-    "In a game where a mod above this one narrows who may lift a wreck, a colonist has no uninstall order on the wreck and a hauler droid carries it instead.",
+    "In a game where a mod above this one narrows who may lift a wreck, a colonist cannot take the wreck up, and a hauler droid that the narrowing allows carries it instead.",
     "A colony with no factory research sets a wrecked smelter down on the bare floor of its workshop."
    ],
    "reject": [
@@ -176,7 +176,7 @@
    "says": "Colonists study the machine itself, and only that study opens the research for its next repair.",
    "meant": {
     "intent": "Reject if false: his words make the machine in front of the colonist the subject of the research. If a bench alone opens the repair, the wreck is one more ingredient of a recipe. In the built mod the first repair needs no study and no research, and study exists only with another mod loaded.",
-    "source": "OWNER:1795755622961436106 ('studied to enable research'; 'Each repair requires machine study, research bench time, and considerable resources'); OWNER:1795749426260848822 ('study the MACHINE itself as part of the research'); OWNER:1795749555968288570 ('It should teach them about how to fix that machine... slowly'); delegated: record decisions d_study_before_each_repair (two projects for each machine; the base game's own study carries it; research is the colony's knowledge) and d_first_look_read reading 3 (no item of another mod; turned on once; progress shown on the machine).",
+    "source": "OWNER:1795755622961436106 ('studied to enable research'; 'Each repair requires machine study, research bench time, and considerable resources'); OWNER:1795749426260848822 (\"study the MACHINE itself as part of the 'research.'\"); OWNER:1795749555968288570 (\"It should teach them about how to fix that machine… and the associated research item it is part of, slowly.\"); delegated: record decisions d_study_before_each_repair (two projects for each machine; the base game's own study carries it; research is the colony's knowledge) and d_first_look_read reading 3 (no item of another mod; turned on once; progress shown on the machine).",
     "figurative": [
      {
       "word": "only that study",
@@ -233,8 +233,8 @@
     "figurative": [
      {
       "word": "where it stands",
-      "stands_for": "at the machine, with no workbench and no pick from the build menu. A machine at home and a machine still in its ruin are both repaired where they stand.",
-      "accept": "A colony repairs a wreck that it found on its own map without moving it first."
+      "stands_for": "at the machine, with no workbench and no pick from the build menu. A machine at home and a machine still in its ruin are both repaired where they stand, once the ground under the machine is the ground that its working level needs (rule R_ground).",
+      "accept": "A colony repairs a wrecked smelter that it found in a ruin on its own map without moving it: it lays the factory floor under the wreck where it stands, and the repair is then made there."
      },
      {
       "word": "in sight",
@@ -248,7 +248,7 @@
     "The player cancels a repair after part of the materials arrived. The wreck still stands, and the delivered materials lie beside it.",
     "Something interrupts a repair for days. Afterwards colonists go on with the same repair.",
     "A wreck whose research is not done shows the repair order as unavailable, and the order says what is missing.",
-    "A colony repairs a wreck that it found on its own map without moving it first."
+    "A colony repairs a wrecked smelter that it found in a ruin on its own map without moving it: it lays the factory floor under the wreck where it stands, and the repair is then made there."
    ],
    "reject": [
     "The player picks the next level from the build menu and places it over the wreck. A colonist takes the wreck apart and then builds a frame on empty ground.",
@@ -451,7 +451,7 @@
    "id": "switch_gives_machine_back",
    "says": "In Mod Settings a player switches any one ancient machine off, and that machine is then the ordinary machine that it was without this mod.",
    "meant": {
-    "intent": "Reject if false: every mod ships superb Mod Settings, with an on/off switch for each major feature and a game that still works when every switch is off (standing ruling). The card for all 18 names the cost: 'a stranger who already has a factory loses the most'. The switch for each machine is that stranger's way out, machine by machine. An older live check on a settings switch went red on 'off, then on'.",
+    "intent": "Reject if false: every mod ships superb Mod Settings, with an on/off switch for each major feature and a game that still works when every switch is off (standing ruling). The card for all 18 names the cost, in the description of the option that he picked (our text, not his words): 'a stranger who already has a factory loses the most'. The switch for each machine is that stranger's way out, machine by machine. An older live check on a settings switch went red on 'off, then on'.",
     "source": "standing ruling: design/RimMandrake/standing_rulings.md, Every mod ships superb Mod Settings; OWNER:1795761534460592124 (all 18, with its cost line); delegated: record decisions d_all_eighteen_shape call 4 (one on/off line for each machine, on as shipped) and d_plasteel_with_last_repair call 3 (the forge's line replaces the two forge settings).",
     "figurative": [
      {
@@ -592,7 +592,7 @@
     ]
    },
    "accept": [
-    "One run on the mod's small list: a large factory machine and a carried machine both go from a ruin to Refurbished. The Kludged smelter makes steel on the way, and the Kludged power cell lights a lamp. The log holds no error of this mod. The run includes a reload from a save made in the middle of the first repair. The run is then played in a second order of the main actions: the wreck is studied in the ruin before it is carried home, and the Ancient Component is found before the first repair.",
+    "One run on the mod's small list: a large factory machine and a carried machine both go from a ruin to Kludged and do their work: the Kludged smelter makes steel, and the Kludged power cell lights a lamp. The ruin held a single Ancient Component. The machine that gets it goes on to Refurbished, and the last repair of the other machine says that a component is missing. The log holds no error of this mod. The run includes a reload from a save made in the middle of the first repair. The run is then played in a second order of the main actions: the wrecks are studied in the ruin before they are carried home, the Ancient Component is found before the first repair, and the other machine gets it.",
     "A second colony in the same world finds no component and stops at Kludged. Nothing in its game is stuck: no order waits for ever without a reason shown.",
     "A player who has never seen the mod selects a wreck at home and reads that it must be studied; after the study, that a project is open; after the research, that a repair can be ordered and what it needs."
    ],
@@ -604,7 +604,7 @@
    ],
    "lazy": "The run is played with the costs and the times set to almost nothing in Mod Settings, so each step passes in a moment and nothing was watched at the shipped values.",
    "range": {
-    "varies": "Two machines from end to end: one large factory machine and one carried machine. For the other machines, the journey from the carried-home wreck on, with the wreck placed by the scene. Two orders of the main actions: carry and then study; study in the ruin and then carry; the component found before the first repair or after it. A reload from a save made in the middle of a repair, and one made in the middle of a study. Shipped settings. Time compressed at top speed: every job and every wait is real, and the compression skips nothing.",
+    "varies": "Two machines from the ruin to Kludged: one large factory machine and one carried machine. In each order of the actions one of the two goes on to Refurbished with the ruin's component: the large machine in the first order, the carried machine in the second. For the other machines, the journey from the carried-home wreck on, with the wreck placed by the scene. Two orders of the main actions: carry and then study; study in the ruin and then carry; the component found before the first repair or after it. A reload from a save made in the middle of a repair, and one made in the middle of a study. Shipped settings. Time compressed at top speed: every job and every wait is real, and the compression skips nothing.",
     "left_out": "A season of play, raids and the campaign's layers. The exact timings. The rare wreck on an ordinary map (bar wreck_is_found reads it; the whole run starts at a ruin). A machine whose line is off."
    },
    "sees": {
@@ -771,7 +771,7 @@
     "R_ground"
    ],
    "holds_together": "argued",
-   "why": "A wreck is always movable and may stand on any firm ground, so it can always come home. A working level needs the donor's ground, so the repair order checks the ground and says what is missing; a colony lays factory floor at the place where it installs the wreck. An uninstall during a repair is a cancel. Whether floor can be laid under a wreck that already stands is not measured; if it cannot, the colony carries the wreck onto floor, which the same rules allow.",
+   "why": "A wreck is always movable and may stand on any firm ground, so it can always come home. A working level needs the donor's ground, so the repair order checks the ground and says what is missing; a colony lays factory floor at the place where it installs the wreck. An uninstall during a repair is a cancel. Read from the game's source and not yet seen in play: floor can be laid under a standing wreck when the wreck names no ground need (rule R_ground). The scene sc_repair_needs_ground reads both ways in play: the floor laid under the wreck, and the wreck carried onto floor.",
    "model": ""
   },
   {
@@ -922,7 +922,7 @@
   },
   {
    "id": "R_lift",
-   "rule": "Every wreck has a carried form and weighs what the donor machine weighs. Who may lift a wreck is data on the machine; as shipped, any colonist may. This mod requires no hauler mod and names none.",
+   "rule": "Every wreck has a carried form and weighs what the donor machine weighs. Who may lift a wreck is data on the machine; as shipped, any colonist may. A layer above narrows the lift by changing that data. A pawn that the data excludes cannot take the wreck up by any order. A pawn that the data allows always can, by the order that this pawn has: a colonist by the base game's Uninstall order, a hauler of another mod by that mod's own order. So a narrowing never leaves a wreck that no pawn can move. This mod requires no hauler mod and names none.",
    "touches": [
     "carried_form"
    ]
@@ -945,7 +945,7 @@
   },
   {
    "id": "R_ground",
-   "rule": "A wreck stands on any ground that carries a heavy building. A working level needs the ground that the donor machine needs: for the factory machines, the factory mod's own floor. A repair order on a wreck that stands on other ground is unavailable and says so. The factory floor stays in the build menu behind the factory mod's own research, like the other parts.",
+   "rule": "A wreck stands on any firm ground: its def names no ground need of the base game's kind. A working level needs the ground that the donor machine needs: for the factory machines, the factory mod's own floor. A repair order on a wreck that stands on other ground is unavailable and says so. The colony then lays that floor under the wreck where it stands, or carries the wreck onto such a floor; both ways must work. The factory floor stays in the build menu behind the factory mod's own research, like the other parts. Read on 2026-11-27 from the game's source (GenConstruct.CanPlaceBlueprintOver, through RimSage) and from the factory mod's Terrain_Floors.xml, not yet seen in play: the game accepts a floor under a standing building only when the building names no ground need or the new floor gives that need, and the factory floor gives one kind of ground only, its own. So a wreck def that named Heavy ground could neither get factory floor laid under it nor be installed on factory floor.",
    "touches": [
     "carried_form",
     "repair_order",

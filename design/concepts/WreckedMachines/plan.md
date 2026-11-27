@@ -119,14 +119,21 @@ later versions is in `version/next_version/README.md`.
 - **The repair mechanism is the largest new code.** Three designs are below. All three must keep the machine's
   identity on a level change: its power connection, its facing, its place in a stockpile filter or bill list where the
   donor has one. The offline walk reads the logic; `sc_repair_on_machine` reads the identity.
-- **Ground.** A wreck at home on a plain floor cannot be repaired until it stands on factory floor. Whether the game
-  lets a colony lay floor under a standing building is not measured; `sc_repair_needs_ground` records which way works.
-  If neither reads well in play, rule `R_ground` is attacked: the alternative is that a wreck placed by the mod
-  brings a patch of ancient factory floor with it and keeps the donor's rule at every level.
+- **Ground.** A wreck on a plain floor, at home or in its ruin, cannot be repaired until factory floor is under it.
+  Read from the game's source on 2026-11-27 (`GenConstruct.CanPlaceBlueprintOver`, through RimSage) and from the
+  factory mod's `Terrain_Floors.xml`, and not yet seen in play: the game accepts a floor under a standing building
+  only when the building names no ground need or the new floor gives that need, and the factory floor gives one kind
+  of ground only, its own. So the wreck's def names no ground need of the base game's kind (rule `R_ground`); a wreck
+  def that named Heavy ground could neither get factory floor laid under it nor be installed on factory floor.
+  `sc_repair_needs_ground` reads both ways in play. If the game refuses in play what its source allows, rule
+  `R_ground` is attacked: the alternative is that a wreck placed by the mod brings a patch of ancient factory floor
+  with it and keeps the donor's rule at every level.
 - **Art is most of the work**: 136 pictures for 17 machines, 4 for the two carried machines and 1 for the component.
-  A machine is onboarded only when its pictures pass the art judge; until then its line ships off, so that no
-  machine is ancient with a borrowed picture. That is a build rule of this plan, and it keeps bar
-  `levels_told_apart` true for every machine whose line is on.
+  A machine enters the onboarded set only when its pictures pass the art judge. Until then the machine has no line
+  in Mod Settings and is the factory mod's ordinary machine, so no machine is ancient with a borrowed picture during
+  the build. Every line that exists ships on. 0.1.0 passes only with all 20 machines in the set (check
+  `C_onboarded_set`). That is a build rule of this plan, and it keeps bar `levels_told_apart` true for every
+  ancient machine.
 - **The base game's hand-outs** (call B of turn 5). Odyssey, Ideology and Anomaly name the two base-game machines in
   loot and reward lists by defName. A patch that matches nothing logs nothing, so `sc_no_handouts` reads the
   generators' output and not the absence of an error.

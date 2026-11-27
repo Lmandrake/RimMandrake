@@ -120,11 +120,11 @@
     "a wall segment beside the wrecks"
    ],
    "action": "order Uninstall on each wreck; when the colonist holds the carried form, order its install at the far cell; read the colonist's job at each step; then read each wreck def's carried form and mass for all 20 machines",
-   "expect": "the colonist uninstalls, hauls and installs each wreck; the same Wrecked machine stands at the far cell on the plain floor; every wreck def has a carried form; the read of mass against one colonist's capacity says which wrecks need more than one carrier on a journey",
+   "expect": "the colonist uninstalls, hauls and installs each wreck; the same Wrecked machine stands at the far cell on the plain floor; the colonist's job at each step is the uninstall, the haul and the install, and the script gave no command that moves a thing; every wreck def has a carried form; the mass of each wreck against one colonist's capacity is recorded beside the row and is not judged",
    "control": {
     "case": "the same Uninstall order on the wall segment",
     "expect": "the order is refused: a wall has no carried form",
-    "rules_out": "a wreck moved by a script command and not by a colonist; an instrument that cannot see a refusal"
+    "rules_out": "an instrument that cannot see a refusal, so that 'every wreck can be uninstalled' would read true of anything"
    },
    "restore": "destroy the spawned things; close the quicktest map",
    "hold": "immediate",
@@ -178,9 +178,9 @@
    "action": "read the second project; turn study on once on the Kludged cell; advance the clock; read the project again; save and reload in the middle of the study",
    "expect": "the second project is locked until the Kludged machine is studied and open after it; the study's progress is the same after the reload as before it",
    "control": {
-    "case": "a wrecked power cell beside the Kludged one, studied for the same span instead",
-    "expect": "the second project stays locked: study of the wreck opens only the first project",
-    "rules_out": "one study that opens both projects"
+    "case": "the same starting state with study never turned on on the Kludged cell: a wrecked power cell stands beside it, and a researcher works at the bench for the same span",
+    "expect": "the second project is still locked at the end: the study of the wreck that was done before, the wreck beside it, time and bench work do not open it",
+    "rules_out": "a second project that the first study, time or bench work alone would open"
    },
    "restore": "reload the starting state; delete the scene's save",
    "hold": "immediate"
@@ -277,11 +277,11 @@
    "entry_point_item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
    "start": [
     "the mod's small list with all five expansions, a quicktest map (asserted: the mod's proof type answers)",
-    "the level settings at their shipped values (asserted)",
+    "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
     "the three levels and the Original of the smelter and of the power cell on the map (the Original cell is the base game's own, placed for comparison)"
    ],
    "action": "set each level setting to its lowest and to its highest value, apply, and read the applied speed or power of each level beside the Original's",
-   "expect": "at every value the order holds: Wrecked gives nothing, Kludged is below Refurbished, and Refurbished is below the Original; the settings screen shows each value and says when it takes effect",
+   "expect": "at every value the order holds: Wrecked gives nothing, Kludged is below Refurbished, and Refurbished is below the Original; at the lowest value the applied speed or power of the Kludged and of the Refurbished level is below its shipped reading, and at the highest value it is above it; the settings screen shows each value and says when it takes effect",
    "control": {
     "case": "the shipped values, read first and read again after the settings are put back",
     "expect": "the two reads are equal field by field",
@@ -438,7 +438,7 @@
     "a wrecked and a Kludged autoloom on the map; a wrecked and a Kludged power cell on the map",
     "a first read of the build menu, the research list and the generators for the autoloom and the power cell"
    ],
-   "action": "switch the autoloom's line off and apply; read again; switch the power cell's line off and apply; read again; switch both on again and apply; read a last time",
+   "action": "switch the autoloom's line off and apply, with the restart of the game where the line's label names one; read again; switch the power cell's line off and apply in the same way; read again; switch both on again and apply in the same way; read a last time",
    "expect": "with its line off the autoloom is in the build menu behind the factory mod's research and its restoration projects are gone; with its line off the generators produce a working vanometric power cell; the wrecks and Kludged machines on the map stand unchanged through every switch; the last read equals the first read field by field; each line's label says when its change takes effect",
    "control": {
     "case": "the smelter, whose line is never touched, read in the same passes",
@@ -610,11 +610,11 @@
    "start": [
     "the mod's small list with all five expansions, a quicktest map (asserted: the mod's proof type answers)",
     "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
-    "two wrecked smelters with their project finished and their materials in a stockpile: one installed on a plain wooden floor, one on factory floor (asserted terrain under each)",
+    "three wrecked smelters with their project finished and their materials in a stockpile: two installed on a plain wooden floor, one on factory floor (asserted terrain under each)",
     "one free colonist; the factory mod's first research finished by play in the starting save"
    ],
-   "action": "read the repair order on each wreck; lay factory floor under the first wreck if the game accepts the order, or else uninstall it and install it on factory floor; read its repair order again",
-   "expect": "on the plain floor the order is unavailable and its reason names the factory floor; on factory floor the order is available; after the first wreck stands on factory floor its order is available too. The scene records which of the two ways the game allowed.",
+   "action": "read the repair order on each wreck; order factory floor under the first wreck where it stands and let the colonist lay it; read its repair order again; then uninstall a third wrecked smelter from a plain floor, install it on factory floor and read its repair order",
+   "expect": "on the plain floor the order is unavailable and its reason names the factory floor; on factory floor the order is available; the game accepts the floor order under the standing wreck, the wreck stands unchanged while the floor is laid, and its order is then available; the wreck that was carried onto factory floor installs there and its order is available. Both ways must work (rule R_ground).",
    "control": {
     "case": "a wrecked power cell on the same plain floor",
     "expect": "its repair order is available: the cell's donor needs no special floor",
