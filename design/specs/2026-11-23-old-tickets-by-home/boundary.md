@@ -19,7 +19,8 @@ and nothing closes or drops a ticket.
 ## ACCEPTS (the only inputs this is built for)
 
 - **an-open-ledger-item.** `rimflow home <ID>` takes an item that is not done, dropped or superseded.
-- **a-home-as-kind-and-name.** A home is `mod:<folder>`, `pipeline:<part>`, `game:<need>`, `machine:<name>` or
+- **a-home-as-kind-and-name.** A home is `mod:<folder>`, `pipeline:<part>`, `game:<need>`, `machine:<name>`,
+  `fix:<mod folder>` (a correction of a passed version that moves no bar: `conductor_stops.py sort --to lane`) or
   `unplaced`. A mod that does not exist yet is named by its planned folder.
 - **a-rows-file.** `rimflow home --from <file>`: one line for each ticket, a tab between the fields: ID, HOME, GROUP,
   FLAG, REASON. A line that starts with `#` is a comment.

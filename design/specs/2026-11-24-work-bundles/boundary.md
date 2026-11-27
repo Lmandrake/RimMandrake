@@ -198,7 +198,8 @@ onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_d
   was refused by a bundle since its last other event (a verify, a run's result, is not one) is left out, and the tick's reading names it with its reason.
   A home whose old tickets are all left out starts nothing and says why.
 - **the-onboard-classes-are-data.** `onboard_classes` in `list_dispatch.json` says which classes of home the program may
-  start: `pipeline`, `machine` and `game` on (the owner lifted his hold on the old game-needs tickets on 2026-11-26);
+  start; the setting, not this page, says which class is on today (its `_onboard_classes_doc` says why: `game` is off since
+  2026-11-26 7:35 PM PST by the owner's card answer, `RIMMANDRAKE_THROTTLE_GAME_WORK_WHEN_REPAIRS_END_ROOM_SHORT`);
   `mod` on means the mod's own bundle takes them (the-mods-own-bundle-onboards-its-old-tickets): the lane never starts a
   `mod:` home. A ticket with no home of its own (`item:`, `cause:`) is never started. A home of a class that is off or
   has no setting starts nothing, and the reading says which setting holds it. The code path is the same for every class.

@@ -1505,6 +1505,13 @@ def t_the_page_shows_each_onboarding_run():
         and "1 already fixed" in md and "1 dropped" in md and "1 routed" in md and "1 open" in md,
         "page: an onboarding run's line names its home, its member count and each outcome so far (%s)" % md)
     chk(lambda: "1 onboarding" in md, "page: the count line counts the onboarding runs that ended (%s)" % md)
+    # a machine: or a game: home (both are onboard classes) is named too, never "an unnamed system"
+    for home, words in (("machine:SteveDesktop", "SteveDesktop"), ("game:research-tree", "research tree")):
+        r = W.new_record(home, ["M1"], "why", "workshop", NOW, onboard=True)
+        r.update(state="live", units=[{"unit": "u-m", "at": NOW, "kind": "launch"}])
+        md2 = "\n".join(W.page_md(W.page_rows(NOW + 60, bundles={r["id"]: r}, unit_live=lambda u: True)))
+        chk(lambda md2=md2, words=words: words in md2 and "unnamed system" not in md2,
+            "page: an onboarding run of %s names its home (%s)" % (home, md2))
 
 
 def t_the_mods_own_bundle_onboards_its_old_tickets():

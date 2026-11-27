@@ -1693,6 +1693,10 @@ def system_words(system):
         return "tickets that share one cause"
     if kind == "item":
         return "one ticket and its follow-ups"
+    if kind == "machine" and name:
+        return "the %s machine" % name
+    if kind == "game" and name:
+        return "the %s work in the live game" % name.replace("_", " ").replace("-", " ")
     return "an unnamed system"
 
 
