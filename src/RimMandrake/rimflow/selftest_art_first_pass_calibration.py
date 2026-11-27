@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """selftest_art_first_pass_calibration.py - the promises of design/specs/2026-11-24-first-pass-calibration/boundary.md.
 No model, no network: the judge is a fake. The real run is `refusal_contract.py calibrate --model art_eval_first_pass`,
-which spends."""
+which spends. No real picture either: a fake judge reads no pixels, so every case's pictures are drawn stand-ins
+(`stand_ins`). A slim clone holds no media, and the artstore on D: is not always reachable."""
+import copy
+import hashlib
 import json
 import os
 import sys
@@ -15,6 +18,37 @@ import art_first_pass_calibration as F  # noqa: E402
 import refusal_contract as RC  # noqa: E402
 
 FAILS = []
+PICTURES = {}   # source path -> its drawn stand-in, for this run
+
+
+def stand_in(src, edge, tmp):
+    """A drawn RGBA picture for `src`: an opaque oval on clear ground, a colour of its own (no two are byte-identical,
+    as cards.gates would flag), on the shipping canvas so policy.canvas_mismatch holds nothing."""
+    from PIL import Image, ImageDraw
+    if src not in PICTURES:
+        h = hashlib.sha256(src.encode()).digest()
+        im = Image.new("RGBA", (edge, edge), (0, 0, 0, 0))
+        ImageDraw.Draw(im).ellipse((edge // 8, edge // 8, edge * 7 // 8, edge * 7 // 8), fill=(h[0], h[1], h[2], 255))
+        PICTURES[src] = str(Path(tmp) / ("%s.stand-in" % h.hex()[:16]))   # not a media name: the item's check hides *.png
+        im.save(PICTURES[src], format="PNG")
+    return PICTURES[src]
+
+
+def stand_ins(cases, tmp):
+    """`cases` with every picture path (a facing, a set, a composite) swapped for its stand-in."""
+    def swap(v, edge):
+        if isinstance(v, str):
+            return stand_in(v, edge, tmp)
+        if isinstance(v, list):
+            return [swap(x, edge) for x in v]
+        if isinstance(v, dict):
+            return {k: swap(x, edge) for k, x in v.items()}
+        return v
+    out = copy.deepcopy(cases)
+    for c in out:
+        edge = F.P.canvas_rule((c["spec"].get("size") or {}).get("drawSize")) or 256
+        c["spec"]["images"] = swap(c["spec"].get("images") or {}, edge)
+    return out
 
 
 def check(name, ok, got=""):
@@ -91,12 +125,15 @@ def t_could_not_look():
     _rc, e = ran(lambda p, d: ("", {"error": "You've hit your session limit"}))
     check("could-not-look: a failed call leaves its case out", e == {}, e)
     check("could-not-look: the family then reads UNTESTED", RC.judge_cases(pl, {"cases": []})[0] == "UNTESTED")
+    case = next(c for c in F.cases() if "south" in c["spec"]["images"])
     with tempfile.TemporaryDirectory() as tmp:
-        spec = json.load(open(os.path.join(REPO, "infrastructure/state/art_eval/regression_specs/owner_RM_DecayDrake_C.json")))
-        spec["images"] = dict(spec["images"], south=os.path.join(tmp, "gone.png"))
-        case = {"id": "x", "expect": "pass", "spec": spec}
-        check("could-not-look: a missing picture did not run, and no judge is asked",
-              F.judge(case, Path(tmp) / "c", lambda p, d: 1 / 0)[0] is None)
+        asked = []
+        whole = F.judge(case, Path(tmp) / "whole", lambda p, d: (asked.append(1) or reply(p, "good"), META))[0]
+        gone = copy.deepcopy(case)
+        gone["spec"]["images"]["south"] = os.path.join(tmp, "gone.png")
+        check("could-not-look: a missing picture did not run, and no judge is asked (the same case whole is judged)",
+              whole == "pass" and asked == [1] and F.judge(gone, Path(tmp) / "c", lambda p, d: 1 / 0)[0] is None,
+              (whole, asked))
 
 
 def t_malformed_is_not_missing():
@@ -191,13 +228,19 @@ def t_weak_is_no_verdict():
 
 
 def main():
-    t_planted_rows()
-    t_band_is_the_answer()
-    t_could_not_look()
-    t_malformed_is_not_missing()
-    t_blind()
-    t_no_second_reviewer()
-    t_weak_is_no_verdict()
+    real = F.cases
+    with tempfile.TemporaryDirectory(prefix="rm-first-pass-pictures-") as tmp:
+        F.cases = lambda path=None: stand_ins(real(path), tmp)   # run() and planted() read F.cases
+        try:
+            t_planted_rows()
+            t_band_is_the_answer()
+            t_could_not_look()
+            t_malformed_is_not_missing()
+            t_blind()
+            t_no_second_reviewer()
+            t_weak_is_no_verdict()
+        finally:
+            F.cases = real
     print("selftest_art_first_pass_calibration: %s" % ("PASS" if not FAILS else "FAIL (%d)" % len(FAILS)))
     return 1 if FAILS else 0
 
