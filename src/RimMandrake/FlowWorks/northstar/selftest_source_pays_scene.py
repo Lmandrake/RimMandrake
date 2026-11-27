@@ -66,6 +66,9 @@ class Fake:
         self.bad, self.statics, self.fill_undug = [], set(), []
         self.film = None          # (wet line in notches, mode, rate): the sink draws the film under the wet line slowly
         self.film_end = None      # the truth when the unlimited sink comes off: (film left, last pulse's draw)
+        # the shipped rain rule (RM_MapComponent_Excavation.RainLevelsNow): rainRate x rainFillPerPulse a pulse into an
+        # accumulator, landed as whole notches; the shipped default 0.01 (RIMMANDRAKE_SLOW_RAIN_FILL_PIT_BRIMS_IN_ONE_NIGHT)
+        self.settings, self.rain_acc = {'rainFillPerPulse': '0.01'}, 0.0
 
     # ---- the engine
     def comps(self):
@@ -127,8 +130,13 @@ class Fake:
                 for q in self.dug:
                     self.water[q] = min(self.dug[q], self.water.get(q, 0.0) + 1.25)
         elif self.weather == 'Rain' and self.fault not in ('never_refills', 'no_rain'):
+            self.rain_acc += float(self.settings.get('rainFillPerPulse') or 0.0)
+            notches = 0
+            while self.rain_acc >= 1.0:
+                self.rain_acc -= 1.0
+                notches += 1
             for q in self.dug:
-                self.water[q] = self.dug[q] if self.fault == 'instant_refill' else min(self.dug[q], self.water.get(q, 0.0) + 0.1)
+                self.water[q] = self.dug[q] if self.fault == 'instant_refill' else min(self.dug[q], self.water.get(q, 0.0) + notches)
         for (sx, sz), s in self.sinks.items():
             reach = [q for q in ((sx, sz), (sx + 1, sz), (sx - 1, sz), (sx, sz + 1), (sx, sz - 1)) if q in self.dug]
             cap = 100.0 if s['rate'] < 0 else (5.0 if self.fault == 'zero_tap_drains' else s['rate'])
@@ -234,7 +242,9 @@ class Fake:
         if tool == 'jawa/spawn_batch':
             return {'success': True}
         if tool == 'jawa/mod_settings_field':
-            return {'success': True, 'value': None}
+            if kw.get('action') == 'set':
+                self.settings[kw['field']] = kw.get('value')
+            return {'success': True, 'value': self.settings.get(kw.get('field'))}
         if tool == 'jawa/static_call':
             self.statics.add((kw['type'], kw['method'], len(kw.get('args', '').split('|')) if kw.get('args') else 0))
             return {'success': True, 'result': self.static(kw['type'], kw['method'], kw.get('args', ''))}

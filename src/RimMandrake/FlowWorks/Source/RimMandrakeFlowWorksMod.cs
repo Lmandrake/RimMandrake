@@ -1396,7 +1396,7 @@ namespace RimMandrake.FlowWorks
             using (Dependent(list, "rainFillPerPulse"))
             {
                 float perHour = rainFillPerPulse * RM_Volume.MetresPerLevel * RimWorld.GenDate.TicksPerHour / PulseIntervalTicks;
-                list.Label("Rain fill speed: " + (perHour * 100f).ToString("0.#") + " cm an hour of steady heavy rain");
+                list.Label("Rain fill speed: " + (perHour * 100f).ToString("0.##") + " cm an hour of steady heavy rain");
                 rainFillPerPulse = list.Slider(rainFillPerPulse, 0.001f, 1f);
                 list.Label("How fast heavy rain fills an open trench or pit. At the default a 4 m pit takes "
                          + "days of storm to fill to its brim.");

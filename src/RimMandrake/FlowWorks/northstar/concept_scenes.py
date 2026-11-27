@@ -751,6 +751,7 @@ def _src_empty_rows(S, P):
 def _src_refill_long(S, P):
     """sc_source_pays' rain: 14,000 ticks of locked rain on the emptied pond, read three times (some, not instant, rising)."""
     read, full = P.read, P.full
+    S.setting('rainFillPerPulse', SRC_RAIN_FILL)
     S.call('jawa/weather_set', unlock=True)
     S.call('jawa/weather_set', weather='Rain', lockWeather=True)
     start = read()
@@ -791,6 +792,10 @@ SRC_RAIN_STEP = 500       # ticks between reads, before the first water and whil
 # The same bound holds the wait for the next rise after the first water: rain lands in lumps more than 1,000 ticks apart
 # (live 2026-11-25, bundle_shrink_20261125: 0 L until 4,500 ticks, then 1,250 L, and 1,250 L again 1,000 ticks later).
 SRC_RAIN_ONSET_MAX = 90000
+# The refill claim is "visible, not instant, rising", not a rate: both refill reads run rain at 0.1 notch a pulse, the rate
+# the bound above and the 14,000-tick long form were measured at. The shipped 0.01 (5 cm a rain-hour,
+# RIMMANDRAKE_SLOW_RAIN_FILL_PIT_BRIMS_IN_ONE_NIGHT) lands no notch in the long form's window. Restored by the scene's end.
+SRC_RAIN_FILL = 0.1
 
 
 def _source_draws(S):
@@ -824,6 +829,7 @@ def _source_refills(S):
     S.pulse(2)
     hole = S.sc(NSP, 'ProofReadout', probe)
     start = _litres(hole)
+    S.setting('rainFillPerPulse', SRC_RAIN_FILL)
     S.call('jawa/weather_set', unlock=True)
     S.call('jawa/weather_set', weather='Rain', lockWeather=True)
     waited, first_txt, first = 0, None, None

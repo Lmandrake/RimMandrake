@@ -107,8 +107,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 float def = float.Parse(field.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
                 Assert(scribe.Groups[1].Value == field.Groups[1].Value,
                     "can-fail: the save default equals the shipped default (" + scribe.Groups[1].Value + " vs " + field.Groups[1].Value + ")");
-                const float pulsesPerHour = 2500f / 250f;   // GenDate.TicksPerHour over the shipped pulse
-                float hoursTo4m = 8f / (def * pulsesPerHour);
+                var pulse = Regex.Match(mod, @"public static float pulseIntervalTicks = ([0-9.]+)f;");
+                Assert(pulse.Success, "the shipped flow pulse found");
+                float pulsesPerHour = 2500f / float.Parse(pulse.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
+                Assert(def > 0f, "can-fail: rain still fills an open pit at the default (" + def + ")");
+                float notches4m = 4f / RimMandrake.FlowWorks.RM_Volume.MetresPerLevel;   // GenDate.TicksPerHour = 2500 above
+                float hoursTo4m = notches4m / (def * pulsesPerHour);
                 Assert(hoursTo4m > 24f, "can-fail: steady heavy rain takes more than a day to brim a 4 m pit at the default ("
                     + hoursTo4m.ToString("0.#") + " h at " + def + ")");
                 Assert(Regex.IsMatch(Body(Src("RM_MapComponent_Excavation.cs"), "private int RainLevelsNow("),

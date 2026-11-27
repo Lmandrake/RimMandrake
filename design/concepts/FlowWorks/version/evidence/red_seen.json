@@ -299,7 +299,7 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_RIVER": {
-  "at": "2026-11-27T01:27:10Z",
+  "at": "2026-11-27T02:57:31Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Fish*,Flotsam*,P10*,RIVER*,Rain*,RiverCurrent*,RiverProbe*,RiverSwitchFlip*,RiverWalk*,WeirBreach*,WeirCatch*,WeirFoam*,WeirPool*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
   "last": "can-fail: steady heavy rain takes more than a day to brim a 4 m pit at the default (8 h at 0.1)",
