@@ -66,7 +66,7 @@ Refusals: those of the session, and `NO_LIMIT`, `GAME_RUNNING`, `RUN_ACTIVE`, `R
 ### `jawa/read_paths`
 
 `reads` is a JSON list of `{"of": T, "path": P}`. With `rect` ("x,z,w,h") and `path`: one value for each thing in the
-rectangle, or for each cell when the path holds `[cell]` (`of` is then `map` or a map component path). Reply: `tick`, `paused`, `values` (each: `of`, `path`, `state`, `v`, `detail`).
+rectangle (a thing of several cells once, when any cell of its footprint is in it), or for each cell when the path holds `[cell]` (`of` is then `map` or a map component path). Reply: `tick`, `paused`, `values` (each: `of`, `path`, `state`, `v`, `detail`).
 It needs no session; an alias then reads `unbound`. Refusals: `BAD_PATH`, `PATH_CALLS_METHOD`, `BAD_ARGS`, `NO_GAME`.
 
 ### `jawa/act_batch`

@@ -211,13 +211,16 @@ namespace JawaBench.BridgeTools
             for (int i = 0; i < 4; i++) if (!int.TryParse(p[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out n[i])) return "rect '" + rect + "' is not x,z,w,h";
             if (n[0] < 0 || n[1] < 0 || n[2] < 1 || n[3] < 1 || n[0] + n[2] > map.Size.x || n[1] + n[3] > map.Size.z) return "rect '" + rect + "' is not on the map of " + map.Size.x + "x" + map.Size.z;
             bool cells = path.IndexOf("[cell]", StringComparison.Ordinal) >= 0;
+            // a thing of several cells is read once, when any cell of its footprint is in the rectangle (a bed whose anchor is
+            // outside it was left out: Codex review 2026-11-24, rectangle_omits_building_footprint)
+            var seen = new HashSet<Thing>();
             for (int z = n[1]; z < n[1] + n[3]; z++)
                 for (int x = n[0]; x < n[0] + n[2]; x++)
                 {
                     if (cells) { want.Add(new KeyValuePair<string, string>(of, path.Replace("[cell]", "[" + x + "," + z + "]"))); continue; }
                     var l = map.thingGrid.ThingsListAtFast(new IntVec3(x, 0, z));
                     for (int i = 0; i < l.Count; i++)
-                        if (l[i].Position.x == x && l[i].Position.z == z) want.Add(new KeyValuePair<string, string>("thing:" + l[i].ThingID, path));
+                        if (seen.Add(l[i])) want.Add(new KeyValuePair<string, string>("thing:" + l[i].ThingID, path));
                 }
             return null;
         }
