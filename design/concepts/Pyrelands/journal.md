@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stage 3, offline build, since 2026-11-26 5:42 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-27 9:40 AM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 5:42 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-27 9:40 AM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -625,3 +625,12 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - Conductor rulings carried out: 4:36 AM PST (the wind rows read in distance walked at the shipped pace, peak against burning depth, pin removed: d1aaf04e43) and 5:28 AM PST (the fire baseline read in the same session at pace 100: e7f7ea5956; cross-check 46.0 against 0.1.0's 47.0).
 - In game on ArchSmall, early rows: sc_grass_seen_under_ash PASS, sc_smoke_weather_chokes PASS, sc_roofed_grass_declines PASS (row rgd_6, blind judge YES after the sag fix), sc_fire_catches_and_runs PASS (pace-100 head 46.0, shipped 85.0), sc_fire_walks_with_wind PASS 11/11 at pace 200.
 - Test table remade with its maker at 0.2.0 (the maker now reads VERSION.json, keeps the previous table's keys and bars, finds scenes registered with @suite.chain, and stamps runs as the certificate does): bars not runnable 6 before, 0 after; 33 of 33 built offline tests green; certificate OK.
+
+### 2026-11-27 9:40 AM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
+
+- Why: Stage 3 of Pyrelands 0.2.0 is done: the gate reads OPEN and every exit test passes on origin f02a66859a (read 9:40 AM PST 2026-11-27 after ./sync), and the build run RUN_TWO ended with all 50 bars runnable and the certificate OK. A hand move by the Conductor; the item that builds this move into the pipeline is RIMMANDRAKE_MOVE_STAGES_BY_PROGRAM_REVERSES_A_WRITTEN_NEVER
+- Checks passed: order, by, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate.
+- Blind cycle 1 of this visit (1 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-26 5:42 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-26 5:42 PM PST).
+- Record: `version/stage_record.json`.
