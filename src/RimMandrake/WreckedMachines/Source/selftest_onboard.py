@@ -313,32 +313,35 @@ def main():
         # ---- a donor process that needs another mod keeps that condition on every level (the failure that happened, 2026-11-27:
         # the Kludged alloy forge named VFEFactory_AlloyBronze bare, the donor has it MayRequire VFE Classical, and the load said
         # "Could not resolve cross-reference to PipeSystem.ProcessDef named VFEFactory_AlloyBronze")
-        def conditional_donor(v):
+        def conditional_donor(v, attr, value):
             f = os.path.join(v, "1.6", "Defs", "ThingDefs_Buildings", "Buildings_Factories.xml")
             body = open(f).read()
             assert "<li>VFEFactory_SmeltMetalFromSlag</li>" in body
-            open(f, "w").write(body.replace("<li>VFEFactory_SmeltMetalFromSlag</li>", '<li MayRequire="Some.OtherMod">VFEFactory_SmeltMetalFromSlag</li>'))
+            open(f, "w").write(body.replace("<li>VFEFactory_SmeltMetalFromSlag</li>", '<li %s="%s">VFEFactory_SmeltMetalFromSlag</li>' % (attr, value)))
 
-        def conditions(m_):
+        def conditions(m_, attr):
             out = {}
             for d in etree.parse(staged(m_, "levels.xml")).getroot():
                 if isinstance(d.tag, str) and d.findtext("defName"):
                     for li in d.findall("comps/li/processes/li"):
                         if li.text == "VFEFactory_SmeltMetalFromSlag":
-                            out[d.findtext("defName").rsplit("_", 1)[-1]] = li.get("MayRequire")
+                            out[d.findtext("defName").rsplit("_", 1)[-1]] = li.get(attr)
             return out
-        m, v = fresh()
-        conditional_donor(v)
-        rc, out = run(["stamp", "smelter", "--mod", m, "--vfef", v])
-        got = conditions(m) if rc == 0 else {}
-        say(got == {"Kludged": "Some.OtherMod", "Refurbished": "Some.OtherMod"}, "a donor process that needs another mod keeps its MayRequire on the Kludged and the Refurbished level",
-            "exit %d, %s" % (rc, got), "Some.OtherMod on both")
-        if rc == 0:
-            edit(staged(m, "levels.xml"), lambda r: [li.attrib.pop("MayRequire", None) for li in r.iter("li")
-                                                      if li.text == "VFEFactory_SmeltMetalFromSlag" and li.getparent().getparent().find("canOverclock") is not None][:1])
-        res, _ = faults(m, v)
-        say(any("MayRequire" in f for f in res["donor_fidelity"]), "PLANT that condition dropped from the Kludged level: check faults donor_fidelity",
-            "%d faults" % len(res["donor_fidelity"]), "at least 1 that names MayRequire")
+        # Both condition attributes the factory mod writes on a process entry: MayRequire, and MayRequireAnyOf (the factory
+        # mod's biofuel refinery lists VFEFactory_MakeChemfuelFromRedWood MayRequireAnyOf="sarg.alphaanimals,sarg.alphabiomes").
+        for attr, value in (("MayRequire", "Some.OtherMod"), ("MayRequireAnyOf", "Some.OtherMod,Some.ThirdMod")):
+            m, v = fresh()
+            conditional_donor(v, attr, value)
+            rc, out = run(["stamp", "smelter", "--mod", m, "--vfef", v])
+            got = conditions(m, attr) if rc == 0 else {}
+            say(got == {"Kludged": value, "Refurbished": value}, "a donor process that needs another mod keeps its %s on the Kludged and the Refurbished level" % attr,
+                "exit %d, %s" % (rc, got), "%s on both" % value)
+            if rc == 0:
+                edit(staged(m, "levels.xml"), lambda r: [li.attrib.pop(attr, None) for li in r.iter("li")
+                                                          if li.text == "VFEFactory_SmeltMetalFromSlag" and li.getparent().getparent().find("canOverclock") is not None][:1])
+            res, _ = faults(m, v)
+            say(any(attr in f for f in res["donor_fidelity"]), "PLANT that %s dropped from the Kludged level: check faults donor_fidelity" % attr,
+                "%d faults" % len(res["donor_fidelity"]), "at least 1 that names %s" % attr)
 
         # ---- land
         m, v = fresh()

@@ -71,6 +71,9 @@ PICTURE_ROWS = ("pictures_of_its_own", "pictures_judged")
 # Words no text of a line may hold (brief of 2026-11-27): plus the base game's and a galaxy-far-away vocabulary.
 BANNED = re.compile(r"\b(grades?|tiers?|repaired|ships?|crash(?:ed|es)?|factions?|clans?|gods?|jedi|sith|vader|yoda|skywalker|"
                     r"tatooine|death star|lightsaber|stormtroopers?|wookiee|millennium falcon|obi-wan|r2-d2)\b|build over", re.I)
+# The attributes that put a condition on a process entry: the factory mod writes both (the biofuel refinery lists
+# VFEFactory_MakeChemfuelFromRedWood MayRequireAnyOf="sarg.alphaanimals,sarg.alphabiomes").
+CONDITIONS = ("MayRequire", "MayRequireAnyOf")
 TEXT_TAGS = ("label", "description", "jobString", "inspectString", "completedLetterLabel", "completedLetter", "li")
 
 
@@ -153,6 +156,11 @@ def comp_of(d, cls):
 def donor_processes(d):
     p = comp_of(d, PROCESSOR)
     return [li.text.strip() for li in p.findall("processes/li") if li.text] if p is not None else []
+
+
+def conditions_of(li):
+    """The load conditions on one process entry, as ((attribute, value), ...) in CONDITIONS order; () when it has none."""
+    return tuple((a, li.get(a)) for a in CONDITIONS if li.get(a))
 
 
 def article(label):
@@ -569,11 +577,11 @@ def derive(donor, row, level, key, number, tx, procs_kl):
             else:
                 lst = mk("processes")
                 # a donor process that needs another mod keeps that condition, or the def names a process that is not loaded
-                needs = {(li.text or "").strip(): li.get("MayRequire") for li in (old.findall("li") if old is not None else [])}
+                needs = {(li.text or "").strip(): conditions_of(li) for li in (old.findall("li") if old is not None else [])}
                 for p in want:
                     e = sub(lst, "li", p)
-                    if needs.get(p):
-                        e.set("MayRequire", needs[p])
+                    for a, val in needs.get(p, ()):
+                        e.set(a, val)
                 if old is not None:
                     old.addprevious(etree.Comment(" Part of the donor's list: the row's kludgedProcesses. "))
                     pr.replace(old, lst)
@@ -792,12 +800,13 @@ def own_checks(mod, key, vfef, other_ids):
         if rp != dprocs:
             bad["donor_fidelity"].append("Refurbished runs %s, not the donor's %s" % (rp, dprocs))
         dp = comp_of(donor, PROCESSOR)
-        needs = {(li.text or "").strip(): li.get("MayRequire") for li in (dp.findall("processes/li") if dp is not None else [])}
+        needs = {(li.text or "").strip(): conditions_of(li) for li in (dp.findall("processes/li") if dp is not None else [])}
         for nm, d in (("Kludged", k), ("Refurbished", r)):
             for li in d.findall("comps/li/processes/li"):
-                if needs.get((li.text or "").strip()) != li.get("MayRequire"):
-                    bad["donor_fidelity"].append("%s names the process %s with MayRequire %r, the donor has %r (a process of a mod that is not loaded is a config error)"
-                                                 % (nm, (li.text or "").strip(), li.get("MayRequire"), needs.get((li.text or "").strip())))
+                p = (li.text or "").strip()
+                if needs.get(p, ()) != conditions_of(li):
+                    bad["donor_fidelity"].append("%s names the process %s with conditions %s, the donor has %s (a process of a mod that is not loaded is a config error)"
+                                                 % (nm, p, dict(conditions_of(li)), dict(needs.get(p, ()))))
         for nm, d in (("Kludged", k), ("Refurbished", r)):
             if text(comp_of(d, PROCESSOR), "canOverclock") != "false":
                 bad["donor_fidelity"].append("%s can be overclocked" % nm)
