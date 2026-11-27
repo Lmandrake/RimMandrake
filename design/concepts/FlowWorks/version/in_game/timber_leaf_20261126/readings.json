@@ -1,0 +1,6 @@
+{"timber_nowinch": "DRAW ok=True leaves=1 tier=timber hinges=A winchAt=- firstAt=121,140 reason=-",
+ "raise_timber": "DEVSET target=raised progress=960",
+ "leaf_timber": "LEAF leaf=1/1 progress=960 full=960 target=raised raised=4/4 frozen=False winch=False powered=False hold=True auto=False pending=none tip=True hinge=A version=1 standing=4/4",
+ "leaf_steel": "LEAF leaf=1/1 progress=120 full=120 target=raised raised=6/6 frozen=False winch=True powered=False hold=True auto=False pending=none tip=True hinge=A version=1 standing=6/6",
+ "leaf_control": "LEAF leaf=1/1 progress=0 full=960 target=lowered raised=0/4 frozen=False winch=False powered=False hold=False auto=False pending=none tip=False hinge=A version=1 standing=4/4",
+ "note": "ArchSmall, FlowWorks e4ca2be630 on flowworks_list, quicktest map (The Rot), 2026-11-26. run1 refused the timber spans (8 squares, over the timber 4-square limit, and a built anchor square): SITE, re-laid at 4 squares."}
