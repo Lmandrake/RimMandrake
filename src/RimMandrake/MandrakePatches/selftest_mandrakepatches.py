@@ -631,6 +631,75 @@ def metal_nonflammable_check():
           {"Steel", "RSW_Durasteel", "RM_Lanternstone"} <= set(hit) and len(hit) >= 40, "%d covered; sample %s" % (len(hit), hit[:5]))
 
 
+def light_order_problems(src, mod_src, jobdefs):
+    """The wiring around LightOrderRule (whose decision Scenario/LightOrder tests offline): the right-click order of
+    RIMMANDRAKE_ADD_LIGHT_ANYTHING_FLAMMABLE_ORDER_TO_ALL_COLONISTS reads every fact from the game, hides itself where
+    FlowWorks' own toss line covers the square, lights through vanilla's FireUtility, and has a default-on switch."""
+    out = []
+    for needle, why in (
+            ("class JobDriver_LightFire : JobDriver", "no JobDriver_LightFire"),
+            ("class FloatMenuOptionProvider_LightFire : FloatMenuOptionProvider", "no float-menu provider"),
+            ("protected override bool Multiselect => false;", "the provider offers itself to a multi-pawn selection"),
+            ("LightOrderRule.Decide(", "the menu does not ask the tested rule"),
+            ("LightOrderRule.Label(", "the menu does not take the tested label"),
+            ("FireUtility.TryStartFireIn(", "the job does not light through vanilla's FireUtility.TryStartFireIn"),
+            ("FireUtility.ChanceToStartFireIn(", "the square test is not vanilla's ChanceToStartFireIn"),
+            ("FlammableNow = thing.FlammableNow", "flammability is not Thing.FlammableNow"),
+            ("Burning = thing.IsBurning()", "burning is not FireUtility.IsBurning"),
+            ("PawnControllable = pawn.IsColonistPlayerControlled", "the colonist test is not IsColonistPlayerControlled"),
+            ("TargetIsPawn = thing is Pawn", "a living pawn is not recognised"),
+            ("OtherModCellLine = FlowWorksOffersLine(", "the FlowWorks overlap guard is not wired"),
+            ('"RimMandrake.FlowWorks.RM_TossFlame"', "FlowWorks' toss class is not bound by name"),
+            ('"CanLight"', "FlowWorks' CanLight is not the overlap test"),
+            ('"tossFlameOrderEnabled"', "FlowWorks' own switch is not read"),
+            ("this.FailOn(() => !RM_PatchesSettings.lightOrderEnabled)", "the job ignores the switch going off"),
+            ("PathEndMode.Touch", "the colonist does not walk to touch range"),
+            ("public static string Status", "no settings status line")):
+        if needle not in src:
+            out.append(why)
+    if "public static bool lightOrderEnabled = true;" not in mod_src or 'Scribe_Values.Look(ref lightOrderEnabled, "lightOrderEnabled", true);' not in mod_src:
+        out.append("the order switch is not default-on in both the field and the Scribe default")
+    if "public static bool lightOrderPlants = false;" not in mod_src or 'Scribe_Values.Look(ref lightOrderPlants, "lightOrderPlants", false);' not in mod_src:
+        out.append("the plants switch is not default-off in both the field and the Scribe default")
+    if "ref RM_PatchesSettings.lightOrderEnabled" not in mod_src or "ref RM_PatchesSettings.lightOrderPlants" not in mod_src or "LightOrder.Status" not in mod_src:
+        out.append("no settings checkboxes or status")
+    if "<defName>RM_LightFire</defName>" not in jobdefs or "<driverClass>RimMandrake.Patches.JobDriver_LightFire</driverClass>" not in jobdefs:
+        out.append("the JobDef RM_LightFire does not name JobDriver_LightFire")
+    return out
+
+
+def light_order_check():
+    import glob
+    import re
+    rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read().replace("\r\n", "\n")
+    try:
+        src, mod_src, jobdefs = (rd("Source", "LightOrder", "LightOrder.cs"), rd("Source", "CaiFogOff", "RM_PatchesMod.cs"),
+                                 rd("Defs", "JobDefs", "RM_Patches_JobDefs.xml"))
+    except OSError as e:
+        check("light order: shipped source readable", False, str(e))
+        return
+    got = light_order_problems(src, mod_src, jobdefs)
+    check("light order: shipped source", got == [], got)
+    # the brief's acceptance regex, over every shipped .cs
+    cs = "".join(open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(HERE, "Source", "**", "*.cs"), recursive=True))
+    check("light order: acceptance regex (JobDriver_*Light* class and a FloatMenuOption)",
+          re.search(r"class\s+JobDriver_\w*(Light|Ignite)", cs) is not None and re.search(r"FloatMenuOption|Designator", cs) is not None)
+    srchash = rd("Assemblies", "RimMandrakePatches.dll.srchash")
+    check("light order: the built DLL's srchash lists the order, its rule and its live probe",
+          all("LightOrder/" + f in srchash for f in ("LightOrder.cs", "LightOrderRule.cs", "LightOrderProof.cs")))
+    breaks = [("FlowWorks guard dropped", src.replace("OtherModCellLine = FlowWorksOffersLine(", "OtherModCellLine = false && FlowWorksOffersLine("), mod_src, jobdefs),
+              ("lit without FireUtility", src.replace("FireUtility.TryStartFireIn(", "FireUtility.ChanceToStartFireIn("), mod_src, jobdefs),
+              ("multiselect on", src.replace("Multiselect => false;", "Multiselect => true;"), mod_src, jobdefs),
+              ("switch ignored mid-job", src.replace("this.FailOn(() => !RM_PatchesSettings.lightOrderEnabled)", "this.FailOn(() => false)"), mod_src, jobdefs),
+              ("defaults off", src, mod_src.replace("lightOrderEnabled = true;", "lightOrderEnabled = false;"), jobdefs),
+              ("plants default on", src, mod_src.replace('"lightOrderPlants", false', '"lightOrderPlants", true'), jobdefs),
+              ("checkbox removed", src, mod_src.replace("ref RM_PatchesSettings.lightOrderEnabled", "ref RM_PatchesSettings.caiFogForcedOff"), jobdefs),
+              ("driver renamed in the def", src, mod_src, jobdefs.replace("JobDriver_LightFire", "JobDriver_Ignite"))]
+    for name, a, b, c in breaks:
+        check("break: planted '%s' changed the text" % name, (a, b, c) != (src, mod_src, jobdefs))
+        check("break: light order %s is reported" % name, len(light_order_problems(a, b, c)) >= 1)
+
+
 def main():
     spec = importlib.util.spec_from_file_location("mp_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -643,7 +712,8 @@ def main():
     cut_drug_guard_check()
     log_spam_check()
     metal_nonflammable_check()
-    ghosts = ghost_target_ops(os.path.join(HERE, "Patches"))
+    light_order_check()
+    ghosts =ghost_target_ops(os.path.join(HERE, "Patches"))
     check("shipped Patches/: no op on a mod-namespaced def sits outside a FindMod", ghosts == [], ghosts)
     fa = open(os.path.join(HERE, "Patches", "HeadSetForFA_Revive.xml"), encoding="utf-8").read()
     check("FA revive is wrapped in FindMod on the Facial Animation Compatability Project",

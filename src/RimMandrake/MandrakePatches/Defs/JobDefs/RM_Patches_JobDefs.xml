@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RIMMANDRAKE_ADD_LIGHT_ANYTHING_FLAMMABLE_ORDER_TO_ALL_COLONISTS: walk to touch range of a flammable thing, work a moment,
+       start a fire on it (the right-click "Set fire to ..." order; Source/LightOrder/LightOrder.cs). -->
+  <JobDef>
+    <defName>RM_LightFire</defName>
+    <driverClass>RimMandrake.Patches.JobDriver_LightFire</driverClass>
+    <reportString>setting fire to TargetA.</reportString>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+
+</Defs>

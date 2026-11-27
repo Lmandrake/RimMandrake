@@ -19,6 +19,10 @@ namespace RimMandrake.Patches
         public static bool metalStoneNonFlammable = true;
         // RIMMASTER_FIX_SOUTH_DRAWS_FRONT_SAID_MANY_TIMES (owner 2026-10-16, 2026-11-08): more south draws in front.
         public static bool southDrawsFront = true;
+        // RIMMANDRAKE_ADD_LIGHT_ANYTHING_FLAMMABLE_ORDER_TO_ALL_COLONISTS (owner 2026-11-25): every colonist can set fire to
+        // anything flammable; plants wait behind their own switch (one misclick would be a wildfire).
+        public static bool lightOrderEnabled = true;
+        public static bool lightOrderPlants = false;
 
         public override void ExposeData()
         {
@@ -29,6 +33,8 @@ namespace RimMandrake.Patches
             Scribe_Values.Look(ref quietThirdPartyLogSpam, "quietThirdPartyLogSpam", true);
             Scribe_Values.Look(ref metalStoneNonFlammable, "metalStoneNonFlammable", true);
             Scribe_Values.Look(ref southDrawsFront, "southDrawsFront", true);
+            Scribe_Values.Look(ref lightOrderEnabled, "lightOrderEnabled", true);
+            Scribe_Values.Look(ref lightOrderPlants, "lightOrderPlants", false);
         }
     }
 
@@ -40,12 +46,18 @@ namespace RimMandrake.Patches
             CaiFogOff.Install();
         }
 
+        private static Vector2 scroll;
+        private static float viewHeight;
+
         public override string SettingsCategory() => "RimMandrake Patches";
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            var l = new Listing_Standard();
-            l.Begin(inRect);
+            // a scroll view: eight sections with their status lines outgrow the window (the light order made it eight)
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scroll, view);
+            var l = new Listing_Standard { maxOneColumn = true };
+            l.Begin(view);
             bool before = RM_PatchesSettings.caiFogForcedOff;
             bool southBefore = RM_PatchesSettings.southDrawsFront;
             l.CheckboxLabeled("Keep CAI 5000's fog of war off", ref RM_PatchesSettings.caiFogForcedOff,
@@ -89,7 +101,20 @@ namespace RimMandrake.Patches
                 + "building layer. A pawn still draws over buildings and trees, as in vanilla. Off = vanilla order. "
                 + "Takes effect at once.");
             l.Label(SouthDrawsFrontPatches.Status);
+            l.GapLine();
+            l.CheckboxLabeled("Colonists can set fire to anything flammable", ref RM_PatchesSettings.lightOrderEnabled,
+                "Right-click a flammable thing with one colonist selected: \"Set fire to ...\". The colonist walks up to it, "
+                + "works a moment and starts a fire there. Offered on walls, furniture, items, corpses and chemfuel puddles "
+                + "that can burn now; never on a living pawn, a thing already burning, or one that cannot burn (a steel wall "
+                + "while metal is non-flammable). Where FlowWorks offers its own \"Toss a flame here\", only that line shows. "
+                + "Off = no such order. Takes effect at once.");
+            l.CheckboxLabeled("    ...plants and trees too", ref RM_PatchesSettings.lightOrderPlants,
+                "Also offer the order on plants and trees. Off by default: the line would sit on nearly every outdoor "
+                + "right-click, and one misclick starts a wildfire.");
+            l.Label(LightOrder.Status);
+            viewHeight = l.CurHeight + 12f;
             l.End();
+            Widgets.EndScrollView();
             if (RM_PatchesSettings.southDrawsFront != southBefore)
                 SouthDrawsFrontPatches.Reprint();
             if (RM_PatchesSettings.caiFogForcedOff && !before)

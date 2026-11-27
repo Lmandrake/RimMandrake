@@ -156,6 +156,7 @@ DOTNET_LANE = {"selftest_atmosphericbase_kernel.py", "selftest_flowworks_kernel_
                "selftest_flowworks_trench_cover.py", "selftest_gimmesomeslack.py", "selftest_pit_lip_cover.py",
                "selftest_property_fabric.py", "selftest_reclamation_trigger.py",
                "selftest_seashores.py", "selftest_south_draws_front_scenarios.py", "selftest_stun_scaling.py", "selftest_sun_heat.py",
+               "selftest_light_order.py",  # builds and runs the LightOrder scenario (net8)
                "selftest_gss_mast_behind_tall_south_picture.py",  # compiles the SouthDrawsFront kernel probe (net8)
                "selftest_swim_shore_reach.py", "selftest_track_grid.py", "selftest_wasterun_kernel.py",
                # SELFTEST_FIX_SIX_TIMEOUTS_AT_240S: 4 s / 122 s / 22 s alone, CRASH [timeout] beside the lane
