@@ -1,0 +1,3 @@
+Two rules that answer 'is this ticket one mod's work?' disagreed and left 266 old tickets with no home: maturation_nonmod.classify (the page set the 2026-11-23 home pass read) calls a ticket whose id or title names a mod mod work, while mod_work.of (the lane's rule) calls a mod named by a word alone list work. So the pass skipped them as mod tickets, and the lane treated them as homeless list tickets. When a census finds a set that no route takes, compare the classifiers that each route uses, not only the routes.
+item: RIMMANDRAKE_CLOSE_TESTLESS_HOLES_HOMES_NOT_248_SHAPE_RUNS
+home: design/specs/2026-11-23-old-tickets-by-home/boundary.md
