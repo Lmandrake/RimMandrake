@@ -156,10 +156,24 @@
     "ref": "run rm-role-designer-1795773471",
     "stage": 3,
     "tokens": 3538235
+   },
+   {
+    "at": "2026-11-27T10:55:28Z",
+    "kind": "review",
+    "ref": "rm-judge/opus a4c31e8ad7f26e907: fresh read of the stage 3 tree, scenes, sheet and plan (five hunts; four significant faults fixed, 18 quotes confirmed)",
+    "stage": 3,
+    "tokens": 112057
+   },
+   {
+    "at": "2026-11-27T10:58:43Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795776308",
+    "stage": 3,
+    "tokens": 2302609
    }
   ],
   "reserve": 60000,
-  "spent": 41890575
+  "spent": 44305241
  },
  "history": [
   {
@@ -364,6 +378,24 @@
    "stage": 3,
    "what": "retry",
    "why": "run rm-role-designer-1795773471 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-27T10:45:22Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "41890575 of 8000000 spent; run rm-role-designer-1795776308 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T10:45:22Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795776308, stage 3, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T10:58:43Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1795776308: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -616,12 +648,46 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-27T10:58:43Z",
+   "inputs": {
+    "exam": null,
+    "floor": "e1538f124ba31c45f00e55dbd41247e6ba60b1244f260ff0a092c8fd0558d67d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
+    "scenes": "78f814932feba5cc08610426ae676b4646b0991748aea6031ce827d36b42e28a",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc"
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_scene_contract.md": "09226da911e86bf1a7e5930a39dd7b7afb416df68b4ff54fffd2e5b090b629b8",
+    "designer_write.md": "c97c5bac20083d5d6c474f01c6c1ff1de9db66915ea20e709a6ba1a384dbf026"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
+    "floor": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
+    "root": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
+    "scenes": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
+    "sheet": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f",
+    "tree": "f9aeffe5819cd5c596981d91b0d973b984b0bc2f"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
+   },
+   "run": "rm-role-designer-1795776308",
+   "stage": 3,
+   "summary": "Stage 3 closed. Run rm-role-designer-1795773471 wrote the design and died on an API 529 before its result; this run finished it. On disk: sheet.md, tree.json (12 six-part bars, whole bar whole_journey, 12 checks, 17 rules, 17 meetings), plan.md (with the offline-simulation answer: yes for the repair state machine and the onboarding table, no for the rest), scenes.json (22 acceptance, 2 interaction and 4 exploration scenes; 3 showcases, flagship smelter_comes_home by a delegated pick), floor.json, models.md and root.md. Gate A lint passes and the showcase set is accepted. This run: (1) filed the build item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL with its acceptance test, seen red (23 entry points missing), published at 694c69f167; (2) wrote version/next_version/README.md, the eight 'later' lines of the sheet as pre-written tickets, which opens no version; (3) ran one fresh reader (rm-judge, opus) over the whole design: all 18 quotes of the sheet are word for word in their events, and four significant faults were found and fixed here. The largest: the repair bar promised the repair of a found wreck where it stands, and the ground rule refused it on a ruin's floor. The game's source (GenConstruct.CanPlaceBlueprintOver) and the factory mod's floor def settle the rule: a wreck names no ground need, the colony lays factory floor under it or carries it onto floor, and the scene sc_repair_needs_ground must show both ways in play. The others: the whole bar's first picture now matches the one Ancient Component of its scenes; the settings scene can no longer pass on settings that never apply; rule R_lift says what a narrowing of the lift does. No bar was added and no bar's 'says' changed. Open for later stages: one meeting is unknown (study on a building; the spike is built first); his reaction to the 9 captures of the first look is not on the ledger, and a word from him reopens stage 2."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
