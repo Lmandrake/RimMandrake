@@ -2,6 +2,7 @@
 """Selftest of infrastructure/stevedesktop/rm_ssd/rm_pool_room.py (RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_
 EIGHTY_GIG): the hourly count of helper runs SteveDesktop's ~/rm disk still holds. A fake pool in a temp dir; the floor
 is set relative to the real free space of that dir, so ROOM and SHORT are both reached. Exit 0 green, 1 a red."""
+import importlib.util
 import json
 import os
 import shutil
@@ -22,7 +23,8 @@ def check(ok, what):
 
 def run(base, floor):
     env = dict(os.environ, RM_POOL_ROOM_DISK=base, RM_POOL_ROOM_CLONES=os.path.join(base, "clones"),
-               RM_POOL_ROOM_KEPT=os.path.join(base, "kept"), RM_POOL_ROOM_STATE=os.path.join(base, "state"))
+               RM_POOL_ROOM_KEPT=os.path.join(base, "kept"), RM_POOL_ROOM_STATE=os.path.join(base, "state"),
+               RM_POOL_ROOM_STORE=os.path.join(base, "store.git"))
     env.pop("RM_POOL_FLOOR_GB", None)
     if floor is not None:
         env["RM_POOL_FLOOR_GB"] = str(floor)
@@ -35,9 +37,36 @@ def run(base, floor):
     return r.returncode, rec, ok_file
 
 
+def load(path, name):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def make_store(base):
+    """A bare store whose HEAD holds 12 MB of text and 30 MB of media: a slim checkout of it is about 12 MB."""
+    work = os.path.join(base, "storework")
+    os.makedirs(os.path.join(work, "Textures"))
+    with open(os.path.join(work, "code.txt"), "wb") as f:
+        f.write(os.urandom(12 * 10**6))
+    for name in ("Textures/a.png", "b.wav"):
+        with open(os.path.join(work, name), "wb") as f:
+            f.write(os.urandom(15 * 10**6))
+    g = ["git", "-c", "user.name=t", "-c", "user.email=t@t", "-C", work]
+    for cmd in (["init", "-q", "-b", "main"], ["add", "-A"], ["commit", "-q", "-m", "s"]):
+        subprocess.run(g + cmd, check=True, capture_output=True)
+    subprocess.run(["git", "clone", "-q", "--bare", work, os.path.join(base, "store.git")], check=True, capture_output=True)
+    shutil.rmtree(work)
+
+
 def main():
     base = tempfile.mkdtemp(prefix="poolroom-", dir=os.path.expanduser("~/.cache"))
     try:
+        mine = load(SCRIPT, "rm_pool_room")
+        sc = load(os.path.join(HERE, "scratch_clone.py"), "scratch_clone")
+        check(tuple(getattr(mine, "SLIM_MEDIA", ())) == tuple(sc.SLIM_MEDIA) and mine.SLIM_HEAD == list(sc.SLIM_PATTERNS[:2]),
+              "the media a slim clone leaves out are scratch_clone's (SLIM_MEDIA, SLIM_PATTERNS)")
         for i, mb in enumerate((40, 10, 10)):
             c = os.path.join(base, "clones", "c%d.det" % i)
             os.makedirs(os.path.join(c, ".git", "info"))
@@ -68,11 +97,31 @@ def main():
               "100 MB over the floor: SHORT and no ok reading (%s)" % rec.get("why"))
         rc, rec, okf = run(base, round(free + 1.0, 3))     # under the floor already: no more
         check(rc == 1 and rec.get("more_clones") == 0, "under the floor: 0 more clones (%s)" % rec.get("why"))
+        shutil.rmtree(os.path.join(base, "clones", "c1.det"))
+        shutil.rmtree(os.path.join(base, "clones", "c2.det"))
+        rc, rec, okf = run(base, round(free - 1.0, 3))
+        check(rc == 5 and rec.get("verdict") == "COULD_NOT_LOOK" and "more_clones" not in rec,
+              "only a full clone and no store: no slim size to count by, COULD NOT LOOK, never a count by the full "
+              "clone (%s)" % rec.get("why"))
+        make_store(base)
+        rc, rec, okf = run(base, round(free - 1.0, 3))
+        # SteveDesktop 2026-11-26 18:58-20:58: the pool held one parked full warm spare (5.1 GB) and the check counted
+        # every new clone at 5.1 GB (SHORT, 6 runs). A helper takes that spare and makes it slim (detached_helper.take_clone),
+        # so a new clone is a slim checkout of the store's HEAD: about 12 MB here, never the 40 MB full clone
+        check(rc == 0 and rec.get("verdict") == "ROOM" and abs(rec.get("new_clone_gb", 0) - 0.01) < 0.003
+              and rec.get("new_clone_from") == "store" and 60 <= rec.get("more_clones", 0) <= 80,
+              "only a full clone in the pool: a new clone counted at the store's slim checkout, ROOM (%s)" % rec.get("why"))
         shutil.rmtree(os.path.join(base, "clones"))
         os.makedirs(os.path.join(base, "clones"))
+        rc, rec, okf = run(base, round(free - 1.0, 3))
+        # SteveDesktop 2026-11-26 17:57: an empty pool read COULD_NOT_LOOK, and the live promise aged
+        check(rc == 0 and rec.get("verdict") == "ROOM" and rec.get("clones_now") == 0 and rec.get("largest_clone_gb") == 0
+              and rec.get("new_clone_from") == "store", "an empty pool: counted by the store's slim checkout, ROOM (%s)"
+              % rec.get("why"))
+        shutil.rmtree(os.path.join(base, "store.git"))
         rc, rec, okf = run(base, 1)
-        check(rc == 5 and rec.get("verdict") == "COULD_NOT_LOOK", "an empty pool gives no size to count by: COULD NOT "
-              "LOOK, never a count (%s)" % rec.get("why"))
+        check(rc == 5 and rec.get("verdict") == "COULD_NOT_LOOK", "an empty pool and no store give no size to count by: "
+              "COULD NOT LOOK, never a count (%s)" % rec.get("why"))
         shutil.rmtree(os.path.join(base, "clones"))
         rc, rec, okf = run(base, 1)
         check(rc == 5 and rec.get("verdict") == "COULD_NOT_LOOK", "no pool folder: COULD NOT LOOK (%s)" % rec.get("why"))

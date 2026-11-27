@@ -523,7 +523,10 @@ RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK holds 
   pool, because the global floor (210 GB) is larger than this whole disk; its danger is written beside it.
 - **Room check:** `rm-pool-room.timer` (systemd --user, hourly) runs `~/.local/bin/rm_pool_room.py`. It writes
   `~/.local/state/rm-ssd/pool_room.json` (ROOM, SHORT or COULD_NOT_LOOK: free space, floor, each clone's size, how many
-  more clones the pool admits) every run, and `pool_room_ok.json` only on ROOM: 10 runs fit.
+  more clones the pool admits) every run, and `pool_room_ok.json` only on ROOM: 10 runs fit. It sizes a new clone by
+  the smallest slim clone there, else by a slim checkout of `store.git`'s HEAD; a parked full warm spare never sizes it.
+  The installed copy does not follow `git pull`: after a change, `install -m 0755
+  ~/rm/runner/infrastructure/stevedesktop/rm_ssd/rm_pool_room.py ~/.local/bin/rm_pool_room.py`.
 - **Screenshots cleaner:** the lane's games write screenshots that nothing pruned (Steve1's
   `C:\Users\sjlewis\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots` held 15.4 GB on
   2026-11-25; the lane wrote up to 4.6 GB in one day). `rm-family-clean.timer` (systemd --user, every 6 h) runs

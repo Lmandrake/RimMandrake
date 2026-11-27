@@ -9,7 +9,9 @@ free - largest clone - floor >= 0 (scratch_clone.pool_admit), and each one it ad
 disk still holds
     more = floor(margin / new) + 1   (0 when margin < 0),   margin = free - floor - largest - owed
 more clones. `new` is the smallest slim clone in the pool (a helper's clone is slim: detached_helper.clone_full), else
-the largest clone. `owed` is the machine's kept check trees not made yet (KEPT_TREES of them, each the size of the largest
+the slim checkout of the store's HEAD, counted from `git ls-tree` (each file and folder rounded up to a 4 KiB block;
+1.479 GB where a real slim clone's tree read 1.469 GB by du, 2026-11-26). The pool's other clones never size a new one:
+a parked warm spare is full, and a helper that takes it makes it slim (detached_helper.take_clone). `owed` is the machine's kept check trees not made yet (KEPT_TREES of them, each the size of the largest
 one there, else of the largest clone): the first publishes make them, and they stay.
 Writes ~/.local/state/rm-ssd/pool_room.json on every run, with one verdict:
     ROOM            the clones there now plus `more` reach TARGET_RUNS
@@ -18,7 +20,8 @@ Writes ~/.local/state/rm-ssd/pool_room.json on every run, with one verdict:
 and writes pool_room_ok.json ONLY on ROOM, so the live promise
 `unit=rm-pool-room.timer reading=/home/mandrake/.local/state/rm-ssd/pool_room_ok.json max_age=3h`
 goes stale, and breaks, as soon as the disk cannot hold TARGET_RUNS. Exit 0 ROOM, 1 SHORT, 5 could not look.
-Env overrides (the selftest): RM_POOL_ROOM_DISK, RM_POOL_ROOM_CLONES, RM_POOL_ROOM_KEPT, RM_POOL_ROOM_STATE.
+Env overrides (the selftest): RM_POOL_ROOM_DISK, RM_POOL_ROOM_CLONES, RM_POOL_ROOM_KEPT, RM_POOL_ROOM_STATE,
+RM_POOL_ROOM_STORE.
 """
 import json
 import math
@@ -30,10 +33,14 @@ import time
 DISK = os.environ.get("RM_POOL_ROOM_DISK", "/home/mandrake/rm")
 CLONES = os.environ.get("RM_POOL_ROOM_CLONES", os.path.join(DISK, "relentless", "clones"))
 KEPT = os.environ.get("RM_POOL_ROOM_KEPT", os.path.join(DISK, "treecheck-kept"))
+STORE = os.environ.get("RM_POOL_ROOM_STORE", os.path.join(DISK, "store.git"))
 STATE = os.environ.get("RM_POOL_ROOM_STATE", os.path.expanduser("~/.local/state/rm-ssd"))
 TARGET_RUNS = 10    # the owner's goal (2026-11-25): SteveDesktop's allocator allows 10 runs; the disk must hold them
 KEPT_TREES = int(os.environ.get("RM_TREECHECK_SLOTS") or 2)     # publish.py kept_n(): one per tree-check slot
 SLIM_HEAD = ["/*", "!*.png"]    # the first lines of scratch_clone.SLIM_PATTERNS, as a slim clone's sparse-checkout holds them
+SLIM_MEDIA = ("png", "jpg", "jpeg", "webp", "gif", "bmp", "tga", "dds", "psd", "wav", "ogg", "mp3", "mp4")  # scratch_clone's
+BLOCK = 4096
+LS_TREE_TIMEOUT_S = 600  # budget: danger=a git that never returns holds the oneshot unit active, so no later run fires; evidence=none seen for git here, the same class as DU_TIMEOUT_S; longest=1.4s (ls-tree of store.git HEAD on SteveDesktop, 2026-11-26), so 600 s is far over 10 times it
 DU_TIMEOUT_S = 1800  # budget: danger=a du that never returns holds the timer's oneshot unit active, so no later run fires; evidence=Windows-side calls from SteveDesktop have hung (RUNBOOK); longest=1.2s (one measured run, du of a 1.45 GB slim clone on Archmagi, 2026-11-25); one du per clone, so 1800 s is far over 10 times any one
 
 
@@ -51,6 +58,25 @@ def du_bytes(path):
     if r.returncode != 0 or not r.stdout.split():
         raise RuntimeError("du %s rc=%d: %s" % (path, r.returncode, r.stderr.strip()[-200:]))
     return int(r.stdout.split()[0])
+
+
+def slim_checkout_bytes(store):
+    """-> the bytes a slim checkout of `store`'s HEAD allocates: each file that a slim clone keeps (no SLIM_MEDIA) and
+    each folder, rounded up to a block. Raises on a git failure."""
+    r = subprocess.run(["git", "--git-dir", store, "ls-tree", "-r", "-t", "-l", "--full-tree", "HEAD"],
+                       capture_output=True, text=True, timeout=LS_TREE_TIMEOUT_S)
+    if r.returncode != 0:
+        raise RuntimeError("git ls-tree in %s rc=%d: %s" % (store, r.returncode, r.stderr.strip()[-200:]))
+    media = tuple("." + e for e in SLIM_MEDIA)
+    total = 0
+    for line in r.stdout.splitlines():
+        meta, _, path = line.partition("\t")
+        kind, size = meta.split()[1], meta.split()[3]
+        if kind == "tree":
+            total += BLOCK
+        elif kind == "blob" and not path.rsplit("/", 1)[-1].endswith(media):
+            total += -(-int(size) // BLOCK) * BLOCK
+    return total
 
 
 def measure():
@@ -82,7 +108,14 @@ def measure():
     rec["clones_now"] = len(names)
     largest = max(sizes.values()) / 1e9 if sizes else 0.0
     slim = [b / 1e9 for n, b in sizes.items() if is_slim(os.path.join(CLONES, n))]
-    new = min(slim) if slim else largest
+    if slim:
+        new, rec["new_clone_from"] = min(slim), "a slim clone"
+    else:
+        try:
+            new, rec["new_clone_from"] = slim_checkout_bytes(STORE) / 1e9, "store"
+        except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
+            return dict(rec, verdict="COULD_NOT_LOOK", why="the pool holds no slim clone and the store's slim checkout "
+                        "cannot be sized, so no clone size is known to count by: %s: %s" % (type(e).__name__, e))
     tree = max(rec["kept_trees"].values()) if rec["kept_trees"] else largest
     owed = max(0, KEPT_TREES - len(rec["kept_trees"])) * tree
     rec.update(largest_clone_gb=round(largest, 2), new_clone_gb=round(new, 2), kept_trees_owed_gb=round(owed, 2))
@@ -90,20 +123,20 @@ def measure():
     if margin < 0:
         more = 0
     elif new <= 0:
-        more = None     # no clone to size a new one by: the count is unknown, never infinite
+        more = None     # a new clone sized at 0 bytes: the count is unknown, never infinite
     else:
         more = int(math.floor(margin / new)) + 1
-    rec["more_clones"] = more
     if more is None:
-        return dict(rec, verdict="COULD_NOT_LOOK", why="the pool holds no clone, so no clone size is known to count by "
-                    "(free %.1f GB, floor %.1f GB)" % (rec["free_gb"], rec["floor_gb"]))
+        return dict(rec, verdict="COULD_NOT_LOOK", why="a new clone sizes at 0 bytes (from %s), so the count is unknown "
+                    "(free %.1f GB, floor %.1f GB)" % (rec["new_clone_from"], rec["free_gb"], rec["floor_gb"]))
+    rec["more_clones"] = more
     rec["runs_it_holds"] = len(names) + more
     ok = rec["runs_it_holds"] >= TARGET_RUNS
     rec["verdict"] = "ROOM" if ok else "SHORT"
     rec["why"] = ("%d clones now + %d more = %d runs %s %d: %.1f GB free, floor %.1f GB, largest clone %.2f GB, a new "
-                  "clone %.2f GB, machine check trees still owed %.1f GB"
+                  "clone %.2f GB (from %s), machine check trees still owed %.1f GB"
                   % (len(names), more, rec["runs_it_holds"], ">=" if ok else "<", TARGET_RUNS, rec["free_gb"],
-                     rec["floor_gb"], largest, new, owed))
+                     rec["floor_gb"], largest, new, rec["new_clone_from"], owed))
     return rec
 
 
