@@ -545,7 +545,14 @@ Without the anchor and the exclusion, the watcher's own command text and the bac
   `LONG ON ONE CHECK` and `PRE-DESIGN CONCEPTS`. A pattern without `NEEDS CONDUCTOR` leaves ticket-lane items waiting
   until you read the log by hand.
 - Exclude a repeating line only by its full item id, and only while you work that item.
-- A Monitor ends after 30 minutes. Arm the watcher again at each expiry notice.
+- A Monitor ends after 30 minutes. Arm the watcher again at each expiry notice. At each expiry, read the log lines of
+  that half hour by hand once, because a watcher can be blind.
+- The watcher polls the size of the log and prints the new lines that match. Do not use `tail -F ... | cut`: `cut`
+  holds its output until the stream ends, so that watcher prints nothing while it is alive (measured 2026-11-27: one
+  `NEEDS CONDUCTOR` line missed in 90 minutes). The command:
+  ```
+  f=/mnt/d/ClaudeWork/rimmandrake/conductor/log.md; n=$(wc -c <"$f"); while true; do m=$(wc -c <"$f" 2>/dev/null || echo "$n"); if [ "$m" -gt "$n" ]; then tail -c +$((n+1)) "$f" | grep -E '^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}Z — (DISPATCHER ESCALATION|NEEDS CONDUCTOR|HUNT OPENED|SHORT OF X OF Y|LONG ON ONE CHECK|PRE-DESIGN CONCEPTS)' | grep -v 'restart:BENCH' | cut -c1-600; n=$m; fi; sleep 20; done
+  ```
 
 **Stop the watcher before HANDOFF READY**, because a live watcher holds the context backstop restart.
 
