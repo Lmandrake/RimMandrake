@@ -1,0 +1,3 @@
+An outcome check of the form 'test -s <page>' holds as soon as the page exists, so when a brief orders the page written first as a skeleton, the list_dispatch tick closes the item at the skeleton's landing, before the work (measured 2026-11-27: RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY closed at 10:02 AM PST, 7 minutes after its claim, on the skeleton at b2a5801208). A page-shaped item needs a check that reads the finished page (e.g. path-lacks:<page>::SKELETON or a count of filled rows), not its presence; and the brief's closing park then fails on a done item.
+item: RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY
+home: src/RimMandrake/rimflow/roles/conductor.md
