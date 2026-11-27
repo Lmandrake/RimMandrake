@@ -373,11 +373,14 @@ def t_the_flight_guard_refuses_creature_flyers_only():
                 # (a documented take: design/RimMandrake/northstar_live_queue_2026-10-01.md)
                 "judge captures for RIMMANDRAKE_ROUTE_GRAVSHIP_ICON_JUDGE_PAST_FLIGHT_WORD_GUARD",
                 "rerun RIMMANDRAKE_KEEP_IN_FLIGHT_DEBRIS_OPEN_SWEEP_BURIED_IT", "gravship flight icon for RimMandrake",
-                "northstar live queue preflight..motion_frames")
+                "northstar live queue preflight..motion_frames",
+                "capture the gravship in flight on the world map, showing its route",
+                "gravship flight icon capture after the combat test")
     refused = ("fly the hawk over the dunes", "flyer flight test", "flight capture of a pawn",
                "gravship icon next to a flying hawk", "RIMMANDRAKE_FLYER_FLIGHT_TEST", "glide test",
                "butterfly airborne check", "paused flyer state read", "a drake takes off", "preflight of the hawk's flight",
-               "RIMMANDRAKE_FLY_THE_DRAKE", "gravship escort of drakes in flight", "judge captures for UTINNI_WORLDMAP_FLIGHT_ICON_1 "
+               "RIMMANDRAKE_FLY_THE_DRAKE", "gravship escort of drakes in flight", "gravship beside a lacewing in flight",
+               "gravship in flight, a bat following it", "judge captures for UTINNI_WORLDMAP_FLIGHT_ICON_1 "
                "and a hawk takeoff")
     for purpose in admitted:
         s = sleeper()

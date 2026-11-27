@@ -99,6 +99,10 @@ _ITEM_ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
 # substrings, fail-safe, except "drake" inside Mandrake: every new item ID starts RIMMANDRAKE_ (CLAUDE.md, queue names)
 _CREATURE_WORD = re.compile(r"flyer|pawn|creature|animal|bird|hawk|mynock|wing|beast|insect|bat\b|(?<!man)drake|dragon",
                             re.I)
+# Common words that hold a creature word and name none (showing: "wing"; combat: "bat"), cut before the creature check.
+# A list, not a looser pattern: "lacewing" and "batwing" stay creatures.
+_NOT_CREATURE = re.compile(r"\b(?:show|follow|draw|throw|grow|know|blow|view|review|allow|slow|glow|flow)ing\b|"
+                           r"\bcombat", re.I)
 _GRAVSHIP_OR_MAP_ICON = re.compile(r"\bgrav[-\s]*ship|\bworld[-\s]*map\b[^.;]*\bicon|\bicon\b[^.;]*\bworld[-\s]*map\b", re.I)
 
 
@@ -111,7 +115,7 @@ def flight_purpose(text):
     if _PAUSED_FLYER_READ.search(text) and _PAUSED_FLYER_TOOL.search(text):
         text = _PAUSED_FLYER_TOOL.sub(" ", _PAUSED_FLYER_READ.sub(" ", text))
     text = _cut_item_ids(text)
-    if _GRAVSHIP_OR_MAP_ICON.search(text) and not _CREATURE_WORD.search(text):
+    if _GRAVSHIP_OR_MAP_ICON.search(text) and not _CREATURE_WORD.search(_NOT_CREATURE.sub(" ", text)):
         return False
     return bool(_FLIGHT_RE.search(text))
 
