@@ -332,8 +332,9 @@ is running).
      Each option is one concept to flesh out with the Conductor, with one line on what the player or the user would get.
      One option lets all of them sleep. After his answer, run `python3 src/RimMandrake/Utils/pre_design_concepts.py
      offered "<name>" --answer "<his answer>"` for each concept on the card, and record his answer on the ledger with
-     `--by-card`. A concept that he picks to flesh out is design work with the Conductor; it leaves the store only when
-     it becomes a mod at the intake, an entry of a next-version list, or a ticket (write that in its `Went to` line).
+     `--by-card`. A concept that he picks to flesh out is design work with the Conductor. The concept leaves
+     `design/pre_design_concepts/` only when the concept becomes a mod at the intake, an entry of a next-version list,
+     or a ticket. Write that in the `Went to` line of the concept's file.
 4. Quick mode does not build, test or deploy. Quick mode never takes the bridge.
 
 ## Session mode (he is here)

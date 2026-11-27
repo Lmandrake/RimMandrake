@@ -2639,9 +2639,9 @@ there on 2026-11-26. `design/V2_DREAMS.md` took any idea, but no page showed it.
 - **Nothing in the store is scheduled.** No run starts from the store.
 - **No sweep, filter or judge ages, shortens or drops a concept.** Only he drops a concept. §Old work is filtered before
   any process takes it does not apply to the store, because no process takes a concept.
-- **A capability for a mod that exists does not go in the store.** It goes on the mod's next-version list
+- **A capability for a mod that exists does not go in the store.** Such a capability goes on the mod's next-version list
   (`design/concepts/<Mod>/version/next_version/README.md`).
-- **A concept leaves the store when he picks it.** It then becomes a mod at the intake of the Maturation Pipeline, an
+- **A concept leaves the store when he picks it.** The concept then becomes a mod at the intake of the Maturation Pipeline, an
   entry of a next-version list, or a ticket. Its file gets a `Went to` line that says where, and stays as the record.
 - **The page shows it.** MATURATION_NOW shows, at its intake, the count of concepts that wait and each plain name. A
   store that the page cannot read shows `UNMEASURED` with its cause, never 0.
