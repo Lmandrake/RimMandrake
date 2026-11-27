@@ -1979,7 +1979,22 @@ def prose_after(top):
         print(text)
 
 
+def plant_door(top):
+    """A planted fault that a killed `maturation.py red-seen` left in this clone is reversed from its record before
+    anything is committed, and named in one line; one that cannot be reversed, an unreadable record or a red-seen
+    running now refuses: the named paths may hold a fault that is not the mod (plant_record.py;
+    RIMMANDRAKE_RESTORE_TREE_WHEN_RED_SEEN_IS_KILLED_PLANT_STAYED_APPLIED)."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))
+    import plant_record
+    pl = plant_record.check(top)
+    if pl["state"] in plant_record.STOPS:
+        raise Refuse(pl["line"])
+    if pl["line"]:
+        print(pl["line"])
+
+
 def _publish(top, paths, msg, cwd=None):
+    plant_door(top)
     skips = door_skips()
     if paths:
         if not msg or not msg.strip():

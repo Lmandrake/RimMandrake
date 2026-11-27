@@ -6897,6 +6897,8 @@ def main(argv=None):
         return 1
     if o.cmd == "red-seen":
         r = JC.red_seen(root, o.mod, o.test, patch=o.patch)
+        if r.get("plant") and r["plant"] not in r["why"]:
+            print(r["plant"])   # a leftover plant of a red-seen that did not end, reversed first
         print(("RED SEEN %s %s: %s" % (o.mod, o.test, r["why"])) if r["ok"] else "NOT RECORDED %s %s: %s" % (
             o.mod, o.test, r["why"]))
         return 0 if r["ok"] else 2 if str(r["why"]).startswith("did not run") else 1
@@ -6905,7 +6907,12 @@ def main(argv=None):
         g = JC.grandfather(root, o.mod) if o.grandfather else None
         if g is not None and not o.json:
             print("GRANDFATHER %s: %s" % (o.mod, g["why"]))
-        if o.run:
+        # a leftover plant of a red-seen that did not end is reversed before any test runs on the tree; a stop
+        # (not restored, could not look, running) runs nothing, and the certificate below refuses on it
+        pl = JC.PR.check(root)
+        if pl["line"]:
+            print(pl["line"], file=sys.stderr if o.json else sys.stdout)
+        if o.run and pl["state"] not in JC.PR.STOPS:
             t0 = time.time()
             # only the tests whose reads or file changed (or that are red or unstamped) run; --all is a named full pass
             ran = JC.run_offline(root, o.mod, resume=not o.all)

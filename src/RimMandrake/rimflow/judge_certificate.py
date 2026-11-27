@@ -38,6 +38,7 @@ import subprocess
 import time
 
 import check_margin as CM
+import plant_record as PR       # the record a red-seen writes before it plants (a SIGKILL skips every finally)
 
 TABLE = "version/test_table.json"
 RUN_TIMEOUT_S = 6000      # the slowest measured offline decider is FlowWorks' C# suite, 531 s # budget: danger=a hung deciding test holds the certificate; longest=599s (the slowest offline PASS on a loaded machine, 2026-11-24)
@@ -54,6 +55,9 @@ GRANDFATHER = "version/evidence/red_seen_grandfather.json"
 OFFLINE_STAGES = ("2", "4-5")   # a bar proving at one of these stages is decided offline
 # budget: danger=a hung scene on an empty game holds the certificate; longest=0.15s (FlowWorks' 17 scenes, 2026-11-18)
 EMPTY_GAME_TIMEOUT_S = 120      # FlowWorks' 17 scenes on an empty game: 0.15 s measured 2026-11-18
+# budget: danger=a hung git apply holds red-seen with its fault planted; longest=1s (a one-file plant and its reverse,
+# budget: the selftest fixtures, 2026-11-27)
+GIT_APPLY_TIMEOUT_S = 60
 
 
 def tpath(root, mod):
@@ -390,7 +394,20 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
     """Prove a deciding test can fail: apply the planted fault (git apply, in root), run the test's command, want a
     non-zero exit, reverse the fault and prove every file it touched is byte-identical to before. Only a red run is
     recorded (version/evidence/red_seen.json[test]: rc, last line, the test file's blob, the patch, when); a test that
-    stays green under the fault is the test that could not fail, and nothing is recorded. -> {"ok", "why"}."""
+    stays green under the fault is the test that could not fail, and nothing is recorded. -> {"ok", "why"[, "plant"]}.
+    First, a leftover plant of an earlier red-seen that did not end (a SIGKILL) is reversed from its record and named in
+    "plant"; a leftover that cannot be reversed, an unreadable record or a red-seen still running on this clone is "did
+    not run" (plant_record.check; design/specs/2026-11-27-red-seen-plant-record/boundary.md)."""
+    pl = PR.check(root)
+    if pl["state"] in PR.STOPS:
+        return {"ok": False, "why": "did not run: %s" % pl["line"], "plant": pl["line"]}
+    r = _red_seen(root, mod, test_id, patch, runner, now)
+    if pl["line"]:
+        r["plant"] = pl["line"]
+    return r
+
+
+def _red_seen(root, mod, test_id, patch, runner, now):
     tt, err = read_table(root, mod)
     if tt is None:
         return {"ok": False, "why": "did not run: the table cannot be read: %s" % err}
@@ -435,9 +452,16 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
     # RIMMANDRAKE_RESTORE_RED_SEEN_TREE_WHEN_A_TIMEOUT_KILLS_IT: a default SIGTERM/SIGHUP ends Python without `finally`, so
     # a `timeout`-killed red-seen left its planted fault in the work tree (FlowWorks blind cycle 5). While the fault is
     # planted, those signals raise SystemExit instead, the finally below reverses the fault, and the exit goes on.
+    # RIMMANDRAKE_RESTORE_TREE_WHEN_RED_SEEN_IS_KILLED_PLANT_STAYED_APPLIED: a SIGKILL skips every finally, so the
+    # original bytes are recorded before the plant; the next red-seen, certificate or ./publish reverses a leftover
+    try:
+        rec = PR.write(root, mod, test_id, patch_text, {p: before.get(p) for p in paths})
+    except (OSError, PR.Unreadable) as e:
+        return {"ok": False, "why": "did not run: the plant record cannot be written before the plant: %s" % e}
     held = _hold_signals()
-    a = subprocess.run(["git", "apply", os.path.abspath(patch)], cwd=root, capture_output=True, text=True, timeout=60)
+    a = subprocess.run(["git", "apply", os.path.abspath(patch)], cwd=root, capture_output=True, text=True, timeout=GIT_APPLY_TIMEOUT_S)
     if a.returncode != 0:
+        PR.clear(root, rec)
         _release_signals(held)
         return {"ok": False, "why": "did not run: the fault does not apply: %s" % a.stderr.strip()}
     try:
@@ -451,7 +475,7 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
             rc, last = None, "could not start: %s" % e
     finally:
         rev = subprocess.run(["git", "apply", "-R", os.path.abspath(patch)], cwd=root, capture_output=True, text=True,
-                             timeout=60)
+                             timeout=GIT_APPLY_TIMEOUT_S)
         bad = []
         for p, old in _snapshot_changes(root, before):  # not restored (the reverse, or the test's own writes): by hand
             fp = os.path.join(root, p)
@@ -461,6 +485,7 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
                 with open(fp, "wb") as fh:
                     fh.write(old)
             bad.append(p)
+        PR.clear(root, rec)     # every watched file holds its bytes from before: the plant is gone
         _release_signals(held)
     dirty1 = _git_dirty(root) if dirty0 is not None else None
     new = sorted(dirty1 - dirty0) if dirty1 is not None else []
@@ -501,6 +526,15 @@ def certify(root, mod, to="blind_challenge"):
     each with observed, would_pass and smallest_fix. ok is False when any row is REFUSED. Reads only; under a second."""
     tt, err = read_table(root, mod)
     out = {"ok": True, "rows": [], "did_not_run": [], "to": to, "mod": mod}
+    # a leftover plant of a red-seen that did not end is reversed before anything is read; one that cannot be, an
+    # unreadable record and a red-seen running now refuse: the tree is not the mod (plant_record.check)
+    out["plant"] = pl = PR.check(root)
+    if pl["state"] in PR.STOPS:
+        out["ok"] = False
+        out["rows"].append({"bar": "*", "test": ", ".join(pl["files"]) or None, "clause": "plant_left",
+                            "status": "REFUSED", "observed": pl["line"], "would_pass": "no planted fault in the tree",
+                            "smallest_fix": pl["line"].split("; ", 1)[-1]})
+        return out
     if tt is None:
         out["did_not_run"].append("the certificate did not run: %s; the mod goes through on this guard" % err)
         return out
@@ -773,6 +807,8 @@ def first_fix(v):
 
 def print_certificate(v, out=print):
     out("CERTIFICATE %s (to %s): %s" % (v.get("mod"), v.get("to"), "OK" if v.get("ok") else "REFUSED"))
+    if (v.get("plant") or {}).get("line"):
+        out("  %s" % v["plant"]["line"])
     for d in v.get("did_not_run") or []:
         out("  DID NOT RUN: %s" % d)
     seen = set()
