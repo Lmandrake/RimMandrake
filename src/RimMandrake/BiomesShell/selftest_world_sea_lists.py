@@ -18,6 +18,7 @@ Each promise is a t_<name> function below (code_review_status.py reads them by n
     python3 selftest_world_sea_lists.py [--part chill|glass]     one item's promises only (its outcome check)
 """
 import hashlib
+import io
 import os
 import re
 import shutil
@@ -228,9 +229,22 @@ def t_toggles_scribed_and_drawn(mod):
     return bad
 
 
+def glass_png():
+    """-> a file object of TwilightGlass.png, or None when the repo holds none. A slim clone (scratch_clone.py shape
+    --slim) leaves media out of the checkout, so there the blob git holds is read instead: an absent working file there
+    is not an absent texture (a slim helper clone read this check FAIL "not installed", and code_review_status DIRTY)."""
+    if os.path.exists(GLASS_PNG):
+        return open(GLASS_PNG, "rb")
+    rel = os.path.relpath(GLASS_PNG, REPO).replace(os.sep, "/")
+    # hang guard: a local index read ends in well under a second
+    r = subprocess.run(["git", "-C", REPO, "cat-file", "blob", ":" + rel], capture_output=True, timeout=60)
+    return io.BytesIO(r.stdout) if r.returncode == 0 and r.stdout else None
+
+
 def t_glass_texture_is_the_pick():
-    if not os.path.exists(GLASS_PNG):
-        return ["%s is not installed" % os.path.relpath(GLASS_PNG, REPO)]
+    png = glass_png()
+    if png is None:
+        return ["%s is not installed (not on disk, not in the git index)" % os.path.relpath(GLASS_PNG, REPO)]
     try:
         import numpy as np
         from PIL import Image
@@ -240,7 +254,8 @@ def t_glass_texture_is_the_pick():
         return ["UNMEASURED: cannot import the sheet generator (%s)" % e]
     rgb, a = WWV.glass_tex("panes", WWV.hsv_shift(BW.F["TwilightSea"][0], *WWV.COLOURS["deep"]), **WWV.PANES3)
     want = np.dstack([np.clip(np.rint(rgb), 0, 255), np.rint(a * 255)]).astype(np.uint8)
-    have = np.asarray(Image.open(GLASS_PNG).convert("RGBA"))
+    with png:
+        have = np.asarray(Image.open(png).convert("RGBA"))
     if have.shape != want.shape:
         return ["TwilightGlass.png is %s, the pick is %s" % (have.shape, want.shape)]
     if not np.array_equal(have, want):
