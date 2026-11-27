@@ -494,13 +494,15 @@ def _build_suite():
                            args="%s|noop" % engine)
         if not (r or {}).get("success"):
             raise ExpectationFailed("UNMEASURED: PreLaunchConfirmation could not be called: %s" % str(r)[:300])
-        rows = (t.session.call("jawa/window_list_close", action="list") or {}).get("windows") or []
+        try:
+            rows = (t.session.call("jawa/window_list_close", action="list") or {}).get("windows") or []
+        finally:
+            _close_boxes(t)     # on every path out of the read, a raised one too: no launch dialog stays open
         boxes = [w for w in rows if str(w.get("type", "")).endswith("Dialog_MessageBox")]
+        text = boxes[-1].get("text") if boxes else None
         if not boxes:
             raise ExpectationFailed("UNMEASURED: no launch confirmation appeared (Odyssey off? windows %s)"
                                     % [w.get("type") for w in rows][:8])
-        text = boxes[-1].get("text")
-        _close_boxes(t)
         t._record("launch confirmation text (%s)" % engine, {"text": text})
         if not text:
             raise ExpectationFailed("UNMEASURED: the dialog text is unreadable (a companion without the text field?): %r"
