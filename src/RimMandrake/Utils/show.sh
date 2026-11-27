@@ -11,8 +11,8 @@
 # DIR  -> opens the folder itself.
 #
 # Terminal hyperlinks (OSC 8) and markdown links are inert in this setup, so a
-# report cannot be clicked. Bare file:/// URLs stay the written convention —
-# double-click copies them — and this is what runs when the owner says "show me".
+# report cannot be clicked. Reports give plain native paths (never file:/// or %20,
+# global CLAUDE.md "Full paths"), and this is what runs when the owner says "show me".
 #
 # ⚠️ explorer.exe EXITS 1 ON SUCCESS. Never read its status as failure; this
 # script reports on whether it was launched, and exits 0 when it was.
