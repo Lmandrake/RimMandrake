@@ -1115,7 +1115,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 			// standing overflow after a week"). The drown test's own block must kill the plant before it counts it.
 			Case("SheetCropKill_the_caller_kills_each_drowning_crop", () =>
 			{
-				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				// the raw file, lines kept (Src flattens whitespace, newlines included, so a line comment would swallow the rest)
+				string sheet = System.IO.File.ReadAllText(RiverSwitchFlipChecks.SrcPath(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs")));
 				var code = new System.Text.StringBuilder();
 				foreach (string line in sheet.Split('\n'))
 				{
