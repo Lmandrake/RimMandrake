@@ -1,0 +1,39 @@
+{
+ "item": "UTINNI_WORLDMAP_FLIGHT_ICON_1",
+ "family": "design/RimMandrake/art_judge_brief.md",
+ "sha": "9ad7d729e5",
+ "given": {
+  "inputs": [
+   "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_zoomout.png",
+   "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_icon_crop_6x.png",
+   "Transient/utinni_flight_2026-09-24/utinni_flight_far_zoomin_2026-09-24.png@6168adf820",
+   "design/RimUtinni/world_icon_flight_judge/offline_sprite_under_cyan_multiply.png"
+  ],
+  "criteria": {
+   "A3": "The globe in flight shows the icon, and it reads as our ring-hull ship (now a delegated art call, not his look)."
+  }
+ },
+ "passed": [],
+ "refusals": [
+  {
+   "clause": "A3",
+   "criterion_hash": "4d87665f026af9e5",
+   "evidence": [
+    "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_zoomout.png",
+    "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_icon_crop_6x.png",
+    "Transient/utinni_flight_2026-09-24/utinni_flight_far_zoomin_2026-09-24.png@6168adf820",
+    "design/RimUtinni/world_icon_flight_judge/offline_sprite_under_cyan_multiply.png"
+   ],
+   "observed": "In flight, the zoomed-out globe draws vanilla's cyan dome glyph (World/WorldObjects/Expanding/Gravship under the faction tint), not RUT_Utinni; the zoomed-in capture shows no ship. Patch and art bytes are unchanged since the capture (md5 measured 2026-11-27, repo = ArchBig deploy).",
+   "would_pass": "In-flight captures, zoomed out and zoomed in, each centred on the Gravship's draw position, that show the ring-hull silhouette with a hub under the faction tint.",
+   "smallest_fix": {
+    "what": "Read the live Gravship's def.expandingIconTexture, def.texture, ExpandingIcon and Material texture names mid-flight (part our_icon_draws_on_the_globe_in_flight_live, WB-game-ship-20261126-164518 step 3), fix the cause the reading names, then capture both zooms on the ship.",
+    "attainable": "yes",
+    "cost": "new instrument"
+   },
+   "criterion_verdict": "sound",
+   "criterion_why": "It asks what the owner asked on 2026-09-12; a working patch passes it.",
+   "new_since": "first"
+  }
+ ]
+}
