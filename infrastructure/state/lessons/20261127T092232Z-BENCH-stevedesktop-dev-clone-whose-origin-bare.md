@@ -1,0 +1,3 @@
+On SteveDesktop, a ~/dev clone whose origin is the bare-name Lmandrake repo (Lodestar, Dispatch, MandrakeWorkflows) tracks a one-commit public release export and silently lacks the working tree's files, e.g. Dispatch's gpt_door.py. The registry remote is the -dev repo, and the per-repo deploy keys read it. Check origin against Lodestar sync/registry.md before you call a file missing upstream.
+item: RIMMANDRAKE_RESTORE_STEVEDESKTOP_GPT_DOOR_DISPATCH_CLONE_LACKS_IT
+home: infrastructure/stevedesktop/RUNBOOK.md; Lodestar claude/global/machines/stevedesktop.md ('origins stay the canonical ...' is false for -dev repos)
