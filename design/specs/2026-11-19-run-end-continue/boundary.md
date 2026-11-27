@@ -90,6 +90,10 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_left_o
 - **a-stopped-run-waits-for-its-stop-switch-to-lift.** A stop on a scope (`pipe stop item:X`) leaves its switch on:
   the step waits and the timed pass starts nothing until the switch is lifted (`pipe on`); the next pass then starts
   the continuation.
+- **a-bundle-restart-line-claims-no-daily-limit.** The Conductor line of a launched continuation (`continued_line`)
+  counts a lane continuation against `MAX_PER_DAY` ("N of at most 3 today"); a work bundle's restart names its restart
+  and its guard ("restart N of work bundle X; a bundle has no daily limit, its guard is progress"), never a count of a
+  limit it does not have (the FlowWorks bundle WB-mod-FlowWorks-20261126-113858 logged "5 of at most 3 today").
 - **a-blind-role-never-resumes.** A run whose role is to read without the maker's context starts fresh, every time: a
   blind judge (stage `blind_challenge`, or an item named BLIND with a judge's verb), a fresh or second reader, an
   examiner, a challenger, a coverage judge, or any brief that declares itself a judge, reviewer or reader. The why

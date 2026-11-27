@@ -873,6 +873,24 @@ def t_a_stopped_run_waits_for_its_stop_switch_to_lift():
         C.launch_unit = real
 
 
+def t_a_bundle_restart_line_claims_no_daily_limit():
+    """The FlowWorks bundle WB-mod-FlowWorks-20261126-113858 restarted 5 times and the Conductor log said "5 of at most
+    3 today": a daily limit a bundle does not have (its guard is progress). The bundle's line names its restart and
+    that guard; a lane continuation's line keeps its daily count."""
+    rec = {"unit": "u-b5", "item": "RIMMANDRAKE_M1", "model": "opus"}
+    b = LOC.continued_line("u-b5", rec, {"why": "work bundle WB-x: 1 member(s) still open", "target": "RIMMANDRAKE_M1",
+                                         "n": 5, "bundle": "WB-mod-FlowWorks-20261126-113858"}, "u-b6", None, None,
+                           "a work bundle restarts fresh")
+    check("a-bundle-restart-line-claims-no-daily-limit: no daily count for a bundle",
+          "of at most" not in b and "today" not in b, b)
+    check("a-bundle-restart-line-claims-no-daily-limit: it names the restart and its guard",
+          "restart 5 of work bundle WB-mod-FlowWorks-20261126-113858" in b and "progress" in b, b)
+    lane = LOC.continued_line("u-l2", dict(rec, unit="u-l2"), {"why": "LEFT OPEN", "target": "RIMMANDRAKE_M1", "n": 2},
+                              "u-l3", None, "sid", None)
+    check("a-bundle-restart-line-claims-no-daily-limit: a lane continuation keeps its daily count",
+          "(2 of at most %d today)" % LOC.MAX_PER_DAY in lane and "its session resumed" in lane, lane)
+
+
 def t_a_brief_that_only_mentions_a_lane_names_no_lane():
     # 2026-11-27: a readying brief ("# Brief: make every scheduled infrastructure piece ready", which names "the ticket
     # lane" and bullets nine owed items it was to read) ended done and was continued on one of those items as if they
@@ -915,7 +933,8 @@ def main():
               t_a_run_stopped_at_an_easy_spot_with_a_left_open_note_is_continued,
               t_a_stop_that_ends_the_work_is_never_continued, t_a_hand_void_beside_a_stop_still_bars_the_carry_on,
               t_a_stopped_run_waits_for_the_account_gate_as_a_new_run, t_a_stopped_run_waits_for_its_stop_switch_to_lift,
-              t_a_brief_that_only_mentions_a_lane_names_no_lane):
+              t_a_brief_that_only_mentions_a_lane_names_no_lane,
+              t_a_bundle_restart_line_claims_no_daily_limit):
         try:
             t()
         except Exception as e:  # noqa: BLE001

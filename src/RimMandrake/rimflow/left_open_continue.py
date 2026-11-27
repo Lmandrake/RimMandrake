@@ -712,6 +712,20 @@ def recheck(rec, now, gates=None, root=None, reader=None):
     return waiting(got, now)
 
 
+def continued_line(unit, rec, p, new, lad, sid, fresh_why):
+    """The Conductor's line for a continuation that launched. A lane continuation counts against MAX_PER_DAY; a work
+    bundle's restart has no daily limit (its guard is progress, recheck), so its line names the restart, never a count
+    of a limit it does not have: the FlowWorks bundle WB-mod-FlowWorks-20261126-113858 logged "5 of at most 3 today"."""
+    how = "%s, %s" % (("EFFORT LADDER: " + lad["why"]) if lad else "same model %s" % rec.get("model"),
+                      "its session resumed" if sid else "fresh: " + str(fresh_why))
+    if p.get("bundle"):
+        return "%s on %s ended with work left (%s); continued as %s on %s, %s (restart %d of work bundle %s; a bundle " \
+               "has no daily limit, its guard is progress)" % (unit, rec["item"], p.get("why"), new, p["target"], how,
+                                                               p["n"], p["bundle"])
+    return "%s on %s ended with work left (%s); continued as %s on %s, %s (%d of at most %d today)" % (
+        unit, rec["item"], p.get("why"), new, p["target"], how, p["n"], MAX_PER_DAY)
+
+
 def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, reader=None, projects=None,
         plan_dir=None):
     """The continuation unit's step: launch the planned continuation once. -> {act, why, ...}. plan_dir: a test's
@@ -801,10 +815,7 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
         if p.get("bundle"):
             import work_bundle as WB
             WB.note_restart(p["bundle"], m.group(1), now, int(p.get("bundle_ended_now") or 0))
-        line = "%s on %s ended with work left (%s); continued as %s on %s, %s, %s (%d of at most %d today)" % (
-            unit, rec["item"], p.get("why"), m.group(1), p["target"],
-            ("EFFORT LADDER: " + lad["why"]) if lad else "same model %s" % rec.get("model"),
-            "its session resumed" if sid else "fresh: " + str(fresh_why), p["n"], MAX_PER_DAY)
+        line = continued_line(unit, rec, p, m.group(1), lad, sid, fresh_why)
         try:
             DH.conductor_line(line, now, log_path, head=HEAD)
         except Exception as e:  # noqa: BLE001
