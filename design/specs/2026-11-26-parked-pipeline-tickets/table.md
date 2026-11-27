@@ -45,6 +45,35 @@ after the replan)` of 2026-11-01.
 | `SEAT_GOODBYE_FIX_QUEUED_PROMPT_LOST` | pipeline:conductor-tools | owner card | STALE (dropped) | his rulings: typing at goodbye is an acceptable risk (2026-10-29); no text stops the goodbye (2026-11-01) |
 | `SEAT_GOODBYE_FIX_REPLACEMENT_DIED_UNREAD` | pipeline:conductor-tools | owner card | NOT WORTH THE TOUCH (dropped) | a Codex prediction; no failure in 25 days |
 | `DOORBELL_DELAY_FIX_FRESH_WINDOW_WAITS` | pipeline:dispatcher | owner card | DONE (closed) | stall_after_s 60; seat_restart._fresh_owed resets idle_since at a restart (ae07aa74b1) |
+| `DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN` | machine:Archmagi | block by the retired Relentless pipeline: wait for the daemon restart | DONE (closed) | artpipe status/heartbeat.json written 9:44 PM PST today, rm-artpiped active, no `D:\Luke\dev\_*` dir |
+| `FOCUS_ENFORCE_HEADLESS_LAUNCH_ALLOWLIST` | machine:Archmagi | owner card | NOT WORTH THE TOUCH (dropped) | a title with no spec and no failure on record; focus_heal and game_focus refuse without opt-in |
+| `FOCUS_HEAL_TAME_HANDS_OFF_HIS_WINDOWS` | machine:Archmagi | owner card | NOT WORTH THE TOUCH (dropped) | built (focus_heal.py:105, selftest_game_focus green); only a live proof was owed |
+| `DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING` | machine:Archmagi | wait to 2026-12-10: his physical reseat | STAYS PARKED | a physical act at the desk |
+| `QUOTA_LEFT_AT_RESET_MEASURE_PER_ACCOUNT` | machine:accounts | owner card | DONE (closed) | `./acct measures` records the percent left at each reset, per account, per week |
+| `WARMTIMER_HARDEN_SPARE_LIVE` | machine:accounts | owner card | HIS PARK, STILL USEFUL | see the list below |
+| `HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE` | machine:SteveDesktop | integration phase | STAYS PARKED | A6 is full-list. Conductor call: A1-A3 name small tiers (bridge, fw_gss_sitting, pyrelands), so the hold may be wider than its reason |
+| `HEAP_READ_BISECT_ROWS_NAME_THE_RETAINERS` | machine:SteveDesktop | full-list hold | STAYS PARKED | reads the rows of the heap bisect above |
+| `REBOOT_BREAKGLASS_VERIFY_1` | machine:SteveDesktop | needs a Windows reboot at a moment he names | STAYS PARKED | his phone over cellular, his card 2026-09-19; its work is on Archmagi, not SteveDesktop |
+| `ROLE_HEADERS_RETIRE_ENABLED_PROSE` | pipeline:docs | owner card | NOT WORTH THE TOUCH (dropped) | done in substance: roles/operations.md:4 and conductor.md:7 say the schedule decides; the lint guards no live fault |
+| `SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP` | pipeline:docs | wait to 2026-12-02: the Conductor's call on step 3 | STAYS PARKED | step 3 is his 2026-11-03 hold; the run of 2026-11-26 recommends a drop |
+| `CLOSE_SHA_REPAIR_EIGHT_ON_LEAP_DAY` | pipeline:ledger | owner card | NOT WORTH THE TOUCH (dropped) | no process reads those old shas; the close gate now refuses a bad sha |
+| `RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION` | pipeline:ledger | his ruling 2026-11-12: store look defects until the ladder is regenerated | STAYS PARKED | Conductor call: that ruling is from before the Maturation Pipeline (suspect); the acceptance test fails today |
+| `MOD_HUMAN_EXPLORATION_PASS_1` | pipeline:maturation | after the art wave (2026-09-12) | STALE (dropped) | replaced by the owner's walk stage of the Maturation Pipeline (his act 3) |
+| `NORTH_STAR_WALK_AUTHORING_1` | pipeline:maturation | block by FOUNDRY, a retired seat: owner reacts to drafts | STALE (dropped) | a mod's bars now lock in its own folder at its Design Version |
+| `PLAYER_ROLE_DESIGN_EMPTY_CHAIR_AT_TABLE` | pipeline:maturation | parked by the owner's words, 2026-10-31 | STAYS PARKED | "Once my live playtesting is the actual bottleneck we will reconsider." |
+| `RIMMANDRAKE_CUTOVER_PILOT_MODS_TO_LEDGER_SAME_DAY` | pipeline:maturation | wait to 2026-11-30 | STAYS PARKED | the 2026-11-29 study answers it; the date is ahead |
+| `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED` | pipeline:maturation | his ruling 2026-11-12 | STAYS PARKED | the same Conductor call as the ledger row above |
+| `RIMMANDRAKE_KILL_LIVE_HOLDER_RESUME_AFTER_FIRST_SESSION` | pipeline:maturation | wait to 2026-12-03: his walk of ExplosiveKnockback | STAYS PARKED | his act 3 |
+| `OWNER_CARDS_HARDEN_DECISION_RECEIPTS` | pipeline:owner-review | wait to 2026-12-04: a census window | STAYS PARKED | a real date ahead |
+| `PHONE_SENDS_ENFORCE_STILL_HONOR_SYSTEM` | pipeline:owner-review | owner card | HIS PARK, STILL USEFUL | see the list below |
+| `RIMMANDRAKE_STOP_SHARED_COPIES_OUTLIVING_THEIR_LENDER` | pipeline:helpers | wait to 2026-11-27 | UNPARK (unwait) | its 7-day reading ended 3:44 PM PST 2026-11-26, before the wait date |
+| `COLDLOAD_PROVE_DEFLOADCACHE_HALF_INSTALLED` | pipeline:deploy-and-lists | integration phase | STAYS PARKED | full-list cold-load proof |
+
+`OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW` was closed by the lane soon after its wait was lifted.
+
+## Count by class
+
+53 tickets read: DONE 5, STALE 5, NOT WORTH THE TOUCH 8, UNPARK 2, HIS PARK, STILL USEFUL 4, STAYS PARKED 29.
 
 ## HIS PARK, STILL USEFUL: the list for the Conductor
 
@@ -56,3 +85,54 @@ after the replan)` of 2026-11-01.
   - Repairs: def-content checks that read no defs today, because no usable `defs.sqlite` exists.
   - Evidence: run 2026-11-26: `selftest_ecosystem_pyramid_check.py` and `selftest_label_collision_check.py` read
     UNMEASURED ("no usable defs.sqlite at ...\DefDump"). The repair needs a DefDump capture from a game (needs game-up).
+- `WARMTIMER_HARDEN_SPARE_LIVE`
+  - Repairs: the daily warm of the live Claude login when no claude process runs (the "auto log out" he banned).
+  - Evidence: on SteveDesktop, claude-account-warm.timer is enabled (system unit) and `~/.local/bin/claude-account`
+    line 842 skips the live login only `if w == "live" and claude_pids()`. The fix lands in the claude-remote-control
+    repo, from Archmagi.
+- `PHONE_SENDS_ENFORCE_STILL_HONOR_SYSTEM`
+  - Repairs: a phone image from `chat_review.py` can reach him with no pre-review record.
+  - Evidence: no hook in `.claude/` or in the settings names SendUserFile (searched 2026-11-26).
+
+The two that would repair the most: `WARMTIMER_HARDEN_SPARE_LIVE` (a banned logout of the live login) and
+`SELFTEST_UNMEASURED_FOUR_REBUILD_DEFDUMP_DB` (def checks that today read nothing).
+
+## Conductor calls that would free work (no owner act is needed for any of them)
+
+- `BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD`: rescope A1 and A2 from L4 to L2 (they pass at L2), then close. A looser
+  bar, so it is the Conductor's act.
+- `BRIDGE_TPS_CAPTURE_FIXES_1`: split the small-list half of C3 off from its full-list half. A bar change.
+- `RIMMANDRAKE_REFUSE_OWNER_DEFECT_CLOSE_WITHOUT_REGRESSION` and `RIMMANDRAKE_INGEST_HELD_LOOK_DEFECTS_WHEN_LADDER_REGENERATED`:
+  say whether his 2026-11-12 ruling (store look defects until the validation ladder is regenerated) still stands.
+- `HEAP_BISECT_RELOAD_RETAINERS_59_MB_SLOPE`: A1-A3 run on small tiers; only A6 needs the full list.
+- `SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP`: drop step 3 (recommended by its run of 2026-11-26).
+
+## Ready old tickets per home after these acts
+
+Read from `list_home.py offer` at about 10:05 PM PST 2026-11-26, then less the tickets that a bundle refused (the lane
+leaves those out):
+
+| home | offered | offered, less bundle refusals | still parked |
+|---|---|---|---|
+| pipeline:bridge | 7 | 0 | 6 |
+| pipeline:operations | 3 | 3 | 4 |
+| pipeline:helpers | 1 | 1 | 0 |
+| pipeline:owner-review | 1 | 1 | 2 |
+| pipeline:conductor-tools | 0 | 0 | 2 |
+| pipeline:docs | 0 | 0 | 3 |
+| pipeline:ledger | 0 | 0 | 1 |
+| pipeline:maturation | 0 | 0 | 4 |
+| pipeline:test-lane | 0 | 0 | 2 |
+| pipeline:deploy-and-lists | 0 | 0 | 1 |
+| machine:Archmagi | 0 | 0 | 1 |
+| machine:accounts | 0 | 0 | 1 |
+| machine:SteveDesktop | 0 | 0 | 3 |
+
+(The "still parked" column also holds the kind-owed items that this run did not read.)
+
+No `pipeline:` or `machine:` home has 5 ready old tickets after these acts. The reason is in the rows above. Of the 29
+tickets that stay parked, 15 wait for the full mod list or the integration phase. 6 wait for one of his acts or a
+physical act at the desk. 6 wait for a real date ahead or for his ruling. 2 stage a raid while raid tests are paused.
+pipeline:bridge, the largest home, has 7 offered tickets, and a bundle refused every one of them for full-list work,
+the raid pause or an L4 level. The Conductor calls above would free at most three bridge tickets. So no home reaches 5
+until he opens the integration phase.
