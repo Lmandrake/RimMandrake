@@ -47,7 +47,8 @@ with no remainder linked gets one ticket, filed by the program, with the report 
 - **no-remainder-closes-with-its-reason-recorded.** `--no-remainder "<why>"` closes, and the event holds the reason. An
   empty reason is refused.
 - **words-that-name-nothing-unbuilt-close-as-before.** "no part is unbuilt", "nothing left unbuilt" and plain evidence
-  close with no extra step.
+  close with no extra step. A hyphenated compound ("built-but-unwired wording", "the not-built list") names a kind of
+  content, not a part of this work, and is not read; a plain statement in the same sentence still is.
 - **a-program-close-files-the-remainder-itself-and-closes.** The list tick's close writes one `file` (and a note with the
   words) and then the `close`.
 - **the-owner-and-the-conductor-window-are-never-refused.** Their close goes on, with the note on the event.

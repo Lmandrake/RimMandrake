@@ -178,6 +178,13 @@ def t_words_that_name_nothing_unbuilt_close_as_before():
     check(CR.named("Not built: none of the three parts") == [] and CR.named("Nothing is done: the alarm is not built")
           and CR.named("the page is not built, 0 tests red"),
           "plain: a denial does not hide a later part")
+    # a hyphenated compound names a kind of content, not a part of this work (2026-11-26: a list of FIXED findings,
+    # "built-but-unwired wording", filed the false remainder RIMMANDRAKE_FINISH_PREPARE_FIRST_LOOK_MATRIX_UNBUILT_PARTS)
+    fixed = ("fresh reader: 7 findings, 5 fixed (PL7 exactly one new keeper; save filing names the save's game; "
+             "built-but-unwired wording), 2 judged not significant (wired-but-not-built is an existing owner-era rule)")
+    check(CR.named(fixed) == [] and CR.named("Content that is built-but-unwired gets a key-sheet line") == []
+          and CR.named("the not-built list is empty") == [] and CR.named("built-but-unwired wording; the alarm is unwired"),
+          "plain: a hyphenated compound is a name, not a statement; a plain statement beside it still counts")
 
 
 def t_a_program_close_files_the_remainder_itself_and_closes():

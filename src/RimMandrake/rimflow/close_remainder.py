@@ -16,6 +16,9 @@ DENIED = re.compile(r"\b(?:no|nothing|none|0|zero)\b(?: \w+){0,5}? (?:%s)\b|\b(?
 # a report DECLARES (no agent is there to say it meant something else): a heading "Not built: ..." or "parts ... are not built"
 DECLARED = re.compile(r"^[\s>*_#\-\d.)]*(?:(?:left|still|spec|parts?|yet)\s+){0,3}%s\b[^:.]{0,40}:"
                       r"|\b(?:parts?|pieces?) of the (?:spec|ticket|item)\b[^.;:]{0,40}\b%s\b" % (_UNBUILT, _UNBUILT), re.I)
+# a hyphenated compound ("built-but-unwired wording", "the not-built list") names a kind of content, not a part of this
+# work: a list of FIXED findings that held one filed a false remainder on 2026-11-26
+COMPOUND = re.compile(r"\w+(?:-\w+)+")
 UNTESTED = re.compile(r"\b(?:untested|not tested)\W{0,4}:\W{0,4}(.+?)(?=\.\s|\n|$)", re.I | re.S)
 IS_REMAINDER = re.compile(r"remainder|finish|%s" % _UNBUILT, re.I)
 _ID = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}\b")
@@ -27,14 +30,14 @@ TITLE_WORDS = 400               # danger: one ledger line every replay reads; th
 def named(text):
     """-> the sentences of `text` that name something unbuilt."""
     return [s.strip() for ln in str(text or "").splitlines() for s in re.split(r"(?<=[.;!?])\s+(?=[A-Z`*(\d])", ln)
-            if NAMED.search(DENIED.sub(" ", s))]
+            if NAMED.search(DENIED.sub(" ", COMPOUND.sub(" ", s)))]
 
 
 def declared(report):
     """-> the lines of a run's report that declare unbuilt parts; a heading with nothing after it takes its sub-bullets."""
     lines, out = str(report or "").splitlines(), []
     for k, ln in enumerate(lines):
-        if not DECLARED.search(DENIED.sub(" ", ln)):
+        if not DECLARED.search(DENIED.sub(" ", COMPOUND.sub(" ", ln))):
             continue
         if re.search(r":[\s*_]*$", ln):
             for sub in lines[k + 1:]:
