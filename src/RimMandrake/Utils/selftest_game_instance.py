@@ -124,7 +124,9 @@ def stop(w):
     b = w.start_b()
     r = w.gi("stop", "--wait-s", "1")
     check(not F.wait_dead(a, 0.5) and F.alive(b), "a graceful stop is graceful: a game that ignores it stays up")
-    check(r.returncode == 1 and "still running" in r.stdout, "and the stop says so, exit 1: %r" % r.stdout[-120:])
+    check(r.returncode == 0 and "still running" in r.stdout,
+          "and the stop says so, exit still 0: callers escalate by their own wait (modcheck restart_onto_list refuses "
+          "on any other exit and would never reach its --force): %r" % r.stdout[-120:])
     w.gi("stop", str(a), "--force")
     check(F.wait_dead(a) and F.alive(b), "--force takes that pid, and b lives")
     w.clear()

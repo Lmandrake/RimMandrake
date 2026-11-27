@@ -560,7 +560,7 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None, de
 
 
 # stop's wait for the process to be gone. Danger: a game that ignores a graceful close (a modal on screen) would hold
-# the caller forever; the bound ends the wait and the stop says "still running". Without the wait, a launch right after
+# the caller forever; the bound ends the wait and the stop says "still running" (exit still 0). Without the wait, a launch right after
 # a stop saw the closing process, said "already running" and started nothing (ArchBig, 2026-11-26). Hang guard: the
 # longest real graceful close is UNMEASURED; seconds were seen (that ArchBig was still up ~1 s after its stop). The CLI
 # waits by default; a caller of stop() that does its own wait (maturation's deploy restart) passes nothing and waits not.
@@ -624,8 +624,7 @@ def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=Non
         except Blind as e:
             out.append("UNMEASURED whether %s is gone: %s" % (_n(name), e))
             left = []
-        if left:
-            rc = 1
+        if left:      # exit stays 0: the stop was sent, and callers escalate to --force by their own wait
             out.append("%s still running after %g s: pid %s (a graceful stop only asks; --force takes it)" %
                        (_n(name), wait_s, ", ".join(map(str, left))))
     if broken:
