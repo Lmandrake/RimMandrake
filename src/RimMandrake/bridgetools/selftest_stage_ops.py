@@ -116,6 +116,8 @@ WIRING = [
                               r'\.Want\("def", td\.defName\)\.Got\("def", spawned\.def\.defName\)', r'\.Got\("stuff", spawned\.Stuff\?\.defName\)',
                               r'\.Got\("cell", spawned\.Position\.x \+ "," \+ spawned\.Position\.z\)', r'\.Got\("rot", spawned\.Rotation\.AsInt\.ToString\(\)\)',
                               r'\.Got\("hp", spawned\.def\.useHitPoints \? spawned\.HitPoints\.ToString\(\) : null\)', r'row\.Got\("quality", rq\.Quality\.ToString\(\)\)',
+                              r'var rs = spawned\.TryGetComp<CompStyleable>\(\);',
+                              r'row\.Want\("style", styleDef\.defName\)\.Got\("style", rs\?\.styleDef\?\.defName\)',
                               r'StageReadBack\.Reply\(rb, Time\.frameCount\)', r'success = [^,]*\(bool\)stageBack\["ok"\],', r'readBack = stageBack,']),
 ]
 
@@ -268,6 +270,7 @@ SITE_PLANTS = [
     ("terrain echoes the request", "set_terrain_batch", TT, 'Got("terrain", after?.defName)', 'Got("terrain", def.defName)'),
     ("spawn_pawn echoes the kind asked", "spawn_pawn", TT, 'Got("kind", kindNow)', 'Got("kind", kind.defName)'),
     ("build_batch echoes the def asked", "build_batch", MT, 'Got("def", spawned.def.defName)', 'Got("def", td.defName)'),
+    ("build_batch echoes the style asked", "build_batch", MT, 'Got("style", rs?.styleDef?.defName)', 'Got("style", styleDef.defName)'),
     ("destroy_batch never reads the cells again", "destroy_batch", TT, '"still standing after the clean", true);', '"still standing after the clean", false);'),
     ("destroy_batch's success ignores the read-back", "destroy_batch", TT, 'bool ok = seen.Count > 0 && outOfBounds == 0 && (bool)readBack["ok"];', 'bool ok = seen.Count > 0 && outOfBounds == 0;'),
     ("pawn_need echoes the requested level", "pawn_need", PT,

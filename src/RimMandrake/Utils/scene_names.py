@@ -400,7 +400,7 @@ def _plan_stage(s, cast, things, terrain, station):
                 plan.append(("terrain", alias, False, [(corners[0][0], corners[0][1], r[2], r[3])], d))
                 continue
             cells, many = _cells(d.get("at"))
-            odd = set(d) - ({"kind", "at", "faction", "can"} if group == "cast" else {"thing", "at", "stuff", "rot"})
+            odd = set(d) - ({"kind", "at", "faction", "can"} if group == "cast" else {"thing", "at", "stuff", "rot", "style"})
             if odd:
                 raise Refused("BAD_ARGS", "%s.%s takes no %s (`help stage`)" % (group, alias, ", ".join(sorted(odd))))
             plan.append(("pawn" if group == "cast" else "thing", alias, many, [place(c) for c in cells], d))
@@ -494,6 +494,8 @@ def stage(s, cast=None, things=None, terrain=None, station=None):
                 args = {"ops": ops, "faction": "player", "wipeExisting": False}
                 if d.get("stuff"):
                     args["stuff"] = d["stuff"]
+                if d.get("style"):          # a ThingStyleDef: the look that the build menu's pick gives (read back as `style`)
+                    args["style"] = d["style"]
                 r = s._call(BUILD, **args)
                 b = _block(s, BUILD, r, rec, did)
                 rows.update({(row.get("x"), row.get("z")): row for row in b.get("made") or []})
@@ -704,7 +706,7 @@ class Effect(object):
 VERBS = {
     "damage": "damage(target, amount, kind='Blunt', name=None): hurt a thing; observed: its hitPointsInt before and after (jawa/damage)",
     "job": "job(pawn, job, target=None, cell=None, name=None): force a job on a pawn through the player-order path (jawa/ordered_job); a cell with no target is the job's target (a Goto)",
-    "place": "place(thing, at, stuff=None, rot=None, bind=None, name=None): make one thing after staging (jawa/build_batch)",
+    "place": "place(thing, at, stuff=None, rot=None, style=None, bind=None, name=None): make one thing after staging (jawa/build_batch)",
     "order": "not built: the order through the game's own giver is %s" % OWED_ORDER,
     "explode": "not built: no converted scene needed it; jawa/explosion_at through s.raw meanwhile",
     "incident": "not built: no converted scene needed it", "weather": "not built: no converted scene needed it",
@@ -754,7 +756,7 @@ class Act(object):
                 args["targetBX"], args["targetBZ"] = cell
         return self._do("job", name, "jawa/ordered_job", args, pawn)
 
-    def place(self, thing, at, stuff=None, rot=None, bind=None, name=None):
+    def place(self, thing, at, stuff=None, rot=None, bind=None, name=None, style=None):
         if not isinstance(thing, str) or not (isinstance(at, tuple) and len(at) == 2):
             raise Refused("BAD_ARGS", "place(thing='<defName>', at=(x, z))")
         if bind is not None and (not ALIAS.match(bind) or bind in self._s._aliases):
@@ -762,6 +764,8 @@ class Act(object):
         args = {"ops": "%s:%d,%d%s" % (thing, at[0], at[1], ",%d" % rot if rot is not None else ""), "faction": "player", "wipeExisting": False}
         if stuff:
             args["stuff"] = stuff
+        if style:
+            args["style"] = style
         return self._do("place", name, BUILD, args, None, bind=bind)
 
     # ---- the one way an act is sent

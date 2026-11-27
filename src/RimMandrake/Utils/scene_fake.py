@@ -56,6 +56,7 @@ class FakeGame(object):
         self.cleaned, self.dirty = [], {}   # the rects that jawa/destroy_batch cleaned; rects "x,z,w,h" -> things its clean leaves
         self.rect_values = []           # what a rect read gives: [{of, path, state, v}]
         self.kind_made = {}             # kindDef -> the kind the game makes instead (a replaced pawn kind)
+        self.style_made = {}            # ThingStyleDef -> the style the game stores instead (None: none stored)
         self.echo = False               # planted: a staging tool whose block echoes the request (no readBack)
         self.serial_id, self.acts_done, self.bound, self.pictures = 20000, {}, {}, {}
         self.map_size = (250, 250)
@@ -235,8 +236,13 @@ class FakeGame(object):
                 d, rest = op.split(":")
                 xz = rest.split(",")
                 self.serial_id += 1
-                made.append({"op": "thing", "id": "%s%d" % (d, self.serial_id), "x": int(xz[0]), "z": int(xz[1]),
-                             "got": {"def": d, "cell": "%s,%s" % (xz[0], xz[1]), "rot": xz[2] if len(xz) > 2 else "0"}})
+                row = {"op": "thing", "id": "%s%d" % (d, self.serial_id), "x": int(xz[0]), "z": int(xz[1]),
+                       "got": {"def": d, "cell": "%s,%s" % (xz[0], xz[1]), "rot": xz[2] if len(xz) > 2 else "0"}}
+                if a.get("style"):          # jawa/build_batch style=: wanted, and read back from CompStyleable.styleDef
+                    row["got"]["style"] = self.style_made.get(a["style"], a["style"])
+                    if row["got"]["style"] != a["style"]:
+                        wrong.append(dict(row, wrong=[{"key": "style", "want": a["style"], "got": row["got"]["style"]}]))
+                made.append(row)
         elif tool == "jawa/set_terrain_batch":
             for op in a["ops"].split(";"):
                 d, rest = op.split(":")

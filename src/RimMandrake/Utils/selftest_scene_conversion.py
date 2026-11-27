@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Selftest of RIMMANDRAKE_CONVERT_THREE_SCENES_SHOW_IF_TEN_NAMES_HELP: three real scenes on the scene library 0.3.0, against the
-fake game (scene_fake.py) and kept traces. No game, no bridge. 17 checks; `--mutants` plants the four wrong codes of the ticket
+fake game (scene_fake.py) and kept traces. No game, no bridge. 19 checks; `--mutants` plants the four wrong codes of the ticket
 and shows that each turns a check red.
 
 The replies of the new hands are made from their wire pages, not recorded in a game. The two moat traces are made from the hits
@@ -140,23 +140,17 @@ def storeroom_world(thrown=True):
     return W
 
 
-def lamp_world(styled=True):
+def lamp_world(drawn_vanilla=False):
+    """The four lamps as the game holds them after s.stage style=: each stores its look; each draws it, or (drawn_vanilla: the
+    master switch off) draws the vanilla art while it keeps the stored look."""
     W = world()
-    g = W.game
-    x0, z0, looks = 60, 60, ["Scrapper", "Industrial", "Modern", "Futuristic"]
-    g.values[("static:RimMandrake.GimmeSomeSlack.Aerial.AerialProbe", "result")] = ("ok", "PLACED WallLamp")
-    g.rect_values = []
     series = {}
-    for i, look in enumerate(looks):
-        tid, x, z = "WallLamp%d" % (31001 + i), x0 + 3 + 4 * i, z0 + 7
-        g.rect_values += [{"of": "thing:" + tid, "path": "def.defName", "state": "ok", "v": "WallLamp"},
-                          {"of": "thing:" + tid, "path": "positionInt", "state": "ok", "v": "%d,0,%d" % (x, z)}]
-        g.values[("thing:" + tid, "def.defName")] = ("ok", "WallLamp")
-        g.values[("thing:" + tid, "positionInt")] = ("ok", "%d,%d" % (x, z))
-        series["lamps[%d].positionInt" % i] = [(0, "ok")]
-        series["lamps[%d].comp<CompStyleable>.styleDef" % i] = [(0, "WallLamp_" + look if styled else None)]
-    g.script = {"state": "hit", "ticks": 1, "tracks": {}}
-    W.lamp_tracks = track_rows(series, 60)
+    for look in ["Scrapper", "Industrial", "Modern", "Futuristic"]:
+        a = "lamp_" + look.lower()
+        series[a + ".positionInt"] = [(0, "ok")]
+        series[a + ".comp<CompStyleable>.styleDef"] = [(0, "WallLamp_" + look)]
+        series[a + ".drawn.path"] = [(0, "Things/Building/Misc/WallLamp" if drawn_vanilla else "RimMandrake/GimmeSomeSlack/Styles/%s/WallLamp" % look)]
+    W.game.script = {"state": "hit", "ticks": 60, "tracks": track_rows(series, 60)}
     return W
 
 
@@ -172,7 +166,7 @@ def judged(folder):
     return scene.judge(folder)
 
 
-# ------------------------------------------------------------------------------- the 17 checks
+# ------------------------------------------------------------------------------- the 19 checks
 def imports_only_scene(path):
     tree = ast.parse(open(path, encoding="utf-8").read())
     mods = set()
@@ -221,17 +215,17 @@ def t_storeroom_plays_to_its_end():
 
 def t_wall_lamps_plays_to_its_end():
     W = lamp_world()
-    real = W.game._run_until
-
-    def run_until(a):                       # the probe's one-tick runs, then the judged run of 60 ticks with the lamps' tracks
-        if a["action"] == "start" and a["limit"] > 10:
-            W.game.script = {"state": "hit", "ticks": 60, "tracks": W.lamp_tracks}
-        return real(a)
-    W.game._run_until = run_until
     folder, text = play(SCENES["wall_lamps"], W)
     v = judged(folder)
     must(v.outcome == "SUCCESS", "wall lamps: %s %s" % (v.outcome, v.first_failed))
     must(any(t == "jawa/artboard_capture" for t, _a in W.game.log), "no picture was taken for the judge")
+    styled = sorted(a.get("style") for t, a in W.game.log if t == "jawa/build_batch" and a.get("style"))
+    must(styled == ["WallLamp_Futuristic", "WallLamp_Industrial", "WallLamp_Modern", "WallLamp_Scrapper"], "the looks staged: %s" % styled)
+    must(not any(t == "jawa/mod_settings_field" and a.get("field") == "request" for t, a in W.game.log), "the scene still asks the mod's probe")
+    W = lamp_world(drawn_vanilla=True)      # the master switch's plant: the stored look stays, the drawn art is vanilla
+    folder, _text = play(SCENES["wall_lamps"], W)
+    v = judged(folder)
+    must(v.outcome == "MOD FAILURE", "a lamp that draws the vanilla art was judged %s" % v.outcome)
 
 
 def _a_contract(**kw):
@@ -293,6 +287,29 @@ def t_stage_reply_is_built_from_the_read_back_and_a_replaced_kind_is_a_staging_f
         must(e.name == "COULD_NOT_LOOK", "an echo was %s" % e.name)
     else:
         raise AssertionError("a staging reply with no read-back was taken as made")
+    s.close()
+
+
+def t_a_thing_staged_with_a_style_is_built_in_it_and_a_wrong_look_is_a_staging_fault():
+    """RIMMANDRAKE_STAGE_STYLE_KEY_SO_A_LOOK_NEEDS_NO_MOD_PROBE: s.stage things= and s.act.place take style=, jawa/build_batch
+    gets it, and a thing that the read-back shows in another style is a staging fault, never a made thing."""
+    W = world()
+    s = scene.open("ArchSmall")
+    things = s.stage(things={"lamp": dict(thing="WallLamp", at=(3, 7), rot=0, style="WallLamp_Modern")})
+    calls = [a for t, a in W.game.log if t == "jawa/build_batch"]
+    must(calls and calls[-1].get("style") == "WallLamp_Modern", "build_batch was sent %s" % (calls[-1:],))
+    must(things.lamp.id, "the styled lamp was not made: %s" % (things.lamp,))
+    W.game.style_made = {"WallLamp_Modern": None}         # the game stored no style: the def has no CompStyleable, or a mod cleared it
+    try:
+        s.stage(things={"lamp2": dict(thing="WallLamp", at=(5, 7), rot=0, style="WallLamp_Modern")})
+    except scene.Fault as e:
+        must(e.name == "STAGING_FAULT" and "style" in e.detail, "%s %s" % (e.name, e.detail))
+    else:
+        raise AssertionError("a lamp read back with no style was taken as made in its look")
+    W.game.style_made = {}
+    s.act.place("WallLamp", (9, 7), rot=0, style="WallLamp_Scrapper", bind="lamp3")
+    calls = [a for t, a in W.game.log if t == "jawa/act_batch"]
+    must(calls and "WallLamp_Scrapper" in calls[-1]["acts"], "place did not send the style: %s" % (calls[-1:],))
     s.close()
 
 
@@ -404,6 +421,7 @@ CHECKS = [t_a_job_to_a_cell_alone_reaches_the_game_as_its_first_target, t_moat_i
           t_contract_refuses_success_with_no_exposure, t_contract_refuses_kind_b_with_no_budget,
           t_contract_refuses_a_tap_that_is_not_built, t_contract_makes_no_bridge_call_and_is_checked_before_the_load,
           t_stage_reply_is_built_from_the_read_back_and_a_replaced_kind_is_a_staging_fault,
+          t_a_thing_staged_with_a_style_is_built_in_it_and_a_wrong_look_is_a_staging_fault,
           t_read_gives_gone_for_a_gone_thing_never_zero,
           t_moat_judge_is_mod_failure_on_the_hits_with_the_melee_rule_off, t_moat_judge_is_success_on_the_hits_with_the_melee_rule_on,
           t_a_run_after_a_changing_raw_call_does_not_count_for_a_bar, t_a_trace_with_no_closing_record_is_could_not_look,
@@ -515,7 +533,7 @@ def main(argv):
     finally:
         shutil.rmtree(TMP, ignore_errors=True)
     print("scene conversion: %d of %d checks passed" % (good, len(CHECKS)))
-    return 0 if good == len(CHECKS) == 18 else 1
+    return 0 if good == len(CHECKS) == 19 else 1
 
 
 if __name__ == "__main__":

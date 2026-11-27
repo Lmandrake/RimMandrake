@@ -529,6 +529,20 @@ namespace JawaBench.BridgeTools
 
             private static string Num(float f) { return ((double)f).ToString("R", CultureInfo.InvariantCulture); }
 
+            // The host's reviewed readers (IPathHost.Reader). `drawn` on a thing: what the game draws for it (Drawn.Of).
+            public bool Reader(object owner, string name, out object v, out PathValue bad)
+            {
+                v = null; bad = default(PathValue);
+                var t = owner as Thing;
+                if (t == null || name != "drawn") return false;
+                string why;
+                v = Drawn.Of(t, out why);
+                if (v == null) bad = PathValue.Bad("error", why);
+                return true;
+            }
+
+            public string ReaderNames(object owner) { return owner is Thing ? "drawn (path, texture, graphicClass, rot)" : ""; }
+
             public int CellIndex(int x, int z, int length, out string why)
             {
                 why = null;
@@ -855,6 +869,36 @@ namespace JawaBench.BridgeTools
                 if (action != "do") return JawaBenchHandsCore.Refusal("BAD_ARGS", "action is do or census, not '" + action + "'", "correct it");
                 return JawaBenchHands.ActBatch(driver, acts);
             });
+        }
+    }
+    /// <summary>What a thing draws, as plain values: the reading of the path step `drawn` (item
+    /// RIMMANDRAKE_READ_WHAT_A_THING_DRAWS_NOT_ONLY_ITS_STYLE). path: the texture path of the graphic that Thing.Graphic gives
+    /// (a mod's patch on that getter included, as the drawer sees it); texture: the name of the main texture of the material that
+    /// the graphic gives at the thing's rotation (Graphic.MatAt), the one picture drawn; graphicClass: the graphic's class;
+    /// rot: the rotation it was read at.</summary>
+    internal sealed class DrawnPicture
+    {
+        public string path, texture, graphicClass;
+        public double rot;
+    }
+
+    internal static class Drawn
+    {
+        /// <summary>Reviewed 2026-11-27 against the decompiled 1.6 source (RimSage): Thing.Graphic fills the thing's cached graphic
+        /// (styleGraphicInt or graphicInt, through GraphicDatabase's cache), which the first draw of the thing does in the same way.
+        /// Graphic.MatAt picks MatNorth, MatEast, MatSouth or MatWest; its overrides read (Random, RandomRotated, Appearances,
+        /// StackCount, Indexed, ActivityStaged, Genepack) pick MatSingle, MatSingleFor(thing) or a sub-graphic's MatAt. A graphic
+        /// of a mod runs its own code here (boundary: a-side-effect-inside-a-reviewed-reader). A pawn draws through its renderer,
+        /// not Thing.Graphic, so it has no reading here. Main thread only.</summary>
+        internal static DrawnPicture Of(Thing t, out string why)
+        {
+            why = null;
+            if (t is Pawn) { why = "a pawn draws through its renderer (PawnRenderer), not Thing.Graphic"; return null; }
+            Graphic g = t.Graphic;
+            if (g == null) { why = t.ThingID + " has no graphic"; return null; }
+            Material m = g.MatAt(t.Rotation, t);
+            Texture tex = m != null ? m.mainTexture : null;
+            return new DrawnPicture { path = g.path, texture = tex != null ? tex.name : null, graphicClass = g.GetType().FullName, rot = t.Rotation.AsInt };
         }
     }
 }

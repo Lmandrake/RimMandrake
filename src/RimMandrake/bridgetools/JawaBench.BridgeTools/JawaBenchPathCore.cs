@@ -4,7 +4,9 @@
 // and the `value` probe of a condition.
 //
 // A walk calls no method. A field is read. A property is read as the field its getter returns (the getter is not called), or
-// its getter is called when a person reviewed it (Reviewed). Anything else is PATH_CALLS_METHOD.
+// its getter is called when a person reviewed it (Reviewed). A name that no member of the type has may be a reader of the host
+// (IPathHost.Reader): code that a person reviewed, which reads one thing a value path cannot reach (what a thing draws).
+// Anything else is PATH_CALLS_METHOD.
 //
 // Compiled into bridgetools/RunUntilSelfTest as well: a `using Verse;` here breaks that build, which is the guard rail.
 using System;
@@ -38,6 +40,11 @@ namespace JawaBench.BridgeTools
         object Leaf(object v, out bool known);
         /// <summary>The index of cell x,z in a map-sized array, or -1 with why.</summary>
         int CellIndex(int x, int z, int length, out string why);
+        /// <summary>A reviewed reader of the host named `name` on this owner: true when the host has one (then v, or bad when it
+        /// could not read). Asked only for a name that no field or property of the owner's type has.</summary>
+        bool Reader(object owner, string name, out object v, out PathValue bad);
+        /// <summary>The names of the host's readers on this owner, for the detail of a wrong name ("" when none).</summary>
+        string ReaderNames(object owner);
     }
 
     internal static class JawaBenchPathCore
@@ -250,7 +257,19 @@ namespace JawaBench.BridgeTools
                     {
                         var a = Member(i == 0 && st != null ? st : o.GetType(), s.Name, i == 0 && st != null);
                         if (a.Refused != null) return PathValue.No(CallsMethod, a.Refused);
-                        if (a.Why != null) return PathValue.Bad("error", "step '" + s.Name + "': " + a.Why);
+                        if (a.Why != null)
+                        {
+                            object rv;
+                            if (o != null && h.Reader(o, s.Name, out rv, out bad))
+                            {
+                                if (bad.State != null) return PathValue.Bad(bad.State, "step '" + s.Name + "': " + bad.Detail);
+                                o = rv;
+                                last = s.ToString();
+                                continue;
+                            }
+                            string rn = o == null ? "" : h.ReaderNames(o);
+                            return PathValue.Bad("error", "step '" + s.Name + "': " + a.Why + (string.IsNullOrEmpty(rn) ? "" : "; the host reads: " + rn));
+                        }
                         o = a.Get(o);
                     }
                     else if (i == 0 && st != null) return PathValue.Bad("error", "step '" + s + "': a static target starts with a field name");

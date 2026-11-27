@@ -84,6 +84,12 @@ Path: steps joined by a point. A step is a field (public or private), a property
 whose class has that short or full name), or an index `[n]`, `[x,z]` (a map-sized array). A property is read only when its
 getter returns a field and does nothing else (the field is read, no method is called), or when it is on the reviewed list
 in `JawaBenchPathCore.Reviewed`. A step that calls is `PATH_CALLS_METHOD`.
+A name that no field or property of the type has may be a reader of the host (`IPathHost.Reader`): reviewed code that reads
+one thing that no field holds. A wrong name lists the host's readers beside the fields. The one reader is `drawn`, on a thing
+that is not a pawn: what the game draws for it (item `RIMMANDRAKE_READ_WHAT_A_THING_DRAWS_NOT_ONLY_ITS_STYLE`). Its fields:
+`path`, the texture path of the graphic that `Thing.Graphic` gives, with each mod's patch on that getter; `texture`, the name
+of the main texture of the material that the graphic gives at the thing's rotation (`Graphic.MatAt`); `graphicClass`; `rot`.
+So `drawn.path` is the look that a player sees, where `comp<CompStyleable>.styleDef` is only the look that is stored.
 A value is a number, a bool, a text, an enum name, a defName, a thing id, a cell `x,z`, null, or a list of those. A list is a
 value of `jawa/read_paths` only; in a track or a condition it reads `error`.
 
@@ -107,6 +113,9 @@ The records of `scene_trace_v1`, with one more field `sess`, and with `n` counte
   (`../2026-11-23-bridge-v2-life-cycle/boundary.md`). Between two runs of a session, another caller can change the game.
 - **a-tool-of-the-bridge-host.** A batch calls companion tools only. `rimworld/` tools go through the host's own queue.
 - **a-side-effect-inside-a-reviewed-property.** The list is read by a person; a Harmony patch on a listed getter runs.
+- **a-side-effect-inside-a-reviewed-reader.** `drawn` calls `Thing.Graphic` and `Graphic.MatAt`. The first read of a thing
+  that was never drawn builds its graphic, as its first draw would (GraphicDatabase's cache). A mod's patch or graphic class
+  runs its own code.
 - **a-type-that-was-never-used.** The first read of a static field runs the type's own initializer, as any first use does.
 - **zero-allocation.** A value-typed leaf makes one box for each read.
 
@@ -119,6 +128,9 @@ The records of `scene_trace_v1`, with one more field `sess`, and with `n` counte
 - **an-unreadable-value-ends-as-unknown-and-is-named.** The run stops on that tick; `unknownValue` names the value and its state.
 - **a-group-is-frozen.** A dead member reads `gone` and stays; a later spawn is not in the group.
 - **private-fields-and-statics-are-read.** A track on a private field and on a static field reads the value.
+- **a-host-reader-is-read-where-no-member-is.** A name that no member has is read by the host's reader, and the path walks
+  the reader's object on. A member of the same name wins, and the reader is not asked. The reader's own error is the reading.
+  A wrong name lists the readers.
 - **a-wrong-field-is-an-error-with-the-fields.** The state is `error` and `detail` lists the fields that the type has.
 - **an-unreviewed-method-is-refused-by-name.** Nothing is called.
 - **a-thousand-reads-change-nothing.** The state digest is equal before and after.

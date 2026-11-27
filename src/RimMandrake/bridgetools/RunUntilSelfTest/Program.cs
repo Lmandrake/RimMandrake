@@ -30,6 +30,7 @@ namespace JawaBench.BridgeTools
         public int Compute() { Touched++; return 1; }
         public Creature Rider;
         public List<int> Wounds = new List<int> { 3, 4 };
+        public string shown = "field";                                          // a field of a name that the host also reads
         public Mood mood = Mood.Angry;
         public string jobDef;
         public HeldComp Held = new HeldComp();
@@ -98,6 +99,18 @@ namespace JawaBench.BridgeTools
         }
 
         // ---- IPathHost
+        internal sealed class Picture { public string path, texture; }       // what a host reader gives: an object of fields
+        public int ReaderCalls;
+        public bool Reader(object owner, string name, out object v, out PathValue bad)
+        {
+            v = null; bad = default(PathValue);
+            if (!(owner is Creature)) return false;
+            if (name == "drawn") { ReaderCalls++; v = new Picture { path = "Things/Creature/P", texture = "P_south" }; return true; }
+            if (name == "shown") { ReaderCalls++; v = "reader"; return true; }
+            if (name == "drawnBroken") { bad = PathValue.Bad("error", "no graphic"); return true; }
+            return false;
+        }
+        public string ReaderNames(object owner) { return owner is Creature ? "drawn, drawnBroken, shown" : ""; }
         public bool Root(string of, out object root, out Type staticOf, out PathValue bad)
         {
             root = null; staticOf = null; bad = default(PathValue);
@@ -374,6 +387,24 @@ namespace JawaBench.BridgeTools
                 Eq(G(run, "why"), "hit", "a wrong name in a track does not stop the run");
                 Eq(D(D(G(run, "values"))["p.hitPoints"])["state"], "error", "the track's state");
                 Eq(G(D(L(G(run, "couldNotLook"))[0]), "firstTick"), 1000.0, "could not look from");
+            });
+            Check("a_host_reader_is_read_where_no_member_is", () =>
+            {
+                var w = New("P");
+                Bind(w, "{\"p\":\"P\"}");
+                var r = P.Read(w, "p", "drawn.path");
+                Eq(r.State, "ok", "drawn.path state (" + r.Detail + ")");
+                Eq(r.V, "Things/Creature/P", "the reader's object is walked by the path");
+                Eq(P.Read(w, "p", "drawn.texture").V, "P_south", "a second field of the reader's object");
+                int calls = w.ReaderCalls;
+                Eq(P.Read(w, "p", "shown").V, "field", "a member of the same name wins over the host's reader");
+                Eq(w.ReaderCalls, calls, "the reader was not asked for a name that a member answers");
+                r = P.Read(w, "p", "drawnBroken.path");
+                True(r.State == "error" && r.Detail.Contains("no graphic"), "the reader's own error is the reading: " + r.Detail);
+                r = P.Read(w, "p", "hitPoints");
+                True(r.State == "error" && r.Detail.Contains("drawn"), "a wrong name lists the host's readers: " + r.Detail);
+                r = P.Read(w, "p", "Rider.drawn");
+                True(r.State == "error" && r.Detail.Contains("null at 'Rider'"), "a null link before a reader: " + r.Detail);
             });
             Check("an_unreviewed_method_is_refused_by_name", () =>
             {

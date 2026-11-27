@@ -21,7 +21,7 @@ CS = os.path.join(HERE, "JawaBench.BridgeTools")
 CORES = ["JawaBenchCondCore.cs", "JawaBenchSceneTickCore.cs", "JawaBenchPathCore.cs", "JawaBenchHandsCore.cs"]
 HANDS = os.path.join(CS, "JawaBenchHands.cs")
 PROJ = os.path.join(HERE, "RunUntilSelfTest", "RunUntilSelfTest.csproj")
-N_UNITS = 19                    # fewer printed = the harness did not run whole
+N_UNITS = 20                    # fewer printed = the harness did not run whole
 
 
 class Unmeasured(Exception):
@@ -136,6 +136,10 @@ def t_a_wrong_field_is_an_error_with_the_fields():
     return unit("a_wrong_field_is_an_error_with_the_fields")
 
 
+def t_a_host_reader_is_read_where_no_member_is():
+    return wired("public bool Reader(object owner, string name, out object v, out PathValue bad)", "Drawn.Of(") or unit("a_host_reader_is_read_where_no_member_is")
+
+
 def t_an_unreviewed_method_is_refused_by_name():
     return unit("an_unreviewed_method_is_refused_by_name")
 
@@ -201,6 +205,12 @@ def t_an_act_on_a_tick_is_any_tool_call():
 
 SC, PC, HC, CC = "JawaBenchSceneTickCore.cs", "JawaBenchPathCore.cs", "JawaBenchHandsCore.cs", "JawaBenchCondCore.cs"
 PLANTS = [
+    ("the host's reader is never asked", "a_host_reader_is_read_where_no_member_is", PC,
+     [("if (o != null && h.Reader(o, s.Name, out rv, out bad))", "if (o == null && h.Reader(o, s.Name, out rv, out bad))")]),
+    ("the host's reader is asked before the members", "a_host_reader_is_read_where_no_member_is", PC,
+     [("var a = Member(i == 0 && st != null ? st : o.GetType(), s.Name, i == 0 && st != null);",
+       "object rv0; PathValue b0; if (o != null && h.Reader(o, s.Name, out rv0, out b0) && b0.State == null) { o = rv0; last = s.ToString(); continue; } "
+       "var a = Member(i == 0 && st != null ? st : o.GetType(), s.Name, i == 0 && st != null);")]),
     ("* a second run starts a new trace", "one_session_one_trace_no_gap", HC,
      [("var run = make(runId, ticks, Cur.Trace);", "var run = make(runId, ticks, Cur.Runs.Count > 0 ? new T.Trace { Session = Cur.Id } : Cur.Trace);")]),
     ("* an unreadable condition value counted as false", "an_unreadable_value_ends_as_unknown_and_is_named", CC,
@@ -286,9 +296,10 @@ def main(argv):
             t_the_slice_tool_still_passes, t_no_frame_inside_a_batch, t_a_repeated_id_returns_the_first_reply, t_a_changed_repeat_is_refused,
             t_a_thrown_act_keeps_the_acts_before_it]
     added = [t_an_act_at_zero_shares_the_hop_that_starts_the_clock, t_an_act_on_a_tick_is_any_tool_call]
+    readers = [t_a_host_reader_is_read_where_no_member_is]
     bad = {}
     try:
-        for t in item + added:
+        for t in item + added + readers:
             v = t()
             bad[t] = v != "ok"
             print("%s %s%s" % ("ok  " if v == "ok" else "FAIL", t.__name__[2:], "" if v == "ok" else ": " + v), flush=True)
@@ -296,8 +307,8 @@ def main(argv):
     except Unmeasured as e:
         print("FAIL run until UNMEASURED: %s" % e)
         return 1
-    print("run until: %d of %d checks passed; acts inside a run: %d of %d%s" % (
-        sum(not bad[t] for t in item), len(item), sum(not bad[t] for t in added), len(added),
+    print("run until: %d of %d checks passed; acts inside a run: %d of %d; host readers: %d of %d%s" % (
+        sum(not bad[t] for t in item), len(item), sum(not bad[t] for t in added), len(added), sum(not bad[t] for t in readers), len(readers),
         "" if "--no-plants" in argv else "; plants %s" % ("all red" if good else "NOT all red")))
     return 0 if not any(bad.values()) and good else 1
 

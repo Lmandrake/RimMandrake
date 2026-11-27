@@ -10,7 +10,7 @@ One verb for each call. `help verbs` gives each verb's arguments.
 |---|---|---|
 | `damage` | hurts a thing (`jawa/damage`); `damage(target, amount, kind="Blunt")` | yes |
 | `job` | forces a job on a pawn through the player-order path (`jawa/ordered_job`); `job(pawn, job, target=None, cell=None)` | yes |
-| `place` | makes one thing after staging (`jawa/build_batch`); `place(thing, at, stuff=None, rot=None, bind=None)` | yes |
+| `place` | makes one thing after staging (`jawa/build_batch`); `place(thing, at, stuff=None, rot=None, bind=None, style=None)` | yes |
 | `order` | gives a pawn an order through the game's own work giver or float menu code | no: `RIMMANDRAKE_BUILD_CAST_ASSERTS_AND_ORDER_THROUGH_GIVER` |
 | `explode` | makes an explosion on a cell | no: no converted scene needed it (`jawa/explosion_at` through `s.raw`) |
 | `incident` | fires an incident | no: no converted scene needed it |

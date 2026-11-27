@@ -552,6 +552,9 @@ in the same hop. The tool's `success` is false when the block's `ok` is false. T
 `jawa/set_work_priority` puts the block in `stageReadBack` and keeps the numeric `readBack` for callers that read the
 effective priority. Its stage row reads the stored priority from `Pawn_WorkSettings` and faults if the stored value is
 unavailable or differs from the requested priority.
+`jawa/build_batch` takes `style` (a ThingStyleDef). It sets the style after the spawn, as the build menu's god-mode path does
+(`Designator_Build.DesignateSingleCell`), wants it, and reads back the stored `CompStyleable.styleDef`. A def with no
+`CompStyleable` fails its op (item `RIMMANDRAKE_STAGE_STYLE_KEY_SO_A_LOOK_NEEDS_NO_MOD_PROBE`).
 
 It accepts: rows with a wanted value and a value read from the game; a frame number at the open and at the reply; names of
 things a clean left; one refusal by name. It does not survive: a tool that passes the request value as the read value (the

@@ -893,7 +893,10 @@ namespace JawaBench.BridgeTools
                 "takes: ThingMaker.MakeThing(def, stuff) then GenSpawn.Spawn. " +
                 "ops format 'ThingDef:x,z[,rot]' separated by ';', e.g. " +
                 "'Wall:10,20,0;Wall:11,20;Door:12,20,1'. rot is 0=N 1=E 2=S 3=W or a name. " +
-                "stuff, faction, quality and hitPoints apply to every op in the call. " +
+                "stuff, faction, quality, hitPoints and style apply to every op in the call. " +
+                "style (a ThingStyleDef) is set after the spawn, as the build menu's god-mode pick does " +
+                "(Designator_Build.DesignateSingleCell), and read back from CompStyleable.styleDef; a def with no " +
+                "CompStyleable fails its op. " +
                 "⚠️ HitPoints are set AFTER MakeThing on purpose - MakeThing calls PostMake " +
                 "which randomises them from startingHpRange, so writing them first is lost. " +
                 "⚠️ WALLS CREATE NO ROOF; roof separately with jawa/set_roof_batch. " +
@@ -918,7 +921,8 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Hit points. -1 leaves the PostMake roll.")] int hitPoints = -1,
             [ToolParameter(Description = "Default true: a spawn destroys whatever it lands on, because RimWorld has no non-wiping spawn. Set false to REFUSE such an op instead - same effect as refuseIfDisplaces, and it also refuses replacing a same-def thing at the same cell.")] bool wipeExisting = true,
             [ToolParameter(Description = "Read back at most this many things. Default 8.")] int readBack = 8,
-            [ToolParameter(Description = "REFUSE any op that would destroy something already standing, instead of wiping it. Off by default, because a door legitimately replaces the wall in its cell. Turn it on when a generator's output must not eat itself.")] bool refuseIfDisplaces = false)
+            [ToolParameter(Description = "REFUSE any op that would destroy something already standing, instead of wiping it. Off by default, because a door legitimately replaces the wall in its cell. Turn it on when a generator's output must not eat itself.")] bool refuseIfDisplaces = false,
+            [ToolParameter(Description = "A ThingStyleDef defName: the look of every op's thing, set after the spawn as the build menu's pick does, and read back. Empty = the def's own look.")] string style = null)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -944,6 +948,14 @@ namespace JawaBench.BridgeTools
                     fac = ResolveFactionAliasOrDef(faction, out ferr);
                     if (fac == null && ferr != null)
                         return Fail(ferr, DefSuggestions<FactionDef>(faction));
+                }
+
+                // RIMMANDRAKE_STAGE_STYLE_KEY_SO_A_LOOK_NEEDS_NO_MOD_PROBE: a scene gives a thing its look with no mod's probe.
+                ThingStyleDef styleDef = null;
+                if (!string.IsNullOrEmpty(style))
+                {
+                    styleDef = DefDatabase<ThingStyleDef>.GetNamedSilentFail(style.Trim());
+                    if (styleDef == null) return Fail("No ThingStyleDef '" + style + "'.", DefSuggestions<ThingStyleDef>(style));
                 }
 
                 QualityCategory q = QualityCategory.Normal; bool setQ = false;
@@ -1108,6 +1120,16 @@ namespace JawaBench.BridgeTools
                         }
                         var spawned = GenSpawn.Spawn(t, c, map, rot);
 
+                        // The style AFTER the spawn, as Designator_Build.DesignateSingleCell's god-mode path sets it
+                        // (thing2.StyleDef = ThingStyleDefNonPreceptSource). The setter drops the cached style graphic, so
+                        // the thing draws in its new look; a def with no CompStyleable keeps no style, and its op fails.
+                        if (styleDef != null && spawned != null)
+                        {
+                            if (spawned.TryGetComp<CompStyleable>() == null)
+                                failures.Add(new { op, why = spawned.def.defName + " has no CompStyleable: it cannot hold style " + styleDef.defName });
+                            else spawned.StyleDef = styleDef;
+                        }
+
                         // AFTER MakeThing/PostMake, or the startingHpRange roll wins.
                         if (hitPoints >= 0 && spawned != null && spawned.def.useHitPoints)
                             spawned.HitPoints = Mathf.Clamp(hitPoints, 1, spawned.MaxHitPoints);
@@ -1164,6 +1186,9 @@ namespace JawaBench.BridgeTools
                                 row.Got("quality", rq.Quality.ToString());
                                 if (setQ) row.Want("quality", q.ToString());
                             }
+                            // the stored style (the field), not Thing.StyleDef: a mod's getter patch may answer for a thing with none
+                            var rs = spawned.TryGetComp<CompStyleable>();
+                            if (styleDef != null) row.Want("style", styleDef.defName).Got("style", rs?.styleDef?.defName);
                             rbRows.Add(new KeyValuePair<StageReadBack.Row, Thing>(row, spawned));
                         }
                         else
