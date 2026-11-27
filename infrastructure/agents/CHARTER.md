@@ -19,6 +19,23 @@ Two rules keep the Principle honest:
 - To retire a test does not fix or accept a fault. A retired test leaves its record (`standing_rulings.md` §Live tests
   have three kinds, section 5).
 
+## A test is as strict as the harm it guards — owner, 2026-11-27
+
+> "A test is as strict as the harm it guards, and no stricter: it names what must match and ignores a difference that costs nothing."
+
+This sentence is the text of record: the option that he picked by card on 2026-11-27. His words before the card, and the
+case that caused them: `standing_rulings.md` §A test is as strict as the harm it guards.
+
+Three rules apply the sentence:
+
+- The sentence covers every comparison: pictures, saved state, random draws, files and logs. A test that asks "is this
+  the same as before" for a mod names the gameplay state that must match. The test ignores a difference that changes
+  nothing that the player sees or can do. Examples: the phase and presence of fish shadows, and the exact curve that a
+  Gimme Some Slack line takes.
+- Exact identity is the right level only where identity itself is the promise: a copied file, a build hash, two
+  implementations that must give the same output. Such a test says that identity is the promise.
+- A test that ignores a difference names what may differ. A difference that the test does not name still fails.
+
 ## Posture
 
 **Act first.** Anything git can undo gets no verification, no filing and no report beyond one line. Examples: edits,

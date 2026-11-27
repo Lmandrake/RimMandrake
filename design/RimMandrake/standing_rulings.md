@@ -1976,6 +1976,34 @@ His words, 2026-11-24, about 1:15 AM PST (of Pyrelands' `sc_walk`):
 
 > "So here we are again. This time, it's not raiders, but a seasons-long playthrough that has unbearably large numbers of environmental confounding forces. WHAT is being actually tested here? Should it even be tested? And if so, what's the MINIMUM test necessary to show it? This seems needlessly ornate and clearly doesn't work. Let's please learn from this! What other mods have these elaborate, oversized tests like this? Let's fix them now. But first this one."
 
+## A test is as strict as the harm it guards — owner, 2026-11-27
+
+The rule is at the top of `infrastructure/agents/CHARTER.md`, beside the Principle of Impactful Evidence. `CLAUDE.md`
+points at it. The placement follows his card answer of 2026-11-23 for the Principle of Impactful Evidence ("Top of the
+Charter, pointer in CLAUDE.md").
+
+**His words, 2026-11-27 about 10:27 AM PST** (item `RIMMANDRAKE_ADD_PRINCIPLE_COMPARE_WHAT_MATTERS_FISH_PARTED_RUNS`):
+
+> *"We should not be using pixel-level identical comparisons to determine successful resaves. There are many aspects that don't matter (like the phase and presence of fish shadows, the precise curves chosen by GSS, etc) that we will detect with this kind of test. It should only be "pixel level changes that indicate impacts to gameplay." Ensure the tests are at the appropriate significance level please. This should be another guiding principle. Work with me to rephrase this into a generalizable principle that's concisely stated before adding it."*
+
+**The sentence, picked by card the same morning** (the option "As strict as the harm it guards"; the text of
+record):
+
+> "A test is as strict as the harm it guards, and no stricter: it names what must match and ignores a difference that costs nothing."
+
+The card also carried two guards, and the CHARTER holds them as rules: exact identity stays right where identity itself
+is the promise, and a test that ignores a difference names what may differ.
+
+**The case.** The run on `RIMMANDRAKE_FIND_RAND_DRAWS_PARTING_RUNS_EVEN_STEP` compared the random draws and the state of
+three runs that started from one save. The runs parted on tick 3, because the fish shadow effect of Odyssey
+(`Verse.FishShadowComponent.MapComponentTick`) takes 6 draws on a tick that a hash sets anew at every load. The effect
+changes nothing that the player can act on. The comparison was not a picture comparison; the sentence covers both.
+
+**Honours it.** A scene-repeat check that compares the positions, jobs and health of the pawns and the things that the
+scene stages, and ignores fish shadows.
+
+**Breaks it.** A check that fails a resave because the stream of random draws differs, when no gameplay state differs.
+
 ## Season-long play is play testing, not acceptance and not his walk — owner, 2026-11-24
 
 Item `RIMMANDRAKE_ENACT_SEASON_PLAY_IS_PLAYTEST_NOT_ACCEPTANCE_NOR_HIS_WALK`.

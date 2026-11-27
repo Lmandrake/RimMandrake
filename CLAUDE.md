@@ -11,6 +11,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - The top of `infrastructure/agents/CHARTER.md` holds the Principle of Impactful Evidence. Spend testing where the
   evidence is likely to change what we do, weighed against the cost of the evidence. Read the Principle before you add,
   repeat or retire a test.
+- The top of `infrastructure/agents/CHARTER.md` also holds this rule: a test is as strict as the harm it guards, and no
+  stricter. A comparison names what must match. A comparison ignores a difference that costs nothing. Read the rule
+  before you write a test that compares two runs, saves, pictures or files.
 - Read your own window file. The Conductor (the window that the owner talks to) reads
   `infrastructure/agents/CONDUCTOR.md`.
 - The game cycle is in `infrastructure/GAME_STATE_WORKFLOW.md`.
