@@ -79,3 +79,12 @@ run's unit records model `claude-fable-5-2`.
 **Picked:** Ruins, plus a rare wreck (Recommended)
 **Its description:** Why: every colony meets the mod, even one that never leaves home. Buys: now and then one half-buried wreck on an ordinary map, there on arrival; the ruins hold the good ones. Costs: a wreck is less rare. Recommended: it is the Designer's pick, on the test 'does a stay-at-home colony ever see the mod'.
 **Other options:** Only in ancient ruins
+
+## What the card said
+
+<!-- answered 2026-11-27T06:38:17Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Wrecked Machines, version 0.1.0. An ancient machine can no longer be researched and built: a colony must find its wreck and repair it. The factory mod (Vanilla Factory Expanded) has 18 production machines, or 17 without Vanilla Cooking Expanded. Today only the automated smelter is ancient. Each further big machine needs 8 new pictures and one onboarding by hand (its recipes and rates at each repair level), and no new mechanic. (Hard to read? Type STE, Binding or Both for a rewrite.) How many of the factory's machines are ancient in 0.1.0?
+**Picked:** All 18 machines
+**Its description:** Why: the mod at full strength; every factory machine is out in the world to be found. Cost: 136 new pictures and 17 more onboardings by hand, and a stranger who already has a factory loses the most.
+**Other options:** A proven handful (Recommended) · Only the smelter
