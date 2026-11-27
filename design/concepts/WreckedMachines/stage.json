@@ -170,10 +170,52 @@
     "ref": "run rm-role-designer-1795776308",
     "stage": 3,
     "tokens": 2302609
+   },
+   {
+    "at": "2026-11-27T11:06:41Z",
+    "kind": "helper",
+    "ref": "rm-judge/opus a376b08cf0937d975: stage 4 Examiner, 14 scenarios",
+    "stage": 4,
+    "tokens": 74804
+   },
+   {
+    "at": "2026-11-27T11:06:41Z",
+    "kind": "helper",
+    "ref": "rm-judge/opus a41c422121589260d: stage 4 Challenger, 6 scenarios",
+    "stage": 4,
+    "tokens": 62361
+   },
+   {
+    "at": "2026-11-27T11:09:14Z",
+    "kind": "helper",
+    "ref": "rm-judge/opus af1c55c41b4cf810e: stage 4 Reader A, 20 scenarios",
+    "stage": 4,
+    "tokens": 66652
+   },
+   {
+    "at": "2026-11-27T11:09:14Z",
+    "kind": "helper",
+    "ref": "rm-judge/opus ad5a05e2faea517d0: stage 4 Reader B, 20 scenarios",
+    "stage": 4,
+    "tokens": 64675
+   },
+   {
+    "at": "2026-11-27T11:09:14Z",
+    "kind": "helper",
+    "ref": "rm-judge/opus a1683dffff9d32fa1: stage 4 control Reader on the copy without wrecks_join_lines",
+    "stage": 4,
+    "tokens": 67171
+   },
+   {
+    "at": "2026-11-27T11:13:25Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795777120",
+    "stage": 4,
+    "tokens": 2037030
    }
   ],
   "reserve": 60000,
-  "spent": 44305241
+  "spent": 46677934
  },
  "history": [
   {
@@ -396,6 +438,30 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1795776308: stage 3 done"
+  },
+  {
+   "at": "2026-11-27T10:59:27Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "44305241 of 8000000 spent; run rm-role-designer-1795777120 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T10:59:27Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1795777120, stage 4, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T11:13:27Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795777120: stage 4 done"
+  },
+  {
+   "at": "2026-11-27T11:13:27Z",
+   "stage": 5,
+   "what": "exam_map",
+   "why": "read map recorded for 20 scenarios"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -682,12 +748,45 @@
    "run": "rm-role-designer-1795776308",
    "stage": 3,
    "summary": "Stage 3 closed. Run rm-role-designer-1795773471 wrote the design and died on an API 529 before its result; this run finished it. On disk: sheet.md, tree.json (12 six-part bars, whole bar whole_journey, 12 checks, 17 rules, 17 meetings), plan.md (with the offline-simulation answer: yes for the repair state machine and the onboarding table, no for the rest), scenes.json (22 acceptance, 2 interaction and 4 exploration scenes; 3 showcases, flagship smelter_comes_home by a delegated pick), floor.json, models.md and root.md. Gate A lint passes and the showcase set is accepted. This run: (1) filed the build item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL with its acceptance test, seen red (23 entry points missing), published at 694c69f167; (2) wrote version/next_version/README.md, the eight 'later' lines of the sheet as pre-written tickets, which opens no version; (3) ran one fresh reader (rm-judge, opus) over the whole design: all 18 quotes of the sheet are word for word in their events, and four significant faults were found and fixed here. The largest: the repair bar promised the repair of a found wreck where it stands, and the ground rule refused it on a ruin's floor. The game's source (GenConstruct.CanPlaceBlueprintOver) and the factory mod's floor def settle the rule: a wreck names no ground need, the colony lays factory floor under it or carries it onto floor, and the scene sc_repair_needs_ground must show both ways in play. The others: the whole bar's first picture now matches the one Ancient Component of its scenes; the settings scene can no longer pass on settings that never apply; rule R_lift says what a narrowing of the lift does. No bar was added and no bar's 'says' changed. Open for later stages: one meeting is unknown (study on a building; the spike is built first); his reaction to the 9 captures of the first look is not on the ledger, and a word from him reopens stage 2."
+  },
+  {
+   "at": "2026-11-27T11:13:26Z",
+   "inputs": {
+    "exam": "d1aa652a76d26df2327f378f3604af2f88c919585daa8ad346cace50a01a93e6",
+    "floor": "e1538f124ba31c45f00e55dbd41247e6ba60b1244f260ff0a092c8fd0558d67d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
+    "scenes": "78f814932feba5cc08610426ae676b4646b0991748aea6031ce827d36b42e28a",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc"
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_exam.md": "6ec8760e9b57a40efe589a6ee69489f9405c25bde9f9dec22493ecf975807ed2"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "aa9d14c66971e7f079231ee4264783794c9f01c8",
+    "floor": "aa9d14c66971e7f079231ee4264783794c9f01c8",
+    "root": "aa9d14c66971e7f079231ee4264783794c9f01c8",
+    "scenes": "aa9d14c66971e7f079231ee4264783794c9f01c8",
+    "sheet": "aa9d14c66971e7f079231ee4264783794c9f01c8",
+    "tree": "aa9d14c66971e7f079231ee4264783794c9f01c8"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
+   },
+   "run": "rm-role-designer-1795777120",
+   "stage": 4,
+   "summary": "Stage 4, the Cold Reader exam, passed on tree 480772ae49ee and sheet 54d5b95f8740. A fresh Examiner wrote 14 scenarios and a fresh Challenger wrote 6 (14 reject, 6 accept; every one of the 12 bars read at least once), frozen before any Reader started. Two fresh Readers, who saw only the sheet, the tree and the scenario text, both matched the expected verdict on 20 of 20 (measured from their answer files). No Reader accepted what a core bar rejects, and no Challenger scenario was missed. The control Reader read the program's copy without the bar wrecks_join_lines, accepted the one scenario that the bar rejects (e13) and matched the other 19. On disk: exam.json, exam_control/, exam_reads.json (the read map, 20 scenarios over 12 bars) and exam_evidence/ (the helpers' scenario and answer files). No bar, rule or sheet line changed. Five wording notes on which no verdict turned are lines in version/polish.md for the next run that changes the tree. Not done by this run: nothing was asked of him, and his reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

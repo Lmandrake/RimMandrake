@@ -1152,6 +1152,20 @@
     "ITEM:RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL"
    ],
    "what": "How stage 3 was closed. Run rm-role-designer-1795773471 wrote the tree, the sheet, the scenes, the floor, the models and the plan, and died on an API 529 before its result. Run rm-role-designer-1795776308 closed the stage. (1) It filed the build item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL with its acceptance test, seen red (23 entry points missing). (2) It wrote version/next_version/README.md: the lines under 'later' on the sheet as pre-written tickets; the list opens no version. (3) One fresh reader (rm-judge, opus, a4c31e8ad7f26e907) read the design once with five hunts and found all 18 quotes of the sheet word for word in their events. It found four significant faults, each fixed in this run. First: the repair bar promised a repair of a found wreck without moving it, and rule R_ground refused that repair on a ruin's floor. The game's source settled it (d_wreck_stands_on_any_ground): a wreck names no ground need, the colony lays factory floor under it where it stands, and the scene sc_repair_needs_ground must show both ways. Second: the whole bar's first picture had two machines reach Refurbished, and the scenes hold one Ancient Component; the picture now says that one machine gets it and the other names the missing component. Third: the scene sc_levels_under_settings passed on a build whose level settings never apply; its expect now asks that the applied value moves below and above its shipped reading. Fourth: rule R_lift did not say what a narrowing of the lift does; it now says that an excluded pawn cannot take the wreck up, that an allowed pawn always can, and that a narrowing never leaves a wreck that no pawn can move. (4) Six smaller repairs from the same read: two quotes in a bar's source made word for word; the card's cost line marked as our text; the controls of sc_carry_wreck_home and sc_second_study; the restart in sc_switch_machine_off; and the plan's line on a machine whose pictures have not passed (it has no line yet and is not ancient; it does not ship with its line off). No bar was added and no bar's 'says' changed."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_stage4_exam",
+   "kind": "call",
+   "speaker": "agent",
+   "run": "rm-role-designer-1795777120",
+   "source": [
+    "design/concepts/WreckedMachines/exam.json",
+    "design/concepts/WreckedMachines/exam_control/copy.json",
+    "design/concepts/WreckedMachines/exam_reads.json",
+    "design/concepts/WreckedMachines/version/polish.md"
+   ],
+   "what": "The Cold Reader exam of stage 4, held by run rm-role-designer-1795777120 on tree 480772ae49ee and sheet 54d5b95f8740. A fresh Examiner (rm-judge, opus, a376b08cf0937d975) wrote 14 scenarios and a fresh Challenger (a41c422121589260d) wrote 6: 14 reject cases and 6 accept cases, every bar read at least once, frozen before any Reader started. Two fresh Readers (af1c55c41b4cf810e, ad5a05e2faea517d0) saw the sheet, the tree and the scenario text only, and both matched the expected verdict on 20 of 20. No Reader accepted what a core bar rejects, and no Challenger scenario was missed. The control Reader (a1683dffff9d32fa1) read the program's copy without the bar wrecks_join_lines, accepted the one scenario that the bar rejects (e13) and matched the other 19, so the scenarios discriminate. No bar and no word of the tree or the sheet changed in this run. Five wording notes of the Examiner, the Challenger and the Readers, on which no verdict turned, are polish lines in version/polish.md for the next run that changes the tree."
   }
  ],
  "failure_modes": [

@@ -1,0 +1,449 @@
+{
+ "author": "rm-role-designer-1795773471 (wrote the tree at stage 3; rm-role-designer-1795776308 closed that stage)",
+ "examiner": "rm-judge Examiner a376b08cf0937d975 (fresh Opus, not the author; sheet and tree only)",
+ "challenger": "rm-judge Challenger a41c422121589260d (fresh Opus, not the author; sheet and tree only)",
+ "inputs": {
+  "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+  "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc"
+ },
+ "scenarios": [
+  {
+   "id": "e01",
+   "text": "Every machine's Mod Settings line is on. A colony has found no wrecked autoloom yet. It finishes the autoloom's first restoration project at a research bench. The Kludged autoloom then appears in the Factory tab of the build menu. Colonists place it on empty factory floor and build it from steel and components, and it makes goods. No wreck was used.",
+   "expect": "reject: the bar says a player cannot research and build an ancient machine and the colony gets a working one only when its colonists repair a wreck; 'working' covers the Kludged level, and here a Kludged machine is researched and built from the menu with no wreck.",
+   "expect_source": "leaf:only_by_repair",
+   "by": "examiner"
+  },
+  {
+   "id": "e02",
+   "text": "A player starts a colony on an ordinary map with no ruin. One wrecked smelter lies among rubble, with a mound of rock over most of it. The wreck cannot be selected or uninstalled until colonists mine the mound away, cell by cell. After the mining, a colonist uninstalls it.",
+   "expect": "reject: the bar's figurative line says 'half-buried' means the wreck only reads as old and left behind; it 'is a plain building on the map. It is not a thing that colonists must dig out.' This wreck must be dug out first.",
+   "expect_source": "leaf:wreck_is_found",
+   "by": "examiner"
+  },
+  {
+   "id": "e03",
+   "text": "A colony carried a wrecked smelter home from a ruin and repaired it to Kludged on factory floor in its workshop. Later the player wants the Kludged smelter in a new workshop, but it offers no Uninstall order. In the same game, colonists uninstall a second wrecked smelter in another ruin, carry it home and install it.",
+   "expect": "accept: 'any wreck' stands for the Wrecked level of each machine, and 'A machine at a repaired level may be fixed in place: that is data of each machine' (range.left_out points to R_kludged_move: as built the Kludged smelter cannot be moved). Every wreck here can still be carried.",
+   "expect_source": "leaf:wreck_comes_home",
+   "by": "examiner"
+  },
+  {
+   "id": "e04",
+   "text": "A caravan of colonists with a pack animal finds a wrecked autoloom in an ancient ruin on another world tile. A colonist uninstalls it, and the carried autoloom lies on the ground. The caravan's packing list does not offer it to any colonist or animal, so the caravan goes home without it. On the home map, the same kind of carried wreck can be hauled and installed.",
+   "expect": "reject: the bar says colonists can take up any wreck and carry it away. Its range includes 'a move by caravan from another tile', and its figurative line accepts colonists with a pack animal who bring a wreck home from another tile. A wreck that can never leave the tile is 'lost to the colony' (meant.intent).",
+   "expect_source": "leaf:wreck_comes_home",
+   "by": "examiner"
+  },
+  {
+   "id": "e05",
+   "text": "A colony studied a wrecked smelter, finished the smelter's first restoration project and repaired that wreck to Kludged on factory floor. Months later colonists carry home a second wrecked smelter and set it on factory floor. Its repair order to Kludged is unavailable and says that this wreck must be studied first, though the research screen shows the project as finished. Colonists study the second wreck for several days before the order opens.",
+   "expect": "reject: 'the machine itself' stands for a machine of that kind at that level, and 'What is learned belongs to the colony afterwards'. The bar's figurative accept line is that a colony that repaired one smelter repairs a second wrecked smelter with no new study.",
+   "expect_source": "leaf:study_opens_research",
+   "by": "examiner"
+  },
+  {
+   "id": "e06",
+   "text": "A wrecked smelter stands on factory floor, and its study and first project are done. The player orders the repair to Kludged on the wreck, and colonists haul the materials to it. When the first colonist starts work, the wreck disappears. In its place, on the same cells and facing the same way, stands a grey frame of the Kludged smelter that shows the work's progress. When the work is complete, the Kludged smelter stands there.",
+   "expect": "reject: the bar says the machine stays in sight at its old level until the work is complete. 'In sight' means that the machine 'is drawn, can be selected and is that machine during the whole repair'. A frame of the next level in the wreck's place is not the wreck.",
+   "expect_source": "leaf:repair_on_the_machine",
+   "by": "examiner"
+  },
+  {
+   "id": "e07",
+   "text": "Odyssey is loaded, so the fish farm is an ancient machine. A colony repairs a wrecked fish farm to Kludged and powers it. It makes fish, its one product, slowly. After the last repair, the Refurbished fish farm makes the same fish faster than the Kludged one, but slower than the factory mod's own fish farm in a comparison game where that machine's line is off.",
+   "expect": "accept: the figurative line 'a small part' says 'A machine with one product makes that product slowly at the Kludged level'. The range lists the fish farm as a machine with one product. Refurbished does all the work, and it is slower than the Original.",
+   "expect_source": "leaf:levels_of_function",
+   "by": "examiner"
+  },
+  {
+   "id": "e08",
+   "text": "A colony finds one Ancient Component in an ancient ruin on its map. Its Kludged smelter and its Kludged power cell have both had their second study and research done. Colonists make the smelter Refurbished. Afterwards the component is still in the stockpile, and colonists then use it to make the power cell Refurbished as well.",
+   "expect": "reject: 'needs' stands for 'the repair uses the component up: one for each machine that is made Refurbished'. The bar's accept line has a colony with one component choose between its smelter and its power cell.",
+   "expect_source": "leaf:last_repair_needs_component",
+   "by": "examiner"
+  },
+  {
+   "id": "e09",
+   "text": "At play zoom, an autoloom that faces south shows three clearly different shapes at its three levels: broken open, patched with bodged parts, and whole. When it is turned to face east or west, the Wrecked and the Kludged autoloom show the same patched picture. Only the label tells them apart.",
+   "expect": "reject: the bar says a player tells Wrecked, Kludged and whole apart by eye. Its accept line requires this 'in every facing', and its range names 'Four facings for a machine that turns'. In two facings the wreck shows the patched picture, which the wreck's text does not agree with.",
+   "expect_source": "leaf:levels_told_apart",
+   "by": "examiner"
+  },
+  {
+   "id": "e10",
+   "text": "A colony has repaired a vanometric power cell to Kludged. The player then switches the power cell's line off in Mod Settings and restarts. Later a quest offers a working vanometric power cell as its reward. The colony takes it and installs it, and it gives power. The repaired Kludged power cell still stands and works as Kludged. Ruins explored after the switch hold wrecks of other machines and no wrecked power cell. The autoloom and the other machines are still ancient.",
+   "expect": "accept: 'the ordinary machine that it was' for the power cell is a machine 'handed out by the base game's rewards, traders and loot'. Repaired levels that already stand 'stay as they are', and new wrecks of it are not placed. only_by_repair leaves out a machine whose line is off.",
+   "expect_source": "leaf:switch_gives_machine_back",
+   "by": "examiner"
+  },
+  {
+   "id": "e11",
+   "text": "In a game with this mod, the factory mod and the five expansions only, the restoration projects sit on a research tab named Restoration, and every text of the mod speaks of ancient, long-dead machines. In a second game, a campaign mod is also loaded. It moves the same projects to a research tab of its own named Kolyska Engineering, and its own letters speak of the crashed ship. The projects' descriptions are the same in both games.",
+   "expect": "accept: the bar's accept line says 'A campaign mod may move them to a tab of its own, and this mod does not know'. The range leaves out 'The campaign's own mods, which say what they like'. This mod's own text names no setting.",
+   "expect_source": "leaf:no_setting_named",
+   "by": "examiner"
+  },
+  {
+   "id": "e12",
+   "text": "FlowWorks is not loaded. A colonist lays a base-game power conduit along a wall beside a Kludged smelter and a wrecked smelter. The game draws its thin power wire from the conduit to the Kludged smelter, which is powered. It draws no wire to the wreck, which takes no power.",
+   "expect": "accept: the bar's range.left_out names 'A game without FlowWorks: the base game draws power wires only to things that take power, a wreck takes none, and no bar asks for a wire there.'",
+   "expect_source": "leaf:wrecks_join_lines",
+   "by": "examiner"
+  },
+  {
+   "id": "e13",
+   "text": "FlowWorks is loaded. A wrecked smelter and a Kludged smelter stand side by side on factory floor, both facing east. A conduit and a pipe are laid up to the side of each. At the Kludged smelter, both lines are drawn up to the machine's edge. At the wreck, both lines stop short, and a strip of bare floor shows between each line's end and the machine. When the wreck is turned to face south, both lines are drawn to its edge. The wreck takes no power and no water in any facing.",
+   "expect": "reject: the bar says pipes and conduit that run to a wreck draw into it as they draw into the same machine at its repaired levels, 'with no gap'. Its range covers the Wrecked level 'in each facing'. Facing east, the wreck leaves a gap that the Kludged level does not.",
+   "expect_source": "leaf:wrecks_join_lines",
+   "by": "examiner"
+  },
+  {
+   "id": "e14",
+   "text": "One continuous game at shipped settings, on the mod's small list, with every machine's line on, played at top speed and with no development command. Colonists explore an ancient ruin on their map. One room holds a wrecked autoloom, and another holds an Ancient Component, which they take home to a stockpile. They study the autoloom where it stands in the ruin, and the wreck then reads that its first project is open. They uninstall it, carry it home and install it on factory floor in the workshop. Researchers finish the project at a bench. The wreck's repair order then lists its materials. Colonists repair it to Kludged, with a save and reload in the middle of the repair, and the Kludged autoloom makes goods. Its text now says that it must be studied again. After the second study and research, the last repair uses the stored component, and the autoloom stands Refurbished. The log holds no error of this mod.",
+   "expect": "accept: the bar's range names this order of actions ('study in the ruin and then carry', 'the component found before the first repair'). It names a reload in the middle of a repair, shipped settings, and time at top speed, where 'the compression skips nothing'. At each step the machine's own text says what it needs next.",
+   "expect_source": "leaf:whole_journey",
+   "by": "examiner"
+  },
+  {
+   "id": "c01",
+   "text": "A colony plays at the mod's shipped settings, with every machine's line in Mod Settings on. It has no power cell and no emanator yet. A caravan of an exotic goods trader arrives. Among its wares is a battered psychic emanator labelled Kludged, at a high price. The colony buys it and installs it in the dining room. It calms the colonists near it a little, less than the base game's emanator would. Later the colonists study it, finish its second restoration project at a bench, and repair it to Refurbished on the machine with an Ancient Component that they found in an ancient ruin.",
+   "expect": "reject: the trader's stock handed the colony a working ancient machine. The bar says nothing in the world gives the colony a working one, 'working' stands for 'at the Kludged, Refurbished or Original level', and 'nothing in the world' names 'a trader's stock'. A Kludged machine for sale breaks it, though it is not Refurbished.",
+   "expect_source": "leaf:only_by_repair",
+   "by": "challenger"
+  },
+  {
+   "id": "c02",
+   "text": "A colony carries a wrecked smelter and a wrecked autoloom home from a ruin and sets both down on factory floor in its workshop. The player selects the smelter wreck and turns study on once. Over the next days a researcher goes back to the smelter wreck without new orders, and the wreck shows its study filling. When it is complete, a message says so, and on the research screen the first restoration project of the smelter and the first restoration project of the autoloom both become available. Researchers finish both projects at an ordinary bench. Colonists then repair both wrecks to Kludged on the machines. No colonist studied the autoloom wreck at any point.",
+   "expect": "reject: the autoloom's project opened from a study of a different machine. The bar says only study of the machine itself opens the research for 'its next repair', and 'only that study' stands for 'the project for a repair cannot be started at a bench until colonists have studied a machine of that kind at the level below'. The smelter is not a machine of the autoloom's kind.",
+   "expect_source": "leaf:study_opens_research",
+   "by": "challenger"
+  },
+  {
+   "id": "c03",
+   "text": "A wrecked autoloom stands on factory floor, and its study and first research are done. The player selects it and orders the repair to Kludged on it. Colonists haul steel and components to it. When the first colonist begins to work, the wreck is replaced on the same cells by a grey frame of the Kludged autoloom with a progress bar. The frame can be selected and lists the work that is left. Over two days colonists work on the frame, and then the Kludged autoloom stands there, facing the way that the wreck faced. In another test the player cancels a repair while the work is under way: the frame disappears, the wreck is put back where it stood, and the delivered materials lie beside it.",
+   "expect": "reject: during the work the wreck is replaced by a frame. The bar says the machine 'stays in sight at its old level until the work is complete', and 'in sight' stands for 'the machine is drawn, can be selected and is that machine during the whole repair'. A frame of the next level is not the wreck. That the wreck comes back on a cancel does not repair this.",
+   "expect_source": "leaf:repair_on_the_machine",
+   "by": "challenger"
+  },
+  {
+   "id": "c04",
+   "text": "At shipped settings, a colony repairs its autoloom to Refurbished with an Ancient Component from a ruin. The Refurbished autoloom takes every bill that the factory mod's autoloom takes, and each bill takes exactly as long as it takes on the factory mod's autoloom. To show that it is a repaired machine, it draws half again as much power as the factory mod's autoloom and breaks down more often. Before the last repair, the Kludged autoloom made plain cloth slowly and refused the other bills, and the wreck did no work at all.",
+   "expect": "reject: the Refurbished autoloom makes goods at the Original's speed. The bar says 'no repaired machine does it as well as the Original', and 'as well as' stands for 'slower for a machine that makes goods'. Higher power use and more breakdowns are not 'slower'.",
+   "expect_source": "leaf:levels_of_function",
+   "by": "challenger"
+  },
+  {
+   "id": "c05",
+   "text": "A colony has a Kludged smelter and a Kludged power cell, and the second study and research of each are done. Colonists find one Ancient Component in a room of an ancient ruin and bring it home to the stockpile. The last repair of the smelter can start only while the component is in the stockpile, and while it is missing the order says so. When the smelter's repair to Refurbished is complete, the component is still in the stockpile. Colonists then repair the power cell to Refurbished, and that repair also finds the component and goes ahead. The colony's next ruin holds no component.",
+   "expect": "reject: one component made two machines Refurbished. The bar says the repair to Refurbished 'needs' an Ancient Component, and 'needs' stands for 'the repair uses the component up: one for each machine that is made Refurbished'.",
+   "expect_source": "leaf:last_repair_needs_component",
+   "by": "challenger"
+  },
+  {
+   "id": "c06",
+   "text": "Three autolooms stand in a row on factory floor, all facing south: a Wrecked one, a Kludged one and a Refurbished one. At play zoom, by day and by night, a tester who has never seen the mod points without labels at the broken one, the patched one and the whole one. Elsewhere in the same base a second wreck was repaired to Kludged where it stood, facing east. In that facing it shows the same broken-open picture as a wrecked autoloom facing east. Its inspect text reads Kludged, it has power, and it runs its cloth bills.",
+   "expect": "reject: in the east facing a Kludged autoloom looks like a wreck, and its picture says broken while its text says Kludged and working. The bar asks that a player tell the levels apart by eye and that 'what the picture shows agrees with what the machine's text says'. Its accept line asks for this 'in every facing'.",
+   "expect_source": "leaf:levels_told_apart",
+   "by": "challenger"
+  }
+ ],
+ "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+ "readers": [
+  "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+  "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+ ],
+ "reader_verdicts": {
+  "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": {
+   "e01": {
+    "verdict": "reject",
+    "leaf": "only_by_repair",
+    "leaves": [
+     "study_opens_research"
+    ],
+    "why": "The bar says 'A player cannot research and build an ancient machine' and its accept line reads 'A colony finishes every research project in the game. No level of an ancient machine appears in the build menu'; here research puts the Kludged autoloom in the build menu and no wreck is used (and the project was finished without the study that alone opens it)."
+   },
+   "e02": {
+    "verdict": "reject",
+    "leaf": "wreck_is_found",
+    "leaves": [],
+    "why": "'half-buried' stands for a wreck that reads as old: 'It is a plain building on the map. It is not a thing that colonists must dig out', and the accept line has a colonist uninstall it 'with no digging'; here it must be mined free first."
+   },
+   "e03": {
+    "verdict": "accept",
+    "leaf": "wreck_comes_home",
+    "leaves": [],
+    "why": "'any wreck' means the Wrecked level and 'A machine at a repaired level may be fixed in place', and rule R_kludged_move says 'the Kludged smelter cannot be moved'; the second wreck is uninstalled, carried home and installed as the bar asks."
+   },
+   "e04": {
+    "verdict": "reject",
+    "leaf": "wreck_comes_home",
+    "leaves": [],
+    "why": "The bar's accept line has 'A caravan loads a wrecked autoloom that it found on another tile... It arrives', its range covers 'a move by caravan from another tile', and its intent refuses 'a wreck on another tile is lost to the colony'; here the caravan cannot pack it."
+   },
+   "e05": {
+    "verdict": "reject",
+    "leaf": "study_opens_research",
+    "leaves": [
+     "repair_on_the_machine"
+    ],
+    "why": "'the machine itself' means 'What is learned belongs to the colony afterwards' with the accept 'A colony that repaired one smelter repairs a second wrecked smelter with no new study' (rule R_two_projects: 'a second machine of the same kind needs no new study'); here a second study is demanded."
+   },
+   "e06": {
+    "verdict": "reject",
+    "leaf": "repair_on_the_machine",
+    "leaves": [],
+    "why": "The bar says 'the machine stays in sight at its old level until the work is complete', and 'in sight' means 'the machine is drawn, can be selected and is that machine during the whole repair'; here the wreck disappears and a frame of the Kludged smelter takes its place when work starts."
+   },
+   "e07": {
+    "verdict": "accept",
+    "leaf": "levels_of_function",
+    "leaves": [
+     "only_by_repair"
+    ],
+    "why": "'A machine with one product makes that product slowly at the Kludged level', Refurbished does all of it and 'as well as' means 'slower for a machine that makes goods' than the Original, and the range counts the fish farm whose 'def loads with Odyssey'; all of that holds here."
+   },
+   "e08": {
+    "verdict": "reject",
+    "leaf": "last_repair_needs_component",
+    "leaves": [],
+    "why": "'needs' stands for 'the repair uses the component up: one for each machine that is made Refurbished', with the accept 'A colony with one component chooses between its smelter and its power cell'; here one component refurbishes two machines."
+   },
+   "e09": {
+    "verdict": "reject",
+    "leaf": "levels_told_apart",
+    "leaves": [],
+    "why": "The accept line asks that a person tell the wreck from the Kludged one 'in every facing', the range varies 'Four facings', and rule R_whole_picture says 'Each Wrecked and each Kludged level has a picture of its own'; facing east or west they share one picture and only the label tells them apart."
+   },
+   "e10": {
+    "verdict": "accept",
+    "leaf": "switch_gives_machine_back",
+    "leaves": [
+     "only_by_repair"
+    ],
+    "why": "With the line off, the power cell is 'handed out by the base game's rewards, traders and loot', 'Wrecks and repaired levels of that machine that already stand in the game stay as they are; new wrecks of it are not placed', and 'the other machines are still ancient'; only_by_repair leaves out 'A machine whose Mod Settings line is off'."
+   },
+   "e11": {
+    "verdict": "accept",
+    "leaf": "no_setting_named",
+    "leaves": [],
+    "why": "The accept line says the projects 'sit on a research tab that the base game or this mod owns. A campaign mod may move them to a tab of its own, and this mod does not know', and the range leaves out 'The campaign's own mods, which say what they like'; this mod's own texts name no setting."
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "wrecks_join_lines",
+    "leaves": [
+     "levels_of_function"
+    ],
+    "why": "The range leaves out 'A game without FlowWorks: the base game draws power wires only to things that take power, a wreck takes none, and no bar asks for a wire there', and a wreck that takes no power is what levels_of_function asks."
+   },
+   "e13": {
+    "verdict": "reject",
+    "leaf": "wrecks_join_lines",
+    "leaves": [],
+    "why": "Lines must 'draw into it as they draw into the same machine at its repaired levels, with no gap', and the range with FlowWorks loaded covers the Wrecked level 'in each facing'; facing east both lines stop short of the wreck."
+   },
+   "e14": {
+    "verdict": "accept",
+    "leaf": "whole_journey",
+    "leaves": [
+     "study_opens_research",
+     "repair_on_the_machine",
+     "last_repair_needs_component",
+     "wreck_comes_home"
+    ],
+    "why": "The run is one continuous game at shipped settings with every line on and no command, it takes the order 'the wrecks are studied in the ruin before they are carried home, the Ancient Component is found before the first repair', includes a reload in the middle of a repair, the player reads at each step what the machine needs next, and 'The log holds no error of this mod'."
+   },
+   "c01": {
+    "verdict": "reject",
+    "leaf": "only_by_repair",
+    "leaves": [
+     "wreck_is_found"
+    ],
+    "why": "'nothing in the world gives the colony a working one', where 'nothing in the world' includes 'a trader's stock' and 'working' means 'at the Kludged, Refurbished or Original level'; here a trader sells a Kludged emanator."
+   },
+   "c02": {
+    "verdict": "reject",
+    "leaf": "study_opens_research",
+    "leaves": [],
+    "why": "'only that study' means 'the project for a repair cannot be started at a bench until colonists have studied a machine of that kind at the level below'; here the autoloom's first project opens and is researched although no colonist ever studied an autoloom."
+   },
+   "c03": {
+    "verdict": "reject",
+    "leaf": "repair_on_the_machine",
+    "leaves": [],
+    "why": "'the machine stays in sight at its old level until the work is complete', where 'in sight' means the machine 'is drawn, can be selected and is that machine during the whole repair'; here the wreck is replaced by a grey frame when work begins (the cancel half is fine)."
+   },
+   "c04": {
+    "verdict": "reject",
+    "leaf": "levels_of_function",
+    "leaves": [],
+    "why": "'no repaired machine does it as well as the Original', where 'as well as' means 'slower for a machine that makes goods', and the accept asks that each job 'takes longer than on the Original'; here each bill takes exactly as long, and more power and breakdowns do not stand in for slower."
+   },
+   "c05": {
+    "verdict": "reject",
+    "leaf": "last_repair_needs_component",
+    "leaves": [],
+    "why": "'needs' stands for 'the repair uses the component up: one for each machine that is made Refurbished', and the control asks that 'the count of components goes to none'; here the component is still in the stockpile after the smelter's repair and serves the power cell too."
+   },
+   "c06": {
+    "verdict": "reject",
+    "leaf": "levels_told_apart",
+    "leaves": [],
+    "why": "The levels must be told apart 'in every facing' and 'what the picture shows agrees with what the machine's text says'; facing east the Kludged autoloom shows the wreck's broken-open picture while its text reads Kludged, against rule R_whole_picture ('Each Wrecked and each Kludged level has a picture of its own')."
+   }
+  },
+  "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": {
+   "e01": {
+    "verdict": "reject",
+    "leaf": "only_by_repair",
+    "leaves": [
+     "study_opens_research"
+    ],
+    "why": "only_by_repair says 'A player cannot research and build an ancient machine' and accepts that after every project 'No level of an ancient machine appears in the build menu'; a restoration project 'opens a repair order and never a build-menu entry' (meeting research_projects)."
+   },
+   "e02": {
+    "verdict": "reject",
+    "leaf": "wreck_is_found",
+    "leaves": [
+     "wreck_comes_home"
+    ],
+    "why": "'half-buried' is meant as 'a plain building on the map. It is not a thing that colonists must dig out', and the accept case has a colonist uninstall it 'with no digging'."
+   },
+   "e03": {
+    "verdict": "accept",
+    "leaf": "wreck_comes_home",
+    "leaves": [],
+    "why": "'any wreck' stands for the Wrecked level and 'A machine at a repaired level may be fixed in place', and rule R_kludged_move says 'As built: the Kludged smelter cannot be moved'; the second wreck is taken up, carried and set down as the bar asks."
+   },
+   "e04": {
+    "verdict": "reject",
+    "leaf": "wreck_comes_home",
+    "leaves": [],
+    "why": "The bar accepts 'A caravan loads a wrecked autoloom that it found on another tile ... It arrives', its range covers 'a move by caravan from another tile', and its intent says a wreck that cannot leave means 'a wreck on another tile is lost to the colony'."
+   },
+   "e05": {
+    "verdict": "reject",
+    "leaf": "study_opens_research",
+    "leaves": [
+     "repair_on_the_machine"
+    ],
+    "why": "Rule R_two_projects: 'a second machine of the same kind needs no new study and no new research', and the bar accepts 'A colony that repaired one smelter repairs a second wrecked smelter with no new study.'"
+   },
+   "e06": {
+    "verdict": "reject",
+    "leaf": "repair_on_the_machine",
+    "leaves": [],
+    "why": "The machine must 'stay in sight at its old level until the work is complete', and 'in sight' means it 'is drawn, can be selected and is that machine during the whole repair'; a grey frame replacing the wreck when work starts is what the meant says the first look refused."
+   },
+   "e07": {
+    "verdict": "accept",
+    "leaf": "levels_of_function",
+    "leaves": [],
+    "why": "'A machine with one product makes that product slowly at the Kludged level', Refurbished does all the work, and 'as well as' means 'slower for a machine that makes goods' than the Original, which is the ordinary machine when its line is off."
+   },
+   "e08": {
+    "verdict": "reject",
+    "leaf": "last_repair_needs_component",
+    "leaves": [],
+    "why": "'needs' stands for 'the repair uses the component up: one for each machine that is made Refurbished', and the accept case is 'A colony with one component chooses between its smelter and its power cell, and the other machine stays Kludged'."
+   },
+   "e09": {
+    "verdict": "reject",
+    "leaf": "levels_told_apart",
+    "leaves": [],
+    "why": "The bar's accept case requires the levels told apart 'in every facing', its range covers 'Four facings', and rule R_whole_picture says 'Each Wrecked and each Kludged level has a picture of its own'; only a label telling them apart fails 'by eye'."
+   },
+   "e10": {
+    "verdict": "accept",
+    "leaf": "switch_gives_machine_back",
+    "leaves": [
+     "only_by_repair"
+    ],
+    "why": "With the line off the power cell is 'handed out by the base game's rewards, traders and loot', 'Wrecks and repaired levels of that machine that already stand in the game stay as they are; new wrecks of it are not placed', and the other machines stay ancient; only_by_repair leaves out 'A machine whose Mod Settings line is off'."
+   },
+   "e11": {
+    "verdict": "accept",
+    "leaf": "no_setting_named",
+    "leaves": [],
+    "why": "The bar accepts 'The restoration projects sit on a research tab that the base game or this mod owns. A campaign mod may move them to a tab of its own, and this mod does not know', and its range leaves out 'The campaign's own mods, which say what they like'."
+   },
+   "e12": {
+    "verdict": "accept",
+    "leaf": "wrecks_join_lines",
+    "leaves": [
+     "levels_of_function"
+    ],
+    "why": "The range leaves out 'A game without FlowWorks: the base game draws power wires only to things that take power, a wreck takes none, and no bar asks for a wire there.'"
+   },
+   "e13": {
+    "verdict": "reject",
+    "leaf": "wrecks_join_lines",
+    "leaves": [],
+    "why": "Lines must 'draw into it as they draw into the same machine at its repaired levels, with no gap', the range covers the Wrecked level 'in each facing', and the bar rejects a build where the repaired levels pull the line in 'and the wreck leaves a gap'."
+   },
+   "e14": {
+    "verdict": "accept",
+    "leaf": "whole_journey",
+    "leaves": [
+     "study_opens_research",
+     "repair_on_the_machine",
+     "last_repair_needs_component"
+    ],
+    "why": "It follows the whole journey at shipped settings with no command: study 'where it was found' is in study_opens_research's range and the second order of whole_journey, the machine tells what it needs next, the reload keeps the repair, the stored component is used, and the log is clean; nothing it shows is refused."
+   },
+   "c01": {
+    "verdict": "reject",
+    "leaf": "only_by_repair",
+    "leaves": [],
+    "why": "'nothing in the world gives the colony a working one', where 'nothing in the world' includes 'a trader's stock' and 'working' means 'at the Kludged, Refurbished or Original level'; a trader selling a Kludged emanator breaks it."
+   },
+   "c02": {
+    "verdict": "reject",
+    "leaf": "study_opens_research",
+    "leaves": [],
+    "why": "'only that study' means 'the project for a repair cannot be started at a bench until colonists have studied a machine of that kind at the level below', and rule R_study_carrier/R_two_projects tie each machine's first project to study of its own wreck; the autoloom was never studied."
+   },
+   "c03": {
+    "verdict": "reject",
+    "leaf": "repair_on_the_machine",
+    "leaves": [],
+    "why": "The wreck is replaced by a frame when work begins, but the bar says 'the machine stays in sight at its old level until the work is complete', with 'in sight' meaning it 'is drawn, can be selected and is that machine during the whole repair'."
+   },
+   "c04": {
+    "verdict": "reject",
+    "leaf": "levels_of_function",
+    "leaves": [],
+    "why": "'no repaired machine does it as well as the Original', and 'as well as' stands for 'slower for a machine that makes goods' (accept: 'each job takes longer than on the Original'); bills taking exactly as long as the factory mod's autoloom break that, whatever the power and breakdowns."
+   },
+   "c05": {
+    "verdict": "reject",
+    "leaf": "last_repair_needs_component",
+    "leaves": [],
+    "why": "'needs' stands for 'the repair uses the component up: one for each machine that is made Refurbished'; a component still in the stockpile after the smelter's last repair and used again for the power cell breaks it."
+   },
+   "c06": {
+    "verdict": "reject",
+    "leaf": "levels_told_apart",
+    "leaves": [],
+    "why": "Levels must be told apart by eye 'in every facing' and 'what the picture shows agrees with what the machine's text says'; an east-facing Kludged autoloom that shows the wrecked picture while its text reads Kludged breaks both, and R_whole_picture gives each Kludged level 'a picture of its own'."
+   }
+  }
+ },
+ "control": {
+  "broken_leaf": "wrecks_join_lines",
+  "reader": "rm-judge control a1683dffff9d32fa1 (fresh Opus)",
+  "missed": true,
+  "missed_ids": [
+   "e13"
+  ],
+  "note": "The control Reader got exam_control/ (designer_stage.py exam-control --leaf wrecks_join_lines --strip 'draw in the piping' --strip 'draw-in tags') and read all 20 scenarios. It accepted e13, which the removed bar rejects, and matched the other 19."
+ },
+ "score": {
+  "right": 20,
+  "total": 20
+ },
+ "accept_where_reject_core": 0,
+ "challenger_misses": [],
+ "notes": "Run rm-role-designer-1795777120 held the exam. Both Readers matched expect on all 20 scenarios (14 reject, 6 accept) and named the expect_source bar on each. The scenarios were frozen (scenarios_hash) before any Reader was started; the frozen file with expect stayed outside the Readers' folders. Helper files: exam_evidence/."
+}

@@ -1,0 +1,11 @@
+{
+ "leaf": "wrecks_join_lines",
+ "base_tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+ "base_sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+ "by": "designer_stage.py exam-control",
+ "strip": [
+  "draw in the piping",
+  "draw-in tags"
+ ],
+ "at": "2026-11-27T11:06:41Z"
+}

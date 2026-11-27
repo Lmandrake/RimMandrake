@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1795777120",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Stage 4, the Cold Reader exam, passed on tree 480772ae49ee and sheet 54d5b95f8740. A fresh Examiner wrote 14 scenarios and a fresh Challenger wrote 6 (14 reject, 6 accept; every one of the 12 bars read at least once), frozen before any Reader started. Two fresh Readers, who saw only the sheet, the tree and the scenario text, both matched the expected verdict on 20 of 20 (measured from their answer files). No Reader accepted what a core bar rejects, and no Challenger scenario was missed. The control Reader read the program's copy without the bar wrecks_join_lines, accepted the one scenario that the bar rejects (e13) and matched the other 19. On disk: exam.json, exam_control/, exam_reads.json (the read map, 20 scenarios over 12 bars) and exam_evidence/ (the helpers' scenario and answer files). No bar, rule or sheet line changed. Five wording notes on which no verdict turned are lines in version/polish.md for the next run that changes the tree. Not done by this run: nothing was asked of him, and his reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2.",
+ "quick_look": {
+  "offer": false,
+  "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
+ }
+}

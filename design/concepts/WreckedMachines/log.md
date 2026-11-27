@@ -263,3 +263,11 @@ page.
 - `c_plasteel_restore_red`: the red row ends with the plasteel switch.
 - `d_look_accepted` and `look_01.md`: the look ran on the Conductor's item; the Designer's own item was superseded.
 - The delegated calls are on the ledger for his digest: OWNER event 1795770570858909459.
+
+## 2026-11-27 stage 4, the Cold Reader exam (run rm-role-designer-1795777120), 3:10 AM PST
+
+- No question went to him. Frozen inputs: tree 480772ae49ee, sheet 54d5b95f8740.
+- Examiner a376b08cf0937d975 wrote 14 scenarios and Challenger a41c422121589260d wrote 6 (14 reject, 6 accept; every bar read at least once). Frozen with scenarios_hash 1a00e2c9d11c before any Reader started.
+- Reader A af1c55c41b4cf810e and Reader B ad5a05e2faea517d0 saw the sheet, the tree and the scenario text only. Both matched expect on 20 of 20. No Reader accepted what a core bar rejects. No Challenger scenario was missed.
+- Control: the copy without `wrecks_join_lines` (strip phrases "draw in the piping" and "draw-in tags"). Control Reader a1683dffff9d32fa1 accepted e13, which that bar rejects, and matched the other 19.
+- Wording notes that no verdict turned on: five lines in `version/polish.md`.

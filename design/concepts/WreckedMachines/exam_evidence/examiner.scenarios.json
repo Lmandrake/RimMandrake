@@ -1,0 +1,102 @@
+{
+  "scenarios": [
+    {
+      "id": "e01",
+      "text": "Every machine's Mod Settings line is on. A colony has found no wrecked autoloom yet. It finishes the autoloom's first restoration project at a research bench. The Kludged autoloom then appears in the Factory tab of the build menu. Colonists place it on empty factory floor and build it from steel and components, and it makes goods. No wreck was used.",
+      "expect": "reject: the bar says a player cannot research and build an ancient machine and the colony gets a working one only when its colonists repair a wreck; 'working' covers the Kludged level, and here a Kludged machine is researched and built from the menu with no wreck.",
+      "expect_source": "leaf:only_by_repair",
+      "by": "examiner"
+    },
+    {
+      "id": "e02",
+      "text": "A player starts a colony on an ordinary map with no ruin. One wrecked smelter lies among rubble, with a mound of rock over most of it. The wreck cannot be selected or uninstalled until colonists mine the mound away, cell by cell. After the mining, a colonist uninstalls it.",
+      "expect": "reject: the bar's figurative line says 'half-buried' means the wreck only reads as old and left behind; it 'is a plain building on the map. It is not a thing that colonists must dig out.' This wreck must be dug out first.",
+      "expect_source": "leaf:wreck_is_found",
+      "by": "examiner"
+    },
+    {
+      "id": "e03",
+      "text": "A colony carried a wrecked smelter home from a ruin and repaired it to Kludged on factory floor in its workshop. Later the player wants the Kludged smelter in a new workshop, but it offers no Uninstall order. In the same game, colonists uninstall a second wrecked smelter in another ruin, carry it home and install it.",
+      "expect": "accept: 'any wreck' stands for the Wrecked level of each machine, and 'A machine at a repaired level may be fixed in place: that is data of each machine' (range.left_out points to R_kludged_move: as built the Kludged smelter cannot be moved). Every wreck here can still be carried.",
+      "expect_source": "leaf:wreck_comes_home",
+      "by": "examiner"
+    },
+    {
+      "id": "e04",
+      "text": "A caravan of colonists with a pack animal finds a wrecked autoloom in an ancient ruin on another world tile. A colonist uninstalls it, and the carried autoloom lies on the ground. The caravan's packing list does not offer it to any colonist or animal, so the caravan goes home without it. On the home map, the same kind of carried wreck can be hauled and installed.",
+      "expect": "reject: the bar says colonists can take up any wreck and carry it away. Its range includes 'a move by caravan from another tile', and its figurative line accepts colonists with a pack animal who bring a wreck home from another tile. A wreck that can never leave the tile is 'lost to the colony' (meant.intent).",
+      "expect_source": "leaf:wreck_comes_home",
+      "by": "examiner"
+    },
+    {
+      "id": "e05",
+      "text": "A colony studied a wrecked smelter, finished the smelter's first restoration project and repaired that wreck to Kludged on factory floor. Months later colonists carry home a second wrecked smelter and set it on factory floor. Its repair order to Kludged is unavailable and says that this wreck must be studied first, though the research screen shows the project as finished. Colonists study the second wreck for several days before the order opens.",
+      "expect": "reject: 'the machine itself' stands for a machine of that kind at that level, and 'What is learned belongs to the colony afterwards'. The bar's figurative accept line is that a colony that repaired one smelter repairs a second wrecked smelter with no new study.",
+      "expect_source": "leaf:study_opens_research",
+      "by": "examiner"
+    },
+    {
+      "id": "e06",
+      "text": "A wrecked smelter stands on factory floor, and its study and first project are done. The player orders the repair to Kludged on the wreck, and colonists haul the materials to it. When the first colonist starts work, the wreck disappears. In its place, on the same cells and facing the same way, stands a grey frame of the Kludged smelter that shows the work's progress. When the work is complete, the Kludged smelter stands there.",
+      "expect": "reject: the bar says the machine stays in sight at its old level until the work is complete. 'In sight' means that the machine 'is drawn, can be selected and is that machine during the whole repair'. A frame of the next level in the wreck's place is not the wreck.",
+      "expect_source": "leaf:repair_on_the_machine",
+      "by": "examiner"
+    },
+    {
+      "id": "e07",
+      "text": "Odyssey is loaded, so the fish farm is an ancient machine. A colony repairs a wrecked fish farm to Kludged and powers it. It makes fish, its one product, slowly. After the last repair, the Refurbished fish farm makes the same fish faster than the Kludged one, but slower than the factory mod's own fish farm in a comparison game where that machine's line is off.",
+      "expect": "accept: the figurative line 'a small part' says 'A machine with one product makes that product slowly at the Kludged level'. The range lists the fish farm as a machine with one product. Refurbished does all the work, and it is slower than the Original.",
+      "expect_source": "leaf:levels_of_function",
+      "by": "examiner"
+    },
+    {
+      "id": "e08",
+      "text": "A colony finds one Ancient Component in an ancient ruin on its map. Its Kludged smelter and its Kludged power cell have both had their second study and research done. Colonists make the smelter Refurbished. Afterwards the component is still in the stockpile, and colonists then use it to make the power cell Refurbished as well.",
+      "expect": "reject: 'needs' stands for 'the repair uses the component up: one for each machine that is made Refurbished'. The bar's accept line has a colony with one component choose between its smelter and its power cell.",
+      "expect_source": "leaf:last_repair_needs_component",
+      "by": "examiner"
+    },
+    {
+      "id": "e09",
+      "text": "At play zoom, an autoloom that faces south shows three clearly different shapes at its three levels: broken open, patched with bodged parts, and whole. When it is turned to face east or west, the Wrecked and the Kludged autoloom show the same patched picture. Only the label tells them apart.",
+      "expect": "reject: the bar says a player tells Wrecked, Kludged and whole apart by eye. Its accept line requires this 'in every facing', and its range names 'Four facings for a machine that turns'. In two facings the wreck shows the patched picture, which the wreck's text does not agree with.",
+      "expect_source": "leaf:levels_told_apart",
+      "by": "examiner"
+    },
+    {
+      "id": "e10",
+      "text": "A colony has repaired a vanometric power cell to Kludged. The player then switches the power cell's line off in Mod Settings and restarts. Later a quest offers a working vanometric power cell as its reward. The colony takes it and installs it, and it gives power. The repaired Kludged power cell still stands and works as Kludged. Ruins explored after the switch hold wrecks of other machines and no wrecked power cell. The autoloom and the other machines are still ancient.",
+      "expect": "accept: 'the ordinary machine that it was' for the power cell is a machine 'handed out by the base game's rewards, traders and loot'. Repaired levels that already stand 'stay as they are', and new wrecks of it are not placed. only_by_repair leaves out a machine whose line is off.",
+      "expect_source": "leaf:switch_gives_machine_back",
+      "by": "examiner"
+    },
+    {
+      "id": "e11",
+      "text": "In a game with this mod, the factory mod and the five expansions only, the restoration projects sit on a research tab named Restoration, and every text of the mod speaks of ancient, long-dead machines. In a second game, a campaign mod is also loaded. It moves the same projects to a research tab of its own named Kolyska Engineering, and its own letters speak of the crashed ship. The projects' descriptions are the same in both games.",
+      "expect": "accept: the bar's accept line says 'A campaign mod may move them to a tab of its own, and this mod does not know'. The range leaves out 'The campaign's own mods, which say what they like'. This mod's own text names no setting.",
+      "expect_source": "leaf:no_setting_named",
+      "by": "examiner"
+    },
+    {
+      "id": "e12",
+      "text": "FlowWorks is not loaded. A colonist lays a base-game power conduit along a wall beside a Kludged smelter and a wrecked smelter. The game draws its thin power wire from the conduit to the Kludged smelter, which is powered. It draws no wire to the wreck, which takes no power.",
+      "expect": "accept: the bar's range.left_out names 'A game without FlowWorks: the base game draws power wires only to things that take power, a wreck takes none, and no bar asks for a wire there.'",
+      "expect_source": "leaf:wrecks_join_lines",
+      "by": "examiner"
+    },
+    {
+      "id": "e13",
+      "text": "FlowWorks is loaded. A wrecked smelter and a Kludged smelter stand side by side on factory floor, both facing east. A conduit and a pipe are laid up to the side of each. At the Kludged smelter, both lines are drawn up to the machine's edge. At the wreck, both lines stop short, and a strip of bare floor shows between each line's end and the machine. When the wreck is turned to face south, both lines are drawn to its edge. The wreck takes no power and no water in any facing.",
+      "expect": "reject: the bar says pipes and conduit that run to a wreck draw into it as they draw into the same machine at its repaired levels, 'with no gap'. Its range covers the Wrecked level 'in each facing'. Facing east, the wreck leaves a gap that the Kludged level does not.",
+      "expect_source": "leaf:wrecks_join_lines",
+      "by": "examiner"
+    },
+    {
+      "id": "e14",
+      "text": "One continuous game at shipped settings, on the mod's small list, with every machine's line on, played at top speed and with no development command. Colonists explore an ancient ruin on their map. One room holds a wrecked autoloom, and another holds an Ancient Component, which they take home to a stockpile. They study the autoloom where it stands in the ruin, and the wreck then reads that its first project is open. They uninstall it, carry it home and install it on factory floor in the workshop. Researchers finish the project at a bench. The wreck's repair order then lists its materials. Colonists repair it to Kludged, with a save and reload in the middle of the repair, and the Kludged autoloom makes goods. Its text now says that it must be studied again. After the second study and research, the last repair uses the stored component, and the autoloom stands Refurbished. The log holds no error of this mod.",
+      "expect": "accept: the bar's range names this order of actions ('study in the ruin and then carry', 'the component found before the first repair'). It names a reload in the middle of a repair, shipped settings, and time at top speed, where 'the compression skips nothing'. At each step the machine's own text says what it needs next.",
+      "expect_source": "leaf:whole_journey",
+      "by": "examiner"
+    }
+  ]
+}

@@ -1,0 +1,980 @@
+{
+ "schema_version": 1,
+ "subject": "WreckedMachines",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/concepts/WreckedMachines/root.md#north-star",
+ "root_state": "VALIDATED",
+ "root_hash": "16eb902474e8b357b4689cdbfcebe3ed4c6ca0210dd250c92455d742c018430a",
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "9f5d9b761d114cdd8ac7505f14c1e5a7209ed812eca9008fd0daad2b204a1d68",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [],
+ "leaves": [
+  {
+   "id": "only_by_repair",
+   "says": "A player cannot research and build an ancient machine, and nothing in the world gives the colony a working one: the colony gets a working one only when its colonists repair a wreck.",
+   "meant": {
+    "intent": "Reject if false: if a colony can build an ancient machine from the menu or buy a working one, the wreck and its repair are a detour and the mod has no promise left. His statement: the machines 'can no longer simply be researched and built like normal', and the Original is 'no longer attainable through research or repair, used only for comparison'. An ancient machine is each production machine of the factory mod, the vanometric power cell and the psychic emanator, while its line in Mod Settings is on.",
+    "source": "OWNER:1795755622961436106 (his statement of the mod); OWNER:1795761534460592124 (by card: all 18 machines); OWNER:1795749543738184808 ('remove the VFE factory, not the manual one'); delegated: record decisions d_no_working_original_in_the_world (the Designer's reading of 'used only for comparison', call B of turn 5, CONDUCTOR:1795770570858909459) and d_all_eighteen_shape (the parts that carry goods stay buildable; a machine that stands in an older save is not changed).",
+    "figurative": [
+     {
+      "word": "nothing in the world",
+      "stands_for": "the ways the game itself hands things to a colony: loot on a generated map, a quest reward and a trader's stock. It does not mean a machine that already stands in an older save, and it does not mean a development command.",
+      "accept": "A colony that loads an older save keeps the working factory machines that already stand in it."
+     },
+     {
+      "word": "working",
+      "stands_for": "at the Kludged, Refurbished or Original level. A Wrecked machine is the thing a colony does find.",
+      "accept": "A ruin room holds a wrecked autoloom, and that find breaks nothing in this bar."
+     }
+    ]
+   },
+   "accept": [
+    "The Factory tab of the build menu lists the conveyors, the hoppers, the factory floor and the other parts that carry goods, and no machine that makes goods. The base game's electric smelter is still in its own tab.",
+    "A trader of exotic goods visits and a quest offers its rewards. Neither holds a working vanometric power cell or a working psychic emanator. The colony's first working power cell is the one that its colonists repaired.",
+    "A colony finishes every research project in the game. No level of an ancient machine appears in the build menu, the Wrecked level included.",
+    "A colony that loads an older save keeps the working factory machines that already stand in it."
+   ],
+   "reject": [
+    "The automated smelter is gone from the build menu, and the other factory machines are researched and built as before.",
+    "No machine is in the build menu, and a quest reward still hands the colony a working psychic emanator.",
+    "The Wrecked level of a machine is in the build menu for a little steel, so a colony builds a wreck beside its base and never has to find one.",
+    "Every machine leaves the build menu and every hand-out, and the conveyors, the hoppers and the base game's electric smelter leave with them."
+   ],
+   "lazy": "Every machine leaves the build menu and every hand-out, and the conveyors, the hoppers and the base game's electric smelter leave with them.",
+   "range": {
+    "varies": "Each of the 20 ancient machines: the 18 production machines of the factory mod (17 when Vanilla Cooking Expanded is not loaded; the fish farm's def loads with Odyssey), the vanometric power cell and the psychic emanator. Grouped by how they could fail: the factory machines (build menu and research); the two base-game machines (reward lists, trader stock and map loot of Core, Ideology, Odyssey and Anomaly). Each level of each machine. A new game with no research, and a game with every research project finished.",
+    "left_out": "A machine whose Mod Settings line is off (bar switch_gives_machine_back). The Mod Setting that puts the Original back in the build menu: a player's override that is off as shipped; no bar judges the Original as a thing a colony reaches. A machine that stands in an older save. Development commands. Another mod that hands out a factory machine by a list of its own: not searched for. Whether any trader's stock reads the factory mod's thing category is UNMEASURED today; the reading of this bar settles it."
+   },
+   "sees": {
+    "instrument": "A state read in a loaded game. (1) jawa/architect_designator_visible for each level of each ancient machine and for the factory mod's parts. (2) The same read after every research project is finished (jawa/research_bulk). (3) The reward, loot and trader-stock generators that can produce a building, each run many times, and the list of the defs that they produced. Reading (3) needs one generic bridge function that does not exist yet (run a ThingSetMakerDef, or a TraderKindDef's stock, N times and list the defs): a build item of the scene.",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. Every machine's line at its shipped value (asserted by a settings read). No research finished (asserted).",
+    "on": "Every machine's Mod Settings line on. The full-restoration setting off.",
+    "control": "The cheapest other explanation is an instrument that cannot see a machine in a menu or in a generator's output. The same reads with one factory machine's line off must show that machine in the build menu, and with the power cell's line off the generators must produce a working power cell at least once.",
+    "reset": "Put the settings back and read them back; close the quicktest map. Nothing persistent changes.",
+    "live_only_why": "The mod changes defs at startup in C#, and the generators read the lists of five expansions. Only the loaded game holds those lists as they are."
+   },
+   "touches": [
+    "build_menu",
+    "world_handouts",
+    "mod_settings",
+    "research_projects"
+   ],
+   "live_only": true,
+   "experience": "A player cannot research and build an ancient machine, and nothing in the world gives the colony a working one: the colony gets a working one only when its colonists repair a wreck."
+  },
+  {
+   "id": "wreck_is_found",
+   "says": "A player meets wrecked machines in the world: they lie in the rooms of ancient ruins, and now and then one lies half-buried on an ordinary map when the colony arrives.",
+   "meant": {
+    "intent": "Reject if false: with no wreck in the world the mod never starts. That is failure mode 1 of the record: 'There is no way in'. His card adds that every colony meets the mod, even one that never leaves home.",
+    "source": "OWNER:1795755647483442186 (by card: 'Ruins, plus a rare wreck'); OWNER:1795755622961436106 ('they must be found'); OWNER:1795755673273656447 (which machine a colony gets first is 'an Utinni-tier decision independent of this mod'); delegated: record decisions d_found_is_wrecked (a found machine is always at the Wrecked level; which wrecks lie where is a weighted list that a layer above can change) and d_feasible_wreck_placement.",
+    "figurative": [
+     {
+      "word": "half-buried",
+      "stands_for": "the wreck reads as old and left behind where it lies. It is a plain building on the map. It is not a thing that colonists must dig out.",
+      "accept": "A wreck stands in the open among rubble, and a colonist walks up to it and uninstalls it with no digging."
+     },
+     {
+      "word": "now and then",
+      "stands_for": "some new maps hold one such wreck and many hold none. How often is a Mod Setting and is never part of this bar.",
+      "accept": "A player starts several colonies and only some of the maps hold a wreck."
+     }
+    ]
+   },
+   "accept": [
+    "A colony explores an ancient ruin on its own map and finds a wrecked machine in one of the rooms. The wreck is whole enough to recognise as a machine, and it does no work.",
+    "A player starts a colony on an ordinary map with no ruin and sees one wrecked machine among rubble. The map of the player's next colony holds none.",
+    "Over many ruins a player finds wrecks of many different machines, large factory machines and carried ones.",
+    "A wreck stands in the open among rubble, and a colonist walks up to it and uninstalls it with no digging."
+   ],
+   "reject": [
+    "Wrecks lie only in ruins on other world tiles, so a colony that stays at home never sees one.",
+    "A machine that a colony finds is already Kludged or Refurbished and works when power reaches it.",
+    "Every ruin room and every new map holds wrecks, so a colony collects a full factory in its first season.",
+    "Wrecks lie in ruins and on ordinary maps, and each of them is the same one machine."
+   ],
+   "lazy": "Wrecks lie in ruins and on ordinary maps, and each of them is the same one machine.",
+   "range": {
+    "varies": "The sites: an ancient ruin on the colony's own map, an ancient ruin on a visited tile (Odyssey's ancient complexes and the base game's ancient ruins), and an ordinary new map with no ruin. The placement reads no biome: it reads whether a ruin room or open ground exists (GUIDING_PRINCIPLES.md entry 1), so it is tested on the biome of the small list's test map. Which machine: the weighted list of all 20. Map sizes 200 to 325.",
+    "left_out": "How often a wreck appears and which machine is most common: tuning data in Mod Settings and in the placement list. Which machine the campaign gives first: the campaign's own list. A quest that points at a wreck: not in 0.1.0. Any second planet or change to the world: never."
+   },
+   "sees": {
+    "instrument": "A count on generated maps in a loaded game. (1) Generate a map that holds an ancient ruin and list this mod's wrecks with their cells (jawa/list_things by defName); each cell must be inside a ruin room. (2) Run the ordinary-map placement on fresh maps with its chance at the shipped value, for a number of maps written before the first run, and count the maps with one wreck and with none. (3) Read the level of each machine found. Reading (2) is random by design, so the tester writes X of Y in the test table before the first run (kind B).",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. A fresh map with no thing of this mod on it before the generation step (asserted). The mod's placement list read back: it holds every ancient machine whose line is on.",
+    "on": "Every machine's line on. The two placement switches (ruins, ordinary maps) at their shipped values.",
+    "control": "The cheapest other explanation is a wreck that the scene itself spawned, or a wreck that another mod placed (FlowWorks and Cold Storage place wrecks of their own). The scene spawns nothing and counts only this mod's defs. The same ruin map generated with this mod's ruin placement switched off holds no wreck of this mod.",
+    "reset": "Discard the generated maps.",
+    "live_only_why": "Placement runs inside the game's map generation, in the ruin rooms that Odyssey makes. No offline copy of that generator exists."
+   },
+   "touches": [
+    "map_generation",
+    "machine_level",
+    "mod_settings"
+   ],
+   "live_only": true,
+   "experience": "A player meets wrecked machines in the world: they lie in the rooms of ancient ruins, and now and then one lies half-buried on an ordinary map when the colony arrives."
+  },
+  {
+   "id": "wreck_comes_home",
+   "says": "Colonists can take up any wreck, carry it away and set it down where the colony wants it.",
+   "meant": {
+    "intent": "Reject if false: his statement says that a machine is 'found and retrieved to a safe location'. A wreck that cannot leave the ruin can only be repaired where the danger is, and a wreck on another tile is lost to the colony. The built smelter wreck has no carried form today.",
+    "source": "OWNER:1795755622961436106; OWNER:1795762605668672773 (by card: 'Colonists carry it'); OWNER:1795760440829904733 (hauler droids and ride-in machines: the campaign's narrowing); delegated: record decisions d_wreck_is_carried and d_lift_is_data (who may lift a wreck is data on the machine that a layer above can narrow).",
+    "figurative": [
+     {
+      "word": "any wreck",
+      "stands_for": "the Wrecked level of each ancient machine, the largest factory machine included. A machine at a repaired level may be fixed in place: that is data of each machine.",
+      "accept": "A wrecked smelter as large as a small room is uninstalled, and colonists with a pack animal bring it home from another tile."
+     },
+     {
+      "word": "where the colony wants it",
+      "stands_for": "on any ground that carries a heavy building. A wreck does not need the factory floor that the working machine needs.",
+      "accept": "A colony with no factory research sets a wrecked smelter down on the bare floor of its workshop."
+     }
+    ]
+   },
+   "accept": [
+    "A colonist uninstalls a wrecked smelter in a ruin, hauls it to the colony's workshop and installs it there. It stands as the same wreck.",
+    "A caravan loads a wrecked autoloom that it found on another tile. Its weight takes the load of more than one colonist, or of a pack animal. It arrives, and colonists install it at home.",
+    "In a game where a mod above this one narrows who may lift a wreck, a colonist cannot take the wreck up, and a hauler droid that the narrowing allows carries it instead.",
+    "A colony with no factory research sets a wrecked smelter down on the bare floor of its workshop."
+   ],
+   "reject": [
+    "The small wrecks can be carried, and the large factory wrecks have no uninstall order.",
+    "A wreck can be uninstalled, and its carried form cannot be set down at home because it needs a floor that the colony has no research to build.",
+    "Colonists carry a wreck home, and the thing that they set down is a machine at another level."
+   ],
+   "lazy": "none: the words name the three acts (take up, carry, set down) and say 'any wreck'. A build that does the three acts for every wreck with the base game's own uninstall and install is the bar. The card names the cost that he accepted: an ancient machine lifts as easily as a loom.",
+   "range": {
+    "varies": "Each of the 20 wrecks, grouped by size and weight (the factory wrecks weigh what the factory mod's machines weigh, 35 to 115 kg; the two carried machines). A wreck with no owner in a ruin and a wreck that the colony owns. A move inside one map and a move by caravan from another tile. A colonist and a pack animal. Ground: bare soil, a plain floor, the factory floor.",
+    "left_out": "Who may lift a wreck in the campaign: data that a layer above narrows; this mod does not know that Droidworks exists. Whether a Kludged or Refurbished machine can be moved: rule R_kludged_move. His four words 'but notified or built' are not read, and nothing rests on them. Transport pods and gravships: the base game's, not judged."
+   },
+   "sees": {
+    "instrument": "One colonist and one order per wreck group, in a loaded game: the Uninstall order on a wreck that has no owner, a read that the carried form exists and that the colonist carries it, an install order at another cell, and a read that the same Wrecked machine stands there. For the other wrecks a state read of each wreck def's carried form and of its mass against one colonist's carry capacity. The install order needs one generic bridge function that does not exist yet (place the install blueprint of a carried building): a build item of the scene.",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. A wrecked smelter and a wrecked power cell with no faction on open ground. One colonist who can haul, with no job (asserted). A clear install cell on a plain floor some cells away (asserted).",
+    "on": "The machines' lines on. No mod above this one loaded, so nothing narrows the lift.",
+    "control": "The cheapest other explanation is a scene that moved the wreck by a command and not by a colonist. The scene reads the colonist's job at each step (uninstall, haul, install). A wall beside the wreck, which has no carried form, must refuse the Uninstall order: the instrument can see a refusal.",
+    "reset": "Destroy the spawned things; close the quicktest map.",
+    "live_only_why": "Carrying is a chain of colonist jobs. A def read shows that a carried form exists; it does not show that a colonist finishes the chain with a machine of that size and sets it down."
+   },
+   "touches": [
+    "carried_form",
+    "machine_level"
+   ],
+   "live_only": true,
+   "experience": "Colonists can take up any wreck, carry it away and set it down where the colony wants it."
+  },
+  {
+   "id": "study_opens_research",
+   "says": "Colonists study the machine itself, and only that study opens the research for its next repair.",
+   "meant": {
+    "intent": "Reject if false: his words make the machine in front of the colonist the subject of the research. If a bench alone opens the repair, the wreck is one more ingredient of a recipe. In the built mod the first repair needs no study and no research, and study exists only with another mod loaded.",
+    "source": "OWNER:1795755622961436106 ('studied to enable research'; 'Each repair requires machine study, research bench time, and considerable resources'); OWNER:1795749426260848822 (\"study the MACHINE itself as part of the 'research.'\"); OWNER:1795749555968288570 (\"It should teach them about how to fix that machine… and the associated research item it is part of, slowly.\"); delegated: record decisions d_study_before_each_repair (two projects for each machine; the base game's own study carries it; research is the colony's knowledge) and d_first_look_read reading 3 (no item of another mod; turned on once; progress shown on the machine).",
+    "figurative": [
+     {
+      "word": "only that study",
+      "stands_for": "the project for a repair cannot be started at a bench until colonists have studied a machine of that kind at the level below. It does not mean that study replaces the bench.",
+      "accept": "After the study is complete, researchers finish the project at an ordinary research bench, away from the machine."
+     },
+     {
+      "word": "the machine itself",
+      "stands_for": "a machine of that kind at that level, standing on the map. What is learned belongs to the colony afterwards.",
+      "accept": "A colony that repaired one smelter repairs a second wrecked smelter with no new study."
+     }
+    ]
+   },
+   "accept": [
+    "The player selects a wreck and turns study on once. A colonist who does research walks to the wreck and studies it, comes back to it over the next days without a new order, and the wreck shows how far its study is.",
+    "Before the study is complete, the research screen shows the machine's first restoration project as locked and says that the wreck must be studied. When the study is complete, a message says so and the project can be started.",
+    "Colonists study the Kludged machine in the same way, and that study opens the second project, the one for the repair to Refurbished.",
+    "After the study is complete, researchers finish the project at an ordinary research bench, away from the machine.",
+    "A colony that repaired one smelter repairs a second wrecked smelter with no new study."
+   ],
+   "reject": [
+    "The restoration project can be researched at a bench from the first day, and study of the wreck only makes it faster.",
+    "Study works only when another mod is loaded, or only when the colonist carries a special kit. In a game with this mod and the factory mod alone the wreck offers no study.",
+    "The player must order every study session, and no colonist ever goes back to the wreck by himself.",
+    "A colonist studies the wreck for a moment and the project opens; the study took no time that a player would notice."
+   ],
+   "lazy": "A colonist studies the wreck for a moment and the project opens; the study took no time that a player would notice.",
+   "range": {
+    "varies": "Each ancient machine, grouped: a large factory machine and the two carried machines. Both studies: the wreck for the first project, the Kludged machine for the second. A wreck at home and a wreck studied where it was found. A game with this mod and the factory mod alone, and a game with Research Reinvented loaded (the small list holds it; its own study opportunities stay on top). A colonist who can research and one who cannot. A reload in the middle of a study.",
+    "left_out": "How long a study takes and what a project costs: tuning data in Mod Settings. Research Reinvented's own rules (its field kit, its order for each session): that mod's. A wreck in its carried form: it is studied only while it stands. A machine destroyed in the middle of its study: the colony keeps the progress, because the base game keeps study by kind of thing; not judged."
+   },
+   "sees": {
+    "instrument": "One wreck, one researcher and the clock, in a loaded game: jawa/research_availability for the first restoration project before any study (not startable, the studied-thing requirement unmet); the study turned on by its gizmo on the selected wreck (rimworld/list_selected_gizmos, rimworld/execute_gizmo); the researcher's job read while the clock advances (jawa/safe_advance); the wreck's inspect text read for its progress (jawa/inspect_string); then jawa/research_availability again. The same for the Kludged machine and the second project. A numeric read of study progress needs one generic bridge function that does not exist yet (read the game's study record for a kind of thing): a build item of the scene.",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. No restoration project started or finished and no study recorded for the machine's kind (asserted). One colonist who can research, with no job. A powered research bench of the kind that the project needs.",
+    "on": "The machine's line on. Study switched on for the wreck. No development command on research or study.",
+    "control": "The cheapest other explanation is a project that would open anyway. In the same starting state with study never turned on, the clock advances the same length, a researcher works at the bench, and the project is still locked.",
+    "reset": "Reload the starting state; close the quicktest map.",
+    "live_only_why": "The study is a colonist's job on a building. The base game uses that study on items only, and nobody has seen it on a building in play (models.md, 'Study on a building')."
+   },
+   "touches": [
+    "study_progress",
+    "research_projects",
+    "machine_level"
+   ],
+   "live_only": true,
+   "experience": "Colonists study the machine itself, and only that study opens the research for its next repair."
+  },
+  {
+   "id": "repair_on_the_machine",
+   "says": "A player orders a repair on the machine, colonists bring the materials and work at it where it stands, and the machine stays in sight at its old level until the work is complete.",
+   "meant": {
+    "intent": "Reject if false: the first look at the built mod saw a repair as a pick from the build menu: a colonist took the wreck apart and then built a grey frame on empty ground. It read 'as a new build where the wreck stood, not a repair of the wreck'. A machine that took a journey to find must never be lost to a cancelled order.",
+    "source": "OWNER:1795755622961436106 ('slowly repaired through several levels'; 'considerable resources'); OWNER:1795749529567808948 ('repairing big machines in place, and that's excellent'); delegated: record decisions d_repair_is_made_on_the_machine (call A of turn 5, CONDUCTOR:1795770570858909459) and d_first_look_read reading 2.",
+    "figurative": [
+     {
+      "word": "where it stands",
+      "stands_for": "at the machine, with no workbench and no pick from the build menu. A machine at home and a machine still in its ruin are both repaired where they stand, once the ground under the machine is the ground that its working level needs (rule R_ground).",
+      "accept": "A colony repairs a wrecked smelter that it found in a ruin on its own map without moving it: it lays the factory floor under the wreck where it stands, and the repair is then made there."
+     },
+     {
+      "word": "in sight",
+      "stands_for": "the machine is drawn, can be selected and is that machine during the whole repair. A mark on it may show that a repair is under way.",
+      "accept": "During the repair the wreck carries a repair mark and lists the materials that are still missing, and it is still the wreck."
+     }
+    ]
+   },
+   "accept": [
+    "The player selects a wreck whose study and research are done and orders the repair to Kludged on it. Colonists haul the materials to the wreck and work on it. The wreck is there the whole time. When the work is complete the Kludged machine stands in its place and faces the same way.",
+    "The player cancels a repair after part of the materials arrived. The wreck still stands, and the delivered materials lie beside it.",
+    "Something interrupts a repair for days. Afterwards colonists go on with the same repair.",
+    "A wreck whose research is not done shows the repair order as unavailable, and the order says what is missing.",
+    "A colony repairs a wrecked smelter that it found in a ruin on its own map without moving it: it lays the factory floor under the wreck where it stands, and the repair is then made there."
+   ],
+   "reject": [
+    "The player picks the next level from the build menu and places it over the wreck. A colonist takes the wreck apart and then builds a frame on empty ground.",
+    "The player cancels a repair, and the wreck is gone.",
+    "The machine changes level when the order is given, before any colonist has worked on it.",
+    "After a reload in the middle of a repair, the repair is forgotten and the delivered materials are lost."
+   ],
+   "lazy": "none: the words name who orders, where the work is done and what stays in sight. The lazy build is the built mod (a build-menu pick over the wreck); it fails 'on the machine' and 'stays in sight'. No other build that does the three things and that he would refuse was found.",
+   "range": {
+    "varies": "Each ancient machine, grouped: a large factory machine in each of its four facings, and a carried machine. Both repairs: to Kludged and to Refurbished. The order given before and after the materials are in a stockpile. A cancel at three points: before any delivery, after part of the materials, during the work. A reload in the middle of a repair. A machine with no power. Two machines of one kind under repair at the same time.",
+    "left_out": "What a repair costs and how long the work takes: tuning data in Mod Settings ('considerable resources' is his word; the amount is not a bar). A machine destroyed by fire or attack during a repair: it is destroyed like any building (rule R_destroyable). Which skill the work needs. A machine uninstalled during a repair: rule R_uninstall_cancels, read by the scene sc_uninstall_during_repair."
+   },
+   "sees": {
+    "instrument": "One machine, one colonist and one order, in a loaded game: the repair order read and given on the selected machine (rimworld/list_selected_gizmos, rimworld/execute_gizmo); jawa/list_things for the machine's def at its cell at every step (the list must never be empty); the colonist's jobs read while the clock advances; the level read at the end. Then the same with a cancel at each of the three points, and once with a save and a reload during the work.",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. A Wrecked machine installed at a known cell (asserted def and cell). Its first study complete and its first project finished (asserted by jawa/research_availability). The materials in a stockpile (asserted count). One free colonist who can do the work.",
+    "on": "The machine's line on. A test listener on the neutral level-changed signal (rule R_signal): the scene asserts that it fired once, with the machine, the old level and the new level.",
+    "control": "The cheapest other explanation is a level that changes without the repair. A second wreck of the same kind beside the first, with no order, is still Wrecked at the end. A third wreck whose project is not finished shows the order as unavailable.",
+    "reset": "Destroy the spawned things; close the quicktest map.",
+    "live_only_why": "The repair is an order, hauling and work by a colonist over time, with a cancel and a reload in the middle. The first look already showed that def data which reads well on paper plays as a build menu."
+   },
+   "touches": [
+    "repair_order",
+    "machine_level",
+    "research_projects",
+    "level_signal"
+   ],
+   "live_only": true,
+   "experience": "A player orders a repair on the machine, colonists bring the materials and work at it where it stands, and the machine stays in sight at its old level until the work is complete."
+  },
+  {
+   "id": "levels_of_function",
+   "says": "A Wrecked machine does no work, a Kludged machine does a small part of the machine's work, a Refurbished machine does all of it, and no repaired machine does it as well as the Original.",
+   "meant": {
+    "intent": "Reject if false: the levels are what the repairs buy. His statement: 'wrecked (nonfunctional), Kludged (minimal), Refurbished (full functionality but slower than original)'. His ruling: 'There is nothing beyond or even equal to the original.' The value of a repaired machine is that the colony has it at all. In the built mod the power-cell wreck gives a faint current and the Refurbished smelter lacks one of the smelter's jobs.",
+    "source": "OWNER:1795755622961436106; OWNER:1795749411129133147; OWNER:1795749512608610645 (the battery that loses capacity and still works: read as the Kludged and Refurbished levels); OWNER:1795769070699312426 ('1: b.': plasteel is the recipe that the alloy forge's last repair brings); OWNER:1795755673273656447 (each machine's recipes and rates at each level are its onboarding); delegated: record decisions d_wrecked_gives_nothing, d_plasteel_with_last_repair (gravlite goes with plasteel: call C of turn 5, CONDUCTOR:1795770570858909459) and d_all_eighteen_shape call 8.",
+    "figurative": [
+     {
+      "word": "work",
+      "stands_for": "what the machine is for: products for a factory machine, power for the power cell, a calmer mood nearby for the psychic emanator.",
+      "accept": "A Kludged power cell lights a few lamps and a Refurbished one runs a workshop, and the base game's own power cell would give more than either."
+     },
+     {
+      "word": "as well as",
+      "stands_for": "slower for a machine that makes goods; weaker for the power cell and the emanator. Whatever a player sets in Mod Settings, the order Wrecked, Kludged, Refurbished, Original holds.",
+      "accept": "A player moves the Refurbished setting as high as it goes, and the Refurbished smelter is still slower than the Original."
+     },
+     {
+      "word": "a small part",
+      "stands_for": "the machine's onboarding table names which of its products the Kludged level makes. A machine with one product makes that product slowly at the Kludged level.",
+      "accept": "The Kludged alloy forge, in a game with this mod and the factory mod alone, makes obsidian and nothing else."
+     }
+    ]
+   },
+   "accept": [
+    "A wrecked power cell joined to a power net gives no power, and a wrecked emanator calms nobody. A wreck may glow faintly, and that light does nothing.",
+    "A Kludged smelter smelts slag into steel and refuses the harder jobs. The Refurbished smelter takes every job that the factory mod's smelter takes, and each job takes longer than on the Original.",
+    "The Kludged alloy forge offers no plasteel. The Refurbished forge makes plasteel and gravlite.",
+    "A colony keeps a machine Kludged for the whole game and gets real use from it every day.",
+    "A player moves the Refurbished setting as high as it goes, and the Refurbished smelter is still slower than the Original."
+   ],
+   "reject": [
+    "A wrecked power cell gives a faint current.",
+    "The Kludged machine does everything that the Refurbished one does, only slower, so the last repair buys nothing that a player would name.",
+    "The Refurbished smelter lacks one of the jobs of the factory mod's smelter.",
+    "With the level settings raised, a Refurbished machine matches the Original or beats it.",
+    "A Kludged machine makes one of the machine's products, and it is the one that a colony needs least, so a Kludged machine is of no use to anyone."
+   ],
+   "lazy": "A Kludged machine makes one of the machine's products, and it is the one that a colony needs least, so a Kludged machine is of no use to anyone.",
+   "range": {
+    "varies": "Each of the 20 machines at each of its levels, grouped: machines that make goods by several processes (the smelter, the alloy forge and the like); machines with one product (the drill platform, the autofarmer, the fish farm); the power cell; the emanator. The level settings in Mod Settings at their lowest, shipped and highest values. With power and without. In the campaign's mod list the Kludged forge also makes durasteel, after the Armoury adds its recipe to the forge's levels (rule R_neighbour_names).",
+    "left_out": "The numbers: how much slower, how much power, how strong the mood, how often a Kludged machine breaks down. They are tuning data and are kept as check C_level_numbers. Which products each Kludged machine makes: its onboarding table (rule R_onboarding), judged here only as 'a useful small part'. The Original as a thing that a colony reaches: no bar. Overclocking and the factory mod's boosters: as the onboarding table says for each level."
+   },
+   "sees": {
+    "instrument": "A state read for every machine and level, and one production run for one machine of each group, in a loaded game. The read: the processes that the level offers (jawa/comp_read), its power (jawa/power_net) and, for the emanator, the thoughts of a colonist beside it (jawa/pawn_thoughts). The run: one product made at the Kludged level, at the Refurbished level and on an Original placed for comparison, with the ticks that each took. Then the level settings go to their lowest and highest values and the order of the four levels is read again. A run of a factory process needs inputs placed and the clock advanced; if jawa/container_fill does not reach the factory mod's processor, one generic bridge function is a build item of the scene.",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. The three levels of one machine and its Original side by side on one powered net (asserted powered, no breakdown). The inputs of one product in place at each.",
+    "on": "The machines' lines on. The level settings at their shipped values for the first reading.",
+    "control": "The cheapest other explanation is a difference that power or a breakdown caused and the level did not. The same Refurbished machine makes the product twice and takes the same time. The Original is the factory mod's own def, read back as unchanged by this mod.",
+    "reset": "Put the settings back and read them back; destroy the spawned things.",
+    "live_only_why": "The values that apply come from C# at startup and from the settings, and the factory mod's processor decides what a machine really offers. Only a production run shows 'slower'."
+   },
+   "touches": [
+    "machine_level",
+    "mod_settings",
+    "forge_processes",
+    "power_net",
+    "onboarding_table"
+   ],
+   "live_only": true,
+   "experience": "A Wrecked machine does no work, a Kludged machine does a small part of the machine's work, a Refurbished machine does all of it, and no repaired machine does it as well as the Original."
+  },
+  {
+   "id": "last_repair_needs_component",
+   "says": "The repair to Refurbished needs an Ancient Component, and a colony gets one only by finding it in an ancient ruin.",
+   "meant": {
+    "intent": "Reject if false: his words: 'The final refurbishment requires a rare ancient component'; 'a truly scarce and valuable resource'; 'Only found in ruins or via plot'. The component makes the last repair a choice. With a second source it is a shopping item. Today nothing in the game gives one, so no machine can pass Kludged in play.",
+    "source": "OWNER:1795755622961436106; OWNER:1795749476635482102; OWNER:1795761550785045693 ('Only found in ruins or via plot'); delegated: record decision d_component_from_ruins ('via plot' is read as the campaign's story: a layer above may hand one out, and this mod has no plot; taking a wreck apart gives none, because his words leave that source out).",
+    "figurative": [
+     {
+      "word": "only by finding it in an ancient ruin",
+      "stands_for": "in a game with this mod alone. The component is a plain item, so the story of a mod above this one may give one out, and this mod does not know.",
+      "accept": "In the campaign a story event hands the colony one Ancient Component, and it works in a repair like any other."
+     },
+     {
+      "word": "needs",
+      "stands_for": "the repair uses the component up: one for each machine that is made Refurbished.",
+      "accept": "A colony with one component chooses between its smelter and its power cell, and the other machine stays Kludged."
+     }
+    ]
+   },
+   "accept": [
+    "A colony has a Kludged smelter, its second study and research are done and every other material is ready. The last repair cannot start, and the order says that an Ancient Component is missing.",
+    "Colonists search an ancient ruin and find an Ancient Component in one of its rooms. At home the last repair uses it up.",
+    "A colony that never finds a component keeps its machines Kludged for the whole game, and they go on working.",
+    "A colony with one component chooses between its smelter and its power cell, and the other machine stays Kludged.",
+    "In the campaign a story event hands the colony one Ancient Component, and it works in a repair like any other."
+   ],
+   "reject": [
+    "A trader sells Ancient Components, or a bench recipe makes one.",
+    "Colonists take a wreck apart and an Ancient Component is left.",
+    "One trip to a ruin gives a colony more components than it has machines.",
+    "Components lie in ruins, and no ruin that a colony can reach ever holds one, so no machine is ever Refurbished."
+   ],
+   "lazy": "Components lie in ruins, and no ruin that a colony can reach ever holds one, so no machine is ever Refurbished.",
+   "range": {
+    "varies": "The last repair of each machine (the 18, the power cell, the emanator). The ruins that can hold a component: on the colony's map and on visited tiles. A colony with no component, with one and with several. The neighbours that also charge the component (Cold Storage's stasis lockers, the Cuisine mod's stasis casket and vaults) loaded and not loaded.",
+    "left_out": "How rare the component is: a tuning number in Mod Settings, never a bar. The campaign's story source ('via plot'): a layer above. A quest inside this mod that rewards a component: a different build, not in 0.1.0. The component's price."
+   },
+   "sees": {
+    "instrument": "In a loaded game. (1) The Refurbished repair order of each machine read with no component in stock: unavailable, and its reason names the component (rimworld/list_selected_gizmos). (2) The generators of bar only_by_repair read for the component: no reward, no loot outside a ruin and no trader stock holds it; no recipe makes it (a def read); each wreck level taken apart by a colonist leaves none (the products listed). (3) Ruin maps generated a number of times that is written before the first run: over the set at least one component lies in a ruin room, and none lies outside a ruin.",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. A Kludged machine whose second study and research are done (asserted). Every material of the last repair but the component in a stockpile (asserted). No Ancient Component on the map (asserted).",
+    "on": "The machines' lines on. The component's placement at its shipped value.",
+    "control": "The cheapest other explanation is an order that is refused for another reason. With one component placed in the stockpile and nothing else changed, the same order is accepted, the repair completes and the count of components goes to none.",
+    "reset": "Destroy the spawned things; discard the generated maps.",
+    "live_only_why": "The sources are the game's generators and its ruin rooms. A def read cannot show that a ruin really holds a component, or that a repair really uses one up."
+   },
+   "touches": [
+    "ancient_component",
+    "repair_order",
+    "world_handouts",
+    "map_generation"
+   ],
+   "live_only": true,
+   "experience": "The repair to Refurbished needs an Ancient Component, and a colony gets one only by finding it in an ancient ruin."
+  },
+  {
+   "id": "levels_told_apart",
+   "says": "At play zoom a player tells a Wrecked machine, a Kludged machine and a whole machine apart by eye, and what the picture shows agrees with what the machine's text says.",
+   "meant": {
+    "intent": "Reject if false: the first look found the three emanators 'hard to tell apart at play zoom' (one picture in three shades) and a no-power mark on a Refurbished machine whose text read powered. A player who must click each machine to learn its level has a list, not a workshop of survivors. This is 'the much larger lift in terms of art generation' that he named.",
+    "source": "delegated: record decisions d_three_looks and d_first_look_read (readings 1 and 5), from the three levels of his statement that a colony can hold (OWNER:1795755622961436106), his words of 2026-11-19 on the art (OWNER:1795106694655684530) and the floor line reads_as.",
+    "figurative": [
+     {
+      "word": "whole",
+      "stands_for": "Refurbished or Original. These two may share one picture, because outside an older save no colony holds an Original beside a Refurbished machine.",
+      "accept": "A Refurbished smelter and the factory mod's own smelter look the same, and the player tells them apart by the name."
+     },
+     {
+      "word": "by eye",
+      "stands_for": "by shape and damage that a person sees without a label. A darker or lighter shade of one picture does not count.",
+      "accept": "A person who has never seen the mod points at the broken one, the patched one and the whole one in a row with no labels."
+     }
+    ]
+   },
+   "accept": [
+    "The three levels of one machine stand in a row. A person who has not read the labels points at the wreck (broken open and dead), at the Kludged one (patched, with bodged parts) and at the whole one, in every facing.",
+    "A wreck among ordinary rubble and scrap reads as a machine that is worth carrying home, and not as debris.",
+    "A powered Refurbished machine shows no no-power mark. A Kludged machine that has broken down shows the breakdown mark, and its text says so.",
+    "A Refurbished smelter and the factory mod's own smelter look the same, and the player tells them apart by the name."
+   ],
+   "reject": [
+    "The levels of the power cell are one picture in lighter and darker shades.",
+    "The Wrecked picture and the Kludged picture differ only in a detail that is lost at play zoom.",
+    "A Refurbished machine shows a no-power mark while its text reads powered.",
+    "A machine's label calls it repaired while the settings screen calls the same level by another name.",
+    "Each level is the same picture with a coloured badge in its corner that names the level."
+   ],
+   "lazy": "Each level is the same picture with a coloured badge in its corner that names the level.",
+   "range": {
+    "varies": "Each of the 20 machines at Wrecked, Kludged and whole. Four facings for a machine that turns. Play zoom and the near zoom that he studies at. Day and night light. Powered, without power and broken down. Beside the base game's rubble, and beside the wreck families of the Wreckage mod when that mod is loaded.",
+    "left_out": "How many pictures a level has and how large their files are: art data (a big machine needs 8 pictures of its own, Wrecked and Kludged in four facings; that count is a check, C_onboarding_complete). The Original's picture: the donor's own. The Ancient Component's picture: the art floor line judges it."
+   },
+   "sees": {
+    "instrument": "A blind reader on captures from the game: play-zoom and near-zoom captures of the three levels of each machine in each facing (modcheck play_zoom.shoot), with labels off, sorted by a fresh agent that did not make the art (design/RimMandrake/art_judge_brief.md). Beside each capture a state read: the marks drawn on the machine against its inspect text and its power state (jawa/inspect_string, jawa/power_net).",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. The three levels of each machine in a row on plain ground, powered where a level takes power (asserted by a power read), in daylight (asserted hour), in clear weather.",
+    "on": "The machines' lines on. The art of the build under test deployed (asserted by texture identity).",
+    "control": "The cheapest other explanation is a reader who guesses from the order of the row: the order is shuffled for each capture. The reader also gets one planted row in which two levels are one picture in two shades, and must call that row not told apart.",
+    "reset": "Destroy the spawned things; close the quicktest map.",
+    "live_only_why": "The bar is about what the game draws at play zoom, with the game's own marks on top. A texture file on disk shows neither the zoom nor the marks."
+   },
+   "touches": [
+    "machine_picture",
+    "machine_level",
+    "power_net",
+    "player_text"
+   ],
+   "live_only": true,
+   "experience": "At play zoom a player tells a Wrecked machine, a Kludged machine and a whole machine apart by eye, and what the picture shows agrees with what the machine's text says."
+  },
+  {
+   "id": "switch_gives_machine_back",
+   "says": "In Mod Settings a player switches any one ancient machine off, and that machine is then the ordinary machine that it was without this mod.",
+   "meant": {
+    "intent": "Reject if false: every mod ships superb Mod Settings, with an on/off switch for each major feature and a game that still works when every switch is off (standing ruling). The card for all 18 names the cost, in the description of the option that he picked (our text, not his words): 'a stranger who already has a factory loses the most'. The switch for each machine is that stranger's way out, machine by machine. An older live check on a settings switch went red on 'off, then on'.",
+    "source": "standing ruling: design/RimMandrake/standing_rulings.md, Every mod ships superb Mod Settings; OWNER:1795761534460592124 (all 18, with its cost line); delegated: record decisions d_all_eighteen_shape call 4 (one on/off line for each machine, on as shipped) and d_plasteel_with_last_repair call 3 (the forge's line replaces the two forge settings).",
+    "figurative": [
+     {
+      "word": "the ordinary machine that it was",
+      "stands_for": "for a factory machine: researched and built from the menu as the factory mod has it. For the power cell and the emanator: handed out by the base game's rewards, traders and loot. Wrecks and repaired levels of that machine that already stand in the game stay as they are; new wrecks of it are not placed.",
+      "accept": "With the alloy forge's line off, the factory mod's forge is back in the build menu behind its own research, plasteel included, and a wrecked forge that the colony already carried home still stands in the workshop."
+     }
+    ]
+   },
+   "accept": [
+    "A player who wants an ordinary autoloom switches its line off. After the restart that the line's label names, the autoloom is in the build menu, and the other machines are still ancient.",
+    "With every line off, the game plays as the factory mod and the base game play alone, and the log is clean.",
+    "A player switches a line off and on again, and the machine is ancient again exactly as it shipped.",
+    "With the alloy forge's line off, the factory mod's forge is back in the build menu behind its own research, plasteel included, and a wrecked forge that the colony already carried home still stands in the workshop."
+   ],
+   "reject": [
+    "One master switch turns the whole mod off, and no single machine can be given back.",
+    "A line is switched off and on again, and the machine is then in neither the build menu nor the ruins.",
+    "With a line off the machine is back in the build menu, and wrecks of it still appear in new ruins.",
+    "A machine's line is off, the machine is back in the build menu, and every wreck and repaired level of that machine that stood in the colony has vanished from the save."
+   ],
+   "lazy": "A machine's line is off, the machine is back in the build menu, and every wreck and repaired level of that machine that stood in the colony has vanished from the save.",
+   "range": {
+    "varies": "Each of the 20 lines, grouped: a factory machine, the alloy forge, the two base-game machines. One line off; every line off; off and then on again. A new game, and a save that already holds wrecks and repaired levels of the machine. The other settings (the level settings, the costs, the two placement switches) at their lowest and highest values.",
+    "left_out": "The numbers behind the tuning settings (check C_level_numbers). The settings of the salvage rule and of the distillation machine: they stay as built until those rules move (rule R_riders). The full-restoration setting: a player's override that no bar judges."
+   },
+   "sees": {
+    "instrument": "A settings sweep in a loaded game: jawa/mod_settings_field sets each line and the mod's apply call runs (jawa/static_call); then the reads of bar only_by_repair for that machine (build menu, research, generators) and a list of the machine's wrecks that already stand on the map; then off and on again, compared with the first reading field by field.",
+    "start": "A loaded game on the mod's small list (design/concepts/WreckedMachines/version/small_list.json), all five expansions, a quicktest map. Every line on (asserted). One wreck and one Kludged machine of the tested kind on the map.",
+    "on": "Nothing more: the bar is the switches themselves.",
+    "control": "The cheapest other explanation is a read of a stale def. In the same pass a second machine whose line was not touched reads unchanged, and the first read (line on) differs from the second (line off).",
+    "reset": "Put every setting back in a finally step and read it back.",
+    "live_only_why": "The settings act on the loaded defs through the mod's C#. The red check of 2026-11-03 showed that 'off, then on' can differ from the shipped def, and only the loaded game shows it."
+   },
+   "touches": [
+    "mod_settings",
+    "build_menu",
+    "world_handouts"
+   ],
+   "live_only": true,
+   "experience": "In Mod Settings a player switches any one ancient machine off, and that machine is then the ordinary machine that it was without this mod."
+  },
+  {
+   "id": "no_setting_named",
+   "says": "A player reads no name or mark of any story setting in this mod: no ship, no faction and no god.",
+   "meant": {
+    "intent": "Reject if false: his ruling is that the mod stands alone at the RimMandrake level, and the campaign requires it, never the reverse. The built text still says 'Bring the ship's alloy forge back to heat', 'restoring wrecked ship machinery' and 'torn off its mounts in the crash'. A stranger's game has no ship.",
+    "source": "OWNER:1795749349214480499 ('it should be its own stand-alone mod (RimMandrake level)'); ITEM:RAKATAN_ARCHOTECH_MACHINES_1 ruling 0 (no setting word in a defName, label or description); record contradiction c_setting_words_in_generic_tier.",
+    "figurative": [
+     {
+      "word": "story setting",
+      "stands_for": "the campaign's world: the crashed ship, the clan, the names Rakatan, Utinni and Jawa, Star Wars names and god favour. The word 'ancient' and the base game's own words (archotech, vanometric, psychic) are not a setting.",
+      "accept": "A wreck's description says that it is an ancient machine, long dead, and names nobody who made it."
+     }
+    ]
+   },
+   "accept": [
+    "Every label, description, research text, message and settings line of the mod reads the same in a game with no campaign mod loaded, and makes sense there.",
+    "A wreck's description says that it is an ancient machine, long dead, and names nobody who made it.",
+    "The restoration projects sit on a research tab that the base game or this mod owns. A campaign mod may move them to a tab of its own, and this mod does not know."
+   ],
+   "reject": [
+    "A research project reads 'Bring the ship's alloy forge back to heat'.",
+    "The things name no setting, and the mod's description in the mod list still speaks of the ship and the clan.",
+    "The setting words are cut and nothing is put in their place, so a description stops in the middle of a sentence and a wreck's text does not say what it is."
+   ],
+   "lazy": "The setting words are cut and nothing is put in their place, so a description stops in the middle of a sentence and a wreck's text does not say what it is.",
+   "range": {
+    "varies": "Every text of this mod that a player can read: the labels and descriptions of the 20 machines at every level, the research projects, the Ancient Component, thoughts, letters and messages, inspect text, order labels and their tooltips, Mod Settings, About.xml, and the text of the patches that load only with another mod (the distillation machine's, with FlowWorks). The word list: ship, Kolyska, Rakatan, Utinni, Jawa, clan, god, favour, Star Wars names, 'the crash'.",
+    "left_out": "defNames and code names that a player never reads: a rename there is build detail, and neighbours read those names (check C_neighbour_names). Design files, and README text that the mod list does not show. The campaign's own mods, which say what they like."
+   },
+   "sees": {
+    "instrument": "An offline read: every player-facing text field of the mod's Defs, Patches, Languages and About.xml, and the C# string literals that reach the screen, searched for the word list. Each hit is shown with its file and line. A second reader (a fresh agent) reads the changed texts once for sense.",
+    "start": "The mod folder at the commit under test.",
+    "on": "The patches that load only with another mod are read too; the files are read whether or not that mod is loaded.",
+    "control": "The cheapest other explanation is a search that cannot see a field. A planted description with 'the ship's' in a conditional patch, and one in a C# string, must both be found.",
+    "reset": "Nothing changes."
+   },
+   "touches": [
+    "player_text"
+   ],
+   "live_only": false,
+   "experience": "A player reads no name or mark of any story setting in this mod: no ship, no faction and no god."
+  },
+  {
+   "id": "whole_journey",
+   "says": "With every ancient machine on and nothing done by a command, a colony finds a wreck, brings it home, studies it, repairs it to Kludged and uses it, then studies it again and repairs it to Refurbished with an Ancient Component from a ruin, and at each step the player can tell what the machine needs next.",
+   "meant": {
+    "intent": "The first version running complete. Each part can pass alone and the journey can still fail: a wreck that is carried home and then stands on ground where its repair is refused with no reason shown, a study that completes and opens a project that needs a bench the colony cannot have at that point, a last repair that waits for a component in a world whose ruins hold none.",
+    "source": "OWNER:1795755622961436106 (his statement, read as one journey); the definition of the whole bar (design/specs/2026-11-16-designer-cleanse-and-bar-definition.md section 3).",
+    "figurative": [
+     {
+      "word": "can tell what the machine needs next",
+      "stands_for": "from the machine itself: its text, its orders and the reasons that an order gives when it is unavailable. Not from a wiki or from this design.",
+      "accept": "A player who has never seen the mod selects a wreck at home and reads that it must be studied; after the study, that a project is open; after the research, that a repair can be ordered and what it needs."
+     }
+    ]
+   },
+   "accept": [
+    "One run on the mod's small list: a large factory machine and a carried machine both go from a ruin to Kludged and do their work: the Kludged smelter makes steel, and the Kludged power cell lights a lamp. The ruin held a single Ancient Component. The machine that gets it goes on to Refurbished, and the last repair of the other machine says that a component is missing. The log holds no error of this mod. The run includes a reload from a save made in the middle of the first repair. The run is then played in a second order of the main actions: the wrecks are studied in the ruin before they are carried home, the Ancient Component is found before the first repair, and the other machine gets it.",
+    "A second colony in the same world finds no component and stops at Kludged. Nothing in its game is stuck: no order waits for ever without a reason shown.",
+    "A player who has never seen the mod selects a wreck at home and reads that it must be studied; after the study, that a project is open; after the research, that a repair can be ordered and what it needs."
+   ],
+   "reject": [
+    "Each step passes in a scene of its own with the earlier steps done by commands, and in one continuous run the repair of the carried-home wreck is refused with no reason that the player can read.",
+    "After the reload the half-done repair is gone, or the machine stands at two levels at once.",
+    "A flood: wrecks on every map and components in every room. A desert: ruin after ruin with no wreck and no component. A stall: a repair order that waits with no reason shown. An error storm: red log lines each time a level changes.",
+    "The run is played with the costs and the times set to almost nothing in Mod Settings, so each step passes in a moment and nothing was watched at the shipped values."
+   ],
+   "lazy": "The run is played with the costs and the times set to almost nothing in Mod Settings, so each step passes in a moment and nothing was watched at the shipped values.",
+   "range": {
+    "varies": "Two machines from the ruin to Kludged: one large factory machine and one carried machine. In each order of the actions one of the two goes on to Refurbished with the ruin's component: the large machine in the first order, the carried machine in the second. For the other machines, the journey from the carried-home wreck on, with the wreck placed by the scene. Two orders of the main actions: carry and then study; study in the ruin and then carry; the component found before the first repair or after it. A reload from a save made in the middle of a repair, and one made in the middle of a study. Shipped settings. Time compressed at top speed: every job and every wait is real, and the compression skips nothing.",
+    "left_out": "A season of play, raids and the campaign's layers. The exact timings. The rare wreck on an ordinary map (bar wreck_is_found reads it; the whole run starts at a ruin). A machine whose line is off."
+   },
+   "sees": {
+    "instrument": "One scripted run in a loaded game on the small list, with a save and a reload in the middle (rimworld/save_game, rimworld/load_game; the save file's existence is checked on disk), the log tapped from start to end (LogTap), a state read at each step and a capture at each change of level. Then the second order, from the same starting save.",
+    "start": "A saved game on the small list: a colony with a research bench, a stockpile of the repair materials and three colonists; an ancient ruin on the map, made by the game's own generation and not placed by hand, that holds wrecks of this mod and one Ancient Component (asserted by list reads); no project of this mod started.",
+    "on": "Every machine's line on and every setting at its shipped value (asserted). The rules outside the promise as built (the salvage rule, the distillation machine). Research Reinvented loaded, as on the small list. Nothing finished by a development command.",
+    "control": "The cheapest other explanation is a run that passed because a command did a step. The script lists every bridge call that changes state; after the starting save none may spawn a thing, finish research or study, or set a level. The second order must reach the same end state as the first.",
+    "reset": "Reload the starting save; delete the saves that the run made.",
+    "live_only_why": "The bar is the mod running complete: many colonist jobs in a row, a save and a reload. No part of it can be read from files."
+   },
+   "touches": [
+    "machine_level",
+    "map_generation",
+    "study_progress",
+    "research_projects",
+    "repair_order",
+    "ancient_component",
+    "carried_form",
+    "save_file"
+   ],
+   "live_only": true,
+   "experience": "With every ancient machine on and nothing done by a command, a colony finds a wreck, brings it home, studies it, repairs it to Kludged and uses it, then studies it again and repairs it to Refurbished with an Ancient Component from a ruin, and at each step the player can tell what the machine needs next."
+  }
+ ],
+ "checks": [
+  {
+   "id": "C_onboarded_set",
+   "what": "The list of ancient machines equals the production machines found in the factory mod's own defs (18 with Vanilla Cooking Expanded, 17 without) plus the vanometric power cell and the psychic emanator. A factory update that adds a machine turns this red."
+  },
+  {
+   "id": "C_onboarding_complete",
+   "what": "Each ancient machine has: a Wrecked, a Kludged and a Refurbished def; a carried form for its wreck; two restoration projects, each with its studied-thing requirement; pictures of its own for Wrecked and Kludged in each facing (8 for a large machine); one row in the onboarding table; one line in Mod Settings."
+  },
+  {
+   "id": "C_onboarding_table_offline",
+   "what": "Each onboarding row read against the factory mod's real XML with the patch interpreter of prove_alloy_forge_offline.py: the Kludged process list is not empty and is a strict part of the donor's list (or the one process, for a machine with one); the Refurbished list equals the donor's list."
+  },
+  {
+   "id": "C_level_numbers",
+   "what": "A baseline that can be diffed: the level ratios, breakdown factors, power values, mood offsets, repair costs, study lengths, project costs, placement weights and chances, and the component's rarity. No number here passes or refuses a bar."
+  },
+  {
+   "id": "C_kernel_fuzz",
+   "what": "The seeded fuzz of the shipped Verse-free kernel (src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py): for every settings value the ratios stay ordered Wrecked, Kludged, Refurbished and below the Original."
+  },
+  {
+   "id": "C_repair_state_walk",
+   "what": "The offline walk of the repair state machine in the shipped kernel against a fake game (plan.md, offline simulation): every state and event, with the rows 'a cancel never loses the machine', 'the level changes only on complete work' and 'the signal fires once for each change'."
+  },
+  {
+   "id": "C_neighbour_names",
+   "what": "The names that four neighbours read still resolve after the build: Cold Storage (the level extension, the place rule, RatioFor, RM_WM_AncientComponent), the Cuisine mod's stasis ladder, the Armoury's recipes on the smelter's and the forge's levels, and ResearchRetag's research tabs. A patch that matches nothing logs nothing, so each neighbour's patch is counted as applied."
+  },
+  {
+   "id": "C_forge_gates_gone",
+   "what": "After the alloy forge's onboarding: the projects RM_WM_AlloyForgeRestoration and RM_WM_PlasteelAlloying and the settings alloyForgeProgressiveGate and plasteelAlloyEnabled are absent, and ResearchRetag names neither project."
+  },
+  {
+   "id": "C_old_save",
+   "what": "A save made on the factory mod without this mod, holding working factory machines, loads with this mod added: the machines stand and work as before, and the log is clean (floor line save_compat)."
+  },
+  {
+   "id": "C_salvage_rule_offline",
+   "what": "src/RimMandrake/WreckedMachines/selftest_salvage_rule.py stays green (the shipped salvage source against its fake engine, 41 variants) after the smelter's levels change."
+  },
+  {
+   "id": "C_distillation_loads",
+   "what": "The distillation machine's patch still applies to FlowWorks' defs (an offline patch read), until the machine moves to FlowWorks."
+  },
+  {
+   "id": "C_power_mark",
+   "what": "The first live visit of the build reads the no-power mark on the Refurbished smelter and emanator again (record contradiction c_bolt_on_powered_machine) and classes it: the mod, or the staged scene."
+  }
+ ],
+ "meetings": [
+  {
+   "thing": "machine_level",
+   "members": [
+    "wreck_is_found",
+    "wreck_comes_home",
+    "study_opens_research",
+    "repair_on_the_machine",
+    "levels_of_function",
+    "levels_told_apart",
+    "whole_journey",
+    "R_onboarding",
+    "R_destroyable"
+   ],
+   "holds_together": "argued",
+   "why": "A machine has one level at a time, and only two things set it: placement (always Wrecked) and a completed repair (one step up). Carrying, study, a cancel and a reload read the level and never change it; taking the machine apart ends it. So no two bars ask for different levels of one machine at one moment. The offline walk C_repair_state_walk checks the same statement over every state and event.",
+   "model": ""
+  },
+  {
+   "thing": "build_menu",
+   "members": [
+    "only_by_repair",
+    "switch_gives_machine_back",
+    "R_parts_stay",
+    "R_ground"
+   ],
+   "holds_together": "argued",
+   "why": "The build menu holds the factory mod's parts and floor always, and a production machine only while its line is off. The two bars read the same menu in the two states of one switch, so they cannot disagree. The floor must stay (R_ground), or a carried-home wreck could never be repaired; R_parts_stay keeps it.",
+   "model": ""
+  },
+  {
+   "thing": "world_handouts",
+   "members": [
+    "only_by_repair",
+    "last_repair_needs_component",
+    "switch_gives_machine_back",
+    "R_placement"
+   ],
+   "holds_together": "argued",
+   "why": "Three kinds of thing pass through the game's hand-outs and each has one rule: a working machine is never handed out while its line is on; a wreck is placed only by this mod's own lists; a component lies only in ruin rooms. A line that is off gives back the base game's hand-out of that machine and stops the placement of its wrecks. None of the three rules reads another's list.",
+   "model": ""
+  },
+  {
+   "thing": "mod_settings",
+   "members": [
+    "only_by_repair",
+    "wreck_is_found",
+    "levels_of_function",
+    "switch_gives_machine_back",
+    "R_riders"
+   ],
+   "holds_together": "argued",
+   "why": "The settings are of three kinds that do not overlap: one on/off line for each machine, the tuning numbers (levels, costs, placement), and the riders' switches as built. The kernel clamps the level numbers so that no value breaks the order of the levels. Every setting is re-derived from the shipped defs when it is applied, so off and on again returns the shipped state; the sweep of switch_gives_machine_back reads that.",
+   "model": ""
+  },
+  {
+   "thing": "research_projects",
+   "members": [
+    "only_by_repair",
+    "study_opens_research",
+    "repair_on_the_machine",
+    "whole_journey",
+    "R_two_projects",
+    "R_forge"
+   ],
+   "holds_together": "argued",
+   "why": "A restoration project opens a repair order and never a build-menu entry, so finishing every project cannot break only_by_repair. Each project is locked by one study and unlocks one repair; the forge has no third project (R_forge). The 20 machines bring 40 projects: they sit on one research tab of their own so that they do not crowd the base game's tabs (plan.md, load).",
+   "model": ""
+  },
+  {
+   "thing": "map_generation",
+   "members": [
+    "wreck_is_found",
+    "last_repair_needs_component",
+    "whole_journey",
+    "R_placement"
+   ],
+   "holds_together": "argued",
+   "why": "Wrecks and components come from one placement list with separate weights, so a ruin can hold both and the whole run can start from one generated ruin. Cold Storage already adds a wrecked locker to Odyssey's ruin rooms by the same route with no C# (record decision d_feasible_wreck_placement). The flood and the desert are the two ends of the weights; the whole bar rejects both, and the weights are tuning data.",
+   "model": ""
+  },
+  {
+   "thing": "carried_form",
+   "members": [
+    "wreck_comes_home",
+    "whole_journey",
+    "R_lift",
+    "R_kludged_move",
+    "R_uninstall_cancels",
+    "R_ground"
+   ],
+   "holds_together": "argued",
+   "why": "A wreck is always movable and may stand on any firm ground, so it can always come home. A working level needs the donor's ground, so the repair order checks the ground and says what is missing; a colony lays factory floor at the place where it installs the wreck. An uninstall during a repair is a cancel. Read from the game's source and not yet seen in play: floor can be laid under a standing wreck when the wreck names no ground need (rule R_ground). The scene sc_repair_needs_ground reads both ways in play: the floor laid under the wreck, and the wreck carried onto floor.",
+   "model": ""
+  },
+  {
+   "thing": "study_progress",
+   "members": [
+    "study_opens_research",
+    "whole_journey",
+    "R_two_projects",
+    "R_study_carrier"
+   ],
+   "holds_together": "unknown",
+   "why": "The base game's study has been read in source and never seen on a building in play. Not known: whether a researcher takes the study job on a building by himself, whether the research screen names the unstudied machine, and what a player sees when Research Reinvented's study of the same machine is on top.",
+   "model": "Study on a building"
+  },
+  {
+   "thing": "repair_order",
+   "members": [
+    "repair_on_the_machine",
+    "last_repair_needs_component",
+    "whole_journey",
+    "R_uninstall_cancels",
+    "R_ground"
+   ],
+   "holds_together": "argued",
+   "why": "One order on the machine has one list of needs: the finished project, the ground, the materials and, for the last repair, the component. The order is unavailable with a reason for each missing need, so the bars that add a need (the component, the ground) all show through the same place. A cancel, an uninstall and a reload act on the one repair record of the machine.",
+   "model": ""
+  },
+  {
+   "thing": "level_signal",
+   "members": [
+    "repair_on_the_machine",
+    "R_signal"
+   ],
+   "holds_together": "argued",
+   "why": "The only event that changes a level after placement is a completed repair, so the signal has one place to fire. The repair scene's listener counts it.",
+   "model": ""
+  },
+  {
+   "thing": "forge_processes",
+   "members": [
+    "levels_of_function",
+    "R_onboarding",
+    "R_forge",
+    "R_neighbour_names"
+   ],
+   "holds_together": "argued",
+   "why": "The forge's onboarding row follows the one rule of every row, with his card as its fixed point: plasteel (and gravlite, which is made from plasteel) at Refurbished only. The Kludged forge keeps a useful part in the campaign through the Armoury's durasteel, which lands in the same change as the forge's onboarding (R_neighbour_names). With this mod and the factory mod alone the Kludged forge makes obsidian only; the page of turn 5 told him so.",
+   "model": ""
+  },
+  {
+   "thing": "power_net",
+   "members": [
+    "levels_of_function",
+    "levels_told_apart",
+    "R_wreck_inert"
+   ],
+   "holds_together": "argued",
+   "why": "A wreck joins no net (R_wreck_inert), so it gives and takes nothing (levels_of_function) and shows no power mark; a line may still draw to it by its tag ((removed)). The marks on a repaired level come from its real power state, which the picture bar reads beside the capture.",
+   "model": ""
+  },
+  {
+   "thing": "onboarding_table",
+   "members": [
+    "levels_of_function",
+    "R_onboarding",
+    "R_kludged_move"
+   ],
+   "holds_together": "argued",
+   "why": "The table is the one place where a machine's levels are written; the bar reads the game and the offline check C_onboarding_table_offline reads the table against the donor's defs. Whether a level can be moved is a field of the same row.",
+   "model": ""
+  },
+  {
+   "thing": "ancient_component",
+   "members": [
+    "last_repair_needs_component",
+    "whole_journey",
+    "R_destroyable"
+   ],
+   "holds_together": "argued",
+   "why": "The component has one way in (a ruin room) and one way out (a last repair). Taking any machine apart gives none, so a colony cannot turn found wrecks into components. Neighbours also charge it (Cold Storage, the Cuisine mod's stasis), so each component is a choice, and a machine that stays Kludged is normal play.",
+   "model": ""
+  },
+  {
+   "thing": "machine_picture",
+   "members": [
+    "levels_told_apart",
+    "R_whole_picture"
+   ],
+   "holds_together": "argued",
+   "why": "Three looks cover the levels that a colony can hold at one time; the fourth level shares the third's picture and is told apart by name. The art judge reads each new picture against the canon library.",
+   "model": ""
+  },
+  {
+   "thing": "player_text",
+   "members": [
+    "levels_told_apart",
+    "no_setting_named",
+    "R_level_names"
+   ],
+   "holds_together": "argued",
+   "why": "The text that must agree with the picture (the inspect text and the order reasons) is part of the text that the offline read searches for setting words and for the old level name. The bars and the rule read the same strings for three different faults, and one change of a string can repair all three.",
+   "model": ""
+  },
+  {
+   "thing": "link_tags",
+   "members": [
+    "R_wreck_inert"
+   ],
+   "holds_together": "measured",
+   "why": "src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py reads the shipped XML and holds both halves today: a tagged wreck draws lines in, and a tagged wreck holds no comp that could join a net. It is green on the built smelter wreck; it must read all 20 wrecks after their onboarding.",
+   "model": ""
+  }
+ ],
+ "rules": [
+  {
+   "id": "R_onboarding",
+   "rule": "A machine enters this mod by an onboarding table that is written by hand in 0.1.0: its levels, what each level makes and how fast, its two restoration projects, what each repair costs, whether its Kludged level can be moved, and its pictures. One rule binds every table: Kludged is a useful small part of the machine's work, and Refurbished is all of it and slower than the Original. The build takes the smelter first and then the machines in the order in which the campaign needs them.",
+   "touches": [
+    "onboarding_table",
+    "forge_processes",
+    "machine_level"
+   ]
+  },
+  {
+   "id": "R_two_projects",
+   "rule": "Each machine has two restoration projects. Study of the wreck opens the first, and study of the Kludged machine opens the second. A project is the colony's knowledge: a second machine of the same kind needs no new study and no new research.",
+   "touches": [
+    "research_projects",
+    "study_progress"
+   ]
+  },
+  {
+   "id": "R_study_carrier",
+   "rule": "Study is carried by the base game's own study of a thing (the comp that unlocks research after analysis, and a project's list of things that must be analysed), put on a building. It needs no other mod and no item. With Research Reinvented loaded, that mod's study opportunities at the machine stay on top. A machine is studied only while it stands, not in its carried form.",
+   "touches": [
+    "study_progress"
+   ]
+  },
+  {
+   "id": "R_placement",
+   "rule": "Where wrecks and Ancient Components lie is data: a weighted list for ruin rooms and a rare single wreck for ordinary new maps. A layer above can change the list without this mod knowing. Every machine that is placed is at the Wrecked level. The placement reads no biome; it reads whether a ruin room or open ground exists. A machine whose line is off is not placed.",
+   "touches": [
+    "map_generation",
+    "world_handouts"
+   ]
+  },
+  {
+   "id": "R_lift",
+   "rule": "Every wreck has a carried form and weighs what the donor machine weighs. Who may lift a wreck is data on the machine; as shipped, any colonist may. A layer above narrows the lift by changing that data. A pawn that the data excludes cannot take the wreck up by any order. A pawn that the data allows always can, by the order that this pawn has: a colonist by the base game's Uninstall order, a hauler of another mod by that mod's own order. So a narrowing never leaves a wreck that no pawn can move. This mod requires no hauler mod and names none.",
+   "touches": [
+    "carried_form"
+   ]
+  },
+  {
+   "id": "R_kludged_move",
+   "rule": "Whether a Kludged or a Refurbished machine can be moved is a field of its onboarding table. As built: the Kludged smelter cannot be moved, the Refurbished smelter can, and the carried machines can at every level.",
+   "touches": [
+    "carried_form",
+    "onboarding_table"
+   ]
+  },
+  {
+   "id": "R_uninstall_cancels",
+   "rule": "An order to uninstall a machine that is under repair cancels the repair first, as a cancel by the player does: the delivered materials are given back, and the machine is carried at its old level.",
+   "touches": [
+    "carried_form",
+    "repair_order"
+   ]
+  },
+  {
+   "id": "R_ground",
+   "rule": "A wreck stands on any firm ground: its def names no ground need of the base game's kind. A working level needs the ground that the donor machine needs: for the factory machines, the factory mod's own floor. A repair order on a wreck that stands on other ground is unavailable and says so. The colony then lays that floor under the wreck where it stands, or carries the wreck onto such a floor; both ways must work. The factory floor stays in the build menu behind the factory mod's own research, like the other parts. Read on 2026-11-27 from the game's source (GenConstruct.CanPlaceBlueprintOver, through RimSage) and from the factory mod's Terrain_Floors.xml, not yet seen in play: the game accepts a floor under a standing building only when the building names no ground need or the new floor gives that need, and the factory floor gives one kind of ground only, its own. So a wreck def that named Heavy ground could neither get factory floor laid under it nor be installed on factory floor.",
+   "touches": [
+    "carried_form",
+    "repair_order",
+    "build_menu"
+   ]
+  },
+  {
+   "id": "R_destroyable",
+   "rule": "A machine of this mod at any level can be attacked, burnt and taken apart like any building. Taking one apart gives ordinary scrap and never an Ancient Component.",
+   "touches": [
+    "ancient_component",
+    "machine_level"
+   ]
+  },
+  {
+   "id": "R_parts_stay",
+   "rule": "The factory mod's parts that do not make goods stay researched and built as that mod has them: the conveyors, the underground conveyor ends, the hopper, the booster, the heatsink and the factory floor. The base game's electric smelter is not touched. A machine that stands in an older save is not changed.",
+   "touches": [
+    "build_menu"
+   ]
+  },
+  {
+   "id": "R_riders",
+   "rule": "Two rules in the mod's folder are outside its promise and work as built until they move: the one salvage rule (to shared code with its own home) and the distillation machine (its working form to FlowWorks). No bar of 0.1.0 judges what they do; their settings stay as built. The alloy forge's early research step and its two settings end when the forge is onboarded.",
+   "touches": [
+    "mod_settings"
+   ]
+  },
+  {
+   "id": "R_signal",
+   "rule": "When a machine changes level, the mod raises one neutral signal that carries the machine, the old level and the new level. The mod names no listener and knows none.",
+   "touches": [
+    "level_signal"
+   ]
+  },
+  {
+   "id": "R_whole_picture",
+   "rule": "A Refurbished machine may use the Original's picture. Each Wrecked and each Kludged level has a picture of its own; a shade of another level's picture is not a picture of its own.",
+   "touches": [
+    "machine_picture"
+   ]
+  },
+  {
+   "id": "R_forge",
+   "rule": "On the alloy forge, plasteel and gravlite are processes of the Refurbished level only, and no research project of their own locks them. Durasteel stays the Armoury's recipe, which the Armoury adds to the forge's Kludged and Refurbished levels.",
+   "touches": [
+    "forge_processes",
+    "research_projects"
+   ]
+  },
+  {
+   "id": "R_neighbour_names",
+   "rule": "A name that a neighbour mod reads (a def name, a class, a research project) changes only together with that neighbour's file, in one landing. The Armoury's forge recipes and ResearchRetag's tab patch are the two known cases of 0.1.0.",
+   "touches": [
+    "neighbour_names",
+    "forge_processes"
+   ]
+  },
+  {
+   "id": "R_level_names",
+   "rule": "A player reads four level names and no others: Wrecked, Kludged, Refurbished and Original. No label, description, order or settings line calls a level Repaired. A defName that keeps the old word is build detail, changed only under R_neighbour_names.",
+   "touches": [
+    "player_text"
+   ]
+  },
+  {
+   "id": "R_wreck_inert",
+   "rule": "(removed)",
+   "touches": [
+    "link_tags",
+    "power_net"
+   ]
+  }
+ ],
+ "whole": "whole_journey"
+}
