@@ -7,10 +7,12 @@ FireCatchesProbe (FireEcologyHook.cs, the block between its begin and end marker
         /mnt/d/ClaudeWork/rimmandrake/fire_catches/tag010, a Windows drive), puts the probe block before the tag
         FireEcologyHook.cs's namespace close, builds it in place with this clone's winbuild.py (exported beside it), prints
         the DLL's path. DIR must be fresh or an earlier export of the same tag.
-Then, live (Stage 6): deploy the current mod (deploy_custom_mods.py --mod Pyrelands --apply), put that DLL over the
-game's Mods\\Pyrelands\\Assemblies\\FireEcologyHook.dll while the game is shut, load, and run the chain with
-PYRE_FCR_TAKE_010=1 (fire_catches_live.py); it writes fire_catches_010_reading.json beside the chain and judges nothing.
-Redeploy the current mod afterwards.
+Then, live (Stage 6), with the game shut: deploy the current build (Pyrelands ships composed: deploy_custom_mods.py
+--compose biomes --apply), then in the game's Mods\\RimMandrake.Biomes\\Biomes\\Pyrelands replace Defs, Patches and
+Languages with the tag's (git archive mod/Pyrelands/v0.1.0 of those three folders; the current Defs name classes the tag
+DLL lacks, e.g. RM_Plant_WithersUnderRoof, ember grass's thingClass: live 2026-11-27) and put that DLL (and its .srchash)
+over Assemblies\\FireEcologyHook.dll. Load, and run the chain with PYRE_FCR_TAKE_010=1 (fire_catches_live.py); it writes
+fire_catches_010_reading.json beside the chain and judges nothing. Redeploy the current build afterwards.
 """
 import argparse
 import io

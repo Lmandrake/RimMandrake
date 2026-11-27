@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/fire_catches_live.py
++++ b/src/RimMandrake/Pyrelands/fire_catches_live.py
+@@ -291,7 +291,7 @@
+             # one spark: the biome's other fire sources held off for the run (the fire clock's fronts and scar arc, the
+             # fire hawks' twigs, scorch fruit), as sc_fire_walks_with_wind does (wind_burn_live.SET); the burn line stays on,
+             # it is the carry (live 2026-11-27: with them on, fires 224 cells off the spark at hour 1, 3 of them uncarried)
+-            V._set(t, dict(HOLD_OFF, **({"windCarriesFireEnabled": True} if take else    # the tag has no Fire pace setting
++            V._set(t, dict(**({"windCarriesFireEnabled": True} if take else    # the tag has no Fire pace setting
+                                         {"windCarriesFireEnabled": True, "firePacePercent": PACE_DEFAULT})))
+             wind = call(t, BURN, "SetWindForTest", BEARING)
+             size = V._map_size(t) if V._live(t) else (250, 250)

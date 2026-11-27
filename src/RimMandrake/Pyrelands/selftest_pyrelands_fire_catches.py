@@ -217,6 +217,7 @@ class Game(object):
         self.weather, self.log, self.dud, self.pawn_rows, self.flood_at, self.stray_at, self.rain_at = \
             "Clear", [], False, False, None, None, None
         self.stray, self.shots, self.lit, self.settings = [], [], [], {}
+        self.unread_at = None   # the hour from which the probe's Burn answers unreadably (a read cut short)
 
     @property
     def tick(self):
@@ -232,6 +233,8 @@ class Game(object):
 
     def burn(self, since):
         s = self.sim
+        if self.unread_at is not None and s.tick // 2500 >= self.unread_at:
+            return "error=planted unreadable"
         zs, xs = np.nonzero(s.size > 0)
         fires = ["%d:%d:%d" % (x, z, s.born[z, x]) for z, x in zip(zs, xs)]   # with carried on, every fire but the spark is a carry's
         fires += ["%d:%d:-1" % c for c in self.stray]
@@ -366,8 +369,12 @@ check("... the verdict owed only the judge (UNMEASURED, never FAIL)", x["verdict
       x["why"])
 check("... every mechanical row holds, the head beats the 0.1.0 reading", rows and all(rw["ok"] is True for k, rw in rows.items()
       if k != "a blind judge reads a walking line"), rows)
-check("... the Fire pace set is the shipped default and wind carries on", g.settings == {"windCarriesFireEnabled": True,
-      "firePacePercent": W.PACE_DEFAULT}, g.settings)
+check("... the Fire pace set is the shipped default and wind carries on", g.settings == dict(W.HOLD_OFF, windCarriesFireEnabled=True,
+      firePacePercent=W.PACE_DEFAULT), g.settings)
+check("... the biome's other fire sources held off, the burn line on (one spark; live 2026-11-27 read foreign fires)",
+      all(g.settings.get(k) is False for k in ("fireClockEnabled", "fireHawkSpreadEnabled", "scorchFruitEnabled"))
+      and g.settings.get("burnLineEnabled") is True and all(g0.settings.get(k) == v for k, v in W.HOLD_OFF.items()),
+      (g.settings, g0.settings))
 check("... one spark, one cell, at SPARK_SIZE", g.lit == [(W.SPARK_X, g.lit[0][1], W.SPARK_SIZE)] if g.lit else False, g.lit)
 check("... captures named by hour, each at or under SHOT_PX", g.shots and all(max(s[1][2], s[1][3]) * s[2] <= W.SHOT_PX
       for s in g.shots) and [s[0] for s in g.shots][0] == "fcr_h01", g.shots)
@@ -391,6 +398,18 @@ for label, setup, comp, want in (
     setup(gm)
     y = run(gm, reading=reading)
     check("planted %s: the %s is %s" % (label, comp, want), y["verdicts"].get(comp) == want, (y["verdicts"], y["why"]))
+gm = Game(pace=200)
+gm.unread_at = 3
+y = run(gm, reading=reading)
+check("planted a burn cut short at hour 3: the verdict is UNMEASURED (no verdict on a partial burn)",
+      y["verdicts"].get("fire_catches_burn") == "UNMEASURED" and y["verdicts"].get("fire_catches_verdict") == "UNMEASURED"
+      and "before its end" in y["why"].get("fire_catches_verdict", ""), (y["verdicts"], y["why"]))
+cut = os.path.join(tempfile.mkdtemp(prefix="fcr_cut_"), "r.json")
+gm = Game(pace=100)
+gm.unread_at = 3
+y = run(gm, env={W.TAKE_ENV: "1"}, reading=cut)
+check("planted a take cut short at hour 3: no 0.1.0 reading is written (live 2026-11-27 wrote head 224 from hour 1)",
+      not os.path.exists(cut) and y["verdicts"].get("fire_catches_verdict") == "UNMEASURED", (y["verdicts"], y["why"]))
 gm = Game(pace=200, cover=0.40)
 y = run(gm, reading=reading)
 check("thin grass on every row: the stage grows the corridor and the opportunity is valid", y["manifest"] and

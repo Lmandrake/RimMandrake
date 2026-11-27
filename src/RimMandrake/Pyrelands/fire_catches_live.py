@@ -51,6 +51,8 @@ ROW_STEP = 10                           # candidate spark rows, every 10 cells, 
 CAPTURE_HOURS = (1, 6, 12, 24)          # one capture of the burn per quarter day, and the hour-1 spark
 SHOT_PX = 1500                          # a capture's long side at most (the agents' image limit)
 PLAY_PPC = 64                           # validation.R6_PLAY_PPC, the cap
+HOLD_OFF = {"burnLineEnabled": True, "fireClockEnabled": False, "fireHawkSpreadEnabled": False,   # RM_PyrelandsSettings
+            "scorchFruitEnabled": False}                    # fields, in 0.1.0 and now; the stage's isolation (register())
 TAKE_ENV = "PYRE_FCR_TAKE_010"
 OUT_ENV = "RM_FCR_DIR"
 READING_010 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fire_catches_010_reading.json")
@@ -286,8 +288,11 @@ def register(suite, V):
                 V._on_site(t)
             t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
             V._extinguish(t)
-            V._set(t, {"windCarriesFireEnabled": True} if take else    # the tag has no Fire pace setting
-                   {"windCarriesFireEnabled": True, "firePacePercent": PACE_DEFAULT})
+            # one spark: the biome's other fire sources held off for the run (the fire clock's fronts and scar arc, the
+            # fire hawks' twigs, scorch fruit), as sc_fire_walks_with_wind does (wind_burn_live.SET); the burn line stays on,
+            # it is the carry (live 2026-11-27: with them on, fires 224 cells off the spark at hour 1, 3 of them uncarried)
+            V._set(t, dict(HOLD_OFF, **({"windCarriesFireEnabled": True} if take else    # the tag has no Fire pace setting
+                                        {"windCarriesFireEnabled": True, "firePacePercent": PACE_DEFAULT})))
             wind = call(t, BURN, "SetWindForTest", BEARING)
             size = V._map_size(t) if V._live(t) else (250, 250)
             reads = []
@@ -345,6 +350,7 @@ def register(suite, V):
                         shots.append({"hour": hour, "rect": rect,
                                       "path": t.screenshot(name="fcr_h%02d" % hour, rect=tuple(rect), ppc=shot_ppc(rect))})
                 if done:
+                    state["ended"] = hour
                     break
             state["lit"] = lit
         V._independent(t)
@@ -354,6 +360,9 @@ def register(suite, V):
             if "hourly" not in state:
                 V._unmeasured(t, "no burn to judge: the stage set no spark row")
             spark = state["spark"]
+            if not state.get("ended"):   # a burn cut short (an UNMEASURED read or capture) is no reading and no verdict
+                V._unmeasured(t, "the burn stopped at hour %d, before its end (a day or the edge): no %s" % (
+                    len(state["hourly"]), "0.1.0 reading" if take else "verdict"))
             ok, why, orows = opportunity(state["corr"], state["weathers"])
             last = state["hourly"][-1][1] if state["hourly"] else None
             hd = head(last["burned"] | set((f[0], f[1]) for f in last["fires"]), spark, BEARING) if last else None

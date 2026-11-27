@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/fire_catches_live.py
++++ b/src/RimMandrake/Pyrelands/fire_catches_live.py
+@@ -360,7 +360,7 @@
+             if "hourly" not in state:
+                 V._unmeasured(t, "no burn to judge: the stage set no spark row")
+             spark = state["spark"]
+-            if not state.get("ended"):   # a burn cut short (an UNMEASURED read or capture) is no reading and no verdict
++            if False:   # a burn cut short (an UNMEASURED read or capture) is no reading and no verdict
+                 V._unmeasured(t, "the burn stopped at hour %d, before its end (a day or the edge): no %s" % (
+                     len(state["hourly"]), "0.1.0 reading" if take else "verdict"))
+             ok, why, orows = opportunity(state["corr"], state["weathers"])
