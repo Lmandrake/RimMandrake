@@ -69,6 +69,8 @@ fixed step: its def guard reads every mod over the Windows mount.
 - **the-model-watch-can-see.** The live acceptance's watch sees a claude child in the command's process tree, and sees
   none when there is none.
 - **the-acceptance-verdict-needs-every-row.** The acceptance is PASS only when every row below passes.
+- **a-station-past-the-map-edge-is-clamped.** A station rect is cut to the map's cells before its capture; a rect with
+  no cell on the map is named as a missing capture.
 - **an-unknown-game-is-refused-by-name.** `--game` with a name that is no game: exit 1, the name in the line.
 
 ## Live acceptance (`walk_stage.py accept`, recorded in walk_stage_accept.json)

@@ -192,11 +192,20 @@ def t_an_unknown_game_is_refused_by_name():
     check("unknown_game_refused_by_name", p.returncode == W.EX_FAULT and "NoSuchGame" in p.stdout, p.stdout + p.stderr)
 
 
+def t_a_station_past_the_map_edge_is_clamped():
+    clamp = getattr(W, "clamp_rect", None)
+    got = clamp((221, 225, 30, 26), 250, 250) if clamp else None
+    check("station_18_map_edge_clamped", got == (221, 225, 29, 25), str(got))
+    check("rect_inside_unchanged", clamp and clamp((10, 20, 5, 6), 250, 250) == (10, 20, 5, 6))
+    check("rect_left_of_zero_clamped", clamp and clamp((-3, -2, 10, 10), 250, 250) == (0, 0, 7, 8))
+    check("rect_off_the_map_is_none", clamp and clamp((260, 10, 5, 5), 250, 250) is None)
+
+
 def main():
     for t in (t_a_missing_mod_is_named, t_the_save_is_loaded_only_on_the_list, t_a_game_on_the_list_is_reused,
               t_a_bad_config_is_refused_by_name, t_a_logged_exception_is_found, t_a_save_comes_with_its_labels,
               t_the_model_watch_can_see, t_no_step_names_a_model_door, t_the_acceptance_verdict_needs_every_row,
-              t_an_unknown_game_is_refused_by_name):
+              t_an_unknown_game_is_refused_by_name, t_a_station_past_the_map_edge_is_clamped):
         t()
     print("selftest_walk_stage: %s (%d fail)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

@@ -215,6 +215,17 @@ def restart_why(want, running, deployed_changed):
     return None
 
 
+def clamp_rect(rect, sx, sz):
+    """-> rect (x, z, w, h) cut to the map's cells [0, sx) x [0, sz), or None when no cell of it is on the map. A
+    station drawn to the map's edge (GSS station 18, MAP EDGE, ends at cell 250 of a 250 map) is refused whole by
+    rimworld/screenshot_cell_rect, so it is cut first (live, ArchSmall, 2026-11-26)."""
+    x, z, w, h = rect
+    x0, z0, x1, z1 = max(0, x), max(0, z), min(sx, x + w), min(sz, z + h)
+    if x1 <= x0 or z1 <= z0:
+        return None
+    return (x0, z0, x1 - x0, z1 - z0)
+
+
 def first_log_exception(text):
     """-> the first exception line of a Player.log text, or None."""
     for line in text.splitlines():
@@ -239,9 +250,10 @@ class Run:
         self.rows = []
         self.t = time.time()
 
-    def row(self, step, what):
+    def row(self, step, what, s=None):
+        """One timed step line. s: the step's own seconds, measured where it ran (a bridge-phase step)."""
         now = time.time()
-        self.rows.append({"step": step, "s": round(now - self.t, 1), "what": what})
+        self.rows.append({"step": step, "s": round(now - self.t, 1) if s is None else s, "what": what})
         self.t = now
         print("step %-9s %6.1fs  %s" % (step, self.rows[-1]["s"], what), flush=True)
 
@@ -390,10 +402,15 @@ class Run:
         job = {"do": "stage", "action": action, "save": name, "resave": (name or "") + "_SMALL",
                "rebuild": cfg.get("rebuild"), "stations": cfg["stations"], "mod": self.mod,
                "save_as": "%s_%s" % ((cfg.get("rebuild") or {}).get("save_as") or cfg["save"], _now())}
+        t0 = time.time()
         r = self.phase(job)
         self.phase_result = r
         for s in r.get("steps") or []:
-            self.row(s["step"], s["what"])
+            self.row(s["step"], s["what"], s.get("s"))
+        self.t = time.time()
+        if r.get("steps"):
+            self.row("bridge", "the phase's own start and finish (python.exe, connect, write)",
+                     round(time.time() - t0 - sum(s.get("s") or 0 for s in r["steps"]), 1))
         if not r.get("ok"):
             raise Stop(r.get("step") or "stage", r.get("why") or "the bridge phase did not say why",
                        EX_BLIND if r.get("blind") else EX_FAULT)
@@ -599,9 +616,17 @@ def _stage(job, call, res, step):
             step("save", "saved %s" % name)
         res["save"] = name
         call("jawa/clear_ui")
+        mi = call("jawa/map_info")
+        sx, sz = mi.get("sizeX"), mi.get("sizeZ")
+        if not (isinstance(sx, int) and isinstance(sz, int)):
+            fail("capture", "jawa/map_info gave no map size (%s, %s)" % (sx, sz), blind=True)
         shots, missing = {}, []
         for s in job["stations"]:
-            x, z, w, h = s["rect"]
+            rc = clamp_rect(s["rect"], sx, sz)
+            if rc is None:
+                missing.append("%s (its rect %s is off the %dx%d map)" % (s["name"], s["rect"], sx, sz))
+                continue
+            x, z, w, h = rc
             r = call("rimworld/screenshot_cell_rect", x=x, z=z, width=w, height=h, paddingCells=1,
                      fileName="walkstage_%s_%d" % (re.sub(r"\W+", "_", s["name"]), time.time_ns() // 1000000),
                      suppressMessage=True)
@@ -611,7 +636,7 @@ def _stage(job, call, res, step):
                 shutil.copyfile(src, dst)
                 shots[s["name"]] = dst
             else:
-                missing.append(s["name"])
+                missing.append("%s (%s)" % (s["name"], r.get("message") or r.get("error") or "no file: %s" % src))
         res["captures"] = shots
         if missing:
             fail("capture", "%d station(s) gave no picture: %s" % (len(missing), ", ".join(missing[:6])), blind=True)

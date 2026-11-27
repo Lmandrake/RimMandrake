@@ -1,0 +1,116 @@
+{
+ "mod": "GimmeSomeSlack",
+ "game": "ArchSmall",
+ "at": "2026-11-26T15:58:25-08:00",
+ "planted": {
+  "exit": 1,
+  "names_mod": true,
+  "last": "NOT READY GimmeSomeSlack on ArchSmall: list: mandrake.rm.walkstageplantedmissing is named by small_list.json but is not on the resolved list (not installed, or not in tier gimmesomeslack_walk)",
+  "model_processes": []
+ },
+ "real": {
+  "exit": 0,
+  "last": "READY GimmeSomeSlack on ArchSmall: save GSS_020_CLOSE_WALK_20261124_SMALL | list 11 mods (gimmesomeslack_walk) | captures D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838 | 151 s",
+  "model_processes": [],
+  "steps": [
+   "step list        15.9s  11 mods, tier gimmesomeslack_walk",
+   "step lock         0.0s  held: ArchSmall",
+   "step deploy     106.9s  in sync, nothing written",
+   "step game         1.6s  reused: up on the list",
+   "step decide       0.1s  load GSS_020_CLOSE_WALK_20261124_SMALL: its header holds the list (11 mods)",
+   "step load         4.3s  loaded GSS_020_CLOSE_WALK_20261124_SMALL",
+   "step hostiles     0.3s  0 hostile pawns (0 killed)",
+   "step pause        2.2s  paused at tick 17683",
+   "step capture     19.3s  38 stations captured",
+   "step exception    0.1s  none seen since the load",
+   "step bridge       0.4s  the phase's own start and finish (python.exe, connect, write)"
+  ]
+ },
+ "captures": {
+  "01_ground_cords_scrapper": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\01_ground_cords_scrapper.png",
+  "02_ground_cords_industrial": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\02_ground_cords_industrial.png",
+  "03_ground_cords_modern": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\03_ground_cords_modern.png",
+  "04_ground_cords_futuristic": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\04_ground_cords_futuristic.png",
+  "05_modern_every_colour_entry": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\05_modern_every_colour_entry.png",
+  "06_overhead_four_looks": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\06_overhead_four_looks.png",
+  "07_merge_bigger_run_wins": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\07_merge_bigger_run_wins.png",
+  "08_merge_a_tie": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\08_merge_a_tie.png",
+  "09_split_keeps_the_look": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\09_split_keeps_the_look.png",
+  "10_restyle_this_run_yours": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\10_restyle_this_run_yours.png",
+  "11_older_save_no_stored_look": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\11_older_save_no_stored_look.png",
+  "12_wall_rock_entries": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\12_wall_rock_entries.png",
+  "13_cut_fallen_span": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\13_cut_fallen_span.png",
+  "14_power_tap": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\14_power_tap.png",
+  "15_pole_cluster": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\15_pole_cluster.png",
+  "16_electric_room": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\16_electric_room.png",
+  "17_over_the_unknown": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\17_over_the_unknown.png",
+  "18_map_edge": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\18_map_edge.png",
+  "19_river_crossing": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\19_river_crossing.png",
+  "20_roof_boundary": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\20_roof_boundary.png",
+  "21_long_span_diagonals": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\21_long_span_diagonals.png",
+  "22_converging_hub": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\22_converging_hub.png",
+  "23_nets_side_by_side_half_built": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\23_nets_side_by_side_half_built.png",
+  "24_waterproof_conduit_four_looks": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\24_waterproof_conduit_four_looks.png",
+  "25_conduit_kinds": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\25_conduit_kinds.png",
+  "26_wall_brackets_every_face": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\26_wall_brackets_every_face.png",
+  "27_tap_clamp_poses": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\27_tap_clamp_poses.png",
+  "28_auto_link_selected": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\28_auto_link_selected.png",
+  "29_fallen_wire_hazards": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\29_fallen_wire_hazards.png",
+  "30_claim_their_pole": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\30_claim_their_pole.png",
+  "31_styled_blueprints": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\31_styled_blueprints.png",
+  "32_one_line_every_piece": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\32_one_line_every_piece.png",
+  "33_wall_lamps_four_looks": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\33_wall_lamps_four_looks.png",
+  "34_battery_four_looks": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\34_battery_four_looks.png",
+  "35_three_poles_two_spans": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\35_three_poles_two_spans.png",
+  "36_pole_lamp_takes_cord_end": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\36_pole_lamp_takes_cord_end.png",
+  "37_switch_glow_out": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\37_switch_glow_out.png",
+  "38_fallen_wire": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838\\38_fallen_wire.png"
+ },
+ "record": "D:\\ClaudeWork\\rimmandrake\\showings\\walk_stage_GimmeSomeSlack_20261126_155838/walk_stage.json",
+ "read": {
+  "ok": true,
+  "save": "GSS_020_CLOSE_WALK_20261124_SMALL",
+  "programState": "Playing",
+  "paused": true,
+  "tick": 17683,
+  "hostiles": 0,
+  "exit": 0
+ },
+ "verdict": {
+  "result": "PASS",
+  "rows": [
+   [
+    "planted_exits_nonzero",
+    "PASS"
+   ],
+   [
+    "planted_names_the_mod",
+    "PASS"
+   ],
+   [
+    "real_exits_0_ready",
+    "PASS"
+   ],
+   [
+    "read_save_loaded",
+    "PASS"
+   ],
+   [
+    "read_paused",
+    "PASS"
+   ],
+   [
+    "read_zero_hostiles",
+    "PASS"
+   ],
+   [
+    "capture_per_station",
+    "PASS"
+   ],
+   [
+    "no_model_process",
+    "PASS"
+   ]
+  ]
+ }
+}
