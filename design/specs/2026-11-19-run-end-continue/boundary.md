@@ -60,6 +60,10 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_left_o
   named no, never a launch.
 - **launch-checks-are-skipped-only-for-the-same-item.** The step passes `skip_launch_checks` only when its target is
   the run's own item; a hand-off to another lane ticket runs that ticket's launch checks.
+- **a-brief-that-only-mentions-a-lane-names-no-lane.** A brief is a lane brief only when its first heading line (the
+  first line that starts with `#`) starts with the word Lane (`# Lane watchers: ...`, `# Lane 3 meters: ...`). A brief
+  that only uses the word elsewhere ("the ticket lane", "until your lane 1 is recorded", "the SteveDesktop test lane")
+  names no lane, whatever ids it bullets, so a run whose own item closed is not continued on one of them.
 - **an-open-lane-item-is-its-own-target.** A lane run whose own item is still open is continued on that item, with the
   open lane tickets listed in the header.
 - **a-refused-continuation-spends-no-daily-slot.** A continuation record with status `refused` or `launch_failed` is

@@ -873,6 +873,34 @@ def t_a_stopped_run_waits_for_its_stop_switch_to_lift():
         C.launch_unit = real
 
 
+def t_a_brief_that_only_mentions_a_lane_names_no_lane():
+    # 2026-11-27: a readying brief ("# Brief: make every scheduled infrastructure piece ready", which names "the ticket
+    # lane" and bullets nine owed items it was to read) ended done and was continued on one of those items as if they
+    # were its lane; judge briefs ("until your lane 1 is recorded") and mod packets ("the SteveDesktop test lane") read
+    # the same way. A lane brief names itself a lane in its first heading ("# Lane watchers: ...").
+    ids = ["RIMMANDRAKE_OWED_PIECE_ONE_READ_ONLY", "RIMMANDRAKE_OWED_PIECE_TWO_READ_ONLY"]
+    bullets = "".join("- `%s`\n" % t for t in ids)
+    briefs = {
+        "a readying brief": "# Brief: make every piece ready (one run)\n\nThe ticket lane is the Workshop Pipeline.\n\n"
+                            "## The pieces\n\n" + bullets,
+        "a judge brief": "## You judge X blind\n\nStay blind until your lane 1 is recorded.\n\n" + bullets,
+        "a mod packet": "# FlowWorks — mod ledger packet\n\nSteve1 takes work through the SteveDesktop test lane.\n\n"
+                        + bullets,
+    }
+    for what, b in briefs.items():
+        rec = make_run(item="RIMMANDRAKE_READYING_RUN_DONE_ITS_OWN", brief=b, at=T0 + 60000)
+        check("a-brief-that-only-mentions-a-lane-names-no-lane: %s" % what, LOC.lane_tickets_of(rec) == [],
+              str(LOC.lane_tickets_of(rec)))
+    rec = make_run(item="RIMMANDRAKE_READYING_RUN_DONE_ITS_OWN", brief=briefs["a readying brief"], at=T0 + 60100)
+    p, _ = go(rec, {"state": "done", "notes": []}, states=states_for("done", {t: "proposed" for t in ids}),
+              now=T0 + 60700)
+    check("a-brief-that-only-mentions-a-lane-names-no-lane: its done item is not continued", p["act"] == "none"
+          and not LAUNCHES, str(p))
+    numbered = make_run(item=LANE[0], brief="# Lane 3 meters: every limit shown\n\n" + bullets, at=T0 + 60200)
+    check("a-brief-that-only-mentions-a-lane-names-no-lane: a numbered lane heading is still a lane",
+          LOC.lane_tickets_of(numbered) == ids, str(LOC.lane_tickets_of(numbered)))
+
+
 def main():
     for t in (test_open_with_note, test_closed, test_lane, test_limit, test_capped, test_killed_voided, test_gates,
               test_finish_kicks, test_launch_records_opt_in, test_waiting,
@@ -886,7 +914,8 @@ def main():
               t_the_run_end_note_carries_no_spend_sentence, t_a_blind_role_never_resumes,
               t_a_run_stopped_at_an_easy_spot_with_a_left_open_note_is_continued,
               t_a_stop_that_ends_the_work_is_never_continued, t_a_hand_void_beside_a_stop_still_bars_the_carry_on,
-              t_a_stopped_run_waits_for_the_account_gate_as_a_new_run, t_a_stopped_run_waits_for_its_stop_switch_to_lift):
+              t_a_stopped_run_waits_for_the_account_gate_as_a_new_run, t_a_stopped_run_waits_for_its_stop_switch_to_lift,
+              t_a_brief_that_only_mentions_a_lane_names_no_lane):
         try:
             t()
         except Exception as e:  # noqa: BLE001

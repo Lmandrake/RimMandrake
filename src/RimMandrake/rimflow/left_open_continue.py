@@ -66,7 +66,10 @@ MAX_PER_DAY = 3
 DAY_S = 86400
 ALARM_ID = "DETACHED_CONTINUE_LIMIT_REACHED"
 HEAD = "LEFT OPEN CONTINUE"
-LANE_RX = re.compile(r"\blane\b", re.I)
+# A lane brief names itself a lane in its first heading ("# Lane watchers: ...", "# Lane 3 meters: ..."). The word
+# anywhere else is no lane: on 2026-11-27 a readying brief that named "the ticket lane" and bulleted nine items to read
+# was continued on one of them after its own item closed; judge briefs ("lane 1") and mod packets read the same way.
+LANE_RX = re.compile(r"#+\s*lane\b", re.I)     # matched on the first heading line only (is_lane_brief)
 BULLET_ID_RX = re.compile(r"^\s*[-*]\s+`([A-Z][A-Z0-9_]{7,})`", re.M)
 # A resume carries the session's whole context into every request, and on a cache miss (past the 1 h cache life, or a
 # model change) its first request writes all of it again: 2026-11-21, resumes of 252k-362k contexts cost 0.72M-1.20M
@@ -105,10 +108,19 @@ def brief_of(rec):
     return ""
 
 
+def is_lane_brief(text):
+    """True when the first heading line of `text` (the first line that starts with #) starts with the word Lane."""
+    for line in (text or "").splitlines():
+        if line.lstrip().startswith("#"):
+            return bool(LANE_RX.match(line.lstrip()))
+    return False
+
+
 def lane_tickets_of(rec):
-    """-> the ticket ids a lane brief bullets, in order; [] for a brief that is not a lane."""
+    """-> the ticket ids a lane brief bullets, in order; [] for a brief that is not a lane (its first heading does not
+    start with the word Lane)."""
     b = brief_of(rec)
-    if not LANE_RX.search(b):
+    if not is_lane_brief(b):
         return []
     return list(dict.fromkeys(BULLET_ID_RX.findall(b)))
 
