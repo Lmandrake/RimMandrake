@@ -22,11 +22,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 
 FAKE_GAME = r'''#!/usr/bin/env python3
-# A game: writes its bridge line to -logfile, records the environment it got, sleeps. --ignore-term survives a graceful stop.
+# A game: writes its bridge line to -logfile, records the environment it got, sleeps. --ignore-term survives a graceful stop;
+# --linger takes 1.5 s to close after one.
 import json, os, signal, sys, time
 a = sys.argv[1:]
 if "--ignore-term" in a:
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
+if "--linger" in a:              # a real game takes seconds to close after a graceful stop
+    signal.signal(signal.SIGTERM, lambda *_: (time.sleep(1.5), sys.exit(0)))
 if "-logfile" in a:
     with open(a[a.index("-logfile") + 1].replace("\\", "/"), "w") as f:
         p = os.environ.get("FAKE_GAME_PORT") or os.environ.get("GABP_SERVER_PORT")
@@ -47,7 +50,7 @@ if not any(x.startswith("-savedatafolder=") for x in a) and "-logfile" not in a 
         f.write(("[RimBridge] GABP server connected to GABS on port %s\n" % p) if p else
                 "[RimBridge] GABP server running standalone on port 5174\n[RimBridge] Bridge token: faketoken\n")
     with open(os.path.join(d, "a_saw.json"), "w") as f:
-        json.dump({"argv": [x for x in a if x != "--ignore-term"], "port": p, "token": os.environ.get("GABP_TOKEN")}, f)
+        json.dump({"argv": [x for x in a if x not in ("--ignore-term", "--linger")], "port": p, "token": os.environ.get("GABP_TOKEN")}, f)
 time.sleep(600)
 '''
 
@@ -117,7 +120,7 @@ if mode == "silent":
 m = re.search(r"Get-Process -Id (\d+)", script)
 if "Filter 'Name=''RimWorldWin64.exe'''" in script or "Filter 'Name=''" in script:
     for pid, argv in games():
-        cmd = '' if mode == "unreadable" else ' '.join(['"C:\\Game\\RimWorldWin64.exe"'] + [a for a in argv if a != "--ignore-term"])
+        cmd = '' if mode == "unreadable" else ' '.join(['"C:\\Game\\RimWorldWin64.exe"'] + [a for a in argv if a not in ("--ignore-term", "--linger")])
         print("%d|%d|%s" % (pid, start_ms(pid), cmd))
     print("GAME-LIST-OK")
 elif "Get-NetTCPConnection" in script:

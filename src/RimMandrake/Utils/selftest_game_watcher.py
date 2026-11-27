@@ -84,13 +84,16 @@ def t_ordinary_stop_matches_parent():
 
     usage = (b"usage: game_instance.py stop [-h] [--force] [--instance INSTANCE]\n"
              b"                             [--for PURPOSE] [--despite-hold DESPITE]\n"
+             b"                             [--wait-s WAIT_S]\n"
              b"                             [pid]\n")
     help_text = usage + (
         b"\npositional arguments:\n  pid\n\noptions:\n"
         b"  -h, --help            show this help message and exit\n"
         b"  --force\n  --instance INSTANCE\n"
         b"  --for PURPOSE         what the stop is for (the bridge check records it)\n"
-        b"  --despite-hold DESPITE\n                        act on a held game on purpose: why\n")
+        b"  --despite-hold DESPITE\n                        act on a held game on purpose: why\n"
+        b"  --wait-s WAIT_S       wait up to this long for the process to be gone (0: do\n"
+        b"                        not wait)\n")
     unknown = (b"usage: game_instance.py [-h]\n"
                b"                        {env,pid,prepare,install,launch,stop,status,free,leftovers} ...\n"
                b"game_instance.py: error: unrecognized arguments: --b\n")

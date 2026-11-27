@@ -9,7 +9,7 @@ process means, and game_paths, rimbridge_client and driver_lock follow that name
 
     python3 src/RimMandrake/Utils/game_instance.py env b            export lines: eval "$(... env b)"; nothing for a
     python3 src/RimMandrake/Utils/game_instance.py pid [b]          the pid, or nothing when it is not running
-    python3 src/RimMandrake/Utils/game_instance.py stop [PID] [--force] [--instance b] [--for "why"]   taskkill /PID, never /IM; only
+    python3 src/RimMandrake/Utils/game_instance.py stop [PID] [--force] [--instance b] [--for "why"] [--wait-s S]   taskkill /PID, never /IM; only
                                                                     when `rimflow bridge idle` says TAKEABLE
     python3 src/RimMandrake/Utils/game_instance.py stop --broken --instance b  confirm broken disk health, then stop by PID
     python3 src/RimMandrake/Utils/game_instance.py prepare b        seed the folder and its own install (safe while another
@@ -559,8 +559,17 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None, de
                purpose))
 
 
+# stop's wait for the process to be gone. Danger: a game that ignores a graceful close (a modal on screen) would hold
+# the caller forever; the bound ends the wait and the stop says "still running". Without the wait, a launch right after
+# a stop saw the closing process, said "already running" and started nothing (ArchBig, 2026-11-26). Hang guard: the
+# longest real graceful close is UNMEASURED; seconds were seen (that ArchBig was still up ~1 s after its stop). The CLI
+# waits by default; a caller of stop() that does its own wait (maturation's deploy restart) passes nothing and waits not.
+STOP_WAIT_S = 120
+
+
 @_named
-def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=None, broken=False):
+def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=None, broken=False,
+         wait_s=0, sleep=time.sleep, clock=time.time):
     """taskkill by process id -> (exit code, text). With no pid, every game of this instance; a pid must be this
     instance's, or Refused. Raises Blind when ownership cannot be read: nothing is signalled on a guess. Refused too
     while the bridge is not this seat's to act on (bridge_refusal): a stop is a reboot, the agent's to call only when
@@ -604,6 +613,21 @@ def stop(pid_=None, force=False, name=None, purpose=None, despite=None, seat=Non
             break
         rc = rc or r.returncode
         out.append(((r.stdout or "") + (r.stderr or "")).strip() or "taskkill /PID %d" % p)
+    if rc == 0 and wait_s and not broken:    # the emergency stop is /F and nothing relaunches after it
+        end, left = clock() + wait_s, targets
+        try:
+            while left:
+                left = alive(left)        # by pid: a closing game reads an empty command line (alive's note)
+                if not left or clock() >= end:
+                    break
+                sleep(0.5)
+        except Blind as e:
+            out.append("UNMEASURED whether %s is gone: %s" % (_n(name), e))
+            left = []
+        if left:
+            rc = 1
+            out.append("%s still running after %g s: pid %s (a graceful stop only asks; --force takes it)" %
+                       (_n(name), wait_s, ", ".join(map(str, left))))
     if broken:
         out.insert(0, "%s %s pid %d: %s (%s)" %
                    ("STOP FAILED" if rc else "STOPPED", _n(name), pid_, reading.state, reading.detail))
@@ -1059,6 +1083,8 @@ def main(argv=None):
     s.add_argument("--instance", default=None)
     s.add_argument("--for", dest="purpose", default=None, help="what the stop is for (the bridge check records it)")
     s.add_argument("--despite-hold", dest="despite", default=None, help="act on a held game on purpose: why")
+    s.add_argument("--wait-s", dest="wait_s", type=float, default=STOP_WAIT_S,
+                   help="wait up to this long for the process to be gone (0: do not wait)")
     # Emergency stop requires the full flag. Keep ordinary help and parse errors as before.
     options = argv[:argv.index("--")] if "--" in argv else argv
     if "--broken" in options:
@@ -1097,7 +1123,7 @@ def main(argv=None):
         else:
             if a.cmd == "stop":
                 emergency = {"broken": True} if getattr(a, "broken", False) else {}
-                rc, text = stop(a.pid, a.force, a.instance, a.purpose, a.despite, **emergency)
+                rc, text = stop(a.pid, a.force, a.instance, a.purpose, a.despite, wait_s=a.wait_s, **emergency)
             else:
                 rc, text = launch(a.name, a.wait, despite=a.despite)
             print(text)

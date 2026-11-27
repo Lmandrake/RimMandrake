@@ -113,10 +113,18 @@ def stop(w):
     check(r.returncode == G.EX_REFUSED and F.alive(a) and F.alive(b), "a pid that is no game: refused")
     w.clear()
 
+    a = w.start("--linger", "-disable-compute-shaders")
+    r = w.gi("stop", str(a))
+    check(r.returncode == 0 and stdout(w.gi("pid")) == "",
+          "stop returns once the game is gone, not while it closes (a launch right after a stop said 'already "
+          "running' and started nothing, 2026-11-26)")
+    w.clear()
+
     a = w.start("--ignore-term", "-disable-compute-shaders")
     b = w.start_b()
-    r = w.gi("stop")
+    r = w.gi("stop", "--wait-s", "1")
     check(not F.wait_dead(a, 0.5) and F.alive(b), "a graceful stop is graceful: a game that ignores it stays up")
+    check(r.returncode == 1 and "still running" in r.stdout, "and the stop says so, exit 1: %r" % r.stdout[-120:])
     w.gi("stop", str(a), "--force")
     check(F.wait_dead(a) and F.alive(b), "--force takes that pid, and b lives")
     w.clear()
