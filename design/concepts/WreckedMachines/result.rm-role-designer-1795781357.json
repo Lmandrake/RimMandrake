@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1795781357",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Stage 4 closed again without a retake: the exam of 2026-11-27 stands. The coverage judge's repair changed scenes.json only; the tree (480772ae49ee) and the sheet (54d5b95f8740) are the ones on which the exam was held, and a Reader never sees scenes.json. Measured in this run: `exam_retake.py plan` answered NONE_TOUCHED (nothing that any of the 20 scenarios read changed); `exam_retake.py carry` on an empty answer file restamped exam.json and carried all 20 answers, each marked with the exam that it came from; `exam_retake.py record` wrote the read map again (20 scenarios over 12 bars). The score is unchanged: 20 of 20, no accept where a core bar rejects, no Challenger miss, and the control Reader's miss of e13 stands. No Examiner, Challenger, Reader or control Reader ran in this run. No bar, rule, scene or sheet line changed. Written by this run: exam.json (restamped), exam_reads.json, exam_retake_plan.json, record decision d_stage4_exam_carried and a section of log.md. Not done by this run: nothing was asked of him; the next act is stage 5's fresh judge look at the repaired scenes. His reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2.",
+ "quick_look": {
+  "offer": false,
+  "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
+ }
+}

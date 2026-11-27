@@ -247,10 +247,17 @@
     "ref": "run rm-role-designer-1795780944",
     "stage": 3,
     "tokens": 1333717
+   },
+   {
+    "at": "2026-11-27T12:12:23Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795781357",
+    "stage": 4,
+    "tokens": 619364
    }
   ],
   "reserve": 60000,
-  "spent": 57127969
+  "spent": 57747333
  },
  "coverage_rounds": [
   {
@@ -610,6 +617,30 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1795780944: stage 3 done"
+  },
+  {
+   "at": "2026-11-27T12:09:57Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "57127969 of 8000000 spent; run rm-role-designer-1795781357 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T12:09:58Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1795781357, stage 4, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T12:12:24Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795781357: stage 4 done"
+  },
+  {
+   "at": "2026-11-27T12:12:24Z",
+   "stage": 5,
+   "what": "exam_map",
+   "why": "read map recorded for 20 scenarios"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -918,12 +949,45 @@
    "run": "rm-role-designer-1795780944",
    "stage": 3,
    "summary": "Stage 3 closed again on the scenes that the stage-5 coverage judge repaired. The judge rm-coverage-judge-1795778084 answered not_covered with seven gaps and fixed each one itself in scenes.json: four new acceptance scenes (study without Research Reinvented, the cannery on a list with Vanilla Cooking Expanded, a state read of every onboarded machine, a wreck brought home by caravan) and edits to five scenes. This run read each repair against the tree and changed no scene, bar, rule or sheet line; a judge's fix is checked by the next judge, a fresh one, so no coverage_fixes.json was written. Measured in this run: Gate A lint passes and the showcase set is accepted on the changed scenes (26 acceptance, 2 interaction and 4 exploration scenes). Each new expectation rests on words that the tree already holds. The one repair on a criterion that the second reader called flawed (a Refurbished machine taken apart gives no component) stays, because rule R_destroyable already says it. The control of the caravan scene holds on measured values (the autoloom has Mass 65; one colonist carries 35 kg). The bridge functions that the new scenes need exist (commits 626876a561 and 16d9d38315). The build item's acceptance test prints 'missing 4', the four new entry points; another run is working that item, and its file was not changed. Written by this run: record decision d_stage5_judge_fix_read, a note in plan.md on the four scenes, their instruments and two new mod-list tiers, and one line in version/polish.md for the judge's advisory note on cost settings, which no scene moves. Not done by this run: no live look and no judge look; the next act is stage 5's fresh judge look. His reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2."
+  },
+  {
+   "at": "2026-11-27T12:12:24Z",
+   "inputs": {
+    "exam": "d1e83ff7f55d4aa0cf38bfc72f2b909f74893c059c5d00e835b5f13352b0e744",
+    "floor": "e1538f124ba31c45f00e55dbd41247e6ba60b1244f260ff0a092c8fd0558d67d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
+    "scenes": "e0140af7d38bcafbf78b867dbef6fc24eb07e9168a6d29839cb2623695979db3",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc"
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_exam.md": "6ec8760e9b57a40efe589a6ee69489f9405c25bde9f9dec22493ecf975807ed2"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "a9b9f8456aefd2d994cbc0d1d2217c99286ab67a",
+    "floor": "a9b9f8456aefd2d994cbc0d1d2217c99286ab67a",
+    "root": "a9b9f8456aefd2d994cbc0d1d2217c99286ab67a",
+    "scenes": "a9b9f8456aefd2d994cbc0d1d2217c99286ab67a",
+    "sheet": "a9b9f8456aefd2d994cbc0d1d2217c99286ab67a",
+    "tree": "a9b9f8456aefd2d994cbc0d1d2217c99286ab67a"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "no question goes to him at this stage; the first look of 2026-11-26 was played and its readings are in the design (record decision d_first_look_read)"
+   },
+   "run": "rm-role-designer-1795781357",
+   "stage": 4,
+   "summary": "Stage 4 closed again without a retake: the exam of 2026-11-27 stands. The coverage judge's repair changed scenes.json only; the tree (480772ae49ee) and the sheet (54d5b95f8740) are the ones on which the exam was held, and a Reader never sees scenes.json. Measured in this run: `exam_retake.py plan` answered NONE_TOUCHED (nothing that any of the 20 scenarios read changed); `exam_retake.py carry` on an empty answer file restamped exam.json and carried all 20 answers, each marked with the exam that it came from; `exam_retake.py record` wrote the read map again (20 scenarios over 12 bars). The score is unchanged: 20 of 20, no accept where a core bar rejects, no Challenger miss, and the control Reader's miss of e13 stands. No Examiner, Challenger, Reader or control Reader ran in this run. No bar, rule, scene or sheet line changed. Written by this run: exam.json (restamped), exam_reads.json, exam_retake_plan.json, record decision d_stage4_exam_carried and a section of log.md. Not done by this run: nothing was asked of him; the next act is stage 5's fresh judge look at the repaired scenes. His reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
