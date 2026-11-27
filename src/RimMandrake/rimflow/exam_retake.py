@@ -404,23 +404,32 @@ def plan(d, scenarios=None, repo=None):
         "; " + "; ".join(notes) if notes else "", len(carry)), retake, carry, changed, against)
 
 
+# a hang guard on each git call, never a speed bar: a hung git (a stuck index lock, a dead mount) would hold the plan
+# forever. Measured need: the whole tree.json history of ExplosiveKnockback (21 commits) in 0.8 s for the log and
+# 0.3 s for every show together, 2026-11-26.
+GIT_TIMEOUT_S = 300
+
+
 def _exam_tree_from_git(d, want):
-    """-> the tree.json object whose tree_hash is `want`, from git history of d's tree.json, or None (no git, no such
-    commit). Every commit that touched tree.json is read: the danger of a cap is a wrong whole exam, and a read is
-    about 10 ms."""
+    """-> the tree.json object whose tree_hash is `want`, from git history of d's tree.json, or None when git was read
+    and no commit holds it. OSError (with its cause) when git could not be read: the caller says which. Every commit
+    that touched tree.json is read: the danger of a cap is a wrong whole exam, and a read is about 15 ms."""
     import subprocess
     try:
         log = subprocess.run(["git", "-C", d, "log", "--format=%H", "--", "tree.json"], capture_output=True,
-                             text=True, check=True).stdout.split()
-    except (OSError, subprocess.CalledProcessError):
-        return None
+                             text=True, check=True, timeout=GIT_TIMEOUT_S).stdout.split()
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
+        raise OSError("git log of tree.json failed (%s)" % e)
     for h in log:
         try:
             out = subprocess.run(["git", "-C", d, "show", "%s:./tree.json" % h], capture_output=True, text=True,
-                                 check=True).stdout
+                                 check=True, timeout=GIT_TIMEOUT_S).stdout
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
+            raise OSError("git show %s:tree.json failed (%s)" % (h[:10], e))
+        try:
             t = json.loads(out)
-        except (OSError, subprocess.CalledProcessError, ValueError):
-            continue
+        except ValueError:
+            continue            # a commit whose tree.json is not JSON is not the exam's tree
         if isinstance(t, dict) and CT.tree_hash(t) == want:
             return t
     return None
@@ -433,7 +442,10 @@ def _schema2_shared(d, rec, shared0):
     (None, why)."""
     if legacy_shared(d) == shared0:
         return units(d)[1], None
-    old = _exam_tree_from_git(d, rec["exam"].get("tree"))
+    try:
+        old = _exam_tree_from_git(d, rec["exam"].get("tree"))
+    except OSError as e:
+        return None, "git history could not be read to find the tree the exam was taken on (%s)" % e
     if old is None:
         return None, "the tree the exam was taken on (%s) is not in git history" % str(rec["exam"].get("tree"))[:12]
     try:

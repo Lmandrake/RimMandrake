@@ -653,7 +653,7 @@ def _legacy_shared(d):
 
 def _git(rd, *a):
     import subprocess
-    subprocess.run(["git", "-C", rd] + list(a), check=True, capture_output=True,
+    subprocess.run(["git", "-C", rd] + list(a), check=True, capture_output=True, timeout=ER.GIT_TIMEOUT_S,
                    env=dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t",
                             GIT_COMMITTER_EMAIL="t@t"))
 
