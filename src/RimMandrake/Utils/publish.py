@@ -1018,12 +1018,74 @@ def door_checks(top, changed):
     """The whole-tree checks, then the pipeline checks, under one per-machine slot (treecheck_slots.SLOTS run at once,
     the rest wait first come first served; RIMMANDRAKE_THROTTLE_TREECHECKS_WHEN_DISK_SATURATES_HANG_GUARDS_FIRE: six at
     once saturated SteveDesktop's disk, 2026-11-24). A change that runs no door check takes no slot. Page:
-    design/specs/2026-11-24-treecheck-slots/boundary.md. Raises Refuse as tree_checks and pipeline_checks do."""
+    design/specs/2026-11-24-treecheck-slots/boundary.md. A text-only change takes text_door instead, with no slot.
+    Raises Refuse as tree_checks and pipeline_checks do."""
+    if text_door(top, changed):
+        return
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import treecheck_slots
     with treecheck_slots.Gate(os.path.join(RM_ROOT, TREECHECK_GATE)) as gate:
         tree_checks(top, changed, gate)
         pipeline_checks(top, changed, gate)
+
+
+# Rule and design text: a .md path outside these folders (code, hooks and briefs live in them) that no pipeline_files
+# glob names. Page: design/specs/2026-11-24-treecheck-slots/boundary.md, a-text-publish-passes-held-slots.
+CODE_DIRS = ("src/", ".claude/", "infrastructure/githooks/")
+
+
+def text_only(changed, skip_globs, pipeline_globs):
+    """True when the change is rule or design text: every changed path is a skip_when_only path or a .md file outside
+    CODE_DIRS that no pipeline_files glob names, and at least one is such a .md file. A change to code, a def, a test,
+    a hook, a brief or a pipeline page is never text only. None (the change set is unknown) is never text only."""
+    if not changed:
+        return False
+    rest = [p for p in changed if not any(fnmatch.fnmatch(p, g) for g in skip_globs)]
+    return bool(rest) and all(p.endswith(".md") and not p.startswith(CODE_DIRS)
+                              and not any(fnmatch.fnmatch(p, g) for g in pipeline_globs) for p in rest)
+
+
+def text_door(top, changed):
+    """The door of a text-only change (text_only): no tree-check slot. It runs the whole-tree checks that read text
+    (every check not marked `"reads_text": false` in publish_tree_checks.json) and the pipeline tests whose `inputs`
+    the change matches (`any_change`), on the machine's text tree (full_head_tree lane TEXT_LANE: one kept full checkout,
+    reused, one text publish at a time), and refuses on a red as the ordinary door does. -> True when it took the change,
+    False when the ordinary door takes it (not text only, or no check list here)."""
+    if not os.path.isfile(os.path.join(top, TREE_CHECKS)):
+        return False
+    tcfg = json.load(open(os.path.join(top, TREE_CHECKS), encoding="utf-8"))
+    pp = os.path.join(top, PIPELINE_TESTS)
+    pcfg = json.load(open(pp, encoding="utf-8")) if os.path.isfile(pp) else {}
+    if not text_only(changed, tcfg.get("skip_when_only", ()), pcfg.get("pipeline_files", ())):
+        return False
+    print("door: a text-only change (%d path(s)): the checks that read text run on the machine's text tree, with no "
+          "tree-check slot" % len(changed), flush=True)
+    if is_clone_top(top):
+        rev, what = landing_rev(top)
+        with full_head_tree(top, rev=rev, what=what, lands=True, lane=TEXT_LANE) as full:
+            _text_checks(top, full, changed, committed=True)
+    else:
+        _text_checks(top, top, changed)
+    return True
+
+
+def _text_checks(top, tree, changed, committed=False):
+    """Run text_door's checks in `tree` (the landing commit's own lists). Raises Refuse on a red."""
+    tcfg = _committed(tree, TREE_CHECKS)
+    if os.environ.get("RM_PUBLISH_SKIP_TREE_CHECKS", "").strip():
+        print("tree checks SKIPPED by RM_PUBLISH_SKIP_TREE_CHECKS: %s" % os.environ["RM_PUBLISH_SKIP_TREE_CHECKS"].strip())
+    elif tcfg:
+        checks = [c for c in tcfg.get("checks", ()) if c.get("reads_text", True) is not False]
+        if checks:
+            _run_tree_checks(tree, dict(tcfg, checks=checks))
+    pcfg = _committed(tree, PIPELINE_TESTS)
+    if not pcfg or not _any_change_hit(changed, pcfg):
+        return
+    if os.environ.get("RM_PUBLISH_SKIP_PIPELINE_CHECKS", "").strip():
+        print("pipeline checks SKIPPED by RM_PUBLISH_SKIP_PIPELINE_CHECKS: %s"
+              % os.environ["RM_PUBLISH_SKIP_PIPELINE_CHECKS"].strip())
+        return
+    _run_pipeline_checks(tree, changed, pcfg, door_base(top), committed=committed)
 
 
 def polish_door_check(top):
@@ -1345,6 +1407,9 @@ CHECKTREE_PREFIX = "rm-treecheck-"
 # Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md.
 CHECKTREE_KEPT = CHECKTREE_PREFIX + "kept"   # a clone's own kept tree, the old layout: removed when found
 CHECKTREE_KEPT_LOCK = CHECKTREE_KEPT + ".lock"
+# The machine's one kept tree of text-only publishes (text_door), beside the slot trees under kept_root(); one text
+# publish holds it at a time and the next waits for it, saying so every PUSH_LOCK_SAY_S.
+TEXT_LANE = CHECKTREE_PREFIX + "text"
 KEPT_ROOT_ENV = "PUBLISH_KEPT_ROOT"          # the machine's kept trees (default <RM_ROOT>/treecheck-kept)
 KEPT_N_ENV = "PUBLISH_KEPT_TREES"            # how many (default treecheck_slots.slots_n(): one per slot)
 KEPT_TOP = "rm-kept-top"                     # in a kept tree's .git: the clone it was last made exact for
@@ -1584,8 +1649,32 @@ def _drop_clone_kept(gitdir):
         "FAILED" if os.path.lexists(old) else "gone")
 
 
+def _take_lane(top, gitdir, lane):
+    """-> (tree, fd, None): the machine's one kept tree of `lane` (under kept_root(top), else the clone's git dir), its
+    flock held. While another publish holds it, waits, and says so at once and every PUSH_LOCK_SAY_S (a text publish
+    holds it for its checks, about a minute). (None, None, why) when its lock cannot be opened."""
+    root = kept_root(top) or gitdir
+    try:
+        os.makedirs(root, exist_ok=True)
+        fd = os.open(os.path.join(root, lane + ".lock"), os.O_CREAT | os.O_RDWR, 0o644)
+    except OSError as e:
+        return None, None, "the %s tree's lock could not be opened: %s" % (lane, e)
+    t0, said = time.monotonic(), None
+    while True:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return os.path.join(root, lane), fd, None
+        except BlockingIOError:
+            pass
+        if said is None or time.monotonic() - said >= PUSH_LOCK_SAY_S:
+            said = time.monotonic()
+            print("publish: waiting %d s for the %s tree (another text publish holds it)" % (said - t0, lane),
+                  file=sys.stderr, flush=True)
+        time.sleep(0.2)     # budget: ends no work: how often a waiter looks; the holder's own checks are bounded
+
+
 @contextlib.contextmanager
-def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
+def full_head_tree(top, rev="HEAD", what="HEAD", lands=None, lane=None):
     """The checks judge the commit, not the working tree: a sparse clone lacks the files they read (they went red or
     green blind, lessons 2026-11-15 194926Z/195130Z) and a full one holds edits the commit does not (is_clone_top).
     Yield a full checkout of `rev`: one of the machine's kept check trees (_take_kept: kept_n() of them under
@@ -1595,11 +1684,13 @@ def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
     kept tree that cannot be made exact is made fresh. While every kept tree is held (a nested call, split_pre_existing,
     more callers than slots), the call makes a fresh tree of its own in the clone's git dir and removes it after. A
     random-named leftover of a killed run (older than CHECKTREE_STALE_S) and the clone's own kept tree of the old layout
-    are removed first. Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md."""
+    are removed first. Page: design/specs/2026-11-25-treecheck-kept-tree/boundary.md. lane: the machine's one kept tree
+    of that lane (_take_lane, TEXT_LANE), waited for, in place of a slot's tree."""
     gitdir = out(top, "rev-parse", "--absolute-git-dir")
     for n in os.listdir(gitdir):
         p = os.path.join(gitdir, n)
-        if n.startswith(CHECKTREE_PREFIX) and n not in (CHECKTREE_KEPT, CHECKTREE_KEPT_LOCK) \
+        if n.startswith(CHECKTREE_PREFIX) and n not in (CHECKTREE_KEPT, CHECKTREE_KEPT_LOCK, TEXT_LANE,
+                                                         TEXT_LANE + ".lock") \
                 and time.time() - os.path.getmtime(p) > CHECKTREE_STALE_S:
             shutil.rmtree(p, ignore_errors=True)
     dropped = _drop_clone_kept(gitdir) if kept_root(top) is not None else None
@@ -1612,6 +1703,8 @@ def full_head_tree(top, rev="HEAD", what="HEAD", lands=None):
     # re-run held 15.2 GB in one kept tree on SteveDesktop's 80 GB disk (2026-11-26 12:33 PM PST)
     if os.path.basename(os.path.realpath(top)).startswith(CHECKTREE_PREFIX) and kept_root(top) is None:
         kept, fd, busy = None, None, "a check tree keeps no tree of its own"
+    elif lane:
+        kept, fd, busy = _take_lane(top, gitdir, lane)
     else:
         kept, fd, busy = _take_kept(top, gitdir)
     tree = None

@@ -313,7 +313,8 @@ def landing_clone(tmp):
 def t_a_close_publish_passes_held_slots(tmp):
     """Both slots held by planted holders: the publish of a `rimflow close` (a ledger line and the prose move to
     items/closed/, the shape that waited 30 min on 2026-11-26) and a ledger-only publish land while they still hold;
-    a publish of new live item prose still waits for a slot (the gate keeps guarding the disk)."""
+    a publish of new live item prose is still checked (it is text, so text_door runs its checks: a-text-publish-passes-
+    held-slots; selftest_retired_era_gone judges item file names)."""
     work = landing_clone(tmp)
     root, log = os.path.join(BASE, P.TREECHECK_GATE), os.path.join(tmp, "held.log")
     holders = [drive(root, 2, "H%d" % i, 600, log) for i in (1, 2)]
@@ -352,11 +353,95 @@ def t_a_close_publish_passes_held_slots(tmp):
               "a-close-publish-passes-held-slots: a ledger-only publish landed in %.1f s past two held slots (%r)"
               % (s, out.strip()[-300:]))
         open(os.path.join(work, P.ITEMS_DIR, "Y.md"), "w").write("# Y\n")
-        out, s = pub(["-m", "item Y prose", os.path.join(work, P.ITEMS_DIR, "Y.md")], 3)
-        check("waiting 0 s for a tree-check slot" in out and "PUBLISHED" not in out,
-              "a-close-publish-passes-held-slots: new live item prose still waits for a slot (%r)" % out.strip()[-300:])
+        out, s = pub(["-m", "item Y prose", os.path.join(work, P.ITEMS_DIR, "Y.md")], 30)
+        check("tree checks: 1 green" in out and "PUBLISHED" in out,
+              "a-close-publish-passes-held-slots: new live item prose is still checked (it is text: the text door runs "
+              "its checks) (%r)" % out.strip()[-300:])
         check(sum(1 for _t, k, _n in events(log) if k == "out") == 0,
               "a-close-publish-passes-held-slots: the planted holders still held throughout")
+    finally:
+        for h in holders:
+            h.kill()
+            h.communicate()
+
+
+TEXT_CHECK = r'''
+import subprocess, sys
+r = subprocess.run(["git", "grep", "-l", "FORBIDDEN", "--", "*.md"], capture_output=True, text=True)
+if r.stdout.strip():
+    print("FAIL a rule text says FORBIDDEN: " + r.stdout.strip()); sys.exit(1)
+print("text check green")
+'''
+
+
+def t_a_text_publish_passes_held_slots(tmp):
+    """Both slots held by planted holders. A publish of only rule or design text (Markdown outside src/, .claude/ and
+    the git hooks) lands while they still hold: it runs the whole-tree checks that read text, in the machine's text
+    tree, and not a check marked `"reads_text": false`. A red text check still refuses it. A publish of code, or of code
+    and text together, still waits for a slot (RIMMANDRAKE_BUILD_RULING_FAST_PATH_SENTENCE_TOOK_NINETY_MINUTES: his
+    one-sentence ruling into standing_rulings.md waited over 50 min in the line on 2026-11-26)."""
+    work = landing_clone(tmp)
+    seed = os.path.join(tmp, "seed")
+    cfg = json.load(open(os.path.join(seed, P.TREE_CHECKS)))
+    cfg["checks"] = [{"test": "probe.py", "fix": "f"}, {"test": "textcheck.py", "fix": "drop the word"},
+                     {"test": "codeonly.py", "fix": "f", "reads_text": False}]
+    json.dump(cfg, open(os.path.join(seed, P.TREE_CHECKS), "w"))
+    open(os.path.join(seed, "textcheck.py"), "w").write(TEXT_CHECK)
+    open(os.path.join(seed, "codeonly.py"), "w").write("import sys\nprint('FAIL the code-only check ran')\nsys.exit(1)\n")
+    for d in ("design", "src"):
+        os.makedirs(os.path.join(seed, d), exist_ok=True)
+    open(os.path.join(seed, "design", "rules.md"), "w").write("# Rules\n")
+    open(os.path.join(seed, "src", "x.py"), "w").write("x = 1\n")
+    g("add", "-A", cwd=seed)
+    g("commit", "-q", "-m", "text and code checks", cwd=seed)
+    g("push", "-q", "origin", "HEAD:main", cwd=seed)
+    g("pull", "-q", "--ff-only", cwd=work)
+    root, log = os.path.join(BASE, P.TREECHECK_GATE), os.path.join(tmp, "held.log")
+    holders = [drive(root, 2, "H%d" % i, 600, log) for i in (1, 2)]
+    env = dict(os.environ, PUBLISH_RM_ROOT=BASE, RM_TREECHECK_SLOTS="2")
+    env.pop(TS.HELD_ENV, None)
+
+    def pub(args, wait_s):
+        t0 = time.time()
+        p = subprocess.Popen([sys.executable, os.path.join(HERE, "publish.py")] + args, cwd=work, env=env,
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        try:
+            # budget: danger=a text publish that waits for the planted holders (the code before this promise) holds the
+            # budget: test as long as they hold (600 s); evidence=that code; longest=0.9s (a text publish here, 2026-11-26), 33x
+            return p.communicate(timeout=wait_s)[0], time.time() - t0
+        except subprocess.TimeoutExpired:
+            p.kill()
+            return p.communicate()[0] + "\n(STILL WAITING after %d s)" % wait_s, time.time() - t0
+    rules, code = os.path.join(work, "design", "rules.md"), os.path.join(work, "src", "x.py")
+    try:
+        deadline = time.time() + 20
+        while sum(1 for _t, k, _n in events(log) if k == "in") < 2 and time.time() < deadline:
+            time.sleep(0.05)
+        check(sum(1 for _t, k, _n in events(log) if k == "in") == 2, "a-text-publish-passes-held-slots: sanity: both "
+              "planted holders hold a slot")
+        open(rules, "a").write("- A new rule, in his words.\n")
+        out, s = pub(["-m", "rule text", rules], 30)
+        check("PUBLISHED" in out and "for a tree-check slot" not in out and "tree checks: 2 green" in out,
+              "a-text-publish-passes-held-slots: a Markdown-only publish landed in %.1f s past two held slots, its two "
+              "text checks green and the check marked reads_text false not run (%r)" % (s, out.strip()[-400:]))
+        open(rules, "a").write("- FORBIDDEN\n")
+        out, s = pub(["-m", "bad rule text", rules], 30)
+        check("PUBLISHED" not in out and "textcheck.py" in out and "REFUSED" in out
+              and "FORBIDDEN" in open(rules).read(),
+              "a-text-publish-passes-held-slots: a red text check refuses a text publish, and the edit stays in the work "
+              "tree (%r)" % out.strip()[-400:])
+        g("checkout", "--", "design/rules.md", cwd=work)
+        open(code, "a").write("y = 2\n")
+        out, s = pub(["-m", "code", code], 3)
+        check("waiting 0 s for a tree-check slot" in out and "PUBLISHED" not in out,
+              "a-text-publish-passes-held-slots: a code publish still waits for a slot (%r)" % out.strip()[-300:])
+        open(rules, "a").write("- Another rule.\n")
+        out, s = pub(["-m", "code and text", code, rules], 3)
+        check("waiting 0 s for a tree-check slot" in out and "PUBLISHED" not in out,
+              "a-text-publish-passes-held-slots: a publish of code and text together still waits for a slot (%r)"
+              % out.strip()[-300:])
+        check(sum(1 for _t, k, _n in events(log) if k == "out") == 0,
+              "a-text-publish-passes-held-slots: the planted holders still held throughout")
     finally:
         for h in holders:
             h.kill()
@@ -367,7 +452,7 @@ def main():
     for t in (t_at_most_the_limit_run_at_once, t_waiters_go_first_come_first_served, t_a_dead_holder_frees_its_slot,
               t_a_waiter_shows_progress, t_one_publish_holds_one_slot_across_both_checks,
               t_a_check_under_a_held_slot_never_waits_again, t_a_publish_with_no_door_checks_takes_no_slot,
-              t_a_close_publish_passes_held_slots):
+              t_a_close_publish_passes_held_slots, t_a_text_publish_passes_held_slots):
         tmp = tempfile.mkdtemp(prefix=t.__name__[2:20] + "-", dir=BASE)
         try:
             t(tmp)

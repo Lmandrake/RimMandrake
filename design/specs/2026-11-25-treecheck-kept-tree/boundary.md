@@ -25,6 +25,10 @@ refused a fifth run at its disk floor.
   beside it (`PUBLISH_KEPT_ROOT` overrides the folder). Every door check takes a slot first, so no more callers than
   trees come at once. A call takes the first free tree, the one this clone used last first (`.git/rm-kept-top`): the
   fewest files differ.
+- One more kept tree serves text-only publishes, which take no slot: `<RM_ROOT>/treecheck-kept/rm-treecheck-text`,
+  with its own flock (`publish.py TEXT_LANE`, `_take_lane`). One text publish holds it at a time; the next waits for
+  its lock and says so (`design/specs/2026-11-24-treecheck-slots/boundary.md`, a-text-publish-passes-held-slots). It is
+  made and reused as the slot trees are.
 - A tree may last have served another clone. A reuse repoints it at this clone: its `objects/info/alternates` names
   this clone's objects (as a fresh `git clone --shared` of it would) and its `remote.origin.url` names this clone.
   `checkout -f` reads none of the last clone's commits (measured 2026-11-25: a checkout whose old HEAD is in no

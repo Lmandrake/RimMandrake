@@ -25,6 +25,11 @@ Up to six door checks ran at once on one disk: the disk read 100% busy, load rea
   gate, as before this page. Could not look is not a refusal.
 - **other-disk-load.** The gate counts only door checks. The pool monitor's `find` scans, builds and live games are
   not in it.
+- **a-check-that-starts-to-read-text.** The `"reads_text": false` mark is a measurement of 2026-11-26. A marked check
+  that later starts to read text is not run on a text-only publish. A check with no mark always runs.
+- **the-first-text-tree.** The first text-only publish on a machine makes the text tree: a full checkout (about 5 GB),
+  outside the slots. Later ones reuse it and write only the files that differ. `rm_pool_room.py` on SteveDesktop counts
+  it among the kept trees, but its `KEPT_TREES` still owes one per slot.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -46,14 +51,28 @@ Up to six door checks ran at once on one disk: the disk read 100% busy, load rea
   paths, no pipeline test touched) neither waits nor takes a slot.
 - **a-close-publish-passes-held-slots.** While both slots are held, a publish of only ledger lines, or of a
   `rimflow close` (its ledger line and the move of `items/<ID>.md` to `items/closed/<ID>.md`), lands at once and runs
-  no check. A publish that adds live item prose (`items/<ID>.md`) still waits for a slot: `selftest_retired_era_gone`
-  judges item file names. Design (2026-11-26, `RIMMANDRAKE_UNJAM_PUBLISH_DOOR_LEDGER_WAITED_THIRTY_MINUTES`): the
+  no check. A publish that adds live item prose (`items/<ID>.md`) is still checked: `selftest_retired_era_gone`
+  judges item file names. Item prose is text, so its checks run on the text tree (next promise). Design (2026-11-26, `RIMMANDRAKE_UNJAM_PUBLISH_DOOR_LEDGER_WAITED_THIRTY_MINUTES`): the
   smallest one that keeps the disk guarded. Such a publish makes no checkout and runs no check, so it adds no disk
   load, and it never needed a slot. `skip_when_only` names `items/closed/*.md`, and `publish.py runs_no_tree_check`
   counts the deleted `items/<ID>.md` of the same move. Measured: on 2026-11-26 the tick's own close (the dispatch
   clone, a ledger line and one prose move) waited in the line behind two pipeline runs of 31 min each. With two
   planted holders, the close publish landed in 0.3 s; on the code before, it still waited after 60 s
   (`evidence/close_publish_parent.txt`).
+
+- **a-text-publish-passes-held-slots.** While both slots are held, a publish of only rule or design text lands: every
+  changed path is a `skip_when_only` path or a `.md` file outside `src/`, `.claude/` and `infrastructure/githooks/` that
+  no `pipeline_files` glob names (`publish.py text_only`). Such a publish takes no slot. It runs on the machine's text
+  tree (a kept full checkout of the landing commit, `TEXT_LANE`): every whole-tree check that is not marked
+  `"reads_text": false`, and the pipeline tests whose `inputs` the change matches (`any_change`, such as
+  `selftest_conductor_authority.py` for `CLAUDE.md`). A red check refuses it, as at the ordinary door. A publish that
+  changes code, a def, a test, a hook, a brief or a pipeline page, alone or with text, still waits for a slot. Design
+  (2026-11-26, `RIMMANDRAKE_BUILD_RULING_FAST_PATH_SENTENCE_TOOK_NINETY_MINUTES`): on 2026-11-26 the owner's
+  one-sentence ruling, carried into `standing_rulings.md`, waited over 50 min in this line. At 5:35 PM PST that day the
+  line held 7 waiters, the oldest 35 min. With two planted holders, a Markdown-only publish was still waiting after 30 s
+  on the code before (`evidence/text_publish_parent.txt`), and landed in 0.9 s on the fix. Measured with the door-reads
+  hook (2026-11-26, a clone at `4a9fd316d7`): 9 of the 28 whole-tree checks read no text, and they carry the mark; the
+  other 19 read a `.md` file, list a folder that holds one, or run git over the whole tree.
 
 ## LIMITS
 
