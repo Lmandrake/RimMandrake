@@ -38,6 +38,9 @@ CAUSES = (("canary", r"canary red"),
 # suspension_bridges_and_covers -- each ended by its own real `live check owed`/`look owed` GAP -- under thirst's cause.
 UPSTREAM = re.compile(r"upstream failed")
 ORPHAN = "<no chain>"           # split_rows key: rows the sheet never reached carry no chain
+# The rows modcheck's runner writes when it stops a chain before its first component (runner.py: the site hold, a chain
+# setup that raised). Such a chain never writes its planned components, so their absence is that stop's consequence.
+SETUP_STOP = re.compile(r"^<(?:site hold, before|chain setup, outside) any component>$")
 NOT_A_FAULT = ("BLOCKED_SELECTION",)        # the selection was refused: no run happened
 LANE_CAUSES = ("CANARY",)                   # testq.PAUSE_ON with an INVALID outcome: lane_finding has these
 COMPANION_STALE = re.compile(r"companion (STALE|UNSTAMPED|MISSING) ")
@@ -74,13 +77,16 @@ def split_rows(rows):
     causes = {}
     # the chains first, then ORPHAN: a row the sheet never reached whose planned_chain (the worker's, from modcheck's
     # EXPECTED_ROW_CHAINS) is a chain the harness stopped is that stop's consequence, held under the chain's cause, not
-    # a second repair item for one event (HARNESS_REPAIR_CAUSE_AC81755A: a site hold before any component filed both)
+    # a second repair item for one event (HARNESS_REPAIR_CAUSE_AC81755A: a site hold before any component filed both).
+    # So is one whose chain stopped before its components (SETUP_STOP), with or without a cause: that stop row is
+    # judged on its own (J20261127T102417Z-b7c73d: an UNMEASURED setup row; its 3 absent rows filed absent_from_sheet)
+    stopped = {k for k in order if k != ORPHAN and any(SETUP_STOP.match(str(r.get("row") or "")) for r in by[k])}
     for k in [k for k in order if k != ORPHAN] + [k for k in order if k == ORPHAN]:
         if k == ORPHAN or not any(r.get("verdict") == "FAIL" for r in by[k]):
             kinds = {}          # every KIND of fault: closing the repair of one must not release the other
             for r in by[k]:
                 c = row_cause(r)
-                if c and not (k == ORPHAN and r.get("planned_chain") in causes):
+                if c and not (k == ORPHAN and (r.get("planned_chain") in causes or r.get("planned_chain") in stopped)):
                     kinds.setdefault(c.split(":")[0], c)
             if kinds:
                 causes[k] = " + ".join(kinds.values())

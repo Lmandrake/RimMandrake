@@ -305,6 +305,28 @@ def main():
           and R.passed_since([good], MOD, "other", "2026-10-01T00:00:00Z", sit_item)[0] is None
           and R.passed_since([good], "Pyrelands", "sb", "2026-10-01T00:00:00Z", sit_item)[0] is None,
           "passed-since: a job before SINCE, of another chain or of another mod does not count")
+    # J20261127T102417Z-b7c73d: the chain's own setup stopped it (an UNMEASURED staging refusal, no harness cause), so
+    # modcheck wrote one "<chain setup, outside any component>" row and none of the planned components. Those planned
+    # rows are that stop's consequence, not a lost row: the stop row is already judged on its own (row_cause).
+    setup = ("ExpectationFailed: UNMEASURED: staging jawa/set_terrain_batch was refused, "
+             "so the plot under test does not exist")
+    for verdict, why in (("UNMEASURED", setup), ("FAIL", "ExpectationFailed: the gate did not open")):
+        st = R.split_rows([row("ts", "<chain setup, outside any component>", verdict, why),
+                           absent("ts_on", "ts"), absent("ts_off", "ts")])
+        check(R.ORPHAN not in st[2] and len(st[1]) == 2,
+              "absent rows of a chain its own setup stopped (%s) file no absent_from_sheet cause: %s"
+              % (verdict, st[2]))
+    mixed = R.split_rows([row("ts", "<chain setup, outside any component>", "UNMEASURED", setup), absent("ts_on", "ts"),
+                          row("ok", "r1", "PASS"), absent("ok_r2", "ok")])[2]
+    check(mixed.get(R.ORPHAN, "").startswith("absent_from_sheet:"),
+          "beside a setup-stopped chain, a row lost from a chain that measured is still its own fault: %s" % mixed)
+    import re as _re
+    runner_src = open(os.path.join(HERE, "..", "modcheck", "runner.py"), encoding="utf-8").read()
+    stop_names = _re.findall(r'Component\("(<[^"]*any component>)"', runner_src)
+    check(sorted(set(stop_names)) == ["<chain setup, outside any component>", "<site hold, before any component>"]
+          and all(R.SETUP_STOP.match(n) for n in stop_names),
+          "retest.SETUP_STOP knows every stop row modcheck's runner writes before a chain's components: %s"
+          % stop_names)
     bare = R.split_rows([row("sb", "<site hold, before any component>", "UNMEASURED", hold), row(None, "r9", "NOT_RUN", DIED)])[2]
     check(bare.get(R.ORPHAN, "").startswith("absent_from_sheet:"),
           "an absent row with no planned_chain (an older worker) is still its own fault: %s" % bare)
