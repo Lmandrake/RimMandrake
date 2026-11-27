@@ -2683,7 +2683,11 @@ def _verify_target(ev, item):
         raise SchemaError("%s criterion %s is tagged %s, and this run says --level %s."
                           % (item.id, cid, want, level))
     if ev["result"] == "pass":
-        if item.state not in ("built", "validated"):
+        # A judge or verifier run `start`s a built item (the ticket lane's brief orders it), which moves it to doing;
+        # its pass still counts when it names the built sha. A pass at another sha stays refused: the build may be
+        # under rework (selftest_judge_start_keeps_pass.py; WORLD_FACES_REDRAW_ABYSS_ROT_RUST, 2026-11-27).
+        started_judge = item.state == "doing" and item.built_sha and same_sha(ev.get("sha"), item.built_sha)
+        if item.state not in ("built", "validated") and not started_judge:
             raise TransitionError(
                 "%s is `%s`: a criterion pass counts only against a BUILT artifact. "
                 "Record `implemented` first." % (item.id, item.state))
