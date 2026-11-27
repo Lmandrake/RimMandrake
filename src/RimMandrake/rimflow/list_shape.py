@@ -259,21 +259,25 @@ def holds_parts(parts, root, run=None):
     return (1 if fails else 2 if blind else 0), lines
 
 
+def holds_text(iid, w, root, run=None):
+    """-> (code, text): the answer of `holds <ID>` on the ledger world w, as holds_main prints it. check_once.py calls it
+    in the beat's own process, with the world that beat already read."""
+    it = w.items.get(iid)
+    if it is None:
+        return 2, "UNMEASURED: %s has never been filed" % iid
+    code, lines = holds_parts((it.shape or {}).get("parts"), root, run=run)
+    return code, "\n".join(list(lines) + [{0: "HOLDS", 1: "FAILS", 2: "UNMEASURED"}[code] + ": %s" % iid])
+
+
 def holds_main(iid):
     try:
         import list_effect as LE
         w = LE._world()
-        it = w.items.get(iid)
     except Exception as e:  # noqa: BLE001 - could not look is never a verdict
         print("UNMEASURED: the ledger could not be read (%s: %s)" % (type(e).__name__, e))
         return 2
-    if it is None:
-        print("UNMEASURED: %s has never been filed" % iid)
-        return 2
-    code, lines = holds_parts((it.shape or {}).get("parts"), LE.check_root())
-    for ln in lines:
-        print(ln)
-    print({0: "HOLDS", 1: "FAILS", 2: "UNMEASURED"}[code] + ": %s" % iid)
+    code, text = holds_text(iid, w, LE.check_root())
+    print(text)
     return code
 
 

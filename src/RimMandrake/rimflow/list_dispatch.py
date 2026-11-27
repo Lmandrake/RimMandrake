@@ -1484,7 +1484,7 @@ def onboard_facts(open_, now, cfg, systems, ordered, w, mw_mods, mw_cause, bundl
     return got
 
 
-def gather(st, now=None, root=None, load_lag_s=None):
+def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
     import list_effect as LE
     now = time.time() if now is None else now
     root = root or LE.check_root()
@@ -1617,6 +1617,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
             open_, now, cfg, systems, ordered, w, mw_mods, mw_cause, bundles, mods))
     _read_next(st, ordered, runs or {})
     paused = _paused(now)
+    go = []
     for iid, d in ordered.items():
         d["mod"] = mod_of(iid, d.get("title"), mods)
         d["off"], cnl = _off(iid, d["mod"])
@@ -1628,8 +1629,16 @@ def gather(st, now=None, root=None, load_lag_s=None):
         if (not (d.get("effect") or d.get("shape_due") or d.get("judge")) or paused or d["off"] or cnl
                 or mwd.get("mod") or mwd.get("unreadable")):
             continue
+        go.append(iid)
+    # each check once, in parallel under a bound, a kept result where its reads are unchanged: the list_effect timer
+    # reads the same kept results (check_once.py)
+    import check_once
+    ran, cstats = (run_many or check_once.run_many)([ordered[i]["effect"] for i in go if ordered[i].get("effect")],
+                                                    root, world=w, write=keep)
+    for iid in go:
+        d = ordered[iid]
         if d.get("effect"):
-            d["verdict"], d["out"] = LE.run(d["effect"], root)
+            d["verdict"], d["out"] = ran.get(d["effect"]) or ("unmeasured", "the check was not run")
             if d["verdict"] != "fails" and not waits_for_game(d):     # a live check with no game may still launch
                 continue
         try:
@@ -1645,7 +1654,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
             "bundles_live": bundles_live, "join": join, "onboard": onboard, "old": old,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
-            "cores": os.cpu_count(),
+            "cores": os.cpu_count(), "checks": cstats,
             "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old,
             # which game is free, read only when a row may take one (games_wanted)
             "games": _games() if games_wanted(ordered) else []}
@@ -2031,7 +2040,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         fcntl.flock(lock, fcntl.LOCK_EX)
     try:
         st = _read(os.path.join(d, "state.json"), {})     # a dry tick reads it and writes nothing
-        facts = fx["facts"](st) if "facts" in fx else gather(st, now, load_lag_s=cfg.get("load_lag_s"))
+        facts = fx["facts"](st) if "facts" in fx else gather(st, now, load_lag_s=cfg.get("load_lag_s"), keep=apply)
         account = fx["account"]() if "account" in fx else account_gate()
         gone = []
         if only and facts.get("items") is not None:     # the Conductor's run-now: these items, every gate

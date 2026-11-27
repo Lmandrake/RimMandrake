@@ -144,9 +144,9 @@ def _check_tmp():
         return None
 
 
-def run(text, root, timeout=None):
+def run(text, root, timeout=None, env_extra=None):
     """-> (verdict, output): verdict holds | fails | unmeasured. Never raises. A cmd: check gets its own TMPDIR, deleted
-    when the command ends, whatever its verdict."""
+    when the command ends, whatever its verdict. env_extra (check_once.py: the read recorder) is added to its env."""
     p = parse(text)
     if p["kind"] == "unreadable":
         return "unmeasured", p["why"]
@@ -155,6 +155,7 @@ def run(text, root, timeout=None):
         env = dict(os.environ, PATH=cmd_path(os.environ.get("PATH")))
         if tmp:
             env.update(TMPDIR=tmp, TMP=tmp, TEMP=tmp)
+        env.update(env_extra or {})
         try:
             r = subprocess.run(["bash", "-c", p["cmd"]], cwd=root, capture_output=True, text=True, errors="replace",
                                timeout=CMD_TIMEOUT_S if timeout is None else timeout, stdin=subprocess.DEVNULL, env=env)
@@ -446,7 +447,8 @@ def _one(s, n):
 
 
 def tick(apply=False, publish=True, root=None, fx=None, now=None):
-    """One beat. -> the reading. fx (tests): pause(now), blocked(iid), close(iid, text, why, publish), need(text, now)."""
+    """One beat. -> the reading. fx (tests): pause(now), blocked(iid), close(iid, text, why, publish), need(text, now),
+    run_many(texts, root, world, write) (check_once.run_many)."""
     fx = fx or {}
     root = root or check_root()
     now = time.time() if now is None else now
@@ -476,28 +478,37 @@ def _tick(apply, publish, root, fx, now, d):
         paused = "the pause store could not be read (%s: %s)" % (type(e).__name__, e)
     got = _git(root, "rev-parse", "--short=12", "HEAD")
     head = got.value.strip() if got.ok else "UNMEASURED (%s)" % got.cause
-    rows = {}
+    rows, todo = {}, []
     for iid in sorted(w.items):
         it = w.items[iid]
         eff = getattr(it, "effect", None)
         if not eff or it.state in CLOSED:
             continue
         row = rows[iid] = {"effect": eff, "state": it.state}
-
-        def put(decision, why, row=row):
-            row["decision"], row["why"] = decision, why
         if paused:
-            put("pipeline_paused", paused)
+            row["decision"], row["why"] = "pipeline_paused", paused
             continue
         try:
             off = blocked(iid)
         except Exception as e:  # noqa: BLE001 - a store that cannot be read is never "nothing is off"
-            put("blind", "the control store could not be read (%s: %s)" % (type(e).__name__, e))
+            row["decision"] = "blind"
+            row["why"] = "the control store could not be read (%s: %s)" % (type(e).__name__, e)
             continue
         if off:
-            put("off", off)
+            row["decision"], row["why"] = "off", off
             continue
-        verdict, out = run(eff, root)
+        todo.append(iid)
+    # each check once, in parallel under a bound, a kept result where its reads are unchanged (check_once.py)
+    import check_once
+    ran, cstats = fx.get("run_many", check_once.run_many)([rows[i]["effect"] for i in todo], root, world=w,
+                                                          write=apply)
+    for iid in todo:
+        it, row = w.items[iid], rows[iid]
+        eff = row["effect"]
+
+        def put(decision, why, row=row):
+            row["decision"], row["why"] = decision, why
+        verdict, out = ran.get(eff) or ("unmeasured", "the check was not run")
         row["verdict"] = verdict
         dec = decide({"state": it.state, "effect": eff}, verdict)
         if dec == "work":
@@ -544,7 +555,7 @@ def _tick(apply, publish, root, fx, now, d):
     for r in rows.values():
         counts[r["decision"]] = counts.get(r["decision"], 0) + 1
     rd = {"schema": 1, "at": now, "at_pac": pac(now), "root": root, "head": head, "apply": apply, "counts": counts,
-          "items": rows}
+          "checks": cstats, "items": rows}
     if apply:
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
