@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-25T20:16:31-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-27T04:53:45-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 3,
-    "total": 4
+    "visit": 1,
+    "total": 5
   },
   "pre_human_arrivals": 4,
   "moves": [
@@ -568,6 +568,29 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-27T04:53:45-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes (order, version, hold, road_back_items, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); certificate OK 53 bars; gate open, no refusals or hand steps",
+      "unit": "rm-detached-bench-rimmandrake-advance-flowworks-past-offli-1795783880",
+      "item": "RIMMANDRAKE_ADVANCE_FLOWWORKS_PAST_OFFLINE_BUILD_RUN_TWO",
+      "confirmed": {
+        "steward_confirms": "read maturation.py next (8/8 exit tests pass, refusals [], hand_steps []), certificate --to blind_challenge OK (53 bars certified, 115 grandfathered red_seen rows unchanged), gate OPEN; last mod-side commit bda4ca8c33 only re-recorded red_seen evidence, so no fix reader owed. Verdict: advance."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "road_back_items",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ],
