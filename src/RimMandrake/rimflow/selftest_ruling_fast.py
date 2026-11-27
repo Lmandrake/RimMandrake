@@ -79,15 +79,16 @@ class Doors:
     def local_commits(self):
         return []
 
-    def note(self, item, said, text, why):
-        self._do("note", item, said)
-        return {"ts": "2026-11-26T20:45:58Z", "tsn": "1795725958667522790", "id": item, "ownerSaid": said}
+    def note(self, item, said, text, why, per_ruling=None):
+        self._do("note", item, said or ("per-ruling " + per_ruling))
+        return {"ts": "2026-11-26T20:45:58Z", "tsn": "1795725958667522790", "id": item, "ownerSaid": said,
+                "perRuling": per_ruling}
 
     def hold(self, mod, said, date):
         self._do("hold", mod, said, date)
 
-    def park(self, iid, said, reason, why):
-        self._do("park", iid, said)
+    def park(self, iid, said, reason, why, per_ruling=None):
+        self._do("park", iid, said or ("per-ruling " + per_ruling))
 
     def file(self, name, title, caused_by, why):
         self._do("file", name, title, caused_by)
@@ -169,6 +170,12 @@ def t_a_bad_call_does_nothing():
     RF = load()
     cases = [
         ("blank words", ["ITEM_A", "--said", "  ", "--section", "Owner hold"], {}),
+        ("neither his words nor the route", ["ITEM_A", "--section", "Owner hold"], {}),
+        ("both his words and the route", ["ITEM_A", "--said", WORDS, "--per-ruling", "RULING_X", "--why", "w",
+                                          "--section", "Owner hold"], {}),
+        ("the route with no reason", ["ITEM_A", "--per-ruling", "RULING_X", "--section", "Owner hold"], {}),
+        ("a hold on the route", ["ITEM_A", "--per-ruling", "RULING_X", "--why", "the Conductor's order",
+                                 "--section", "Owner hold", "--hold", "PyrelandsMechanics"], {}),
         ("unknown item", ["NO_SUCH", "--said", WORDS, "--section", "Owner hold"], {}),
         ("unknown ticket", ["ITEM_A", "--said", WORDS, "--section", "Owner hold", "--park", "NO_SUCH"], {}),
         ("unknown mod", ["ITEM_A", "--said", WORDS, "--section", "Owner hold", "--hold", "NoSuchMod"], {}),
@@ -225,10 +232,29 @@ def t_at_most_five_lines():
           "at-most-five-lines: a failed act stops the rest, names its cause and the undo in at most 5 lines (%r)" % out)
 
 
+def t_the_conductor_route_cites_the_ruling():
+    """--per-ruling (the Conductor's route, CLAUDE.md §A fault of form: his word and the Conductor's act are not
+    refused for lack of a quote): the acts run with the ruling cited, the bullet says it is the Conductor's act under that
+    ruling and quotes the --why as our text, never as his words."""
+    RF = load()
+    rules, d = setup()
+    why = "Conductor instruction: carry the card answer on the Tribes question"
+    rc, out = call(RF, d, rules, ["ITEM_A", "--per-ruling", "RULING_X", "--why", why, "--section", "Owner hold",
+                                  "--park", "TICKET_B"])
+    flat = " ".join(open(rules).read().split())
+    check(rc == 0 and [e[0] for e in d.log][:2] == ["note", "park"]
+          and [e[2] for e in d.log if e[0] == "park"] == ["per-ruling RULING_X"],
+          "the-conductor-route-cites-the-ruling: the note and the park cite the ruling (rc %s, %s)" % (rc, d.log))
+    check("the Conductor's act per standing ruling `RULING_X`" in flat and why in flat and '*"' not in flat.split(
+          "## Owner hold", 1)[1].split("## Mod", 1)[0],
+          "the-conductor-route-cites-the-ruling: the bullet names the ruling and the reason, quoted as no words of his "
+          "(%r)" % flat[-400:])
+
+
 def main():
     for t in (t_the_acts_run_in_order, t_his_words_go_in_word_for_word_with_the_event_date,
               t_only_what_the_caller_names, t_a_bad_call_does_nothing, t_the_follow_up_holds_the_slow_part,
-              t_at_most_five_lines):
+              t_at_most_five_lines, t_the_conductor_route_cites_the_ruling):
         try:
             t()
         except Exception as e:      # a crash of one test is a red of that promise, named

@@ -8,6 +8,9 @@ worker about 40 min, and its landing then waited over 50 min in the publish line
 
     python3 src/RimMandrake/rimflow/ruling_fast.py <ITEM> --said "<his words>" --section "<heading>" \\
         [--hold <Mod>]... [--park <ID>]... [--title "<a short lead, our text>"] [--why "<the Conductor's order>"]
+    python3 src/RimMandrake/rimflow/ruling_fast.py <ITEM> --per-ruling <item-id|event> --why "<the Conductor's order>" \\
+        --section "<heading>" [--park <ID>]...      the Conductor's route: the act cites a standing ruling, not his words;
+                                                    it holds no mod (a hold is his act alone)
 
 The acts, in this order (each one an existing part; none is copied here):
   1. his words on ITEM:            rimflow note ITEM --owner-said "<words>"
@@ -54,13 +57,15 @@ class Refused(Exception):
 def parse(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("item", help="the ledger item his words are on")
-    ap.add_argument("--said", required=True, help="his words, as he typed them")
+    ap.add_argument("--said", default="", help="his words, as he typed them")
+    ap.add_argument("--per-ruling", default="", metavar="ID|EVENT",
+                    help="the Conductor's route in place of his words: the standing ruling the act stands on, with --why")
     ap.add_argument("--section", required=True, help="the heading of the standing_rulings.md section for his words")
     ap.add_argument("--hold", action="append", default=[], metavar="MOD", help="a mod his words hold (repeat)")
     ap.add_argument("--park", action="append", default=[], metavar="ID", help="a ticket his words park (repeat)")
     ap.add_argument("--title", default="", help="a short bold lead for the bullet (our text, not his)")
-    ap.add_argument("--why", default="ruling_fast.py: the fast part of his ruling, carried at once",
-                    help="the caller's reason (a helper: the Conductor's order)")
+    ap.add_argument("--why", default="",
+                    help="the caller's reason (a helper: the Conductor's order); required with --per-ruling")
     ap.add_argument("--follow-up", default="", help="the follow-up item's name (default: made from ITEM)")
     return ap.parse_args(argv)
 
@@ -111,11 +116,17 @@ def when_pacific(ts):
     return p.strftime("%a %Y-%m-%d ") + p.strftime("%I:%M %p %Z").lstrip("0")
 
 
-def bullet(words, event, item, title="", holds=(), parks=()):
-    """-> the bullet's lines: his words exactly, the event's Pacific time, tsn and item; wrapped at WIDTH."""
+def bullet(words, event, item, title="", holds=(), parks=(), per_ruling="", why=""):
+    """-> the bullet's lines: his words exactly, the event's Pacific time, tsn and item; wrapped at WIDTH. On the
+    Conductor's route (per_ruling): the ruling and the reason, which are our text, so they are never quoted as his."""
     lead = "**%s** " % title.strip() if title.strip() else ""
-    text = "- %s(owner, %s, OWNER event `%s` on `%s`): *\"%s\"*" % (lead, when_pacific(event["ts"]), event.get("tsn") or "?",
-                                                                   item, " ".join(words.split()))
+    if per_ruling:
+        text = "- %s(the Conductor's act per standing ruling `%s`, %s, OWNER event `%s` on `%s`): %s" % (
+            lead, per_ruling, when_pacific(event["ts"]), event.get("tsn") or "?", item, " ".join(why.split()))
+    else:
+        text = "- %s(owner, %s, OWNER event `%s` on `%s`): *\"%s\"*" % (lead, when_pacific(event["ts"]),
+                                                                       event.get("tsn") or "?", item,
+                                                                       " ".join(words.split()))
     done = []
     if holds:
         done.append("`mod_owner_hold.py hold` holds %s" % ", ".join("`%s`" % m for m in holds))
@@ -183,8 +194,15 @@ def undo_line(item, holds, parks, text_sha, follow):
 def check_call(o, doors, rules_path):
     """Refuse a bad call before any act. -> (lines, start, end) of the rules file."""
     bad = []
-    if not o.said.strip():
-        bad.append("his words are blank; repair: pass --said with his words")
+    said, route = o.said.strip(), o.per_ruling.strip()
+    if bool(said) == bool(route):
+        bad.append("give his words (--said) or the Conductor's route (--per-ruling <item-id|event> with --why), one of "
+                   "them; repair: pass exactly one")
+    if route and not o.why.strip():
+        bad.append("the Conductor's route carries its reason; repair: add --why with the Conductor's order")
+    if route and o.hold:
+        bad.append("a hold is his act alone (mod_owner_hold.py hold, OWNER ONLY): the Conductor's route holds no mod; "
+                   "repair: drop --hold, or pass his words with --said")
     for iid in [o.item] + list(o.park):
         if not doors.item_exists(iid):
             bad.append("the ledger has no item %s; repair: name an item that `rimflow show` knows" % iid)
@@ -192,7 +210,7 @@ def check_call(o, doors, rules_path):
         if not doors.mod_exists(m):
             bad.append("no mod %s (design/concepts/%s is absent); repair: name a mod by its folder" % (m, m))
     if doors.dirty(rules_path):
-        bad.append("%s has uncommitted edits; repair: publish or undo them first, so only his words land" % RULES)
+        bad.append("%s has uncommitted edits; repair: publish or undo them first, so that the commit holds the new bullet alone" % RULES)
     try:
         lines = open(rules_path, encoding="utf-8").read().split("\n")
         start, end = find_section(lines, o.section)
@@ -219,28 +237,32 @@ def run(o, doors, rules_path=None, out=None):
         return 2
     step, done, text_sha, follow = "record his words", [], None, ""
     try:
-        event = doors.note(o.item, o.said, "his ruling, carried by ruling_fast.py", o.why)
+        why = o.why.strip() or "ruling_fast.py: the fast part of his ruling, carried at once"
+        route = o.per_ruling.strip()
+        event = doors.note(o.item, o.said, "his ruling, carried by ruling_fast.py", why, per_ruling=route or None)
         done.append("his words on %s" % o.item)
         date = when_pacific(event["ts"]).split()[1]
         for m in holds:
             step = "hold %s" % m
             doors.hold(m, o.said, date)
             done.append("held %s" % m)
-        reason = ("Parked by his word (owner, %s: \"%s\"). Lifts on his word." % (date, " ".join(o.said.split())))
+        reason = ("Parked by his word (owner, %s: \"%s\"). Lifts on his word." % (date, " ".join(o.said.split()))
+                  if not route else "Parked by the Conductor per standing ruling %s (%s): %s"
+                  % (route, date, " ".join(why.split())))
         for t in parks:
             step = "park %s" % t
-            doors.park(t, o.said, reason, o.why)
+            doors.park(t, o.said, reason, why, per_ruling=route or None)
             done.append("parked %s" % t)
         step = "land his words on the ledger"
         sha1, s1 = doors.publish_ledger("ledger: %s his words%s (ruling_fast.py)"
                                         % (o.item, "; holds and parks" if holds or parks else ""))
         when = when_pacific(event["ts"])
-        say("LANDED his words on %s (OWNER event %s, %s)%s%s: PUBLISHED %s (ledger door, %.1f s)"
-            % (o.item, event.get("tsn") or "?", when, "; held %s (binds now in the control store; its mirror "
+        say("LANDED %s on %s (OWNER event %s, %s)%s%s: PUBLISHED %s (ledger door, %.1f s)"
+            % ("his words" if not route else "the act per %s" % route, o.item, event.get("tsn") or "?", when, "; held %s (binds now in the control store; its mirror "
                "mod_owner_hold.json is written here, unpublished)" % ", ".join(holds) if holds else "",
                "; parked %s" % ", ".join(parks) if parks else "", sha1[:12], s1))
         step = "write his words into %s" % RULES
-        new = insert(lines, start, end, bullet(o.said, event, o.item, o.title, holds, parks))
+        new = insert(lines, start, end, bullet(o.said, event, o.item, o.title, holds, parks, route, why))
         with open(rules_path, "w", encoding="utf-8") as f:
             f.write("\n".join(new))
         local = doors.local_commits()
@@ -252,8 +274,8 @@ def run(o, doors, rules_path=None, out=None):
                "; %d earlier local commit(s) of this clone rode with it" % len(local) if local else ""))
         step = "file the follow-up"
         follow = o.follow_up or follow_up_name(o.item, doors.item_exists)
-        doors.file(follow, follow_up_title(o.item, event, o.said, lines[start].lstrip("# ").strip(), holds, parks),
-                   o.item, o.why)
+        doors.file(follow, follow_up_title(o.item, event, o.said or "per standing ruling %s: %s" % (route, why),
+                                           lines[start].lstrip("# ").strip(), holds, parks), o.item, why)
         sha3, _s3 = doors.publish_ledger("ledger: %s filed for the slow part of his ruling on %s" % (follow, o.item))
         say("FOLLOW-UP %s (owed, caused by %s): the CLAUDE.md rule line, lines that say the opposite, tickets he did not "
             "name%s: PUBLISHED %s" % (follow, o.item, ", the hold mirror" if holds else "", sha3[:12]))
@@ -305,15 +327,17 @@ class Doors:
                            text=True, timeout=time_budget.CALL_S)  # budget: class=call
         return r.stdout.split() if not r.returncode else []
 
-    def note(self, item, said, text, why):
-        self._run([sys.executable, CLI, "note", item, "--owner-said", said, "--text", text, "--seat", self.seat,
-                   "--why", why], time_budget.RIMFLOW_S)  # budget: class=rimflow
-        ev = self._event(item, said)
+    def note(self, item, said, text, why, per_ruling=None):
+        auth = ["--per-ruling", per_ruling] if per_ruling else ["--owner-said", said]
+        self._run([sys.executable, CLI, "note", item, *auth, "--text", text, "--seat", self.seat, "--why", why],
+                  time_budget.RIMFLOW_S)  # budget: class=rimflow
+        ev = self._event(item, said, per_ruling)
         if ev is None:
-            raise RuntimeError("rimflow note exited 0, but OWNER.jsonl holds no note on %s with his words" % item)
+            raise RuntimeError("rimflow note exited 0, but OWNER.jsonl holds no note on %s with %s" % (
+                item, "the ruling %s" % per_ruling if per_ruling else "his words"))
         return ev
 
-    def _event(self, item, said):
+    def _event(self, item, said, per_ruling=None):
         p = os.path.join(self.repo, EVENTS, "OWNER.jsonl")
         want = " ".join(said.split())
         with open(p, encoding="utf-8", errors="replace") as f:
@@ -323,7 +347,9 @@ class Doors:
                 e = json.loads(ln)
             except ValueError:
                 continue
-            if e.get("event") == "note" and e.get("id") == item and " ".join((e.get("ownerSaid") or "").split()) == want:
+            if e.get("event") != "note" or e.get("id") != item:
+                continue
+            if (e.get("perRuling") == per_ruling) if per_ruling else (" ".join((e.get("ownerSaid") or "").split()) == want):
                 return e
         return None
 
@@ -333,9 +359,10 @@ class Doors:
         if r.returncode not in (0, 5):      # 5: the store holds it, its mirror alarm is raised (mod_owner_hold.py)
             raise RuntimeError("mod_owner_hold.py hold exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()[-400:]))  # cut-ok: message
 
-    def park(self, iid, said, reason, why):
-        self._run([sys.executable, CLI, "block", iid, "--kind", "owner", "--owner-said", said, "--reason", reason,
-                   "--why", why], time_budget.RIMFLOW_S)  # budget: class=rimflow
+    def park(self, iid, said, reason, why, per_ruling=None):
+        auth = ["--per-ruling", per_ruling] if per_ruling else ["--owner-said", said]
+        self._run([sys.executable, CLI, "block", iid, "--kind", "owner", *auth, "--reason", reason, "--why", why],
+                  time_budget.RIMFLOW_S)  # budget: class=rimflow
 
     def file(self, name, title, caused_by, why):
         self._run([sys.executable, CLI, "file", name, "--for", self.seat, "--kind", "owed", "--title", title,

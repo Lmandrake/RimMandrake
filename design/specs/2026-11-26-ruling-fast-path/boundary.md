@@ -10,6 +10,8 @@ fast part independently of the larger items of work."*
 
     python3 src/RimMandrake/rimflow/ruling_fast.py <ITEM> --said "<his words>" --section "<heading>" \
         [--hold <Mod>]... [--park <ID>]... [--title "<a short lead, our text>"] [--why "<the Conductor's order>"]
+    python3 src/RimMandrake/rimflow/ruling_fast.py <ITEM> --per-ruling <item-id|event> --why "<the Conductor's order>" \
+        --section "<heading>" [--park <ID>]...
 
 The command composes parts that exist. It writes no second copy of any of them:
 `rimflow note --owner-said`, `mod_owner_hold.py hold`, `rimflow block --kind owner`, `rimflow file --kind owed`,
@@ -18,7 +20,8 @@ The command composes parts that exist. It writes no second copy of any of them:
 
 ## ACCEPTS (the only inputs this is built for)
 
-- **his-words-and-what-they-act-on.** An item that the ledger knows, his words as he typed them, the heading of one
+- **his-words-and-what-they-act-on.** An item that the ledger knows, his words as he typed them (or the Conductor's
+  route: a standing ruling cited with `--per-ruling` and its reason in `--why`), the heading of one
   section of `design/RimMandrake/standing_rulings.md`, and any number of mods to hold (each a folder
   `design/concepts/<Mod>`) and tickets to park (each an item that the ledger knows).
 - **a-clone-of-this-repo.** The command runs at the top of a clone that can land with `./publish`: the Conductor's seat
@@ -48,12 +51,17 @@ The command composes parts that exist. It writes no second copy of any of them:
   given, the Pacific date and time of the ledger event that recorded them, that event's `tsn`, and the item.
 - **only-what-the-caller-names.** The command holds only the mods and parks only the tickets that the call names. With
   none named, it holds and parks nothing. It never searches for a mod or a ticket.
-- **a-bad-call-does-nothing.** The command refuses before its first act, and names the repair, when: the words are
-  blank; the item, a ticket to park or a mod to hold does not exist; the heading matches no section or more than one;
+- **a-bad-call-does-nothing.** The command refuses before its first act, and names the repair, when: it has neither
+  his words nor the Conductor's route, or both; the route has no `--why`; the route names a mod to hold (a hold is his
+  act alone, `mod_owner_hold.py`); the item, a ticket to park or a mod to hold does not exist; the heading matches no section or more than one;
   `standing_rulings.md` has uncommitted edits in the clone.
 - **the-follow-up-holds-the-slow-part.** The follow-up item names the slow part: the rule line in `CLAUDE.md`, the
   search for lines that say the opposite, the search for tickets that he did not name, and (when a mod was held) the
   publish of the hold mirror.
+- **the-conductor-route-cites-the-ruling.** With `--per-ruling` and `--why`, the note and each park cite the ruling
+  (CLAUDE.md §A fault of form is repaired where it is found: no tool refuses the Conductor's act for lack of a quote).
+  The bullet says that the act is the Conductor's under that ruling, and gives the reason as our text, never quoted as
+  his words.
 - **at-most-five-lines.** The command prints at most 5 lines: what landed with its published sha, the follow-up item,
   and the undo.
 
