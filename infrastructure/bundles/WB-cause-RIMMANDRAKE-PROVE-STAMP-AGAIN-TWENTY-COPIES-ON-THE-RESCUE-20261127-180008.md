@@ -7,7 +7,12 @@ State: ENDED, 2026-11-27. Every member has an outcome.
 
 | member | outcome | commit | live reading |
 |---|---|---|---|
-| `RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW` | REAL, fixed | `7822187aaf` (item prose), `bb3e00e228` (hooks, proof step) | ArchSmall 2026-11-27: R1, R2, R3 PASS; prove_mod_hooks rows 1 to 3 PASS |
+| `RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW` | REAL, built and proven; the ledger reads `dropped` (a sweep run dropped it mid-run at 10:16 PST on a reason the work had made false; `dropped` is terminal, so close is refused) | `7822187aaf` (item prose), `bb3e00e228` (hooks, proof step), `8297348470` (boundary R3 PASS) | ArchSmall 2026-11-27: R1, R2, R3 PASS; prove_mod_hooks rows 1 to 3 PASS |
+
+## Fixed on the way, no ticket
+
+- `a01daf8197`: `rimflow drop` and `supersede` refuse an item under another run's live lease and name the holder (`--despite-lease` passes);
+  the lease records its role unit. `selftest_lease.py` red before, 13/13 after; registered in `pipeline_tests.json`.
 
 ## What the next context needs
 
