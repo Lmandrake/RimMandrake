@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "04fe095ae2a4f813aa3924a4fe676053f43373eced08c7bded09361d837743c9",
+  "body_sha256": "641c805cf607b6f31ff5cbf79419d03e027457a9a9a6b4bbfad79fc9d276b4b1",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -45,7 +45,7 @@
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
    "HOLDER.run-1795693138": 26757,
-   "HOLDER.run-1795761255": 3953,
+   "HOLDER.run-1795761255": 5239,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1296,10 +1296,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795761255",
-   "done": "Light order closed (d67a29da8b, 7d325f3abb; live 5/5); three next-version designs closed (2f57859563); black rain refused to next version; Scrapper heavy bridge strip installed + in-game judge KEEP on deck (b13ec6d84a, 5f53f935c0); chemfuel ignition blast built (9f8c5d6de9), blast live-seen",
-   "next": "Draw east-west far-side bridge cables below pawns in RM_DeckArt.cs, test first, then rerun the chemfuel throw rows on a fresh site",
-   "ruled_out": "the chemfuel blast not firing (it fires once, r 3.45); A3 as a mod fault (EK wrote no throw; the check read position)",
-   "ts": "2026-11-27T10:12:46Z"
+   "done": "restart 1: RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK closed 1fcbcb8f9f (scene sweeps squatters; live ArchBig 4/4 PASS, both ways shown)",
+   "next": "Fix the Scrapper heavy bridge far-side cable draw order in RM_DeckArt.cs, test first, and look live",
+   "ruled_out": "EK blocking A1 for a real obstacle: it was an earlier runs colonist in the lane; A3 position check wrong: it was a shared square with a leftover pawn",
+   "ts": "2026-11-27T10:39:21Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1751,7 +1751,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1830,
+  "events": 1833,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7851,7 +7851,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-27T10:12:46Z",
+   "last": "2026-11-27T10:39:24Z",
    "lease": "run-1795761255",
    "released": false,
    "token": 62
