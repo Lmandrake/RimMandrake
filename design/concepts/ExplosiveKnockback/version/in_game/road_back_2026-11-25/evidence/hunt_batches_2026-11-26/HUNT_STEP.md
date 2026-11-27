@@ -56,3 +56,26 @@ the visit 1 symptom "planned 0 cells" (goods_fly_rebound): it did not recur in a
 ## Files
 
 `batchN_*lane_job.json` (the job's whole result), `logs_<job suffix>/run_NN.log` (the runner's stdout per process).
+
+## Why the lane failed sc_pit_fetch and sc_pawn_arc while ArchBig passed them (2026-11-27)
+
+Item RIMMANDRAKE_SORT_KNOCKBACK_LANE_FAILS_ARCHBIG_PASSES_SAME_CHECKS. The cause was not the lane in either check.
+
+- sc_pit_fetch, a BUILD cause. Batches 1 to 4 ran sources 5796fe3cec and 813366f4c6. Both are older than the scene
+  repairs 6d9a503cf4 and 2fe8f88034, which read free will 5 ticks after the raise, after a path-data gather. The
+  "control 1" of the batches is the same-tick read that those repairs removed. Lane job J20261126T122136Z-756133
+  (source 2940c9cd6b, after the repairs) reads sc_pit_fetch PASS: "in the staging tick main 1 control 1", and
+  "main 1 control 0" 5 ticks later. [measured]
+- sc_pawn_arc, a MOD cause. In every lane run and in ArchBig's visit 2 run, the journal reads `resume_skip
+  reason=stack_gone` at the colonist's landing. The carried stack flies 6 cells on its own flyer
+  (carried_thing_own_arc) and lands 7 ticks after the colonist. So ResumeHaul found the stack neither held nor on the
+  map, and gave the haul back to free will. Free will took the stack again at origins 57,12, 42,12 (ArchBig) and 12,12.
+  It did not take the stack in 900 ticks at origin 27,12 (3 runs of 3), the first site that `Origins` gives on the lane's
+  stage map. Why free will skips the stack at 27,12 is UNMEASURED. The fix does not depend on it.
+  [measured: the runner jsonl on SteveDesktop, ~/rm/runner*/Transient/explosive_knockback/run_20261126T0{10440,13412,14356,21553}.jsonl]
+- Fix at 11fffbf13b: ResumeHaul waits for a stack that is still in its knockback flyer, and
+  RM_ThingFlyer_Knockback.Land gives the haul back when the stack lands (StackLanded). The sc_pawn_arc verdict now
+  requires the mod's own `resume` line, so a free-will haul no longer passes the row. Offline:
+  `selftest_explosiveknockback_resume_after_stack_lands.py`, red 5 of 5 on the parent, green with 6 of 6 planted faults
+  caught. Live: the lane job on the fix's proof build (outcome check
+  `road_back_2026-11-25/scripts/lane_decides_pawn_arc_pit_fetch.py`).
