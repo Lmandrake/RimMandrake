@@ -7,6 +7,10 @@
 // `protected List<LayerSubMesh> subMeshes`; LayerSubMesh.FinalizeMesh hands verts/tris/colors to the Mesh and KEEPS the lists,
 // so the CPU copy is the drawn geometry. MapDrawer.SectionAt(IntVec3) finds the section. Realtime-drawn things (a door, a
 // pawn) are NOT in a section mesh: they are listed by thing, with their drawerType, so a caller can tell the census is blind there.
+// RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: MapDrawLayer.GetSubMesh keeps ONE sub-mesh per material, and
+// MapDrawLayer.DrawLayer draws it with Graphics.DrawMesh(mesh, identity, material) as one draw; the renderer orders that draw by
+// the mesh as a whole. So each draw also reports its mesh's bounds (what the renderer sees), the heights of all its vertices and
+// of those on the square, against an optional probe height (a pawn's drawn y, from jawa/pawn_render_nodes).
 // THREAD AFFINITY: all game access inside ctx.MainThread.InvokeAsync.
 
 using System;
@@ -32,18 +36,25 @@ namespace JawaBench.BridgeTools
                 "it covers inside the square (0..1 per triangle, summed: >1 means it draws over itself), its clipped extent in " +
                 "square-local units, and the min/max/mean of its vertex colours there. A disabled sub-mesh or a hidden layer is " +
                 "listed with drawn=false. Realtime-drawn things on the square (doors, pawns) are NOT in any mesh: they come back " +
-                "in realtime[] by def and drawerType, so a caller sees where the census is blind.",
+                "in realtime[] by def and drawerType, so a caller sees where the census is blind. Each draw also gives materialId " +
+                "(two sub-meshes of one material name are told apart by it), boundsY (the Unity mesh bounds: the renderer orders the " +
+                "WHOLE sub-mesh as one draw by them, not each print in it), vertY (every vertex of the sub-mesh) and squareY (the " +
+                "vertices of the triangles on the square). With probeY >= 0 (a pawn node's drawn y from jawa/pawn_render_nodes) each " +
+                "draw also says boundsVsProbe (above = nearer the camera, below, level) and straddlesProbe (vertices on both sides).",
             ResultDescription =
                 "success, ticksGame, cell{x,z}, sectionsRead, draws[] {layer, visible, disabled, drawn, material, shader, " +
                 "renderQueue, matColour[r,g,b,a], tris, area, ext[x0,z0,x1,z1], aMin, aMax, rgbMean[r,g,b], aMean, colours[] {rgba[r,g,b,a] of a " +
-                "triangle whose three vertices share it, area}, mixedArea (triangles whose vertices differ)}, realtime[] " +
+                "triangle whose three vertices share it, area}, mixedArea (triangles whose vertices differ), materialId, boundsY{centre, " +
+                "min, max}, vertY{n, min, max, centre} and squareY{...} (n=0: no vertex read), boundsVsProbe, straddlesProbe, " +
+                "squareVsProbe (probeY >= 0 only)}, probeY, realtime[] " +
                 "{def, thingClass, drawerType}, layersWithNoMeshData[].")]
         public static async Task<object> CellDrawCensus(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "the square's x")] int x = -1,
             [ToolParameter(Description = "the square's z")] int z = -1,
-            [ToolParameter(Description = "substring filter on the layer type name; empty = every layer", DefaultValue = "")] string layerFilter = "")
+            [ToolParameter(Description = "substring filter on the layer type name; empty = every layer", DefaultValue = "")] string layerFilter = "",
+            [ToolParameter(Description = "a height (world y) to read each draw against, e.g. a pawn node's drawn y; -1 = none", DefaultValue = -1f)] float probeY = -1f)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -89,6 +100,12 @@ namespace JawaBench.BridgeTools
                             if (st.tris == 0) continue;
                             Material m = sm.material;
                             Color mc = m != null && m.HasProperty("_Color") ? m.color : Color.white;
+                            var vy = new List<float>(sm.verts.Count);
+                            foreach (Vector3 v in sm.verts) vy.Add(v.y);
+                            JawaBenchDrawOrderCore.YSpan all = JawaBenchDrawOrderCore.Span(vy);
+                            JawaBenchDrawOrderCore.YSpan sq = JawaBenchDrawOrderCore.Span(st.ys);
+                            Bounds bd = sm.mesh != null ? sm.mesh.bounds : default(Bounds);
+                            bool probe = probeY >= 0f;
                             draws.Add(new
                             {
                                 layer = lname,
@@ -108,6 +125,13 @@ namespace JawaBench.BridgeTools
                                 rgbMean = st.n > 0 ? new[] { R(st.rSum / st.n), R(st.gSum / st.n), R(st.bSum / st.n) } : new float[0],
                                 colours = ColourGroups(st),
                                 mixedArea = R(st.mixedArea),
+                                materialId = m != null ? m.GetInstanceID() : 0,
+                                boundsY = sm.mesh != null ? new { centre = R(bd.center.y), min = R(bd.min.y), max = R(bd.max.y) } : null,
+                                vertY = YOut(all),
+                                squareY = YOut(sq),
+                                boundsVsProbe = probe && sm.mesh != null ? JawaBenchDrawOrderCore.Relation(bd.center.y, probeY, JawaBenchDrawOrderCore.Eps) : null,
+                                straddlesProbe = probe ? (bool?)JawaBenchDrawOrderCore.Straddles(all, probeY, JawaBenchDrawOrderCore.Eps) : null,
+                                squareVsProbe = probe && !sq.Empty ? JawaBenchDrawOrderCore.Relation(sq.Centre, probeY, JawaBenchDrawOrderCore.Eps) : null,
                             });
                         }
                     }
@@ -123,6 +147,7 @@ namespace JawaBench.BridgeTools
                     success = true,
                     ticksGame = TicksGameSafe(),
                     cell = new { x, z },
+                    probeY = probeY >= 0f ? (float?)probeY : null,
                     sectionsRead = sections.Count,
                     draws,
                     realtime,
@@ -133,11 +158,16 @@ namespace JawaBench.BridgeTools
 
         private static float R(float v) => (float)Math.Round(v, 4);
 
+        /// <summary>A height span for the reply: n=0 means no vertex was read (never a span at 0).</summary>
+        private static object YOut(JawaBenchDrawOrderCore.YSpan s) =>
+            s.Empty ? (object)new { n = 0 } : new { n = s.n, min = R(s.min), max = R(s.max), centre = R(s.Centre) };
+
         private struct Stat
         {
             public int tris, n, aMin, aMax;
             public float area, x0, z0, x1, z1, aSum, rSum, gSum, bSum, mixedArea;
             public Dictionary<int, float> byColour;
+            public List<float> ys;     // the heights of the vertices of the triangles on the square
         }
 
         /// <summary>The distinct flat colours of a sub-mesh's triangles inside the square, with the area each covers: one water sheet
@@ -158,7 +188,7 @@ namespace JawaBench.BridgeTools
         /// summed (overdraw counts twice), the extent of the clipped parts, and the vertex colours of the triangles that reach in.</summary>
         private static Stat Clip(LayerSubMesh sm, int x, int z)
         {
-            var st = new Stat { aMin = 256, aMax = -1, x0 = 2f, z0 = 2f, x1 = -1f, z1 = -1f };
+            var st = new Stat { aMin = 256, aMax = -1, x0 = 2f, z0 = 2f, x1 = -1f, z1 = -1f, ys = new List<float>() };
             var poly = new List<Vector2>(8);
             var tmp = new List<Vector2>(8);
             bool colours = sm.colors.Count == sm.verts.Count;
@@ -194,6 +224,7 @@ namespace JawaBench.BridgeTools
                 if (ar < 1e-5f) continue;
                 st.tris++;
                 st.area += ar;
+                st.ys.Add(sm.verts[a].y); st.ys.Add(sm.verts[b].y); st.ys.Add(sm.verts[d].y);
                 foreach (Vector2 p in poly)
                 {
                     st.x0 = Math.Min(st.x0, p.x); st.z0 = Math.Min(st.z0, p.y);
