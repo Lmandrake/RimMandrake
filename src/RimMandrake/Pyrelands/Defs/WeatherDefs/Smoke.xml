@@ -20,7 +20,7 @@
     chokes the same way.
 
     🔑 rainRate, snowRate and sandRate STAY 0.
-      rainRate: anything above 0.1 puts out fires (Fire.TickInterval reads
+      rainRate: anything above 0.01 puts out fires (Fire.cs:312 reads
         map.weatherManager.RainRate) and black rain must stay the only rain.
       sandRate: any non-ash weather with sand would lay foreign sand on the
         ash map (PyrelandsAshSand.GridFreeOfForeignSand).
