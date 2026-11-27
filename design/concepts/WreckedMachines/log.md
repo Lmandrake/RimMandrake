@@ -227,3 +227,39 @@ third read passed the ask and the page.
 - `c_plasteel_behind_a_component`: new, core, open, waiting for a_plasteel_on_the_forge.
 - `inv_more_factory_machines` and `inv_ancient_component_source` are in scope by his answers.
 
+
+## 2026-11-27 turn 5 (run rm-role-designer-1795769705), no ask sent, 1:10 AM PST
+
+### His answer to turn 4, word for word
+
+- a_plasteel_on_the_forge (OWNER:1795769070699312426, typed in chat; on the ledger at 12:44 AM PST 2026-11-27):
+  "1: b." The Conductor had put the ask to him in chat as question 1. Option (b) is our text: "The Refurbished forge:
+  plasteel is the recipe that the last repair brings."
+
+Text of turn 5: `design/concepts/WreckedMachines/turn_05.md`. It tells him what was taken from "1: b." and from the
+first look at the built mod (the Conductor's findings note, event 1795766557136982102 in the BENCH shard), and it
+names three calls made without a card.
+
+### Review
+
+Two fresh Opus judges, neither the author. The first (rm-judge aa3f32904cbb116b2) struck the page: call B then left
+the base game's working power cell in the world, and his words "used only for comparison" argue against that; three
+slips besides (the time of his answer, a misquote of "Kludged (minimal)", "cannot be built again" without "in 0.1.0").
+The Designer reversed call B and corrected the slips. The second (rm-judge af92389435438039f) passed the corrected
+page.
+
+### Changed in the record by this run
+
+- `s_plasteel_last_repair`: his answer. `a_plasteel_on_the_forge` is answered; `c_plasteel_behind_a_component` is
+  resolved.
+- `d_plasteel_with_last_repair`: what (b) means (the late plasteel project and the two forge settings end with the
+  forge's onboarding; the forge's six processes measured; gravlite with the Refurbished forge).
+- `d_first_look_read`: what the first look measured and what each reading does to the design.
+- `d_repair_is_made_on_the_machine` and `c_repair_takes_the_machine_apart` (core, resolved): a repair is ordered and
+  made on the machine, and a cancelled repair never costs the colony the machine.
+- `d_no_working_original_in_the_world`: while a machine's line is on, the world hands out no working one, the two
+  base-game machines included.
+- `c_bolt_on_powered_machine` (not core, open): a fault of the built mod for the build's first live visit.
+- `c_plasteel_restore_red`: the red row ends with the plasteel switch.
+- `d_look_accepted` and `look_01.md`: the look ran on the Conductor's item; the Designer's own item was superseded.
+- The delegated calls are on the ledger for his digest: OWNER event 1795770570858909459.

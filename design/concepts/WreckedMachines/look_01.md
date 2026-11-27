@@ -4,7 +4,8 @@ Run `rm-role-designer-1795761299`, 2026-11-26. He accepted the offer of turns 1 
 (`OWNER:1795760440829904733`): "Yes I will look at the existing wrecked machines."
 
 This page says what the save must show. The Designer does not stage it: a Designer run may not take a game, deploy or
-restart. The staging is the item `RIMMANDRAKE_STAGE_WRECKED_MACHINES_LOOK_HE_SAID_YES`.
+restart. The staging was the Conductor's item `RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED`; what the look
+measured is `d_first_look_read` in `record.json`.
 
 - **Kind:** exploration. It accepts no bar and no leaf. It shows the mod as built today, before the build of 0.1.0
   changes it.

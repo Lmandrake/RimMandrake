@@ -304,7 +304,7 @@
     "design/RimMandrake/canon_materials_design_2026-10-09.md",
     "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml"
    ],
-   "status": "sent",
+   "status": "answered",
    "text": "A colony has found a wrecked alloy forge, studied it and made it Kludged. It makes its first alloys. Which picture gives it plasteel? (a) Research: a late research project opens the plasteel recipe on any working forge, the Kludged one included. This is your sentence of 2026-10-09, and no Ancient Component is spent. (b) The Refurbished forge: plasteel is the recipe that the last repair brings. It takes the second study, the second research project and one Ancient Component, from a ruin or \"via plot\" (your words). (c) Both locks: the Refurbished forge, and the late research project too. I recommend (b), judged on one test: is there a reason to spend a rare Ancient Component on the forge?",
    "turn": "design/concepts/WreckedMachines/turn_04.md",
    "review": {
@@ -316,6 +316,11 @@
     "at": "2026-11-27T07:25:12Z",
     "run": "rm-role-designer-1795763300",
     "turn": "design/concepts/WreckedMachines/turn_04.md"
+   },
+   "answer": {
+    "at": "2026-11-27T08:44:30Z",
+    "source": "OWNER:1795769070699312426",
+    "what": "Option (b), typed as '1: b.': the Refurbished forge gives plasteel (s_plasteel_last_repair). The recommended option."
    }
   }
  ],
@@ -513,13 +518,15 @@
   {
    "core": false,
    "id": "c_plasteel_restore_red",
-   "routed": "build: first live visit",
+   "routed": "stage 3: ends with the forge's two settings",
    "source": [
     "ITEM:WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS",
-    "src/RimMandrake/WreckedMachines/validation.py"
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "OWNER:1795769070699312426"
    ],
    "status": "open",
-   "text": "One live check is red and open since 2026-11-03: after the plasteel switch goes off and on, the forge did not match its shipped def. The code changed twice since and nobody re-ran it; half of the report may be the harness printing a list as type names. Not a design question: the first live visit re-runs the row and classes it (mod, check or scene)."
+   "text": "One live check is red and open since 2026-11-03: after the plasteel switch goes off and on, the forge did not match its shipped def. The code changed twice since and nobody re-ran it; half of the report may be the harness printing a list as type names. Not a design question: the first live visit re-runs the row and classes it (mod, check or scene).",
+   "position": "His answer (b) takes the plasteel switch out of 0.1.0 (d_plasteel_with_last_repair, point 3). The row tests that switch, so stage 3 writes the row and the ticket WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS to end with the switch. No live visit is spent to class the row first."
   },
   {
    "core": true,
@@ -627,7 +634,7 @@
   {
    "core": true,
    "id": "c_plasteel_behind_a_component",
-   "status": "open",
+   "status": "resolved",
    "routed": "stage 2: a_plasteel_on_the_forge",
    "source": [
     "OWNER:1791563988919655563",
@@ -636,10 +643,41 @@
     "OWNER:1795755673273656447",
     "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
     "design/RimMandrake/canon_materials_design_2026-10-09.md",
-    "design/concepts/WreckedMachines/turn_04.md"
+    "design/concepts/WreckedMachines/turn_04.md",
+    "OWNER:1795769070699312426"
    ],
    "text": "Two of his sentences pull apart on the forge's plasteel now that the forge is one of the 18. His words of 2026-10-09 put the unlock on research ('the recipies will unlock later in the game for more difficult alloys. Durasteel earlier, plasteel later'), and the built mod does that with a late research project. His words of 2026-11-26 give recipes to repair levels ('specific recipies blessed per repair tier'; Kludged 'minimal', Refurbished 'full functionality'), and the last repair costs an Ancient Component that comes 'Only found in ruins or via plot'. If plasteel is the Refurbished forge's recipe, the campaign's fabricated plasteel waits for a component; if research opens it on the Kludged forge, a colony has little reason to spend a component on the forge.",
-   "position": "Plasteel is the recipe that the forge's last repair brings (option b of a_plasteel_on_the_forge). Held until he answers."
+   "resolved": true,
+   "resolved_by": "rm-role-designer-1795769705",
+   "resolution": "His answer (b): plasteel is the recipe of the Refurbished forge (s_plasteel_last_repair, d_plasteel_with_last_repair). The lock on plasteel is the last repair, which costs an Ancient Component; no separate research project locks it. 'Durasteel earlier, plasteel later' holds through the repair levels."
+  },
+  {
+   "core": true,
+   "id": "c_repair_takes_the_machine_apart",
+   "status": "resolved",
+   "resolved": true,
+   "resolved_by": "rm-role-designer-1795769705",
+   "routed": "stage 2: d_repair_is_made_on_the_machine",
+   "source": [
+    "OWNER:1795755622961436106",
+    "OWNER:1795749529567808948",
+    "ITEM:RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED",
+    "infrastructure/state/ledger/events/BENCH.jsonl",
+    "src/RimMandrake/WreckedMachines/Source/WreckedMachinesLadder.cs"
+   ],
+   "text": "The root says that colonists repair the machine, and his words of 2026-09-15 praise repair in place. In the built mod a repair is a build order from the Factory menu, placed over the lower level; a colonist takes the lower machine apart, and then a frame is built on empty ground (seen at the first look). Between the two steps no machine stands there, and in 0.1.0 a machine of this mod cannot be built again.",
+   "resolution": "d_repair_is_made_on_the_machine: the repair is ordered on the machine, the machine stays in sight at its lower level until the work is complete, and a cancelled repair leaves the machine as it was. No level of an onboarded machine is in the build menu."
+  },
+  {
+   "core": false,
+   "id": "c_bolt_on_powered_machine",
+   "status": "open",
+   "routed": "build: first live visit classes it",
+   "source": [
+    "ITEM:RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED",
+    "infrastructure/state/ledger/events/BENCH.jsonl"
+   ],
+   "text": "A fault of the built mod, seen at the first look and filed nowhere else: a yellow no-power mark shows on the Refurbished smelter while its inspect text reads powered (capture A3), and the Conductor sees the same mark on the Refurbished emanator (capture C3). The cause was not found. Not a design question. The build of 0.1.0 changes both defs; its first live visit reads the mark again and classes it (mod, or the staged scene)."
   }
  ],
  "decisions": [
@@ -870,7 +908,8 @@
    ],
    "speaker": "owner",
    "run": "rm-role-designer-1795761299",
-   "what": "He accepted the look at the running mod: 'Yes I will look at the existing wrecked machines.' What the save shows is written in look_01.md (an exploration scene on the mod's small list: the smelter, the power cell and the emanator at each built grade, a colonist sent to study a wreck, a Kludged smelter about to be built over a wreck, and a wrecked smelter beside a wrecked power cell to show what moving a wreck is today). A Designer run may not take a game, so the staging is the item RIMMANDRAKE_STAGE_WRECKED_MACHINES_LOOK_HE_SAID_YES. The look explores d_three_looks and d_study_before_each_repair; no open ask waits for it."
+   "what": "He accepted the look at the running mod: 'Yes I will look at the existing wrecked machines.' What the save shows is written in look_01.md (an exploration scene on the mod's small list: the smelter, the power cell and the emanator at each built grade, a colonist sent to study a wreck, a Kludged smelter about to be built over a wreck, and a wrecked smelter beside a wrecked power cell to show what moving a wreck is today). A Designer run may not take a game, so the staging is the Conductor's item RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED (the Designer's own item for the same look was superseded as its duplicate on 2026-11-26). The look was staged that night; what it measured is d_first_look_read. The look explores d_three_looks and d_study_before_each_repair; no open ask waits for it.",
+   "amended_by": "rm-role-designer-1795769705"
   },
   {
    "date": "2026-11-26",
@@ -960,6 +999,82 @@
     "design/concepts/WreckedMachines/turn_04.md"
    ],
    "what": "Colonists carry a wreck (his card). Every wreck gets a carried form; the build changes the smelter wreck, which has none today. Who may lift a wreck is data on the machine that a layer above can narrow: the campaign gives the lift to hauler droids and ride-in machines (his reply of 2026-11-26), and this mod does not know that Droidworks exists. A wreck weighs what the factory mod's machine weighs (35 to 115 kg, measured), so a wreck from another tile takes the load of one to four colonists at the base game's 35 kg each, or pack animals. Whether a Kludged machine can be moved stays data of each machine (d_wreck_is_carried); the built kludged smelter cannot be moved and the built Refurbished smelter can. The four words 'but notified or built' are still not read."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_plasteel_with_last_repair",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795769705",
+   "source": [
+    "OWNER:1795769070699312426",
+    "OWNER:1791563988919655563",
+    "OWNER:1795755673273656447",
+    "OWNER:1795755622961436106",
+    "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
+    "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml",
+    "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs",
+    "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml",
+    "src/RimStarWars/Armoury/Patches/RSW_AlloyForge_Durasteel.xml",
+    "design/concepts/WreckedMachines/turn_04.md",
+    "design/concepts/WreckedMachines/turn_05.md"
+   ],
+   "what": "What his answer (b) means for the alloy forge in 0.1.0. (1) The factory mod's plasteel process (VFEFactory_AlloyPlasteel) runs on the Refurbished forge and on no lower level. (2) He picked (b) and not (c), so no separate research project locks plasteel. The built late project RM_WM_PlasteelAlloying leaves this mod when the forge is onboarded, as RM_WM_AlloyForgeRestoration does (d_forge_is_onboarded). The forge's second restoration project, which study of the Kludged forge opens, is the research that the last repair needs (d_study_before_each_repair). (3) The two built forge settings (alloyForgeProgressiveGate and plasteelAlloyEnabled) leave with the two projects. The forge's own on/off line (d_all_eighteen_shape) takes their place; with that line off the forge is the factory mod's forge, plasteel included. (4) Measured 2026-11-27 from the factory mod's ProcessDefs_AlloyForge.xml (workshop folder 3686924415, 1.6): the forge has six processes. They are plasteel; gravlite (its def loads with Odyssey, and its label says it is made from vacstone and plasteel); obsidian from stone chunks (its def loads with Odyssey); and bronze, sky steel and stainless steel (each loads with one other mod). Every DLC is assumed. So in a game with this mod and the factory mod alone, the Kludged forge makes at most obsidian. In the campaign the Kludged forge also makes durasteel, after the Armoury adds its recipe to the forge's levels (d_forge_is_onboarded). The Designer's call: gravlite goes with the Refurbished forge, because gravlite is made from plasteel. Which level runs each other process is the forge's onboarding table, build work under the rule of d_all_eighteen_shape. (5) His sentence of 2026-10-09, 'Durasteel earlier, plasteel later', still holds; the lock on plasteel is now the repair level and no longer a research project of its own. (6) A neighbour names the two built projects: ResearchRetag puts each on a research tab. A patch that matches nothing logs nothing, so stage 3 names ResearchRetag's change beside the forge's onboarding. (7) The cost that the page told him: a colony that gets no Ancient Component makes no plasteel at the forge; salvage, re-melted slag on the smelter and trade stay. (8) The red live row on the plasteel switch (c_plasteel_restore_red) tests a switch that 0.1.0 removes, so the row and its ticket end with the switch."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_first_look_read",
+   "kind": "finding",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795769705",
+   "source": [
+    "ITEM:RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED",
+    "infrastructure/state/ledger/events/BENCH.jsonl",
+    "OWNER:1795760440829904733",
+    "design/concepts/WreckedMachines/look_01.md",
+    "src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
+   ],
+   "what": "What the first look at the built mod measured, and what each reading does to the design. The look is the agent's walk of 2026-11-26 on ArchSmall, on the mod's small list (run rm-detached-bench-rimmandrake-stage-wrecked-machines-first-1795761734; keeper save WRECKED_MACHINES_FIRST_LOOK_2026_11_26; the Conductor's note of findings for the Designer is event 1795766557136982102 in the BENCH shard). The Conductor sent him 9 of the 18 captures at 12:00 AM PST 2026-11-27; no word of his about them is on the ledger yet. (1) Levels by eye. The smelter's Wrecked and Kludged levels have their own pictures and read clearly. Refurbished and the original grade share one picture. The power cell and the emanator are one base-game picture in three shades, and the three emanators are hard to tell apart at play zoom. This confirms d_three_looks and adds one thing: a darker shade of one picture does not tell two levels apart, so each Wrecked and each Kludged level needs a picture of its own. (2) A repair reads as a new build. The player picks the Kludged smelter in the Factory build tab and places it on the wreck; a colonist takes the wreck apart, then builds a grey frame on the empty ground. The design answers with d_repair_is_made_on_the_machine. (3) Study. With Research Reinvented loaded, a colonist cannot study a wreck without a field research kit; the player must order each session, and the researcher never chose the wreck himself. One session of about 6 game hours moved the restoration project from 10 to 223 of 2000 points. Later the wreck offered no study; the worker's guess (about 60 per cent) is that the wreck's study was used up, and nobody checked. That study is Research Reinvented's. The study that 0.1.0 leans on is the base game's (d_study_before_each_repair, d_feasible_study_in_vanilla), and nobody has seen the base game's study on a building in play: that look is still owed before a bar leans on it. What the reading adds to the design, as lines for stage 3: study of a machine needs no item of another mod; the player turns study on once on the machine, and colonists who do research come back to it by themselves; the machine shows how far its study is. (4) Moving. The smelter wreck has no Uninstall and cannot be carried; the power-cell wreck has Uninstall even when nobody owns it, and a colonist carried it to a stockpile. This confirms the change of d_wreck_is_carried and d_lift_is_data. (5) Faults of the built mod, which the build takes: a no-power mark shows on the Refurbished smelter while its inspect text reads powered, and the Conductor sees the same mark on the Refurbished emanator (c_bolt_on_powered_machine); the wrecked smelter (30 steel) and the original grade are in the Factory build menu."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_repair_is_made_on_the_machine",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795769705",
+   "source": [
+    "OWNER:1795755622961436106",
+    "OWNER:1795749529567808948",
+    "ITEM:RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED",
+    "infrastructure/state/ledger/events/BENCH.jsonl",
+    "src/RimMandrake/WreckedMachines/Source/WreckedMachinesLadder.cs",
+    "src/RimMandrake/WreckedMachines/DESIGN.md",
+    "design/concepts/WreckedMachines/look_01.md",
+    "design/concepts/WreckedMachines/turn_05.md"
+   ],
+   "what": "A repair is ordered on the machine and made on the machine. (1) The player selects the machine and orders its next repair there. No level of an onboarded machine is in the Architect build menu, the Wrecked level included: his statement says that a colony 'can no longer simply' research and build one. (2) The machine stays where it stands, at its lower level and in sight, while colonists bring the resources and do the work. When the work is complete, the machine changes level. (3) A repair that is cancelled, interrupted or left without its resources never costs the colony the machine: the machine is still there at its lower level, and what was brought is given back as the base game gives back a cancelled build. The evidence that these lines are needed. Read from the base game's source through RimSage on 2026-11-27 (GenSpawn.SpawningWipes, GenConstruct.BlocksConstruction, WorkGiver_DeconstructForBlueprint): the built ladder steps by replaceTags, and for that the base game has a colonist take the lower building apart before the frame of the upper one is built. Seen in play at the first look (d_first_look_read, reading 2): 'the colonist deconstructs the wreck, then builds a grey frame on the empty spot', and the walk's report says it reads 'as a new build where the wreck stood, not a repair of the wreck'. So in the built mod, after the wreck is taken apart and before the frame is complete, no machine stands there; if the order is then cancelled, nothing in the source that was read puts the wreck back, and in 0.1.0 a machine of this mod cannot be built again (in the built mod the wrecked smelter is still in the build menu for 30 steel, a testing affordance). Nobody has cancelled such an order in play; that reading is from source only. No ask: his statement says 'repaired', his sentence of 2026-09-15 calls repair in place 'excellent', and nothing was found that argues for the build menu except that it needs no new code. How the build does it (a repair job on the machine, or a frame that keeps the machine) is build work; the bars say what the player sees. He can undo this call; station E of the keeper save shows him what the built mod does today."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_no_working_original_in_the_world",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795769705",
+   "source": [
+    "OWNER:1795755622961436106",
+    "OWNER:1795749411129133147",
+    "OWNER:1795761534460592124",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml",
+    "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_HideDonorSmelter.xml",
+    "design/concepts/WreckedMachines/turn_04.md",
+    "design/concepts/WreckedMachines/turn_05.md"
+   ],
+   "what": "While a machine's Mod Settings line is on, the world hands out no working one of that machine: not as loot on a map, not as a reward and not as trader stock. A colony comes by a working one only by repair. This holds for all 20 onboarded machines, the two base-game machines included. For the 18 factory machines it is call 5 of d_all_eighteen_shape, shown to him in turn_04.md. For the two base-game machines it is new, and it changes the base game. Measured 2026-11-27 through RimSage (Defs/Core/ThingDefs_Buildings/Buildings_Special.xml and the ThingSetMakerDefs of Ideology, Odyssey and Anomaly): the base game's vanometric power cell and psychic emanator each carry the reward tag RewardStandardCore and the trade tag ExoticBuilding, and the map-generation loot lists name both (Ideology and Odyssey name both; Anomaly names the emanator in a loot list and in a reward list). So today a colony gets a working one as a reward, from a trader of exotic goods, or as loot. His words decide the call: the Original is 'no longer attainable through research or repair, used only for comparison', and a machine of this mod 'must be found and retrieved to a safe location, studied to enable research, and then slowly repaired'. A working Original that a trader sells is used for more than comparison, and it passes over every repair level. Where the statement and an older picture pulled apart, this record let the statement decide (d_wreck_is_carried, d_wrecked_gives_nothing); it does so here. The first draft of this run took the opposite call (leave the base game's cell alone, because a change to base-game loot is a large act in a stranger's game); the fresh reader aa3f32904cbb116b2 struck that call on the words 'used only for comparison', and the Designer found no words of his for it. What stays as it is: a machine that already stands in an old save; and with a machine's line off, that machine is handed out as the base game or the factory mod hands it out. Whether a wreck lies where the base game's loot would have held a working machine is data of where wrecks lie (d_found_is_wrecked). The base game's infinite chemreactor is not an onboarded machine and is not changed. What it costs: this mod changes three base-game hand-outs for a stranger (reward, trade and loot of two machines). d_three_looks rests on this call: outside an old save, no colony holds an Original beside a Refurbished machine of the same picture. The Designer's reading of his statement, not his words; he can undo it. Shown to him as call B of turn_05.md."
   }
  ],
  "failure_modes": [
@@ -1140,10 +1255,11 @@
     "ITEM:WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS",
     "OWNER:1791563988919655563",
     "OWNER:1795755673273656447",
-    "OWNER:1795761534460592124"
+    "OWNER:1795761534460592124",
+    "OWNER:1795769070699312426"
    ],
    "what": "The donor mod's alloy forge is reachable early, right after the smelter's restoration, at a cost without advanced components, and its plasteel recipe waits for a late project; two settings turn the steps off and take plasteel off the forge. It is not a wreck and has no grades. The durasteel recipe itself is the Armoury's.",
-   "scope_note": "His card for all 18 (OWNER:1795761534460592124) makes the forge an onboarded machine of 0.1.0 (d_forge_is_onboarded): the step that opens the forge for building ends with that onboarding. What gives plasteel is a_plasteel_on_the_forge."
+   "scope_note": "His card for all 18 (OWNER:1795761534460592124) makes the forge an onboarded machine of 0.1.0 (d_forge_is_onboarded): the step that opens the forge for building ends with that onboarding. Plasteel is the recipe of the Refurbished forge by his answer (OWNER:1795769070699312426): the late plasteel project and the two forge settings end with the forge's onboarding (d_plasteel_with_last_repair)."
   },
   {
    "id": "inv_one_salvage_rule",
@@ -1343,6 +1459,10 @@
   {
    "source": "OWNER:1795758284303786840",
    "not_design_input": "the Designer's own record of the seven calls of turn 2, filed under the Evidence-for-Ask ruling; it holds none of his words, and each call is a decision of this record"
+  },
+  {
+   "source": "OWNER:1795770570858909459",
+   "not_design_input": "the Designer's own record of the three calls of turn 5, filed under the Evidence-for-Ask ruling; it holds none of his words, and each call is a decision of this record"
   }
  ],
  "packageId": "mandrake.rm.wreckedmachines",
@@ -1594,6 +1714,16 @@
    ],
    "speaker": "owner",
    "text": "His card answer to a_who_moves_a_wreck: 'Colonists carry it (Recommended)'. The option's description on the card, which is our text and not his words: 'Why: a stranger can then do what your statement says, found and retrieved to a safe location, with this mod alone. Who may lift a wreck is data, so the campaign narrows it to hauler droids and ride-in machines. Cost: in a stranger's game an ancient machine lifts as easily as a loom.'"
+  },
+  {
+   "date": "2026-11-27",
+   "id": "s_plasteel_last_repair",
+   "source": [
+    "OWNER:1795769070699312426",
+    "design/concepts/WreckedMachines/turn_04.md"
+   ],
+   "speaker": "owner",
+   "text": "His typed answer to a_plasteel_on_the_forge: '1: b.' The Conductor put the ask to him in chat as question 1. Option (b) on the page of turn 4, which is our text and not his words: 'The Refurbished forge: plasteel is the recipe that the last repair brings. It takes the second study, the second research project and one Ancient Component, from a ruin or \"via plot\" (your words).' He took the recommended option. He did not take '(a) Research' or '(c) Both locks'."
   }
  ],
  "script_audit": [
