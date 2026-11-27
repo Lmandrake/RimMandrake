@@ -1525,6 +1525,124 @@ def t_the_judge_filter_reads_the_ask_against_now():
     chk(lambda: jf("rule design/here.md from the brief", root)["live"] is False, "a text judge needs no game")
 
 
+PAUSE_RX = [r"^RIMMANDRAKE_READ_FIX_[0-9A-F]+(_[0-9A-F]{6})?_WITH_FRESH_EYES$"]
+PAUSE_WHY = "the owner's order (test): the pipeline works before hardening"
+
+
+def _pause_world(setting, extra_runs=()):
+    """The code review pause fixture: a fresh-reader ticket (a made-up sha) and a fix ticket, both ready, the real `_off`
+    over a settings file written from `setting` (a dict, a raw text, or None for no such file). -> (rd, tick)."""
+    import contextlib
+    import control
+    import detached_helper as DH
+    import list_effect as LE
+    import model as LM
+    import probe_result as PR
+    ld = LD()
+    ids = ["RIMMANDRAKE_READ_FIX_ABCDEF1234_WITH_FRESH_EYES", "RIMMANDRAKE_FIX_SOME_OTHER_THING_ENTIRELY"]
+    world = LM.replay([{"id": iid, "event": "file", "for": "BENCH", "seat": "BENCH", "kind": "task", "title": iid,
+                        "effect": "cmd:false", "ts": "2026-11-22T00:00:00Z"} for iid in ids])
+    d = tempfile.mkdtemp(prefix="ld_pause_")
+    cfgp = os.path.join(d, "list_dispatch.json")
+    if setting is not None:
+        with open(cfgp, "w", encoding="utf-8") as f:
+            f.write(setting if isinstance(setting, str) else json.dumps({"code_review_pause": setting}))
+    cfg = dict(CFG, load_line=28, load_per_run=2, load_lag_s=90)
+    fx = {"account": lambda: (True, "")}
+
+    def tick(only=None):
+        with patch.dict(os.environ, RM_DISPATCHER_STATE=d), contextlib.ExitStack() as es:
+            for p in (patch.object(LE, "_world", return_value=world), patch.object(ld, "_mods", return_value=[]),
+                      patch.object(ld, "CFG_PATH", cfgp), patch.object(control, "blocked", return_value=None),
+                      patch.object(ld, "_paused", return_value=None), patch.object(ld, "_held", return_value=None),
+                      patch.object(ld, "_pool", return_value=None), patch.object(ld, "_clone_exists", return_value=False),
+                      patch.object(DH, "live_status", lambda rec, *a: rec["status"]),
+                      patch.object(ld, "load_now", return_value=PR.value(1))):
+                es.enter_context(p)
+            for n, iid in enumerate(extra_runs):
+                DH.write_record({"unit": "u%d" % n, "item": iid, "at": NOW - 5, "status": "running",
+                                 "next_act_owner": "list_dispatch"})
+            return ld.tick(cfg, apply=False, fx=fx, now=NOW, only=only)
+    return ids, tick
+
+
+def t_the_code_review_pause_holds_every_review_ticket():
+    """RIMMANDRAKE_PAUSE_CODE_REVIEW_PIPELINE_WORKS_BEFORE_HARDENING (his order 2026-11-27): while list_dispatch.json's
+    code_review_pause is on, the lane starts no run on a code review ticket, however late it was filed."""
+    import io
+    import contextlib
+    on = {"on": True, "reason": PAUSE_WHY, "id_patterns": PAUSE_RX}
+    ids, tick = _pause_world(on)
+    rd = tick()
+    rdr, fix = ids
+    chk(lambda: rd["items"][rdr]["decision"] == "off" and "code review is paused" in rd["items"][rdr]["why"]
+        and PAUSE_WHY in rd["items"][rdr]["why"] and not rd["launched"],
+        "pause on: a ready fresh-reader ticket reads off, 'code review is paused' with the reason, and starts no run (%s)"
+        % rd["items"][rdr])
+    chk(lambda: rd["items"][fix]["decision"] == "would_launch",
+        "pause on: a ready ticket of another kind (a fix) is launched as before (%s)" % rd["items"][fix])
+    ids2, tick2 = _pause_world(dict(on, on=False))
+    chk(lambda: tick2()["items"][ids2[0]]["decision"] == "would_launch", "pause off: the same reader ticket reads ready")
+    ids3, tick3 = _pause_world({"on": True, "reason": PAUSE_WHY, "id_patterns": PAUSE_RX})
+    ids4, tick4 = _pause_world("{}")
+    chk(lambda: tick4()["items"][ids4[0]]["decision"] == "would_launch" and tick4()["pause"]["on"] is False,
+        "no code_review_pause key in a readable file: the pause is off, measured")
+    ids5, tick5 = _pause_world(on, extra_runs=[ids[0]])
+    rd5 = tick5()
+    chk(lambda: rd5["items"][ids5[0]]["decision"] == "off" and not rd5["launched"],
+        "pause on, a reader ticket with a live run: the lane stops nothing and launches nothing (%s)" % rd5["items"][ids5[0]])
+    chk(lambda: rd["pause"] == {"on": True, "reason": PAUSE_WHY, "held": 1}, "the reading names the pause, its reason and the "
+        "count of held tickets (%s)" % rd.get("pause"))
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        LD()._print(rd)
+    chk(lambda: "code review is paused" in buf.getvalue() and PAUSE_WHY in buf.getvalue() and "1 ticket" in buf.getvalue(),
+        "status prints that the pause is on, the reason and the count (%r)" % buf.getvalue()[-300:])
+    for what, setting in (("a settings file that is not JSON", "{not json"), ("no settings file", None),
+                          ("a pause whose id_patterns is not a list", {"on": True, "reason": "r", "id_patterns": 7})):
+        ids6, tick6 = _pause_world(setting)
+        rd6 = tick6()
+        chk(lambda rd6=rd6, ids6=ids6: rd6["items"][ids6[0]]["decision"] == "blind"
+            and "could not look" in rd6["items"][ids6[0]]["why"] and not rd6["launched"]
+            and "could not look" in str((rd6.get("pause") or {}).get("could_not_look", "")),
+            "%s: the lane says could not look for the pause and reads no 'pause off' (%s)" % (what, rd6["items"][ids6[0]]))
+
+
+def t_the_shipped_pause_names_the_three_kinds_and_only_them():
+    ld = LD()
+    s = ld.load_cfg().get("code_review_pause") or {}
+    chk(lambda: s.get("on") is True and s.get("reason"), "the shipped lane carries the pause, on, with its reason")
+    import re
+    held = ["RIMMANDRAKE_READ_FIX_1ECCD06DB0_WITH_FRESH_EYES", "RIMMANDRAKE_READ_FIX_5E0A5DB3_WITH_FRESH_EYES",
+            "RIMMANDRAKE_READ_FIX_A01DAF8197_9F3C2B_WITH_FRESH_EYES",
+            "RIMMANDRAKE_FILE_NEW_MACHINERY_REVIEW_LIKE_FRESH_READER",
+            "RIMMANDRAKE_REVIEW_NEW_SCRIPTS_THROUGH_CODEX_EIGHTY_THREE_UNREAD"]
+    free = ["RIMMANDRAKE_FIX_RETURN_STEP_SAYS_FAILED", "RIMMANDRAKE_PAUSE_CODE_REVIEW_PIPELINE_WORKS_BEFORE_HARDENING",
+            "RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST", "RIMMANDRAKE_JUDGE_FLOWWORKS_BLIND_CYCLE"]
+    rx = [re.compile(p) for p in s.get("id_patterns") or []]
+    chk(lambda: all(any(r.search(i) for r in rx) for i in held), "the shipped patterns match the three kinds of review ticket")
+    chk(lambda: not any(r.search(i) for r in rx for i in free), "and no fix, no build and no blind challenge")
+
+
+def t_the_pause_command_edits_one_line_and_nothing_else():
+    ld = LD()
+    with open(ld.CFG_PATH, encoding="utf-8") as f:
+        text = f.read()
+    off = ld.set_pause(text, False, None)
+    on = ld.set_pause(off, True, "a new reason")
+    chk(lambda: json.loads(off)["code_review_pause"]["on"] is False and json.loads(on)["code_review_pause"]["on"] is True
+        and json.loads(on)["code_review_pause"]["reason"] == "a new reason", "pause off, then on with a new reason: the key follows")
+    keep = lambda t: {k: v for k, v in json.loads(t).items() if k != "code_review_pause"}  # noqa: E731
+    chk(lambda: keep(off) == keep(text) == keep(on), "every other key is untouched")
+    chk(lambda: sum(1 for a, b in zip(text.splitlines(), off.splitlines()) if a != b) == 1
+        and len(text.splitlines()) == len(off.splitlines()), "exactly one line of the file changes")
+    try:
+        ld.set_pause("{}", True, None)
+        chk(lambda: False, "a file with no pause line is refused, naming the line to add")
+    except ValueError as e:
+        chk(lambda: "code_review_pause" in str(e), "a file with no pause line is refused, naming the line to add")
+
+
 def main():
     for t in (t_decide_is_pure_and_says_why_on_every_row,
               t_the_check_runs_before_every_attempt,
@@ -1566,7 +1684,10 @@ def main():
               t_each_row_says_since_when_it_took_its_decision,
               t_a_judge_route_launches_one_fresh_judge_run,
               t_the_judge_filter_reads_the_ask_against_now,
-              t_a_live_check_with_no_game_takes_a_free_game_or_waits):
+              t_a_live_check_with_no_game_takes_a_free_game_or_waits,
+              t_the_code_review_pause_holds_every_review_ticket,
+              t_the_shipped_pause_names_the_three_kinds_and_only_them,
+              t_the_pause_command_edits_one_line_and_nothing_else):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a promise whose test cannot run is a FAIL, never a crash

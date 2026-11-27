@@ -987,9 +987,85 @@ def _held(mod):
     return "HELD BY OWNER: %s (%s): %s" % (mod, h.get("date") or "-", _one(h.get("said"), 120))
 
 
+PAUSE_KEY = "code_review_pause"
+PAUSE_PREFIX = "code review is paused: "
+
+
+def _pause_setting():
+    """-> the pause setting of list_dispatch.json: None when the file is readable and has no such key, else {"on": bool,
+    "reason": str, "id_patterns": [str]} as written. Raises when the file cannot be read or the setting is malformed: a
+    pause that cannot be read is never "off" (CLAUDE.md: could not look, failed, zero and empty are four answers)."""
+    with open(CFG_PATH, encoding="utf-8") as f:
+        raw = json.load(f)
+    if not isinstance(raw, dict):
+        raise ValueError("%s holds %s, not an object" % (os.path.basename(CFG_PATH), type(raw).__name__))
+    s = raw.get(PAUSE_KEY)
+    if s is None:
+        return None
+    if not isinstance(s, dict) or not isinstance(s.get("on"), bool):
+        raise ValueError("%s needs an object with a true/false `on`" % PAUSE_KEY)
+    pats = s.get("id_patterns")
+    if s["on"] and (not isinstance(pats, list) or not all(isinstance(p, str) for p in pats)):
+        raise ValueError("%s.id_patterns must be a list of regexes" % PAUSE_KEY)
+    for p in pats or []:
+        re.compile(p)
+    return s
+
+
+def _pause_cnl(e):
+    return "could not look whether code review is paused: %s (%s: %s)" % (
+        os.path.basename(CFG_PATH), type(e).__name__, _one(e, 200))
+
+
+def _paused_class(iid):
+    """-> (why the ticket is held by the code review pause or None, could-not-look text or None). The pause holds a
+    ticket whose id matches an id_pattern while `on` is true (his order of 2026-11-27: the pipeline works before
+    hardening). It only reads the id: no run is stopped, and nothing is refused at filing."""
+    try:
+        s = _pause_setting()
+        if not s or not s["on"]:
+            return None, None
+        if any(re.search(p, iid) for p in s["id_patterns"]):
+            return PAUSE_PREFIX + (str(s.get("reason") or "no reason written")), None
+    except Exception as e:  # noqa: BLE001 - could not look is never "the pause is off"
+        return None, _pause_cnl(e)
+    return None, None
+
+
+def pause_reading(items):
+    """-> the pause as the reading says it: {"on", "reason", "held"} (held: the lane's tickets that it holds), or
+    {"could_not_look": text}."""
+    try:
+        s = _pause_setting()
+    except Exception as e:  # noqa: BLE001
+        return {"could_not_look": _pause_cnl(e)}
+    if not s or not s["on"]:
+        return {"on": False, "reason": (s or {}).get("reason"), "held": 0}
+    return {"on": True, "reason": s.get("reason"),
+            "held": sum(1 for d in (items or {}).values() if str((d or {}).get("off") or "").startswith(PAUSE_PREFIX))}
+
+
+def set_pause(text, on, reason):
+    """-> list_dispatch.json's `text` with its one code_review_pause line set on or off (and `reason`, when given). Every
+    other line stays byte for byte. Raises ValueError when the file has no such line."""
+    rx = re.compile(r'^(\s*"%s":\s*)(\{.*\})(,?\s*)$' % PAUSE_KEY, re.M)
+    m = rx.search(text)
+    if not m:
+        raise ValueError('no line `"%s": {"on": true, "reason": "...", "id_patterns": [...]},` in the settings file; '
+                         "add one" % PAUSE_KEY)
+    cur = json.loads(m.group(2))
+    cur["on"] = bool(on)
+    if reason:
+        cur["reason"] = reason
+    return text[:m.start()] + m.group(1) + json.dumps(cur, ensure_ascii=False) + m.group(3) + text[m.end():]
+
+
 def _off(iid, mod):
     """-> (why it is off or None, could-not-look text or None)."""
     import control as C
+    why, cnl = _paused_class(iid)
+    if why or cnl:
+        return why, cnl
     try:
         for fam in (FAMILY, "detached"):
             why = C.blocked({"family": fam, "item": iid, "mod": mod})
@@ -1661,6 +1737,7 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
     load = load_now()
     old = onboard_facts_safe(lambda: old_facts(w, open_, now, cfg, mw_mods, mw_cause, mods))
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
+            "pause": pause_reading(ordered),
             "bundles_live": bundles_live, "join": join, "onboard": onboard, "old": old,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "cores": os.cpu_count(), "checks": cstats,
@@ -2093,7 +2170,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         if apply and not only:
             st["blind_hold"] = bh
         rd = {"schema": 1, "blind_hold": bh, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
-              "old": old,
+              "old": old, "pause": facts.get("pause"),
               "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],
@@ -2162,7 +2239,18 @@ def row_stage(it, row, now):
     return LP.stage_of(f, now)["stage"]
 
 
+def _pause_line(p):
+    if not isinstance(p, dict):
+        return "code review pause: UNMEASURED (the reading carries none)"
+    if p.get("could_not_look"):
+        return p["could_not_look"]
+    if not p.get("on"):
+        return "code review pause: off"
+    return "%s%s; %d ticket(s) held" % (PAUSE_PREFIX, p.get("reason"), p.get("held") or 0)
+
+
 def _print(rd):
+    print(_pause_line(rd.get("pause")))
     for iid, r in rd["items"].items():
         print("%-64s %-16s %s" % (iid, r["decision"], _one(r.get("why"), 170)))
     print("list_dispatch %s at %s: %d item(s); %s" % ("tick" if rd.get("apply") else "dry tick", rd["at_pac"],
@@ -2178,6 +2266,9 @@ def main(argv=None):
     t.add_argument("--only", nargs="+", metavar="ID", help="the Conductor's run-now: decide only these items (every "
                                                           "gate and slot still applies)")
     sub.add_parser("status")
+    pz = sub.add_parser("pause", help="the code review pause (list_dispatch.json code_review_pause): on, off or show")
+    pz.add_argument("mode", choices=["on", "off", "show"])
+    pz.add_argument("--why", help="the reason, written in the setting (on)")
     c = sub.add_parser("clear")
     c.add_argument("item")
     c.add_argument("--why", required=True)
@@ -2191,6 +2282,24 @@ def main(argv=None):
             print("UNMEASURED: no reading yet at %s" % os.path.join(sdir(create=False), "reading.json"))
             return 2
         _print(rd)
+        return 0
+    if o.cmd == "pause":
+        if o.mode == "show":
+            print(_pause_line(pause_reading({})))
+            return 0
+        with open(CFG_PATH, encoding="utf-8") as f:
+            text = f.read()
+        try:
+            new = set_pause(text, o.mode == "on", o.why)
+        except ValueError as e:
+            print("REFUSED: %s" % e)
+            return 2
+        tmp = CFG_PATH + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(new)
+        os.replace(tmp, CFG_PATH)
+        print("code review pause %s in %s; it binds the lane once landed: ./publish -m \"<reason>\" %s"
+              % (o.mode, CFG_PATH, os.path.relpath(CFG_PATH)))
         return 0
     # The tick's lock: an applied tick reads state.json, decides for minutes and writes its copy back, so a clear written
     # in between was lost (2026-11-27 10:10 AM PST). The clear waits for a running tick and writes on top of its state.

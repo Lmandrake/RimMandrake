@@ -459,6 +459,9 @@ moment that it starts. So an act binds at once, with no publish and no tick wait
 ./pipe off <all|Mod|stage:S|item:ID|family:F|game:G> --why "..."   new starts stop at once; live runs untouched
 ./pipe off game:ArchBig --why "his walk"           hold ArchBig only: in-game runs go to ArchSmall (see below)
 ./pipe on  <same> --why "..."                lifts a `pipe off` (never his hold) and asks for a tick now
+python3 src/RimMandrake/rimflow/list_dispatch.py pause off|on [--why "..."]   the code review pause (his order 2026-11-27):
+                                             edits one line of list_dispatch.json, so land it with ./publish. `off` makes
+                                             every held review ticket ready again; `status` shows pause, reason, count
 ./pipe stop <scope|unit> --at-easy-spot --why "..."   finish the unit in hand, write where you are, end (the default)
 ./pipe stop <scope|unit> --write-now [--deadline 5m] --why "..."   stop now, write where you are, end; then --kill
 ./pipe stop <scope|unit> --kill --why "..."  SIGKILL the whole cgroup, verified dead; record killed, return the clone
