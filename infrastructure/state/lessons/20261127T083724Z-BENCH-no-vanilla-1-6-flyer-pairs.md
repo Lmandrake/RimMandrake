@@ -1,0 +1,3 @@
+No vanilla 1.6 flyer pairs flight with alternateGraphics. Where a flyer's ground look differs (Duck, Quail, Peacock by sex), vanilla ships a second flip-book (flyingAnimationFramePathPrefixFemale); Chicken and Locust use flyingAnimationInheritColors, which tints by the lifeStage colour, not an AlternateGraphic colour. So a flyer with alternate coats needs its own per-coat swap (Harmony postfix on Pawn_FlightTracker.GetBestFlyAnimation by pawn.GetGraphicIndex()) or its coats change look at take-off.
+item: MURRELITH_FLIGHT_DECIDE_SIX_COATS_ONE_WING
+home: skills/rimworld-modding/references/flight.md
