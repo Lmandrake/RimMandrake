@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs b/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs
+index 74c9fd12ce..c49ff49fd4 100644
+--- a/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs
++++ b/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs
+@@ -794,7 +794,6 @@ namespace RimMandrake.FlowWorks.Sheet
+ 					if (plant != null && !plant.Destroyed && plant.def.plant != null && !plant.def.plant.IsTree
+ 						&& RM_SheetMath.CropDrowns(stand, plant.Age, pulseTicks, prm))
+ 					{
+-						plant.Kill();
+ 						killed++;
+ 						at = c;
+ 					}

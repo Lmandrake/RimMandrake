@@ -1,0 +1,88 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_PIN_SHEET_CALLER_KILLS_THE_DROWNED_CROP",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "inv_overflow_sheet: '... kills crops under standing overflow after a week' (record.json); its offline deciders T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE",
+   "evidence": [
+    "lane2/planted_results.jsonl PF_SHEET_CALLER_CROP_NEVER_KILLED: plant.Kill() deleted from Source/Sheet/RM_MapComponent_Sheet.cs; T_SHEET rc 0 (62/62) and PY_FLOWWORKS_SHEET_DROWN_MESSAGE rc 0: caught false",
+    "design/concepts/FlowWorks/version/polish.md line 116 predicted it from source (Codex review 2026-11-24); this cycle measured it",
+    "the kernel half (CropDrowns, the crop timer) is tested; only the caller kills, and no decider read that it does"
+   ],
+   "would_pass": "an offline decider of inv_overflow_sheet goes red when the sheet caller stops killing the crop the kernel drowns",
+   "smallest_fix": "SheetWaterChecks.cs: case SheetCropKill_the_caller_kills_each_drowning_crop (under T_SHEET's Sheet* glob): inside the CropDrowns(stand, plant.Age, pulseTicks, prm) block, plant.Kill( comes before killed++ (comments stripped, raw file)",
+   "verdict_on_criterion": "the criterion is right; the check could not fail on a caller that announces deaths of crops that live on",
+   "status": "FIXED 5d68be6e660f0e448b71e5d2b9c02c70139bd0a7",
+   "against": "check",
+   "miss_of": 4,
+   "repair_shown": "red rc 1 on the plant, green rc 0 (63/63) on the real build, both at 5d68be6e66 (lane2/fixes.jsonl); red-seen recorded"
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_OVERSPILL_SHIPS_SWITCHED_OFF",
+   "class": "Polish",
+   "bar": "inv_overflow_sheet",
+   "criterion": "Mod Settings: defaults equal the shipped behaviour; owner card D7: overspill ships ON once validated",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_INFO_SHEET_MASTER_SWITCH_SHIPS_OFF",
+    "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetSettings.cs: sheetOverflowEnabled = false",
+    "already on version/polish.md line 11 under this name: no new line"
+   ],
+   "would_pass": "the default flips to true when his walk signs the overspill off",
+   "smallest_fix": "RM_SheetSettings.cs: sheetOverflowEnabled = true and its Scribe default true, at the walk's sign-off (not before: his D7 card ties it to validation)",
+   "verdict_on_criterion": "not a fault of the offline bar: the overspill works when on and every offline check runs it on; the flip is a sign-off act",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "against": "mod",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_RECORD_TAR_SHEET_FIRE_UNSEEN_OFFLINE",
+   "class": "Polish",
+   "bar": "inv_fire, canal_fire_burns_back (stage 6)",
+   "criterion": "tar spills catch and creep like dry grass (RM_SheetFire.cs, changed since cycle 4)",
+   "evidence": [
+    "lane2/planted_results.jsonl PF_SHEETFIRE_TAR_CATCHES_EVERY_CHECK and PF_SHEETFIRE_TAR_FIRE_BESIDE_LIGHTS_AT_ONCE: missed by T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE",
+    "the kernel half (CreepingCatchChance) is caught by T_SHEET and lane 1 (PF_SHEET_CREEP_*)",
+    "both bars prove at stage 6; their live decider is sc_canal_fire; T_FIRE and PY_FLOWWORKS_FUEL_MOAT were not run on these plants"
+   ],
+   "would_pass": "stage 6 (sc_canal_fire or a tar spill row) shows a tar sheet catching from a fire beside it only by chance and creeping, not in a whoosh",
+   "smallest_fix": "none for 0.1.0's offline exit; stage 6 confirms sc_canal_fire stages a tar SHEET (not only a channel)",
+   "verdict_on_criterion": "no offline bar claims it",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "against": "scene",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_RECORD_LINE_STYLE_COMP_UNCHECKED_ON_TWO_DEFS",
+   "class": "Polish",
+   "bar": "inv_looks (stage 6)",
+   "criterion": "choose style for the whole connected line from a sprinkler head or faucet (CompProperties_LineLook added since cycle 4)",
+   "evidence": [
+    "lane2/planted_results.jsonl PF_SPRINK_DEF_*, PF_FAUCET_DEF_*: the comp removed or its class misspelt; T_SPRINKLER and T_THIRST stay green"
+   ],
+   "would_pass": "a def-load check (L1) or the looks scene sees the gizmo on both",
+   "smallest_fix": "none offline for the offline bars: the comp is a look, not the pump or thirst claim; a misspelt class fails the def load at L1",
+   "verdict_on_criterion": "no offline bar claims it",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "against": "check",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_CORRECT_CROP_TOOLTIP_TWO_CM_IS_THREE",
+   "class": "Polish",
+   "bar": "inv_overflow_sheet",
+   "criterion": "the settings text tells the truth",
+   "evidence": [
+    "RM_SheetSettings.cs tooltip: 'Water at least 2 cm deep standing on a plant for the whole delay kills it'",
+    "RM_SheetMath.Params: SheetUpDl 3 cm, SheetDownDl 2 cm, CropStandMinTier Sheet: water rising from dry counts only from 3 cm, then down to 2 cm",
+    "lane1 L1_FIXED_SHEET_CROP_DROWNS_AT_THE_DELAY: 2.5 cm poured on dry ground never stands"
+   ],
+   "would_pass": "the tooltip says 3 cm (it counts while it stays above 2 cm)",
+   "smallest_fix": "RM_SheetSettings.cs: the tooltip text only",
+   "verdict_on_criterion": "the kernel is right; one sentence of the text is short of it",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "against": "mod",
+   "miss_of": 4
+  }
+ ]
+}

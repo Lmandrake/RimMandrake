@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "7e457c960135500afd927402c84df908331d70436dd68380f59c711f681eabd8",
+  "body_sha256": "f5acf4e977f2de07bfc5c82628d56410aad8cfbe58562b7452fc4067a21449cc",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -51,6 +51,7 @@
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
+   "JUDGE.judge-1795794888": 4312,
    "STEWARD": 2597
   }
  },
@@ -1753,7 +1754,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1849,
+  "events": 1856,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -1850,12 +1851,12 @@
     "by": "BACKFILL",
     "claim": "Fill and wash now debit the body, spent bodies are skipped, and wear is carried across container transitions. Offline selftest GptFixesAChecks (selftest_flowworks_stock.py); no live proof run. (recorded on pre-landing a6ce6a54db; landed as 51bcdabdb8a0)",
     "class": "problem",
-    "code_sha": "51bcdabdb8a0",
+    "code_sha": "5d68be6e66",
     "proposed_fix": "Debit the body on fill and wash, skip spent bodies, and copy HitPoints across container transitions in MakeContainer.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Bottle/bucket/barrel fill (JobDriver_FillBottle, RM_LiquidBottleUtility.TryGetLiquidAt reads terrain only) and wash (JobDriver_WashBottle) never debit the body's RM_LiquidStock, so a limited pond creates liquid. MakeContainer builds a fresh Thing without HitPoints, healing containers.",
-    "ts": "2026-11-19T23:57:43Z",
+    "ts": "2026-11-27T21:27:13Z",
     "version": "0.1.0"
    },
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -4491,12 +4492,12 @@
     "by": "BACKFILL",
     "claim": "A held drain now returns whole levels to a pond, a spill over its pond credits stock, and an end under a wall is blocked (F12 fixed by reading). (recorded on pre-landing 4ded2d06ec; landed as 176d6455be66)",
     "class": "problem",
-    "code_sha": "176d6455be66",
+    "code_sha": "5d68be6e66",
     "proposed_fix": "Return whole levels to an adjacent pond, credit stock for a spill over its pond, count unplaced spill instead of silently debiting, and block an Outflow end under a wall.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "A stopped hose drains as filth instead of returning levels to an adjacent pond: PlaceHeld (RM_LiquidSpill.cs:149) accepts only RM_OutletKind.Channel, and Spill over water fails TryMakeFilth so units vanish. A spill no cell accepts still debits the source.",
-    "ts": "2026-11-19T23:57:54Z",
+    "ts": "2026-11-27T21:27:13Z",
     "version": "0.1.0"
    },
    "finding:HOSE_STYLES_FIX_RELOAD_DRIFT_SEEN": {
@@ -6423,12 +6424,12 @@
     "by": "BACKFILL",
     "claim": "Added SheetCropAge_the_caller_judges_each_crop_by_its_own_age in SheetWaterChecks.cs; planted CALLER_SHEET_CROP_AGE_IGNORED now caught, red on a395d97a, green on 4b33b22f.",
     "class": "problem",
-    "code_sha": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+    "code_sha": "5d68be6e66",
     "proposed_fix": "Add SelfTest/SheetWaterChecks.cs case SheetCropAge_the_caller_judges_each_crop_by_its_own_age, a source law on the Verse-bound caller.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE stayed green when RM_MapComponent_Sheet passed CropDrowns(stand, int.MaxValue, ...) instead of each crop's own age.",
-    "ts": "2026-11-19T23:57:29Z",
+    "ts": "2026-11-27T21:27:13Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_DELAY_UP_AND_DRYING_CAP": {
@@ -6519,12 +6520,12 @@
     "by": "BACKFILL",
     "claim": "Added case Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider in ThirstChecks.cs; planted CALLER_THIRST_IGNORES_HEAT_AND_LABOUR now caught, red on a395d97a, green on 4b33b22f.",
     "class": "problem",
-    "code_sha": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+    "code_sha": "5d68be6e66",
     "proposed_fix": "Add SelfTest/ThirstChecks.cs case Thirst_need_falls_at_the_ruled_rate_with_heat_labour_sleep_and_slider so T_THIRST goes red when the need stops feeding the ruled factors.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_THIRST stayed green when Need_RM_Thirst fell at FallPerInterval(BaseFallPerDay), ignoring heat x3, labour, sleep and the rate slider.",
-    "ts": "2026-11-19T23:57:29Z",
+    "ts": "2026-11-27T21:27:14Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED": {
@@ -6557,6 +6558,22 @@
     "tags": [],
     "text": "Planted DEF_STILL_RATE_TENFOLD (RM_LiquidStills.xml 6000 to 60000 L a day) survived every decider; machine rates are marked PROVISIONAL and no bar states them.",
     "ts": "2026-11-16T11:41:20Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_SHEET_CALLER_KILLS_THE_DROWNED_CROP": {
+    "accept": "red/green commands in cycle_5/lane2/fixes.jsonl: T_SHEET on the plant exits 1, on the real build exits 0",
+    "bars": [
+     "inv_overflow_sheet"
+    ],
+    "by": "JUDGE.judge-1795794888",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "SheetWaterChecks.cs: case SheetCropKill_the_caller_kills_each_drowning_crop: plant.Kill( inside the CropDrowns block before killed++",
+    "status": "open",
+    "tags": [],
+    "text": "With plant.Kill() deleted from RM_MapComponent_Sheet.cs, T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE stay green (planted PF_SHEET_CALLER_CROP_NEVER_KILLED). Against the check; miss_of 4; repaired at 5d68be6e66.",
+    "ts": "2026-11-27T21:27:02Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_SPRINKLER_CALLER_TO_A_WORKING_PUMP": {
@@ -7434,12 +7451,12 @@
     "by": "BACKFILL",
     "claim": "Tank now spills on destroy, drill returns pending to the deposit, converter drops pending items; adapter carry loss is sub-unit and left unfixed. (recorded on pre-landing 682b968dc5; landed as 181f26b085bd)",
     "class": "problem",
-    "code_sha": "181f26b085bd",
+    "code_sha": "5d68be6e66",
     "proposed_fix": "Spill tank contents on destroy, return drill pending to its deposit, and drop converter pending items on destroy.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Building_LiquidTank has no Destroy/DeSpawn override, so a stocked tank's contents are silently deleted on deconstruct. CompLiquidConverter has no PostDestroy/PostDeSpawn, so pendingCount is never settled; drill pending is lost too.",
-    "ts": "2026-11-19T23:58:00Z",
+    "ts": "2026-11-27T21:27:14Z",
     "version": "0.1.0"
    },
    "finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH": {
@@ -7984,6 +8001,7 @@
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
+   "JUDGE.judge-1795794888",
    "STEWARD"
   ],
   "spend_tokens": 45401435,
@@ -8422,6 +8440,15 @@
     "subject": "finding:RIMMANDRAKE_TRACE_FLOWWORKS_HELD_WINCH_FELL_IN_THE_CONTROL",
     "text": "PASS live, game b, calm site, 2026-11-21: all five rows; control held winches True, on an island [], leaves 720/720, WinchJobs +84, polls 50.",
     "ts": "2026-11-21T11:22:54Z"
+   },
+   {
+    "by": "JUDGE.judge-1795794888",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "196f9829e6",
+    "subject": "judge",
+    "text": "lane 1 run_lane1.py: 78 rows, 27 PASS, 1 INFO, 0 FAIL, 50 not_kernel UNSETTLED; rc 0",
+    "ts": "2026-11-27T16:11:25Z"
    }
   ],
   "traps": {

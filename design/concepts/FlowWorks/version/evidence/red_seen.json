@@ -325,15 +325,15 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_SHEET": {
-  "at": "2026-11-26T22:46:25Z",
+  "at": "2026-11-27T20:37:35Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "can-fail: Ensure ends with SyncParams() outside every branch, so each pulse re-reads the Mod Settings",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\n@@ -105,7 +105,6 @@\n \t\t\t\t\tloadedKinds = null;\n \t\t\t\t}\n \t\t\t}\n-\t\t\tSyncParams();\n \t\t}\n \n \t\tprivate void SyncParams()\n",
+  "last": "the crop the kernel drowns is killed (plant.Kill) before it is counted and announced",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs b/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\nindex 74c9fd12ce..c49ff49fd4 100644\n--- a/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs\n@@ -794,7 +794,6 @@ namespace RimMandrake.FlowWorks.Sheet\n \t\t\t\t\tif (plant != null && !plant.Destroyed && plant.def.plant != null && !plant.def.plant.IsTree\n \t\t\t\t\t\t&& RM_SheetMath.CropDrowns(stand, plant.Age, pulseTicks, prm))\n \t\t\t\t\t{\n-\t\t\t\t\t\tplant.Kill();\n \t\t\t\t\t\tkilled++;\n \t\t\t\t\t\tat = c;\n \t\t\t\t\t}\n",
   "patch_files": [
    "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs"
   ],
-  "patch_sha": "abd6f2ce8c0054c6",
+  "patch_sha": "4b7d05fae7076a6c",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },

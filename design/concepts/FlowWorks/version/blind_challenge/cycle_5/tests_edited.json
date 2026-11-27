@@ -1,1 +1,22 @@
-{"cycle": 5, "run": "judge-1795794888", "edited": []}
+{
+ "cycle": 5,
+ "run": "judge-1795794888",
+ "edited": [
+  {
+   "path": "src/RimMandrake/FlowWorks/Source/SelfTest/SheetWaterChecks.cs",
+   "why": "new case SheetCropKill_the_caller_kills_each_drowning_crop (T_SHEET's Sheet* glob): the sheet caller must call plant.Kill() inside the CropDrowns block before it counts the death; caught planted PF_SHEET_CALLER_CROP_NEVER_KILLED, which every offline decider of inv_overflow_sheet missed. No assertion removed or weakened.",
+   "before": "590f39b2ae743127c675244b7ce8bccb718e62fb",
+   "after": "5aa3bd4de2fe634f82413d7c8a3141d4f88a6881",
+   "commit": "5d68be6e660f0e448b71e5d2b9c02c70139bd0a7",
+   "commits": [
+    "30dbdfc2b90c815f57234bc81df3c8ea2a58960c",
+    "5d68be6e660f0e448b71e5d2b9c02c70139bd0a7"
+   ]
+  },
+  {
+   "path": "src/RimMandrake/rimflow/selftest_red_seen.py",
+   "why": "pipeline test, not a FlowWorks decider: t_killed_run_restores_the_tree (RIMMANDRAKE_RESTORE_RED_SEEN_TREE_WHEN_A_TIMEOUT_KILLS_IT)",
+   "commit": "79815237e76f3c99cafbc250ef0e8f94dd0a563c"
+  }
+ ]
+}

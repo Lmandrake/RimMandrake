@@ -1,0 +1,303 @@
+{
+ "faults": [
+  {
+   "id": "PF_SHEET_SOAK_NOT_LEDGERED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (take > 0) { s.Dl[c] -= take; s.Soaked += take; rep?.Soaked.Add((c, take, s.Fluid[c])); }",
+   "new": "if (take > 0) { s.Dl[c] -= take; rep?.Soaked.Add((c, take, s.Fluid[c])); }",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_SHEET_CROP_DROWNS_ONE_PULSE_LATE",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "return Math.Min(standPulses, agePulses) >= p.CropKillPulses;",
+   "new": "return Math.Min(standPulses, agePulses) > p.CropKillPulses;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_SHEET_FILM_STANDS_AS_SHEET",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "public Tier CropStandMinTier = Tier.Sheet;",
+   "new": "public Tier CropStandMinTier = Tier.Film;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_SHEET_CREEP_CATCHES_EIGHT_TIMES_FAST",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "public const float VanillaNearSpread = 0.8f / 8f;",
+   "new": "public const float VanillaNearSpread = 0.8f;",
+   "bars": [
+    "inv_overflow_sheet",
+    "canal_fire_burns_back"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_SHEET_CREEP_IGNORES_SPEED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "float p = VanillaNearSpread * checkTicks / VanillaSpreadIntervalTicks * (speed <= 0.01f ? 0.01f : speed);",
+   "new": "float p = VanillaNearSpread * checkTicks / VanillaSpreadIntervalTicks;",
+   "bars": [
+    "inv_overflow_sheet",
+    "canal_fire_burns_back"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_SHEETFIRE_TAR_CATCHES_EVERY_CHECK",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetFire.cs",
+   "old": "if (n.InBounds(map) && Rand.Chance(pc) && !TryLight(n)",
+   "new": "if (n.InBounds(map) && !TryLight(n)",
+   "bars": [
+    "inv_overflow_sheet",
+    "canal_fire_burns_back"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_SHEETFIRE_TAR_FIRE_BESIDE_LIGHTS_AT_ONCE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetFire.cs",
+   "old": "if (n.InBounds(map) && s.CreepsAt(n))\n\t\t\t\t{\n\t\t\t\t\tcontinue;\n\t\t\t\t}",
+   "new": "if (false && n.InBounds(map) && s.CreepsAt(n))\n\t\t\t\t{\n\t\t\t\t\tcontinue;\n\t\t\t\t}",
+   "bars": [
+    "inv_overflow_sheet",
+    "canal_fire_burns_back"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_SHEET_CALLER_CROP_NEVER_KILLED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "\t\t\t\t\t\tplant.Kill();\n\t\t\t\t\t\tkilled++;",
+   "new": "\t\t\t\t\t\tkilled++;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "PF_CONV_CAP_EATS_REMAINDER",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "return Math.Min(accrued, perTick > inputUnits ? perTick + inputUnits : inputUnits);",
+   "new": "return Math.Min(accrued, perTick > inputUnits ? perTick : inputUnits);",
+   "bars": [
+    "inv_converters"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_CONV_ROTATION_ALWAYS_FIRST",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "int i = ((last < 0 ? -1 : last) + k) % n;",
+   "new": "int i = (k - 1) % n;",
+   "bars": [
+    "inv_converters"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_CONV_CALLER_DROPS_CLIPPED_INCOME",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+   "old": "accrued += clipped;   // CAP_EATS_CHANGE",
+   "new": "accrued += 0f;   // CAP_EATS_CHANGE",
+   "bars": [
+    "inv_converters"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "PF_THIRST_FALL_RATE_WRONG",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "public const float BaseFallPerDay = 0.8f;",
+   "new": "public const float BaseFallPerDay = 0.6f;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_THIRST_LAST_RESORT_ANY_TIME",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return lastResortAllowed && Desperate(level);",
+   "new": "return lastResortAllowed;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_CONTAINER_UNSTYLED_SWALLOWS_STYLED",
+   "file": "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerStyleMath.cs",
+   "old": "return thisLook == otherLook;",
+   "new": "return thisLook == null || thisLook == otherLook;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_RESERVE_CALLER_NEVER_KEPT",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_DrinkReserve.cs",
+   "old": "liquid != null && liquid.AutoGathered);",
+   "new": "false);",
+   "bars": [
+    "inv_bottles_thirst",
+    "inv_sprinklers"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "PF_FAUCET_STOCK_NEVER_HELD",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/Building_RM_PipeFaucet.cs",
+   "old": "return !forced && size == RM_ContainerSize.Bottle && RM_ThirstUtility.UseOf(liquid) == RM_DrinkUse.Potable",
+   "new": "return false && size == RM_ContainerSize.Bottle && RM_ThirstUtility.UseOf(liquid) == RM_DrinkUse.Potable",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_FAUCET_FILL_NOT_COUNTED",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/Building_RM_PipeFaucet.cs",
+   "old": "RM_BottleStock.Notify_Filled(Map, 1);",
+   "new": "RM_BottleStock.Notify_Filled(Map, 0);",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_THIRSTUTIL_FORBIDDEN_SPENDS_REACH",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs",
+   "old": "if (c.IsForbidden(pawn))\n\t\t\t\t{\n\t\t\t\t\treturn true;\n\t\t\t\t}",
+   "new": "if (c.IsForbidden(pawn))\n\t\t\t\t{\n\t\t\t\t\treturn ++reachFails <= 40;\n\t\t\t\t}",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_THIRSTUTIL_SMALL_POND_GIVES",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs",
+   "old": "if (ex?.Stock != null && !RM_LiquidBottleUtility.CanDebitTerrain(map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))",
+   "new": "if (false && ex?.Stock != null && !RM_LiquidBottleUtility.CanDebitTerrain(map, c, RM_Volume.Units(RM_ThirstMath.TerrainDrinkLitres)))",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_FAUCET_DEF_LOSES_LINE_STYLE",
+   "file": "src/RimMandrake/FlowWorks/Defs/Thirst/RM_PipeFaucet.xml",
+   "old": "      <li Class=\"RimMandrake.FlowWorks.Machinery.CompProperties_LineLook\" />   <!-- Choose style: the whole connected line -->\n",
+   "new": "",
+   "bars": [
+    "inv_bottles_thirst",
+    "inv_looks"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_FAUCET_DEF_STYLE_CLASS_MISSPELT",
+   "file": "src/RimMandrake/FlowWorks/Defs/Thirst/RM_PipeFaucet.xml",
+   "old": "RimMandrake.FlowWorks.Machinery.CompProperties_LineLook",
+   "new": "RimMandrake.FlowWorks.Machinery.CompProperties_LineLok",
+   "bars": [
+    "inv_bottles_thirst",
+    "inv_looks"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_DRILL_UNSURVEYED_REFUSED",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "if (!surveyed)\n\t\t\t{\n\t\t\t\treturn Verdict.Allowed;",
+   "new": "if (!surveyed)\n\t\t\t{\n\t\t\t\treturn Verdict.NoYield;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_DRILL_IGNORES_POWER",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "if (s.needsPower && !s.powered) return Block.Unpowered;",
+   "new": "",
+   "bars": [
+    "inv_drilling"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_DRILL_CALLER_PLACES_ON_DRY_HOLE",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+   "old": "case RM_DrillSurveyMath.Verdict.NoYield:\n\t\t\t\t\t\treturn \"RM_DrillPlaceNoYield\".Translate();",
+   "new": "case RM_DrillSurveyMath.Verdict.NoYield:\n\t\t\t\t\t\tbreak;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "PF_SPRINK_SPRAYS_WITHOUT_PUMP",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "if (!pressure) return RM_SprinklerState.NoPressure;",
+   "new": "",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_SPRINK_PULSE_ROUNDS_DOWN",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "return (int)Math.Ceiling(Math.Round(cells * (double)litresPerCellHour * unitsPerLitre, 3));",
+   "new": "return (int)Math.Floor(Math.Round(cells * (double)litresPerCellHour * unitsPerLitre, 3));",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "PF_SPRINK_CALLER_NO_PUMP_CHECK",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs",
+   "old": "bool pressure = enabled && switchOn && HasPressure(head);",
+   "new": "bool pressure = enabled && switchOn;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "PF_SPRINK_DEF_LOSES_LINE_STYLE",
+   "file": "src/RimMandrake/FlowWorks/Defs/Sprinklers/RM_Sprinklers.xml",
+   "old": "      <li Class=\"RimMandrake.FlowWorks.Machinery.CompProperties_LineLook\" />   <!-- Choose style: the whole connected line -->\n",
+   "new": "",
+   "bars": [
+    "inv_sprinklers",
+    "inv_looks"
+   ],
+   "where": "changed"
+  },
+  {
+   "id": "PF_SPRINK_DEF_STYLE_CLASS_MISSPELT",
+   "file": "src/RimMandrake/FlowWorks/Defs/Sprinklers/RM_Sprinklers.xml",
+   "old": "RimMandrake.FlowWorks.Machinery.CompProperties_LineLook",
+   "new": "RimMandrake.FlowWorks.Machinery.CompProperties_LineLok",
+   "bars": [
+    "inv_sprinklers",
+    "inv_looks"
+   ],
+   "where": "changed"
+  }
+ ]
+}

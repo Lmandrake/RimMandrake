@@ -123,28 +123,111 @@ lane-1 commit.
 
 
 ## Lane 2 reruns
-(pending)
+`lane2/rerun_offline.py` (generic over the test table; one fix of its own compare during the run: a stock-suite summary
+also matches on its count of cases run, because its "N filtered out" grows as the suite grows). `lane2/reruns.jsonl`:
+**8 of 8 run deciders PASS and match their records** [measured]: T_SHEET (394 s), PY_FLOWWORKS_SHEET_DROWN_MESSAGE, T_CONVERT
+(295 s), T_THIRST (293 s), PY_WATER_NOT_FOOD, PY_NATIVES_DRINK_OWN_WATER, T_DRILL (221 s), T_SPRINKLER (249 s).
+T_DIG_TIME_ARITHMETIC is UNRUN as recorded ("specified, not built"; it decides no offline bar).
+
+After the fix (`lane2/reruns_after_fix.jsonl`, at 5d68be6e66): the deciders that `rerun_relation.py` names for
+`SheetWaterChecks.cs`: T_SHEET PASS (63 cases, the one new case being the repair), T_TOSS_FLAME_OFFLINE,
+T_FETCH_FALLEN_OFFLINE, T_LIQUID_COATING_OFFLINE PASS, T_PIT_LOOK_1114 PASS (875 s). Every other decider keeps its
+`reruns.jsonl` row.
 
 ## Planted
-(pending)
+`lane2/planted_faults.json` (29 faults), `lane2/plant_faults.py` (WINBUILD_ROOT
+`/mnt/d/ClaudeWork/rimmandrake/scratch/flowworks_blind_c5_mut/`; restores on SIGTERM, SIGINT, SIGHUP; a catch is a new failing
+row only), `lane2/planted_results.jsonl` (baseline first, from this cycle's unplanted reruns and lane 1; last row
+`{"tree_clean_after": true}`). **22 of 29 caught** [measured].
+
+| group | planted | caught | missed |
+|---|---|---|---|
+| sheet kernel (`RM_SheetMath.cs`: ledger, crop timer, film tier; and its changed lines, creeping fire) | 5 | 5 | 0 |
+| sheet callers (`RM_MapComponent_Sheet.cs` crop kill; changed `RM_SheetFire.cs` x2) | 3 | 0 | 3 |
+| converter (kernel x2, caller x1) | 3 | 3 | 0 |
+| thirst and containers (kernel x3, reserve caller, changed faucet x2, changed thirst reach x2) | 8 | 8 | 0 |
+| faucet def (changed `RM_PipeFaucet.xml` x2) | 2 | 0 | 2 |
+| drilling (kernel x2, place worker) | 3 | 3 | 0 |
+| sprinklers (kernel x2, caller x1) | 3 | 3 | 0 |
+| sprinkler def (changed `RM_Sprinklers.xml` x2) | 2 | 0 | 2 |
+
+Lane 1 caught every kernel plant it can see (17 of 17 kernel and changed-kernel-line plants). The misses:
+`PF_SHEET_CALLER_CROP_NEVER_KILLED` is the Problem below (an offline bar's claim). The two tar-fire caller plants and the four
+line-style def plants touch no offline bar's claim (`inv_fire`, `canal_fire_burns_back` and `inv_looks` prove at stage 6).
+"Two per changed file" was read as two per changed file of the offline bars' inputs (2304 files changed, most of them
+ledger, evidence and art).
 
 ## Faults
-(pending)
+`lane2/faults.json`: **1 Problem (FIXED), 4 Polish (NOTED_FOR_CONDUCTOR)**.
+
+- **Problem** `RIMMANDRAKE_PIN_SHEET_CALLER_KILLS_THE_DROWNED_CROP` (inv_overflow_sheet, against the check, `miss_of: 4`):
+  with `plant.Kill()` deleted from the sheet caller, T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE stayed green [measured],
+  as `polish.md` line 116 had predicted from source. FIXED at 5d68be6e66.
+- Polish `RIMMANDRAKE_NOTE_FLOWWORKS_OVERSPILL_SHIPS_SWITCHED_OFF` (against mod): `sheetOverflowEnabled` ships false. It
+  is already on `polish.md` under this name, to flip at his walk's sign-off (his D7 card). No new line.
+- Polish `RIMMANDRAKE_RECORD_TAR_SHEET_FIRE_UNSEEN_OFFLINE` (against scene, stage 6): no offline decider of the sheet
+  sees the tar sheet's creeping catch in `RM_SheetFire.cs` (changed since cycle 4). Stage 6's `sc_canal_fire` should
+  stage a tar sheet, not only a channel.
+- Polish `RIMMANDRAKE_RECORD_LINE_STYLE_COMP_UNCHECKED_ON_TWO_DEFS` (against check, stage 6): no test reads the new
+  `CompProperties_LineLook` on the sprinkler head and the faucet. A misspelt class would fail the def load at L1.
+- Polish `RIMMANDRAKE_CORRECT_CROP_TOOLTIP_TWO_CM_IS_THREE` (against mod, `miss_of: 4`): the crop-drown tooltip says "at
+  least 2 cm". The kernel counts water rising from dry only from 3 cm (hysteresis 3 cm up, 2 cm down); lane 1 measured that
+  2.5 cm poured on dry ground never stands.
+
+Callers read and found sound (no fault): the creeping-fire caller passes a constant 60-tick check (the kernel's NaN at a
+0-tick check cannot arise); the faucet's bottle-stock hold and its fill count; the thirst search's forbidden-cell change;
+the converter's capped and clipped budget and rotation; the drill's tick order against `WhyNot`; the sprinkler's pump and
+drinking-reserve gates.
+
+Pipeline defect found and fixed (not a FlowWorks fault): `RIMMANDRAKE_RESTORE_RED_SEEN_TREE_WHEN_A_TIMEOUT_KILLS_IT`.
+A `timeout`-killed `maturation.py red-seen` left its planted fault (`plant.Kill()` deleted) in this clone's tree, because
+Python skips `finally` on a default SIGTERM. I found it at the next `red-seen` ("patch does not apply") and reversed it by
+hand with `git apply -R` before anything else ran. The fix is in `judge_certificate.red_seen`: while the fault is planted,
+SIGTERM and SIGHUP raise SystemExit, so the restore runs. The test is `selftest_red_seen.py`
+`t_killed_run_restores_the_tree`: red on the parent (restored False, 19/21), green on the fix (21/21). Published at
+79815237e7.
 
 ## Fixes
-(pending)
+`lane2/fixes.jsonl`: one check repair, no mod fix.
+
+- `RIMMANDRAKE_PIN_SHEET_CALLER_KILLS_THE_DROWNED_CROP`: new case `SheetCropKill_the_caller_kills_each_drowning_crop` in
+  `Source/SelfTest/SheetWaterChecks.cs` (under T_SHEET's `Sheet*` glob). Shown at the fix sha 5d68be6e66: **red** rc 1 on the
+  plant (`plant_faults.py --run-planted PF_SHEET_CALLER_CROP_NEVER_KILLED -- <T_SHEET>`: "FAIL SheetCropKill... the crop
+  the kernel drowns is killed (plant.Kill) before it is counted", 62/63), and **green** rc 0 on the real build (63/63).
+  `maturation.py red-seen FlowWorks T_SHEET` recorded RED SEEN. The first version (30dbdfc2b9) read the file through
+  `Src()`, which flattens whitespace, so it failed on the real build. That version was never counted; 5d68be6e66 reads the
+  raw file. A check repair owes no fresh reader.
 
 ## Steward's decisions enacted
-(pending)
+None. This run acted on none of the four (the raid deferral and re-pin, route b's "no fifth blind cycle", and the
+in-game recheck are design inputs for other stages; nothing in this cycle's offline scope turned on them). So no
+OWNER.jsonl event was written.
 
 ## Tests edited
-(pending)
+`tests_edited.json`: `src/RimMandrake/FlowWorks/Source/SelfTest/SheetWaterChecks.cs` (blob 590f39b2ae ->
+5aa3bd4de2; one case added, no assertion removed or weakened; commits 30dbdfc2b9, 5d68be6e66). Also
+`src/RimMandrake/rimflow/selftest_red_seen.py` (pipeline, not a FlowWorks decider; 79815237e7).
 
 ## Unsettled
-(pending)
+- 50 lane-1 `not_kernel` rows (every non-offline bar): settled by their stage-6 scenes.
+- Planted misses outside the offline bars: the tar-sheet creeping catch (`inv_fire`, `canal_fire_burns_back`) and the
+  line-style comp on two defs (`inv_looks`). T_FIRE and PY_FLOWWORKS_FUEL_MOAT were not run on the tar plants.
+- `code_review_status.py check` on `SheetWaterChecks.cs` did not finish inside 120 s: UNMEASURED.
+- judge-verify listed 53 findings claimed fixed. I ruled on the five on the offline bars I judged (verified at 5d68be6e66,
+  each by reading the fixed code and by the decider reruns). The other 48 (stage-6 bars or none, plus
+  `FLOWWORKS_HOTPATH_MEASURE_EVERY_FRAME`, of which I checked only the feed-mesh cache) are not ruled: their claims rest on
+  live rows or suites outside this offline stage, and a ruling without that check would be false.
 
 ## Exit
-(pending)
+offline_bars: {inv_overflow_sheet: green, inv_converters: green, inv_bottles_thirst: green, inv_drilling: green, inv_sprinklers: green}
+problems_open: 0
+exit_met: true
 
 ## Owed
-(pending)
+- The fresh reader of the pipeline fix 79815237e7 (`judge_certificate.py`), filed with `fresh_reader.py file --fix`.
+- The four Polish rows go to the Conductor for the Polish-list call.
+- The 48 unruled judge-verify claims: for the stage-6 visit or the steward.
+- `maturation.py certificate FlowWorks --run` (this run, 1333 s: 6 tests rerun, 116 kept) refuses 1 of 53 bars:
+  `inv_settings`, red_seen owed by PY_VALIDATION_V2_OFFLINE, whose `northstar/validation_v2.py` another run changed; not this
+  cycle's edit and not an offline bar of this exit. The stamps of the six rerun tests are in `version/test_table.json`
+  (`runs_today` only).

@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":94350,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=80f620f96d555a4273624ff5879ea5e0e604b711d14d8c4f275276e2f3d2bb75 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":94350,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"JUDGE.judge-1795794888":4312,"STEWARD":2597} body_sha256=4076ebe98b00044cfe9cc3703e7e25e3c54bfd6aef941a075d529c330bfdf0af -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1849 events in 49 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 1856 events in 50 shards · reducer 1
 holder lease run-1795783799, token 64, last active 2026-11-27T12:54:51Z
 holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 400000
 
@@ -9,8 +9,8 @@ holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 4
 - next: Let the Dispatch tick launch the blind challenge (Stages 4 and 5)
 - ruled out: fix reader owed: bda4ca8c33 only re-recorded red_seen evidence, no mod fix
 
-## Open findings (178)
-(claimed fixes, awaiting a judge, on one line each with the oldest 125 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
+## Open findings (174)
+(claimed fixes, awaiting a judge, on one line each with the oldest 126 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
 - RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES [open, polish · bars inv_overflow_sheet]
 - RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES [open, polish · bars inv_converters]
 - ALL_OFF_FIX_DEPTH_ENGINE_STAYS_ON [open, problem]
@@ -116,9 +116,7 @@ holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 4
 - FWSHEET_CULL_MIXED_CONTAINER_ROWS [open, problem]
 - REVIEW_MAP_FIX_COVER_NEW_DEFS [open, problem]
 - THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY [open, problem · bars inv_bottles_thirst]
-- RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
 - RIMMANDRAKE_PIN_FLOWWORKS_COATING_LAWS_MISS_DEAD_TICK on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
-- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN on 4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67
 - RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY [open, polish · bars inv_overflow_sheet]
 - RIMMANDRAKE_PIN_FLOWWORKS_SPRINKLER_RADIUS_DEFAULT_UNWATCHED [open, polish · bars inv_sprinklers]
 - RIMMANDRAKE_PIN_FLOWWORKS_TOSS_RANGE_AND_RELIGHT_UNWATCHED [open, polish · bars inv_toss_flame]
@@ -129,7 +127,6 @@ holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 4
 - RIMMANDRAKE_FIX_FLOWWORKS_FUZZ_FOUR_FLAWS_SINK_STILL_FLOAT [open, problem]
 - RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START [open, problem]
 - RIMMANDRAKE_SETTLE_PARTIAL_IMPL_TWO_INVENTORY_ROWS_UNCOUNTED [open, problem · bars inv_liquid_coating]
-- BOTTLE_STOCK_MEND_FREE_REFILLS on 51bcdabdb8a0
 - CANAL_SWIM_VERIFY_POISON_POOL_PARTY on 17a082d2d09a
 - WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES [open, problem]
 - COVER_DECK_TUNE_QUADRATIC_CENSUS on 17a082d2d09a
@@ -148,7 +145,6 @@ holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 4
 - HOSE_IMPORT_MEND_ONE_SHOT_MISS on e6409b3f6504
 - HOSE_OFF_MEND_SLEEPWALKING_RETRACT on 8866eeddf831
 - HOSE_ORDERS_MEND_WAITING_FOREVER on 127605b1e92c
-- HOSE_SPILL_MEND_POND_GETS_NOTHING on 176d6455be66
 - LADDER_ROWS_WIDEN_STILL_COUNT_TO_TWO on 47ddee0286b6
 - LIQUID_FIRE_MEND_COVER_AND_SAVE on 86c093c8c5d1
 - LIQUID_THEFT_VERIFY_FALSE_ACCUSATION on bce8fc696030
@@ -161,7 +157,6 @@ holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 4
 - REACH_VETO_FIX_ONE_END_ENOUGH on 9b22587f388a
 - RIVER_CURRENT_PROBE_LATE_GRAB on 17a082d2d09a
 - SLUICE_GATE_SETTINGS_EXCISE_KNOBS_ON_NOTHING on 93b24c3d9bef
-- TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT on 181f26b085bd
 - TANK_SETTLE_FIX_DOUBLE_DIPPED on 121eb90aa35e
 - FLOWWORKSMOD_DOC_FIX_STALE_PHASE_NOTES on 669564da550f
 - FLOWWORKS_ALPHABIOMES_RETIRE_GHOST_TERRAINS on 92a6172e522e
@@ -189,6 +184,7 @@ holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 4
 - FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED [open, problem]
 - ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE on d319937af57cc7ccf60aaa2eac783a934dc6accd
 - REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES on 8e48f09407
+- RIMMANDRAKE_PIN_SHEET_CALLER_KILLS_THE_DROWNED_CROP [open, problem · bars inv_overflow_sheet]
 
 ## Traps (276) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
@@ -495,14 +491,14 @@ holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 4
 spend recorded: USD 78.94, 45401435 tokens
 
 ## Left out
-- closed findings: 181, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- closed findings: 186, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - closed traps: 2, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- tests: 48, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- claimed fixes in brief: 53 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 125 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
+- tests: 49, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- claimed fixes in brief: 48 on one line (name and sha), their claim, test and fix by `show`
+- open findings in brief: the oldest 126 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1849 events (views/history.md; never read whole)
+- the full history: 1856 events (views/history.md; never read whole)
 
-cursor: t=2026-11-27T15:55:32Z.1795794932186685623 (modledger.py since --mod FlowWorks t=2026-11-27T15:55:32Z.1795794932186685623 prints what changed after this packet)
+cursor: t=2026-11-27T21:27:14Z.1795814834674386835 (modledger.py since --mod FlowWorks t=2026-11-27T21:27:14Z.1795814834674386835 prints what changed after this packet)
