@@ -431,6 +431,24 @@ def t_a_live_lease_of_another_run_stops_a_drop():
             "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE"} <= dropped, dropped
 
 
+def t_a_lapsed_lease_of_another_run_does_not_stop_a_drop():
+    """The refusal above guards a LIVE lease only: once the holder's lease lapsed (its run died), another run's drop and
+    supersede go on with no --despite-lease. A guard that ignored liveness would strand every item of a dead run until a
+    hand passed --despite-lease, and would tell the dropper to wait for a lapse that already came."""
+    fresh("drop_after_lapse")
+    A, B = "rm-detached-bench-holder-probe", "rm-detached-bench-sweeper-probe"
+    for iid in ("LAPSED_THEN_DROPPED_BY_B_PROBE_FIXTURE", "LAPSED_THEN_SUPERSEDED_BY_B_PROBE_FIXTURE",
+                "REPLACEMENT_PROBE_FIXTURE"):
+        ok("file", iid, "--for", "BENCH", "--title", "t", seat="BENCH", role_unit=A)
+    for iid in ("LAPSED_THEN_DROPPED_BY_B_PROBE_FIXTURE", "LAPSED_THEN_SUPERSEDED_BY_B_PROBE_FIXTURE"):
+        ok("claim", iid, seat="BENCH", role_unit=A, ttl=1)
+    time.sleep(2.2)
+    ok("drop", "LAPSED_THEN_DROPPED_BY_B_PROBE_FIXTURE", "--reason", "r", seat="BENCH", role_unit=B)
+    ok("supersede", "LAPSED_THEN_SUPERSEDED_BY_B_PROBE_FIXTURE", "--by", "REPLACEMENT_PROBE_FIXTURE",
+       seat="BENCH", role_unit=B)
+    assert "LAPSED_THEN_DROPPED_BY_B_PROBE_FIXTURE" in {e["id"] for e in events("drop")}, events("drop")
+
+
 def _read():
     saved = model.EVENTS
     try:
@@ -455,7 +473,8 @@ if __name__ == "__main__":
                    t_replay_judges_by_event_timestamps,
                    t_real_ledger_lock_lives_in_this_clones_git_dir,
                    t_old_reader_tolerates_leases,
-                   t_a_live_lease_of_another_run_stops_a_drop):
+                   t_a_live_lease_of_another_run_stops_a_drop,
+                   t_a_lapsed_lease_of_another_run_does_not_stop_a_drop):
             case(fn.__name__, fn)
         report()
     finally:
