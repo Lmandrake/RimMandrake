@@ -25,6 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PASS, FAIL, UNMEASURED = 0, 1, 2
 PROBE = "RimMandrake.Patches.LightOrderProof"
 SHEET = "RimMandrake.FlowWorks.Sheet.RM_SheetProofs"
+SHEET_SETTINGS = "RimMandrake.FlowWorks.Sheet.RM_SheetSettings"
 LIT_ROWS = ("wall", "hay", "puddle")
 # Walk of at most 6 squares (FreeCellNear's radius; ~0.6 s/square at a colonist's base speed = ~220 ticks) + the 60-tick work
 # (LightOrder.WorkTicks) + slack for a door or a detour: 900 ticks is 4x the expected time; POLL reads it every second.
@@ -59,6 +60,8 @@ def judge_row(name, stage, read):
             return FAIL, "FAIL %s: the click gave job %r, not RM_LightFire" % (name, field(stage, "job"))
         if flow:
             return FAIL, "FAIL %s: FlowWorks' toss line also showed on dry ground: %r" % (name, flow)
+        if not isinstance(read, str) or not read.startswith("READ"):
+            return UNMEASURED, "UNMEASURED %s: the probe's Read never answered (%s)" % (name, str(read)[:160])
         if field(read, "lit") != "True":
             return FAIL, "FAIL %s: no fire by this colonist on the target within %d ticks (%s)" % (name, LIT_TICKS, str(read)[:160])
         return PASS, "ok %s: '%s' -> RM_LightFire -> lit (%s)" % (name, offered[0], read.strip())
@@ -128,6 +131,8 @@ def selftest():
         ("no FlowWorks line is unmeasured", mut(flow=("MENU row=hay flammableNow=True ours=[] flow=[] options=6", "")) == UNMEASURED),
         ("a burning steel wall is unmeasured", mut(steel=("MENU row=steel flammableNow=True ours=[] flow=[] options=4", "")) == UNMEASURED),
         ("nothing is unmeasured", judge({})[0] == UNMEASURED),
+        ("a read the bridge refused is unmeasured, not a fail",
+         mut(hay=(good["hay"][0], "{'success': False, 'message': 'No public static Read with 0 params.'}")) == UNMEASURED),
     ]
     for n, ok in steps:
         print(("ok   " if ok else "FAIL ") + n)
@@ -145,7 +150,7 @@ def main():
         import validation_core as VC
         B = VC.Bridge()
 
-        def call(typ, method, arg=""):
+        def call(typ, method, arg="-"):   # every probe method takes one string; "" reads to the bridge as no parameter
             r = B.call("jawa/static_call", type=typ, method=method, args=arg)
             return str(r.get("result", r)).strip().strip('"') if isinstance(r, dict) else str(r)
 
@@ -166,8 +171,21 @@ def main():
         pick = call(PROBE, "Pick")
         if pick.startswith("CELL "):
             xz = pick.split()[1]
-            spill = call(SHEET, "ProofSheetSpill", "%s;%d;Flood;RM_Fluid_Chemfuel" % (xz, SPILL_DL))
-            stage = call(PROBE, "Stage", "hay@" + xz) if spill.startswith("SPILL") else "UNMEASURED: FlowWorks spill: " + spill
+            # Spills are off in a shipped FlowWorks (sheetOverflowEnabled false); its own spill scene c13 turns the switch on to
+            # stage one, and so does this row, for the one spill, then puts back what it read (scene staging, not the mod).
+            was = B.call("jawa/mod_settings_field", typeName=SHEET_SETTINGS, action="get", field="sheetOverflowEnabled")
+            was = str((was or {}).get("value")) if isinstance(was, dict) else None
+            if was not in ("True", "False", "true", "false"):
+                stage = "UNMEASURED: could not read FlowWorks' sheetOverflowEnabled: %r" % (was,)
+            else:
+                try:
+                    B.call("jawa/mod_settings_field", typeName=SHEET_SETTINGS, action="set", field="sheetOverflowEnabled", value="True")
+                    spill = call(SHEET, "ProofSheetSpill", "%s;%d;Flood;RM_Fluid_Chemfuel" % (xz, SPILL_DL))
+                finally:
+                    B.call("jawa/mod_settings_field", typeName=SHEET_SETTINGS, action="set", field="sheetOverflowEnabled", value=was)
+                print("flow spill at %s: %s (sheetOverflowEnabled put back to %s)" % (xz, spill, was))
+                ok = spill.startswith("SPILL") and not spill.endswith("accepted=0")
+                stage = call(PROBE, "Stage", "hay@" + xz) if ok else "UNMEASURED: FlowWorks spill: " + spill
         else:
             stage = pick
         rows["flow"] = (stage, "")

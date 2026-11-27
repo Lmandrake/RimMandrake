@@ -1,0 +1,14 @@
+wall: STAGED row=wall cell=123,126 target=Wall/WoodLog flammableNow=True ours=[Set fire to wooden wall] flow=[] options=3 job=RM_LightFire | READ lit=True fires=1 targetSpawned=True job=Wait_Combat | CLEAN fires=1
+hay: STAGED row=hay cell=125,126 target=Hay flammableNow=True ours=[Set fire to hay] flow=[] options=2 job=RM_LightFire | READ lit=True fires=1 targetSpawned=True job=Wait_Combat | CLEAN fires=1
+puddle: STAGED row=puddle cell=127,127 target=Filth_Fuel flammableNow=True ours=[Set fire to chemfuel puddle] flow=[] options=2 job=RM_LightFire | READ lit=True fires=1 targetSpawned=True job=Wait_Combat | CLEAN fires=1
+steel: MENU row=steel cell=129,127 target=Wall/Steel flammableNow=False ours=[] flow=[] options=2 | CLEAN fires=0
+flow spill at 129,127: SPILL offered=3000 accepted=3000 (sheetOverflowEnabled put back to False)
+flow: MENU row=hay cell=129,127 target=Hay flammableNow=True ours=[] flow=[Toss a flame here] options=2 | CLEAN fires=0
+ok wall: 'Set fire to wooden wall' -> RM_LightFire -> lit (READ lit=True fires=1 targetSpawned=True job=Wait_Combat)
+ok hay: 'Set fire to hay' -> RM_LightFire -> lit (READ lit=True fires=1 targetSpawned=True job=Wait_Combat)
+ok puddle: 'Set fire to chemfuel puddle' -> RM_LightFire -> lit (READ lit=True fires=1 targetSpawned=True job=Wait_Combat)
+ok steel: no line of ours (flammableNow=False, 2 options)
+ok flow: FlowWorks' 'Toss a flame here' only, ours stood aside
+rows read=5 worst=PASS limit=all PASS
+VERDICT PASS
+[bridge split] 8.9 s wall: load 0.0 / ticks 4.2 / reads 0.0 / other 1.4 / outside calls 3.3 s
