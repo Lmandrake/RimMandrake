@@ -13,7 +13,8 @@ race for one top item without the lease); expiry -> re-offer labelled LAPSED, th
 git check, and RECONCILE when git names the item; wrong token refused; renew keeps it,
 renew after expiry refused; claim hides the item and the queue view shows it active;
 reassign/reclaim revoke; replay judges by event timestamps; an OLD reader (462ad47c30ae, the
-last commit before step 3) tolerates every lease event.
+last commit before step 3) tolerates every lease event; a drop or supersede of an item under
+another run's live lease is refused, and goes on once that lease has lapsed.
 """
 import json
 import os
@@ -425,7 +426,7 @@ def t_a_live_lease_of_another_run_stops_a_drop():
     ok("drop", "HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE", "--reason", "r", "--despite-lease", "its holder died",
        seat="BENCH", role_unit=B)
     ok("drop", "HELD_BY_A_DROPPED_BY_A_PROBE_FIXTURE", "--reason", "r", seat="BENCH", role_unit=A)
-    out = ok("drop", "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE", "--reason", "r", seat="BENCH", role_unit="")
+    ok("drop", "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE", "--reason", "r", seat="BENCH", role_unit="")
     dropped = {e["id"] for e in events("drop")}
     assert {"HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE", "HELD_BY_A_DROPPED_BY_A_PROBE_FIXTURE",
             "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE"} <= dropped, dropped
