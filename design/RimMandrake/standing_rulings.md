@@ -2086,7 +2086,7 @@ His card answers, 2026-11-13, and his later rulings:
   - Each open faction-work ticket is parked on the list with `rimflow block <ID> --kind owner`. The reason names his
     word. A block of kind owner is never offered to a lane, a Work Bundle or Codex (`list_dispatch.py`,
     `list_home.py offer`). `list_dispatch.block_age` marks an old block stale when the game came up or a bridge went
-    free. It never marks a block of kind owner stale. The Conductor reads the question again on
+    free. `block_age` never marks a block of kind owner stale. The Conductor reads the question again on
     2027-01-15. That date is a re-read date, not a start date.
   - **The Conductor's reading of "faction work"** (not his words; logged as delegated, evidence-for-ask): faction work
     is work that builds or changes what a faction is or does: its defs, its settlements, its raids, its trade, its
