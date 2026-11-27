@@ -3265,10 +3265,6 @@ Crystallize is the consolidation pass (the `crystallize` skill of MandrakeWorkfl
 - `--per-ruling <item-id|event>` is a standing ruling, cited by reference. The ruling stands until he changes it.
 - `--why "…"` is your own words.
 - No transcript proof runs. Nothing checks a quote except its shape.
-- **SCRATCH (one timed real use of ruling_fast.py; removed right after)** (owner, Thu 2026-11-26 7:06 PM PST, OWNER
-  event `1795748818665164154` on `RIMMANDRAKE_TRY_RULING_FAST_PATH_ONCE_THEN_DROP_IT`): *"Yes please build the automated
-  script that would accelerate the small fast part independently of the larger items of work."* Carried at once:
-  `rimflow block --kind owner` parks `RIMMANDRAKE_PARK_SCRATCH_TICKET_FOR_RULING_FAST_TRY`.
 
 ## 🔴 Never send him to a computer you can reach yourself — owner, 2026-10-31
 
