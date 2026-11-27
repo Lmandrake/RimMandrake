@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/Pyrelands/pyre_burn_sim.py b/src/RimMandrake/Pyrelands/pyre_burn_sim.py
+--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py
++++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py
+@@ -559,7 +559,7 @@
+                             stamp = max(int(self.burn[tz, tx]) if P["burn_stamps"] else -1, int(self.carried_at[tz, tx]))
+                             return bool(self.size[tz, tx] > 0 or (stamp >= 0 and self.tick - stamp <= P["heal_recent"]))
+                         roll1, roll2, roll_side = rng.random(), rng.random(), rng.random()
+-                        plan, healed = carry_plan(self.wind, roll1, roll2, roll_side, P["carry_reach"],
++                        plan, healed = carry_plan(90.0, roll1, roll2, roll_side, P["carry_reach"],
+                                                   P["heal_reach"], cell, anchor, P["carry_splits"], P["carry_merge"])
+                         opened = 0
+                         if P["flank"]:

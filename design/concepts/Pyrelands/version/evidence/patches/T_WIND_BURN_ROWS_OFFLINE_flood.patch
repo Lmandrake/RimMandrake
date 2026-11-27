@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/Pyrelands/pyre_burn_sim.py b/src/RimMandrake/Pyrelands/pyre_burn_sim.py
+--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py
++++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py
+@@ -592,7 +592,7 @@
+                         tx, tz = x0 + al * ux + ac * px, z0 + al * uz + ac * pz
+                         if self.size[tz, tx] == 0:
+                             self.start(tz, tx, 0.1); self.carry_lit += 1
+-            big = (s > 1.0) & (not P["carried"])
++            big = (s > 1.0)                              # PLANTED FAULT: a carried fire keeps vanilla's even spread (a flood)
+             if big.any():
+                 bz, bx, bs = zs[big], xs[big], s[big]
+                 a = self.acc[bz, bx] + BEAT

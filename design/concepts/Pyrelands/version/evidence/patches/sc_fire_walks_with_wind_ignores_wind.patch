@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
+--- a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
++++ b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
+@@ -284,7 +284,7 @@
+             float rollSide = Rand.Value;
+             Func<int, int, RM_BurnKernel.RM_CarryCell> cell = (dx, dz) => CellState(map, new IntVec3(at.x + dx, 0, at.z + dz));
+             Func<int, int, bool> anchor = (dx, dz) => Anchor(map, ash, burn, new IntVec3(at.x + dx, 0, at.z + dz), now);
+-            int n = RM_BurnKernel.CarryPlan(burn.WindBearing, Rand.Value, Rand.Value, rollSide, RM_BurnKernel.WindCarryReach,
++            int n = RM_BurnKernel.CarryPlan(90f, Rand.Value, Rand.Value, rollSide, RM_BurnKernel.WindCarryReach,
+                 RM_BurnKernel.HealReach, cell, anchor, planX, planZ, out bool healed);
+             n = RM_BurnKernel.FlankPlan(burn.WindBearing, rollSide, at.x, at.z, GroundSeed(map), RM_BurnKernel.HealReach, cell, anchor,
+                 planX, planZ, n, healed);

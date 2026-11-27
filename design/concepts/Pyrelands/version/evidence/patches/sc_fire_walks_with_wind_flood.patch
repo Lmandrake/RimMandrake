@@ -1,0 +1,12 @@
+diff --git a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
+--- a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
++++ b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
+@@ -348,7 +348,7 @@
+             try
+             {
+                 bool governed = WindCarriedFire.Governs(__instance, out _);
+-                return RM_BurnKernel.VanillaSpreadRuns(governed, true, true);
++                return true;   // PLANTED FAULT: vanilla's even spread runs on a carried fire too (a flood)
+             }
+             catch (Exception e)
+             {
