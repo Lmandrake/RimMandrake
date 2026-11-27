@@ -1,10 +1,10 @@
-# BOUNDARY: one mod's builders on a pinned model, Design Version 0.2.0
+# BOUNDARY: one mod's builders on a pinned model, Design Version 0.3.0
 
 Code: `src/RimMandrake/rimflow/mod_model.py`, the store's `mod_models` table and `pipe model` in `control.py`, and the
 launch sites that read them: `maturation_dispatch.py` (`decide`, `execute`, `launch_stage`, `road_back_holder`,
 `cert_launch`, `launch_kind`, `_tick`, `stage_spend`), `maturation_autonomy.py` (`_gate`, `_execute_one`),
-`role_launch.py` (`launch_role`, `launch`) and `designer_stage.py` (`pin_scale`, `task_cap`, `run_budget`,
-`loop_ceiling`). Item: `RIMMANDRAKE_PIN_MOD_MODEL_FABLE_EVERY_STAGE_ROLES_OPUS`. Written 2026-11-19. Each
+`role_launch.py` (`launch_role`, `launch`), `maturation.py` (`launch_mod`, the fan-out) and `designer_stage.py`
+(`pin_scale`, `task_cap`, `run_budget`, `loop_ceiling`, `fanout_line`). Item: `RIMMANDRAKE_PIN_MOD_MODEL_FABLE_EVERY_STAGE_ROLES_OPUS`. Written 2026-11-19. Each
 promise has a test of its name in `src/RimMandrake/rimflow/selftest_mod_model_pin.py`. No test launches a model run: every
 launcher is a fake that records the argv it was given.
 
@@ -64,6 +64,17 @@ launcher is a fake that records the argv it was given.
   budget (its run cap included) and the judge-and-rework loop's park ceiling (twice the task budget) are the shipped
   ones times the price ratio, read from the store at each use, so a pin set or lifted later moves them at once. An
   unpinned concept, or a store that cannot be read, keeps the shipped ones (the stricter). Version 0.2.0.
+- **fable-builders-may-start-subagents.** For a mod whose builders are on Fable, the brief of each builder run (the
+  offline build, the fixer, the steward, the holder, the builder on red deciders) and the Designer's packet carry the
+  fan-out section (`mod_model.fanout_text`): the run may start subagents with the Agent tool for searches, censuses,
+  independent parts and code that a test proves; each subagent takes its model from
+  `infrastructure/agents/Agent_Policy.md` (`sonnet` for code a test proves and for searches, `opus` for code no test
+  proves, never Fable); a subagent never puts a command in the background. The brief no longer says "no helpers", and
+  it names no spend. The owner, 2026-11-26 2:33 PM PST: "Of course it should intelligently subagent fanout as needed."
+  Version 0.3.0 (item `RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO`).
+- **other-runs-keep-their-helper-rules.** An unpinned mod's builder briefs are unchanged. A pinned mod's blind judge
+  and in-game driver still start no helpers and no subagents, the Test Pilot still sits alone, and a codex or unpinned
+  Designer gets no fan-out line. Version 0.3.0.
 
 ## LIMITS
 

@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "mod": "WreckedMachines",
+  "version": "0.1.0",
+  "stage": "designer",
+  "stage_label": "Designer (Stage 1)",
+  "since": "2026-11-26T16:58:43-08:00",
+  "since_from": "advance by BENCH",
+  "at_door": false,
+  "seeded": {
+    "at": "2026-11-26T16:58:30-08:00",
+    "by": "maturation.py seed",
+    "stage_read_from": "journal",
+    "stage_line": "Intake, ideas waiting, since 2026-11-26 5:00 PM PST (admitted the same afternoon; see history)",
+    "run_records": "read"
+  },
+  "cycles": {
+    "visit": 0,
+    "total": 0
+  },
+  "pre_human_arrivals": 0,
+  "moves": [
+    {
+      "from": "intake",
+      "to": "designer",
+      "at": "2026-11-26T16:58:43-08:00",
+      "by": "BENCH",
+      "why": "his go of 2026-11-26 2:33 PM PST on RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO; first-touch item RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST; readiness D:\\ClaudeWork\\rimmandrake\\conductor\\readiness_wreckedmachines_20261126.md READY for the design stage",
+      "unit": "rm-detached-bench-rimmandrake-ready-pipeline-for-wrecked-m-1795732708",
+      "item": "RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO",
+      "confirmed": {
+        "owner_said": "I authorize you to do an all fable experiment on wrecked machines. We can afford it. Let's see how it goes. Gather all those tickets together as a bundle, design run for it to clarify and put needed bars and tests, then let's see how fable 5.2 does. Hopefully beautifully. Of course it should intelligently subagent fanout as needed."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "intake_closed"
+      ]
+    }
+  ],
+  "spend": [
+    {
+      "stage": "designer",
+      "stages": [
+        "designer"
+      ],
+      "tokens": 0,
+      "token_unit": "unstated",
+      "usd": "UNMEASURED",
+      "wall_s": "UNMEASURED",
+      "source": "design/concepts/WreckedMachines/version/VERSION.json tokens_spent",
+      "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"
+    }
+  ]
+}

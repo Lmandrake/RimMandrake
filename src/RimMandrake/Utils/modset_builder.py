@@ -429,6 +429,16 @@ TIERS = {
         "forbid": ["mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
         "dlc": True,
     },
+    "wreckedmachines_solo": {
+        "why": "WreckedMachines' one small list (RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO, 2026-11-26): "
+               "the RM-tier mod with what it needs: VFE Factory (a hard dependency; VFE Core comes with it), Research "
+               "Reinvented (its study opportunities are MayRequire on it) and FlowWorks (its distillation patch is "
+               "a FindMod on it). No campaign layer: the RM-tier mod must play in a game without one. Harmony and "
+               "the five DLCs resolve by themselves.",
+        "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.wreckedmachines", "VanillaExpanded.VFEFactory",
+                 "petetimessix.researchreinvented", "mandrake.rm.flowworks"],
+        "dlc": True,
+    },
     "explosivegrowth_solo": {
         "why": "EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 north-star script on the smallest list that loads the engine: "
                "that is Baroque Biomes (mandrake.rm.biomes, which composes it, everyday bands included since "

@@ -1,0 +1,7 @@
+{
+ "mod": "WreckedMachines",
+ "tier": "wreckedmachines_solo",
+ "why": "The mod's one small list: his walk, its walk save and every sitting run on this tier. Tests may run on a smaller tier of their own. Rule: design/RimMandrake/standing_rulings.md §Mod development runs on small lists.",
+ "also": {},
+ "character_editor": "void.charactereditor"
+}

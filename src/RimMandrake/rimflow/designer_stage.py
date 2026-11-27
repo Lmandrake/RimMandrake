@@ -2047,6 +2047,21 @@ def pin_scale(st):
         return 1
 
 
+def fanout_line(st):
+    """-> the fan-out section (mod_model.fanout_text) when st's mod has its builders pinned to Fable and the run is a
+    Claude run, else None. Read from the control store at each packet; a store that cannot be read, or a pin with no
+    price, gives None (control refuses that mod's launch anyway). The owner, 2026-11-26: "Of course it should
+    intelligently subagent fanout as needed." The exam's own helpers (designer_exam.md) keep the models that file names."""
+    if st.get("runner", "claude") != "claude":
+        return None
+    import control as C
+    import mod_model as MM
+    try:
+        return MM.fanout_text(MM.read_pins().get(C.key(st.get("mod"))))
+    except (C.Unreadable, KeyError):
+        return None
+
+
 def task_cap(st, x=None):
     """-> the task's weighted-token budget now: its recorded cap times pin_scale (x, when the caller read it already)."""
     x = pin_scale(st) if x is None else x
@@ -3520,6 +3535,8 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=N
         head.append(draft_line(st))
     if helper_line(st):
         head.append(helper_line(st))
+    if fanout_line(st):
+        head.append(fanout_line(st))
     held = [r for r in st.get("recovery") or [] if r.get("state") == "held"]
     if held:
         head.append("Held for his review: %s." % ", ".join("%s (until %s)" % (r["scene"], r.get("until")) for r in held))

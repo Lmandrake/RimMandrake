@@ -3302,6 +3302,9 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
             return 2, ("REFUSED: %s's %s already has a live run: %s; launch again when it ends (or stop it)" % (
                 mod, f.get("stage"), "; ".join("%s (stage %s, item %s)" % (x["unit"], x["stage"], x["item"])
                                                for x in got))), None
+    if f.get("stage") == "offline_build":     # a Fable builder may start subagents (mod_model.with_fanout)
+        import mod_model as MM
+        text = MM.with_fanout(text, model)
     if preface:
         text = preface.rstrip("\n") + "\n\n---\n\n" + text
     if reconcile:

@@ -115,3 +115,53 @@ def role_for(role, mod, pins=None):
     if role.get("run_budget_usd") is not None:
         out["run_budget_usd"] = scaled(role["run_budget_usd"], alias)
     return out
+
+
+# THE FAN-OUT. The owner, 2026-11-26 2:33 PM PST, on RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO: "I
+# authorize you to do an all fable experiment on wrecked machines. ... Of course it should intelligently subagent fanout
+# as needed." So a builder run on Fable may start subagents; each subagent takes its model from his ladder
+# (infrastructure/agents/Agent_Policy.md: sonnet for code a test proves and for searches, opus for code no test proves,
+# never a Fable subagent). A judge, the fresh reader of a fix and the live driver keep their own runs and rules: their
+# briefs never pass through with_fanout.
+FANOUT_TIERS = ("fable",)
+FANOUT_HEADING = "## Subagents: this run may start them"
+# the words a builder brief used to forbid helpers with, and what they read as once the fan-out section is added
+NO_HELPER_WORDS = ((" Offline only: no game, no bridge, no helpers.", " Offline only: no game, no bridge."),)
+
+
+def fans_out(alias):
+    """True when a builder run on `alias` (a tier, or its full model id) may start subagents: a Fable run."""
+    a = str(alias or "").lower()
+    return any(a == t or a.startswith("claude-%s" % t) for t in FANOUT_TIERS)
+
+
+def fanout_text(alias):
+    """-> the fan-out section for a builder run on `alias`, or None when that run starts no subagents of its own."""
+    if not fans_out(alias):
+        return None
+    return "\n".join([
+        FANOUT_HEADING, "",
+        "The owner, 2026-11-26: \"Of course it should intelligently subagent fanout as needed.\" This mod's builders "
+        "run on Fable 5.2, so this run may start subagents with the Agent tool: for a search, a census, an "
+        "independent part of the work, or code that a test proves. Keep the design, the judgement and the landing "
+        "in this run.",
+        "- Give each subagent its model by `infrastructure/agents/Agent_Policy.md`, and pass `model` on every Agent "
+        "call: `sonnet` for code that a test proves and for a search or a census; `opus` for code that no test "
+        "proves. Never start a Fable subagent. Haiku is banned.",
+        "- Give each subagent a narrow brief: one bounded unit of work, the files to read, and a short report.",
+        "- A subagent never puts a command in the background and never ends its turn to wait. Take each subagent's "
+        "report before your last message: a subagent that still runs when your turn ends is killed, and its work "
+        "is lost.",
+        "- The blind judge, the fresh reader of a fix and the in-game driver are not your subagents. They are their "
+        "own runs, with their own models and rules."])
+
+
+def with_fanout(text, alias):
+    """-> a builder brief for a run on `alias`: unchanged when that run starts no subagents (fans_out), else its
+    no-helpers words lifted (NO_HELPER_WORDS) and the fan-out section added at its end. Pure."""
+    sec = fanout_text(alias)
+    if not sec or not text or FANOUT_HEADING in text:
+        return text
+    for was, now in NO_HELPER_WORDS:
+        text = text.replace(was, now)
+    return text.rstrip("\n") + "\n\n" + sec + "\n"

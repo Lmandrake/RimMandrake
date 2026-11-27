@@ -302,7 +302,8 @@
   "src/RimMandrake/Utils/account_plan_sweep.py::run_regime::or-empty": 1,
   "src/RimMandrake/Utils/account_plan_sweep.py::check_pass::or-empty": 3,
   "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": 1,
-  "src/RimMandrake/rimflow/list_effect.py::_check_tmp::except-returns-empty": 1
+  "src/RimMandrake/rimflow/list_effect.py::_check_tmp::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/designer_stage.py::fanout_line::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/ticket_preflight.py::_split_def::or-empty": [
@@ -1270,6 +1271,9 @@
   ],
   "src/RimMandrake/rimflow/list_effect.py::_check_tmp::except-returns-empty": [
    "NOT A COLLAPSE: None is no reading of anything: it means the cmd: check runs on the inherited TMPDIR, as before the per-check dir; its verdict is unchanged (design/specs/2026-11-22-list-outcome-checks/boundary.md a-cmd-check-leaves-no-temp-files)"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::fanout_line::except-returns-empty": [
+   "NOT A COLLAPSE: a store that cannot be read refuses the Designer launch itself (control; design/specs/2026-11-19-mod-model-pin/boundary.md an-unreadable-pin-launches-nothing), so no run reads a packet that lost its fan-out line"
   ]
  }
 }

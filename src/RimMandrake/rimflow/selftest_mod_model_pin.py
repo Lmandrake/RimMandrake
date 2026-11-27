@@ -523,13 +523,134 @@ def t_designer_task_budget_scales_by_the_pin_price():
         os.environ["RM_CONTROL_DB"] = good
 
 
+# ---------------------------------------------------------------- the fan-out: a Fable builder may start subagents
+# The owner, 2026-11-26 2:33 PM PST, on RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO: "Of course it should
+# intelligently subagent fanout as needed." Item RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO, step 4.
+NO_HELPER_RX = re.compile(r"no helpers|start no helper|no subagent", re.I)
+
+
+def fanout_ok(text):
+    """-> the list of what the fan-out section of `text` lacks (empty: it says all the brief owes)."""
+    t = text or ""
+    need = (("the Agent tool", r"Agent tool"), ("searches", r"search"), ("censuses", r"census"),
+            ("independent parts", r"independent part"), ("code that a test proves", r"code that a test proves"),
+            ("sonnet for code a test proves", r"`sonnet`[^\n]*code that a test proves"),
+            ("opus for code no test proves", r"`opus`[^\n]*code that no test proves"),
+            ("never a Fable subagent", r"[Nn]ever start a Fable subagent"),
+            ("a subagent never backgrounds a command", r"never puts a command in the background"),
+            ("Agent_Policy.md", r"infrastructure/agents/Agent_Policy\.md"))
+    miss = [n for n, rx in need if not re.search(rx, t)]
+    if NO_HELPER_RX.search(t):
+        miss.append("still says no helpers")
+    if BRIEF_SPEND_RX.search(t):
+        miss.append("names a spend or a cap")
+    return miss
+
+
+def builder_briefs(pins):
+    """-> {kind: brief text} for one pinned or unpinned mod's builder launches: the offline build (launch_mod), the
+    fixer and the steward (_execute_one), the builder on red deciders (cert_launch) and the holder (road_back_holder),
+    each captured at its launcher, never run."""
+    cfg = shipped(**{PINS_KEY: pins})
+    out = {}
+    os.environ["MATURATION_BRIEF_DIR"] = TMP
+
+    def runner(argv, **kw):
+        with open(opt(argv, "--brief-file"), encoding="utf-8") as fh:
+            out["offline_build"] = fh.read()
+        return subprocess.CompletedProcess(argv, 0, "DETACHED rm-detached-u\n", "")
+    with Patch((M, "brief_text", lambda root, mod, cap=None, bars=None: (
+            "# Offline build (Stage 3): %s 0.1.0\n\nThe build's own text.\n" % mod,
+            {"stage": "offline_build", "owed": "build", "refused_bars": []}))):
+        M.launch_mod(TMP, PIN, 30.0, "ITEM", model=MM_alias(cfg), runner=runner, twins=lambda m, s, i: ([], None))
+
+    def do_launch(item, brief, model, cap, seat, env=None, **kw):
+        out[kw.get("_kind") or do_launch.kind] = brief
+        return 0, "DETACHED u", "u"
+    st = {"mods": {PIN: {}}}
+    with Patch((MD, "pilot_ledger", lambda root, mod: False)):
+        do_launch.kind = "fixer"
+        AUT._execute_one(TMP, cfg, st, {"mod": PIN, "aut": "fixer", "fix_item": "RIMMANDRAKE_FIX_X", "cap": 5000000,
+                                        "stage": "offline_build", "fix_for": "refused"},
+                         time.time(), lambda *a, **k: (True, "filed"), do_launch, set())
+        do_launch.kind = "steward"
+        with Patch((AUT, "steward_brief", lambda root, mod, row: "# Steward run on %(item)s\n\nThe steward's text.\n")):
+            AUT._execute_one(TMP, cfg, st, {"mod": PIN, "aut": "steward", "steward_key": "k1", "steward_kind": "ready",
+                                            "stage": "offline_build", "cap": 4000000, "why": "test"},
+                             time.time(), lambda *a, **k: (True, "filed"), do_launch, set())
+    do_launch.kind = "cert_red"
+    MD.cert_launch(TMP, cfg, {"mods": {PIN: {}}}, {"mod": PIN, "cert_reds": ["t_one"], "known_red": {
+        "t_one": "RIMMANDRAKE_RED_ONE"}, "cap": 7500000}, time.time(),
+        {"launch_brief": do_launch, "pilot": lambda root, mod: False, "ended": lambda ids: set()}, set(),
+        lambda *a, **k: (True, "filed"))
+    do_launch.kind = "holder"
+    import modledger
+    with Patch((M, "ledger_needs", lambda root, ids: {i: "offline" for i in ids}),
+               (M, "game_takeable", lambda stage: False),
+               (modledger, "resume_plan", lambda root, mod: {"action": "packet", "reconcile": False, "why": "-"}),
+               (MD, "ledger_open", lambda root, mod, role, brief, **k: {"brief": brief, "env": {}, "run": "r1",
+                                                                         "packet": ""}),
+               (MD, "ledger_after", lambda *a, **k: "ledger ok")):
+        MD.road_back_holder(TMP, cfg, {"mods": {PIN: {}}}, PIN, "offline_build", [{"id": "RIMMANDRAKE_ROAD_A"}],
+                            None, 7500000, time.time(), {"launch_brief": do_launch})
+    return out
+
+
+def MM_alias(cfg):
+    """The offline build's model as launch_stage gives it: the mod's pin, else the shipped model."""
+    import mod_model as MMx
+    return MMx.for_mod(cfg, PIN).get("model", "opus")
+
+
+def t_fable_builders_may_start_subagents():
+    """For a mod whose builders are on Fable, each builder run's brief (the offline build, the fixer, the steward, the
+    holder, the builder on red deciders) and the Designer's packet say the run may start subagents with the Agent tool,
+    name each subagent's model from Agent_Policy.md (sonnet, opus, never Fable), say a subagent never backgrounds a
+    command, and no longer say "no helpers"."""
+    got = builder_briefs({PIN: "fable"})
+    for kind in ("offline_build", "fixer", "steward", "cert_red", "holder"):
+        check(kind in got, "the pinned mod's %s brief was captured at its launcher" % kind)
+        miss = fanout_ok(got.get(kind))
+        check(not miss, "the pinned mod's %s brief says the fan-out in full (missing: %s)" % (kind, miss))
+    import designer_stage as DS
+    p = fresh_store()
+    C.set_model(PIN, "fable", "selftest", p=p)
+    line = getattr(DS, "fanout_line", lambda st: None)({"mod": PIN, "stage": 2, "runner": "claude"})
+    miss = fanout_ok(line)
+    check(not miss, "the pinned mod's Designer packet line says the fan-out in full (missing: %s)" % miss)
+    import inspect
+    check("fanout_line(st)" in inspect.getsource(DS.packet), "designer_stage.packet adds the fan-out line to its head")
+
+
+def t_other_runs_keep_their_helper_rules():
+    """An unpinned mod's builder briefs carry no fan-out section and keep their own words ("no helpers" in the builder
+    on red deciders); a pinned mod's blind judge and in-game driver still start no helpers and no subagents; a codex
+    Designer and an unpinned Designer get no fan-out line."""
+    got = builder_briefs({})
+    for kind, text in sorted(got.items()):
+        check("Agent tool" not in text, "the unpinned mod's %s brief has no fan-out section" % kind)
+    check("no helpers" in got.get("cert_red", ""), "the unpinned builder on red deciders keeps its 'no helpers' line")
+    src = open(os.path.join(HERE, "maturation.py"), encoding="utf-8").read()
+    check(src.count('"- You start no helpers and no subagents.') >= 2,
+          "the blind judge's and the in-game driver's briefs keep 'You start no helpers and no subagents'")
+    import designer_stage as DS
+    p = fresh_store()
+    C.set_model(PIN, "fable", "selftest", p=p)
+    fl = getattr(DS, "fanout_line", None)
+    check(fl is not None and fl({"mod": PIN, "stage": 2, "runner": "codex"}) is None,
+          "a codex Designer run gets no fan-out line")
+    check(fl is not None and fl({"mod": UNPINNED_CONCEPT, "stage": 2, "runner": "claude"}) is None,
+          "an unpinned concept's Designer gets no fan-out line")
+
+
 def main():
     tests = (t_a_pin_is_set_and_lifted_in_the_store, t_an_unknown_pin_is_refused_by_name, t_no_pin_reads_empty_not_unreadable,
              t_pinned_offline_build_launches_on_the_pin, t_unpinned_mod_keeps_the_global_model,
              t_judges_and_live_driver_keep_their_models, t_every_builder_kind_launches_on_the_pin,
              t_build_cap_scales_by_the_pin_price, t_designer_run_now_chain_and_sweep_launch_on_the_pin,
              t_designer_launch_names_its_mod, t_an_unreadable_pin_launches_nothing, t_a_pin_it_cannot_price_launches_nothing,
-             t_offline_build_ceiling_scales_by_the_pin_price, t_designer_task_budget_scales_by_the_pin_price)
+             t_offline_build_ceiling_scales_by_the_pin_price, t_designer_task_budget_scales_by_the_pin_price,
+             t_fable_builders_may_start_subagents, t_other_runs_keep_their_helper_rules)
     try:
         for t in tests:
             try:

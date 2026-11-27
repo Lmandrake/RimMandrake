@@ -2119,7 +2119,8 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
     if not failed:
         cap = row.get("cap") or cfg["cap_tokens"]
         item = sorted(set(chosen.values()))[0]
-        brief = (cert_brief if kind == "red" else red_seen_brief)(mod, chosen, cap, bars, gate)
+        brief = MM.with_fanout((cert_brief if kind == "red" else red_seen_brief)(mod, chosen, cap, bars, gate),
+                               cfg.get("model", "opus"))     # a Fable builder may start subagents
         do_brief = fx.get("launch_brief") or AUT.launch_brief
         # the red_seen proof: resume the run that edited the decider while its context is warm, else start fresh
         sess, sunit, swhy = editing_session(root, mod, reds, now, fx) if kind == "red_seen" else (None, None, None)
@@ -3410,8 +3411,9 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx, game
             "Not yours: %s, each worked by its own live run; work none of them here.\n" % ", ".join(
                 "%s (%s)" % kv for kv in sorted(busy.items())) if busy else "") + bnote), stage=stage, now=now, fx=fx,
             session=rkw.get("session"), reconcile=plan.get("reconcile"))
+        hmodel = MM.for_mod(cfg, mod).get("steward_model", "opus")
         rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
-            item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
+            item, MM.with_fanout(led["brief"], hmodel), hmodel, cap, cfg.get("seat", "BENCH"),
             env=dict(led["env"], **control_env(mod, stage), **({"RM_GAME_INSTANCE": game} if game else {}),
                      **({WB.ENV: bundle["id"]} if bundle else {})), **rkw)
     except BaseException as e:      # a raise leaves no `launching` bundle record: that state blocks the mod

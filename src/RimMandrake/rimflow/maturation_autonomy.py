@@ -2416,6 +2416,8 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
             row["filed_item"] = item
         brief = (steward_brief(root, mod, row).replace("%(item)s", str(item)).replace("%(cap)s", str(row["cap"]))
                  if ok else "")
+    if not row.get("pilot"):        # a Fable fixer or steward may start subagents; the Test Pilot sits alone
+        brief = MM.with_fanout(brief, model)
     unit, led, full = None, None, None
     if ok and MD.pilot_ledger(root, mod):       # a pilot mod's run starts from its ledger packet (modledger.launch)
         led = MD.ledger_open(root, mod, row["aut"], brief, stage=row.get("stage"), now=now)
