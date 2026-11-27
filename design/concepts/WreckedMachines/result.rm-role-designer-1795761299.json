@@ -1,0 +1,14 @@
+{
+ "run": "rm-role-designer-1795761299",
+ "stage": 2,
+ "outcome": "waiting_owner",
+ "summary": "Stage 2, turn 3 sent (design/concepts/WreckedMachines/turn_03.md). His reply to turn 2 (OWNER:1795760440829904733) is taken in. (1) He accepted the look at the running mod: what the save shows is written in design/concepts/WreckedMachines/look_01.md (six stations on the mod's small list), and the staging is filed as RIMMANDRAKE_STAGE_WRECKED_MACHINES_LOOK_HE_SAID_YES, because a Designer run may not take a game. (2) He said that a wreck can be moved by special hauler droids or ride-in machines, through Droidworks. That reopens one part of the turn-2 call d_wreck_is_carried: who lifts a wreck. Measured: the Property mod has a hauler job and five Droidworks chassis carry its marker; the job acts only on a building with a carried form, and the built smelter wreck has none, so today no pawn lifts it; the lift list of 2026-11-01 makes a wrecked machine 'droid only' and its pass is not built; Droidworks is a RimStarWars campaign mod, and this mod stands alone, so a stranger's game has no hauler. One new ask waits for him, a_who_moves_a_wreck: in a game without Droidworks a wrecked smelter gets home by hand (with the lift as data that the campaign narrows to haulers), by a hauler that this mod brings, or not at all; recommended by hand, judged on whether a stranger can do what the root says. A fresh Opus judge (a44e086c95b4295e7) passed the ask and had three sentences corrected that said more than their sources. The last four words of his reply ('but notified or built') are kept as typed and nothing is read from them; the Conductor asked him. The two asks of turn 2 (a_which_factory_machines, a_component_source) have no answer and stay sent. Three core contradictions are open, each on one ask: c_half_ancient_factory, c_no_way_in, c_who_lifts_a_wreck.",
+ "quick_look": {
+  "offer": true,
+  "settles": [
+   "d_three_looks",
+   "d_study_before_each_repair"
+  ],
+  "scene": "ACCEPTED by him on 2026-11-26 (OWNER:1795760440829904733); staging is the item RIMMANDRAKE_STAGE_WRECKED_MACHINES_LOOK_HE_SAID_YES. One save on the mod's small list, six stations (design/concepts/WreckedMachines/look_01.md): the smelter at its four built grades side by side, the power cell and the psychic emanator at theirs beside the vanilla machine, a colonist sent to study a wreck, a Kludged smelter about to be built over a wreck, and a wrecked smelter beside a wrecked power cell to show what moving a wreck is today. He sees whether the grades can be told apart by eye at play zoom and what study at a machine looks like. None of the three asks waits for the look."
+ }
+}
