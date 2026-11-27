@@ -1108,6 +1108,29 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(sheet.Contains("int pulseTicks = RimMandrakeFlowWorksSettings.PulseIntervalTicks;"), "at the current pulse length");
 				Assert(sheet.Contains("if (RM_SheetSettings.cropsDrownEnabled && rep.CropDrowning.Count > 0)"), "only with crops-drown on, on the kernel's report");
 			});
+
+			// FlowWorks blind cycle 5 (planted PF_SHEET_CALLER_CROP_NEVER_KILLED): the kernel says WHEN a crop drowns, but only
+			// the caller kills it. With `plant.Kill();` deleted, every other T_SHEET case and PY_FLOWWORKS_SHEET_DROWN_MESSAGE
+			// stayed green while the game announced deaths of crops that lived on (inv_overflow_sheet: "kills crops under
+			// standing overflow after a week"). The drown test's own block must kill the plant before it counts it.
+			Case("SheetCropKill_the_caller_kills_each_drowning_crop", () =>
+			{
+				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				var code = new System.Text.StringBuilder();
+				foreach (string line in sheet.Split('\n'))
+				{
+					int cm = line.IndexOf("//", StringComparison.Ordinal);
+					code.Append(cm >= 0 ? line.Substring(0, cm) : line).Append('\n');
+				}
+				string src = code.ToString();
+				const string gate = "RM_SheetMath.CropDrowns(stand, plant.Age, pulseTicks, prm))";
+				int g = src.IndexOf(gate, StringComparison.Ordinal);
+				Assert(g >= 0, "the caller's drown test is where SheetCropAge pins it");
+				int open = src.IndexOf('{', g), count = src.IndexOf("killed++;", g, StringComparison.Ordinal);
+				Assert(open > g && count > open, "the drown test opens a block that counts the death");
+				string block = src.Substring(open, count - open);
+				Assert(block.Contains("plant.Kill("), "the crop the kernel drowns is killed (plant.Kill) before it is counted and announced");
+			});
 		}
 	}
 }
