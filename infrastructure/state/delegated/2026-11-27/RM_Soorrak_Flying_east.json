@@ -1,0 +1,31 @@
+{
+  "judge_model": "claude-opus-5-5",
+  "judge_run": "rm-detached-bench-soorrak-repair-east-tip-shears-near-legs-1795767861",
+  "item": "SOORRAK_REPAIR_EAST_TIP_SHEARS_NEAR_LEGS",
+  "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+  "subject": "RM_Soorrak (Flying flip-book, east facing)",
+  "asked": "judge a re-bake with the legs protected out of the distance map (or the 0.20 silhouette floor) against the current frames",
+  "candidate_rebake": "NONE EXISTS. No re-bake of Soorrak east was made: flyer_cutout_sets/Soorrak.json still bakes east at falloff 120 with no leg protection, and flyer_cutout_sets/candidates/ holds only Porg.json. A re-bake is a build of Stillsand art, held by the owner (mod_owner_hold.json, Stillsand, 2026-11-16). This judge made none: a judge never judges its own bake.",
+  "verdicts": [
+    {"picture": "1275c4d9661f964968dcd6ac79624a244a0745a67521c533c25469d9352c02c7 (RM_Soorrak_Flying_3_east.png)",
+     "facing": "east", "frame": 3, "verdict": "KEEP",
+     "rule": "E3: the live picture is PROTECTED by owner keep ruling f47e6f1f71f7cbaa346f (art.py status, 2026-11-27); a delegated call never displaces it.",
+     "notes": "CONCERN (flaw, not polish): the lowest wing tip is a thin stretched sliver that ends in a short dark detached-looking stub below the rest of the membrane; frames 1 and 2 end that tip in a clean tapered point. The flaw is plain at full size and under the owner's advanced zoom; at 32 px/cell (drawSize 1.25 -> 40 px) it is a one-pixel faint trail and does not read. This is the C5a class (a wing part that breaks where it turns), and the item's cause stands as stated: the tip sits within falloff 120 of the legs. The keep event's said text is an order about body stasis ('Their bodies should be kept static while the wings flap...') recorded via 'art install (owner words)', not a pick of this frame; whether that keep was recorded by mistake is a Conductor call (art.py correct-keep), not this judge's."},
+    {"picture": "8d2319c38035e88e (RM_Soorrak_Flying_1_east.png)", "facing": "east", "frame": 1, "verdict": "KEEP",
+     "notes": "Not asked; looked at only as the reference for frame 3. Tips clean, body registered with frames 2 and 3 (C4)."},
+    {"picture": "9a7dca5de5d17193 (RM_Soorrak_Flying_2_east.png)", "facing": "east", "frame": 2, "verdict": "KEEP",
+     "notes": "Not asked; reference only. Lowest tip a clean point."}
+  ],
+  "not_given": ["a re-bake candidate (none exists)", "true-scale panel beside a vanilla human (not needed: E3 decides the verdict on a kept picture)"],
+  "evidence": {
+    "strip": "D:\\ClaudeWork\\scratch\\soorrak_judge\\east_strip.png",
+    "tip_zoom": "D:\\ClaudeWork\\scratch\\soorrak_judge\\tip_zoom.png",
+    "play_zoom": "D:\\ClaudeWork\\scratch\\soorrak_judge\\play_zoom.png"
+  },
+  "path_to_resume": [
+    "the owner or the Conductor lifts the Stillsand hold (mod_owner_hold.py lift Stillsand ...)",
+    "a builder (not this judge) re-bakes east frame 3 with the legs protected out of the distance map, keeping falloff 120 for the wing, and stages it as flyer_cutout_sets/candidates/Soorrak.json plus the baked PNG",
+    "a fresh judge compares that candidate with 1275c4d9661f; a judge KEEP of the candidate still cannot displace the kept frame: the replacement needs the owner's pick (his five acts, replacement of art he kept) or a Conductor correct-keep that releases f47e6f1f71f7 as a keep recorded by mistake"
+  ],
+  "proposals": []
+}
