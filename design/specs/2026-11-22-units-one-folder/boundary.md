@@ -64,4 +64,5 @@ was installed, so nothing could see drift.
 - **test-throwaway-units-are-not-judged.** Names a selftest creates and removes in the real install dir
   (`testq-selftestthrow-*`, `rm-probe-*`) are skipped, so a test that runs during a pass does not alarm.
 - **deadman-rechecks-units-every-pass.** `deadman_check.py run` runs the units clause as arm `units` on every pass: a
-  problem files the one fixed item `LIVE_RESTORE_UNITS`, and the reading `ops_watch/units.json` is rewritten each pass.
+  problem files the one fixed item `LIVE_RESTORE_UNITS` (its successor once that item is retired: `arm_id`), and the
+  reading `ops_watch/units.json` is rewritten each pass.

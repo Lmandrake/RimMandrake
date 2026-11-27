@@ -199,7 +199,7 @@ def retired_loops_arm(measurer=None, now=None):
 def units_arm(measurer=None, now=None):
     """Every unit text of ours has its one home (ops_clocks.units_problems; page
     design/specs/2026-11-22-units-one-folder/boundary.md): -> {"units": None | reason}. A broken arm files the one fixed
-    item LIVE_RESTORE_UNITS. The reading (ops_watch/units.json) is rewritten every pass; the item's `live` promise
+    item LIVE_RESTORE_UNITS (its successor once that item is retired: arm_id). The reading (ops_watch/units.json) is rewritten every pass; the item's `live` promise
     watches it. A measurer that raises is a broken arm with its cause, never a clean one."""
     import ops_clocks as OC
     try:
@@ -279,6 +279,21 @@ def cause_id(key, items=None):
         if it is None or it.state not in RETIRED:
             return cid
     raise RuntimeError("cause %r: 99 generations retired" % key)
+
+
+def arm_id(arm, items=None):
+    """-> the one ticket of an arm: LIVE_RESTORE_<ARM>, the same every pass. A dropped or superseded one cannot be
+    written (the ledger refuses, and the refusal failed rm-deadman.service: OPS_TIMER_REPAIR_PRXC_XKGA), so its
+    successor, the arm's next generation LIVE_RESTORE_<ARM>_<8 hex>, takes over, as `cause_id` does for a cause."""
+    items = items or {}
+    base = "LIVE_RESTORE_" + arm.upper()
+    for gen in range(1, 100):
+        aid = base if gen == 1 else "%s_%s" % (base, hashlib.sha1(("arm:%s#%d" % (arm, gen)).encode("utf-8"))
+                                                .hexdigest()[:8].upper())
+        it = items.get(aid)
+        if it is None or it.state not in RETIRED:
+            return aid
+    raise RuntimeError("arm %r: 99 generations retired" % arm)
 
 
 def hosts_of(rows, items=None):
@@ -468,7 +483,7 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
     rows = [dict(p, why=checker(p["line"])) for p in promises(items, baseline, retired)]
     excused_n = sum(r["why"] == EXCUSED for r in rows)
     rows = [r for r in rows if r["why"] != EXCUSED]
-    rows += [{"item": "LIVE_RESTORE_" + arm.upper(), "line": None, "why": why} for arm, why in sorted(arms.items())]
+    rows += [{"item": arm_id(arm, items), "line": None, "why": why} for arm, why in sorted(arms.items())]
     todo = []
     shared = hosts_of(rows, items)
     # One outage files ONE ticket, its host's (RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET): a host no row already

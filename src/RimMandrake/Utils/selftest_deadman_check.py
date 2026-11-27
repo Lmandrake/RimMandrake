@@ -259,6 +259,51 @@ def t_a_retired_cause_ticket_gets_a_successor():
     check([t["item"] for t in again] == [nid], "the successor is the cause's ticket from then on: %s" % again)
 
 
+def arm_filed(arms, items=None):
+    calls = []
+    DM.sweep(NOW, lambda todo, conf: calls.append(todo) or {t["item"]: None for t in todo}, items or {}, [], arms,
+             lambda line: None)
+    return calls[0] if calls else []
+
+
+def t_no_filing_lands_on_a_retired_item():
+    """The class of OPS_TIMER_REPAIR_PRXC_XKGA's deaths of 2026-11-25 12:18, 2026-11-26 10:48 and 22:33 PST: an arm's
+    fixed id (LIVE_RESTORE_UNITS superseded, LIVE_RESTORE_OPS_WATCH dropped) was written to, the ledger refused ("a
+    retired item holds no promise"), and rm-deadman.service exited 1, so TIMER_FAILED rang for a sweep that worked."""
+    import importlib
+    sys.path.insert(0, str(HERE.parent / "rimflow"))
+    model = importlib.import_module("model")
+    arms = {"units": "2 unit text(s) out of their one home", "ops_watch": "ops_watch has no readable last-run stamp",
+            "dispatcher": "Dispatcher last ticked 40 min ago"}
+    retired = {"LIVE_RESTORE_UNITS": It(state="superseded"), "LIVE_RESTORE_OPS_WATCH": It(state="dropped")}
+    todo = arm_filed(arms, retired)
+    ids = {t["item"] for t in todo}
+    check(len(todo) == 3 and not ids & set(retired), "no arm reading is filed onto a retired fixed id: %s" % sorted(ids))
+    succ = {a: next((t for t in todo if t["item"].startswith("LIVE_RESTORE_%s_" % a.upper())), None) for a in
+            ("units", "ops_watch")}
+    check(all(t and t.get("spawn") and not model.mint_problems(t["item"], set()) for t in succ.values()),
+          "a retired arm id files its successor, spawned, and the successor is an item name: %s" % succ)
+    check("LIVE_RESTORE_DISPATCHER" in ids, "an arm whose fixed id lives still files that id: %s" % sorted(ids))
+    nid = succ["units"]["item"] if succ["units"] else None
+    again = arm_filed({"units": arms["units"]}, dict(retired, **({nid: It(state="done", live_repeats=1)} if nid else {})))
+    check([(t["item"], bool(t.get("spawn"))) for t in again] == [(nid, False)],
+          "the successor is the arm's ticket from then on, reopened, not spawned again: %s" % again)
+    put_back = arm_filed({"units": None}, dict(retired, **({nid: It(state="ready", live_broken="x")} if nid else {})))
+    check([(t["item"], t["result"]) for t in put_back] == [(nid, "kept")], "the successor is put back: %s" % put_back)
+    third = arm_filed({"units": arms["units"]}, dict(retired, **({nid: It(state="dropped")} if nid else {})))
+    check(len(third) == 1 and third[0]["item"] not in (nid, "LIVE_RESTORE_UNITS") and third[0].get("spawn"),
+          "a retired successor gets the next generation: %s" % third)
+    # the class, every road at once: arms, a baseline line, a ledger promise and a cause host
+    cid = filed(HOOKS)[0]["item"]
+    every = dict(retired, **{cid: It(state="dropped"), "LIVE_RESTORE_RM_DEAD": It(state="superseded"),
+                                      "Z_FIX": It(state="dropped", live=DEAD)})
+    calls = []
+    DM.sweep(NOW, lambda t, c: calls.append(t) or {x["item"]: None for x in t}, every, HOOKS + [DEAD], arms,
+             lambda line: unwired(line) if line.startswith("hook=") else ("it died" if "dead" in line else None))
+    bad = [t["item"] for t in (calls[0] if calls else []) if t["item"] in every and every[t["item"]].state in DM.RETIRED]
+    check(calls and not bad, "no road files onto a dropped or superseded item: %s" % bad)
+
+
 def t_cause_ids_are_item_names():
     import importlib
     sys.path.insert(0, str(HERE.parent / "rimflow"))
@@ -470,7 +515,7 @@ def main():
     for t in (t_one_cause_files_one_ticket, t_a_repeat_reopens_the_same_ticket, t_two_causes_stay_two_tickets,
               t_a_lone_fault_keeps_its_own_ticket, t_members_file_no_ticket_of_their_own,
               t_the_cause_ticket_is_put_back_when_the_cause_clears, t_a_retired_cause_ticket_gets_a_successor,
-              t_cause_ids_are_item_names):
+              t_cause_ids_are_item_names, t_no_filing_lands_on_a_retired_item):
         try:
             t()
         except Exception as e:  # noqa: BLE001  a test that raises on the base code is a red, not a crash of the rest

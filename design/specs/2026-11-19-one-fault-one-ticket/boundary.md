@@ -1,7 +1,7 @@
 # BOUNDARY: the dead-man sweep files one ticket per fault, Design Version 0.1.0
 
 Code: `src/RimMandrake/Utils/deadman_check.py`, the part that turns one pass's broken promises into filings:
-`cause_key`, `cause_id`, `hosts_of` (with `shared_hosts`, which it calls) and the filing loop of `sweep`. Item:
+`cause_key`, `cause_id`, `arm_id`, `hosts_of` (with `shared_hosts`, which it calls) and the filing loop of `sweep`. Item:
 `RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET` (owner by card 2026-11-19, "One fault, one ticket"), written
 2026-11-19. The census of every program that files tickets on its own, and why this is the one changed:
 `census.md` beside this page. Each promise has a test of its name in
@@ -48,4 +48,9 @@ LIVE_RESTORE_* tickets in 30 minutes. One timer stopped under 45 fixes reopened 
   same pass.
 - **a-retired-cause-ticket-gets-a-successor.** A dropped or superseded cause ticket is never reopened. The key's next
   generation id is filed, and is that cause's ticket from then on.
+- **no-filing-lands-on-a-retired-item.** No reading of a pass is filed onto a dropped or superseded item, by any road:
+  an arm, a baseline line, a ledger promise or a cause host. An arm whose fixed id `LIVE_RESTORE_<ARM>` is retired files
+  the arm's next generation id (`arm_id`), spawned once, and that id is the arm's ticket from then on. Why: the ledger
+  refuses a write onto a retired item, the refusal made `rm-deadman.service` exit 1, and TIMER_FAILED rang for a sweep
+  that worked (`LIVE_RESTORE_UNITS` and `LIVE_RESTORE_OPS_WATCH`, 2026-11-25 and 2026-11-26; OPS_TIMER_REPAIR_PRXC_XKGA).
 - **cause-ids-are-item-names.** A cause id passes `model.mint_problems`, so `rimflow spawn` takes it.
