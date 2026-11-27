@@ -577,7 +577,6 @@ CONDUIT = "PowerConduit"
 LAMPS_PER_NET = 8                       # "more lamps than the Kludged cell can light" (sc_cell_and_emanator)
 TAKE_APART_REPEATS = 3                  # sc_no_handouts: take-aparts of each level, written before the first run
 RR_PACKAGE = "petetimessix.researchreinvented"
-VCE_PACKAGE = "vanillaexpanded.vcooke"   # Vanilla Cooking Expanded; the cannery tier adds it (read as the loaded list says)
 # The originals, measured: VFE Factory 1.6 ThingDefs_Buildings, and the base game's defs through RimSage (2026-11-27).
 ORIGINAL = {"smelter": "VFEFactory_AutomatedSmelter", "autoloom": "VFEFactory_Autoloom", "alloyforge": "VFEFactory_AutomatedAlloyForge",
             "drill": "VFEFactory_AutomatedDrillPlatform", "powercell": "VanometricPowerCell", "emanator": "PsychicEmanator"}
