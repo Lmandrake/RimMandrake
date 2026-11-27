@@ -374,15 +374,83 @@ def calibration_rect(rect, cells=None):
     return (rect[0] + (rect[2] - c) // 2, rect[1] + (rect[3] - c) // 2, c, c)
 
 
+# What a capture draws, read from the engine (jawa/thing_graphic resolvedPath, the graphic Plant.Print draws): the blind
+# judge of 2026-11-27 (row rgd_3) saw no wilt and no dead grass because the plant shader ignores a tint, while every read
+# said the grass withered. So each capture also reads the drawn look of every plant in A against its stage line.
+LOOK_SUFFIX = {"wilting": "_Wilting", "withered": "_Withered"}   # CompWithersUnderRoof.cs RM_RoofWitherLook suffixes
+DEAD_LOOK = "Things/Plant/RM_FE_DeadGrass/"                       # DeadGrass.xml texPath, baked by wither_look_gen.py
+ALLOWED_LOOK = {0: ("fresh",), 1: ("wilting", "fresh"), 2: ("withered",)}   # the wilting line shows on a roofed fresh
+#                                                                  plant too (CompInspectStringExtra: Wilting || Roofed)
+
+
+def drawn_look(path):
+    """Pure. A resolved graphic path -> dead, withered, wilting or fresh."""
+    p = str(path or "")
+    if p.startswith(DEAD_LOOK):
+        return "dead"
+    for look, suf in sorted(LOOK_SUFFIX.items()):
+        if suf + "/" in p or p.endswith(suf):
+            return look
+    return "fresh"
+
+
+def judge_looks(graphics, before, after):
+    """Pure. jawa/thing_graphic things[] over A and two plants_of reads bracketing it -> {"judged", "transit",
+    "mismatch": [[id, def, stage, look, path]], "counts": {look: n}}. A plant whose stage line changed between the two
+    reads is in transit and not judged; dead grass must draw the dead look."""
+    out = {"judged": 0, "transit": 0, "mismatch": [], "counts": {}, "lines": {}}
+    for g in graphics or []:
+        look = drawn_look(g.get("resolvedPath"))
+        d, i = g.get("defName"), g.get("id")
+        if d == DEAD:
+            allowed, stage = ("dead",), None
+        elif d == GRASS:
+            b, a = (before or {}).get(i), (after or {}).get(i)
+            if b is None or a is None or b[3] != a[3]:
+                out["transit"] += 1
+                continue
+            stage = a[3]
+            allowed = ALLOWED_LOOK.get(stage, ())
+        else:
+            continue
+        out["judged"] += 1
+        out["counts"][look] = out["counts"].get(look, 0) + 1
+        line = "dead" if stage is None else {2: "withered", 1: "wilting"}.get(stage, "none")
+        out["lines"][line] = out["lines"].get(line, 0) + 1
+        if look not in allowed:
+            out["mismatch"].append([i, d, stage, look, g.get("resolvedPath")])
+    return out
+
+
 def judge_captures(shots):
-    """Pure. shots [{"label", "path", "lit", "cells"}] -> opportunity rows (a dark or missing capture is no picture)."""
+    """Pure. shots [{"label", "path", "lit", "looks"}] -> opportunity rows (a dark or missing capture is no picture; a
+    capture that draws a plant in another look than its stage is a wrong picture)."""
     opp = []
     _row(opp, "captures taken", all(s.get("path") for s in shots) and shots, sum(1 for s in shots if s.get("path")),
          "== %d" % len(shots), len(shots))
     lit = [s.get("lit") if s.get("lit") is not None else 0.0 for s in shots]
     _row(opp, "A's lit share at the darkest capture", bool(lit) and min(lit) >= LIT_SHARE,
          round(min(lit), 3) if lit else None, ">= %.2f at groundGlow >= %.1f" % (LIT_SHARE, LIT), len(shots))
+    looks = [s.get("looks") or {} for s in shots]
+    seen = dict((k, max([(x.get("lines") or {}).get(k, 0) for x in looks] or [0])) for k in ("withered", "dead"))
+    _row(opp, "fewest plants with a withered line or dead at the best capture (%s)" % ", ".join(
+        "%s %d" % kv for kv in sorted(seen.items())), min(seen.values()) >= 1, min(seen.values()), ">= 1", len(shots))
     return opp
+
+
+def judge_drawn(shots):
+    """Pure. shots -> verdict rows: every judged plant at every capture draws the look its stage line names."""
+    looks = [s.get("looks") or {} for s in shots]
+    bad = sum(len(x.get("mismatch") or []) for x in looks)
+    judged = sum(x.get("judged") or 0 for x in looks)
+    ver = []
+    _row(ver, "plants drawn in another look than their stage line", bad == 0, bad,
+         "== 0 (%d in transit, not judged)" % sum(x.get("transit") or 0 for x in looks), judged)
+    # the wilting look comes before withered (RM_RoofWitherKernel stages 1 then 2), so a scene with a withered line has
+    # drawn it, and the capture labelled wilting is timed for it
+    wil = max([(x.get("counts") or {}).get("wilting", 0) for x in looks] or [0])
+    _row(ver, "plants drawn wilting at the best capture", wil >= 1, wil, ">= 1", len(shots))
+    return ver
 
 
 def lit_share(glow, cells):
@@ -452,9 +520,17 @@ def register(suite, V):
         if CAL_CELLS and not state.get("zoomProbe"):   # learns the zoom on a rect that fits; never judged, never listed
             state["zoomProbe"] = t.screenshot(name="rgd_zoomprobe", rect=calibration_rect(g["A"]), ppc=V.R6_PLAY_PPC)
         glow = t.bridge_call("jawa/glow_at", rect=V._rs(g["A"]))
+        before = plants_of(t, g["A"])
         path = V._r6_shot(t, g["A"], "rgd_%s" % label)
+        drawn = t.bridge_call("jawa/thing_graphic", rect=V._rs(g["A"]), defs="%s,%s" % (GRASS, DEAD), limit=1200)
+        looks = None
+        if V._live(t) and isinstance(drawn, dict) and drawn.get("isCompleteList") and isinstance(drawn.get("things"), list):
+            looks = judge_looks(drawn["things"], before, plants_of(t, g["A"]))
+            print("[rgd-check] capture %s drawn looks %r, mismatches %d (limit 0) of %d judged, %d in transit" % (
+                label, looks["counts"], len(looks["mismatch"]), looks["judged"], looks["transit"]), flush=True)
         state["shots"].append({"label": label, "path": path, "lit": lit_share(glow, g["plantCells"]) if V._live(t) else None,
-                               "tick": ticks(t), "hour": (glow or {}).get("hour") if isinstance(glow, dict) else None})
+                               "tick": ticks(t), "hour": (glow or {}).get("hour") if isinstance(glow, dict) else None,
+                               "looks": looks, "lookRead": str(drawn)[:200] if looks is None else None})
 
     def read(t):
         g = state["geo"]
@@ -644,7 +720,11 @@ def register(suite, V):
         V._independent(t)
         with V._comp(t, "roofed_grass_captures_lit"):
             if V._live(t):
-                judged(t, "captures", judge_captures(state["shots"]), [])
+                unread = [s["label"] for s in state["shots"] if s.get("looks") is None]
+                if unread:
+                    V._unmeasured(t, "jawa/thing_graphic over A unreadable at capture(s) %r: %r" % (
+                        unread, [s.get("lookRead") for s in state["shots"] if s.get("looks") is None][:1]))
+                judged(t, "captures", judge_captures(state["shots"]), judge_drawn(state["shots"]))
         V._independent(t)
         with V._comp(t, "roofed_grass_no_error_line"):
             lines = V._log_since(t, state.get("mark"))

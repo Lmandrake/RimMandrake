@@ -127,6 +127,24 @@ check("plan: the crumble reads reach past the crumble deadline from the latest p
       pl["cutEnd"] + pl["crumbleReads"] * R.CRUMBLE_READ >= pl["deathDeadline"] + R.HOUR + pl["crumbleSpan"], pl)
 check("planted: a crumbleTicks too short for the cut is refused", not R.plan(60000, 20000)["cutBeforeCrumble"])
 check("percentile nearest-rank", R.percentile([1, 2, 3, 4, 5], 0.5) == 3 and R.percentile([], 0.5) is None)
+# the drawn look against the stage line (judge_looks): withered must draw _Withered; the wilting line allows a roofed fresh
+# plant; no line must draw fresh; dead grass must draw the dead folder; a stage that moved between the reads is not judged
+_gr = [{"id": "a", "defName": R.GRASS, "resolvedPath": "Things/Plant/RM_FE_EmberGrass_Withered/x"},
+       {"id": "b", "defName": R.GRASS, "resolvedPath": "Things/Plant/RM_FE_EmberGrass/x"},
+       {"id": "c", "defName": R.GRASS, "resolvedPath": "Things/Plant/RM_FE_EmberGrass_Wilting/x"},
+       {"id": "d", "defName": R.DEAD, "resolvedPath": "Things/Plant/RM_FE_DeadGrass/x_Dead"},
+       {"id": "e", "defName": R.GRASS, "resolvedPath": "Things/Plant/RM_FE_EmberGrass/x"}]
+_st = {"a": [0, 0, 1, 2], "b": [0, 0, 1, 1], "c": [0, 0, 1, 1], "e": [0, 0, 1, 0]}
+_lk = R.judge_looks(_gr, _st, _st)
+check("judge_looks: a true set reads 0 mismatches of 5", _lk["judged"] == 5 and not _lk["mismatch"], _lk)
+_bad = [dict(g, resolvedPath="Things/Plant/RM_FE_EmberGrass/x") for g in _gr]
+_lk = R.judge_looks(_bad, _st, _st)
+check("judge_looks: every plant drawn fresh flags the withered and the dead (2)",
+      sorted(m[0] for m in _lk["mismatch"]) == ["a", "d"], _lk)
+_lk = R.judge_looks(_gr, _st, dict(_st, a=[0, 0, 1, 1]))
+check("judge_looks: a stage that moved between the reads is in transit", _lk["transit"] == 1 and _lk["judged"] == 4, _lk)
+check("drawn_look reads the baked folders", [R.drawn_look(g["resolvedPath"]) for g in _gr]
+      == ["withered", "fresh", "wilting", "dead", "fresh"])
 check("lit_share", R.lit_share({"cells": [{"x": 1, "z": 1, "groundGlow": 0.5}, {"x": 2, "z": 1, "groundGlow": 0.1}]},
                                [(1, 1), (2, 1), (3, 1)]) == 1 / 3.0)
 check("error_lines", R.error_lines([{"type": "Error", "text": "x"}, {"level": "warning", "text": "y"}]) == ["x"])
@@ -353,6 +371,21 @@ class Game(object):
             for i in [k for k, th in self.things.items() if th["def"] == R.GRASS and self.in_rect(th, kw["rects"])]:
                 del self.things[i]
             return {}
+        if tool == "jawa/thing_graphic":
+            # the engine's drawn graphic: ember grass draws its baked look folder by stage (RM_RoofWitherLook), dead
+            # grass its own folder. tint_look plants the 2026-11-27 bug: the look never reaches the drawn path.
+            want = kw.get("defs", "").split(",")
+            rows = []
+            for i, th in sorted(self.things.items()):
+                if th["def"] not in want or not self.in_rect(th, kw["rect"]):
+                    continue
+                if th["def"] == R.DEAD:
+                    path = "Things/Plant/RM_FE_DeadGrass/RM_FE_EmberGrass_a_Dead"
+                else:
+                    suf = "" if self.fault == "tint_look" else {1: "_Wilting", 2: "_Withered"}.get(th["look"], "")
+                    path = "Things/Plant/RM_FE_EmberGrass%s/RM_FE_EmberGrass_a" % suf
+                rows.append({"id": self.tid(i), "defName": th["def"], "resolvedPath": path})
+            return {"isCompleteList": True, "count": len(rows), "things": rows}
         if tool == "jawa/glow_at":
             glow = 0.0 if self.fault == "dark" else 0.8
             return {"hour": 12, "cells": [{"x": c[0], "z": c[1], "groundGlow": glow}
@@ -368,7 +401,7 @@ FAULTS = {"one_clock": "roofed_grass_withers_unevenly", "no_remains": "roofed_gr
           "no_line": "roofed_grass_withers_unevenly", "stage_falls": "roofed_grass_withers_unevenly",
           "hp_rises": "roofed_grass_withers_unevenly", "b_wilts": "roofed_grass_withers_unevenly",
           "subject_lives": "roofed_grass_one_hp_dies_next_long_tick", "cut_fails": "dead_grass_can_be_cut",
-          "early_crumble": "dead_grass_crumbles_unevenly", "dark": "roofed_grass_captures_lit",
+          "early_crumble": "dead_grass_crumbles_unevenly", "dark": "roofed_grass_captures_lit", "tint_look": "roofed_grass_captures_lit",
           "error_line": "roofed_grass_no_error_line"}
 
 
@@ -534,9 +567,96 @@ def tint_two_args(src):
 twos = tint_two_args(open(R.COMP_CS, encoding="utf-8").read())
 bad = [x for x in twos if not ("Color.white" in x and "Graphic_Random" in x)]
 print("[rgd-st] tint colorTwo args: %r; not white for a Graphic_Random: %d (limit 0) of %d calls" % (twos, len(bad), len(twos)))
-check("the wither tint passes Color.white as colorTwo to a Graphic_Random (it logs an error otherwise)", twos and not bad, twos)
+# Zero calls passes: the look is baked now (below), and a look with no GetColoredVersion logs no colorTwo error.
+check("no wither tint passes a non-white colorTwo to a Graphic_Random (it logs an error otherwise)", not bad, twos)
+_par = tint_two_args("class RM_RoofWitherLook { Color two = g.colorTwo * tint; t = g.GetColoredVersion(g.Shader, g.color * tint, "
+                     "two); } class RM_Plant_WithersUnderRoof")
+check("planted: the parent's tinted colorTwo reads red", [x for x in _par if not ("Color.white" in x and "Graphic_Random" in x)], _par)
 assert tint_two_args("class RM_RoofWitherLook { x = g.GetColoredVersion(g.Shader, g.color * t, g.colorTwo * t); } "
                      "class RM_Plant_WithersUnderRoof") == ["g.colorTwo * t"]
+# ---- 3b. the look is baked, not tinted (a plant draws with 'Custom/Plant cutout', which ignores the material colour:
+# ArchSmall 2026-11-27, row rgd_3 -- dead grass coloured 0.62,0.53,0.42 drew as the living grass, a blind judge saw no wilt).
+import shutil, tempfile  # noqa: E401
+import numpy as np
+from PIL import Image
+LG = load("wither_look_gen", "wither_look_gen.py")
+
+
+def look_class(src):
+    """Pure. (GetColoredVersion calls, the two suffix constants) in RM_RoofWitherLook."""
+    body = src[src.index("class RM_RoofWitherLook"):]
+    body = body[:body.index("class RM_Plant_WithersUnderRoof")]
+    suf = dict(re.findall(r'const string (\w+)Suffix\s*=\s*"([^"]*)"', body))
+    return len(re.findall(r"GetColoredVersion\(", body)), suf
+
+
+calls, suf = look_class(open(R.COMP_CS, encoding="utf-8").read())
+print("[rgd-st] look: GetColoredVersion calls %d (limit 0); suffixes %r" % (calls, suf))
+check("RM_RoofWitherLook tints nothing (a tint is invisible on a plant)", calls == 0, calls)
+check("its suffixes are the baked looks' names", suf == {"Wilting": "_Wilting", "Withered": "_Withered"}
+      and all(k in LG.LOOKS for k in suf), suf)
+check("planted: the parent's tinting look reads red", look_class(
+    "class RM_RoofWitherLook { t = g.GetColoredVersion(g.Shader, g.color * tint, two); } class RM_Plant_WithersUnderRoof")[0] == 1)
+
+plan = LG.plan()
+stale = [d for s_, lk, d in plan if not (os.path.exists(d) and np.array_equal(
+    np.asarray(Image.open(d).convert("RGBA")), np.asarray(LG.recolour(Image.open(s_), lk))))]
+print("[rgd-st] baked looks: %d stale or missing (limit 0) of %d" % (len(stale), len(plan)))
+check("every baked look is present and current (wither_look_gen.py --check)", plan and not stale, stale[:3])
+_tmp = tempfile.mkdtemp(prefix="rgd_st_")
+try:
+    _keep = LG.TEX
+    shutil.copytree(LG.TEX + "/Things/Plant", _tmp + "/Things/Plant")
+    LG.TEX = _tmp
+    os.remove(LG.plan()[0][2])
+    check("planted: a missing baked look reads red", LG.main(["--check"]) == 1)
+finally:
+    LG.TEX = _keep
+    shutil.rmtree(_tmp, ignore_errors=True)
+
+
+def dead_graphics(xml):
+    """Pure-ish. {defName: (texPath, color or None)} for each concrete def in DeadGrass.xml."""
+    import xml.etree.ElementTree as ET
+    out = {}
+    for d in ET.parse(xml).getroot().iter("ThingDef"):
+        dn = d.findtext("defName")
+        if dn:
+            out[dn] = (d.findtext("graphicData/texPath"), d.findtext("graphicData/color"))
+    return out
+
+
+deads = dead_graphics(R.DEAD_XML)
+want = dict((dead, src) for src, dead in LG.SOURCES if dead)
+bad_dead = [k for k, (tp, col) in deads.items() if tp not in want or col is not None
+            or len(LG.source_files(tp)) != len(LG.source_files(want[tp]))]
+print("[rgd-st] dead grass graphics: %r; not a baked folder or coloured: %d (limit 0) of %d" % (deads, len(bad_dead), len(deads)))
+check("each dead grass draws its baked folder with no colour, one file per living variant", deads and not bad_dead, bad_dead)
+_pd = os.path.join(tempfile.mkdtemp(prefix="rgd_st_"), "DeadGrass.xml")
+open(_pd, "w", encoding="utf-8").write('<Defs><ThingDef><defName>RM_FE_DeadGrass</defName><graphicData><texPath>Things/Plant/'
+                                       'RM_FE_EmberGrass</texPath><color>(0.62, 0.53, 0.42)</color></graphicData></ThingDef></Defs>')
+_pdg = dead_graphics(_pd)
+check("planted: the parent's tinted dead grass reads red", [k for k, (tp, col) in _pdg.items() if tp not in want or col], _pdg)
+
+
+def drabness(img):
+    """Pure. (mean saturation, mean value) over the opaque pixels (alpha > 0.5)."""
+    a = np.asarray(img.convert("RGBA")).astype(float) / 255.0
+    m = a[..., 3] > 0.5
+    h, sat, val = LG.rgb_to_hsv(a[..., :3])
+    return float(sat[m].mean()), float(val[m].mean()), int(m.sum())
+
+
+for src, dead in LG.SOURCES:
+    for f in LG.source_files(src):
+        im = Image.open(os.path.join(LG.TEX, src, f))
+        seq = [("Fresh", drabness(im))] + [(lk, drabness(LG.recolour(im, lk))) for lk in ("Wilting", "Withered", "Dead")]
+        sats = [x[1][0] for x in seq]
+        print("[rgd-st] drabness %s: %s (n=%d px)" % (f, ", ".join("%s s%.3f v%.3f" % (k, v[0], v[1]) for k, v in seq),
+                                                       seq[0][1][2]))
+        check("%s: each stage is less saturated than the last, and dead is darker than fresh" % f,
+              all(a_ > b_ for a_, b_ in zip(sats, sats[1:])) and seq[3][1][1] < seq[0][1][1], seq)
+
 check("the probe rect lies at the middle of A", R.calibration_rect((81, 117, 12, 16)) == (84, 122, 6, 6))
 v, _ = run(Game(), env="mass_kill")
 print("[rgd-st] planted scene %s=mass_kill: %r" % (R.PLANT_ENV, v))

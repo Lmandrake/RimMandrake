@@ -10,8 +10,10 @@
     crumbleTicks; each blade's end is spread over 0.6..1.4 of it, RM_RoofWitherKernel). Vanilla deterioration would not do:
     it is zero under a roof in a closed room (StatPart_EnvironmentalEffects), which is exactly where this lies.
 
-    No new art: the living grass's own sprites, tinted by graphicData color to a dead straw brown (an invented colour, our
-    own rule, to be judged live by sc_roofed_grass_declines). Never in any biome's wild plants and never sowable: it only
+    No new art: the living grass's own sprites baked in a dead grey-brown (wither_look_gen.py; an invented colour, our own
+    rule, judged live by sc_roofed_grass_declines' blind judge). Not a graphicData color: a plant draws with 'Custom/Plant
+    cutout', which ignores it (measured live on ArchSmall 2026-11-27: dead grass coloured 0.62,0.53,0.42 drew exactly as the
+    living grass). Never in any biome's wild plants and never sowable: it only
     comes from a roofed death.
   -->
 
@@ -47,9 +49,8 @@
     <label>dead ember grass</label>
     <description>Ember grass that died under a roof: brittle brown stalks that crumble away in a day or two. It can be cut.</description>
     <graphicData>
-      <texPath>Things/Plant/RM_FE_EmberGrass</texPath>
+      <texPath>Things/Plant/RM_FE_DeadGrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(0.62, 0.53, 0.42)</color>
     </graphicData>
     <plant>
       <!-- The living ember grass's sizes (EmberGrass.xml), so the dead patch keeps its shape. -->
@@ -62,9 +63,8 @@
     <label>dead quickgrass</label>
     <description>Quickgrass that died under a roof: a flattened brown mat that crumbles away in a day or two. It can be cut.</description>
     <graphicData>
-      <texPath>Things/Plant/RM_FE_Quickgrass</texPath>
+      <texPath>Things/Plant/RM_FE_DeadQuickgrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(0.66, 0.56, 0.40)</color>
     </graphicData>
     <plant>
       <!-- The living quickgrass's sizes (Quickgrass.xml). -->

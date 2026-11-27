@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -237,13 +238,15 @@ namespace RimMandrake.Pyrelands
         }
     }
 
-    /// <summary>The wilting and withered look: the plant's own graphic, tinted (GetColoredVersion, as ExplosiveGrowth's hue shift
-    /// does; only Graphic_Single and Graphic_Random support it, anything else stays untinted). No new art.</summary>
+    /// <summary>The wilting and withered look: the plant's own art baked in other colours, a sibling of its graphic path with a
+    /// suffix (RM_FE_EmberGrass -> RM_FE_EmberGrass_Wilting, RM_FE_EmberGrass_Withered; wither_look_gen.py bakes them). Not a
+    /// tint: a plant draws through Plant.Print with 'Custom/Plant cutout', which ignores the material colour (measured live
+    /// on ArchSmall 2026-11-27: a GetColoredVersion tint and a graphicData color both left the pixels unchanged, and a blind
+    /// judge saw no wilt). A graphic with no baked look (the leafless art) stays as it is.</summary>
     public static class RM_RoofWitherLook
     {
-        // Invented colours (our own rule), to be judged live by sc_roofed_grass_declines: a drying yellow, then a dead brown.
-        private static readonly Color Wilting = new Color(0.92f, 0.84f, 0.58f);
-        private static readonly Color Withered = new Color(0.70f, 0.58f, 0.42f);
+        public const string WiltingSuffix = "_Wilting";
+        public const string WitheredSuffix = "_Withered";
 
         private static readonly Dictionary<(Graphic, int), Graphic> cache = new Dictionary<(Graphic, int), Graphic>();
 
@@ -263,21 +266,32 @@ namespace RimMandrake.Pyrelands
             {
                 return g;
             }
-            if (!(g is Graphic_Random) && !(g is Graphic_Single))
-            {
-                return g;
-            }
             var key = (g, stage);
-            if (!cache.TryGetValue(key, out Graphic tinted))
+            if (!cache.TryGetValue(key, out Graphic look))
             {
-                Color tint = stage == RM_RoofWitherKernel.StageWilting ? Wilting : Withered;
-                // Graphic_Random takes no colorTwo: a non-white one logs "Cannot use Graphic_Random.GetColoredVersion with a
-                // non-white colorTwo." and is dropped (Verse.Graphic_Random). Ember grass is Graphic_Random.
-                Color two = g is Graphic_Random ? Color.white : g.colorTwo * tint;
-                tinted = g.GetColoredVersion(g.Shader, g.color * tint, two);
-                cache[key] = tinted;
+                look = Baked(g, stage == RM_RoofWitherKernel.StageWilting ? WiltingSuffix : WitheredSuffix) ?? g;
+                cache[key] = look;
             }
-            return tinted;
+            return look;
+        }
+
+        // The baked sibling of g, or null when none was baked. Graphic_Random reads a folder (its files sorted by name, the same
+        // order as the source's, so a wilting tuft keeps its shape); Graphic_Single reads one file.
+        private static Graphic Baked(Graphic g, string suffix)
+        {
+            if (g.path.NullOrEmpty() || !(g is Graphic_Random || g is Graphic_Single))
+            {
+                return null;
+            }
+            string path = g.path + suffix;
+            bool baked = g is Graphic_Random
+                ? ContentFinder<Texture2D>.GetAllInFolder(path).Any()
+                : ContentFinder<Texture2D>.Get(path, false) != null;
+            if (!baked)
+            {
+                return null;
+            }
+            return GraphicDatabase.Get(g.GetType(), path, g.Shader, g.drawSize, g.color, g.colorTwo);
         }
     }
 
