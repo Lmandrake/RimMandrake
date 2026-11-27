@@ -68,7 +68,11 @@ def checks(t: dict) -> list[tuple[str, bool]]:
          and "StylePick_pick_before_load_does_not_reach_the_loaded_game" in t["checks"]),
         ("the live proof builds the second bridge from a new, unpicked button",
          "public static string ProofUnsetLook(string arg)" in t["proofs"]
-         and "Machinery.PipeLook.Core.Pick(first, picked);" in t["proofs"] and "second.TryDesignate(cells)" in t["proofs"]),
+         and "Machinery.PipeLook.Core.Pick(first, picked);" in t["proofs"]
+         and "second.TryDesignate(CellRect.FromLimits(c3, c4)" in t["proofs"]),
+        ("the live proof shows it can see a stored look: the first bridge reads its own pick",
+         'Read(CellRect.FromLimits(c1, c2), picked, out int own, null)' in body(t["proofs"], "public static string ProofUnsetLook(string arg)")
+         and '" own=" + own + "/" + ownParts' in t["proofs"]),
     ]
 
 
@@ -79,13 +83,17 @@ def live_verdicts() -> list[tuple[str, bool]]:
     v = lambda s: m.verdict(s)[:2]  # noqa: E731
     return [
         ("live: ok=True with parts reads PASS",
-         v("UNSETLOOK ok=True default=Scrapper picked=Industrial parts=4 looks=Scrapper reason=-") == ("PASS", "MOD")),
+         v("UNSETLOOK ok=True default=Scrapper picked=Industrial own=4/4 parts=4 looks=Scrapper reason=-") == ("PASS", "MOD")),
         ("live: the first bridge's pick on the second reads FAIL",
-         v("UNSETLOOK ok=False default=Scrapper picked=Industrial parts=4 looks=Industrial reason=-") == ("FAIL", "MOD")),
+         v("UNSETLOOK ok=False default=Scrapper picked=Industrial own=4/4 parts=4 looks=Industrial reason=-") == ("FAIL", "MOD")),
+        ("live: the first bridge not in its own pick reads FAIL, never a blind PASS",
+         v("UNSETLOOK ok=True default=Scrapper picked=Industrial own=0/4 parts=4 looks=Scrapper reason=-") == ("FAIL", "MOD")),
+        ("live: a line with no own= reading is a harness fault, not a pass",
+         v("UNSETLOOK ok=True default=Scrapper picked=Industrial parts=4 looks=Scrapper reason=-") == ("UNMEASURED", "HARNESS")),
         ("live: no part built is UNMEASURED, not a pass",
-         v("UNSETLOOK ok=False default=Scrapper picked=Industrial parts=0 looks= reason=-") == ("UNMEASURED", "SITE")),
+         v("UNSETLOOK ok=False default=Scrapper picked=Industrial own=0/0 parts=0 looks= reason=-") == ("UNMEASURED", "SITE")),
         ("live: a refused build is UNMEASURED",
-         v("UNSETLOOK ok=False default=Scrapper picked=Industrial parts=0 looks= reason=no_pit") == ("UNMEASURED", "SITE")),
+         v("UNSETLOOK ok=False default=Scrapper picked=Industrial own=0/0 parts=0 looks= reason=no_pit") == ("UNMEASURED", "SITE")),
         ("live: a refusal line is a harness fault", v("REFUSED: arg must be ...") == ("UNMEASURED", "HARNESS")),
         ("live: no answer is a harness fault", v(None) == ("UNMEASURED", "HARNESS")),
     ]

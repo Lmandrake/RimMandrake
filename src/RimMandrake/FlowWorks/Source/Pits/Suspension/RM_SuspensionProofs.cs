@@ -789,8 +789,9 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>RIMMANDRAKE_FIX_STEEL_BRIDGE_UNSET_STYLE_TAKES_LAST_CHOSEN: "x1,z1;x2,z2;x3,z3;x4,z4": pick a look that is not
 		/// the default on one steel bridge button and build it over the first rectangle (god), then build a second steel bridge
 		/// over the second rectangle from a new button with nothing chosen, and read the look stored on each of its parts (none
-		/// stored = the default look). → "UNSETLOOK ok=b default=D picked=P parts=N looks=a|b reason=..." (ok: every part of the
-		/// second bridge is in the default look; the parent read the first bridge's pick there, walk map 2026-11-25).</summary>
+		/// stored = the default look). → "UNSETLOOK ok=b default=D picked=P own=M/N parts=N looks=a|b reason=..." (ok: every part
+		/// of the second bridge is in the default look; the parent read the first bridge's pick there, walk map 2026-11-25. own:
+		/// the first bridge's parts in its own pick, of its parts; under N/N the proof cannot see a stored look).</summary>
 		public static string ProofUnsetLook(string arg)
 		{
 			Map map = Find.CurrentMap;
@@ -806,35 +807,47 @@ namespace RimMandrake.FlowWorks.Pits
 			Machinery.PipeLook.Core.Pick(first, picked);
 			bool was = DebugSettings.godMode;
 			string reason;
-			List<IntVec3> cells = CellRect.FromLimits(c3, c4).Cells.ToList();
 			try
 			{
 				DebugSettings.godMode = true;
-				reason = first.TryDesignate(CellRect.FromLimits(c1, c2).Cells.ToList()) ?? second.TryDesignate(cells);
+				reason = first.TryDesignate(CellRect.FromLimits(c1, c2).Cells.ToList()) ?? second.TryDesignate(CellRect.FromLimits(c3, c4).Cells.ToList());
 			}
 			finally
 			{
 				DebugSettings.godMode = was;
 			}
-			int parts = 0;
-			bool ok = reason == null;
 			HashSet<string> looks = new HashSet<string>();
-			foreach (IntVec3 c in cells)
+			// the parts of one bridge, and how many are stored in the look `want` (nothing stored = the default look)
+			int Read(CellRect r, string want, out int inWant, HashSet<string> seen)
 			{
-				foreach (Thing t in c.GetThingList(map))
+				int n = 0;
+				inWant = 0;
+				foreach (IntVec3 c in r.Cells)
 				{
-					if (!RM_SuspensionDefOf.IsPartDef(t.def) || t.def.IsBlueprint || t.def.IsFrame)
+					foreach (Thing t in c.GetThingList(map))
 					{
-						continue;
+						if (!RM_SuspensionDefOf.IsPartDef(t.def) || t.def.IsBlueprint || t.def.IsFrame)
+						{
+							continue;
+						}
+						n++;
+						string look = Machinery.PipeLook.Core.LookOfStyle(RimMandrake.Shared.StylePicker.StylePickerCore.RawStyle(t)) ?? def;
+						seen?.Add(look);
+						if (look == want)
+						{
+							inWant++;
+						}
 					}
-					parts++;
-					string look = Machinery.PipeLook.Core.LookOfStyle(RimMandrake.Shared.StylePicker.StylePickerCore.RawStyle(t)) ?? def;
-					looks.Add(look);
-					ok &= look == def;
 				}
+				return n;
 			}
-			ok &= parts > 0;
-			return "UNSETLOOK ok=" + ok + " default=" + def + " picked=" + picked + " parts=" + parts + " looks=" + string.Join("|", looks)
+			// can it see: the first bridge must read its own pick, else a stored look is invisible here and a default read
+			// on the second bridge would pass blind
+			int ownParts = Read(CellRect.FromLimits(c1, c2), picked, out int own, null);
+			int parts = Read(CellRect.FromLimits(c3, c4), def, out int inDefault, looks);
+			bool ok = reason == null && parts > 0 && inDefault == parts;
+			return "UNSETLOOK ok=" + ok + " default=" + def + " picked=" + picked + " own=" + own + "/" + ownParts + " parts=" + parts
+				+ " looks=" + string.Join("|", looks)
 				+ " reason=" + (reason ?? "-").Replace(' ', '_');
 		}
 	}

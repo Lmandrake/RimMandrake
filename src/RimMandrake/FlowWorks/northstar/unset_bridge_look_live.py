@@ -12,8 +12,10 @@ gets a 1-wide steel bridge laid north-south across it at x 1 and x 7, z 1..4, bu
 RM_SuspensionProofs.ProofUnsetLook. That proof picks a look that is not the default on the first bridge's button, builds
 the first bridge, then builds the second bridge from a new button with nothing chosen. It reads the look stored on each
 part of the second bridge (nothing stored = the default look).
-EXPECT  UNSETLOOK ok=True: every part of the second bridge is in the default look.
+EXPECT  UNSETLOOK ok=True own=N/N: every part of the second bridge is in the default look, and every part of the first
+        bridge is in its own pick (the proof can see a stored look).
 FAILS   ok=False with parts>0 and reason=-: a part of the second bridge took the first bridge's pick (the reported fault).
+        own=M/N with M under N: the first bridge did not take its own pick.
 LIES    no part built, or a refusal: UNMEASURED (SITE). The pick before a load is decided offline only
         (StylePick_pick_before_load_does_not_reach_the_loaded_game): a load makes a new Game object (SavedGameLoaderNow,
         read in the game source 2026-11-26), and a live load costs a cold map load for one bit the offline case decides.
@@ -36,7 +38,9 @@ NOTCHES = 8
 
 
 def verdict(text):
-    """ProofUnsetLook's line -> (status, class, fields). PASS only on ok=True with parts>0 and no refusal."""
+    """ProofUnsetLook's line -> (status, class, fields). PASS only on ok=True with parts>0, no refusal, and the first
+    bridge seen in its own pick (own=N/N): without that reading the proof cannot see a stored look, and a default read on
+    the second bridge would pass blind."""
     t = str(text or "")
     if not t.startswith("UNSETLOOK "):
         return "UNMEASURED", "HARNESS", {"read": t[:300]}
@@ -44,6 +48,11 @@ def verdict(text):
     parts = int(f.get("parts") or 0)
     if f.get("reason", "-") != "-" or parts == 0:
         return "UNMEASURED", "SITE", f
+    own = re.fullmatch(r"(\d+)/(\d+)", f.get("own", ""))
+    if not own:
+        return "UNMEASURED", "HARNESS", dict(f, why="no own= reading: the proof cannot show it sees a stored look")
+    if int(own.group(2)) == 0 or own.group(1) != own.group(2):
+        return "FAIL", "MOD", dict(f, why="the first bridge is not all in its own pick")
     return ("PASS", "MOD", f) if f.get("ok") == "True" else ("FAIL", "MOD", f)
 
 
