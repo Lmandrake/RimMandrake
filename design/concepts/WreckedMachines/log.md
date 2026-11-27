@@ -2,7 +2,7 @@
 
 The verbatim record of each turn with him: what was sent, what he answered. `record.json` is the working record.
 
-## 2026-11-26 turn 1 (run rm-role-designer-1795752087), sent about 8:45 PM PST
+## 2026-11-26 turn 1 (run rm-role-designer-1795752087), sent 8:15 PM PST
 
 Text: `design/concepts/WreckedMachines/turn_01.md`. It opens with the offer of a look at the running mod, then the case
 for and against a generic version, then the root paragraph (`record.json` `root_draft`), its Attack and its Picture.

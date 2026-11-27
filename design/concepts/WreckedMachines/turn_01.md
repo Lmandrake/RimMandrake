@@ -1,6 +1,6 @@
 # Wrecked Machines, Designer turn 1 (stage 1: what is the mod)
 
-Run `rm-role-designer-1795752087`, 2026-11-26, about 8:30 PM PST. For the Conductor to serve as question cards. The
+Run `rm-role-designer-1795752087`, 2026-11-26, 8:15 PM PST. For the Conductor to serve as question cards. The
 three asks are in `record.json` (`a_root`, `a_how_found`, `a_riders`). A fresh agent that did not write this page
 reviewed the asks and the page before sending (the review line is at the end).
 
