@@ -1,0 +1,3 @@
+Two live reads that return a confident stale number: (1) jawa/cell_temperature 'temperature' is the cell's ROOM value, which lags; 'outdoorTemp' is live and follows a GameCondition_TemperatureOffset change within 120 ticks (a 15 C air heat read 0.00 C of change two ticks after its sync). (2) RM_PlanetSunGeometry resolves lazily: jawa/read_paths of its private fields reads loaded=false until a consumer asks; call its getters (jawa/static_call get_Loaded / get_FixedSun). Measured 2026-11-26 on ArchBig.
+item: DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME
+home: infrastructure/state/facts/instrument_traps.md
