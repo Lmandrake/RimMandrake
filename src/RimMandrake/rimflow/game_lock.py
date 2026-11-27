@@ -88,10 +88,27 @@ _PAUSED_FLYER_READ = re.compile(r"(?<!un)\bpaused flyer state read\b", re.I)
 _PAUSED_FLYER_TOOL = re.compile(r"\bflyer_tier_three_state_read\.py\b", re.I)
 
 
+# A gravship in transit on the world map is a world object with an icon, never a pawn (Conductor's class call on
+# RIMMANDRAKE_ROUTE_GRAVSHIP_ICON_JUDGE_PAST_FLIGHT_WORD_GUARD). Two narrow admissions, both fail-safe for a pawn:
+# (1) an item ID (UPPER_SNAKE, two or more words) names work and is cut out before the check, unless a word of it names
+#     a creature (FLYER, PAWN, CREATURE, ...); (2) a purpose that names a gravship or a world-map icon is admitted when
+#     it names no creature word anywhere.
+_ITEM_ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
+_CREATURE_WORD = re.compile(r"flyer|pawn|creature|animal|bird|hawk|mynock|wing|beast|insect|bat\b|drake|dragon", re.I)
+_GRAVSHIP_OR_MAP_ICON = re.compile(r"\bgrav[-\s]*ship|\bworld[-\s]*map\b[^.;]*\bicon|\bicon\b[^.;]*\bworld[-\s]*map\b", re.I)
+
+
+def _cut_item_ids(text):
+    return _ITEM_ID_RE.sub(lambda m: m.group(0) if _CREATURE_WORD.search(m.group(0)) else " ", text)
+
+
 def flight_purpose(text):
     text = text or ""
     if _PAUSED_FLYER_READ.search(text) and _PAUSED_FLYER_TOOL.search(text):
         text = _PAUSED_FLYER_TOOL.sub(" ", _PAUSED_FLYER_READ.sub(" ", text))
+    text = _cut_item_ids(text)
+    if _GRAVSHIP_OR_MAP_ICON.search(text) and not _CREATURE_WORD.search(text):
+        return False
     return bool(_FLIGHT_RE.search(text))
 
 

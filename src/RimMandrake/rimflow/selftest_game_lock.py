@@ -356,6 +356,27 @@ def t_his_hold_refuses_with_exit_3():
     kill(s)
 
 
+def t_the_flight_guard_refuses_creature_flyers_only():
+    """A flight word inside an item's name, or a gravship / world-map icon purpose, is admitted; a pawn's flight stays
+    refused (rc=3) for every seat but OWNER. The paused-flyer state read stays admitted."""
+    bx = Box()
+    admitted = ("judge captures for UTINNI_WORLDMAP_FLIGHT_ICON_1", "capture the gravship in flight on the world map",
+                "world-map icon capture of the gravship", "paused flyer state read (flyer_tier_three_state_read.py)")
+    refused = ("fly the hawk over the dunes", "flyer flight test", "flight capture of a pawn",
+               "gravship icon next to a flying hawk", "RIMMANDRAKE_FLYER_FLIGHT_TEST", "glide test",
+               "butterfly airborne check", "paused flyer state read", "judge captures for UTINNI_WORLDMAP_FLIGHT_ICON_1 "
+               "and a hawk takeoff")
+    for purpose in admitted:
+        s = sleeper()
+        r = bx.gl("claim", "b", "--for", purpose, pid=s.pid)
+        check(r.returncode == 0, "the flight guard admits: %s" % purpose, r.stdout + r.stderr)
+        kill(s)
+        bx.gl("release", "b")
+    for purpose in refused:
+        r = bx.gl("claim", "b", "--for", purpose)
+        check(r.returncode == 3 and "flight" in r.stdout, "the flight guard still refuses: %s" % purpose, r.stdout)
+
+
 def t_an_old_style_hold_is_seen_and_an_old_style_release_frees_it():
     bx = Box()
     s = sleeper()
@@ -851,6 +872,7 @@ def main():
     t_run_aims_cmd_at_the_game_it_holds()
     t_run_names_in_wslenv_only_what_it_hands_on()
     t_his_hold_refuses_with_exit_3()
+    t_the_flight_guard_refuses_creature_flyers_only()
     t_an_old_style_hold_is_seen_and_an_old_style_release_frees_it()
     t_release_frees_only_this_process_trees_hold()
     t_the_225_am_release_that_left_bridge_who_saying_held()

@@ -179,7 +179,7 @@ bridge tells you why. The screen tells you what a player sees. Use both, and tak
    `jawa/weather_get`, `jawa/incident_queue_peek`, `jawa/vitals`). File an unexplained ODD or ALARMING observation under
    rule 4 of "Beyond the checklist".
 4. Flyers are state-read only. Owner: "Don't try to capture images of flight. It doesn't work." Never capture, stage or
-   test a flyer's flight.
+   test a creature flyer's flight. A gravship on the world map is not a flyer.
 
 **The SURPRISE BOOK** (owner, 2026-11-04: "This can be the agent learning."). The book is
 `infrastructure/state/testpilot/surprise_book.jsonl`; only `python3 src/RimMandrake/rimflow/surprise_book.py` writes it.
@@ -209,7 +209,7 @@ to get creative or diagnose the test itself rather than the mod code").
 4. File each strange thing beyond the checklist as its own item, after a search of `src/` and the existing items. Fix
    it in this run when you can (test 2).
 
-**Hard limits at the bridge.** Never fly a flyer, and no flight capture of any kind. Never fullscreen the game or take
+**Hard limits at the bridge.** Never fly a creature flyer, and no flight capture of a creature flyer. A gravship on the world map is not a flyer. Never fullscreen the game or take
 focus. Never force a bridge; his OWNER hold stays refused. Never restore the owner's mod list; parse `ModsConfig.xml`,
 never grep it. Only the canonical world saves are precious. On SteveDesktop, drive by `ssh "$STEVE_WSL"`, treat
 `~/rm/runner` as read-only, and deploy only with `infrastructure/stevedesktop/remote_modcheck.sh --sync --no-run <Mod>`.

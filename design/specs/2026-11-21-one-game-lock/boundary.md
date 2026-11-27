@@ -92,6 +92,10 @@ Before: `rimflow bridge who` 5.0 s for ArchBig, 1.8 s for ArchSmall.
   `claim --despite-hold WHY` with a nonempty reason passes the pipe hold, reports the hold and the reason on stderr,
   and leaves the switch set. A successful claim still records the driver for `query` to name. Another live driver's
   lock, his OWNER lock, and an unreadable control store still refuse the claim.
+- **the-flight-guard-refuses-creature-flyers-only.** `flight_purpose` refuses a purpose about a pawn's flight (any flight
+  word, `--flyer`, or a creature word beside one) for every seat but OWNER. It admits a flight word that sits only inside an
+  item ID (UPPER_SNAKE, no creature word in it), and a purpose that names a gravship or a world-map icon and no creature
+  word: a gravship on the world map is a world object, not a flyer. A paused flyer state read stays admitted.
 - **an-old-style-hold-is-seen-and-an-old-style-release-frees-it.** A take made through `host_guard.py take` or
   `driver_lock.acquire` (what `rimflow bridge take` calls) reads HELD with its purpose; `host_guard.py release` frees it;
   `host_guard.py status` reads a claim made here.

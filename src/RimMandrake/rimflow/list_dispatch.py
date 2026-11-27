@@ -1726,7 +1726,8 @@ Steps:
 4. If you cannot finish, end with a note that starts `LEFT OPEN:` and names the one next act, or a dated wait that names
    who acts next.
 {game}
-Never live-test a flyer's flight and never try to capture images of flight (CLAUDE.md, If it flies in the fiction).
+Never live-test a creature flyer's flight and never try to capture images of a creature flyer's flight (CLAUDE.md, If it
+flies in the fiction). A gravship on the world map is a world object, not a flyer: capturing its icon is allowed.
 Change no mod, no bar and no version. Start no helper of your own.
 """.format(item=iid, n=row.get("run_n", 1), who=who, title=it.get("title") or "-", ask=_one(r.get("ask"), 1200),
            resumes=_one(r.get("resumes"), 400),
