@@ -135,7 +135,8 @@ def t_a_build_tied_job_whose_companion_left_origin_main_is_cancelled_unspent(e):
               and rec.get("job", {}).get("source_sha") == sha,
               "%s whose companion left origin/main is cancelled unspent, at its own sha, with the reason: %s %s"
               % (what, e.started, rec.get("reason")))
-    os.remove(e.T.q("cancelled", j["id"] + ".json"))
+    _tied(e, e.sha1, {})        # empties the queue again, whatever the admission did
+    os.remove(e.T.q("pending", os.listdir(e.T.q("pending"))[0]))
 
 
 def main():
