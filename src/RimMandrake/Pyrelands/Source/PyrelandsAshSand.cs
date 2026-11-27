@@ -10,7 +10,9 @@ using Verse;
 namespace RimMandrake.Pyrelands
 {
     /// <summary>
-    /// Ash is vanilla Odyssey sand on a map fire ecology runs on (the Pyrelands, or a biome opted in by the cross-biome setting).
+    /// Ash is vanilla Odyssey sand on any map whose sand grid holds no other sand: its biome's weather table names no weather
+    /// but the ash weathers with a sandRate (one SandGrid a map, so a desert whose Sandstorm lays sand keeps vanilla's sand).
+    /// The map's conditions decide it, never the biome's name (bar mechanics_switch_plain_no_biome).
     /// Owner, by card, 2026-11-08: "Rebuild ash on vanilla sand?" -> "Yes, rebuild on sand". The same morning on map x: "It seems
     /// like it's accumulating very slowly. If this were snow, I would have expected it to get thicker much faster."
     /// So ash is the map's SandGrid depth (0..1), laid and lost by vanilla's own code wherever it can be:
@@ -33,8 +35,6 @@ namespace RimMandrake.Pyrelands
     [StaticConstructorOnStartup]
     public static class PyrelandsAsh
     {
-        private const string NativeBiomeDefName = "RM_Pyrelands";
-
         private static WeatherDef ashFall, cinderfall;
         private static bool weathersResolved;
 
@@ -90,11 +90,33 @@ namespace RimMandrake.Pyrelands
 
         // ── reads ────────────────────────────────────────────────────────
 
-        /// <summary>Does this map's sand grid hold ash (drawn as ash, footprinted as ash)? Fire ecology runs on it and Odyssey's
-        /// grid exists. The look follows this alone, so ash already lying stays ash with the mechanics toggle off.</summary>
+        /// <summary>Does this map's sand grid hold ash (drawn as ash, footprinted as ash)? Odyssey's grid exists and no foreign
+        /// sand can reach it. The look follows this alone, so ash already lying stays ash with the mechanics toggle off.</summary>
         public static bool IsAshMap(Map map)
         {
-            return map != null && map.sandGrid != null && ModsConfig.OdysseyActive && FireEcologyBiomeGate.On(map);
+            return map != null && map.sandGrid != null && ModsConfig.OdysseyActive && GridFreeOfForeignSand(map.Biome);
+        }
+
+        private static readonly Dictionary<BiomeDef, bool> freeOfForeignSand = new Dictionary<BiomeDef, bool>();
+
+        /// <summary>True when no weather the biome can roll (baseWeatherCommonalities, commonality above 0) other than ash fall and
+        /// cinderfall lays sand (sandRate above 0). Vanilla's Sandstorm has sandRate 1.6, so a biome that rolls it keeps its sand
+        /// vanilla's. Cached per BiomeDef: defs do not change after load.</summary>
+        public static bool GridFreeOfForeignSand(BiomeDef biome)
+        {
+            if (biome == null) return false;
+            if (freeOfForeignSand.TryGetValue(biome, out bool free)) return free;
+            if (!weathersResolved) ResolveWeathers();
+            free = true;
+            if (biome.baseWeatherCommonalities != null)
+                foreach (WeatherCommonalityRecord r in biome.baseWeatherCommonalities)
+                    if (r?.weather != null && r.commonality > 0f && r.weather.sandRate > 0f && !IsAshWeather(r.weather))
+                    {
+                        free = false;
+                        break;
+                    }
+            freeOfForeignSand[biome] = free;
+            return free;
         }
 
         /// <summary>Do ash mechanics run on this map (laying, the slower wear, the rain's wash)? The Pyrelands toggle AND an ash map.</summary>
@@ -132,29 +154,17 @@ namespace RimMandrake.Pyrelands
         // ── patches ──────────────────────────────────────────────────────
 
         /// <summary>The ash weathers' share of the map's sand rate, scaled by the rate setting on an ash map with ash fall on and
-        /// zeroed otherwise; plus an opted-in foreign biome's ambient ash. Any other weather's sand is vanilla's.</summary>
+        /// zeroed otherwise. Any other weather's sand is vanilla's.</summary>
         public static void Postfix_SandRate(WeatherManager __instance, ref float __result)
         {
             if (!weathersResolved) ResolveWeathers();
             WeatherDef cur = __instance.curWeather, last = __instance.lastWeather;
             bool curAsh = IsAshWeather(cur), lastAsh = IsAshWeather(last);
-            bool ambientMay = RM_PyrelandsSettings.crossBiomeEnabled;
-            if (!curAsh && !lastAsh && !ambientMay) return;
+            if (!curAsh && !lastAsh) return;
             Map map = __instance.map;
-            float rate = __result;
-            if (curAsh || lastAsh)
-            {
-                float ashPart = Mathf.Lerp(lastAsh ? last.sandRate : 0f, curAsh ? cur.sandRate : 0f, __instance.TransitionLerpFactor);
-                rate = rate - ashPart + RM_FireEcoKernel.AshWeatherSandRate(ashPart, AshRuns(map),
-                    RM_PyrelandsSettings.ashfallAccumulationEnabled, RM_PyrelandsSettings.ashfallRateMultiplier);
-            }
-            if (ambientMay && map != null && ashFall != null && AshRuns(map))
-            {
-                float ambient = RM_FireEcoKernel.AmbientAshSandRate(true, map.Biome?.defName == NativeBiomeDefName,
-                    RM_PyrelandsSettings.ashfallAccumulationEnabled, RM_PyrelandsSettings.crossBiomeCoverage, ashFall.sandRate,
-                    RM_PyrelandsSettings.ashfallRateMultiplier, map.sandGrid.TotalDepth / Mathf.Max(1, map.Area));
-                if (ambient > rate) rate = ambient;
-            }
+            float ashPart = Mathf.Lerp(lastAsh ? last.sandRate : 0f, curAsh ? cur.sandRate : 0f, __instance.TransitionLerpFactor);
+            float rate = __result - ashPart + RM_FireEcoKernel.AshWeatherSandRate(ashPart, AshRuns(map),
+                RM_PyrelandsSettings.ashfallAccumulationEnabled, RM_PyrelandsSettings.ashfallRateMultiplier);
             __result = rate < 0f ? 0f : rate;
         }
 

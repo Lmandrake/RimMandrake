@@ -5,7 +5,7 @@ namespace RimMandrake.Pyrelands
 {
     // Verse-free decisions of the fire-ecology hooks and the biome (FireEcologyHook.cs, WildPlantAllowlist.cs, RM_PyrelandsMod.cs): the
     // biome placement score, the terrain-family predicates, the ash-dusting / scorch-fruit gates, ash on the sand grid (the
-    // weather's ash rate, the outdoor wear, the cover's opacity, the grass dust), the once-per-fire roll set, the cross-biome list parser and the wild-plant allowlist. The mod calls these with the
+    // weather's ash rate, the outdoor wear, the cover's opacity, the grass dust), the once-per-fire roll set and the wild-plant allowlist. The mod calls these with the
     // same expressions; the offline fuzz drives them.
 
     /// <summary>A map's drift-field noise cut points (RM_FireEcoKernel.DriftCuts): pool, fringe (1), bank (2), core (3).</summary>
@@ -63,7 +63,8 @@ namespace RimMandrake.Pyrelands
 
         /// <summary>The fire-tick gate's ground (PYRE_ASH_BUILD_EVERY_SCAR_A_SEEDBED): ANY Pyrelands ground (an `RM_FE_` terrain, deep
         /// ash included, since deep ash is ~85% of the biome), plus vanilla Soil/Sand/Gravel/SoilRich. The
-        /// ground alone opts in nothing: the hook ANDs it with the map's biome gate (ScorchableHere, FireEcologyOnMap). Widened from `RM_FE_Ground_*` alone, which would silence ash dusting, scorch-fruit and the burn
+        /// ground is the condition, on any map whatever its biome (bar mechanics_switch_plain_no_biome); the hook ANDs it with the fire
+        /// ecology switches (ScorchableHere). Widened from `RM_FE_Ground_*` alone, which would silence ash dusting, scorch-fruit and the burn
         /// stamp on every deep-ash cell.</summary>
         public static bool IsScorchableGround(string n)
         {
@@ -244,18 +245,11 @@ namespace RimMandrake.Pyrelands
             return s < 0.1f ? 0f : s;
         }
 
-        /// <summary>Does the weather the decider just chose become black rain? Only an ordinary rain, only on a Pyrelands map, only
-        /// with the mechanics gate on (Mod enabled, Baroque Biomes toggle); every other choice stands.</summary>
-        public static bool RainBecomesBlackRain(string chosenDefName, bool pyrelandsMap, bool gateOn)
+        /// <summary>Does the weather the decider just chose become black rain? Only an ordinary rain, only where the biome's
+        /// rain falls black (its RM_PyrelandsBiomeTraits), only with the mod enabled; every other choice stands.</summary>
+        public static bool RainBecomesBlackRain(string chosenDefName, bool rainFallsBlack, bool gateOn)
         {
-            return gateOn && pyrelandsMap && chosenDefName != null && Array.IndexOf(OrdinaryRainDefNames, chosenDefName) >= 0;
-        }
-
-        /// <summary>RM_PyrelandsSettings.MechanicsOn: this mod's own master switch AND, when the Baroque Biomes shell is loaded, its
-        /// "Pyrelands" roster toggle (biome_mod_unification_spec.md §5 arm 2). No shell (the standalone mod) = the master alone.</summary>
-        public static bool MechanicsOn(bool modMaster, bool shellPresent, bool shellOn)
-        {
-            return modMaster && (!shellPresent || shellOn);
+            return gateOn && rainFallsBlack && chosenDefName != null && Array.IndexOf(OrdinaryRainDefNames, chosenDefName) >= 0;
         }
 
         /// <summary>RM_JobGiver_BurrowOnFire: a burrow may start unless the last one TIMED OUT less than cooldownTicks ago.
@@ -406,18 +400,12 @@ namespace RimMandrake.Pyrelands
             return scorchable;
         }
 
-        /// <summary>FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: fire ecology (ash dusting, the burn stamp, scorch-fruit) runs on a map only
-        /// when its biome is the Pyrelands or the cross-biome opt-in names it (CrossBiomeApplies). Without this a temperate-forest
-        /// fire on vanilla Soil dusted ash, stamped burns and grew scorch-fruit, because the vanilla soils are scorchable ground.</summary>
-        public static bool FireEcologyOnMap(bool nativeBiome, bool crossBiomeApplies)
+        /// <summary>The fire-tick hook's `scorchable` input: scorchable ground (IsScorchableGround) with fire ecology switched on. No
+        /// biome enters (bar mechanics_switch_plain_no_biome, his cards of 2026-11-21): a grass fire on vanilla Soil in a temperate
+        /// forest dusts ash, stamps its burn and may bear scorch-fruit, as one in the Pyrelands does; the switches turn it off.</summary>
+        public static bool ScorchableHere(bool fireEcologyOn, string terrainDefName)
         {
-            return nativeBiome || crossBiomeApplies;
-        }
-
-        /// <summary>The fire-tick hook's `scorchable` input: scorchable ground (IsScorchableGround) on a map fire ecology runs on.</summary>
-        public static bool ScorchableHere(bool ecologyOnMap, string terrainDefName)
-        {
-            return ecologyOnMap && IsScorchableGround(terrainDefName);
+            return fireEcologyOn && IsScorchableGround(terrainDefName);
         }
 
         /// <summary>Per-interval ash chance: the per-tick chance times the batch size, so a watched and an unwatched fire roll alike.</summary>
@@ -525,10 +513,6 @@ namespace RimMandrake.Pyrelands
         /// <summary>Rain carries off this much ash a visit at rainRate 1: one drift level, as vanilla's rainWashes thinned the filth one
         /// level on a Rand.Chance(rainRate) roll. Black rain (rainRate 1.1) clears a full cover in ~2.5 hours.</summary>
         public const float AshRainWashPerVisit = 0.25f;
-        /// <summary>Cross-biome ambient ash at 100% coverage, as a share of the ash weathers' own sandRate.</summary>
-        public const float AmbientAshShare = 0.1f;
-        /// <summary>Cross-biome ambient ash falls only while the map's mean depth is below this (then dry wear takes over).</summary>
-        public const float AmbientMeanDepthCap = 0.1f;
 
         /// <summary>The sand rate an ash weather adds on this map: its own sandRate times the rate setting on an ash map with ash fall
         /// on; nothing otherwise (the weather still blows, it lays nothing; and never sand on a map that does not draw ash).</summary>
@@ -536,15 +520,6 @@ namespace RimMandrake.Pyrelands
         {
             if (!ashMap || !accumulationOn || !(ashWeatherRate > 0f) || !(rateMultiplier > 0f)) return 0f;
             return ashWeatherRate * rateMultiplier;
-        }
-
-        /// <summary>The steady ambient ash rate of an opted-in foreign biome's map: the coverage slider's share of a tenth of ash fall's
-        /// rate, falling only while the map's mean depth is under AmbientMeanDepthCap; 0 for the Pyrelands itself or off.</summary>
-        public static float AmbientAshSandRate(bool crossBiomeApplies, bool nativeBiome, bool accumulationOn, float coverage,
-            float ashFallRate, float rateMultiplier, float meanDepth)
-        {
-            if (nativeBiome || !crossBiomeApplies || !accumulationOn || !(coverage > 0f) || meanDepth >= AmbientMeanDepthCap) return 0f;
-            return coverage * AmbientAshShare * ashFallRate * rateMultiplier;
         }
 
         /// <summary>What one steady-effects visit takes off an open-sky cell with no sand falling: vanilla's wear on any map that does
@@ -672,36 +647,6 @@ namespace RimMandrake.Pyrelands
         public static HashSet<int> RollSetFor(System.Runtime.CompilerServices.ConditionalWeakTable<object, HashSet<int>> tables, object owner)
         {
             return tables.GetValue(owner, _ => new HashSet<int>());
-        }
-
-        /// <summary>"a, b; c" -> ["a","b","c"]: comma / semicolon separated, trimmed, blanks dropped.</summary>
-        public static List<string> ParseList(string text)
-        {
-            var result = new List<string>();
-            if (string.IsNullOrEmpty(text))
-            {
-                return result;
-            }
-            string[] parts = text.Split(',', ';');
-            for (int i = 0; i < parts.Length; i++)
-            {
-                string trimmed = parts[i].Trim();
-                if (trimmed.Length > 0)
-                {
-                    result.Add(trimmed);
-                }
-            }
-            return result;
-        }
-
-        /// <summary>Cross-biome opt-in (ash drift and fire ecology): never the native biome, "everywhere" covers all, else the named list.</summary>
-        public static bool CrossBiomeApplies(bool enabled, bool hasBiome, bool isNative, bool everywhere, bool listed)
-        {
-            if (!enabled || !hasBiome || isNative)
-            {
-                return false;
-            }
-            return everywhere || listed;
         }
 
         /// <summary>The wild-plant allowlist on one cell's candidate list, in place: anything off the allowlist goes. On a foreign open cell

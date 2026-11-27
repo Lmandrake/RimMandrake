@@ -847,7 +847,7 @@ namespace RimMandrake.Pyrelands.Fuzz
         }
 
         // ════════════════════════ eco ════════════════════════
-        public static long ScoresInBand, ScoresOutside, ScoresOff, AshSkips, AshAttemptsTotal, OnceHits, OnceClears, ParseCases, MixedSupplied;
+        public static long ScoresInBand, ScoresOutside, ScoresOff, AshSkips, AshAttemptsTotal, OnceHits, OnceClears, MixedSupplied;
 
         private static List<string> Eco(int n, int seed)
         {
@@ -871,17 +871,13 @@ namespace RimMandrake.Pyrelands.Fuzz
                 float a2 = RM_FireEcoKernel.BiomeScore(true, true, false, Math.Min(tMax, t2 + 1f), r2 + 10f, 100f, false, tMin, tMax, rMin, rMax, eMin, eMax, bs, dw, div);
                 Check(a2 >= a1, "a warmer, wetter tile scored lower");
                 // the vanilla rival (arid shrubland) at the same tile: report where the Pyrelands out-bids it
-                // ash on sand: the ash weathers' sand rate and an opted-in biome's ambient ash
-                bool ashMapR = r.Next(2) == 0, accOn = r.Next(4) != 0, nativeB = r.Next(2) == 0, cross = r.Next(2) == 0;
-                float weatherRate = r.Next(0, 5) * 0.3f, cov = r.Next(0, 5) / 4f, mult = r.Next(0, 13) / 4f, mean = (float)r.NextDouble() * 0.2f;
+                // ash on sand: the ash weathers' sand rate
+                bool ashMapR = r.Next(2) == 0, accOn = r.Next(4) != 0;
+                float weatherRate = r.Next(0, 5) * 0.3f, mult = r.Next(0, 13) / 4f;
                 float rate = RM_FireEcoKernel.AshWeatherSandRate(weatherRate, ashMapR, accOn, mult);
                 float specRate = ashMapR && accOn && weatherRate > 0f && mult > 0f ? weatherRate * mult : 0f;
                 Check(rate == specRate, $"ash weather sand rate {rate}, spec {specRate}");
                 if (rate <= 0f) AshSkips++; else AshAttemptsTotal++;
-                float amb = RM_FireEcoKernel.AmbientAshSandRate(cross, nativeB, accOn, cov, 1.2f, mult, mean);
-                float specAmb = !nativeB && cross && accOn && cov > 0f && mean < RM_FireEcoKernel.AmbientMeanDepthCap
-                    ? cov * RM_FireEcoKernel.AmbientAshShare * 1.2f * mult : 0f;
-                Check(amb == specAmb, $"ambient ash rate {amb}, spec {specAmb}");
                 // once-per-fire roll set
                 var set = new HashSet<int>(); int bound = 50;
                 for (int k = 0; k < 400; k++)
@@ -1134,15 +1130,6 @@ namespace RimMandrake.Pyrelands.Fuzz
                 Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash does not roll");
                 Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep")), "a ground fire on deep ash is not stamped");
                 Check(!RM_FireEcoKernel.IsScorchableGround("Concrete"), "a paved floor counts as scorchable ground");
-                // list parser vs spec
-                string[] bits = { "RM_A", " RM_B ", "", ";", ",", "  ", "x;y", "\tZ\t", "A,B;C" };
-                var sb = new System.Text.StringBuilder(); int parts = r.Next(0, 8);
-                for (int k = 0; k < parts; k++) { sb.Append(bits[r.Next(bits.Length)]); if (r.Next(2) == 0) sb.Append(r.Next(2) == 0 ? "," : ";"); }
-                string text = r.Next(10) == 0 ? null : sb.ToString();
-                var got = RM_FireEcoKernel.ParseList(text);
-                var want = (text ?? "").Split(new[] { ',', ';' }).Select(x => x.Trim()).Where(x => x.Length > 0).ToList();
-                Check(got.SequenceEqual(want), $"ParseList [{string.Join("|", got)}], spec [{string.Join("|", want)}] for '{text}'");
-                ParseCases++;
                 // gates, exhaustively
                 for (int m = 0; m < 64; m++)
                 {
@@ -1150,12 +1137,6 @@ namespace RimMandrake.Pyrelands.Fuzz
                     bool want3 = pe && (ash || fruit) && spawned && !att2 && scorch;
                     Check(RM_FireEcoKernel.FireTickMayRoll(pe, ash, fruit, spawned, att2, scorch) == want3, "FireTickMayRoll table " + m);
                 }
-                for (int m = 0; m < 8; m++)
-                {
-                    bool master = (m & 1) != 0, shell = (m & 2) != 0, shellOn = (m & 4) != 0;
-                    Check(RM_FireEcoKernel.MechanicsOn(master, shell, shellOn) == (master && (!shell || shellOn)), "MechanicsOn table " + m);
-                }
-                Check(!RM_FireEcoKernel.MechanicsOn(true, true, false) && RM_FireEcoKernel.MechanicsOn(true, false, false), "MechanicsOn: shell toggle off gates; absent shell does not");
                 Check(RM_FireEcoKernel.BurrowMayStart(5000, -1, 7500), "BurrowMayStart: never timed out");
                 Check(!RM_FireEcoKernel.BurrowMayStart(5000, 1000, 7500) && !RM_FireEcoKernel.BurrowMayStart(8499, 1000, 7500), "BurrowMayStart: inside the cooldown refuses");
                 Check(RM_FireEcoKernel.BurrowMayStart(8500, 1000, 7500), "BurrowMayStart: cooldown elapsed");
@@ -1200,29 +1181,30 @@ namespace RimMandrake.Pyrelands.Fuzz
                 foreach (string j in reaskOver) Check(RM_FireEcoKernel.BurrowerNudgeKind(j) == RM_FireEcoKernel.NudgeReask, "BurrowerNudgeKind re-asks over " + j);
                 foreach (string j in leftAlone) Check(RM_FireEcoKernel.BurrowerNudgeKind(j) == RM_FireEcoKernel.NudgeNone, "BurrowerNudgeKind leaves '" + j + "' alone");
                 Check(RM_FireEcoKernel.BurrowerNudgeKind(null) == RM_FireEcoKernel.NudgeNone, "BurrowerNudgeKind: null job name");
-                for (int m = 0; m < 32; m++)
-                {
-                    bool en = (m & 1) != 0, hasB = (m & 2) != 0, nat = (m & 4) != 0, every = (m & 8) != 0, listed = (m & 16) != 0;
-                    Check(RM_FireEcoKernel.CrossBiomeApplies(en, hasB, nat, every, listed) == (en && hasB && !nat && (every || listed)), "CrossBiomeApplies table " + m);
-                }
-                // FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT: a grass fire on vanilla Soil on a TemperateForest map. Cross-biome off:
-                // no ash, no burn stamp, no scorch-fruit roll. On (every biome, or the forest named): all three. The Pyrelands
-                // always; a list naming another biome never. Composed exactly as the fire-tick hook composes it.
-                for (int m = 0; m < 16; m++)
-                {
-                    bool en = (m & 1) != 0, every = (m & 2) != 0, named = (m & 4) != 0, native = (m & 8) != 0;
-                    string biome = native ? "RM_Pyrelands" : "TemperateForest";
-                    var list = RM_FireEcoKernel.ParseList(named ? "AridShrubland, TemperateForest" : "AridShrubland");
-                    bool crossOn = RM_FireEcoKernel.CrossBiomeApplies(en, true, native, every, en && !every && list.Contains(biome));
-                    bool here = RM_FireEcoKernel.ScorchableHere(RM_FireEcoKernel.FireEcologyOnMap(native, crossOn), "Soil");
-                    bool want4 = native || (en && (every || named));
-                    Check(here == want4, $"ScorchableHere on Soil, {biome}, cross-biome {en} every {every} named {named}: {here}, spec {want4}");
-                    Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, here) == want4, "forest fire ash/fruit roll " + m);
-                    Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, here) == want4, "forest fire burn stamp " + m);
-                }
+                // mechanics_switch_plain_no_biome: a grass fire on vanilla Soil dusts ash, stamps its burn and rolls scorch-fruit on any
+                // map, the Pyrelands or a temperate forest alike; only the fire-ecology switches turn it off. Composed exactly as the
+                // fire-tick hook composes it (ScorchableHere(usable, terrain)).
+                foreach (string ground in new[] { "Soil", "SoilRich", "Sand", "Gravel", "RM_FE_Ash_Deep", "RM_FE_Ground_Ash" })
+                    for (int m = 0; m < 2; m++)
+                    {
+                        bool usable = m == 1;
+                        bool here = RM_FireEcoKernel.ScorchableHere(usable, ground);
+                        Check(here == usable, $"ScorchableHere on {ground}, switches {usable}: {here}, spec {usable}");
+                        Check(RM_FireEcoKernel.FireTickMayRoll(true, true, true, true, false, here) == usable, "grass fire ash/fruit roll on " + ground);
+                        Check(RM_FireEcoKernel.BurnStampMay(true, true, true, false, here) == usable, "grass fire burn stamp on " + ground);
+                    }
                 Check(!RM_FireEcoKernel.ScorchableHere(true, "Concrete") && !RM_FireEcoKernel.ScorchableHere(false, "RM_FE_Ash_Deep")
                     && RM_FireEcoKernel.ScorchableHere(true, "RM_FE_Ash_Deep") && !RM_FireEcoKernel.ScorchableHere(true, null), "ScorchableHere corners");
-                Check(RM_FireEcoKernel.FireEcologyOnMap(true, false) && RM_FireEcoKernel.FireEcologyOnMap(false, true) && !RM_FireEcoKernel.FireEcologyOnMap(false, false), "FireEcologyOnMap table");
+                // Black rain is biome DATA (RM_PyrelandsBiomeTraits.ordinaryRainFallsBlack): an ordinary rain the biome's trait turns
+                // black, with the mod on; any other weather, a biome without the trait or the mod off keeps it.
+                string[] weathers = { "Rain", "FoggyRain", "RainyThunderstorm", "TorrentialRain", "Clear", "Fog", "DryThunderstorm", "RM_FE_BlackRain", "rain", "", null };
+                foreach (string w in weathers)
+                    for (int m = 0; m < 4; m++)
+                    {
+                        bool trait = (m & 1) != 0, on = (m & 2) != 0;
+                        bool ordinary = w != null && Array.IndexOf(RM_FireEcoKernel.OrdinaryRainDefNames, w) >= 0;
+                        Check(RM_FireEcoKernel.RainBecomesBlackRain(w, trait, on) == (trait && on && ordinary), $"RainBecomesBlackRain {w ?? "null"} trait {trait} on {on}");
+                    }
                 Check(RM_FireEcoKernel.IsPyrelandsGround("RM_FE_Anything") && !RM_FireEcoKernel.IsPyrelandsGround("RM_FE") && !RM_FireEcoKernel.IsPyrelandsGround("rm_fe_x") && !RM_FireEcoKernel.IsPyrelandsGround(null), "IsPyrelandsGround prefix");
                 Check(RM_FireEcoKernel.IsScorchableGround("RM_FE_Ground_Ash") && RM_FireEcoKernel.IsScorchableGround("SoilRich") && RM_FireEcoKernel.IsScorchableGround("RM_FE_Ash_Deep") && !RM_FireEcoKernel.IsScorchableGround("SandX") && !RM_FireEcoKernel.IsScorchableGround("RM_FE") && !RM_FireEcoKernel.IsScorchableGround(null), "IsScorchableGround");
                 Check(RM_FireEcoKernel.DustChance(0.02f, 15) == 0.02f * 15 && RM_FireEcoKernel.UnderFruitCap(39, 40) && !RM_FireEcoKernel.UnderFruitCap(40, 40), "dust chance / fruit cap");
@@ -1819,7 +1801,7 @@ namespace RimMandrake.Pyrelands.Fuzz
             Console.WriteLine($"burn: measures {Measures}, debt rises {DebtRises} / decays {DebtDecays}, reseed attempts {ReseedAttempts} (landed {ReseedSuccess}), fronts armed {FrontsArmed} / fired {FrontsFired}, history samples {HistorySamples} (longest ring {HistoryMaxLen}), raids fired {RaidsFired} / insults {RaidInsults} / refused {RaidRefused} / gated off {RaidGated}, arson-liveness probes {LivenessChecks}, harvests allowed {HarvestsAllowed} / refused {HarvestsRefused}");
             Console.WriteLine($"burn front line: the old truncated construction lit {LegacyWidths - LegacyCellsLost} of {LegacyWidths} requested cells ({100.0 * (LegacyWidths - LegacyCellsLost) / Math.Max(1, LegacyWidths):F1}%); the kernel line is exact");
             Console.WriteLine($"furnace: charge ups {ChargeUps} / downs {ChargeDowns} / holds {ChargeHolds}, rests rolled {RestsRolled} / too short {RestsShort}, small beasts with zero bed cells {BedZeroCells}; empty-to-full at 40 C = {ChargeDaysAt40:F1} days, at 60 C = {ChargeDaysAt60:F1} days");
-            Console.WriteLine($"eco: mixed patches supplied {MixedSupplied}; scores in band {ScoresInBand} / outside {ScoresOutside} / off {ScoresOff}, zero-rate skips {AshSkips}, ash attempts {AshAttemptsTotal}, once-hits {OnceHits}, set clears {OnceClears}, list parses {ParseCases}");
+            Console.WriteLine($"eco: mixed patches supplied {MixedSupplied}; scores in band {ScoresInBand} / outside {ScoresOutside} / off {ScoresOff}, zero-rate skips {AshSkips}, ash attempts {AshAttemptsTotal}, once-hits {OnceHits}, set clears {OnceClears}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 var blind = new List<string>();

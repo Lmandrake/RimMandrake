@@ -220,8 +220,10 @@ MODS = {
         "Burrowers": "Now",
         "Firefoam sprayer": "Now",        # MapComponent_RM_FoamPath reads sprayerFoamsPathEnabled every tick
         "Sand shovelling": "Now",
-        "Cross-biome ash accumulation": "Now",
         "Ash field": "Now",
+        # bar mechanics_switch_plain_no_biome: herd thirst reads its switch on each 2500-tick pass, the fire sense and the
+        # meal-before-duty node on each call, so all three act at once
+        "People, herds and fire": "Now",
     }, ()),
     "GelatinousSlime": ("SlimeMod.cs", "RM_GelatinousSlime.csproj", {
         "The gene archive": "Now",

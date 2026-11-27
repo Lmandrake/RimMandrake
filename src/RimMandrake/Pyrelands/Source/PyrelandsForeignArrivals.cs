@@ -9,7 +9,8 @@ namespace RimMandrake.Pyrelands
 {
     // pyre_animal_distribution_correct: "no other kind wanders in". Vanilla tries a biome's own animals first, then falls back to
     // every animal in the game that tolerates the temperature (RimSage, IncidentWorker_HerdMigration.TryFindAnimalKind,
-    // AggressiveAnimalIncidentUtility.TryFindAggressiveAnimalKind). Those fallbacks are what these postfixes close on this biome.
+    // AggressiveAnimalIncidentUtility.TryFindAggressiveAnimalKind). Those fallbacks are what these postfixes close on a biome whose data says so
+    // (RM_PyrelandsBiomeTraits.onlyOwnAnimalsArrive; the Pyrelands carries it, Patches/RM_Pyrelands_BiomeTraits.xml).
     [StaticConstructorOnStartup]
     public static class PyrelandsForeignArrivals
     {
@@ -33,15 +34,16 @@ namespace RimMandrake.Pyrelands
             }
         }
 
-        private static bool IsPyrelands(BiomeDef b)
+        /// <summary>The biome's own data says only its roster arrives (RM_PyrelandsBiomeTraits.onlyOwnAnimalsArrive), never its name.</summary>
+        private static bool OnlyOwnArrive(BiomeDef b)
         {
-            return b != null && PyrelandsMechanicsGate.On && Array.IndexOf(PyrelandsTuning.PyrelandsBiomeDefNames, b.defName) >= 0;
+            return b != null && PyrelandsMechanicsGate.On && RM_PyrelandsBiomeTraits.OnlyOwnAnimalsArrive(b);
         }
 
         public static void HerdPostfix(Map map, ref PawnKindDef animalKind, ref bool __result)
         {
             BiomeDef b = map?.Biome;
-            if (__result && IsPyrelands(b) && !b.AllWildAnimals.Contains(animalKind))
+            if (__result && OnlyOwnArrive(b) && !b.AllWildAnimals.Contains(animalKind))
             {
                 animalKind = null;
                 __result = false;
@@ -61,7 +63,7 @@ namespace RimMandrake.Pyrelands
         // A foreign pick (the points fit nothing on the roster) becomes the roster's cheapest animal, so the threat still arrives.
         private static void Restrict(BiomeDef b, ref PawnKindDef animalKind, ref bool __result)
         {
-            if (!__result || !IsPyrelands(b) || b.AllWildAnimals.Contains(animalKind)) return;
+            if (!__result || !OnlyOwnArrive(b) || b.AllWildAnimals.Contains(animalKind)) return;
             animalKind = b.AllWildAnimals.Where(k => k.RaceProps.Animal && k.canArriveManhunter).OrderBy(k => k.combatPower).FirstOrDefault();
             __result = animalKind != null;
         }

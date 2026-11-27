@@ -25,7 +25,8 @@ namespace RimMandrake.Pyrelands
     ///    job-giver, both incident workers.
     ///
     /// 2. KEEP THE BURN ALIVE. Sheet §5, ruled: "The burn exists somewhere on the
-    ///    biome, always; only its address changes." If a Pyrelands map goes
+    ///    biome, always; only its address changes." If a map whose biome keeps a
+    ///    standing burn (RM_PyrelandsBiomeTraits.standingBurn, biome data) goes
     ///    StandingBurnQuietTicks with no fire at all, this lights ONE smoulder in
     ///    open grass, far from anything the player built. It is the biome, not an
     ///    attack: see TryReseedStandingBurn for the four gates it has to pass.
@@ -50,7 +51,6 @@ namespace RimMandrake.Pyrelands
         // Unsaved: re-measured on the next interval after a load.
         private int fireCount;
         private IntVec3 burnCenter = IntVec3.Invalid;
-        private bool? isPyrelandsCached;
 
         // PYRELANDS_ULLAI_GIANT_BUILD_1: where the burn WAS. One burn-centre sample per hour while anything burns,
         // ten days kept. Nearly all ground is deep ash, so terrain cannot say which black is fresh; this record
@@ -92,8 +92,9 @@ namespace RimMandrake.Pyrelands
             windBearing = RM_BurnKernel.WindFromScarEdge(edge);
         }
 
-        /// <summary>Does the wind carry fire on this map now? The Pyrelands, mechanics on, the burn line on, its own switch on.</summary>
-        public bool WindCarries => IsPyrelandsMap && PyrelandsMechanicsGate.On && RM_PyrelandsSettings.burnLineEnabled
+        /// <summary>Does the wind carry fire on this map now? Mechanics on, the burn line on, its own switch on: on any map, whatever
+        /// its biome (bar mechanics_switch_plain_no_biome); the condition is a fire for the wind to carry.</summary>
+        public bool WindCarries => PyrelandsMechanicsGate.On && RM_PyrelandsSettings.burnLineEnabled
             && RM_PyrelandsSettings.windCarriesFireEnabled;
 
         internal bool WasCarried(Fire fire) => carriedFires.Contains(fire.thingIDNumber);
@@ -155,32 +156,6 @@ namespace RimMandrake.Pyrelands
         public static MapComponent_BurnLine For(Map map)
         {
             return map?.GetComponent<MapComponent_BurnLine>();
-        }
-
-        /// <summary>Is this map one of the standing-burn biomes? Cached: a map's
-        /// biome does not change.</summary>
-        public bool IsPyrelandsMap
-        {
-            get
-            {
-                if (!isPyrelandsCached.HasValue)
-                {
-                    isPyrelandsCached = false;
-                    BiomeDef biome = map?.Biome;
-                    if (biome != null)
-                    {
-                        for (int i = 0; i < PyrelandsTuning.PyrelandsBiomeDefNames.Length; i++)
-                        {
-                            if (biome.defName == PyrelandsTuning.PyrelandsBiomeDefNames[i])
-                            {
-                                isPyrelandsCached = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                return isPyrelandsCached.Value;
-            }
         }
 
         /// <summary>Free-standing fires counted at the last measurement.</summary>
@@ -331,45 +306,58 @@ namespace RimMandrake.Pyrelands
         {
             base.MapComponentTick();
 
-            // Cheapest possible early-out for the other ~dozen biomes a campaign
-            // map list carries.
-            if (!IsPyrelandsMap)
-            {
-                return;
-            }
-            // Spread across maps by uniqueID so two Pyrelands maps do not measure
-            // on the same tick. Map is not a Thing, so Thing.IsHashIntervalTick is
-            // not available here; this is the same idea written out.
+            // Every map, whatever its biome (bar mechanics_switch_plain_no_biome): each part below asks its own condition. Spread
+            // across maps by uniqueID so two maps do not measure on the same tick. Map is not a Thing, so Thing.IsHashIntervalTick
+            // is not available here; this is the same idea written out. Off the interval this costs one modulo.
             if (!RM_BurnKernel.MeasureDue(Find.TickManager.TicksGame, map.uniqueID, PyrelandsTuning.BurnWatchIntervalTicks))
             {
                 return;
             }
+
+            // The standing burn and its fire clock are biome DATA (RM_PyrelandsBiomeTraits.standingBurn): the biome keeps a burn
+            // walking; another biome's map never has a front sent at it or a smoulder lit for it. Cached per BiomeDef.
+            bool standingBurn = RM_PyrelandsBiomeTraits.StandingBurn(map.Biome);
 
             if (!PyrelandsMechanicsGate.On)
             {
                 // Master switch off: nothing runs, but the fire clock must still be told it is off, or it keeps a stale
                 // deadline and fires a front the instant the switch is turned back on (PyrelandsFireFront.Tick re-arms
                 // to -1 when disabled).
-                fireFront.Tick();
+                if (standingBurn) fireFront.Tick();
                 return;
             }
 
             // MOD_OPTIONS_RETROFIT_1: burnLineEnabled and fireClockEnabled are
             // independent switches (§6a) — off on one leaves the other running.
             // fireFront.Tick() self-gates on fireClockEnabled (and re-arms its
-            // own clock when the toggle flips), so it is always called here.
+            // own clock when the toggle flips), so it is always called on a standing-burn map.
             // GPT deep review 2026-10-22 #3: Measure() is the only writer of AnyBurn/burnCenter, which burrowing and the
             // furnace thermal cycle read under their OWN switches; it used to run only with the burn line on
             Measure();
             WarnIfDry();
             if (RM_PyrelandsSettings.burnLineEnabled)
             {
-                WatchApproach();
-                NudgeBurrowers();
-                AccrueArsonDebt();
-                KeepTheBurnAlive();
+                // The approach watch, the dive nudge and the arson count each need a fire; a map with none (most maps, most
+                // of the time) stops here. The standing burn is the one part that acts on a quiet map.
+                if (fireCount > 0)
+                {
+                    WatchApproach();
+                    NudgeBurrowers();
+                    AccrueArsonDebt();
+                }
+                else if (arsonDebt > 0f)
+                {
+                    AccrueArsonDebt();
+                }
+                if (standingBurn)
+                {
+                    KeepTheBurnAlive();
+                }
             }
-            fireFront.Tick();
+            if (standingBurn)
+            {
+                fireFront.Tick();
+            }
         }
 
         // PYRE_BURROWERS_DIAGNOSE_FLEE_BEFORE_DIVE: the burrow giver is only asked at a job boundary, so a burrower mid-wander

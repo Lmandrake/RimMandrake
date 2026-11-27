@@ -1,53 +1,50 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.Pyrelands
 {
     /// <summary>
-    /// PYRELANDS_SHIP_READINESS_1 — the Baroque Biomes "Pyrelands" roster toggle gates this mod's MECHANICS, not only
-    /// worldgen (design/RimMandrake/biome_mod_unification_spec.md §5, arm 2).
-    ///
-    /// Found by reflection, never by an assembly reference: Pyrelands still ships standalone (mandrake.rm.pyrelands) where
-    /// RimMandrake.Biomes.dll is absent, and a hard reference would fail to load there. Shell absent = the toggle does not
-    /// exist = on. Resolved once at startup; the call itself is one cached delegate and one dictionary lookup.
-    /// Also announces itself in the shell's RM_BiomesSettings.mechanicsGated set, so the shell's tooltip tells the player
-    /// that this entry's switch stops behaviour on existing maps too.
+    /// What every Pyrelands mechanic reads first: RM_PyrelandsSettings.pyrelandsEnabled ("Mod enabled"), a plain on/off for
+    /// the whole mod with no biome in it. Each mechanic then reads its own switch and its own conditions (a fire near, scorchable
+    /// ground, a grass-watered animal), never the map's biome (bar mechanics_switch_plain_no_biome, his cards of 2026-11-21).
+    /// The Baroque Biomes shell's per-biome "Pyrelands" toggle no longer gates any mechanic (conversion list row code 10).
     /// </summary>
-    [StaticConstructorOnStartup]
     public static class PyrelandsMechanicsGate
     {
-        public const string RosterKey = "Pyrelands";
-        public const string ShellType = "RimMandrake.Biomes.RM_BiomesSettings";
+        public static bool On => RM_PyrelandsSettings.pyrelandsEnabled;
+    }
 
-        private static readonly Func<string, bool> shellEnabled;
+    /// <summary>
+    /// A biome's own fire traits: biome DATA, read off the BiomeDef like its weather table and its plant and animal roster, so
+    /// another biome can opt in by XML (Patches/RM_Pyrelands_BiomeTraits.xml gives RM_Pyrelands all three). No trait here is a
+    /// mechanic's gate: a mechanic runs wherever its conditions hold; these say what the biome itself brings.
+    /// </summary>
+    public class RM_PyrelandsBiomeTraits : DefModExtension
+    {
+        /// <summary>The biome keeps a burn standing: the fire clock sends fronts and a quiet map is re-lit out in the grass.</summary>
+        public bool standingBurn;
+        /// <summary>The biome's ordinary rain falls as black rain (its weather is ash and cinders, never plain rain).</summary>
+        public bool ordinaryRainFallsBlack;
+        /// <summary>Only the biome's own animals arrive: herd migrations and manhunter packs pick from its roster alone.</summary>
+        public bool onlyOwnAnimalsArrive;
 
-        public static bool ShellPresent => shellEnabled != null;
+        private static readonly Dictionary<BiomeDef, RM_PyrelandsBiomeTraits> cache = new Dictionary<BiomeDef, RM_PyrelandsBiomeTraits>();
 
-        /// <summary>What every Pyrelands mechanic reads: RM_PyrelandsSettings.pyrelandsEnabled ("Mod enabled") AND, when the
-        /// shell is loaded, its "Pyrelands" toggle. Never Scribed; each switch keeps its own saved state.</summary>
-        public static bool On => RM_FireEcoKernel.MechanicsOn(RM_PyrelandsSettings.pyrelandsEnabled, ShellPresent, ShellOn);
-
-        /// <summary>The shell's toggle for "Pyrelands"; true when the shell is not loaded.</summary>
-        public static bool ShellOn => shellEnabled == null || shellEnabled(RosterKey);
-
-        static PyrelandsMechanicsGate()
+        /// <summary>The biome's traits, or null. Cached per BiomeDef (defs do not change after load).</summary>
+        public static RM_PyrelandsBiomeTraits Of(BiomeDef biome)
         {
-            Type t = GenTypes.GetTypeInAnyAssembly(ShellType);
-            if (t == null) return;
-            MethodInfo m = t.GetMethod("Enabled", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
-            if (m == null || m.ReturnType != typeof(bool))
+            if (biome == null) return null;
+            if (!cache.TryGetValue(biome, out RM_PyrelandsBiomeTraits t))
             {
-                Log.Warning("[Pyrelands] " + ShellType + " is loaded but has no static bool Enabled(string): the Baroque Biomes "
-                            + "toggle cannot gate Pyrelands mechanics; only this mod's own \"Mod enabled\" switch does.");
-                return;
+                t = biome.GetModExtension<RM_PyrelandsBiomeTraits>();
+                cache[biome] = t;
             }
-            shellEnabled = (Func<string, bool>)Delegate.CreateDelegate(typeof(Func<string, bool>), m);
-            if (t.GetField("mechanicsGated", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) is HashSet<string> gated)
-                gated.Add(RosterKey);
-            Log.Message("[Pyrelands] Baroque Biomes toggle \"" + RosterKey + "\" gates Pyrelands mechanics (now "
-                        + (ShellOn ? "on" : "OFF") + ").");
+            return t;
         }
+
+        public static bool StandingBurn(BiomeDef biome) => Of(biome)?.standingBurn ?? false;
+        public static bool OrdinaryRainFallsBlack(BiomeDef biome) => Of(biome)?.ordinaryRainFallsBlack ?? false;
+        public static bool OnlyOwnAnimalsArrive(BiomeDef biome) => Of(biome)?.onlyOwnAnimalsArrive ?? false;
     }
 }

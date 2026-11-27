@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Biome DATA, not a mechanic's gate (bar mechanics_switch_plain_no_biome, his cards of 2026-11-21): what the Pyrelands itself
+       brings. Each mechanic runs by its own conditions on any map; these three are what the biome adds on top, read by
+       RM_PyrelandsBiomeTraits (Source/PyrelandsMechanicsGate.cs). Another biome opts in by giving its BiomeDef the same extension.
+         standingBurn           the burn stays standing: fire fronts on the clock, a quiet map re-lit (MapComponent_BurnLine)
+         ordinaryRainFallsBlack ordinary rain falls as black rain (PyrelandsNoOrdinaryRain)
+         onlyOwnAnimalsArrive   herd migrations and manhunter packs draw from the roster alone (PyrelandsForeignArrivals) -->
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]</xpath>
+    <value>
+      <li Class="RimMandrake.Pyrelands.RM_PyrelandsBiomeTraits">
+        <standingBurn>true</standingBurn>
+        <ordinaryRainFallsBlack>true</ordinaryRainFallsBlack>
+        <onlyOwnAnimalsArrive>true</onlyOwnAnimalsArrive>
+      </li>
+    </value>
+  </Operation>
+</Patch>

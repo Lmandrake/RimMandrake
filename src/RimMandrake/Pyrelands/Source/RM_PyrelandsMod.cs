@@ -11,7 +11,7 @@ namespace RimMandrake.Pyrelands
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for Pyrelands.
     //
     // Precedent: src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs,
-    // src/RimMandrake/Greentide/Source/RM_GreentideMod.cs (cross-biome
+    // src/RimMandrake/Greentide/Source/RM_GreentideMod.cs (settings-screen
     // shape) and src/RimMandrake/BlueDesert/Source/RM_BlueDesertMod.cs
     // (master-toggle shape) — static fields read from everywhere,
     // Scribe_Values in ExposeData, a DoWindowContents helper called from
@@ -32,9 +32,11 @@ namespace RimMandrake.Pyrelands
     //   6. The four absorbed mandrake.rut.pyrelandsmechanics mechanics
     //      (burn line, fire-hawk ember spread, furnace-beast thermal
     //      circuit, fire clock/rite trigger) — PYRELANDS_RM_MOD_BUILD_1 §6.
-    //   7. Cross-biome opt-in for the ash-accumulation mechanic (4) on a
-    //      non-Pyrelands map, read by PyrelandsAsh's sand-rate postfix
-    //      (applies to running maps), same shape as RM_GreentideSettings.
+    //   7. Each mechanic runs by its own conditions on any map (a fire, scorchable
+    //      ground, an animal's extension), never by the biome; each has a plain
+    //      on/off here, default on, with no biome in it (bar
+    //      mechanics_switch_plain_no_biome, his cards of 2026-11-21). What a biome
+    //      itself brings is biome data (RM_PyrelandsBiomeTraits, its weather table).
     // ════════════════════════════════════════════════════════════════════
     public class RM_PyrelandsSettings : ModSettings
     {
@@ -138,18 +140,13 @@ namespace RimMandrake.Pyrelands
         // Applied by the enforcer within 250 ticks, no restart. Not worldgen-affecting.
         public static float wildPlantRegrowDaysOverride = 0f;
 
-        // Cross-biome opt-in — lets the ash-accumulation mechanic (4) and fire
-        // ecology (ash dusting, burn stamps, scorch-fruit) run on a NON-Pyrelands
-        // biome's map without importing the whole biome. Read by
-        // PyrelandsAsh.Postfix_SandRate and FireEcologyBiomeGate
-        // (via AppliesToBiome), so a change applies to maps already running. Same
-        // shape as RM_GreentideSettings' cross-biome block.
-        public static bool crossBiomeEnabled = false;
-        public static bool crossBiomeEverywhere = false;
-        public static string crossBiomeBiomeList = "";
-        public static float crossBiomeCoverage = 1f;
-
-        private static string biomeListBuffer;
+        // Plain switches for the mechanics that had a biome gate and no switch (bar mechanics_switch_plain_no_biome): each runs on
+        // any map where its condition holds. Herd thirst: a wild grass-watered herd gets one shared starting thirst
+        // (MapComponent_PyrelandsHerdThirst). Fire sense: people keep their walks clear of fire and step off a cell it reaches
+        // (PyrelandsFireSense). Meal before fire duty: an urgently hungry colonist eats before fighting fire (RM_PyreEatBeforeFireDuty).
+        public static bool herdThirstEnabled = true;
+        public static bool fireSenseEnabled = true;
+        public static bool mealBeforeFireDutyEnabled = true;
 
         public override void ExposeData()
         {
@@ -176,10 +173,9 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref furnaceThermalEnabled, "furnaceThermalEnabled", true);
             Scribe_Values.Look(ref furnaceWarmthStrength, "furnaceWarmthStrength", 1f);
             Scribe_Values.Look(ref fireClockEnabled, "fireClockEnabled", true);
-            Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
-            Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
-            Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
-            Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
+            Scribe_Values.Look(ref herdThirstEnabled, "herdThirstEnabled", true);
+            Scribe_Values.Look(ref fireSenseEnabled, "fireSenseEnabled", true);
+            Scribe_Values.Look(ref mealBeforeFireDutyEnabled, "mealBeforeFireDutyEnabled", true);
             Scribe_Values.Look(ref burrowOnFireEnabled, "burrowOnFireEnabled", true);
             Scribe_Values.Look(ref burrowDomeOnHeatHit, "burrowDomeOnHeatHit", true);
             Scribe_Values.Look(ref ullaiEnabled, "ullaiEnabled", true);
@@ -205,34 +201,21 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref wildPlantRegrowDaysOverride, "wildPlantRegrowDaysOverride", 0f);
         }
 
-        /// <summary>True if the cross-biome opt-in (ash accumulation, fire ecology) currently
-        /// applies to this biome (never to Pyrelands' own — that is native,
-        /// not "cross").</summary>
-        public static bool AppliesToBiome(BiomeDef biome)
-        {
-            return RM_FireEcoKernel.CrossBiomeApplies(crossBiomeEnabled, biome != null, biome != null && biome.defName == "RM_Pyrelands",
-                crossBiomeEverywhere, biome != null && crossBiomeEnabled && !crossBiomeEverywhere && ParseBiomeList().Contains(biome.defName));
-        }
-
-        private static List<string> ParseBiomeList()
-        {
-            return RM_FireEcoKernel.ParseList(crossBiomeBiomeList);
-        }
-
         /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: master switches, from each setting's READ SITE (2026-10-14).
         /// "Mod enabled" reaches its mechanics through PyrelandsMechanicsGate.On: ash dusting and scorch-fruit (FireTickMayRoll),
         /// ashfall, the fresh-burn stamp (BurnStampMay), ambient ash, plant growth stages, the wild-plant allowlist, scorched
         /// ruins, the burn line, fire-hawks, the furnace-beast thermal circuit, the fire clock,
-        /// burrowers, and ash-field watering (its only read sites, FertilityPostfix and the ash-field tick, check the gate).
+        /// burrowers, herd thirst, the step away from fire, the meal before fire duty, and ash-field watering (its only read sites, FertilityPostfix and the ash-field tick, check the gate).
         /// Independent, as the master's own tooltip says or because the read site does not consult the gate:
         /// dry deep-ash fertility (written into the terrain def at startup), regrowth pace, biome placement, the restart-time
-        /// giants/ullai, sand shovelling, the sprayer carrier's foam, the cross-biome opt-in (its own master). Sub-switches
+        /// giants/ullai, sand shovelling, the sprayer carrier's foam. Sub-switches
         /// replace the old "hide when off" blocks: the controls now stay visible, greyed, values kept.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("pyrelandsEnabled", "ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled",
                      "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
                      "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled",
-                     "burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled")
+                     "burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled",
+                     "herdThirstEnabled", "fireSenseEnabled", "mealBeforeFireDutyEnabled")
             .Declare("blackRainDousingEnabled", "blackRainDousing")
             .Declare("ashDustingEnabled", "ashDustingChance")
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
@@ -246,7 +229,6 @@ namespace RimMandrake.Pyrelands
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
             .Declare("sandShovelEnabled", "sandShovelYieldMultiplier")
-            .Declare("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage")
             .Independent("ashDryFertility", "wildPlantRegrowDaysOverride", "biomeGenerationEnabled", "furnaceBeastGiant", "sprayerFoamsPathEnabled")
             .Name("pyrelandsEnabled", "Mod enabled")
             .Name("ashDustingEnabled", "Fire leaves ash on the ground").Name("scorchFruitEnabled", "Fire seeds scorch-fruit")
@@ -256,7 +238,9 @@ namespace RimMandrake.Pyrelands
             .Name("ullaiEnabled", "Ullai herds")
             .Name("sandShovelEnabled", "Shovel sand")
             .Name("sprayerFoamsPathEnabled", "Sprayer carriers foam the fire in their way")
-            .Name("crossBiomeEnabled", "Enable outside the Pyrelands biome");
+            .Name("herdThirstEnabled", "Herds reach the water one at a time")
+            .Name("fireSenseEnabled", "People step away from fire")
+            .Name("mealBeforeFireDutyEnabled", "A hungry colonist eats before fire duty");
 
         private static object GetField(string n) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
         private static void SetField(string n, object v) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
@@ -288,7 +272,6 @@ namespace RimMandrake.Pyrelands
             {
                 FieldInfo f = typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
                 if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
-                if (n == "crossBiomeBiomeList") biomeListBuffer = null;
             }
         }
 
@@ -301,7 +284,7 @@ namespace RimMandrake.Pyrelands
         /// should draw. Scope AUDITED per setting against its read site (2026-10-10): scorched ruins and biome placement are read
         /// while a map or planet is generated ([new maps only]);
         /// the giants, ullai and recipe-cost switches are applied at startup ([next game start], a label local to this screen);
-        /// every other setting, including the cross-biome ash opt-in (read each weather tick), is read live ([now]).</summary>
+        /// every other setting is read live ([now]).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -328,11 +311,6 @@ namespace RimMandrake.Pyrelands
 
         public void DoWindowContents(Rect inRect)
         {
-            if (biomeListBuffer == null)
-            {
-                biomeListBuffer = crossBiomeBiomeList;
-            }
-
             // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
             Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
@@ -347,7 +325,8 @@ namespace RimMandrake.Pyrelands
                     "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
                   + "mechanic below stops mattering (their own toggles still apply if this is back "
                   + "on). Not gated by it, only by their own switches: sand shovelling, the firefoam sprayer carrier's own foam, and the restart-time switches (giant furnace-beast, ullai spawning and herd size). Biome tile placement has its own separate switch, further down. "
-                  + "When Pyrelands is part of RimMandrake: Baroque Biomes, that mod's Pyrelands toggle switches these mechanics off too.");
+                  + "Each mechanic runs on any map where its own conditions hold (a fire, natural ground that can burn, an animal of the fire cast), "
+                  + "never by the map's biome. What only the Pyrelands brings (its standing burn and fire fronts, its black rain, its own animals alone arriving) comes from the biome itself.");
                 list.GapLine();
             }
 
@@ -358,7 +337,7 @@ namespace RimMandrake.Pyrelands
     list.CheckboxLabeled("Fire leaves ash on the ground", ref ashDustingEnabled,
                     "A burning cell on scorchable ground has a small chance, per tick batch, to lay ash on the ground "
                   + "(Odyssey's sand buildup, drawn as ash), in clumps up to that cell's drift depth. Off: fire still burns, "
-                  + "and leaves no ash of its own. Vanilla's ash filth is kept off natural Pyrelands ground, so this is the scar's ash.");
+                  + "and leaves no ash of its own. Where the ground holds this ash, vanilla's ash filth is kept off natural ground, so this is the scar's ash.");
                 using (Dependent(list, "ashDustingChance"))
                 {
                     list.Label("Rate: " + (ashDustingChance / AshDustingDefault).ToString("0.00") + "x default");
@@ -525,7 +504,7 @@ namespace RimMandrake.Pyrelands
                 using (Dependent(list, "windCarriesFireEnabled"))
                 {
                     list.CheckboxLabeled("The wind carries the fire", ref windCarriesFireEnabled,
-                        "On Pyrelands ground a fire is carried downwind once and never spreads back, so a burn walks one way with the map's "
+                        "On natural ground that can burn, on any map, a fire is carried downwind once and never spreads back, so a burn walks one way with the map's "
                       + "prevailing wind, as a front whose edges wander: a lone fire fans out, and gaps in a line close. Putting out the whole "
                       + "head of a front stops it. "
                       + "Off: vanilla's even spread, under which a grass fire grows as a ring and takes the whole map.");
@@ -618,29 +597,20 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Cross-biome ash accumulation", RimMandrake.Shared.SettingScope.Now, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
+            if (Group(list, "People, herds and fire", RimMandrake.Shared.SettingScope.Now, new[] { "fireSenseEnabled", "mealBeforeFireDutyEnabled", "herdThirstEnabled" }))
             {
-                list.Label("Lets ash on the ground (a steady light ash fall, drawn as ash, footprint-free) and fire ecology "
-                  + "(fires on soil or gravel lay ash, mark fresh burns and seed scorch-fruit) apply on a "
-                  + "NON-Pyrelands biome's map, without adding the whole Pyrelands biome. Off, both stay in the "
-                  + "Pyrelands. A change applies to maps already running.");
-                list.Label("RM_Pyrelands_CrossBiomeUnsupported".Translate());
-                list.CheckboxLabeled("Enable outside the Pyrelands biome", ref crossBiomeEnabled,
-                    "Master switch for the section below.\n\n" + "RM_Pyrelands_CrossBiomeUnsupported".Translate());
-                // the text box keeps its own buffer: while greyed, show (and keep) the saved list, never a half-typed one
-                if (!crossBiomeEnabled) biomeListBuffer = crossBiomeBiomeList;
-                using (Dependent(list, "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage"))
+                using (Dependent(list, "fireSenseEnabled", "mealBeforeFireDutyEnabled", "herdThirstEnabled"))
                 {
-                    list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
-                        "Apply to any non-Pyrelands biome. Off: only the biomes named below.");
-                    if (!crossBiomeEverywhere)
-                    {
-                        list.Label("  Biome defNames, comma-separated (e.g. RM_Wastes, AridShrubland):");
-                        biomeListBuffer = list.TextEntry(biomeListBuffer);
-                        crossBiomeBiomeList = biomeListBuffer;
-                    }
-                    list.Label("  Ambient ash: " + crossBiomeCoverage.ToStringPercent() + " of a tenth of Ash Fall's rate, until the ground averages a dusting");
-                    crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
+    list.CheckboxLabeled("People step away from fire", ref fireSenseEnabled,
+                    "Shipped default: ON. While a fire burns on the map, idle wanders and walks for joy pick spots clear of every fire, and a "
+                  + "person steps off when fire reaches their cell, unless fighting it, carrying someone, drafted or on your order. Any map. "
+                  + "Off: people wander as vanilla, which never looks at fire.");
+    list.CheckboxLabeled("A hungry colonist eats before fire duty", ref mealBeforeFireDutyEnabled,
+                    "Shipped default: ON. While a fire burns on the map, an urgently hungry colonist breaks off firefighting for a meal and goes "
+                  + "back. Any map. Off: vanilla's order, where firefighting comes before eating until a colonist is starving.");
+    list.CheckboxLabeled("Herds reach the water one at a time", ref herdThirstEnabled,
+                    "Shipped default: ON. Needs FlowWorks' thirst. Each wild herd of grass-watered animals (the fire cast) starts with its own thirst, "
+                  + "so herds visit the rare water a few days apart instead of all on one day. Any map. Off: every animal starts as FlowWorks sets it.");
                 }
                 list.GapLine();
             }

@@ -961,21 +961,17 @@
     "fireClockEnabled": [
      "T_SETTINGS_SWEEP_OFFLINE"
     ],
-    "crossBiomeEnabled": [
-     "T_SELF_CONTAINED_OFFLINE",
-     "T_SETTINGS_SWEEP_OFFLINE"
+    "herdThirstEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE",
+     "T_SETTINGS_SCREENS"
     ],
-    "crossBiomeEverywhere": [
-     "T_SELF_CONTAINED_OFFLINE",
-     "T_SETTINGS_SWEEP_OFFLINE"
+    "fireSenseEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE",
+     "T_SETTINGS_SCREENS"
     ],
-    "crossBiomeBiomeList": [
-     "T_SELF_CONTAINED_OFFLINE",
-     "T_SETTINGS_SWEEP_OFFLINE"
-    ],
-    "crossBiomeCoverage": [
-     "T_SELF_CONTAINED_OFFLINE",
-     "T_SETTINGS_SWEEP_OFFLINE"
+    "mealBeforeFireDutyEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE",
+     "T_SETTINGS_SCREENS"
     ],
     "burrowOnFireEnabled": [
      "sc_ashwallow",

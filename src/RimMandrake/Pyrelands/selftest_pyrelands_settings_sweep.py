@@ -9,10 +9,10 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
   read             the field is read (RM_PyrelandsSettings.<name>) in a mechanic file outside the settings file
   gated            every switch the "Mod enabled" master declares is read only in files that consult
                    PyrelandsMechanicsGate.On (the static half of g10), and the declared set is the pinned set
-  gate_wired       PyrelandsMechanicsGate.On feeds "Mod enabled" (pyrelandsEnabled) and the Baroque Biomes toggle under the
-                   key "Pyrelands" into RM_FireEcoKernel.MechanicsOn (blind challenge cycle 2: a gate that ignored either
-                   left every other check green); and ShellOn reads the shell's delegate under that key (blind cycle 3: a
-                   ShellOn forced true left the Baroque Biomes toggle gating nothing, every check green)
+  gate_wired       PyrelandsMechanicsGate.On is "Mod enabled" (pyrelandsEnabled) alone, a plain on/off with no biome in it:
+                   the gate file holds no Baroque Biomes per-biome toggle, no roster key and no biome read (bar
+                   mechanics_switch_plain_no_biome, his cards of 2026-11-21, which reverse the earlier "On = master AND the
+                   shell's Pyrelands toggle" wiring; blind cycle 2 still holds: a gate that ignores "Mod enabled" is red)
   entry_gated      each pinned mechanic entry point (a Harmony postfix) consults the gate in ITS OWN body, not merely
                    somewhere in its file (cycle 2: an ungated postfix in a gated file stayed green); blind cycle 3 added the
                    furnace-beast heat-immunity prefix, and the wind carry's one predicate (MapComponent_BurnLine.WindCarries,
@@ -25,8 +25,9 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
   sliders          every slider's range holds its field's shipped default (a range that excludes it moves the value the
                    first time the settings window draws)
   kernel_gates     the kernel's own gate predicates, evaluated over every input (blind cycle 4: a MechanicsOn that ignored the
-                   Baroque Biomes toggle and a BurnStampMay that ignored "Mod enabled" left every check here green):
-                   MechanicsOn is master AND (no shell OR toggle); BurnStampMay is false whenever the gate or its own switch is off;
+                   Baroque Biomes toggle and a BurnStampMay that ignored "Mod enabled" left every check here green; the
+                   MechanicsOn row left with the shell toggle, bar mechanics_switch_plain_no_biome):
+                   BurnStampMay is false whenever the gate or its own switch is off;
                    and each of the six gate predicates shuts on its gate argument first (a bare conjunct, or a leading guard)
   gate_args        every caller of a kernel gate predicate hands it PyrelandsMechanicsGate.On at the gate's place (blind cycle 4:
                    BurnStampMay(true, ...) in a postfix that consults the gate elsewhere stayed green)
@@ -58,15 +59,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC_REL = "Source"
 SETTINGS = "RM_PyrelandsMod.cs"
 GATE = "PyrelandsMechanicsGate.On"
-# Ruled values (owner): world switch OFF (card 2026-11-13); cross-biome off, labelled unsupported (2026-10-15);
-# 6-day fresh-burn clock (card 2026-11-05); dry 70%, watered 140%, fresh-burn +50% (code values the g3 correction pinned).
-RULED = {"biomeGenerationEnabled": False, "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "ambientAshHeavy": False,
+# Ruled values (owner): world switch OFF (card 2026-11-13); the cross-biome switches are gone, every mechanic runs by its
+# conditions on any map (cards 2026-11-21, bar mechanics_switch_plain_no_biome, reversing 2026-10-15); 6-day fresh-burn clock (card 2026-11-05); dry 70%, watered 140%, fresh-burn +50% (code values the g3 correction pinned).
+RULED = {"biomeGenerationEnabled": False, "ambientAshHeavy": False,
          "ashDryFertility": 0.70, "ashWateredFertility": 1.40, "freshBurnBonus": 0.50, "freshBurnDays": 6.0}
 # The switches "Mod enabled" stops (RM_PyrelandsSettings.Masters, SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST, 2026-10-14).
 GATED = {"ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled", "freshBurnBonusEnabled", "ambientAshEnabled",
          "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
          "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "burrowOnFireEnabled", "ashWaterFertilityEnabled",
-         "blackRainDousingEnabled"}
+         "blackRainDousingEnabled",
+         # the plain default-on switches bar mechanics_switch_plain_no_biome added (vision.md 0.2.0)
+         "herdThirstEnabled", "fireSenseEnabled", "mealBeforeFireDutyEnabled"}
 
 
 def _strip(s):
@@ -85,7 +88,9 @@ def _val(v, typ, consts):
 
 
 GATE_FILE = "PyrelandsMechanicsGate.cs"
-GATE_EXPR = "RM_FireEcoKernel.MechanicsOn(RM_PyrelandsSettings.pyrelandsEnabled, ShellPresent, ShellOn)"
+GATE_EXPR = "RM_PyrelandsSettings.pyrelandsEnabled"
+# What the gate file must not hold: the shell's per-biome toggle, its roster key, or any biome read (bar mechanics_switch_plain_no_biome).
+GATE_FORBIDDEN = r"\bShellOn\b|\bShellPresent\b|\bRosterKey\b|\bshellEnabled\b|\bMechanicsOn\b|\.Biome\b|\bBiomeDef\s+\w+\s*=|IsPyrelandsMap"
 # (file, class, method): mechanic entry points that must consult the gate themselves.
 ENTRY_POINTS = [("PyrelandsAshField.cs", "PyrelandsAshFieldPatches", "FertilityPostfix"),
                 ("FireEcologyHook.cs", "Patch_FireTick_BlackRainDouses", "Postfix"),
@@ -103,7 +108,6 @@ JOB_GUARDS = [("JobDriver_RUT_FireHawkCarryEmber.cs", "JobDriver_RUT_FireHawkCar
 # A switch "Mod enabled" does not stop, and the words its tooltip names it by.
 MASTER_LEAVES = {"sandShovelEnabled": "sand shovelling", "furnaceBeastGiant": "giant furnace-beast", "ullaiEnabled": "ullai spawning",
                  "sprayerFoamsPathEnabled": "firefoam sprayer"}
-SHELL_ON_EXPR = r"\bShellOn\s*=>\s*shellEnabled\s*==\s*null\s*\|\|\s*shellEnabled\(RosterKey\)\s*;"
 
 
 def _block(s, start):
@@ -178,7 +182,7 @@ def facts(mod):
          "the source and its neighbours need their own recent burn, independent of fertility")
     readers = {n: [f for f, s in code.items() if re.search(r"\bRM_PyrelandsSettings\.%s\b" % n, s)] for n in fields}
     fact("read", ["%s has no reader outside the settings file" % n for n, r in readers.items() if not r and n != "pyrelandsEnabled"]
-         + ([] if any("pyrelandsEnabled" in s and "MechanicsOn" in s for s in code.values()) else ["pyrelandsEnabled not fed to the gate"]),
+         + ([] if re.search(r"\bOn\s*=>\s*" + re.escape(GATE_EXPR) + r"\s*;", code.get(GATE_FILE, "")) else ["pyrelandsEnabled not fed to the gate"]),
          "%d fields read" % sum(1 for r in readers.values() if r))
     m = re.search(r'\.Declare\("pyrelandsEnabled",([^)]*)\)', ms)
     declared = set(re.findall(r'"(\w+)"', m.group(1))) if m else set()
@@ -190,13 +194,12 @@ def facts(mod):
     fact("gated", bad, "%d gated switches, %d read sites" % (len(GATED), sum(len(readers.get(n, [])) for n in GATED)))
     g = code.get(GATE_FILE, "")
     bad = []
-    if not re.search(r"\bOn\s*=>\s*" + re.escape(GATE_EXPR), g):
-        bad.append("PyrelandsMechanicsGate.On is not " + GATE_EXPR)
-    if not re.search(r'RosterKey\s*=\s*"Pyrelands"\s*;', g):
-        bad.append('the roster key is not "Pyrelands"')
-    if not re.search(SHELL_ON_EXPR, g):
-        bad.append("ShellOn does not read the Baroque Biomes delegate under RosterKey")
-    fact("gate_wired", bad, "On = MechanicsOn(Mod enabled, shell, toggle \"Pyrelands\")")
+    if not re.search(r"\bOn\s*=>\s*" + re.escape(GATE_EXPR) + r"\s*;", g):
+        bad.append("PyrelandsMechanicsGate.On is not " + GATE_EXPR + " alone")
+    gate_class = _block(g, g.find("class PyrelandsMechanicsGate")) if "class PyrelandsMechanicsGate" in g else ""
+    for hit in sorted(set(re.findall(GATE_FORBIDDEN, gate_class or ""))):
+        bad.append("the gate holds %s (a shell toggle or a biome read)" % hit)
+    fact("gate_wired", bad, "On = Mod enabled alone, no shell toggle, no biome")
     bad = []
     for f, cls, meth in ENTRY_POINTS:
         body = _method_body(code.get(f, ""), cls, meth)
@@ -341,7 +344,6 @@ def facts(mod):
 
 # (kernel method, the truth it must hold: args in signature order -> expected bool, or None = any)
 KERNEL_GATES = [
-    ("MechanicsOn", lambda master, shell, toggle: master and (not shell or toggle)),
     ("BurnStampMay", lambda gate, bonusOn, spawned, attached, scorchable:
         False if not gate or not bonusOn else (True if spawned and not attached and scorchable else None)),
 ]
@@ -490,21 +492,25 @@ MUTANTS = [
     ("reader dropped", S + "RM_TerrainDig.cs", "RM_PyrelandsSettings.sandShovelYieldMultiplier", "1f"),
     ("reader only in a comment", S + "RM_PyrelandsGiants.cs", "RM_PyrelandsSettings.furnaceBeastGiant", "true /* RM_PyrelandsSettings.furnaceBeastGiant */"),
     ("gate dropped at a read site", S + "PlantGrowthStages.cs", GATE, "true"),
-    ("switch undeclared from the master", S + SETTINGS, '"burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled")', '"ashWaterFertilityEnabled", "blackRainDousingEnabled")'),
-    ("gate ignores Mod enabled", S + GATE_FILE, "MechanicsOn(RM_PyrelandsSettings.pyrelandsEnabled,", "MechanicsOn(true,"),
-    ("roster key misspelt", S + GATE_FILE, 'RosterKey = "Pyrelands";', 'RosterKey = "Pyrelandz";'),
+    ("switch undeclared from the master", S + SETTINGS, '"burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled",', '"ashWaterFertilityEnabled", "blackRainDousingEnabled",'),
+    ("herd thirst undeclared from the master", S + SETTINGS, '"herdThirstEnabled", "fireSenseEnabled"', '"fireSenseEnabled"'),
+    ("gate ignores Mod enabled", S + GATE_FILE, "On => RM_PyrelandsSettings.pyrelandsEnabled;", "On => true;"),
+    ("shell toggle gates again", S + GATE_FILE, "On => RM_PyrelandsSettings.pyrelandsEnabled;",
+     "On => RM_PyrelandsSettings.pyrelandsEnabled && ShellOn;"),
     ("ash-field postfix ungated", S + "PyrelandsAshField.cs", "if (___map == null || !PyrelandsMechanicsGate.On) return;", "if (___map == null) return;"),
     ("black-rain douse ungated", S + "FireEcologyHook.cs", "BlackRainDouseAmount(PyrelandsMechanicsGate.On,", "BlackRainDouseAmount(true,"),
-    ("rain swap ungated", S + "PyrelandsNoOrdinaryRain.cs", "pyre, PyrelandsMechanicsGate.On)", "pyre, true)"),
+    ("rain swap ungated", S + "PyrelandsNoOrdinaryRain.cs", "black, PyrelandsMechanicsGate.On)", "black, true)"),
     ("slider range excludes its default", S + SETTINGS, "list.Slider(blackRainDousing, 0f, 100f)", "list.Slider(blackRainDousing, 50f, 100f)"),
     # blind challenge cycle 3 (each one stayed green before)
-    ("shell toggle forced on", S + GATE_FILE, "public static bool ShellOn => shellEnabled == null || shellEnabled(RosterKey);", "public static bool ShellOn => true;"),
+    ("shell toggle kept beside the gate", S + GATE_FILE, "On => RM_PyrelandsSettings.pyrelandsEnabled;",
+     "On => RM_PyrelandsSettings.pyrelandsEnabled;\n        public static bool ShellOn => true;"),
+    ("gate reads the biome", S + GATE_FILE, "On => RM_PyrelandsSettings.pyrelandsEnabled;",
+     "On => RM_PyrelandsSettings.pyrelandsEnabled && Find.CurrentMap?.Biome?.defName == \"RM_Pyrelands\";"),
     ("heat immunity ungated", S + "Patch_FurnaceBeastHeatImmunity.cs", "if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)", "if (false)"),
-    ("wind carry ungated", S + "MapComponent_BurnLine.cs", "WindCarries => IsPyrelandsMap && PyrelandsMechanicsGate.On &&", "WindCarries => IsPyrelandsMap &&"),
+    ("wind carry ungated", S + "MapComponent_BurnLine.cs", "WindCarries => PyrelandsMechanicsGate.On && RM_PyrelandsSettings.burnLineEnabled", "WindCarries => RM_PyrelandsSettings.burnLineEnabled"),
     ("wind carry ignores its switch", S + "MapComponent_BurnLine.cs", "&& RM_PyrelandsSettings.windCarriesFireEnabled;", ";"),
     ("wind checkbox bound to the burn line", S + SETTINGS, '"The wind carries the fire", ref windCarriesFireEnabled,', '"The wind carries the fire", ref burnLineEnabled,'),
     # blind challenge cycle 4 (each one stayed green before)
-    ("kernel gate ignores the roster toggle", S + "Kernel/RM_FireEcoKernel.cs", "return modMaster && (!shellPresent || shellOn);", "return modMaster;"),
     ("burn stamp kernel ignores the master", S + "Kernel/RM_FireEcoKernel.cs", "return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;",
      "return bonusOn && spawned && !attachedToPawn && scorchable;"),
     ("burn stamp caller passes true", S + "FireEcologyHook.cs", "BurnStampMay(PyrelandsMechanicsGate.On,", "BurnStampMay(true,"),

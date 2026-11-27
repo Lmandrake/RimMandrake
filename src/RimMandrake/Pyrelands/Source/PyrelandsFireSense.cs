@@ -9,12 +9,13 @@ using Verse.AI;
 namespace RimMandrake.Pyrelands
 {
     /// <summary>
-    /// People on a Pyrelands map keep clear of fire. Vanilla's only fire sense for a person is the path finder's: a burning cell
+    /// People keep clear of fire, on any map where one burns (the condition, never the biome: bar mechanics_switch_plain_no_biome;
+    /// Mod Settings "Step away from fire" turns it off). Vanilla's only fire sense for a person is the path finder's: a burning cell
     /// costs extra to cross (Fire.pathfinderDangerous). Idle wander (RCellFinder.CanWanderToCell) and a walk for joy
     /// (JoyGiver_GoForWalk) never look at fire, and nothing moves a person whose cell the fire is about to reach. Where a wildfire
     /// is an event that costs nothing; here a burn line of some 300 fires crosses the map every day. On map x (pass 20, run 5), a
     /// fresh colony left alone: an old colonist wandered out while ~300 fires burned, went down with 8 burns and died in the
-    /// grass. So, on a Pyrelands map only: wander and walk destinations stay WanderClear cells from any fire, and a person
+    /// grass. So, while a fire burns on the map: wander and walk destinations stay WanderClear cells from any fire, and a person
     /// (JobGiver_RM_StepAwayFromFire, in the humanlike constant tree) steps off when fire reaches their cell or a neighbour on
     /// their side of a wall, unless they are fighting it, carrying someone, drafted, or on the player's own order.
     /// </summary>
@@ -51,7 +52,8 @@ namespace RimMandrake.Pyrelands
 
         internal static bool Applies(Map map)
         {
-            return map != null && PyrelandsMechanicsGate.On && map.Biome != null && map.Biome.defName == "RM_Pyrelands"
+            // Conditions, never the biome (bar mechanics_switch_plain_no_biome): a fire burns on the map. One list count.
+            return map != null && PyrelandsMechanicsGate.On && RM_PyrelandsSettings.fireSenseEnabled
                 && map.listerThings.ThingsOfDef(ThingDefOf.Fire).Count > 0;
         }
 

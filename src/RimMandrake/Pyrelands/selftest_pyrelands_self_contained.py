@@ -11,8 +11,10 @@ Static reads of the shipped mod (XML comments are provenance and are skipped: El
              (the canon save's tiles keep resolving; the donor-reference half is selftest_retired_mutator_ports.py)
   text       no label, description or Keyed text in the biome's Defs, Patches or Languages carries campaign vocabulary
              (RSW_/RUT_ names, Ashkarr, Jawa, Utinni, Tatooine, Star Wars canon words): the text is generic (PYRELANDS_GENERIC_TEXT_1)
-  crossbiome the cross-biome section ships its "Unsupported" label (RM_Pyrelands_CrossBiomeUnsupported), and the settings
-             screen draws it (owner 2026-10-15; the defaults-off half is T_SETTINGS_SWEEP_OFFLINE)
+  crossbiome no cross-biome section is left: the settings source holds no crossBiome field or key and no "Enable outside"
+             text, and no Keyed file holds an RM_Pyrelands_CrossBiome* key; every mechanic runs by its conditions on any
+             map (bar mechanics_switch_plain_no_biome, his cards of 2026-11-21, reversing the 2026-10-15 "off, labelled
+             unsupported" ruling this row used to pin; the plain switches are T_CONDITIONS_NOT_BIOME_OFFLINE)
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -115,16 +117,21 @@ def text_errors(mod):
     return errs
 
 
+CROSS_CODE = re.compile(r"crossBiome\w*|RM_Pyrelands_CrossBiome\w*|Enable outside", re.I)
+
+
 def crossbiome_errors(mod):
     errs = []
-    keyed = os.path.join(mod, "Languages", "English", "Keyed", "RM_Pyrelands_CrossBiome.xml")
-    t = ET.parse(keyed).getroot().findtext("RM_Pyrelands_CrossBiomeUnsupported") or ""
-    if "unsupported" not in t.lower():
-        errs.append("crossbiome: RM_Pyrelands_CrossBiomeUnsupported reads %r, no 'Unsupported'" % t)
     cs = open(os.path.join(mod, "Source", "RM_PyrelandsMod.cs"), encoding="utf-8").read()
-    cs = re.sub(r"//[^\n]*", "", re.sub(r"/\*.*?\*/", "", cs, flags=re.S))
-    if not re.search(r'\.Label\(\s*"RM_Pyrelands_CrossBiomeUnsupported"\.Translate\(\)', cs):
-        errs.append("crossbiome: the settings screen never draws RM_Pyrelands_CrossBiomeUnsupported")
+    for hit in sorted(set(CROSS_CODE.findall(cs))):   # comments too: a doc that still offers the section is text on the screen's page
+        errs.append("crossbiome: the settings source still holds %r" % hit)
+    keyed_dir = os.path.join(mod, "Languages", "English", "Keyed")
+    for name in sorted(os.listdir(keyed_dir)) if os.path.isdir(keyed_dir) else []:
+        if not name.endswith(".xml"):
+            continue
+        for el in ET.parse(os.path.join(keyed_dir, name)).getroot():
+            if isinstance(el.tag, str) and (CROSS_CODE.search(el.tag) or CROSS_CODE.search(el.text or "")):
+                errs.append("crossbiome: Keyed %s holds %s" % (name, el.tag))
     return errs
 
 
@@ -147,10 +154,12 @@ MUTANTS = [
     ("payload names an undeclared def", PAYLOAD, "<li>RM_FE_Plant_ScorchFruit</li>", "<li>RM_FE_Plant_NoSuchFruit</li>"),
     ("mutator port unmapped", PORTS, "<defName>RM_GeothermalHotspots</defName>", "<defName>RM_GeothermalHotspotz</defName>"),
     ("campaign word in a def", PAYLOAD, "<quietText>Grass, ash", "<quietText>Jawa grass, ash"),
-    ("unsupported label dropped", os.path.join("Languages", "English", "Keyed", "RM_Pyrelands_CrossBiome.xml"),
-     "Unsupported: may work", "Experimental: may work"),
-    ("unsupported label never drawn", os.path.join("Source", "RM_PyrelandsMod.cs"),
-     'list.Label("RM_Pyrelands_CrossBiomeUnsupported".Translate());', 'list.Gap();'),
+    ("cross-biome key shipped again", os.path.join("Languages", "English", "Keyed", "Pyrelands.xml"),
+     "</LanguageData>", "  <RM_Pyrelands_CrossBiomeUnsupported>Unsupported: may work</RM_Pyrelands_CrossBiomeUnsupported>\n</LanguageData>"),
+    ("cross-biome switch back in the settings", os.path.join("Source", "RM_PyrelandsMod.cs"),
+     "public static bool herdThirstEnabled = true;", "public static bool herdThirstEnabled = true;\n        public static bool crossBiomeEnabled = false;"),
+    ("Enable outside text on the screen", os.path.join("Source", "RM_PyrelandsMod.cs"),
+     '"Herds reach the water one at a time"', '"Enable outside the Pyrelands: herds reach the water one at a time"'),
 ]
 
 
@@ -188,8 +197,8 @@ def main():
     if red != len(MUTANTS) or clean_errs:
         print("FAIL: %d of %d mutants red; clean copy %s" % (red, len(MUTANTS), clean_errs or "green"))
         return 1
-    print("PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, cross-biome labelled "
-          "unsupported; %d of %d mutants red, the clean copy green" % (red, len(MUTANTS)))
+    print("PASS: payload FindMod-guarded on its own target, mutator ports mapped, text generic, no cross-biome "
+          "section; %d of %d mutants red, the clean copy green" % (red, len(MUTANTS)))
     return 0
 
 

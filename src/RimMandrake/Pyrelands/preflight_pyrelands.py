@@ -66,7 +66,8 @@ DLCS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.
         "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
 
 # Shipped defaults, read off RM_PyrelandsSettings (RM_PyrelandsMod.cs) and
-# Plan §3.3: all features ON except biomeGenerationEnabled (off, owner card 2026-11-13), crossBiome* false,
+# Plan §3.3: all features ON except biomeGenerationEnabled (off, owner card 2026-11-13); the crossBiome* settings are gone
+# (bar mechanics_switch_plain_no_biome, his cards of 2026-11-21: every mechanic runs by its conditions, a plain switch each);
 # ashfallRateMultiplier 1, scorchFruitMapCap 40.
 DEFAULTS = {
     "pyrelandsEnabled": True,
@@ -80,8 +81,7 @@ DEFAULTS = {
     "fireClockEnabled": True,
     "burrowOnFireEnabled": True, "burrowDomeOnHeatHit": True,
     "ullaiEnabled": True, "ullaiHerdSizeMultiplier": 1.0, "furnaceBeastGiant": True,
-    "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",
-    "crossBiomeCoverage": 1.0,
+    "herdThirstEnabled": True, "fireSenseEnabled": True, "mealBeforeFireDutyEnabled": True,
     "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0, "sprayerFoamsPathEnabled": True,
     "ashWaterFertilityEnabled": True, "ashDryFertility": 0.7, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
     "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0,

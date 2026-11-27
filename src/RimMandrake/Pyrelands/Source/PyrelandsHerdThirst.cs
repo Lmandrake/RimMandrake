@@ -12,7 +12,8 @@ namespace RimMandrake.Pyrelands
     /// on map s (2026-11-07) all 43 natives read thirst 0.72 three days in: every herd on the map would have left for the
     /// pond on the same day, about 19 days after landing (ThirstyBelow 0.3), and again about 27 days after that.
     ///
-    /// So each wild herd on a Pyrelands map gets ONE random starting thirst, once: animals of the same kind within HerdRadius
+    /// So each wild grass-watered herd, on any map, gets ONE random starting thirst, once (the condition is the animal's
+    /// extension, never the biome: bar mechanics_switch_plain_no_biome; Mod Settings "Herd thirst" turns it off): animals of the same kind within HerdRadius
     /// of each other share it, so a herd walks to the water together and the visits spread over the cycle (about one herd
     /// every few days on a map with seven or eight). A herd that lands below ThirstyBelow drinks on the first day. Nothing
     /// here touches the rate, the threshold or dehydration (the extension still keeps an empty native alive).
@@ -40,7 +41,7 @@ namespace RimMandrake.Pyrelands
         public override void MapComponentTick()
         {
             if (Find.TickManager.TicksGame % CheckIntervalTicks != 37) return;
-            if (!PyrelandsMechanicsGate.On || map.Biome == null || map.Biome.defName != "RM_Pyrelands") return;
+            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.herdThirstEnabled) return;
             if (!resolved)
             {
                 resolved = true;

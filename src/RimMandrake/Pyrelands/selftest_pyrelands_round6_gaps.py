@@ -142,8 +142,8 @@ def g4(c):
                          "settings_map %s -> %s, whose action or control never turns %s" % (k, r, k), e)
                 elif r not in c.tests and r not in c.leaves:
                     need(False, "settings_map %s -> %s is no scene, leaf or test_table id" % (k, r), e)
-        for k in ("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage"):
-            need("T_SELF_CONTAINED_OFFLINE" in (m.get(k) or []), "settings_map %s is not checked for its unsupported label" % k, e)
+        # The four crossBiome* settings are gone (bar mechanics_switch_plain_no_biome, his cards of 2026-11-21): the `extra`
+        # read above turns red if the map still names one, and T_SELF_CONTAINED_OFFLINE turns red if the mod ships one.
     need(bool((c.floor.get("lines", {}).get("mod_settings") or {}).get("establishes")), "floor.json mod_settings has no establishes", e)
     need("switch the other mechanics off and on" not in words(c.scene("sc_walk"), row.get("why")),
          "sc_walk or the coverage_rest why still rests on 'switch the other mechanics off and on'", e)

@@ -17,20 +17,6 @@ namespace RimMandrake.Pyrelands
     public static class PyrelandsTuning
     {
         // ---------------------------------------------------------------
-        // Which maps carry the standing burn.
-        // ---------------------------------------------------------------
-        // Both biome defNames are READ, not guessed: ZBiome_Grasslands is the
-        // campaign's Pyrelands (the_pyrelands.md's own header: "Defines
-        // ZBiome_Grasslands (More Vanilla Biomes donor)"), and RM_Pyrelands is
-        // the standalone RM-tier biome shipped by mandrake.rm.pyrelands
-        // (src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml). A map on any
-        // other biome is invisible to the burn-line component.
-        public static readonly string[] PyrelandsBiomeDefNames =
-        {
-            "ZBiome_Grasslands", "RM_Pyrelands",
-        };
-
-        // ---------------------------------------------------------------
         // The burn-line watch (MapComponent_BurnLine).
         // ---------------------------------------------------------------
         /// <summary>How often the burn is re-measured. 60 ticks = one second of

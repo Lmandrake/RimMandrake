@@ -161,14 +161,17 @@ namespace RimMandrake.Pyrelands
             base.FinalizeInit();
             EnsureGrids();
             active = ScanForAshField();
-            // Re-read the gate (the Baroque Biomes "Pyrelands" toggle lives outside this mod's WriteSettings) on every load.
+            // Re-write the settings into the defs on every load (a game loaded after a settings change sees them).
             PyrelandsAshFieldPatches.ApplySettings();
         }
 
+        /// <summary>The field runs where its conditions are: ground carrying RM_AshFieldExtension, or a cell that has burned (a
+        /// saved burn stamp; StampBurn turns it on live). Never the biome's name (bar mechanics_switch_plain_no_biome).</summary>
         private bool ScanForAshField()
         {
-            BiomeDef b = map.Biome;
-            if (b != null && Array.IndexOf(PyrelandsTuning.PyrelandsBiomeDefNames, b.defName) >= 0) return true;
+            if (burnTick != null)
+                for (int i = 0; i < burnTick.Length; i++)
+                    if (burnTick[i] >= 0) return true;
             TerrainGrid g = map.terrainGrid;
             foreach (IntVec3 c in map.AllCells)
             {

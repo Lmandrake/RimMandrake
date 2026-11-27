@@ -211,9 +211,12 @@ def run(tree, label):
 
     gbody = method_body(tree.read(GIVER), "WouldDive") or ""
     gcode = re.sub(r"//[^\n]*", "", gbody)
-    scoped = bool(re.search(r"\bIsPyrelandsMap\b|\bAnyBurn\b", gcode))
-    row("scope " + label, scoped, "WouldDive %s" % ("asks for a Pyrelands map" if scoped else "dives on any biome's map"),
-        "biome mechanics only inside our own biomes", GIVER)
+    # bar mechanics_switch_plain_no_biome (his cards of 2026-11-21) reversed "biome mechanics only inside our own biomes":
+    # the dive runs by its conditions (a burrower, a fire near) on any map, so the gate must hold no biome read at all.
+    biome = sorted(set(re.findall(r"\bIsPyrelandsMap\b|\.Biome\b|\bBiomeDef\b|\bAnyBurn\b|RM_Pyrelands\b", gcode)))
+    row("scope " + label, not biome and bool(gcode), "WouldDive %s" % (("reads the biome: " + ", ".join(biome)) if biome else
+        "dives by its conditions on any map" if gcode else "nothing: method not found"),
+        "no biome read in the dive gate", GIVER)
     bl = tree.read(BURNLINE) or ""
     wired = [m for m in ("YieldsToFire", "IsIdleJob") if "BurrowerNudgeKind" in (method_body(bl, m) or "")]
     row("nudge wiring " + label, len(wired) == 2, "%d of 2 burn-line job tests call the kernel sets" % len(wired),

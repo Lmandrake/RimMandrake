@@ -73,10 +73,11 @@ namespace RimMandrake.Pyrelands
                 return false;
             }
 
-            // A Pyrelands mechanic, so only on a Pyrelands map (the old AnyBurn gate also scoped it: the burn line never measures
-            // another biome's map, so a tamed ashwallow in a colony elsewhere never dived, and must not now).
+            // Its conditions, never the biome (bar mechanics_switch_plain_no_biome, his cards of 2026-11-21): a burrower (the
+            // extension above) with a fire near (below) dives on any map, so a tamed ashwallow in a temperate-forest colony dives
+            // from a grass fire as it would at home. The burn line only keeps the per-map timeout record.
             MapComponent_BurnLine burnLine = MapComponent_BurnLine.For(map);
-            if (burnLine == null || !burnLine.IsPyrelandsMap)
+            if (burnLine == null)
             {
                 return false;
             }
