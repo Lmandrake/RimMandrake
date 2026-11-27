@@ -75,3 +75,30 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
   colonists, beside a pit; some goods and some people end in the pit. Scene `sc_storeroom_bomb_pit`, staged by
   `RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF` once builds 1, 2 and 5 land. The north-star bars are VALIDATED as
   written (d_c_bars, OWNER:1794470702467936205; hash 5d06c98d8b13).
+
+## offline simulation
+
+**Yes.** The throw decision is a geometry and physics kernel with many cases, and a live run is slow, so the simulation pays.
+
+- **Form:** the shipped code against a fake map. `Source/SelfTest` (net8.0) compiles the production `RM_KnockbackMath.cs` and `RM_KnockbackPlan.cs`, with no game. `Source/SelfTest/KnockbackMap.cs` runs the shipped throw decision on a model map. The blast show's sizes come from the shipped `RM_KnockbackShowPlan.cs`, which is Verse-free.
+- **What it covers:**
+  - throw distance by force, falloff, mass, damage and the caps;
+  - the path walk past walls, closed doors, sandbags, deep water and pit cells;
+  - who is spared;
+  - the carried-thing plan;
+  - the collision bruise split by size;
+  - the gas-clump order and the gas shove onto a cover;
+  - rebound cells;
+  - landing order into a pit;
+  - each plan-side Mod Settings switch flipped alone;
+  - the blast show's sizes and switches.
+- **Range it varies:**
+  - `selftest_explosiveknockback_map.py` (T_SITUATION_MAP_OFFLINE): thing, direction, distance, obstacle and its distance, width and blast; spared cases; seeded storerooms with both tie orders of the game's place-near search.
+  - `selftest_explosiveknockback_fuzz.py` (T_FUZZ): a seeded fuzz of the kernel against independently written oracles.
+  - `selftest_explosiveknockback_kernel.py` (T_KERNEL and its 0.2.0 cases) and `selftest_explosiveknockback_blast_show.py` (T_BLAST_SHOW_OFFLINE).
+- **What it leaves out:** what only the game draws or records.
+  - The flyers' drawn arcs, and the injuries that the game writes on a real pawn.
+  - The Cauldron's real burn scan, and FlowWorks' real cover.
+  - The look of the show (flecks, camera, paint, soot), which the art judge reads.
+  - Frame time.
+  - The live scenes in `scenes.json` decide each of these.

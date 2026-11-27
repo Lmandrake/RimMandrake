@@ -13,11 +13,11 @@
   },
   {
    "id": "s_design_item",
-   "speaker": "owner",
+   "speaker": "conductor",
    "source": [
     "OWNER:1794468800831473605"
    ],
-   "text": "The Designer pass is filed as RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH, from his 2026-11-11 request to finish the pass together."
+   "text": "The Designer pass is filed as RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH by the Conductor (per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM), from his live request of 2026-11-11 to finish the pass together."
   },
   {
    "id": "s_owner_absorb_other_explosion_mods",
@@ -31,7 +31,8 @@
    "id": "s_owner_card_one_judge_run",
    "speaker": "owner",
    "source": [
-    "OWNER:1794556366219202085"
+    "OWNER:1794556366219202085",
+    "OWNER:1794556216852126091"
    ],
    "text": "His card 2026-11-13 (EK sign-off -> One judge run): one coverage-judge run lifted the ceiling park; the judge could not start (exam stale), re-parked."
   },
@@ -334,7 +335,9 @@
    "kind": "ruling",
    "speaker": "owner",
    "source": [
-    "OWNER:1794468864684141079"
+    "OWNER:1794468864684141079",
+    "OWNER:1794510416735448015",
+    "OWNER:1794515326812372840"
    ],
    "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
    "by_card": "A blast hits more goods than can fly smoothly. What happens to the extra? -> All of them fly",
@@ -395,7 +398,12 @@
    "speaker": "owner",
    "source": [
     "OWNER:1794721689897638306",
-    "ITEM:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN"
+    "ITEM:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN",
+    "OWNER:1794748404753740828",
+    "OWNER:1794748823561950419",
+    "OWNER:1794790774946941507",
+    "OWNER:1794790800032152388",
+    "OWNER:1794790816821560212"
    ],
    "date": "2026-11-14 ~21:47 PST (question card, journal question 12)",
    "by_card": "Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows",
@@ -469,7 +477,8 @@
    "speaker": "agent",
    "source": [
     "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
-    "OWNER:1794468864684141079"
+    "OWNER:1794468864684141079",
+    "OWNER:1794799770273329641"
    ],
    "date": "2026-11-11",
    "delegated": "test numbers for a ruled proof",
@@ -622,7 +631,8 @@
    "speaker": "owner",
    "source": [
     "OWNER:1794608649743135329",
-    "OWNER:1794608827666872544"
+    "OWNER:1794608827666872544",
+    "OWNER:1794610188062865138"
    ],
    "date": "2026-11-13",
    "words": "Yes, fix it like that, and then please record this as an actual Pass.",
@@ -646,10 +656,56 @@
    "source": [
     "OWNER:1795565769863524396",
     "OWNER:1795565863812726726",
-    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE"
+    "ITEM:RIMMANDRAKE_OPEN_KNOCKBACK_ZERO_TWO_BLAST_SHOW_HE_SAID_GET_CREATIVE",
+    "OWNER:1794549024074656898",
+    "OWNER:1795218806625766157"
    ],
    "date": "2026-11-24",
    "what": "Design Version 0.2.0 (MINOR) opened by the Designer pass the Conductor briefed on his words of 2026-11-24: 14 new bars as inventory rows (the carried thing on its own arc, collision bruises by size, nine parts of our own blast show, three polish lines the Conductor judged relevant). Every 0.1.0 bar is kept. Judged not relevant and left on the polish list by the Conductor: the jolt-decay doc line, the fire switch on another mod's fire type, the two storeroom-raid check nits. His word of 2026-11-24 drops 'no check throws with an Outer Rim weapon' (\"we will own all our own weapons\"). His word of 2026-11-24 to drop all the explosion-visual mods replaces his card of 2026-11-12 that kept Better Explosions and Dynamic Effects Forge."
+  },
+  {
+   "id": "d_walk_frame_vs_mod_off",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1794833933735804252",
+    "OWNER:1794834159094900561"
+   ],
+   "date": "2026-11-16",
+   "what": "The walk's frame row is judged against the same run's mod-off arm (at most 10 percent worse), not against a fixed frame time; the 50 ms barrage bar (dl_perf_budget) is unchanged. Carried out in tree.json walk_storeroom_raid and scenes.json sc_walk_frames."
+  },
+  {
+   "id": "d_goods_into_pit_first",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795396757153130965",
+    "ITEM:RIMMANDRAKE_LAND_KNOCKBACK_GOODS_IN_PIT_FIRST_BOUNCE_ONLY_WHEN_FULL"
+   ],
+   "date": "2026-11-23",
+   "what": "A good thrown toward a pit lands somewhere in that pit; only a pit that is totally full bounces it back out. Built (RM_KnockbackPlan.cs PitAround, LandingOrder, d61b1e2b31); it refines thrown_into_pit_falls and moves no bar."
+  },
+  {
+   "id": "d_chemfuel_is_explosion",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795663708692199732",
+    "ITEM:RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK"
+   ],
+   "date": "2026-11-26",
+   "what": "A lit pool of chemfuel is an explosion and must throw everyone near it as any harmful blast does. Today FlowWorks burns it with no explosion, so this is FlowWorks work plus a check here; it is listed in version/next_version/README.md and moves no 0.2.0 bar."
+  },
+  {
+   "id": "d_big_blast_whoosh_next",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795663740423093535",
+    "ITEM:RIMMANDRAKE_DESIGN_KNOCKBACK_WHOOSH_FOR_BLASTS_OVER_ONE_CELL"
+   ],
+   "date": "2026-11-26",
+   "what": "A blast larger than one cell (a lit moat of chemfuel, lit gas vapour) throws over a range larger than its burning cells, like expanding air: a really big whoosh. Not yet designed; next version, listed in version/next_version/README.md. It moves no 0.2.0 bar."
   }
  ],
  "asks": [
@@ -1763,5 +1819,87 @@
   "speaker": "owner",
   "date": "2026-11-11 ~23:0x PST (live sitting, question card)",
   "by_card": "Is this the mod? -> Approve as written"
- }
+ },
+ "owner_elsewhere_reviewed": [
+  {
+   "source": "OWNER:1794497609337507378",
+   "not_design_input": "his report of a walk or a look at the built mod (a pass or an observation of it); it confirms the design as built and asks for no change (a haul out of a pit worked: d_q10_retrievable)"
+  },
+  {
+   "source": "OWNER:1794504172145023046",
+   "not_design_input": "his report of a walk or a look at the built mod (a pass or an observation of it); it confirms the design as built and asks for no change (goods scatter and pit falls: a full pass)"
+  },
+  {
+   "source": "OWNER:1794508053859633553",
+   "not_design_input": "his approval of a card's tuning (1-7) after a look: no new design"
+  },
+  {
+   "source": "OWNER:1794508059225966645",
+   "not_design_input": "his approval of a card's tuning (1-7) after a look: no new design"
+  },
+  {
+   "source": "OWNER:1794508064290232196",
+   "not_design_input": "his approval of a card's tuning (1-7) after a look: no new design"
+  },
+  {
+   "source": "OWNER:1794508068907392771",
+   "not_design_input": "his approval of a card's tuning (1-7) after a look: no new design (dl_perf_budget stands)"
+  },
+  {
+   "source": "OWNER:1794508073785812756",
+   "not_design_input": "his approval of the goods-flight tuning after a look: no new design"
+  },
+  {
+   "source": "OWNER:1794508084245050029",
+   "not_design_input": "his approval of a card's tuning (1-7) after a look: no new design"
+  },
+  {
+   "source": "OWNER:1794509108309459415",
+   "not_design_input": "his report of a walk or a look at the built mod (a pass or an observation of it); it confirms the design as built and asks for no change (Test 1: a full pass)"
+  },
+  {
+   "source": "OWNER:1794509111791864079",
+   "not_design_input": "his report of a walk or a look at the built mod (a pass or an observation of it); it confirms the design as built and asks for no change (Test 1: a full pass)"
+  },
+  {
+   "source": "OWNER:1794510421539572284",
+   "not_design_input": "an order to build what the design already holds: no new design"
+  },
+  {
+   "source": "OWNER:1794510426903043902",
+   "not_design_input": "an order to build what the design already holds: no new design"
+  },
+  {
+   "source": "OWNER:1794520992843517735",
+   "not_design_input": "his report of a walk or a look at the built mod (a pass or an observation of it); it confirms the design as built and asks for no change (containers destroyed or moved, shelves emptied: d_c_closed_containers as built)"
+  },
+  {
+   "source": "OWNER:1794520998433113520",
+   "not_design_input": "his report of a walk or a look at the built mod (a pass or an observation of it); it confirms the design as built and asks for no change (the same assessment on the heavy-knock item)"
+  },
+  {
+   "source": "OWNER:1794636597841335613",
+   "not_design_input": "his acceptance of a build as a pass without a human review: no new design"
+  },
+  {
+   "source": "OWNER:1795428600607544084",
+   "not_design_input": "his priority (finish Explosive Knockback): no new design"
+  },
+  {
+   "source": "OWNER:1795466128899661715",
+   "not_design_input": "an informal walk report; its one design point (patch gun lockers to hide their guns) was withdrawn by his 'Ignore gun lockers.' (OWNER:1795565793713209666); its wish to see the frozen start state beside each station is about how a walk is staged, not the mod"
+  },
+  {
+   "source": "OWNER:1795565793713209666",
+   "not_design_input": "his 'Ignore gun lockers.': no locker change; dl_closed_means_hidden stands"
+  },
+  {
+   "source": "OWNER:1795565780371360287",
+   "not_design_input": "a test-table change (drop one gas check), not a change to what the mod does"
+  },
+  {
+   "source": "OWNER:1795589998209547894",
+   "not_design_input": "a process rule (a builder with a free game tests in the same run), not a change to what the mod does"
+  }
+ ]
 }

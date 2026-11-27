@@ -97,7 +97,7 @@
     "a second pawn ordered to walk onto the colonist's planned landing cell, arriving after launch and before landing (asserted: it stands on that cell on a tick between launch and landing; INVALID otherwise)"
    ],
    "action": "a grenade lands; read every tick the colonist's holder, drawn position and job until 600 ticks after landing",
-   "expect": "mid-path the colonist is unspawned and held by a thing of def RM_PawnFlyer_Knockback whose drawn position lies strictly between the start and landing cells; it lands on the cell planned at launch, never a re-targeted one, with a pawn-into-pawn impact line naming the walker; the stun ends within landingStunMax ticks and the colonist holds the same stack, count unchanged, on every tick of the flight and after landing (it flies with what it carries: MakeFlyer flyWithCarriedThing true; owner 2026-11-14, \"For today have them hold it\"), and its next job is a haul of that stack, still in its hands",
+   "expect": "mid-path the colonist is unspawned and held by a thing of def RM_PawnFlyer_Knockback whose drawn position lies strictly between the start and landing cells; it lands on the cell planned at launch, never a re-targeted one, with a pawn-into-pawn impact line naming the walker; the stun ends within landingStunMax ticks and the colonist goes back to work; what it carried leaves its hands at the blast and flies on its own arc (0.2.0, record.json carried_thing_own_arc, read by sc_pawn_arc_carried_thing; the 0.1.0 'hold it' of owner 2026-11-14 was for that day only)",
    "control": {
     "case": "a debug teleport of a third pawn by the same distance, traced the same way",
     "expect": "no RM_PawnFlyer_Knockback holder and no in-between drawn position on any tick",
@@ -929,6 +929,252 @@
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",
    "hold": "immediate",
    "entry_point_item": "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD"
+  },
+  {
+   "id": "sc_pawn_arc_carried_thing",
+   "kind": "acceptance",
+   "requirement": [
+    "pawn_flight_arc"
+   ],
+   "bars_0_2_0": [
+    "carried_thing_own_arc"
+   ],
+   "lane_of": "sc_pawn_arc",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_carried_thing.py::lane",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_carried_thing.py",
+   "contract_kind": "A",
+   "start": [
+    "a fresh quicktest map on ArchSmall on the Explosive Knockback small list (version/small_list.json), one clean station (asserted by scene.open needs: mods ExplosiveKnockback, map fresh:quicktest, calm standard; INVALID otherwise)",
+    "three lanes 14 cells apart, each set off alone: light (a colonist hauling 20 Steel, 10 kg, under lightMassLimit), heavy (a colonist hauling a Muffalo corpse, over lightMassLimit), empty (a colonist carrying nothing); each colonist holds its load before the blast (asserted from its carry tracker)",
+    "the blast is jawa/explosion_at (Bomb, radius 2.9, damage 1) with blastPowerFromDamage off, so it pushes at the Bomb's plain force and harms by 1 (a real shell would down the thrown colonist and hide the bar)"
+   ],
+   "action": "set the blast off on the cell beside each colonist, one lane at a time; read the journal (launch, carried_throw, item_land, land) and the two flyers every tick until all is down",
+   "expect": "light: on the carried_throw tick the colonist's hands and its PawnFlyer hold nothing and the same 20 Steel is the one thing in its own goods flyer (V_HANDS); mid-flight the stack and the colonist are at least half a cell apart (V_APART); the stack lands whole on its own planned cell, Steel on the station 20 before and after (V_STACK_LAND); the colonist lands empty-handed on its launch's cell (V_PAWN_LAND); heavy: carried_throw act dropped, reason too_heavy, and the corpse lies on the colonist's start cell (V_HEAVY)",
+   "control": {
+    "case": "the empty lane: a colonist carrying nothing; and the plant light_limit_5 (lightMassLimit 5 kg, so the 10 kg Steel is too heavy)",
+    "expect": "empty: the launch reads carried none and no carried_throw names it (V_CONTROL); under the plant V_HANDS, V_APART and V_STACK_LAND FAIL (the stack drops on the start cell)",
+    "rules_out": "a stack that only looks apart because it was dropped, and a check blind to a load that never flew"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the fresh quicktest map on ArchSmall is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC"
+  },
+  {
+   "id": "sc_pawn_arc_bruise_sizes",
+   "kind": "acceptance",
+   "requirement": [
+    "pawn_hits_pawn_stops"
+   ],
+   "bars_0_2_0": [
+    "collision_bruise_by_size"
+   ],
+   "lane_of": "sc_pawn_arc",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_bruise_sizes.py::lane_fire",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_bruise_sizes.py",
+   "contract_kind": "A",
+   "start": [
+    "a fresh quicktest map on ArchSmall on the Explosive Knockback small list (version/small_list.json), one clean station (asserted by scene.open needs: mods ExplosiveKnockback, map fresh:quicktest, calm standard; INVALID otherwise)",
+    "four lanes 10 cells apart, all of the player's faction: a thrower colonist 2 cells from the blast and in its path, 3 cells from the blast (outside its 2.9 radius, so only the bruise can touch it), a Squirrel (small), an Elephant (large), a colonist, or nothing (empty)",
+    "the blast is jawa/explosion_at (Bomb, radius 2.9, damage 1) with blastPowerFromDamage off, so it pushes at the Bomb's plain force and harms by 1 (a real shell would down the thrown colonist and hide the bar)"
+   ],
+   "action": "set each lane's blast off alone; read the journal's bruise record and each pawn's Bruise and Crush hediffs 120 ticks after",
+   "expect": "one bruise record names the thrower and the standing pawn in each filled lane (V_BRUISE_REC); the squirrel takes the larger hit (V_SMALL); the colonist takes the larger hit against the elephant (V_LARGE); two colonists are hit alike and lightly, the split following the masses (V_ALIKE); neither colonist is downed (V_NOT_DOWNED); the standing pawn gained a real Bruise or Crush (V_HEDIFF)",
+   "control": {
+    "case": "the empty lane; and the plant no_bruise (impactDamageEnabled off)",
+    "expect": "empty: no bruise record and the launch reads hitOther false (V_EMPTY); under the plant V_SMALL, V_LARGE and V_HEDIFF FAIL",
+    "rules_out": "a bruise that is really the blast's own damage, and a split read from the journal alone with no injury in the game"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the fresh quicktest map on ArchSmall is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN"
+  },
+  {
+   "id": "sc_pawn_land_on_pawn_sizes",
+   "kind": "acceptance",
+   "requirement": [
+    "pawn_hits_pawn_stops"
+   ],
+   "bars_0_2_0": [
+    "collision_bruise_by_size"
+   ],
+   "lane_of": "sc_pawn_arc",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_land_on_pawn_sizes.py::pair",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_land_on_pawn_sizes.py",
+   "contract_kind": "A",
+   "start": [
+    "the stage save RM_Stage_ExplosiveKnockback on ArchSmall (asserted by scene.open; INVALID otherwise)",
+    "four lanes 10 cells apart: a thrower colonist 1 cell from the blast, maxThrowCells 2 so every landing cell is (10, z); a walker one cell off that line, outside the blast, ordered onto the landing cell 2 ticks before the blast: Squirrel (small), Muffalo (large), colonist, or no walker (empty)",
+    "the blast is jawa/explosion_at (Bomb, radius 2.9, damage 1) with blastPowerFromDamage off, so it pushes at the Bomb's plain force and harms by 1 (a real shell would down the thrown colonist and hide the bar)"
+   ],
+   "action": "set each lane's blast off alone; read the land_on_pawn record and each pawn's hediffs after the landing",
+   "expect": "a land_on_pawn record names the thrower and the walker (V_LAND_REC; INVALID when the walker was not on the cell, the mod not judged); the squirrel takes the larger hit (V_SMALL); the colonist takes the larger hit against the muffalo (V_LARGE); two colonists alike, by the masses (V_ALIKE); nobody downed (V_NOT_DOWNED); the walker gained its own share, not the thrower's (V_HEDIFF)",
+   "control": {
+    "case": "the empty lane; the plant no_bruise; and the build plant C_LANDING_BRUISE_SWAPPED (the walker given the thrower's amount)",
+    "expect": "empty: the colonist launched and no land_on_pawn record names it (V_EMPTY); no_bruise makes V_SMALL, V_LARGE and V_HEDIFF FAIL; the swapped build makes V_HEDIFF FAIL",
+    "rules_out": "the stop half (sc_pawn_arc_bruise_sizes) passing for the landing half, and a landing that bruises by the wrong body's size"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the stage save is reloaded, never saved over and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_COVER_KNOCKBACK_BAR_HALVES_NO_LIVE_CHECK_SEES"
+  },
+  {
+   "id": "sc_pawn_arc_sandbag_no_contact",
+   "kind": "acceptance",
+   "requirement": [
+    "pawn_hits_pawn_stops"
+   ],
+   "bars_0_2_0": [
+    "no_impact_without_contact"
+   ],
+   "lane_of": "sc_pawn_arc",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_pawn_arc_sandbag_no_contact.py::lane_fire",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_pawn_arc_sandbag_no_contact.py",
+   "contract_kind": "A",
+   "start": [
+    "a fresh quicktest map on ArchSmall on the Explosive Knockback small list (version/small_list.json), one clean station (asserted by scene.open needs: mods ExplosiveKnockback, map fresh:quicktest, calm standard; INVALID otherwise)",
+    "three lanes 12 cells apart, along +x: near (blast, colonist, Sandbags, standing colonist), far (blast, colonist, free cell, Sandbags, standing colonist), control (the near lane with no sandbag); each standing colonist 3 or more cells from the blast, outside its radius (asserted: the sandbag stands in the line, the contract's exposure)",
+    "the blast is jawa/explosion_at (Bomb, radius 2.9, damage 1) with blastPowerFromDamage off, so it pushes at the Bomb's plain force and harms by 1 (a real shell would down the thrown colonist and hide the bar); sandbagsStopThrow read at the player's value"
+   ],
+   "action": "set each lane's blast off alone; read the journal (blocked, launch, bruise) and the standing colonist's hediffs 120 ticks after",
+   "expect": "near and far: the throw stops PawnBeyondCover with hitOther false and no other impact (V_STOP), no bruise record names the thrower (V_NO_BRUISE), and the standing colonist's injuries are unchanged (V_UNTOUCHED); far: the throw was planned for 3 or more cells, so it really reached the sandbag (V_REACH)",
+   "control": {
+    "case": "the control lane, no sandbag; and the plant no_sandbag (near and far staged without their sandbag)",
+    "expect": "control: stop Pawn, a bruise record naming the standing colonist, its Bruise or Crush rose (V_CONTROL); under the plant V_STOP, V_NO_BRUISE and V_UNTOUCHED FAIL",
+    "rules_out": "a standing pawn that is untouched only because no throw could ever reach it"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the fresh quicktest map on ArchSmall is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN"
+  },
+  {
+   "id": "sc_gas_chain_pawn_on_cover",
+   "kind": "acceptance",
+   "requirement": [
+    "gas_goes_clump_by_clump"
+   ],
+   "bars_0_2_0": [
+    "gas_shoves_pawn_on_pit_cover"
+   ],
+   "lane_of": "sc_gas_chain",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_gas_chain_pawn_on_cover.py::lane",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_gas_chain_pawn_on_cover.py",
+   "contract_kind": "A",
+   "start": [
+    "a fresh quicktest map on ArchSmall on the Explosive Knockback small list (version/small_list.json, which holds mandrake.rm.flowworks and mandrake.rm.biomes, asserted by V_SMALL_LIST), one clean station (asserted by scene.open needs: mods ExplosiveKnockback, map fresh:quicktest, calm standard; INVALID otherwise)",
+    "two lanes 14 cells apart: cover (a superdeep pit dug by jawa/flowworks_excavation_drive, FlowWorks' RM_PitCover_ReinforcedFrame placed over it, a colonist walked onto the deck: asserted by V_ON_DECK) and control (the same colonist on plain soil, no pit); the Cauldron's vent gas seeded beside each colonist (RM_MapComponent_VentGas.SeedCloud, radius 2), so one burst cell reaches it",
+    "gasChain read at the player's value (default on)"
+   ],
+   "action": "light one Fire at the cloud's far end; the Cauldron's burn scan walks the fire through the cloud; read the journal (gas_burst, launch, land), the colonist's cell and hediffs, and the cover after the settle",
+   "expect": "in each lane at least one gas_burst is written (V_BURST) and exactly one launch names the colonist: gas, at most 1 cell planned, no impact; it ends 1 cell from where it stood, on its launch's cell (V_SHOVE); on the cover the launch reads onCover true (V_ON_COVER); no injury but the fire's own Burn (V_UNHURT); the cover still stands (V_COVER_INTACT)",
+   "control": {
+    "case": "the control lane on plain soil; and the plant gas_chain_off (gasChain false, restored in a finally)",
+    "expect": "control: the same one-cell shove on plain ground; under the plant V_SHOVE, V_ON_COVER and V_BURST FAIL on both lanes (the gas burns, nobody is shoved)",
+    "rules_out": "a colonist that moved by walking or by the fire, and a kernel that still reads a pawn on a cover as one in a pit"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the fresh quicktest map on ArchSmall is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_FOLD_KNOCKBACK_POLISH_LINES_INTO_ZERO_TWO_THREE_JUDGED_IN"
+  },
+  {
+   "id": "sc_storeroom_mortar_rebound_legs",
+   "kind": "acceptance",
+   "requirement": [
+    "goods_arc_spin_rebound"
+   ],
+   "bars_0_2_0": [
+    "rebound_goes_shorter"
+   ],
+   "lane_of": "sc_storeroom_mortar",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_storeroom_mortar_rebound_legs.py::blast",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_storeroom_mortar_rebound_legs.py",
+   "contract_kind": "A",
+   "start": [
+    "a fresh quicktest map on ArchSmall on the Explosive Knockback small list (version/small_list.json), one clean station (asserted by scene.open needs: mods ExplosiveKnockback, map fresh:quicktest, calm standard; INVALID otherwise)",
+    "three granite-walled storerooms 5 cells deep, 3, 4 and 6 cells wide, 5 or more cells apart (asserted: the walls stand, the contract's exposure); in each a Shell_HighExplosive against the west wall and one Steel beside it in its row",
+    "goodsRebound and goodsReboundKeepPercent read at the player's values (defaults)"
+   ],
+   "action": "set each room's shell off alone by damage; read the journal (item_move, item_rebound, item_land) for every thrown good until all rest",
+   "expect": "in each room at least one good is thrown (V_THROWN); every thrown good has one landing and as many rebounds as the landing counts (V_TRACE); each comes to rest within the carrier's bounce limit (V_RESTS); every rebound leg is shorter than the cells the throw had left at that rebound, read by the scene, never from the mod's own number (V_SHORTER)",
+   "control": {
+    "case": "the plant keep_all (goodsReboundKeepPercent 100)",
+    "expect": "V_SHORTER FAILS: a rebound carries on for all the way the throw had left",
+    "rules_out": "a check that passes any rebound because the room is too narrow for a long leg"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the fresh quicktest map on ArchSmall is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_RULE_REBOUND_NEAR_WALL_OUTFLIES_FIRST_LEG"
+  },
+  {
+   "id": "sc_blast_show",
+   "kind": "acceptance",
+   "requirement": [
+    "every_harmful_blast_throws"
+   ],
+   "bars_0_2_0": [
+    "blast_show_fire_and_flash",
+    "blast_show_screen_shake",
+    "blast_show_air_ripple",
+    "blast_show_smoke",
+    "blast_show_crater_scar",
+    "blast_show_soot_on_things",
+    "blast_show_soot_on_pawns",
+    "blast_show_scales_with_damage"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_blast_show.py::blasts",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_blast_show.py",
+   "contract_kind": "A",
+   "start": [
+    "a fresh quicktest map on ArchSmall on the Explosive Knockback small list (version/small_list.json), one clean station (asserted by scene.open needs: mods ExplosiveKnockback, map fresh:quicktest, calm standard; INVALID otherwise)",
+    "one station of eight pads, each a vanilla explosive set off by damage (CompExplosive to GenExplosion, the path every vanilla explosive takes): Shell_HighExplosive on soil, rough granite, granite tile and shallow water; TrapIED_HighExplosive on soil; Shell_Incendiary on soil; Shell_EMP on soil; Shell_AntigrainWarhead on soil, set off last and far from the rest",
+    "a granite wall two cells from the tile pad's centre and a muffalo three cells from the IED pad's centre",
+    "every show switch at its default, on"
+   ],
+   "action": "set the pads off one at a time; take a picture right after each blast and one 300 ticks after; read the scars, the camera kick, the wall's paint and the muffalo's hediffs",
+   "expect": "soil pads wear our crater and rough, tile and incendiary pads our scorch, water and EMP none of ours (V_SCAR_KIND); no vanilla blast mark anywhere (V_NO_VANILLA); scars widen with power, HE < IED < antigrain (V_SCAR_SIZE); the camera kicks for each harmful blast in view, harder for the antigrain (V_SHAKE); the wall wears the charred paint (V_SOOT_THING); the muffalo carries the soot (V_SOOT_PAWN); the art judge (design/RimMandrake/art_judge_brief.md) keeps the fire, flash, ripple, smoke and scar pictures, and that keep is part of the verdict",
+   "control": {
+    "case": "the EMP pad (a harmless blast); and the plant show_off (the seven show switches off)",
+    "expect": "EMP: the vanilla look, no scar of ours; under the plant V_SCAR_KIND, V_NO_VANILLA, V_SHAKE, V_SOOT_THING and V_SOOT_PAWN FAIL (vanilla's mark returns, no kick, no soot)",
+    "rules_out": "a show drawn by another mod or by vanilla, and checks that cannot see the show at all"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the fresh quicktest map on ArchSmall is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS"
+  },
+  {
+   "id": "sc_settings_sweep_show_switches",
+   "kind": "acceptance",
+   "requirement": [
+    "settings_scale_and_switch"
+   ],
+   "bars_0_2_0": [
+    "blast_show_switches_off_clean"
+   ],
+   "lane_of": "sc_settings_sweep",
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/ExplosiveKnockback/proof/scene_settings_sweep_show_switches.py::sweep",
+   "command": "python.exe src\\RimMandrake\\Utils\\scene.py accept src\\RimMandrake\\ExplosiveKnockback\\proof\\scene_settings_sweep_show_switches.py",
+   "contract_kind": "A",
+   "start": [
+    "a fresh quicktest map on ArchSmall on the Explosive Knockback small list (version/small_list.json), one clean station (asserted by scene.open needs: mods ExplosiveKnockback, map fresh:quicktest, calm standard; INVALID otherwise)",
+    "a row of like pads, one per show switch plus one all-off pad, and one colonist two cells from two like pads (asserted: T_LIKE_PAD)"
+   ],
+   "action": "set a blast off with each show switch off in turn, then with all off; then throw the colonist twice, show on and show off, on like pads",
+   "expect": "with one switch off, its part is absent and the others are present; with all off, vanilla's own mark returns and nothing of ours is drawn (S_ALL_OFF); the two throws have the same landing offset, cells and mass (T_SAME_THROW: the throw reads no show switch)",
+   "control": {
+    "case": "the plant switches_ignored (no switch is written); and the plant unlike_pad (the show-off blast 3 cells from the colonist, not 2)",
+    "expect": "switches_ignored: S_SCAR and S_SHAKE FAIL on every off pad and S_ALL_OFF FAILS; unlike_pad: T_LIKE_PAD and T_SAME_THROW FAIL",
+    "rules_out": "switches that save but change nothing, and a same-throw check that cannot tell two throws apart"
+   },
+   "restore": "scene.open restores every setting it wrote (in a finally); the fresh quicktest map on ArchSmall is disposable and destroyed after",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS"
   }
  ],
  "showcases": [
@@ -953,6 +1199,28 @@
    ],
    "decision": "d_c_flagship",
    "said": "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well."
+  },
+  {
+   "id": "blast_show",
+   "scenes": [
+    "sc_blast_show",
+    "sc_settings_sweep_show_switches"
+   ],
+   "exercises": [
+    "blast_show_fire_and_flash",
+    "blast_show_screen_shake",
+    "blast_show_air_ripple",
+    "blast_show_smoke",
+    "blast_show_crater_scar",
+    "blast_show_soot_on_things",
+    "blast_show_soot_on_pawns",
+    "blast_show_scales_with_damage",
+    "blast_show_switches_off_clean"
+   ],
+   "source": [
+    "OWNER:1795565769863524396"
+   ],
+   "why": "0.2.0's one new face: the look of every blast, which no earlier showcase draws; greedy pick, 9 new, no overlap"
   }
  ],
  "coverage_rest": [
@@ -1134,6 +1402,47 @@
     "sc_mass_and_power"
    ],
    "why": "the same four creatures thrown farther at damage 100 than at 50 (journal damage ratio 2.0 then 1.0) and alike with blastPowerFromDamage off, in sc_mass_and_power"
+  },
+  {
+   "capability": "carried_thing_own_arc",
+   "by": [
+    "sc_pawn_arc_carried_thing",
+    "pawn_flight_arc"
+   ],
+   "why": "a lane of an ordinary 0.1.0 scene (sc_pawn_arc) that one staged throw decides; a showcase of these five lanes would newly exercise at most 3 of them while sharing the throw itself (inv_kernel, inv_hook, inv_pawn_flyer) with showcase 1, over the 0.25 overlap limit"
+  },
+  {
+   "capability": "collision_bruise_by_size",
+   "by": [
+    "sc_pawn_arc_bruise_sizes",
+    "sc_pawn_land_on_pawn_sizes",
+    "pawn_hits_pawn_stops"
+   ],
+   "why": "a lane of an ordinary 0.1.0 scene (sc_pawn_arc) that one staged throw decides; a showcase of these five lanes would newly exercise at most 3 of them while sharing the throw itself (inv_kernel, inv_hook, inv_pawn_flyer) with showcase 1, over the 0.25 overlap limit"
+  },
+  {
+   "capability": "no_impact_without_contact",
+   "by": [
+    "sc_pawn_arc_sandbag_no_contact",
+    "pawn_hits_pawn_stops"
+   ],
+   "why": "a lane of an ordinary 0.1.0 scene (sc_pawn_arc) that one staged throw decides; a showcase of these five lanes would newly exercise at most 3 of them while sharing the throw itself (inv_kernel, inv_hook, inv_pawn_flyer) with showcase 1, over the 0.25 overlap limit"
+  },
+  {
+   "capability": "gas_shoves_pawn_on_pit_cover",
+   "by": [
+    "sc_gas_chain_pawn_on_cover",
+    "gas_goes_clump_by_clump"
+   ],
+   "why": "a lane of an ordinary 0.1.0 scene (sc_gas_chain) that one staged throw decides; a showcase of these five lanes would newly exercise at most 3 of them while sharing the throw itself (inv_kernel, inv_hook, inv_pawn_flyer) with showcase 1, over the 0.25 overlap limit"
+  },
+  {
+   "capability": "rebound_goes_shorter",
+   "by": [
+    "sc_storeroom_mortar_rebound_legs",
+    "goods_arc_spin_rebound"
+   ],
+   "why": "a lane of an ordinary 0.1.0 scene (sc_storeroom_mortar) that one staged throw decides; a showcase of these five lanes would newly exercise at most 3 of them while sharing the throw itself (inv_kernel, inv_hook, inv_pawn_flyer) with showcase 1, over the 0.25 overlap limit"
   }
  ]
 }
