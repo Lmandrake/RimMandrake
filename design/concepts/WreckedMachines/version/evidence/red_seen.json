@@ -91,7 +91,7 @@
   "test_blob": "5e034f27dc583dcad960ce5fbd31452e8804595e"
  },
  "T_ONBOARDING_TABLE_OFFLINE": {
-  "at": "2026-11-27T18:44:39Z",
+  "at": "2026-11-27T19:05:30Z",
   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
   "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
   "last": "T_ONBOARDING_TABLE_OFFLINE: FAIL (17 lines read)",
@@ -101,7 +101,7 @@
   ],
   "patch_sha": "6725672c2b74f634",
   "rc": 1,
-  "test_blob": "33571b09eff6f883c33abbb85913993f246a7836"
+  "test_blob": "245771307b868dcadc0c09b2fd8c9421d6257472"
  },
  "T_REPAIR_STATE_WALK": {
   "at": "2026-11-27T14:16:10Z",
