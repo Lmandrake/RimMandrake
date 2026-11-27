@@ -251,6 +251,46 @@ def main() -> int:
     v = g2.classify(row("RM_Fac", install_to=it("Things/RM_Fac/RM_Fac_east"), facing="east"))
     check(v["verdict"] == "DONOR", "a per-facing job file is judged on its own facing", v)
 
+    # an OWED facing (CREATURE_FACINGS_REDRAW_ONE_PICTURE_ZOO): a creature drawn on one picture whose texPath the facing
+    # census lists in facing_art_owed.json may get its missing facings; the one picture itself stays protected, and a
+    # creature the list does not name is refused as before
+    owed_p = root / "src/RimMandrake/Utils/facing_art_owed.json"
+    owed_p.parent.mkdir(parents=True, exist_ok=True)
+    owed_p.write_text(json.dumps({"texPaths": ["Things/RM_One/RM_One"]}))
+    for dn in ("RM_One", "RM_Other"):
+        (root / M / "Textures/Things" / dn).mkdir(parents=True)
+        (root / M / "Textures/Things" / dn / f"{dn}.png").write_bytes(f"{dn}-render".encode())
+    (root / M / "Textures/Things/RM_One/RM_One_north.png").write_bytes(B["regen"])
+    (root / M / "Defs" / "o.xml").write_text(
+        "<Defs>" + "".join(f"<ThingDef><defName>{dn}</defName><graphicData><texPath>Things/{dn}/{dn}</texPath>"
+                           "<graphicClass>Graphic_Single</graphicClass></graphicData></ThingDef>" for dn in ("RM_One", "RM_Other"))
+        + "</Defs>")
+    one_events = events() + [var(20, sha(b"RM_One-render"), kind="artpipe", job="chill_one_v1", res="Things/RM_One/RM_One"),
+                             var(21, sha(b"RM_Other-render"), kind="artpipe", job="chill_other_v1",
+                                 res="Things/RM_Other/RM_Other"),
+                             var(22, "d" * 64, kind="artpipe", job="old_one_west",
+                                 loc="src/RimMandrake/Fake/Textures/Things/RM_One/RM_One_west.png")]
+    deployed = {"Things/RM_One/RM_One": [("mandrake.rm.biomes", root / M / "Textures/Things/RM_One/RM_One.png")]}
+    go = gate(root, idx=A.Index(one_events), game_file=lambda res: deployed.get(res, []),
+              game_classify=lambda res: {"cat": "OURS", "by": "mandrake.rm.biomes"} if res in deployed else game_classify(res))
+    for msg, r, want in [
+        ("owed facing: a missing _south of a one-picture creature the census owes is NONE",
+         row("RM_One", install_to=it("Things/RM_One/RM_One_south"), facing="south"), "NONE"),
+        ("owed facing: the one picture itself (no facing) stays REFUSED_REGEN",
+         row("RM_One", install_to=it("Things/RM_One/RM_One")), "REFUSED_REGEN"),
+        ("owed facing: a facing file that exists is judged by its bytes (a render of ours: REGEN)",
+         row("RM_One", install_to=it("Things/RM_One/RM_One_north"), facing="north"), "REFUSED_REGEN"),
+        ("owed facing: a render registered at the facing itself still refuses",
+         row("RM_One", install_to=it("Things/RM_One/RM_One_west"), facing="west"), "REFUSED_REGEN"),
+        ("not owed: a one-picture creature the list does not name is refused as before",
+         row("RM_Other", install_to=it("Things/RM_Other/RM_Other_south"), facing="south"), "REFUSED_REGEN"),
+    ]:
+        v = go.classify(r)
+        check(v["verdict"] == want, msg, v)
+    for p in ("o.xml",):
+        (root / M / "Defs" / p).unlink()
+    owed_p.unlink()
+
     # fail closed: the gate cannot be built -> GateError, and submit files nothing
     class Blind:
         @property

@@ -275,6 +275,7 @@ class Gate:
 
         self._scan_contract_paths(src)
         self._scan_commission_slots()
+        self._scan_owed_facings()
 
     def _scan_commission_slots(self):
         """A commissioned NEW look (EXTRA_ART_PER_BIOME_COMMISSION_1: a female, variant or young texture no def draws
@@ -297,6 +298,23 @@ class Gate:
                 self.def_draws[dn].add(key(t))
                 self.drawn[low(t)].add(dn)
                 self.def_tex.setdefault(dn, set()).add(t)
+
+    def _scan_owed_facings(self):
+        """texPaths the facing census owes facings (src/RimMandrake/Utils/facing_art_owed.json: a creature drawn on one
+        picture, each line carried by an item; CREATURE_FACINGS_REDRAW_ONE_PICTURE_ZOO). A MISSING facing of such a path
+        is a new slot, not a redraw of the one picture: it is judged at its own facing only (_renamed, _game_side). The
+        one picture itself, and any facing that exists or had a render registered at it, are judged as before."""
+        p = self.repo / "src/RimMandrake/Utils/facing_art_owed.json"
+        self.owed = set()
+        if not p.is_file():
+            return
+        try:
+            self.owed = {key(t) for t in json.loads(p.read_text()).get("texPaths", [])}
+        except (OSError, ValueError) as e:
+            raise GateError(f"facing_art_owed.json unreadable: {e}") from e
+
+    def _owed_facing(self, rel: str) -> bool:
+        return strip_facing(rel) != rel and key(strip_facing(rel)) in getattr(self, "owed", ())
 
     def _scan_contract_paths(self, src: Path):
         """TerrainDef / WeatherDef art is installed at a CONTRACT path the def's XML does not name (its texturePath is a
@@ -376,6 +394,24 @@ class Gate:
             if ev.get("sha") in self.history_sha:
                 self.by_res_regen[key(strip_facing(r[:-4] if r.lower().endswith(".png") else r))].append(
                     f"ledger live {m}/Textures/{r}")
+        # the same, at the FACING (res_of_variant strips it): an owed facing is judged here, not at its bare path
+        self.by_face_regen = defaultdict(list)
+        for sha, vs in idx.variants.items():
+            if sha not in self.history_sha:
+                continue
+            for v in vs:
+                m = _LOC.match((v.get("loc") or "").replace("\\", "/"))
+                job = str(v.get("job") or (v.get("extra") or {}).get("job") or "")
+                fj = re.search(r"_(north|south|east|west)$", job)
+                if m and strip_facing(m.group(1)) != m.group(1):
+                    self.by_face_regen[key(m.group(1))].append(self.history_sha[sha])
+                elif fj and res_of_variant(v):
+                    self.by_face_regen[key(res_of_variant(v) + "_" + fj.group(1))].append(self.history_sha[sha])
+        for (m, r), ev in idx.live.items():
+            if ev.get("sha") in self.history_sha:
+                r2 = r[:-4] if r.lower().endswith(".png") else r
+                if strip_facing(r2) != r2:
+                    self.by_face_regen[key(r2)].append(f"ledger live {m}/Textures/{r}")
 
     # ───────────────────────────────────────────────────────────── judging ──
 
@@ -422,6 +458,10 @@ class Gate:
     def _renamed(self, dn: str, rel: str) -> str | None:
         """A render for this def+path exists in the ledger, or the def now draws a render of ours elsewhere."""
         r0 = key(strip_facing(rel))
+        if self._owed_facing(rel):                 # a new facing of a one-picture creature: its own facing only
+            if self.by_face_regen.get(key(rel)):
+                return f"a render was registered at {key(rel)} ({self.by_face_regen[key(rel)][0]})"
+            r0 = key(rel)
         for k in sorted({key(rel), r0}):
             if self.by_res_regen.get(k):
                 return f"a render was registered at {k} ({self.by_res_regen[k][0]})"
@@ -515,6 +555,8 @@ class Gate:
             own = [p for pkg, p in self.game_file(res) if pkg.lower().startswith(OWN_PKG)]
             if fac:                                  # judge THIS facing's copies when the game has them (#6)
                 same = [p for p in own if Path(str(p)).stem.lower().endswith("_" + fac.lower())]
+                if not same and self._owed_facing(rel):
+                    return "NONE", f"{where}: an owed facing; the game serves only the one picture of {res}"
                 own = same or own
             out = []
             for p in own:                            # every copy, every package: the worst decides (#6)
