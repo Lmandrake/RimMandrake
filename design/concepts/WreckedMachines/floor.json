@@ -1,0 +1,99 @@
+{
+ "lines": {
+  "tick_cost": {
+   "status": "applicable",
+   "evidence_mode": "measured",
+   "note": "a machine of this mod ticks as its donor does; the mod adds one repair record for each machine under repair and no map component that runs each tick"
+  },
+  "long_stall": {
+   "status": "applicable",
+   "evidence_mode": "measured",
+   "note": "read on the whole run and on map generation with the placement step"
+  },
+  "latency": {
+   "status": "applicable",
+   "evidence_mode": "measured",
+   "note": "the repair order and the study switch are the two clicks"
+  },
+  "memory": {
+   "status": "applicable",
+   "evidence_mode": "inferred",
+   "establishes": "a heap read before and after the whole run (sc_whole_journey) establishes no growth across one journey of two machines with a save and a reload; flatness over 30 days stays inferred from the absence of any per-tick state (one repair record per machine under repair)"
+  },
+  "load_time": {
+   "status": "applicable",
+   "evidence_mode": "measured",
+   "note": "about 60 new ThingDefs and 40 research projects, and 137 new pictures; read on the small list"
+  },
+  "save_size": {
+   "status": "applicable",
+   "evidence_mode": "compressed",
+   "establishes": "the save of the whole run against the starting save establishes what one journey adds; growth over a long colony stays inferred from one small record per machine"
+  },
+  "save_compat": {
+   "status": "applicable",
+   "note": "check C_old_save: a save with working factory machines made without this mod loads with them standing and working. Removal of the mod from a save: every machine of this mod and every Ancient Component is lost with the usual missing-def messages, the factory mod's own machines return to the build menu, and the research projects of this mod are dropped; a removal test runs only when asked"
+  },
+  "load_order": {
+   "status": "applicable",
+   "note": "loads after the factory mod and Harmony; names no hauler mod, no FlowWorks and no Research Reinvented as a requirement"
+  },
+  "log": {
+   "status": "applicable"
+  },
+  "mod_settings": {
+   "status": "applicable",
+   "note": "bar switch_gives_machine_back; one on/off line for each machine, the level and cost numbers, the two placement switches, the riders' switches as built"
+  },
+  "multiplayer": {
+   "status": "applicable"
+  },
+  "art": {
+   "status": "applicable",
+   "note": "each Wrecked and Kludged level has pictures of its own (rule R_whole_picture); the art judge reads each against the canon library"
+  },
+  "reads_as": {
+   "status": "applicable",
+   "note": "bar levels_told_apart"
+  },
+  "clickable": {
+   "status": "applicable",
+   "note": "the factory machines are drawn over several cells; a click on the art of a wreck selects it"
+  },
+  "order_taken": {
+   "status": "applicable",
+   "note": "the repair order and the study switch show at once that they were taken, before a colonist arrives (bar repair_on_the_machine: a repair mark and the list of missing materials)"
+  },
+  "motion": {
+   "status": "applicable",
+   "note": "a change of level is a change of look: sc_repair_on_machine and sc_whole_journey capture before, during and after"
+  },
+  "text": {
+   "status": "applicable",
+   "note": "bar no_setting_named and rule R_level_names"
+  },
+  "dlc": {
+   "status": "applicable"
+  },
+  "worldgen": {
+   "status": "applicable",
+   "note": "the mod places things on local maps only; it makes and changes no world"
+  },
+  "biome_scope": {
+   "status": "applicable",
+   "note": "placement reads whether a ruin room or open ground exists and no biome; repair, study and the levels read the machine and its ground only"
+  },
+  "flight": {
+   "status": "not_applicable",
+   "evidence": "the mod has no creature and no pawn: its ThingDefs are buildings and one item (src/RimMandrake/WreckedMachines/Defs)"
+  },
+  "naming": {
+   "status": "applicable",
+   "note": "mandrake.rm.wreckedmachines, prefix RM_WM_, namespace RimMandrake.WreckedMachines"
+  },
+  "test_isolation": {
+   "status": "applicable",
+   "note": "design/concepts/WreckedMachines/version/small_list.json; the cannery's checks need Vanilla Cooking Expanded on a tier of their own"
+  }
+ }
+}

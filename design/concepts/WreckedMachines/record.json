@@ -418,7 +418,7 @@
   {
    "core": false,
    "id": "c_setting_words_in_generic_tier",
-   "routed": "stage 3: build item",
+   "routed": "stage 3: bar no_setting_named (an offline read of every text a player reads, with planted faults)",
    "source": [
     "OWNER:1795749349214480499",
     "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml",
@@ -432,7 +432,7 @@
    "core": false,
    "id": "c_repaired_is_not_a_grade",
    "position": "His statement names the fourth level 'Original' (OWNER:1795755622961436106). The player-facing word for the top def is Original, not Repaired.",
-   "routed": "stage 3",
+   "routed": "stage 3: rule R_level_names and the reject picture of bar levels_told_apart; scene sc_text_names_no_setting lists every text that calls a level Repaired",
    "source": [
     "OWNER:1795755622961436106",
     "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md",
@@ -487,7 +487,7 @@
   {
    "core": false,
    "id": "c_neighbours_ride_the_ladder",
-   "routed": "stage 3: constraint and check",
+   "routed": "stage 3: rule R_neighbour_names and check C_neighbour_names",
    "source": [
     "src/RimMandrake/ColdStorage/Source/ColdStorageStartup.cs",
     "src/RimMandrake/ColdStorage/Patches/ColdStorage_WreckedMachinesLadder.xml",
@@ -518,7 +518,7 @@
   {
    "core": false,
    "id": "c_plasteel_restore_red",
-   "routed": "stage 3: ends with the forge's two settings",
+   "routed": "stage 3: check C_forge_gates_gone; the red row and its ticket end with the plasteel switch when the forge is onboarded; the sweep of bar switch_gives_machine_back reads 'off, then on' for every line",
    "source": [
     "ITEM:WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS",
     "src/RimMandrake/WreckedMachines/validation.py",
@@ -578,7 +578,7 @@
   {
    "core": false,
    "id": "c_kludged_and_refurbished_levels",
-   "routed": "stage 3: build items",
+   "routed": "stage 3: bars study_opens_research and levels_of_function",
    "source": [
     "OWNER:1795755622961436106",
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
@@ -604,7 +604,7 @@
   {
    "core": false,
    "id": "c_full_restoration_switch",
-   "routed": "stage 3: a line on Mod Settings",
+   "routed": "stage 3: left out of every bar by name (only_by_repair, switch_gives_machine_back): a player's override",
    "source": [
     "OWNER:1795755622961436106",
     "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs"
@@ -672,7 +672,7 @@
    "core": false,
    "id": "c_bolt_on_powered_machine",
    "status": "open",
-   "routed": "build: first live visit classes it",
+   "routed": "stage 3: bar levels_told_apart, scene sc_marks_agree and check C_power_mark",
    "source": [
     "ITEM:RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED",
     "infrastructure/state/ledger/events/BENCH.jsonl"
@@ -1075,6 +1075,67 @@
     "design/concepts/WreckedMachines/turn_05.md"
    ],
    "what": "While a machine's Mod Settings line is on, the world hands out no working one of that machine: not as loot on a map, not as a reward and not as trader stock. A colony comes by a working one only by repair. This holds for all 20 onboarded machines, the two base-game machines included. For the 18 factory machines it is call 5 of d_all_eighteen_shape, shown to him in turn_04.md. For the two base-game machines it is new, and it changes the base game. Measured 2026-11-27 through RimSage (Defs/Core/ThingDefs_Buildings/Buildings_Special.xml and the ThingSetMakerDefs of Ideology, Odyssey and Anomaly): the base game's vanometric power cell and psychic emanator each carry the reward tag RewardStandardCore and the trade tag ExoticBuilding, and the map-generation loot lists name both (Ideology and Odyssey name both; Anomaly names the emanator in a loot list and in a reward list). So today a colony gets a working one as a reward, from a trader of exotic goods, or as loot. His words decide the call: the Original is 'no longer attainable through research or repair, used only for comparison', and a machine of this mod 'must be found and retrieved to a safe location, studied to enable research, and then slowly repaired'. A working Original that a trader sells is used for more than comparison, and it passes over every repair level. Where the statement and an older picture pulled apart, this record let the statement decide (d_wreck_is_carried, d_wrecked_gives_nothing); it does so here. The first draft of this run took the opposite call (leave the base game's cell alone, because a change to base-game loot is a large act in a stranger's game); the fresh reader aa3f32904cbb116b2 struck that call on the words 'used only for comparison', and the Designer found no words of his for it. What stays as it is: a machine that already stands in an old save; and with a machine's line off, that machine is handed out as the base game or the factory mod hands it out. Whether a wreck lies where the base game's loot would have held a working machine is data of where wrecks lie (d_found_is_wrecked). The base game's infinite chemreactor is not an onboarded machine and is not changed. What it costs: this mod changes three base-game hand-outs for a stranger (reward, trade and loot of two machines). d_three_looks rests on this call: outside an old save, no colony holds an Original beside a Refurbished machine of the same picture. The Designer's reading of his statement, not his words; he can undo it. Shown to him as call B of turn_05.md."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_flagship_smelter_comes_home",
+   "kind": "call",
+   "speaker": "conductor",
+   "delegated": "evidence-for-ask",
+   "flagship": "smelter_comes_home",
+   "run": "rm-role-designer-1795773471",
+   "source": [
+    "CONDUCTOR:1795774540053514047"
+   ],
+   "what": "The flagship, showcase 1 of the mod, is smelter_comes_home: a wrecked smelter found in a ruin room, carried home by colonists, studied, made Kludged where it stands, studied again and made Refurbished with an Ancient Component from the ruin. A delegated pick under the Evidence-for-Ask rule, recorded by this run on the ledger for his digest; it is not his words. Why nothing argues against it: the smelter is the one machine with pictures of its own today, the build takes it first (his words: 'we must first prioritize Utinni service'), and its journey uses every step of his statement. The other candidate, the carried power cell, repeats the same journey at small size and has no picture of its own yet. He can change the pick; a word from him reopens stage 2."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_wreck_stands_on_any_ground",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795773471",
+   "source": [
+    "CONDUCTOR:1795774540053514047",
+    "OWNER:1795762605668672773",
+    "OWNER:1795755622961436106",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
+    "design/concepts/WreckedMachines/sheet.md"
+   ],
+   "what": "A wreck can be set down on any ground that carries a heavy building. A working level needs the ground that the donor machine needs: for the factory machines, the factory mod's own floor. A repair order on a wreck that stands on other ground is unavailable and says so. The factory floor stays in the build menu behind the factory mod's own research, like the other parts (rule R_ground of tree.json). Measured 2026-11-27 from the factory mod's defs (workshop folder 3686924415, 1.6): 14 machines in Buildings_Factories.xml carry terrainAffordanceNeeded FactoryFloor; the terrain VFEF_FactoryFloor is opened by VFE_BasicFactories (after Machining) and is in the factory mod's build category. The built smelter wreck also needs that floor today ('map authoring must lay VFEF_FactoryFloor under every wreck'); the build changes the wreck, not the working levels. Why: his card says that colonists carry a wreck home, and his statement says 'retrieved to a safe location'; a wreck that can stand only on a floor that needs research could not be set down by a colony that has just found it. Not measured: whether the game lets a colony lay floor under a building that already stands; if it does not, the colony carries the wreck onto floor, which the same rule allows (scene sc_repair_needs_ground records which). The Designer's call, not his words; shown to him on sheet.md; he can undo it."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_uninstall_cancels_a_repair",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795773471",
+   "source": [
+    "CONDUCTOR:1795774540053514047",
+    "OWNER:1795762605668672773",
+    "design/concepts/WreckedMachines/turn_05.md",
+    "design/concepts/WreckedMachines/sheet.md"
+   ],
+   "what": "An order to uninstall a machine that is under repair cancels the repair first, as a cancel by the player does: the delivered materials are given back and the machine is carried at its old level (rule R_uninstall_cancels of tree.json; scene sc_uninstall_during_repair). It is the one reading that keeps both his card (colonists carry a machine) and call A of turn 5 (a cancelled repair never costs the colony the machine). The Designer's call, not his words; shown to him on sheet.md."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_stage3_design",
+   "kind": "call",
+   "speaker": "agent",
+   "run": "rm-role-designer-1795773471",
+   "source": [
+    "design/concepts/WreckedMachines/tree.json",
+    "design/concepts/WreckedMachines/sheet.md",
+    "design/concepts/WreckedMachines/plan.md",
+    "design/concepts/WreckedMachines/scenes.json",
+    "design/concepts/WreckedMachines/models.md",
+    "design/concepts/WreckedMachines/root.md",
+    "OWNER:1795755622961436106"
+   ],
+   "what": "How stage 3 wrote the design. (1) The root is root.md: record root.text word for word, one checklist id, validated on his event OWNER:1795755622961436106; the older walk file stays as a record of the built mod and gives no authority against the root. (2) Twelve six-part bars, one of them the whole bar (whole_journey). His card on plasteel is a picture of the bar levels_of_function and the rule R_forge, not a bar of its own, so that the count stays at twelve. (3) What is not a player's experience is a rule or a check: the onboarding table, two projects for each machine, the placement list, who may lift, the level-changed signal, the neighbours' names, the level names (c_repaired_is_not_a_grade: no text calls a level Repaired; a defName is build detail). (4) The two rules outside the promise (the salvage rule, the distillation machine) get no bar; each has a regression reading in scenes.json and a line under 'later' on the sheet. (5) One meeting is unknown (study_progress); models.md names the spike that settles it, and it is built first. (6) Offline simulation: yes, for the repair state machine in the shipped kernel and for the onboarding table against the donor's defs (plan.md). (7) Three showcases; four capabilities are covered by ordinary checks. (8) One build item for the proof script's scenes and the bridge functions that they need: RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL."
   }
  ],
  "failure_modes": [
@@ -1792,5 +1853,5 @@
    "start": "not a live scene"
   }
  ],
- "stage": 2
+ "stage": 3
 }

@@ -142,10 +142,24 @@
     "ref": "run rm-role-designer-1795771114",
     "stage": 3,
     "tokens": 7940000
+   },
+   {
+    "at": "2026-11-27T10:09:39Z",
+    "kind": "helper",
+    "ref": "Explore/sonnet a6834cbd3b0d4c11e: census of the bridge instruments that the stage 3 scenes need",
+    "stage": 3,
+    "tokens": 85996
+   },
+   {
+    "at": "2026-11-27T10:25:21Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795773471",
+    "stage": 3,
+    "tokens": 3538235
    }
   ],
   "reserve": 60000,
-  "spent": 38266344
+  "spent": 41890575
  },
  "history": [
   {
@@ -331,6 +345,25 @@
    "stage": 3,
    "what": "void_system",
    "why": "run rm-role-designer-1795771114: the unit ended with no claude result of its own; its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-27T09:58:07Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "38266344 of 8000000 spent; run rm-role-designer-1795773471 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T09:58:07Z",
+   "parent": "rm-detached-bench-rimmandrake-fix-designer-launch-argument-1795771108",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795773471, stage 3, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T10:25:21Z",
+   "stage": 3,
+   "what": "retry",
+   "why": "run rm-role-designer-1795773471 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -570,6 +603,16 @@
    "run": "rm-role-designer-1795771114",
    "stage": 3,
    "void_system": "the unit ended with no claude result of its own",
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
+  },
+  {
+   "at": "2026-11-27T10:25:21Z",
+   "outcome": "rejected",
+   "parent": "rm-detached-bench-rimmandrake-fix-designer-launch-argument-1795771108",
+   "run": "rm-role-designer-1795773471",
+   "stage": 3,
    "why": [
     "no result.json (a closing message is not a result)"
    ]
