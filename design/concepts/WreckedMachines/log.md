@@ -277,3 +277,10 @@ page.
 - No question went to him. The coverage judge rm-coverage-judge-1795778084 answered not_covered with seven gaps and repaired each in `scenes.json`; the changed scenes reopened stage 3.
 - This run read each repair against the tree and changed no scene, bar, rule or sheet line. It wrote no `coverage_fixes.json`: the next judge, a fresh one, checks the judge's fix as a repair.
 - Record decision `d_stage5_judge_fix_read` holds the read. `plan.md` names the four new scenes, their instruments and the two new mod-list tiers. One advisory note is a line in `version/polish.md`.
+
+## 2026-11-27 stage 4 again, after the coverage judge's repair of the scenes (run rm-role-designer-1795781357), 4:10 AM PST
+
+- No question went to him. The tree (480772ae49ee) and the sheet (54d5b95f8740) are the ones on which the exam was held; only `scenes.json` changed, and no Reader sees that file.
+- `exam_retake.py plan` answered NONE_TOUCHED: nothing that any of the 20 scenarios read changed. No scenario was retaken and no helper ran.
+- `exam_retake.py carry` on an empty answer file restamped `exam.json` and carried all 20 answers. `exam_retake.py record` wrote `exam_reads.json` again.
+- Record decision `d_stage4_exam_carried` holds this.

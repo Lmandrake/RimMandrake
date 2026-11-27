@@ -1,0 +1,36 @@
+{
+ "outcome": "none_touched",
+ "why": "looked: nothing any of the 20 scenarios read changed (tree and sheet as examined for every scenario's units): zero re-run, 20 answers stand; run `exam_retake.py carry <dir> --fresh <file>` on a file holding {} to restamp the exam's inputs (a sheet edit no scenario reads still moves the hash the gate checks)",
+ "retake": [],
+ "carry": [
+  "e01",
+  "e02",
+  "e03",
+  "e04",
+  "e05",
+  "e06",
+  "e07",
+  "e08",
+  "e09",
+  "e10",
+  "e11",
+  "e12",
+  "e13",
+  "e14",
+  "c01",
+  "c02",
+  "c03",
+  "c04",
+  "c05",
+  "c06"
+ ],
+ "changed": [],
+ "against": {
+  "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+  "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+  "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+  "at": "2026-11-27T11:13:27Z"
+ },
+ "by": "exam_retake.py plan",
+ "at": "2026-11-27T12:10:18Z"
+}

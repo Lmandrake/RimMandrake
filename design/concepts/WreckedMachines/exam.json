@@ -445,5 +445,816 @@
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
- "notes": "Run rm-role-designer-1795777120 held the exam. Both Readers matched expect on all 20 scenarios (14 reject, 6 accept) and named the expect_source bar on each. The scenarios were frozen (scenarios_hash) before any Reader was started; the frozen file with expect stayed outside the Readers' folders. Helper files: exam_evidence/."
+ "notes": "Run rm-role-designer-1795777120 held the exam. Both Readers matched expect on all 20 scenarios (14 reject, 6 accept) and named the expect_source bar on each. The scenarios were frozen (scenarios_hash) before any Reader was started; the frozen file with expect stayed outside the Readers' folders. Helper files: exam_evidence/.",
+ "carried": {
+  "e01": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "only_by_repair",
+    "study_opens_research"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "e47dda5f42d7510f90b4b265cc1957f6c12580ef82bee9e12302147bab395ce6",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "only_by_repair": "f31d746391a1c2276d261eefb8b64f7ffeb4968664e8cdc26aecf672f8d68704",
+    "study_opens_research": "17563aab14b1455d4aef400690ad6565591b54fbad289f33f75f09363cb0f62f"
+   }
+  },
+  "e02": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "wreck_comes_home",
+    "wreck_is_found"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "ef5e6c0638417807374d0da5c3a9beb2dfa365f1d7a09364f05d065d854a363b",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "wreck_comes_home": "65eb4db1a795f3da6f9c39c74c737835f48950aa4b7734f72fc6c568db113b80",
+    "wreck_is_found": "b080e83da8ca0508fed7846a9098a3d35406cf9a0178e0aac315fbb40dd0e028"
+   }
+  },
+  "e03": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "wreck_comes_home"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "704bad637689603c45903c6c91b1f5a677db95144c6aca25c465014d82ad7a6c",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "wreck_comes_home": "65eb4db1a795f3da6f9c39c74c737835f48950aa4b7734f72fc6c568db113b80"
+   }
+  },
+  "e04": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "wreck_comes_home"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "448c6d104a2d4819667010916d171208e018b9536949c6fafe2bd9d67c4c40f3",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "wreck_comes_home": "65eb4db1a795f3da6f9c39c74c737835f48950aa4b7734f72fc6c568db113b80"
+   }
+  },
+  "e05": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "repair_on_the_machine",
+    "study_opens_research"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "04d79774bf16b94428a72de0059df21d4a7809aec9ad694b68b24221198e298a",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "repair_on_the_machine": "6cda10fbafaddd5e735aaca9df98c3777d9010e912fa4e5f70b80e632db8e393",
+    "study_opens_research": "17563aab14b1455d4aef400690ad6565591b54fbad289f33f75f09363cb0f62f"
+   }
+  },
+  "e06": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "repair_on_the_machine"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "e1ccced53ee1349d9ce23112b36dd790ba240c64d9d1eeda9fd2c4b28058abf5",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "repair_on_the_machine": "6cda10fbafaddd5e735aaca9df98c3777d9010e912fa4e5f70b80e632db8e393"
+   }
+  },
+  "e07": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "levels_of_function",
+    "only_by_repair"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "202b5a2619dbef431da0ab6b986f6855019bbd6e416e0ea6a8d608102d8e154e",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "levels_of_function": "3c0298a2a869f8062ddaad6ccb7a6bbb37b8e8b7cda99e4567b36bef95083afe",
+    "only_by_repair": "f31d746391a1c2276d261eefb8b64f7ffeb4968664e8cdc26aecf672f8d68704"
+   }
+  },
+  "e08": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "last_repair_needs_component"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "1b84f83b4c3b0eea2f741d0aca6da8cbc2a3e398089e77175a34cdc72b42f626",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "last_repair_needs_component": "1065a5f7e55bba56a056ebec367b3fef0c33d0d311c256af9e5aafc46a351b87"
+   }
+  },
+  "e09": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "levels_told_apart"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "c3b3e2e95c94984b3c9f10599aba9e01a2835f69a36795fcb06293a65f104f6a",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "levels_told_apart": "af6a63369d1593e863d96cb0d1eec8318162a9c242199983bad9a46f65394033"
+   }
+  },
+  "e10": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "only_by_repair",
+    "switch_gives_machine_back"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "7077c0fe5ae36616a9592e2de3e0753904950ea0f92623500a28316ce843104e",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "only_by_repair": "f31d746391a1c2276d261eefb8b64f7ffeb4968664e8cdc26aecf672f8d68704",
+    "switch_gives_machine_back": "53cf85a1aaa0a9e010788f3bf9294c6e7f4bed3d9e303d6f4a7bc6043685fd3b"
+   }
+  },
+  "e11": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "no_setting_named"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "bc6c86d34868f68afb8213c3e06b7a2cbc960dcf797b77f0f46081b9bd1107d7",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "no_setting_named": "9be4e7e14f9beb1d5eac701857c42a4a5ef1d46799a3cd81bb2522919baa64d2"
+   }
+  },
+  "e12": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "levels_of_function",
+    "wrecks_join_lines"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "c6d9b4085f44c82ef097c473bd00c805ca8a08217fdf5c51ec1c9e1bf2fbb509",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "levels_of_function": "3c0298a2a869f8062ddaad6ccb7a6bbb37b8e8b7cda99e4567b36bef95083afe",
+    "wrecks_join_lines": "0d6c89ec0c66ad6682df1fe2c5dc39502bd03db3a25acb923f4c3dccc1206dc3"
+   }
+  },
+  "e13": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "wrecks_join_lines"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "b32af6dbab84383d47eeb984a1236a5df67fe2afd6f2590d2af772d0a3642998",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "wrecks_join_lines": "0d6c89ec0c66ad6682df1fe2c5dc39502bd03db3a25acb923f4c3dccc1206dc3"
+   }
+  },
+  "e14": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "last_repair_needs_component",
+    "repair_on_the_machine",
+    "study_opens_research",
+    "whole_journey",
+    "wreck_comes_home"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "accept",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "accept"
+   },
+   "right": true,
+   "hash": "4073fea77e1c761d77c5c04bd4d41ad824e7522ba2e981669337791173c20edf",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "last_repair_needs_component": "1065a5f7e55bba56a056ebec367b3fef0c33d0d311c256af9e5aafc46a351b87",
+    "repair_on_the_machine": "6cda10fbafaddd5e735aaca9df98c3777d9010e912fa4e5f70b80e632db8e393",
+    "study_opens_research": "17563aab14b1455d4aef400690ad6565591b54fbad289f33f75f09363cb0f62f",
+    "whole_journey": "ef20d7af5b04d1b7806d53ef1dbd749080b7c729e5ec0acae0f48fbbacb17b3d",
+    "wreck_comes_home": "65eb4db1a795f3da6f9c39c74c737835f48950aa4b7734f72fc6c568db113b80"
+   }
+  },
+  "c01": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "only_by_repair",
+    "wreck_is_found"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "3591d50143ad82ba5988987950156422c0fd3ce940579c71e1a52665542eeea9",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "only_by_repair": "f31d746391a1c2276d261eefb8b64f7ffeb4968664e8cdc26aecf672f8d68704",
+    "wreck_is_found": "b080e83da8ca0508fed7846a9098a3d35406cf9a0178e0aac315fbb40dd0e028"
+   }
+  },
+  "c02": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "study_opens_research"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "35e59eb0c5ec8ea793f83a98e5de9f447d33e2786089824bfbfd7f7f416c1da1",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "study_opens_research": "17563aab14b1455d4aef400690ad6565591b54fbad289f33f75f09363cb0f62f"
+   }
+  },
+  "c03": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "repair_on_the_machine"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "415ede1b0e5139fc8e7fad5330c12d85dcc9eac19bd2f96a35915537cf401568",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "repair_on_the_machine": "6cda10fbafaddd5e735aaca9df98c3777d9010e912fa4e5f70b80e632db8e393"
+   }
+  },
+  "c04": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "levels_of_function"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "18e1c33aa132b9dac28769289c562d017ecd7b537c5d097db41f391755d73786",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "levels_of_function": "3c0298a2a869f8062ddaad6ccb7a6bbb37b8e8b7cda99e4567b36bef95083afe"
+   }
+  },
+  "c05": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "last_repair_needs_component"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "c4265681421edc0ef6970021396ffd35dfd1f2691ca00488567e97a4dd425007",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "last_repair_needs_component": "1065a5f7e55bba56a056ebec367b3fef0c33d0d311c256af9e5aafc46a351b87"
+   }
+  },
+  "c06": {
+   "from": {
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+    "readers": [
+     "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)",
+     "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)"
+    ]
+   },
+   "reads": [
+    "levels_told_apart"
+   ],
+   "verdicts": {
+    "rm-judge Reader A af1c55c41b4cf810e (fresh Opus; sheet, tree, scenario text only)": "reject",
+    "rm-judge Reader B ad5a05e2faea517d0 (fresh Opus; sheet, tree, scenario text only)": "reject"
+   },
+   "right": true,
+   "hash": "07603642fff8176784dd35d76abd7b1ecb8c1507f9ea40a4b62ca0bdddb87eff",
+   "shared": "c2fdd7c05f5986580e8b2d538b55d4a3343da3c19f068d0c58f48c1a68f6ea15",
+   "unit_hashes": {
+    "levels_told_apart": "af6a63369d1593e863d96cb0d1eec8318162a9c242199983bad9a46f65394033"
+   }
+  }
+ },
+ "retake": {
+  "outcome": "none_touched",
+  "retaken": [],
+  "carried": [
+   "e01",
+   "e02",
+   "e03",
+   "e04",
+   "e05",
+   "e06",
+   "e07",
+   "e08",
+   "e09",
+   "e10",
+   "e11",
+   "e12",
+   "e13",
+   "e14",
+   "c01",
+   "c02",
+   "c03",
+   "c04",
+   "c05",
+   "c06"
+  ],
+  "changed": [],
+  "against": {
+   "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+   "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+   "scenarios_hash": "1a00e2c9d11c47b7e29515820fc82f5953a9f1ac945a3717b2a46eea4ab16cb3",
+   "at": "2026-11-27T11:13:27Z"
+  },
+  "units": {
+   "only_by_repair": "f31d746391a1c2276d261eefb8b64f7ffeb4968664e8cdc26aecf672f8d68704",
+   "wreck_is_found": "b080e83da8ca0508fed7846a9098a3d35406cf9a0178e0aac315fbb40dd0e028",
+   "wreck_comes_home": "65eb4db1a795f3da6f9c39c74c737835f48950aa4b7734f72fc6c568db113b80",
+   "study_opens_research": "17563aab14b1455d4aef400690ad6565591b54fbad289f33f75f09363cb0f62f",
+   "repair_on_the_machine": "6cda10fbafaddd5e735aaca9df98c3777d9010e912fa4e5f70b80e632db8e393",
+   "levels_of_function": "3c0298a2a869f8062ddaad6ccb7a6bbb37b8e8b7cda99e4567b36bef95083afe",
+   "last_repair_needs_component": "1065a5f7e55bba56a056ebec367b3fef0c33d0d311c256af9e5aafc46a351b87",
+   "levels_told_apart": "af6a63369d1593e863d96cb0d1eec8318162a9c242199983bad9a46f65394033",
+   "switch_gives_machine_back": "53cf85a1aaa0a9e010788f3bf9294c6e7f4bed3d9e303d6f4a7bc6043685fd3b",
+   "no_setting_named": "9be4e7e14f9beb1d5eac701857c42a4a5ef1d46799a3cd81bb2522919baa64d2",
+   "wrecks_join_lines": "0d6c89ec0c66ad6682df1fe2c5dc39502bd03db3a25acb923f4c3dccc1206dc3",
+   "whole_journey": "ef20d7af5b04d1b7806d53ef1dbd749080b7c729e5ec0acae0f48fbbacb17b3d"
+  },
+  "sheet_order": [
+   [
+    "",
+    null
+   ],
+   [
+    "",
+    null
+   ],
+   [
+    "",
+    null
+   ],
+   [
+    "",
+    null
+   ],
+   [
+    "",
+    null
+   ],
+   [
+    "",
+    null
+   ],
+   [
+    "",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "his words",
+    null
+   ],
+   [
+    "what it is",
+    null
+   ],
+   [
+    "what it is",
+    null
+   ],
+   [
+    "does",
+    "only_by_repair"
+   ],
+   [
+    "does",
+    "wreck_is_found"
+   ],
+   [
+    "does",
+    "wreck_comes_home"
+   ],
+   [
+    "does",
+    "study_opens_research"
+   ],
+   [
+    "does",
+    "repair_on_the_machine"
+   ],
+   [
+    "does",
+    "levels_of_function"
+   ],
+   [
+    "does",
+    "last_repair_needs_component"
+   ],
+   [
+    "does",
+    "levels_told_apart"
+   ],
+   [
+    "does",
+    "switch_gives_machine_back"
+   ],
+   [
+    "does",
+    "no_setting_named"
+   ],
+   [
+    "does",
+    "wrecks_join_lines"
+   ],
+   [
+    "does",
+    "whole_journey"
+   ],
+   [
+    "calls that an agent made, which you can undo",
+    null
+   ],
+   [
+    "calls that an agent made, which you can undo",
+    null
+   ],
+   [
+    "calls that an agent made, which you can undo",
+    null
+   ],
+   [
+    "calls that an agent made, which you can undo",
+    null
+   ],
+   [
+    "calls that an agent made, which you can undo",
+    null
+   ],
+   [
+    "calls that an agent made, which you can undo",
+    null
+   ],
+   [
+    "what it costs",
+    null
+   ],
+   [
+    "what it costs",
+    null
+   ],
+   [
+    "what it costs",
+    null
+   ],
+   [
+    "what it costs",
+    null
+   ],
+   [
+    "what it costs",
+    null
+   ],
+   [
+    "does not",
+    null
+   ],
+   [
+    "does not",
+    null
+   ],
+   [
+    "does not",
+    null
+   ],
+   [
+    "does not",
+    null
+   ],
+   [
+    "does not",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "later",
+    null
+   ],
+   [
+    "not read",
+    null
+   ],
+   [
+    "not read",
+    null
+   ]
+  ],
+  "by": "exam_retake.py carry",
+  "at": "2026-11-27T12:10:18Z"
+ }
 }
