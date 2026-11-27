@@ -1,0 +1,127 @@
+{
+ "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+ "judge": "fresh Opus subagent (rm-judge) of run rm-detached-bench-alt-graphics-fix-six-second-faces-1795770762 (claude-opus-5-5; did not make the art)",
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RM_Gembug",
+ "alternate_set": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug",
+ "look": "second look (repair check) of the east facing refused for B1a and B3 in RM_Gembug_Yellow_Jewelbug.json; the whole picture was redrawn (commit d09d26dbe8), so every clause was applied to the new picture once",
+ "canon": "none (RM_ subject, no canon entry)",
+ "def_facts": {
+  "drawSize_cells_adult": 1.5,
+  "source": "the launching brief (RM_Gembug adult drawSize 1.5)"
+ },
+ "inputs": "Looked at: the redrawn Yellow east at full resolution and a 3x nearest crop on mid-brown ground; the kept Yellow south and north and the approved Blue east side by side on three grounds (brown, near-black, grey); a true-scale panel (scale_panel.render_panel, drawSize 1.5): vanilla human at 256 px/cell, and 32 px/cell and 18 px/cell play zoom. Measured: alpha bounding boxes on the 512 canvas (east w0.64 h0.31; kept south w0.32 h0.31, north w0.33 h0.30); edge-ring luminance (9 px ring inside the alpha edge: east mean 195, 0% of ring pixels darker than 50; south 194 / 0%; Blue east 147 / 8%); semi-alpha pixels mean RGB (218,187,72), yellow, not a dark or white halo; corners fully transparent. Panels: D:\\ClaudeWork\\scratch\\wb-art-canon-1127\\judge\\yellow_facings_grounds.png, yellow_east_crop3x.png, yellow_east_scale_full.png, yellow_east_scale.png, yellow_south_scale_full.png. Not given and not needed for this facing: owner notes on the subject (none in the earlier verdict).",
+ "verdicts": [
+  {
+   "picture": "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png",
+   "picture_sha256": "775277ddc032928c0f30978f2b3f18b0a94851b682b4fc5e2f0f243c7a5142d9",
+   "facing": "east",
+   "verdict": "KEEP",
+   "notes": "Repairs met. B1a: no drawn outline; the edge is a lighter-to-darker yellow carried by value against the ground (edge ring has no dark pixels). B3/C2: the same pale-yellow segmented glossy grub as the kept south/north (soft gloss, white speculars, paler round spots along the flank, small stubby legs, small black eye and curved mandibles), same height on the canvas (0.31 vs 0.31/0.30). C1: head and mandibles at the right, so it faces east; west mirrors it. Legs present (four stubby legs under the body). D4: real alpha, no backdrop, halo or ground shadow. B2: at 32 px/cell it reads as a bright yellow shape clearly apart from the brown ground. Polish (no ticket): side-on the body looks a little bulkier than the compact south/north suggest; height agrees, so no C2 fault."
+  }
+ ],
+ "proposals": [],
+ "contract": {
+  "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+  "family": "art_judge_brief",
+  "sha": "775277ddc032928c0f30978f2b3f18b0a94851b682b4fc5e2f0f243c7a5142d9",
+  "passed": [
+   {
+    "clause": "B1",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png"
+    ]
+   },
+   {
+    "clause": "B1a",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png"
+    ]
+   },
+   {
+    "clause": "B2",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png",
+     "/mnt/d/ClaudeWork/scratch/wb-art-canon-1127/judge/yellow_east_scale_full.png"
+    ]
+   },
+   {
+    "clause": "B3",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png",
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_south.png",
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_north.png"
+    ]
+   },
+   {
+    "clause": "C1",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png"
+    ]
+   },
+   {
+    "clause": "C2",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png",
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_south.png",
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_north.png"
+    ]
+   },
+   {
+    "clause": "D1",
+    "evidence": [
+     "/mnt/d/ClaudeWork/scratch/wb-art-canon-1127/judge/yellow_east_scale_full.png"
+    ]
+   },
+   {
+    "clause": "D2",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png"
+    ]
+   },
+   {
+    "clause": "D4",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png"
+    ]
+   },
+   {
+    "clause": "E1",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png"
+    ]
+   },
+   {
+    "clause": "E3",
+    "evidence": [
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_south.png",
+     "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_north.png"
+    ]
+   }
+  ],
+  "refusals": [],
+  "given": {
+   "note": "the launcher's brief to this judge: the picture, its kept siblings and the panels it asked for, and the clause texts of art_judge_brief.md@9ad7d729e5 applied to one east facing; the launching window may replace this with its own given before submit",
+   "inputs": [
+    "/mnt/d/ClaudeWork/scratch/wb-art-canon-1127/judge/yellow_east_scale_full.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_east.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_north.png",
+    "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug_south.png"
+   ],
+   "criteria": {
+    "B1": "The painterly vanilla-RimWorld style: real anatomy, legs allowed, high resolution where the player sees it. Not toy-figurine flat cel. — Owner 2026-09-14 (`infrastructure/state/items/closed/ART_PAINTERLY_RESTORATION_1.md`)",
+    "B1a": "**No outlines.** Value and colour contrast against the ground carry the silhouette. The silhouette never rests on a drawn black outline or keyline. A sprite without an outline is correct. A heavy drawn keyline is STYLE_OFF. — Owner card 2026-10-04 (`ART_VERSION_WRANGLING_1`; the house register `HOUSE_ART_REGISTER` in `src/RimMandrake/Utils/artpipe/common.py`). This card retired the outline clause that B1 carried from 2026-09-14. Exception: the Pyrelands ullai carries a MEDIUM black outline (option B) by the owner's pick of 2026-11-23, this creature only.",
+    "B2": "Legibility at play zoom: at 32 px/cell the subject reads as a few bold shapes, with a body value clearly apart from the ground. Grey mud is a REDO reason. Grey mud is either of two faults, and one alone is a REDO. Fault one: the body blends into the ground. Fault two: the body is dull, with no clear shapes. A plain body with clear shapes, clearly apart from the ground, is not grey mud. Judge both faults by eye. This is an advisory measure only: never refuse on a number. — Lesson 2026-09-12, softened by Owner 2026-09-14; the two faults: Owner card 2026-11-23 (`RIMMANDRAKE_ANSWER_SEVEN_TERMS_NO_SOURCE_DEFINES_GREY_MUD`)",
+    "B3": "Matches its **sibling keeps**: the other sex, lifestages and variants that he already approved set the style, palette and scale. A candidate that reads as a different artist or size class is REDO. — Owner 2026-10-21 (Varactyl; `ART_SHEET_FIX_SIBLING_KEEPS_UNSEEN`, `art_sheet.py sibling_keeps`)",
+    "C1": "North is the creature's rear (no face, no eyes); south looks at the camera; never a top-down view rotated. A mouth, teeth or an open throat is part of the face: on north, the back of the head is drawn closed, never as a toothed opening with the ground showing through it. — Owner 2026-09-15 (`rimworld-sprite-facings`); the closed back: calibration case Danglemaw r1, which he purged (2026-10-24)",
+    "C2": "Facings agree on size, proportions and palette. If one facing looks huge or small, that is REDO. West mirrors east unless a west file exists. — `rimworld-sprite-facings`; Owner 2026-11-19 (\"Allow the Judge to bounce incorrectly sized creatures\")",
+    "D1": "Judge at true scale beside a vanilla human at 128–256 px/cell, and at 32 px/cell. — Owner 2026-10-04 (req 2)",
+    "D2": "The canvas errs generous (drawSize × 128 px per cell). Never down-resolve. — Owner 2026-08-23, 2026-09-14, 2026-10-04",
+    "D4": "Real alpha: no backdrop, halo, ground shadow or scenery. Some ground matter is the subject, not scenery: matter that the subject's own description says it makes where it stands (the fermatalis's mounds of mash). Any other prop on the ground is scenery. — `generating-rimworld-sprites`; the house art prompt (`HOUSE_ART_REGISTER`, the prompt text that B1's item made canonical); Owner 2026-10-24 picked `RM_DecayDrake` r2 with its mash mounds (criteria_ledger CL-035, on the review sheet `owner_escalations_cauldron_sheet_2026-10-24`) - D4 exception: `RM_LadderPortable` west/east facings may carry a small soft floor shadow attached to the foot. — Owner card 2026-10-22 (\"How should we resolve the side walls? → Keep side walls, add a shadow\")",
+    "E1": "Donor art (other mods, and vanilla Core/DLC) is never a final KEEP. A copied donor stand-in is temporary, and the slot still owes our own art. — Owner 2026-10-05, card 2026-10-05, 2026-10-18 (memory `no-donor-art-kept`)",
+    "E3": "A delegated call (a call that an agent makes in the owner's place) never displaces a picture that he KEPT. The one exception is the art-eval pipeline's regen verdict: the picture is redrawn, and he sees it after on the shadow sheet as *replaced your kept art*, with a one-click revert. If a kept picture looks wrong, say so in the report. So on a picture that he kept, your verdict is KEEP, whatever other line it breaks. Write the concern in `notes`, with no refusal record. Only the art-eval pipeline's own judge, which does not use this brief, may write a regen verdict on it. — Owner 2026-10-19; owner card 2026-10-23 06:42 (*\"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after\"*); `delegation_policy.md` §2.2"
+   }
+  }
+ }
+}
