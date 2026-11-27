@@ -1,0 +1,3 @@
+A bridge take with --per-ruling (rimflow bridge take --idle-ok --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM) records the lock under seat OWNER, so game_lock reads it as his OWNER hold and the taker's own game_instance.py stop is refused as 'NOT TAKEABLE, the OWNER holds the bridge' for 45 min. Take a game for a Conductor-ordered run with game_lock.py claim <game> --seat BENCH --for ... --despite-hold ..., and log the authority on the notes instead. Also: game_instance.py stop refuses a --for text that holds a flyer word (FLYER_SITTING), like the bridge take.
+item: DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME
+home: skills/rimbridge/references/connect-and-claim.md

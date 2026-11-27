@@ -239,7 +239,7 @@ ADULT_TICKS = 18 * 3600000   # 18 years: an adult human's body size is 1; a chil
 
 
 def adult_colonist(s, c):
-    """Spawns colonists at c until one is an adult (a child is destroyed again); -> its ThingID."""
+    """Spawns colonists at c until one is an adult (a child is vanished again); -> its ThingID."""
     for _ in range(12):
         p = call(s, "jawa/spawn_pawn", kindDef="Colonist", x=c[0], z=c[1], faction="player")
         pid = ((p.get("pawns") or [{}])[0] or {}).get("id")
@@ -251,7 +251,11 @@ def adult_colonist(s, c):
             raise CouldNotLook("cannot read %s's age: %s" % (pid, v))
         if float(v.get("v")) >= ADULT_TICKS:
             return pid
-        call(s, "jawa/destroy_batch", rects="%d,%d,1,1" % c, categories="Pawn")
+        # jawa/destroy_batch never removes pawns (it refuses and names this call; measured 2026-11-26 on ArchBig: two
+        # rejected children stood on in the staged rows), so the child is vanished by id
+        v = call(s, "jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+        if not v.get("success"):
+            raise CouldNotLook("the child colonist %s could not be removed: %s" % (pid, v.get("message")))
     raise CouldNotLook("no adult colonist in 12 spawns at %s" % (c,))
 
 
