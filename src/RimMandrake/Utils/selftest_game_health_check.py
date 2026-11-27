@@ -9,6 +9,7 @@ ops_watch tps family reading a breach as a MEASURED count (what rings OPS_GAME_H
 import json
 import os
 import sys
+import re
 import tempfile
 import types
 
@@ -202,6 +203,43 @@ with tempfile.TemporaryDirectory() as tmp:
     check("growth: 3 minutes of a field is UNMEASURED even in a long session",
           not G.is_m(s4["metrics"]["mem.private_growth_mb_per_h"]) and G.is_m(s4["metrics"]["mem.managed_growth_mb_per_h"]),
           s4["metrics"]["mem.private_growth_mb_per_h"])
+    # growth is inside ONE game: three loads of the same save, each game flat, the heap stepping +1500 MB at each load
+    # (the reload ratchet, heap_ratchet.py's measure) must not read as a leak rate, in the metric or in the attribution
+    rl = [r for r in session_rows(sid="6" * 32, minutes=150, heap0=3000.0, heap_rate_h=0.0)
+          if r["kind"] != "incident"]
+    tg6 = min(G.T._epoch(r["utc"]) for r in rl if r["kind"] == "game")
+    sq = 50000
+    for load, at in ((1, tg6 + 50 * 60), (2, tg6 + 100 * 60)):
+        for kind, dt, kw in (("menu", 0, {"programState": "Entry"}), ("game", 30, {"game": load + 1, "save": "SAVE_A"})):
+            sq += 1
+            rl.append(dict({"seq": sq, "v": 2, "utc": utc(at + dt), "mono": round(at + dt - T0, 3), "session": "6" * 32,
+                            "kind": kind}, **kw))
+    for r in rl:
+        t = G.T._epoch(r["utc"])
+        step = 1500.0 * ((t > tg6 + 50 * 60 + 30) + (t > tg6 + 100 * 60 + 30))
+        if "heapMB" in r:
+            r["heapMB"] = 3000.0 + step + (r["heapMB"] - 3000.0)        # the GC sawtooth stays, the ratchet steps
+        if r["kind"] == "context":
+            r["maps"] = [{"id": 0, "size": "250x250", "biome": "RUT_Small", "pawns": 9, "things": 3112}]
+    rl.sort(key=lambda r: r["seq"])
+    s6 = G.summarize("6" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in rl], 0, RULES, now=NOW)
+    g6 = s6["metrics"]["mem.managed_growth_mb_per_h"]
+    check("growth: three flat games of one save, +1500 MB at each load, read flat (the ratchet is not a leak rate)",
+          G.is_m(g6) and abs(g6) < 100 and "mem.managed_growth_mb_per_h" not in {b["key"] for b in s6["breaches"]}, g6)
+    m6 = " | ".join(s6["attribution"].get("mem.managed_peak_mb", []))
+    gm = re.search(r"managed growth after the last map change[^|]*?: (-?[\d.]+) MB/h", m6)
+    check("attribution: growth on a fixed map set is read inside the last game, not across its reloads",
+          "mem.managed_peak_mb" in {b["key"] for b in s6["breaches"]} and gm is not None and abs(float(gm.group(1))) < 100,
+          m6)
+    # the rate is the highest over the games: one game that grows beside two flat ones still rings
+    for r in rl:
+        t = G.T._epoch(r["utc"])
+        if "heapMB" in r and tg6 + 50 * 60 + 30 < t < tg6 + 100 * 60:
+            r["heapMB"] += 1800.0 * (t - (tg6 + 50 * 60 + 30)) / 3600.0
+    s7 = G.summarize("6" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in rl], 0, RULES, now=NOW)
+    g7 = s7["metrics"]["mem.managed_growth_mb_per_h"]
+    check("growth: one game growing 1800 MB/h beside two flat games reads ~1800 and breaches",
+          G.is_m(g7) and 1600 <= g7 <= 2000 and "mem.managed_growth_mb_per_h" in {b["key"] for b in s7["breaches"]}, g7)
     dry = G.record(directory=rec, rules=RULES, path=os.path.join(tmp, "h2", "x.jsonl"), dry_run=True, now=NOW)
     check("dry-run writes nothing", len(dry["recorded"]) == 4 and not os.path.exists(os.path.join(tmp, "h2")))
     # breaches on synthetic extremes, one per limit kind

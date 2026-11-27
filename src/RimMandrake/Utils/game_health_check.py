@@ -25,7 +25,8 @@ game_health_thresholds.json it crossed; ops_watch's tps family reads the newest 
 Each breach also carries an `attribution` (row["attribution"][key], plain sentences read from the same record), so an
 alarm says what the session was doing when the limit fell (OPS_GAME_HEALTH_DEBUG_PXQI, 2026-11-04: an Operations dig
 and a builder dig each re-derived these from raw rows): memory breaches name the largest map the session generated and
-the growth AFTER the last map change (a bigger map is scale, growth on a fixed map set is a leak); an error-count
+the growth AFTER the last map change and game load (a bigger map is scale, growth on a fixed map set inside one game
+is a leak, growth across reloads is the ratchet); an error-count
 breach names the error classes MEASURED from the archived Player.log (session ee0fbaa8: the save loaded inside the
 biggest jump was once called dead def names by assumption, which sent Operations away from 3476 chunk errors and 3200
 Beer errors that were no such thing), the biggest scan-to-scan jump and the save loaded inside it, and how many were
@@ -475,14 +476,17 @@ def attribute(brs, kinds, ctx, t0, m, player_log=None):
         mem = [(r["_t"], num(r.get("heapMB")), num(r.get("privateMB"))) for r in ctx]
         s = list(mapset)
         if tl:
-            last = changes[-1][0]
+            # a reload of the same save keeps the map set, so the window also starts at the last game load: growth
+            # across loads is the reload ratchet (heap_ratchet.py), not a leak on a fixed map set
+            last = max([changes[-1][0]] + [g["_t"] for g in kinds.get("game") or []])
             for i, name in ((1, "managed"), (2, "private")):
                 pts = [(t, x[i]) for x in mem for t in (x[0],) if t >= last and x[i] is not None and x[i] > 0]
                 if len(pts) >= 3 and pts[-1][0] - pts[0][0] >= 1800:
-                    s.append("%s growth after the last map change (%s, %.0f min): %.1f MB/h" % (
+                    s.append("%s growth after the last map change and game load (%s, %.0f min): %.1f MB/h" % (
                         name, _hm(last), (pts[-1][0] - pts[0][0]) / 60.0, theil_sen(pts) * 3600.0))
                 else:
-                    s.append("%s growth after the last map change: UNMEASURED (under 30 min on that map set)" % name)
+                    s.append("%s growth after the last map change and game load: UNMEASURED (under 30 min of that "
+                             "game on that map set)" % name)
         for k in sorted(x for x in keys if x.startswith("mem.")):
             out[k] = s
     le = [r for r in ctx if num(r.get("logErr")) is not None]
