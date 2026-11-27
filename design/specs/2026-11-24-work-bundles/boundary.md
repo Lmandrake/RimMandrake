@@ -121,7 +121,7 @@ bundle began). A member with none of these is **open**.
   again, owed one more run once the gate lifts.
 - **a-restart-that-ended-no-member-raises.** A restart (not the first run) that ended no member since it began is not
   restarted again: the bundle reads `raised`, and one ALARM line in the Conductor log names the bundle, the open
-  members and the units. The 3-a-day count of single runs does not apply to a bundle; this guard on progress does.
+  members and the unit of the restart that ended none. The 3-a-day count of single runs does not apply to a bundle; this guard on progress does.
 - **a-restart-cut-short-from-outside-is-restarted.** A restart that ended no member, but whose end was not the work's
   own, is restarted and does not count for the guard on progress. `failure_class.of_run` reads the end, with the stop
   order the run obeyed (`control.run_stop`: delivered by its hook, not a warning, not withdrawn): an account end's
