@@ -14,13 +14,17 @@ The check, for every PawnKindDef in src/ (parsed XML, never text-matched):
   * a creature is APPROVED when the owner has a keep/pick/approve ruling on its subject, or one of its primary
     pictures is owner-protected;
   * for an approved creature, every alternate PNG (resolved in the def's own mod Textures/) must be byte-identical to
-    one of its primary pictures, or owner-protected / owner-ruled by sha. Anything else is a picture the game shows
+    one of its primary pictures, or owner-protected / owner-ruled / judge-kept (delegated) by sha. Anything else is a picture the game shows
     on most spawns that he never saw next to his approval.
 
 Known debts are listed in drawn_art_ruled_baseline.json (a ratchet: a NEW violation fails, a fixed one must be removed
 from the baseline). Limitation: alternateGraphics added by a Patch are not seen.
 
-Usage: python3 selftest_drawn_art_ruled.py [--report] [--write-baseline]
+A judge agent's KEEP in a committed verdict file (infrastructure/state/delegated/<date>/*.json, the picture's sha256)
+rules the picture too (delegated_keeps). With no primary PNG on disk (a slim clone) the look is blind: exit 2,
+UNMEASURED.
+
+Usage: python3 selftest_drawn_art_ruled.py [--report] [--write-baseline]     exit 0 PASS, 1 FAIL, 2 UNMEASURED
 """
 from __future__ import annotations
 
@@ -33,6 +37,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 BASELINE = HERE / "drawn_art_ruled_baseline.json"
+DELEGATED = HERE.parents[3] / "infrastructure" / "state" / "delegated"
 FACINGS = ("south", "east", "north", "west")
 APPROVE = {"keep", "pick", "approve", "A", "B", "C", "D", "E", "F", "G", "H"}
 
@@ -86,9 +91,29 @@ def scan_kinds(root: Path) -> list[dict]:
     return kinds
 
 
-def owner_ruled(idx, sha: str) -> bool:
-    return bool(idx.protected(sha)) or any(r.get("by") == "owner" and r.get("verdict") not in ("redo", "reject", "cut")
-                                           for r in idx.rulings_by_sha.get(sha, []))
+def delegated_keeps(root: Path = DELEGATED) -> set:
+    """Shas a judge agent kept in a committed verdict file (root/<date>/*.json with a `judge` and `verdicts`
+    [{picture_sha256, verdict}]): a delegated art ruling (CLAUDE.md: a judge agent makes each taste call). An
+    already-live picture gets no ledger event from `art.py install --why` (it returns already-live), so the verdict
+    file is the record. A sha that any judge named anything but KEEP is not counted (fail safe)."""
+    keep, other = set(), set()
+    for f in sorted(root.glob("*/*.json")) if root.is_dir() else []:
+        try:
+            d = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(d, dict) or not str(d.get("judge") or "").strip() or not isinstance(d.get("verdicts"), list):
+            continue
+        for v in d["verdicts"]:
+            if isinstance(v, dict) and v.get("picture_sha256"):
+                (keep if str(v.get("verdict") or "").strip().upper() == "KEEP" else other).add(v["picture_sha256"])
+    return keep - other
+
+
+def owner_ruled(idx, sha: str, deleg: set = frozenset()) -> bool:
+    return sha in deleg or bool(idx.protected(sha)) or any(
+        r.get("by") == "owner" and r.get("verdict") not in ("redo", "reject", "cut")
+        for r in idx.rulings_by_sha.get(sha, []))
 
 
 def approved(idx, L, kind: dict, prim_shas: set) -> bool:
@@ -99,7 +124,7 @@ def approved(idx, L, kind: dict, prim_shas: set) -> bool:
     return any(idx.protected(s) for s in prim_shas)
 
 
-def violations(kinds, idx, L, sha_of) -> list[dict]:
+def violations(kinds, idx, L, sha_of, deleg: set = frozenset()) -> list[dict]:
     out = []
     for k in kinds:
         if k["mod"] is None:
@@ -112,11 +137,17 @@ def violations(kinds, idx, L, sha_of) -> list[dict]:
                 continue
             for fc, p in sorted(pngs(k["mod"], tp).items()):
                 s = sha_of(p)
-                if s in prim_shas or owner_ruled(idx, s):
+                if s in prim_shas or owner_ruled(idx, s, deleg):
                     continue
                 out.append({"key": f"{k['def']}|{tp}|{fc}", "def": k["def"], "texPath": tp, "facing": fc,
                             "chance": k["chance"], "sha": s})
     return out
+
+
+def pictures_seen(kinds) -> int:
+    """How many kinds with alternates show at least one primary PNG on disk. 0 over a non-empty scan is a blind
+    look (a slim clone holds no media), never 'no violations'."""
+    return sum(1 for k in kinds if k["mod"] is not None and any(pngs(k["mod"], tp) for tp in k["primary"]))
 
 
 def fixture_check(L) -> list[str]:
@@ -152,6 +183,34 @@ def fixture_check(L) -> list[str]:
         v = violations(scan_kinds(Path(td)), FakeIdx(), L, sha_of)
         if v:
             fails.append(f"fixture: alternate identical to the approved primary should pass, got {len(v)}")
+        # a judge's delegated KEEP of the very bytes rules the picture; a REDO, a judgeless file or other bytes do not
+        for fc in ("east", "north", "south"):
+            (mod / "Textures" / "X" / f"BeastW_{fc}.png").write_bytes(b"alt-" + fc.encode())
+        sh = {fc: L.sha256_file(mod / "Textures" / "X" / f"BeastW_{fc}.png") for fc in ("east", "north", "south")}
+        dd = Path(td) / "delegated" / "2026-01-01"
+        dd.mkdir(parents=True)
+        (dd / "a.json").write_text(json.dumps({"judge": "run-x (did not make the art)", "verdicts": [
+            {"picture_sha256": sh["south"], "verdict": "KEEP"}, {"picture_sha256": sh["north"], "verdict": "keep"},
+            {"picture_sha256": sh["east"], "verdict": "REDO"}]}))
+        (dd / "b.json").write_text(json.dumps({"verdicts": [{"picture_sha256": sh["east"], "verdict": "KEEP"}]}))
+        (dd / "c.json").write_text("not json")
+        dk = delegated_keeps(Path(td) / "delegated")
+        if dk != {sh["south"], sh["north"]}:
+            fails.append(f"fixture: delegated_keeps should hold the judged KEEP south+north only, got {len(dk)}")
+        v = violations(scan_kinds(Path(td)), FakeIdx(), L, sha_of, deleg=dk)
+        if [x["facing"] for x in v] != ["east"]:
+            fails.append(f"fixture: a delegated KEEP should rule south+north and leave the REDO east, got "
+                         f"{[x['facing'] for x in v]}")
+        (dd / "d.json").write_text(json.dumps({"judge": "run-y", "verdicts": [
+            {"picture_sha256": sh["south"], "verdict": "REDO"}]}))
+        if sh["south"] in delegated_keeps(Path(td) / "delegated"):
+            fails.append("fixture: a sha one judge named REDO must not count as a delegated KEEP")
+        if pictures_seen(scan_kinds(Path(td))) != 1:
+            fails.append("fixture: the primary pictures on disk should be seen")
+        for f in (mod / "Textures" / "X").glob("*.png"):
+            f.unlink()
+        if pictures_seen(scan_kinds(Path(td))) != 0:
+            fails.append("fixture: a tree with no PNGs must read as blind (0 seen)")
     return fails
 
 
@@ -161,7 +220,14 @@ def main(argv) -> int:
     idx = L.Index()
     cache = {}
     sha_of = lambda p: cache.setdefault(p, L.sha256_file(p))
-    v = violations(scan_kinds(L.src_root()), idx, L, sha_of)
+    kinds = scan_kinds(L.src_root())
+    if kinds and not pictures_seen(kinds):
+        for f in fails:
+            print("FAIL", f)
+        print(f"UNMEASURED, not a pass or a fail: {len(kinds)} kind(s) with alternates, no primary PNG on disk (a slim clone? "
+              f"`scratch_clone.py shape . --full`)")
+        return 1 if fails else 2
+    v = violations(kinds, idx, L, sha_of, deleg=delegated_keeps())
     keys = {x["key"] for x in v}
     if "--write-baseline" in argv:
         BASELINE.write_text(json.dumps({"why": "known approved-creature alternates the owner never ruled on; "
