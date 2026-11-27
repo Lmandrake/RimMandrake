@@ -499,6 +499,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if isinstance(mw, dict) and mw.get("mod"):
             put("mod_work", "waits for the Maturation Pipeline run of %s (%s); the Workshop Pipeline does not work it"
                 % (mw["mod"], mw.get("why") or "it is that mod's work"))
+            if run.get("live") or run.get("bundle"):
+                row["live_run"] = True      # row_stage: a live run on it shows as Work, as list_pipeline.stage_of says
             continue
         if not cfg.get("enabled"):          # the lane's own acts all stop: no close, no adoption, no launch
             put("disabled", "list_dispatch.json has enabled: false")
@@ -1974,7 +1976,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         else:
             for r in rows:
                 r["decision"] = {"launch": "would_launch", "close": "would_close", "adopt": "would_adopt",
-                                 "shape": "would_shape"}.get(
+                                 "shape": "would_shape", "judge": "would_judge"}.get(
                     r["decision"], r["decision"])
                 r.pop("need", None)
         counts = {}
@@ -2054,7 +2056,7 @@ def row_stage(it, row, now):
     elif it.get("blocked"):
         waits = {"on": "a block: %s" % _one(it.get("blocked_reason") or "no reason given", 90),
                  "resumes": "the block is lifted", "until": None}
-    live = dec in ("live", "launched", "claimed", "in_bundle")
+    live = dec in ("live", "launched", "claimed", "in_bundle") or bool(row.get("live_run"))
     f = {"state": it.get("state"), "effect": it.get("effect"), "verdict": LP.lane_verdict(dec, bool(it.get("effect"))),
          "route": it.get("route"), "waits": waits,
          "run": ("live_work" if it.get("effect") else "live_shape") if live else None,

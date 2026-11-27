@@ -298,7 +298,8 @@ def t_the_gates_launch_nothing():
 def t_the_lane_has_its_own_slots_and_chain_rule():
     runs = {"A": {"live": ["u1"], "ended": []}, "B": {"live": ["u2"], "ended": []}}
     chk(lambda: dec({"A": it(), "B": it(), "C": it()}, iid="C", runs=runs) == ("slots_full", []), "max_live")
-    chk(lambda: dec({"A": it()}, other_live=9) == ("launch", ["A"]), "other runs do not count")
+    chk(lambda: dec({"A": it()}, runs={"Z": {"live": ["m1", "m2", "m3"], "ended": []}}) == ("launch", ["A"]),
+        "other runs do not count: live runs on an item that is not the lane's (a mod run) fill no lane slot")
     chk(lambda: dec({"A": it(effect=None, verdict=None), "B": it(effect=None, verdict=None), "C": it()}, iid="C",
                     runs=runs) == ("launch", ["C"]), "live runs on items with no check do not fill the lane's slots")
     chk(lambda: dec({"A": it(depth=2)}) == ("chain_stop", []), "chain depth")
@@ -776,6 +777,14 @@ def t_a_mod_ticket_is_not_the_list_pipelines():
     import model as LM
     import mod_work as MW
     mods = {"HugeThings", "FlowWorks"}
+    # the tick's stage of a mod ticket with a live run is Work, as list_pipeline.stage_of says over the ledger
+    mwi = it(mod_work={"mod": "FlowWorks", "why": "home mod:FlowWorks"})
+    rows, _l, _ = run({"A": mwi}, runs={"A": {"live": ["u1"], "ended": []}})
+    chk(lambda: rows["A"]["decision"] == "mod_work" and LD().row_stage(mwi, rows["A"], NOW) == "work",
+        "a mod ticket with a live run reads stage work on the tick, as on the page (%s)"
+        % LD().row_stage(mwi, rows["A"], NOW))
+    rows, _l, _ = run({"A": mwi})
+    chk(lambda: LD().row_stage(mwi, rows["A"], NOW) == "waiting", "a mod ticket with no live run reads stage waiting")
     of = MW.of
     home = {"home": "mod:HugeThings", "group": "g", "flag": "LOOKS CURRENT"}
     chk(lambda: of({"home": home, "title": "keep the warned edge"}, mods)["mod"] == "HugeThings", "a home mod:X: X's work")
@@ -1122,6 +1131,13 @@ def t_a_block_with_no_end_ages_whatever_its_needs():
     chk(lambda: not age(old, kind="owner")[0], "a block of kind owner never ages: his act lifts it")
     off, why_off = age(old, system="game:flight")
     chk(lambda: not off and "off" in why_off, "its home class is off: it waits for its class (%s)" % why_off)
+    # the crossing of the two age rules: a block with no end decides before the needs window, so a window that opened
+    # often enough does not take a ticket of an off class past its block
+    ups = [(old + k * day, {"event": "game", "state": "UP"}) for k in (1, 2)]
+    cross, why_x = age(old, needs="game-up", system="game:flight", extra=ups)
+    chk(lambda: not cross and "off" in why_x and "no end" in why_x,
+        "no kind, needs game-up, the window opened twice, idle 5 d, an off class: the no-end rule decides, and it "
+        "waits for its class (%s)" % why_x)
     m, why_m = age(old, system="mod:FlowWorks")
     chk(lambda: not m and "mod_members" in why_m, "one mod's ticket: its mod's bundle settles it (%s)" % why_m)
     early, why_e = age(old, system="item:LD_ENDLESS")
