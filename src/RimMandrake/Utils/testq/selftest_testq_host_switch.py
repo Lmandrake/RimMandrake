@@ -197,6 +197,13 @@ def t_unreadable_state_refused():
     check(bool(r) and "could not look" in r["text"],
           "an empty pipeline list is could-not-look, never 'not in the pipeline': %s" % (r or {}).get("text"))
     os.environ["RM_CONTROL_MODS"] = LIVE_MODS
+    real, P._discovered = P._discovered, lambda: (_ for _ in ()).throw(ImportError("maturation_autonomy torn"))
+    try:        # a mod off the shipped list whose discovered-concepts read fails: could-not-look, never "not in the pipeline"
+        live, why = P.live_mod("Unlisted")
+    finally:
+        P._discovered = real
+    check(not live and "could not look" in str(why) and "maturation_autonomy torn" in str(why),
+          "an unreadable discovered-concepts read is could-not-look with its cause: %s" % why)
     with open(SW, "w") as f:
         f.write("{torn")
     r = P.switch_refusal(job)
