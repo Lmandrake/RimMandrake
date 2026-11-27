@@ -1,0 +1,21 @@
+ArchSmall: held for `python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_vitals_governor.py` (gen 325)
+PASS arm_baseline  {"hooks": "complete", "driver": "monobehaviour", "rollup": "\"pawns\":15,\"colonistsAlive\":3,\"colonistsDowned\":0,\"colonistsHostile\":0,\"hostiles\":0,\"critical\":1,\"criticalAvailable\":1,\"minColonistHealth\":1,\"minColonistMoodMargin\":0.15,\"groups\":{\"animal|neutral\":{\"alive\":11,\"downed\":0,\"bleeding\":0,\"mental\":0},\"animal|player\":{\"alive\":1,\"downed\":0,\"bleeding\":0,\"mental\":0},\"humanlike|player\":{\"alive\":3,\"downed\":0,\"bleeding\":0,\"mental\":0}}", "populated": true}
+PASS advance_600k_refused_before_any_tick  {"state": "refused", "refused": "refused before any tick: 600000 ticks (10 days) on a POPULATED map exceeds the budget 30000; a long clock advance needs a safe colony: no colonist on any map, or timeException=true in a row that protects its colonists from starving and dying and is not about health, needs, damage or death (owner 2026-11-23: allowed when the colony is safe).", "tick_before": 1, "tick_after": 1}
+PASS clock_set_refused_on_populated_map  {"message": "REFUSED: reassigning the clock on a POPULATED map (a spawned free colonist) needs timeException=true (owner 2026-10-13: 'warping ahead in time like that is an EXTREMELY risky proposition'). Prefer setting the time before pawns exist, or the safe advance stepper for real simulated time."}
+FAIL declared_reassignment_detected_and_not_clean_without_exception  {"trigger": [{"seq": 2, "kind": "clock_discontinuity", "severity": "clock", "tick": 2501, "map": -1, "subjectId": -1, "critical": false, "declared": true, "detail": "TicksGame 1 -> 2501 (2500) between frames with no processed tick; DECLARED: time_set_ticks timeException: live proof: declared reassignment"}], "verdict_plain": "RESTART", "verdict_with_exception": "UNMEASURED"}
+PASS undeclared_clock_jump_stops_advance  {"state": "stopped", "executed": 1, "stopBy": {"seq": 3, "kind": "clock_discontinuity", "severity": "clock", "tick": 4501, "map": -1, "subjectId": -1, "critical": false, "declared": false, "detail": "one processed tick moved TicksGame by 2000 (fastEcology)"}, "tick_from": 2501, "tick_to": 4501}
+PASS modal_while_paused_detected_by_wall_time  {"opened": true, "trigger": [{"seq": 5, "kind": "modal_stuck", "severity": "block", "tick": 4501, "map": -1, "subjectId": 2, "subject": "Dialog_Options", "critical": false, "declared": false, "detail": "blocking window RimWorld.Dialog_Options open 30.1 s (paused=True)"}], "modalMaxAgeS": 33.1, "paused": true, "governor_uncorrected": "UNMEASURED", "env_items": ["rimflow file TESTENV_TURRETS_HARDEN_NO_SURPRISE_GUNS --for BENCH --kind task --needs offline --title \"Test environment: threat_structure interfered with row proof_modal at tick 4501 (present at arm: 3 hostile threat structure(s), e.g. 
+FAIL modal_closed_corrected_may_pass  {"governor": "UNMEASURED", "notes": ["anomaly not corrected: threat_structure Hive (Sorne Geneline, spawner, dormant)"]}
+Traceback (most recent call last):
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_vitals_governor.py", line 125, in <module>
+    r = call("jawa/fire_incident", incidentDef="MechCluster", forced=True, dryRun=False, points=800)
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_vitals_governor.py", line 18, in call
+    r = S.call(t, p) or {}
+        ~~~~~~^^^^^^
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbridge_client.py", line 1423, in call
+    return self._call_one(tool, params, check)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbridge_client.py", line 1437, in _call_one
+    raise RaidPausedError(raid)
+rimbridge_client.RaidPausedError: PAUSED: raid tests wait for the tools. Refused: jawa/fire_incident: the incident MechCluster. No raid in a test: use the cheaper test of the bar (standing_rulings.md §The cheapest test that decides the bar), tag a scene that needs raiders `stages_raid` in its test table, and record no verdict for this run. The work that builds the raid tools sets RM_RAID_FOR to its item (`raid_pause.py allow ITEM`)
+[bridge split] 60.7 s wall: load 9.8 / ticks 0.2 / reads 2.8 / other 1.6 / outside calls 46.3 s

@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/bridgetools/prove_vitals_governor.py
++++ b/src/RimMandrake/bridgetools/prove_vitals_governor.py
+@@ -183,7 +183,7 @@
+     cols = fresh_map()
+     arm("proof_cluster", critical=cols[0])
+     x, z = far_cell(cols[0])
+-    b = call("jawa/build_batch", ops="Wall:%d,%d" % (x, z), stuff="Steel", faction="Mechanoid")
++    b = call("jawa/build_batch", ops="Wall:%d,%d" % (x, z), stuff="Steel", faction="none")  # PLANTED FAULT: the wall has no faction
+     call("jawa/vitals", action="sample")
+     ev = events()
+     # the trigger must name OUR wall (a new structure after arm, threats cleared before it), so the structure alone

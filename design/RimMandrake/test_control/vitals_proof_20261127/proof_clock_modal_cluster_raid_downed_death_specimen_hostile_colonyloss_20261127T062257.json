@@ -1,0 +1,303 @@
+{
+ "arm_baseline": {
+  "result": "PASS",
+  "hooks": "complete",
+  "driver": "monobehaviour",
+  "rollup": "\"pawns\":15,\"colonistsAlive\":3,\"colonistsDowned\":0,\"colonistsHostile\":0,\"hostiles\":0,\"critical\":1,\"criticalAvailable\":1,\"minColonistHealth\":1,\"minColonistMoodMargin\":0.15,\"groups\":{\"animal|neutral\":{\"alive\":11,\"downed\":0,\"bleeding\":0,\"mental\":0},\"animal|player\":{\"alive\":1,\"downed\":0,\"bleeding\":0,\"mental\":0},\"humanlike|player\":{\"alive\":3,\"downed\":0,\"bleeding\":0,\"mental\":0}}",
+  "populated": true
+ },
+ "advance_600k_refused_before_any_tick": {
+  "result": "PASS",
+  "state": "refused",
+  "refused": "refused before any tick: 600000 ticks (10 days) on a POPULATED map exceeds the budget 30000; a long clock advance needs a safe colony: no colonist on any map, or timeException=true in a row that protects its colonists from starving and dying and is not about health, needs, damage or death (owner 2026-11-23: allowed when the colony is safe).",
+  "tick_before": 1,
+  "tick_after": 1
+ },
+ "clock_set_refused_on_populated_map": {
+  "result": "PASS",
+  "message": "REFUSED: reassigning the clock on a POPULATED map (a spawned free colonist) needs timeException=true (owner 2026-10-13: 'warping ahead in time like that is an EXTREMELY risky proposition'). Prefer setting the time before pawns exist, or the safe advance stepper for real simulated time."
+ },
+ "declared_reassignment_detected_and_not_clean_without_exception": {
+  "result": "PASS",
+  "trigger": [
+   {
+    "seq": 1,
+    "kind": "clock_discontinuity",
+    "severity": "clock",
+    "tick": 2501,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": true,
+    "detail": "TicksGame 1 -> 2501 (2500) between frames with no processed tick; DECLARED: time_set_ticks timeException: live proof: declared reassignment"
+   }
+  ],
+  "verdict_plain": "RESTART",
+  "verdict_with_exception": "PASS"
+ },
+ "undeclared_clock_jump_stops_advance": {
+  "result": "PASS",
+  "state": "stopped",
+  "executed": 1,
+  "stopBy": {
+   "seq": 2,
+   "kind": "clock_discontinuity",
+   "severity": "clock",
+   "tick": 4501,
+   "map": -1,
+   "subjectId": -1,
+   "critical": false,
+   "declared": false,
+   "detail": "one processed tick moved TicksGame by 2000 (fastEcology)"
+  },
+  "tick_from": 2501,
+  "tick_to": 4501
+ },
+ "modal_while_paused_detected_by_wall_time": {
+  "result": "PASS",
+  "opened": true,
+  "trigger": [
+   {
+    "seq": 3,
+    "kind": "modal_stuck",
+    "severity": "block",
+    "tick": 4501,
+    "map": -1,
+    "subjectId": 2,
+    "subject": "Dialog_Options",
+    "critical": false,
+    "declared": false,
+    "detail": "blocking window RimWorld.Dialog_Options open 30.2 s (paused=True)"
+   }
+  ],
+  "modalMaxAgeS": 33.1,
+  "paused": true,
+  "governor_uncorrected": "UNMEASURED",
+  "env_items": [
+   "rimflow file TESTENV_POPUPS_HARDEN_CLOSE_THE_DOOR --for BENCH --kind task --needs offline --title \"Test environment: modal_stuck interfered with row proof_modal at tick 4501 (blocking window RimWorld.Dialog_Options open 30.2 s (paused=True)); control it so it cannot recur\" --why \"row governor: every threat to a test is logged and gets a test-environment item (owner, 2026-10-13, debug_process.md)\""
+  ]
+ },
+ "modal_closed_corrected_may_pass": {
+  "result": "PASS",
+  "governor": "PASS",
+  "notes": [
+   "CLEAN with 1 corrected anomaly, no evidence of damage: modal_stuck Dialog_Options"
+  ]
+ },
+ "hostile_structure_threat_detected_without_hostile_pawn_count": {
+  "result": "FAIL",
+  "built": 1,
+  "cell": [
+   92,
+   27
+  ],
+  "structures": {
+   "structures": 1,
+   "turrets": 0,
+   "spawners": 0,
+   "dormant": 0
+  },
+  "structure_triggers": 1,
+  "first_structure": [
+   {
+    "seq": 9,
+    "kind": "threat_structure",
+    "severity": "threat",
+    "tick": 1,
+    "map": 0,
+    "subjectId": 24937,
+    "subject": "Wall",
+    "critical": false,
+    "declared": false,
+    "detail": "new hostile structure: Wall (Omeslin Mechhive)"
+   }
+  ],
+  "hostile_pawn_triggers": 4
+ },
+ "hostile_arrival_during_long_step_interrupts_locally": {
+  "result": "PASS",
+  "first_state": "running",
+  "spawned": true,
+  "spawn_msg": "Spawned 1/1 Drifter in faction TribeRoughNeanderthal.",
+  "cell": [
+   16,
+   197
+  ],
+  "state": "stopped",
+  "executed": 1620,
+  "stopBy": {
+   "seq": 11,
+   "kind": "hostile_arrival",
+   "severity": "threat",
+   "tick": 1621,
+   "map": 0,
+   "subjectId": 17494,
+   "subject": "Tobobai",
+   "critical": false,
+   "declared": false,
+   "detail": "arrived: Human Drifter (humanlike)"
+  },
+  "tick_from": 1,
+  "tick_to": 1621
+ },
+ "hostile_arrival_is_a_threat_with_env_item": {
+  "result": "PASS",
+  "outcome": "UNMEASURED",
+  "validity": "INDETERMINATE",
+  "env_items": [
+   "rimflow file TESTENV_HOSTILES_HARDEN_KNOCK_FIRST"
+  ]
+ },
+ "worker_downed_during_wait_is_disrupted_restart_not_fail": {
+  "result": "PASS",
+  "first_state": "running",
+  "downed": true,
+  "state": "stopped",
+  "executed": 1560,
+  "stopBy": {
+   "seq": 13,
+   "kind": "downed",
+   "severity": "damage",
+   "tick": 1561,
+   "map": 0,
+   "subjectId": 710,
+   "subject": "Farrell",
+   "critical": true,
+   "declared": false,
+   "detail": "downed (health 0.26); hediffs Bruise/Arm 22, Crack/Ribcage 22, Bruise/Arm 22, Bruise/Leg 19, Stab/Arm 3"
+  },
+  "outcome": "RESTART",
+  "validity": "DISRUPTED",
+  "notes": [
+   "damage to the test: downed Farrell (downed (health 0.26); hediffs Bruise/Arm 22, Crack/Ribcage 22, Bruise/Arm 22, Bruise/Leg 19, Stab/Arm 3); hurt Farrell (health 1 -> 0.26; newest hediff Bruise/Arm age 60)",
+   "criterion FAIL is NOT scored (owner: damage restarts the row, never FAIL)"
+  ]
+ },
+ "death_retained_after_corpse_removal": {
+  "result": "PASS",
+  "killed": true,
+  "corpse_destroyed": true,
+  "death": [
+   {
+    "seq": 16,
+    "kind": "death",
+    "severity": "threat",
+    "tick": 1,
+    "map": 0,
+    "subjectId": 280,
+    "subject": "Nibbler",
+    "critical": false,
+    "declared": false,
+    "detail": "died: unknown cause"
+   }
+  ],
+  "tombs": 1
+ },
+ "specimen_lost_blocks_false_fail": {
+  "result": "PASS",
+  "specimen": "Steel10543",
+  "trigger": [
+   {
+    "seq": 18,
+    "kind": "specimen_lost",
+    "severity": "damage",
+    "tick": 1,
+    "map": -1,
+    "subjectId": 10543,
+    "subject": "Steel",
+    "critical": true,
+    "declared": false,
+    "detail": "destroyed"
+   }
+  ],
+  "outcome": "RESTART"
+ },
+ "colonist_turned_hostile_latched": {
+  "result": "PASS",
+  "started": true,
+  "state": "Berserk",
+  "pawn": "Human838",
+  "trigger": [
+   {
+    "seq": 22,
+    "kind": "colonist_hostile",
+    "severity": "threat",
+    "tick": 1,
+    "map": 0,
+    "subjectId": 838,
+    "subject": "Mie",
+    "critical": false,
+    "declared": false,
+    "detail": "colonist turned hostile (Berserk)"
+   }
+  ]
+ },
+ "colonist_hostile_raises_red_rimpulse_alarm": {
+  "result": "PASS",
+  "alert": {
+   "id": "vitals:colonist_hostile",
+   "level": "red",
+   "text": "1 colonist(s) hostile to the colony (proof_hostile)",
+   "since": 1795789344.715,
+   "link": null
+  }
+ },
+ "colony_loss_detected_gameender_and_alive0": {
+  "result": "PASS",
+  "advance": "done",
+  "executed": 600,
+  "triggers": [
+   {
+    "seq": 28,
+    "kind": "colony_loss",
+    "severity": "damage",
+    "tick": 401,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": false,
+    "detail": "GameEnder countdown started (no free colonist anywhere)"
+   },
+   {
+    "seq": 29,
+    "kind": "colony_loss",
+    "severity": "damage",
+    "tick": 421,
+    "map": -1,
+    "subjectId": -1,
+    "critical": false,
+    "declared": false,
+    "detail": "alive colonists 0 on every map (map scope)"
+   }
+  ],
+  "note": "vanilla's Man in Black rescue (StrangerInBlackJoin at tick 581) cancels the countdown before the GameEnded letter"
+ },
+ "colony_loss_raises_red_rimpulse_alarm": {
+  "result": "PASS",
+  "alert": {
+   "id": "vitals:colony_dead",
+   "level": "red",
+   "text": "colony loss latched on proof_colonyloss: GameEnder countdown started (no free colonist anywhere)",
+   "since": 1795789361.364,
+   "link": null
+  }
+ },
+ "colony_loss_letter_detected_while_paused": {
+  "result": "PASS",
+  "sent": true,
+  "trigger": [
+   {
+    "seq": 30,
+    "kind": "colony_loss",
+    "severity": "damage",
+    "tick": 1001,
+    "map": -1,
+    "subjectId": -1,
+    "subject": "GameOver (injected by proof)",
+    "critical": false,
+    "declared": false,
+    "detail": "GameEnded letter: GameOver (injected by proof)"
+   }
+  ]
+ }
+}

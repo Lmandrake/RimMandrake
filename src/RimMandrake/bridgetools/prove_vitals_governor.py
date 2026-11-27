@@ -186,12 +186,15 @@ if "cluster" in which:
     b = call("jawa/build_batch", ops="Wall:%d,%d" % (x, z), stuff="Steel", faction="Mechanoid")
     call("jawa/vitals", action="sample")
     ev = events()
-    ts = [t for t in ev.get("triggers", []) if t["kind"] == "threat_structure" and "new hostile structure" in (t.get("detail") or "")]
+    # the trigger must name OUR wall (a new structure after arm, threats cleared before it), so the structure alone
+    # raised it; hostile pawns the map holds are recorded, not required absent (live 2026-11-27: 4 on ArchBig's map)
+    ts = [t for t in ev.get("triggers", []) if t["kind"] == "threat_structure" and t.get("subject") == "Wall"
+          and "new hostile structure" in (t.get("detail") or "")]
     ha = [t for t in ev.get("triggers", []) if t["kind"] == "hostile_arrival"]
     st = call("jawa/vitals")
-    rec("hostile_structure_threat_detected_without_hostile_pawn_count", bool(b.get("survived")) and len(ts) > 0 and not ha,
+    rec("hostile_structure_threat_detected_without_hostile_pawn_count", bool(b.get("survived")) and len(ts) > 0,
         built=b.get("survived"), cell=(x, z), structures=st.get("threats"), structure_triggers=len(ts),
-        first_structure=ts[:1], hostile_pawn_triggers=len(ha))
+        first_structure=ts[:1], hostile_pawn_triggers=len(ha), hostile_pawns=[t.get("detail") for t in ha[:3]])
 
 if "raid" in which:
     cols = fresh_map()

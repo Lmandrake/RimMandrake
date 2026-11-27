@@ -1,0 +1,33 @@
+{
+ "hostile_structure_threat_detected_without_hostile_pawn_count": {
+  "result": "PASS",
+  "built": 1,
+  "cell": [
+   17,
+   216
+  ],
+  "structures": {
+   "structures": 1,
+   "turrets": 0,
+   "spawners": 0,
+   "dormant": 0
+  },
+  "structure_triggers": 1,
+  "first_structure": [
+   {
+    "seq": 33,
+    "kind": "threat_structure",
+    "severity": "threat",
+    "tick": 1,
+    "map": 0,
+    "subjectId": 10960,
+    "subject": "Wall",
+    "critical": false,
+    "declared": false,
+    "detail": "new hostile structure: Wall (Alglax Mechhive)"
+   }
+  ],
+  "hostile_pawn_triggers": 0,
+  "hostile_pawns": []
+ }
+}

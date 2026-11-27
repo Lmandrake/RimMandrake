@@ -1,0 +1,20 @@
+{
+ "hostile_structure_threat_detected_without_hostile_pawn_count": {
+  "result": "FAIL",
+  "built": 1,
+  "cell": [
+   2,
+   215
+  ],
+  "structures": {
+   "structures": 0,
+   "turrets": 0,
+   "spawners": 0,
+   "dormant": 0
+  },
+  "structure_triggers": 0,
+  "first_structure": [],
+  "hostile_pawn_triggers": 0,
+  "hostile_pawns": []
+ }
+}
