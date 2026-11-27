@@ -21,6 +21,27 @@ os.environ["RM_CONTROL_TICK_UNIT"] = ""
 import control as C  # noqa: E402
 import control_acts_export as X  # noqa: E402
 
+
+def subject(argv):
+    """`--subject <rev>`: test control_acts_export.py as it stood at that git revision (the repeat guard replays the
+    instance: `rimflow guard ... --instance "--subject <the fix>^"`). -> the module."""
+    if "--subject" not in argv:
+        return X
+    import importlib.util
+    sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+    import time_budget
+    rev = argv[argv.index("--subject") + 1]
+    repo = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+    src = subprocess.run(["git", "-C", repo, "show", "%s:src/RimMandrake/rimflow/control_acts_export.py" % rev],
+                         capture_output=True, text=True, timeout=time_budget.CALL_S, check=True).stdout
+    path = os.path.join(TMP, "control_acts_export_at_%s.py" % rev.replace("^", "p").replace("~", "t"))
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(src)
+    spec = importlib.util.spec_from_file_location("control_acts_export", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
 PATH = X.PATH
 N = [0]
 
@@ -253,6 +274,8 @@ def t_fetch_race_retries():
 
 
 def main():
+    global X
+    X = subject(sys.argv)
     for t in (t_export_holds_every_act, t_unchanged_store_makes_no_commit, t_touches_no_working_tree,
               t_never_loses_a_published_act, t_could_not_look_publishes_nothing, t_reading_only_on_success,
               t_push_race_rebuilds, t_fetch_race_retries):
