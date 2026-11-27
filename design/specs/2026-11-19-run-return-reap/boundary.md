@@ -33,6 +33,13 @@ command still running when the run ends is killed. Each promise has a test of it
 - **a-blind-scan-kills-nothing.** When the marker scan is blind, nothing is signalled, the step says the scan was blind
   and why, and the busy check decides as before.
 
+- **a-child-of-another-users-process-does-not-blind-the-scan.** `scan_marked_live` rules out a same-uid process with
+  an unreadable environ whose parent (above pid 1) runs as another effective uid: it was forked by another user's
+  program and never inherited a run's marker. Tailscale SSH's `tailscaled be-child ssh` under a root `tailscaled` is one
+  (measured 2026-11-27: errno 13; it blinded 11 of 90 scans, and 7 publishes went red on
+  `a-leftover-child-is-ended-and-the-clone-returned`). A same-uid parent, or one that cannot be read, still makes the
+  scan blind.
+
 - **a-reused-det-clone-takes-the-seat-identity.** `take_clone` on a standing `<ITEM>.det` clone gives it the seat clone's
   repo-local `user.email` (`scratch_clone.set_identity`), as a newly made clone gets
   (`RIMMANDRAKE_SET_HELPER_CLONE_NOREPLY_GMAIL_SLIPS_ONTO_PUBLIC`: RimMandrake is public).

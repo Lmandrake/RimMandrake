@@ -866,6 +866,25 @@ def _alive(pid):
     return _proc_state(pid) not in ("gone", "Z")
 
 
+def _parent_of_another_uid(proc, n, uid):
+    """True when the pid's parent (above pid 1) runs as another effective uid. Such a process was forked by another
+    user's program, so it never inherited a run's environment. Measured 2026-11-27: Tailscale SSH's session child
+    `tailscaled be-child ssh` runs as this uid with an unreadable environ (errno 13) under a root tailscaled, and blinded
+    11 of 90 scans and 7 publishes. A parent that cannot be read is not ruled out."""
+    try:
+        with open(os.path.join(proc, n, "stat"), "rb") as f:
+            parent = f.read().rsplit(b")", 1)[1].split()[1].decode("ascii")
+        if not parent.isdigit() or int(parent) <= 1:
+            return False
+        with open(os.path.join(proc, parent, "status"), "rb") as f:
+            for ln in f:
+                if ln.startswith(b"Uid:"):
+                    return int(ln.split()[2]) != uid
+    except (OSError, IndexError, ValueError):
+        pass
+    return False
+
+
 def scan_marked_live(marker, since=None, proc="/proc"):
     """role_launch.scan_marked, less its zombie blind spot: a zombie's environ cannot be read, and scan_marked calls the
     whole scan blind for it (measured 2026-11-19: one `[python3] <defunct>` of this uid made every scan blind). A zombie
@@ -899,6 +918,8 @@ def scan_marked_live(marker, since=None, proc="/proc"):
                 started = RL._started_at(proc, n, btime) if btime is not None else None
                 if started is not None and started < since - RL.SINCE_SLACK_S:
                     continue
+                if _parent_of_another_uid(proc, n, uid):
+                    continue                    # forked by another user's program: it never inherited a run's marker
                 why = why or "pid %s environ unreadable" % n
                 again.append(n)
                 continue

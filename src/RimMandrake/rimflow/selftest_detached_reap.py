@@ -111,6 +111,33 @@ def t_a_blind_scan_kills_nothing():
           and "a process is working in it" in text, text)
 
 
+def t_a_child_of_another_users_process_does_not_blind_the_scan():
+    """A fake /proc: a live same-uid pid (a real sleeping child, so the real /proc says it is alive), started now, with an
+    unreadable environ. Its parent runs as root (tailscaled's SSH session child `tailscaled be-child ssh`, measured
+    2026-11-27: errno 13 on its environ, parent tailscaled uid 0; it blinded 11 of 90 scans and 7 publishes): ruled out.
+    The same with a same-uid parent: still blind."""
+    kid = subprocess.Popen(["sleep", "60"])
+    KIDS.append(kid)
+    tick = os.sysconf("SC_CLK_TCK")
+    def fake(parent_uid):
+        root = tempfile.mkdtemp(prefix="proc_", dir=TMP)
+        with open(os.path.join(root, "stat"), "w") as f:
+            f.write("cpu 0 0 0 0\nbtime %d\n" % (int(time.time()) - 10))
+        n = str(kid.pid)
+        os.makedirs(os.path.join(root, n, "environ"))       # open() on it raises IsADirectoryError (an OSError)
+        with open(os.path.join(root, n, "stat"), "w") as f:
+            f.write("%s (tailscaled) S 7777 1 1 0 -1 0 0 0 0 0 0 0 0 0 20 0 1 0 %d 0 0\n" % (n, 10 * tick))
+        os.makedirs(os.path.join(root, "7777"))
+        with open(os.path.join(root, "7777", "status"), "w") as f:
+            f.write("Name:\ttailscaled\nUid:\t{0}\t{0}\t{0}\t{0}\n".format(parent_uid))
+        return root
+    pids, blind = DH.scan_marked_live("rm-x", since=time.time() - 30, proc=fake(0))
+    check("a-child-of-another-users-process-does-not-blind-the-scan (a root parent)", blind is None and pids == [], blind)
+    pids, blind = DH.scan_marked_live("rm-x", since=time.time() - 30, proc=fake(os.getuid()))
+    check("a-child-of-another-users-process-does-not-blind-the-scan (a same-uid parent is still blind)",
+          blind and str(kid.pid) in blind, blind)
+
+
 def t_role_launch_scan_rules_out_zombies():
     """A fake /proc: an unreadable environ (a directory there) on a zombie is ruled out; on a live or unknown-state
     process of this uid it is blind. Then the real /proc with a real zombie child (`true`, never waited on)."""
@@ -163,7 +190,7 @@ def t_a_reused_det_clone_takes_the_seat_identity():
 def main():
     try:
         for t in (t_a_leftover_child_is_ended_and_the_clone_returned, t_an_unmarked_process_in_the_clone_keeps_it,
-                  t_another_units_marker_is_not_this_runs, t_a_blind_scan_kills_nothing,
+                  t_another_units_marker_is_not_this_runs, t_a_blind_scan_kills_nothing, t_a_child_of_another_users_process_does_not_blind_the_scan,
                   t_a_reused_det_clone_takes_the_seat_identity, t_role_launch_scan_rules_out_zombies):
             try:
                 t()
