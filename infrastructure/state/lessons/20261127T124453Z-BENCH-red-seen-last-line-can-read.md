@@ -1,0 +1,2 @@
+maturation.py red-seen stores the test's LAST output line as the red evidence. For validation_v2.py --offline that line is the negative-control summary 'O-LIVE-NEG PASS ...' even when the run went red (rc 1). To confirm the red is for the planted reason, run the test with the patch applied and read its FAIL rows (here line 2: O2 FAIL <field>: C# ..., site_spec ...).
+item: RIMMANDRAKE_PROVE_FLOWWORKS_PY_FLOWWORKS_NORTHSTAR_RED_SEEN_OWED
