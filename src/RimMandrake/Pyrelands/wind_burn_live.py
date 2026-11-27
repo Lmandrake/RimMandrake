@@ -17,6 +17,7 @@ wind cannot show the wind is the cause):
   C  black rain on a fourth strip under the wind: every fire out within 2,000 ticks (bar three_skies). Counts only when the
      line actually lit under the rain (an unlit line reads 0 fires from the first sample and used to pass: first live run,
      2026-11-16, RIMMANDRAKE_RUN_PYRELANDS_WEEK_SKY_FREE_NEVER_ONCE_SEEN).
+Every strip burns at 0.1.0's Fire pace (PACE_SCENE, set with the other settings and put back after).
 Before each line is lit it asserts the start: SetWindForTest returned the bearing asked, ProbeWind reads that bearing back
 with carries= matching the wind switch, and the strip holds no fire.
 Restore (RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE): the scene runs inside modcheck/scene_snapshot.py, which saves a
@@ -37,8 +38,14 @@ from scene_snapshot import scene_snapshot  # noqa: E402
 
 S = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 BURN = "RimMandrake.Pyrelands.MapComponent_BurnLine"
+# The scene burns at 0.1.0's Fire pace (RM_BurnKernel.FirePacePercentMin; the selftest reads the C#), where its rows were measured:
+# the fires alive at once grow with the pace (a fire lives as long at any pace, and is carried on sooner), so at the shipped 200
+# a sound burn reads 4.4 x the cells lit and outruns the 3 x row. The scene's claim is the wind's direction, which holds at
+# every pace (selftest_pyrelands_wind_burn_rows.py part 4 reads it at the shipped pace); the pace's own bar is
+# fire_catches_and_runs (fire_catches_live.py, at the shipped pace).
+PACE_SCENE = 100
 SET = {"burnLineEnabled": "True", "fireHawkSpreadEnabled": "False", "fireClockEnabled": "False", "burrowOnFireEnabled": "False",
-       "furnaceThermalEnabled": "False", "scorchFruitEnabled": "False"}
+       "furnaceThermalEnabled": "False", "scorchFruitEnabled": "False", "firePacePercent": str(PACE_SCENE)}
 W = "0,0,250,250"
 STRIP_W, STRIP_H = 61, 21
 LINE = 30          # the lit column, mid-strip: 30 cells of grass each way

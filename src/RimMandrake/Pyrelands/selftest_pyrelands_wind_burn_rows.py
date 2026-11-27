@@ -8,11 +8,12 @@ Four parts, each row printing its worst value, its limit and how many cases it r
      black rain (the first live run, 2026-11-16, RIMMANDRAKE_RUN_PYRELANDS_WEEK_SKY_FREE_NEVER_ONCE_SEEN, read C as [0]*8
      and passed it).
   2. The scene's own layout (a 61 x 21 strip of full grass, ringed bare, a 9-cell line lit mid-strip, wind 90 then 270, then
-     the wind off) driven through pyre_burn_sim.py's model of the shipped carry, whose wind step is RM_BurnKernel.WindProbes
+     the wind off, at the scene's Fire pace: wind_burn_live.PACE_SCENE, 0.1.0's, RM_BurnKernel.FirePacePercentMin) driven
+     through pyre_burn_sim.py's model of the shipped carry, whose wind step is RM_BurnKernel.WindProbes
      (the checksum row below; the C# fuzz asserts its side). Every seed must pass every row.
   3. Planted model faults on the same layout: a carry that walks east whatever the wind, one that lights downwind and
      upwind (spread along one axis), and vanilla's even spread with the wind on. Each must be refused on every seed.
-  4. The bar's wider range, beyond the live layout: every 15 degrees of bearing x grass cover 1.0/0.97/0.80/0.70 x 3 seeds on a
+  4. The bar's wider range, beyond the live layout, at the shipped Fire pace (pyre_burn_sim.DEFAULTS): every 15 degrees of bearing x grass cover 1.0/0.97/0.80/0.70 x 3 seeds on a
      69 x 69 field, read the same way along the wind's own axis.
 The range this covers (RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, 2026-11-17): what the game can vary for
 fire_walks_with_wind is the bearing (any, held per map), the grass under the line (full to patchy), the wind switch, the
@@ -137,15 +138,23 @@ check(bool(want) and int(want.group(1)) == got,
       % (got, want.group(1) if want else "?"))
 
 
-def model_run(bearing, wind_on, cover=1.0, seed=0, H=W.STRIP_H + 8, Wd=W.STRIP_W + 8, splits=1, mode="carry"):
+PACE_MIN = kconst("FirePacePercentMin")
+check(W.PACE_SCENE == PACE_MIN and W.SET.get("firePacePercent") == str(PACE_MIN),
+      "the scene burns at 0.1.0's Fire pace, where its rows were measured: PACE_SCENE %s, SET firePacePercent %s, "
+      "RM_BurnKernel.FirePacePercentMin %d" % (W.PACE_SCENE, W.SET.get("firePacePercent"), PACE_MIN))
+
+
+def model_run(bearing, wind_on, cover=1.0, seed=0, H=W.STRIP_H + 8, Wd=W.STRIP_W + 8, splits=1, mode="carry", pace=None):
     """The scene in the model: grass inside a 4-cell bare ring, a 9-cell line across the wind through the middle, 10,000
-    ticks, the fires read every 500 ticks as the live script reads them. -> a reading in wind_burn_live's shape."""
+    ticks, the fires read every 500 ticks as the live script reads them; pace None is the shipped Fire pace (part 4), the
+    scene's layout passes W.PACE_SCENE. -> a reading in wind_burn_live's shape."""
     rng = np.random.default_rng(1000 + seed)
     plant = np.zeros((H, Wd), np.int8)
     plant[4:H - 4, 4:Wd - 4] = np.where(rng.random((H - 8, Wd - 8)) < cover, 1, 0)
     carried = wind_on and mode != "even"
     s = M.Sim(plant, np.ones_like(plant, bool), seed, weather=False, clock=False, keepalive=False, sprout_per_day=0,
-              loss_per_day=0, wind=bearing if carried else None, carried=carried, carry_splits=splits, **CARRY)
+              loss_per_day=0, wind=bearing if carried else None, carried=carried, carry_splits=splits, **CARRY,
+              **({} if pace is None else dict(fire_pace=pace)))
     cx, cz = 4 + W.LINE, H // 2
     before = int((s.size > 0).sum())
     lit = s.light_line(cx, cz, 9, 0.35, angle=bearing + 90)
@@ -169,10 +178,12 @@ def model_run(bearing, wind_on, cover=1.0, seed=0, H=W.STRIP_H + 8, Wd=W.STRIP_W
 
 
 SEEDS = range(40)
-print("-- 2. the scene's layout through the shipped carry: wind 90, wind 270, wind off; %d seeds" % len(SEEDS))
+SP = W.PACE_SCENE
+print("-- 2. the scene's layout through the shipped carry at the scene's Fire pace %d: wind 90, wind 270, wind off; %d seeds"
+      % (SP, len(SEEDS)))
 fails, worst = 0, dict(lean=1e9, outer=0, peak=0.0, b_outer=1e9, b_margin=1e9)
 for sd in SEEDS:
-    f, r, b = model_run(90, True, seed=sd), model_run(270, True, seed=sd), model_run(90, False, seed=sd)
+    f, r, b = model_run(90, True, seed=sd, pace=SP), model_run(270, True, seed=sd, pace=SP), model_run(90, False, seed=sd, pace=SP)
     rows = verdict(f, r, b)
     fails += not all(ok for _, ok, _ in rows)
     lean = min(f["down_cells"] - f["up_cells"], r["down_cells"] - r["up_cells"])
@@ -199,9 +210,9 @@ for name, probes, splits, mode in FAULTS:
     try:
         caught = 0
         for sd in SEEDS:
-            f = model_run(90, True, seed=sd, splits=splits, mode=mode)
-            r = model_run(270, True, seed=sd, splits=splits, mode=mode)
-            b = model_run(90, False, seed=sd)
+            f = model_run(90, True, seed=sd, splits=splits, mode=mode, pace=SP)
+            r = model_run(270, True, seed=sd, splits=splits, mode=mode, pace=SP)
+            b = model_run(90, False, seed=sd, pace=SP)
             rows = verdict(f, r, b)
             caught += not all(ok for _, ok, _ in rows)
     finally:
