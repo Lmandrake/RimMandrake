@@ -115,27 +115,37 @@ def t_a_child_of_another_users_process_does_not_blind_the_scan():
     """A fake /proc: a live same-uid pid (a real sleeping child, so the real /proc says it is alive), started now, with an
     unreadable environ. Its parent runs as root (tailscaled's SSH session child `tailscaled be-child ssh`, measured
     2026-11-27: errno 13 on its environ, parent tailscaled uid 0; it blinded 11 of 90 scans and 7 publishes): ruled out.
-    The same with a same-uid parent: still blind."""
+    The same with a same-uid parent, a parent that cannot be read, or a root parent that is pid 1: still blind."""
     kid = subprocess.Popen(["sleep", "60"])
     KIDS.append(kid)
     tick = os.sysconf("SC_CLK_TCK")
-    def fake(parent_uid):
+    def fake(parent_uid, ppid="7777"):
+        """parent_uid None: the parent's status cannot be read (a directory there)."""
         root = tempfile.mkdtemp(prefix="proc_", dir=TMP)
         with open(os.path.join(root, "stat"), "w") as f:
             f.write("cpu 0 0 0 0\nbtime %d\n" % (int(time.time()) - 10))
         n = str(kid.pid)
         os.makedirs(os.path.join(root, n, "environ"))       # open() on it raises IsADirectoryError (an OSError)
         with open(os.path.join(root, n, "stat"), "w") as f:
-            f.write("%s (tailscaled) S 7777 1 1 0 -1 0 0 0 0 0 0 0 0 0 20 0 1 0 %d 0 0\n" % (n, 10 * tick))
-        os.makedirs(os.path.join(root, "7777"))
-        with open(os.path.join(root, "7777", "status"), "w") as f:
-            f.write("Name:\ttailscaled\nUid:\t{0}\t{0}\t{0}\t{0}\n".format(parent_uid))
+            f.write("%s (tailscaled) S %s 1 1 0 -1 0 0 0 0 0 0 0 0 0 20 0 1 0 %d 0 0\n" % (n, ppid, 10 * tick))
+        os.makedirs(os.path.join(root, ppid), exist_ok=True)
+        if parent_uid is None:
+            os.makedirs(os.path.join(root, ppid, "status"))
+        else:
+            with open(os.path.join(root, ppid, "status"), "w") as f:
+                f.write("Name:\ttailscaled\nUid:\t{0}\t{0}\t{0}\t{0}\n".format(parent_uid))
         return root
     pids, blind = DH.scan_marked_live("rm-x", since=time.time() - 30, proc=fake(0))
     check("a-child-of-another-users-process-does-not-blind-the-scan (a root parent)", blind is None and pids == [], blind)
     pids, blind = DH.scan_marked_live("rm-x", since=time.time() - 30, proc=fake(os.getuid()))
     check("a-child-of-another-users-process-does-not-blind-the-scan (a same-uid parent is still blind)",
           blind and str(kid.pid) in blind, blind)
+    pids, blind = DH.scan_marked_live("rm-x", since=time.time() - 30, proc=fake(None))
+    check("a-child-of-another-users-process-does-not-blind-the-scan (a parent that cannot be read is still blind)",
+          blind and str(kid.pid) in blind, blind)
+    pids, blind = DH.scan_marked_live("rm-x", since=time.time() - 30, proc=fake(0, ppid="1"))
+    check("a-child-of-another-users-process-does-not-blind-the-scan (a root pid-1 parent is not above pid 1: still "
+          "blind)", blind and str(kid.pid) in blind, blind)
 
 
 def t_role_launch_scan_rules_out_zombies():

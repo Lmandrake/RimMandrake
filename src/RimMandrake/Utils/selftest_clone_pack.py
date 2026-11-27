@@ -118,6 +118,7 @@ def t_timer_clones_from_unit_files(tmp):
     root = tmp / "rm"
     a = make_repo(root / "dispatch", 1)
     b = make_repo(root / "roles" / "artpiped", 1)
+    c = make_repo(root / "pulse-deploy", 1)     # named only by an ExecStart= path inside it, as rm-deploy-update names it
     bare = root / "mirror.git"
     subprocess.run(["git", "init", "-q", "--bare", str(bare)], check=True, timeout=TB.CALL_S)
     outside = make_repo(tmp / "elsewhere", 1)
@@ -131,9 +132,12 @@ def t_timer_clones_from_unit_files(tmp):
         "[Service]\nExecStart=/usr/bin/git -C %s fetch\nExecStart=-/usr/bin/python3 %s/gone/x.py\n"
         "ExecStart=/usr/bin/python3 %s/x.py\n" % (bare, root, outside))
     (units / "rm-three.timer").write_text("[Timer]\nOnUnitInactiveSec=1h\n")
+    (units / "rm-four.service").write_text("[Service]\nExecStart=/usr/bin/python3 %s/src/tools/deploy.py --apply\n" % c)
     got = CP.timer_clones([units, tmp / "no-such-dir"], root=root)
-    ok(got == sorted([a, b]), "timer_clones_from_unit_files: names each work tree once, no bare repo, no missing or "
+    ok(got == sorted([a, b, c]), "timer_clones_from_unit_files: names each work tree once, no bare repo, no missing or "
        "outside path (got %s)" % [str(p) for p in got])
+    ok(c in got, "timer_clones_from_unit_files: an ExecStart= path inside a work tree, with no WorkingDirectory=, "
+       "names that work tree")
 
 
 def t_dead_temp_files_go_live_ones_stay(tmp):
