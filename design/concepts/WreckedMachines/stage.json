@@ -254,10 +254,24 @@
     "ref": "run rm-role-designer-1795781357",
     "stage": 4,
     "tokens": 619364
+   },
+   {
+    "at": "2026-11-27T12:14:39Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1795781593",
+    "stage": 5,
+    "tokens": 283594
+   },
+   {
+    "at": "2026-11-27T12:14:52Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795781541",
+    "stage": 5,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 57747333
+  "spent": 58030927
  },
  "coverage_rounds": [
   {
@@ -302,6 +316,33 @@
    "unmeasured_calls": 0,
    "unplaced": 0,
    "verdict": "not_covered",
+   "void_system": null
+  },
+  {
+   "at": "2026-11-27T12:13:13Z",
+   "error": null,
+   "error_kind": null,
+   "fix_chain_ended": null,
+   "gaps": 0,
+   "ids": [],
+   "judge": "rm-coverage-judge-1795781593",
+   "judge_fixed": false,
+   "late": [],
+   "new_on_unchanged": 0,
+   "new_unsettled": 0,
+   "not_owner_said": 0,
+   "overturned": 0,
+   "owner_said_unmeasured": 0,
+   "parent": null,
+   "reader_void_system": null,
+   "repair_blocks": [],
+   "stale_inputs": null,
+   "tags": {},
+   "tokens": 283594,
+   "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+   "unmeasured_calls": 0,
+   "unplaced": 0,
+   "verdict": "covered",
    "void_system": null
   }
  ],
@@ -641,6 +682,24 @@
    "stage": 5,
    "what": "exam_map",
    "why": "read map recorded for 20 scenarios"
+  },
+  {
+   "at": "2026-11-27T12:13:09Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "57747333 of 8000000 spent; run rm-role-designer-1795781541 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T12:13:09Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1795781541, stage 5, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T12:14:52Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795781541: stage 5 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -982,12 +1041,42 @@
    "run": "rm-role-designer-1795781357",
    "stage": 4,
    "summary": "Stage 4 closed again without a retake: the exam of 2026-11-27 stands. The coverage judge's repair changed scenes.json only; the tree (480772ae49ee) and the sheet (54d5b95f8740) are the ones on which the exam was held, and a Reader never sees scenes.json. Measured in this run: `exam_retake.py plan` answered NONE_TOUCHED (nothing that any of the 20 scenarios read changed); `exam_retake.py carry` on an empty answer file restamped exam.json and carried all 20 answers, each marked with the exam that it came from; `exam_retake.py record` wrote the read map again (20 scenarios over 12 bars). The score is unchanged: 20 of 20, no accept where a core bar rejects, no Challenger miss, and the control Reader's miss of e13 stands. No Examiner, Challenger, Reader or control Reader ran in this run. No bar, rule, scene or sheet line changed. Written by this run: exam.json (restamped), exam_reads.json, exam_retake_plan.json, record decision d_stage4_exam_carried and a section of log.md. Not done by this run: nothing was asked of him; the next act is stage 5's fresh judge look at the repaired scenes. His reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2."
+  },
+  {
+   "at": "2026-11-27T12:14:52Z",
+   "by": "program",
+   "inputs": {
+    "exam": "d1e83ff7f55d4aa0cf38bfc72f2b909f74893c059c5d00e835b5f13352b0e744",
+    "floor": "e1538f124ba31c45f00e55dbd41247e6ba60b1244f260ff0a092c8fd0558d67d",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
+    "scenes": "e0140af7d38bcafbf78b867dbef6fc24eb07e9168a6d29839cb2623695979db3",
+    "sheet": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+    "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc"
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_lock.md": "30f6cbb386c39181a89f77ad0b6b060cef558335448758c7c54c9dbaf2197876"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "8b3eaf10f3ed147643d84ebb50ccd3b809c017b2",
+    "floor": "8b3eaf10f3ed147643d84ebb50ccd3b809c017b2",
+    "root": "8b3eaf10f3ed147643d84ebb50ccd3b809c017b2",
+    "scenes": "8b3eaf10f3ed147643d84ebb50ccd3b809c017b2",
+    "sheet": "8b3eaf10f3ed147643d84ebb50ccd3b809c017b2",
+    "tree": "8b3eaf10f3ed147643d84ebb50ccd3b809c017b2"
+   },
+   "run": "rm-role-designer-1795781541",
+   "stage": 5,
+   "summary": "locked by program: rm-coverage-judge-1795781593 returned covered and signed the tree"
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "locked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

@@ -6,7 +6,13 @@
  "root_ref": "design/concepts/WreckedMachines/root.md#north-star",
  "root_state": "VALIDATED",
  "root_hash": "16eb902474e8b357b4689cdbfcebe3ed4c6ca0210dd250c92455d742c018430a",
- "coverage": null,
+ "coverage": {
+  "signed_by": "CoverageJudge",
+  "at": "2026-11-27T12:14:39Z",
+  "tree_hash": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+  "sheet_hash": "54d5b95f8740e13b653085b43646689e12c9f1cb43fe467de69626b0eecb00bc",
+  "ledger_item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST"
+ },
  "floor": {
   "ref": "concept_floor.json",
   "hash": "9f5d9b761d114cdd8ac7505f14c1e5a7209ed812eca9008fd0daad2b204a1d68",
