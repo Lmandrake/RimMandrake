@@ -8,6 +8,8 @@ Why: at the 3:13 PM PST tick of 2026-11-26, 4 tickets sat at the chain limit, 2 
 attach, 2 were left out of their work bundle, and 4 tickets waited on mods that rest after their pass (Gimme Some Slack
 45 h). No program ended any of them, and none showed on a list that the Conductor reads first.
 
+Code: `src/RimMandrake/rimflow/conductor_stops.py` (all of it), `src/RimMandrake/rimflow/owed.py` (`view`: its `stops` and `asks` blocks).
+
 ## ACCEPTS
 
 - **the-lane-reading.** The Workshop Pipeline's `reading.json` (`list_dispatch.tick`): per item `decision`, `why` and

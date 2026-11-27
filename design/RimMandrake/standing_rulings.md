@@ -560,6 +560,12 @@ The rule:
   - For a mod fault that is fixed in a sitting, §Touching code has a cost applies. There the reader reads only the fix.
   - One fresh reader who did not make the fix reads the fixed file once. The reader gets the file. The reader does not
     get the diff or the earlier findings.
+  - A run that fixes code files the fresh reader of its fix as a ticket, before it ends (`python3
+    src/RimMandrake/rimflow/fresh_reader.py file --fix <sha> <path>...`); the ticket lane launches the reader. The
+    reader gets the fixed file, its boundary page and its tests, never the diff or the earlier findings. A reader
+    ticket is never given to the run that made the fix. The rule binds every run; the footer that
+    `detached_helper.py` adds to every brief carries it. His answer by card, 2026-11-26: "The fixing run files it
+    (Recommended)". Why: 5 of 6 fresh-reader runs in the 7 days to 2026-11-26 were launched by hand.
   - If the reader finds nothing significant, the review is over.
   - If the reader also finds a significant thing, the reader fixes it (same test rule). Then the reader flags the file:
     `code_review_status.py flag <path> --why "…"`.

@@ -5,6 +5,8 @@ Item RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX, part 5. His answer by ca
 the condition is true; his page shows each off with its age. Why: a `pipe off` on Gimme Some Slack stayed 43.5 h after
 its reason ended, and five readiness offs were lifted by hand at up to 106 h (the stuck-items study, Table E).
 
+Code: `src/RimMandrake/rimflow/pipe_off_end.py` (all of it), `src/RimMandrake/rimflow/control.py` (`cmd_switch`: `--end`).
+
 ## ACCEPTS
 
 - **an-end-text.** `pipe off <target> --why "..." --end "<condition>"`. A condition is one of:

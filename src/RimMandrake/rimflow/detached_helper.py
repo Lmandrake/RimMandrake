@@ -169,7 +169,8 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
 """
 # the fixer statement and its test-2 list: one constant (fixer_rule.py), so this copy cannot drift from the others
 import fixer_rule  # noqa: E402
-FOOTER = FOOTER.replace("{fixer}", fixer_rule.text()).replace("BASH_MAX_MS", str(BASH_MAX_MS)) + RULE_HOMES + FF.BRIEF_LINE
+FOOTER = FOOTER.replace("{fixer}", fixer_rule.text() + " " + fixer_rule.READER_RULE).replace(
+    "BASH_MAX_MS", str(BASH_MAX_MS)) + RULE_HOMES + FF.BRIEF_LINE
 
 
 def dirty_shards(clone, seat, runner=subprocess.run):

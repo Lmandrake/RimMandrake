@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""selftest_fresh_reader.py: the promises of design/specs/2026-11-26-fresh-reader-ticket/boundary.md (each t_ function
+is one promise, by name). Offline: a fixture fix, fake facts for the lane, a fake review record. No real fixing run.
+Red on the base: fresh_reader.py absent, no reader rule in fixer_rule.py or the footer.
+
+    python3 src/RimMandrake/rimflow/selftest_fresh_reader.py
+"""
+import os
+import subprocess
+import sys
+import tempfile
+import types
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+for _p in (HERE, os.path.join(REPO, "src", "RimMandrake", "Utils"), os.path.join(REPO, "src", "RimMandrake")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+sys.dont_write_bytecode = True
+os.environ["RM_UNDER_SELFTEST"] = "1"
+os.environ["RM_LIST_DISPATCH_DIR"] = tempfile.mkdtemp(prefix="fr_ld_")
+os.environ["RM_WORK_BUNDLE_DIR"] = tempfile.mkdtemp(prefix="fr_wb_")
+SHA, PATH, MAKER = "44c696d883", "src/RimMandrake/rimflow/list_effect.py", "rm-detached-bench-a-fix-1795700000"
+
+
+def FR():
+    import fresh_reader
+    return fresh_reader
+
+
+def fixture_ticket():
+    """The fixture: the ticket a fixing run files for its fix, as the lane's facts read it."""
+    f = FR()
+    argv = f.file_argv(SHA, [PATH], MAKER)
+    val = {argv[i]: argv[i + 1] for i in range(len(argv) - 1) if argv[i].startswith("--")}
+    return argv, {"state": "proposed", "blocked": False, "effect": val["--effect"], "verdict": "fails", "depth": 0,
+                  "waits_on": [], "out": "DIRTY %s (never marked clean)" % PATH, "title": val["--title"]}
+
+
+def t_the_fixing_run_files_one_reader_ticket():
+    argv, it = fixture_ticket()
+    f = FR()
+    assert argv[3] == f.ticket_id(SHA) == "RIMMANDRAKE_READ_FIX_44C696D883_WITH_FRESH_EYES", argv[3]
+    assert "--not-now" in argv and argv[argv.index("--not-now") + 1].startswith("independent:"), argv
+    assert f.parse_title(it["title"]) == ([PATH], SHA, MAKER), f.parse_title(it["title"])
+    assert f.is_reader(it) and not f.is_reader({"title": "Fix the pump"})
+    import time_budget
+    r = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", argv[3]], capture_output=True,
+                       text=True, timeout=time_budget.CALL_S)
+    assert r.returncode == 0, "the ticket name does not parse: %s" % (r.stdout + r.stderr)[-300:]
+
+
+def t_the_lane_offers_the_reader_ticket():
+    import list_dispatch as LD
+    _, it = fixture_ticket()
+    cfg = {"enabled": True, "max_live": 2, "max_chain_depth": 2, "max_runs_per_item": 2, "max_never_started": 2,
+           "sonnet_cap_usd": 5, "opus_cap_usd": 12, "seat": "BENCH"}
+    rows, launches = LD.decide(cfg, {"items": {}}, {"items": {"R": it}, "runs": {}, "other_live": 0}, 1_800_000_000.0,
+                               account=(True, ""))
+    row = {r["item"]: r for r in rows}["R"]
+    assert row["decision"] == "launch" and launches, row
+    fake = lambda paths: [("CLEAN", p, "design/specs/2026-11-22-list-outcome-checks/boundary.md: promises covered 18 "
+                                        "of 18, src/RimMandrake/rimflow/selftest_list_effect.py passes") for p in paths]
+    b = LD.brief_text("R", it, row) + FR().brief_block(it, runner=fake)
+    assert "FRESH READER" in LD.brief_text("R", it, row), "the lane's brief has no reader part"
+    assert "design/specs/2026-11-22-list-outcome-checks/boundary.md" in b and "selftest_list_effect.py" in b, b
+    assert "Do NOT read the diff" in b and "You are not %s" % MAKER in b, b
+
+
+def t_the_check_holds_on_a_review_record():
+    f = FR()
+    ok = lambda argv: types.SimpleNamespace(returncode=0, stdout="READ-CLEAN %s" % argv[-1])
+    dirty = lambda argv: types.SimpleNamespace(returncode=1, stdout="DIRTY %s (never marked clean)" % argv[-1])
+    flagged = lambda argv: types.SimpleNamespace(returncode=1, stdout="FLAGGED %s" % argv[-1])
+
+    def boom(argv):
+        raise subprocess.TimeoutExpired(argv, 1)
+    assert f.holds(SHA, [PATH], ok) == 0 and f.holds(SHA, [PATH], flagged) == 0
+    assert f.holds(SHA, [PATH], dirty) == 1
+    assert f.holds(SHA, [PATH], boom) == 2, "a record that cannot be read is could not look, never holds"
+
+
+def t_the_rule_is_in_every_brief():
+    import fixer_rule
+    import detached_helper as DH
+    assert fixer_rule.READER_RULE in DH.FOOTER, "the footer every brief gets lacks the reader rule"
+    for p in ("CLAUDE.md", "design/RimMandrake/standing_rulings.md"):
+        with open(os.path.join(REPO, p), encoding="utf-8") as fh:
+            assert fixer_rule.READER_LINE in " ".join(fh.read().split()), "%s lacks the reader line" % p
+
+
+def main():
+    failed = 0
+    tests = [t_the_fixing_run_files_one_reader_ticket, t_the_lane_offers_the_reader_ticket,
+             t_the_check_holds_on_a_review_record, t_the_rule_is_in_every_brief]
+    for t in tests:
+        try:
+            t()
+            print("PASS", t.__name__)
+        except Exception as e:  # noqa: BLE001 - a promise whose test cannot run is a FAIL, never a crash
+            failed += 1
+            print("FAIL", t.__name__, "%s: %s" % (type(e).__name__, str(e)[:400]))
+    print("FAILED %d of %d" % (failed, len(tests)) if failed else "ALL PASS (%d)" % len(tests))
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

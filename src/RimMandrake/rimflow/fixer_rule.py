@@ -19,6 +19,13 @@ EVIDENCE = (
     "it needs one of the owner's five acts, or it changes a north-star bar (a looser bar is the Conductor's act)",
     "another live run holds the files",
 )
+# The fresh reader of a fix (his card, 2026-11-26: "The fixing run files it (Recommended)"): the CLAUDE.md line, and
+# the whole rule for the footer and standing_rulings.md. selftest_fresh_reader.py checks the homes word for word.
+READER_LINE = ("A run that fixes code files the fresh reader of its fix as a ticket, before it ends "
+               "(`python3 src/RimMandrake/rimflow/fresh_reader.py file --fix <sha> <path>...`); the ticket lane launches "
+               "the reader.")
+READER_RULE = READER_LINE + (" The reader gets the fixed file, its boundary page and its tests, never the diff or the "
+                             "earlier findings. A reader ticket is never given to the run that made the fix.")
 NOT_EVIDENCE = "A large task, a long run or a full context is not evidence. A fresh session goes on from your notes."
 STALE = ("would not finish", "more than this run", "more than one run")
 

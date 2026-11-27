@@ -1367,7 +1367,13 @@ Steps:
                check_q=shlex.quote(it.get("effect") or ""),
            out=_one(it.get("out"), 600) or "(nothing)",
            look=LOOK % _one(row["look"], 400) if row.get("look") else "",
-           stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "")
+           stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "") + _reader(it)
+
+
+def _reader(it):
+    """The reader part of a fresh-reader ticket's brief (fresh_reader.py), else ""."""
+    import fresh_reader as FR
+    return FR.brief_block(it) if FR.is_reader(it) else ""
 
 
 LOOK = """
