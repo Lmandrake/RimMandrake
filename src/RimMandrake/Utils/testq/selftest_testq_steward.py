@@ -71,6 +71,43 @@ def t_incident_lifecycle(W, step, finished, events, now):
         W.lane_state = real_state
 
 
+def t_a_lane_cause_ticket_seen_in_two_incidents_gets_one_work_run(W):
+    """lane_ticket.incidents / offer over fake ledger events of one cause ticket (RIMMANDRAKE_OFFER_TWICE_SEEN_LANE_CAUSE_
+    NOTHING_WORKS_IT). The ticket lane's own use of it is tested in rimflow/selftest_list_dispatch.py, by the same name."""
+    LT = W.LT
+    key, wait = "STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_YVBFTB", LT.WAIT + "IDLEEMPTY_YVBFTB (x)"
+
+    def ts(n):
+        return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(1_799_000_000 + n))
+
+    def incident(n, t0, over=True):
+        ev = ([{"event": "spawn", "name": key, "title": "alarm 1", "ts": ts(t0)}] if n == 1 else
+              [{"event": "unblock", "id": key, "reason": "steward: lane cause returned", "ts": ts(t0)},
+               {"event": "note", "id": key, "text": "steward: lane IDLE_EMPTY again (alarm %d)" % n, "ts": ts(t0 + 5)}])
+        if over:
+            ev += [{"event": "note", "id": key, "text": "steward: SteveDesktop lane proven again: job J%d" % n, "ts": ts(t0 + 100)},
+                   {"event": "block", "id": key, "reason": wait, "ts": ts(t0 + 110)}]
+        return ev
+
+    one = incident(1, 0)
+    two = one + incident(2, 1000)
+    three = two + incident(3, 2000)
+
+    def word(ev, runs=()):
+        return LT.offer(LT.incidents(ev), list(runs))[0]
+    ended2 = LT.incidents(two)["ended"]
+    check(word(two) == "offer", "two ended incidents and no live one are offered to the ticket lane")
+    check(word(one) == "blocked", "one ended incident stays blocked by the steward")
+    check(word(two + incident(3, 2000, over=False)) == "live" and word(one + incident(2, 1000, over=False)) == "live",
+          "a live incident stays with the steward, however many incidents ended before")
+    check(word(two, [ended2[-1]["at"] + 30]) == "spent", "the one Work run spends the offer for the same two incidents")
+    check(word(three, [ended2[-1]["at"] + 30]) == "offer", "a third ended incident makes one more offer")
+    check(word(two[:2] + [dict(two[2], ts="no")] + two[3:]) == "could_not_look" and word(None) == "could_not_look",
+          "a record that cannot be read reads could not look, never zero incidents")
+    check([e["alarm"] for e in ended2] == ["alarm 1", "steward: lane IDLE_EMPTY again (alarm 2)"]
+          and "J2" in ended2[1]["recovery"], "each ended incident keeps its alarm text and its recovery")
+
+
 def t_cause_identity(W, step, now):
     real_state = W.lane_state
     try:
@@ -1080,6 +1117,7 @@ def main():
         os.remove(T.q("steward.json"))
         t_incident_lifecycle(W, step, finished, events, base + 40000)
         t_cause_identity(W, step, base + 40200)
+        t_a_lane_cause_ticket_seen_in_two_incidents_gets_one_work_run(W)
         # ------------------------------------------------ units
         # the unit texts live in Utils/systemd/ since 76bd31f806 (testq.UNITS is gone: one home for every unit text)
         udir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "systemd")
