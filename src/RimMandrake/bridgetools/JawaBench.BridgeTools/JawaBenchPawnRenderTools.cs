@@ -1,6 +1,7 @@
 // JawaBenchPawnRenderTools.cs - jawa/pawn_render_nodes: how one pawn is drawn this frame, and the drawn height of each draw.
 // RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: to tell whether a map mesh draws over or under a pawn, read the
-// pawn's own draws beside the mesh's (jawa/cell_draw_census probeY). Generic: any pawn, any mod.
+// pawn's own draws beside the mesh's (jawa/cell_draw_census probeY). Generic: any pawn, any mod. jawa/material_queue reads or sets
+// a section material's renderQueue for a session: the experiment that tells a queue order from a depth order.
 //
 // ENGINE (decompiled 1.6, read 2026-11-27): PawnRenderer keeps `private PreRenderResults results` (valid, draw, useCached, bodyPos,
 // ...), set each frame by ParallelPreRenderPawnAt. useCached (a humanlike pawn with CameraDriver.ZoomRootSize > 18 and no
@@ -119,6 +120,88 @@ namespace JawaBench.BridgeTools
                     requestsRead = reqs != null,
                     nodesY = YOut(nodes),
                     probeY = probe ? (float?)probeY : null,
+                };
+            }, cancellationToken);
+        }
+
+        [Tool(
+            "jawa/material_queue",
+            Description =
+                "Reads, or for this session sets, the Unity renderQueue of the materials that the current map's section layers " +
+                "draw with, picked by materialId (from jawa/cell_draw_census) or by a part of the material's name. An experiment " +
+                "tool for draw order: the renderer draws a lower queue first, so a draw set below a pawn's queue (see " +
+                "jawa/pawn_render_nodes) is drawn before the pawn. setQueue -2 (default) only reads; -1 gives the material back " +
+                "its shader's own queue; 0..5000 sets it. The change lives on the shared Material: every thing drawn with it moves, " +
+                "nothing is saved, and the next game load forgets it. Picks nothing when neither key is given.",
+            ResultDescription =
+                "success, ticksGame, setQueue, sectionsRead, materials[] {material, materialId, shader, shaderQueue, before, " +
+                "after, subMeshes (how many sub-meshes of the map draw with it)}, refused (why a set was refused, else null).")]
+        public static async Task<object> MaterialQueue(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "a material's instance id (cell_draw_census materialId); 0 = pick by name", DefaultValue = 0)] int materialId = 0,
+            [ToolParameter(Description = "a case-blind part of the material name, used only when materialId is 0", DefaultValue = "")] string nameContains = "",
+            [ToolParameter(Description = "-2 read only, -1 the shader's own queue, 0..5000 set", DefaultValue = -2)] int setQueue = -2)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                Map map = Current.Game == null ? null : Find.CurrentMap;
+                if (map == null) return Fail("No current map.");
+                string refused = JawaBenchDrawOrderCore.QueueRefusal(setQueue);
+                if (refused != null) return Fail(refused);
+                if (materialId == 0 && string.IsNullOrEmpty(nameContains))
+                    return Fail("name a material: materialId (from jawa/cell_draw_census) or nameContains");
+                FieldInfo sectionsField = AccessTools.Field(typeof(MapDrawer), "sections");
+                FieldInfo layersField = AccessTools.Field(typeof(Section), "layers");
+                if (sectionsField == null || layersField == null)
+                    return Fail("Verse.MapDrawer.sections or Section.layers not found: the tool cannot see");
+                var grid = sectionsField.GetValue(map.mapDrawer) as Section[,];
+                if (grid == null) return Fail("the map has no sections yet: the tool cannot see");
+                var found = new Dictionary<Material, int>();
+                int read = 0;
+                foreach (Section s in grid)
+                {
+                    if (s == null) continue;
+                    read++;
+                    var layers = layersField.GetValue(s) as List<SectionLayer>;
+                    if (layers == null) continue;
+                    foreach (SectionLayer layer in layers)
+                    {
+                        foreach (LayerSubMesh sm in layer.subMeshes)
+                        {
+                            Material m = sm.material;
+                            if (m == null || !JawaBenchDrawOrderCore.Picks(m.GetInstanceID(), m.name, materialId, nameContains)) continue;
+                            found.TryGetValue(m, out int k);
+                            found[m] = k + 1;
+                        }
+                    }
+                }
+                var rows = new List<object>();
+                foreach (var kv in found)
+                {
+                    Material m = kv.Key;
+                    int before = m.renderQueue;
+                    if (setQueue != JawaBenchDrawOrderCore.ReadOnly) m.renderQueue = setQueue;
+                    rows.Add(new
+                    {
+                        material = m.name,
+                        materialId = m.GetInstanceID(),
+                        shader = m.shader != null ? m.shader.name : null,
+                        shaderQueue = m.shader != null ? m.shader.renderQueue : -1,
+                        before,
+                        after = m.renderQueue,
+                        subMeshes = kv.Value,
+                    });
+                }
+                return (object)new
+                {
+                    success = rows.Count > 0,
+                    message = rows.Count > 0 ? null : "no section sub-mesh of the current map draws with that material",
+                    ticksGame = TicksGameSafe(),
+                    setQueue,
+                    sectionsRead = read,
+                    materials = rows,
+                    refused = (string)null,
                 };
             }, cancellationToken);
         }

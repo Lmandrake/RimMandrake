@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 CS = os.path.join(HERE, "JawaBench.BridgeTools")
 CORE = "JawaBenchDrawOrderCore.cs"
 PROJ = os.path.join(HERE, "DrawOrderSelfTest", "DrawOrderSelfTest.csproj")
-N_UNITS = 16
+N_UNITS = 22
 
 # (planted fault: old -> new in the core, the unit that must go red)
 PLANTS = [
@@ -43,6 +43,12 @@ PLANTS = [
     ("if (!draw) return \"hidden\";", "if (!draw && !useCached) return \"hidden\";", "path_hidden"),
     ("return useCached ? \"cachedAtlas\" : \"nodes\";", "return \"nodes\";", "path_cached_atlas"),
     ("return useCached ? \"cachedAtlas\" : \"nodes\";", "return \"cachedAtlas\";", "path_nodes"),
+    ("if (setQueue == ReadOnly || setQueue == ShaderQueue) return null;", "if (setQueue == ReadOnly) return null;", "queue_read_and_default_allowed"),
+    ("if (setQueue >= 0 && setQueue <= MaxQueue) return null;", "if (setQueue > 0 && setQueue < MaxQueue) return null;", "queue_range_ends_allowed"),
+    ("if (setQueue >= 0 && setQueue <= MaxQueue) return null;", "if (setQueue >= -3 && setQueue <= MaxQueue + 1) return null;", "queue_outside_refused"),
+    ("if (wantId != 0) return id == wantId;", "if (wantId != 0 && id == wantId) return true;", "picks_by_id_only"),
+    ("System.StringComparison.OrdinalIgnoreCase) >= 0;", "System.StringComparison.Ordinal) >= 0;", "picks_by_name_part_case_blind"),
+    ("if (string.IsNullOrEmpty(wantName)) return false;", "if (wantName == null) return false;", "picks_nothing_without_key"),
 ]
 
 # (tool, its file, the calls that must sit inside its main-thread hop)
@@ -50,6 +56,8 @@ WIRING = [
     ("jawa/cell_draw_census", "JawaBenchDrawCensusTools.cs",
      [r"JawaBenchDrawOrderCore\.Span\(", r"JawaBenchDrawOrderCore\.Relation\(", r"JawaBenchDrawOrderCore\.Straddles\(",
       r"\.mesh\.bounds", r"GetInstanceID\(\)"]),
+    ("jawa/material_queue", "JawaBenchPawnRenderTools.cs",
+     [r"JawaBenchDrawOrderCore\.QueueRefusal\(", r"JawaBenchDrawOrderCore\.Picks\(", r"\"sections\"", r"\.renderQueue = "]),
     ("jawa/pawn_render_nodes", "JawaBenchPawnRenderTools.cs",
      [r"JawaBenchDrawOrderCore\.DrawPath\(", r"JawaBenchDrawOrderCore\.Relation\(", r"\"drawRequests\"", r"\"results\"",
       r"preDrawnComputedMatrix", r"ZoomRootSize", r"renderQueue"]),

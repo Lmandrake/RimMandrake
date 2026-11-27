@@ -10,6 +10,10 @@ Run from the repo root with the bridge on a game holding FlowWorks (tier `flowwo
     ... --heavy-scrapper   only the Scrapper heavy bridge (RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER):
                       east-west 2 and 4 squares and north-south 4, a drafted colonist mid-span on each (bare, then in a
                       cowboy hat), captures on the deck middle and on each end (anchor + post)
+    ... --heavy-scrapper --draw-order   also read how each colonist is drawn (jawa/pawn_render_nodes, close and default
+                      zoom) and every section draw on its square and the square north (jawa/cell_draw_census, probeY = its
+                      highest drawn node); --queue-experiment adds, on ew4, the cable material's queue set below then above
+                      the colonist's, a close capture each, then given back (jawa/material_queue)
 Writes DIR/<station>.png, DIR/yard_default.png, DIR/walk_*.png and DIR/readings.json (default Transient/deck_art_picks).
 """
 import argparse
@@ -180,6 +184,78 @@ def heavy_scrapper_look(w, out, stations, readings):
     return shots
 
 
+def _pawn_line(name, tag, n):
+    """One printed line of a jawa/pawn_render_nodes reading -- pure."""
+    if not n.get("success"):
+        return "DRAWORDER %s pawn %s: UNMEASURED %s" % (name, tag, str(n)[:200])
+    reqs = n.get("requests") or []
+    qs = sorted({r.get("renderQueue") for r in reqs})
+    top = max(reqs, key=lambda r: (r.get("drawn") or [0, -1])[1]) if reqs else {}
+    return ("DRAWORDER %s pawn %s: path=%s root=%s frames=%s bodyY=%s nodesY=%s queues=%s top=%s/%s/%s q%s cached=%s" % (
+        name, tag, n.get("drawPath"), n.get("cameraRootSize"), n.get("framesSinceDraw"), (n.get("bodyPos") or [0, None])[1],
+        n.get("nodesY"), qs, top.get("node"), top.get("shader"), (top.get("drawn") or [0, None])[1], top.get("renderQueue"),
+        n.get("cachedQuad")))
+
+
+def _census_lines(name, tag, c):
+    """The printed lines of a jawa/cell_draw_census reading -- pure."""
+    if not c.get("success"):
+        return ["DRAWORDER %s census %s: UNMEASURED %s" % (name, tag, str(c)[:200])]
+    out = []
+    for d in c.get("draws") or []:
+        out.append("DRAWORDER %s census %s: %s %s id=%s %s q%s boundsY=%s vertY=%s squareY=%s vsProbe=%s straddles=%s drawn=%s" % (
+            name, tag, d.get("layer"), d.get("material"), d.get("materialId"), d.get("shader"), d.get("renderQueue"),
+            d.get("boundsY"), d.get("vertY"), d.get("squareY"), d.get("boundsVsProbe"), d.get("straddlesProbe"), d.get("drawn")))
+    return out or ["DRAWORDER %s census %s: [] (no section draw on the square)" % (name, tag)]
+
+
+def draw_order(w, out, stations, readings, experiment):
+    """RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: the readings that say what decides whether a cable
+    covers the colonist. Per bridge: how the colonist is drawn at the close and the default zoom, and every section draw on
+    its square and the square north of it against its highest drawn node. With experiment, on ew4: the cable material's
+    queue below, then above, the colonist's, a close capture each, then the shader's own queue again. Decides nothing."""
+    for name, kind, look, tier, p, q, pit, rect in stations:
+        pawn = readings.get(name, {}).get("pawn") or {}
+        pid, cell = pawn.get("id"), pawn.get("cell")
+        rec = readings.setdefault(name, {}).setdefault("draw_order", {})
+        if not pid or not cell:
+            w.say("DRAWORDER %s: UNMEASURED: no colonist on the deck" % name)
+            continue
+        for tag, root in (("close", 8.0), ("default", float(DEFAULT_ZOOM))):
+            w.call("jawa/clear_ui", all=True)
+            w.call("rimworld/jump_camera_to_cell", x=cell[0], z=cell[1])
+            w.call("rimworld/set_camera_zoom", rootSize=root)
+            time.sleep(1.5)
+            n = w.call("jawa/pawn_render_nodes", pawnId=pid) or {}
+            rec["pawn_" + tag] = n
+            w.say(_pawn_line(name, tag, n))
+        close = rec.get("pawn_close") or {}
+        ys = [(r.get("drawn") or [0, None])[1] for r in close.get("requests") or []]
+        ys = [y for y in ys if isinstance(y, (int, float))]
+        probe = max(ys) if ys else -1.0
+        for dz in (0, 1):
+            c = w.call("jawa/cell_draw_census", x=cell[0], z=cell[1] + dz, probeY=probe) or {}
+            rec["census_z%d" % dz] = c
+            for ln in _census_lines(name, "z+%d" % dz, c):
+                w.say(ln)
+        if not experiment or not name.startswith("ew4"):
+            continue
+        qs = [r.get("renderQueue") for r in close.get("requests") or [] if isinstance(r.get("renderQueue"), int)]
+        cables = sorted({d.get("materialId") for k in ("census_z0", "census_z1") for d in (rec.get(k) or {}).get("draws") or []
+                         if "cable" in str(d.get("material")).lower() or "rail" in str(d.get("material")).lower()})
+        if not qs or not cables:
+            w.say("DRAWORDER %s experiment: UNMEASURED: pawn queues %s, cable materials %s" % (name, qs, cables))
+            continue
+        exp = rec.setdefault("experiment", [])
+        for tag, queue in (("q_below", min(qs) - 1), ("q_above", max(qs) + 1), ("q_shader", -1)):
+            for mid in cables:
+                r = w.call("jawa/material_queue", materialId=mid, setQueue=queue) or {}
+                exp.append(dict(step=tag, materialId=mid, setQueue=queue, reply=r))
+                w.say("DRAWORDER %s experiment %s: material %s -> %s: %s" % (name, tag, mid, queue, str(r.get("materials") or r)[:240]))
+            time.sleep(1.0)
+            exp.append(dict(step=tag, shot=close_snap(w, out, "%s_mid_hat_%s" % (name, tag), cell)))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--origin", default=None)
@@ -188,6 +264,8 @@ def main(argv=None):
     ap.add_argument("--jetties", action="store_true", help="build only the jetty yard: each tier in each look, east and north")
     ap.add_argument("--heavy-scrapper", action="store_true",
                     help="build only the Scrapper heavy bridge (EW 2 and 4, NS 4) with a colonist mid-span on each")
+    ap.add_argument("--draw-order", action="store_true", help="with --heavy-scrapper: the draw-order readings of each colonist")
+    ap.add_argument("--queue-experiment", action="store_true", help="with --draw-order: the cable queue experiment on ew4")
     a = ap.parse_args(argv)
     a.mock = False
     a.no_shots = False
@@ -223,6 +301,8 @@ def main(argv=None):
             w.say("CHECK %s: %s (%s)" % (name, "OK" if ok else "BAD", why))
         w.say("CHECK heavy Scrapper DECKART: %d bad of %d read (limit 0)" % (bad, len(stations)))
         readings["_look"] = [list(t) for t in heavy_scrapper_look(w, a.out, stations, readings)]
+        if a.draw_order:
+            draw_order(w, a.out, stations, readings, a.queue_experiment)
         with open(os.path.join(a.out, "readings.json"), "w") as f:
             json.dump(readings, f, indent=1)
         w.say("WROTE %s" % os.path.join(a.out, "readings.json"))

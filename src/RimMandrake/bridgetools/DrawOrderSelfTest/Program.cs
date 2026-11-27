@@ -80,6 +80,19 @@ namespace JawaBench.BridgeTools
                 ? null : "draw=false read " + C.DrawPath(true, false, false));
             U("path_cached_atlas", () => C.DrawPath(true, true, true) == "cachedAtlas" ? null : "useCached read " + C.DrawPath(true, true, true));
             U("path_nodes", () => C.DrawPath(true, true, false) == "nodes" ? null : "nodes read " + C.DrawPath(true, true, false));
+            // jawa/material_queue
+            U("queue_read_and_default_allowed", () => C.QueueRefusal(C.ReadOnly) == null && C.QueueRefusal(C.ShaderQueue) == null
+                ? null : "-2 or -1 refused");
+            U("queue_range_ends_allowed", () => C.QueueRefusal(0) == null && C.QueueRefusal(C.MaxQueue) == null && C.QueueRefusal(2450) == null
+                ? null : "0, 2450 or MaxQueue refused");
+            U("queue_outside_refused", () => C.QueueRefusal(-3) != null && C.QueueRefusal(C.MaxQueue + 1) != null
+                ? null : "-3 or MaxQueue+1 accepted");
+            U("picks_by_id_only", () => C.Picks(7, "Cable", 7, "zzz") && !C.Picks(8, "Cable", 7, "Cable")
+                ? null : "an id given did not decide alone");
+            U("picks_by_name_part_case_blind", () => C.Picks(1, "Scrapper/RM_Cable", 0, "rm_cable") && !C.Picks(1, "Post", 0, "cable")
+                ? null : "a name part did not pick, or picked a stranger");
+            U("picks_nothing_without_key", () => !C.Picks(1, "Cable", 0, "") && !C.Picks(1, "Cable", 0, null)
+                ? null : "no id and no name picked a material");
             Console.WriteLine("U-count " + n);
             return 0;
         }

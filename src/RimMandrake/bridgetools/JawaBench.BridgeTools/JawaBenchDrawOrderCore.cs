@@ -54,6 +54,25 @@ namespace JawaBench.BridgeTools
             return !s.Empty && s.min < y - eps && s.max > y + eps;
         }
 
+        /// <summary>jawa/material_queue: -2 reads only, -1 gives a material back its shader's own queue, 0..MaxQueue sets one.</summary>
+        internal const int ReadOnly = -2, ShaderQueue = -1, MaxQueue = 5000;
+
+        internal static string QueueRefusal(int setQueue)
+        {
+            if (setQueue == ReadOnly || setQueue == ShaderQueue) return null;
+            if (setQueue >= 0 && setQueue <= MaxQueue) return null;
+            return "setQueue must be -2 (read only), -1 (the shader's own queue) or 0.." + MaxQueue + "; got " + setQueue;
+        }
+
+        /// <summary>Whether a material is the one asked for: by instance id when one is given (the name is then ignored), else
+        /// by a case-blind part of its name. Neither given picks nothing (never every material).</summary>
+        internal static bool Picks(int id, string name, int wantId, string wantName)
+        {
+            if (wantId != 0) return id == wantId;
+            if (string.IsNullOrEmpty(wantName)) return false;
+            return name != null && name.IndexOf(wantName, System.StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
         /// <summary>How a pawn is drawn this frame, from PawnRenderer's pre-render results: notPreRendered (no results yet),
         /// hidden, cachedAtlas (one quad of the pawn's whole cached frame: the render nodes are not drawn) or nodes (one draw
         /// per render node).</summary>
