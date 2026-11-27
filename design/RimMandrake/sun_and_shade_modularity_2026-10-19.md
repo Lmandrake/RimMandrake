@@ -2,6 +2,10 @@
 
 **Owner ruling, 2026-10-19 (question card):** "Where does Sun & Shade live? -> Own piece inside Baroque Biomes, standalone later (Recommended)". Alternative C stands; items filed from section 6 (C list), with `SUNSHADE_MIGRATE_MOVE_NOT_CHANGE` ordered before the DIRECT_SUN_* and TREE_SHADE_* build items.
 
+**Still open, owner, 2026-11-26 9:10 PM PST (his words, ledger event OWNER:1795756206289623411 on `SUNSHADE_MIGRATE_MOVE_NOT_CHANGE`):** "Direct Sun is surprising to see, but it's an essential mod that's quite welcome to develop alongside us. It's mechanics are integral to the setting and many Baroque Biomes, so it's a required mod for Baroque Biomes that can also stand alone... or can it? I want to record in the mod that we are still evaluating whether to merge it into Baroque Biomes or take on the potential extra work of making it stand-alone (not yet clear)."
+
+The state after those words: Direct Sun (Sun & Shade) is required by Baroque Biomes. Where Direct Sun ships is not decided: merged into Baroque Biomes, or a stand-alone mod. The extra work of a stand-alone mod is not measured yet. The Conductor's reading, not his words: until he decides, no work makes Direct Sun a stand-alone mod, and no work removes that option.
+
 FOUNDRY design pass. No mod code, defs, game or bridge were touched. This doc files nothing: the
 items in §6 are a list to file once the owner has picked.
 

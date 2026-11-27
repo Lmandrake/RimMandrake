@@ -70,3 +70,12 @@ his words above; its Designer run is on Fable 5.2 (`claude-fable-5-2`).
 Acceptance test: `python3 src/RimMandrake/rimflow/maturation.py show WreckedMachines` reads "0.1.0: Stage 1, the
 Designer" with a move from intake carrying his words, and `./pipe show WreckedMachines` lists the mod; the Designer
 run's unit records model `claude-fable-5-2`.
+
+## What the card said
+
+<!-- answered 2026-11-27T04:58:31Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Wrecked Machines, Designer question 2 of 3. Picture a stranger's colony in an ordinary game, a year in. The note of your card of October 3 says relics are found at ancient ruin sites; it does not say 'only'. In an ordinary game those ruins exist only on map tiles that carry the ancient-ruins feature. The answer decides which placement code gets built. There are two options because the Designer's third is 'something else you picture': type it on the write-in line. When does the mod first show itself?
+**Picked:** Ruins, plus a rare wreck (Recommended)
+**Its description:** Why: every colony meets the mod, even one that never leaves home. Buys: now and then one half-buried wreck on an ordinary map, there on arrival; the ruins hold the good ones. Costs: a wreck is less rare. Recommended: it is the Designer's pick, on the test 'does a stay-at-home colony ever see the mod'.
+**Other options:** Only in ancient ruins

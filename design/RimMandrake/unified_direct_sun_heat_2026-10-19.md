@@ -302,6 +302,10 @@ SelfTest:
 D1–D4 are ruled (§8). D5 and D6 were not asked; DS8 applies his principle to them, and it is the
 one confirm still owed.
 
+Where Direct Sun ships is still open (owner, 2026-11-26): merged into Baroque Biomes, or a stand-alone mod. Baroque
+Biomes requires Direct Sun in both cases. His words and the state: the top of
+`design/RimMandrake/sun_and_shade_modularity_2026-10-19.md`.
+
 ## 8. Owner rulings 2026-10-19 and what they changed
 
 By question card on this pass, verbatim:
