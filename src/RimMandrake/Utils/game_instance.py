@@ -493,6 +493,19 @@ def live_holder(name, new_run=False):
         return host_guard.crossing(new_run=new_run)
 
 
+def own_take(name):
+    """-> the generation of game `name`'s live take that this process drives under (inherited RM_HOST_GUARD_GEN, or its
+    own window's take), else None (host_guard._reentrant). `rw_game.sh down` takes its own RUNNER guard and stops under
+    it; `rimflow bridge idle` read that guard as another seat's live hold, and the idle stop was refused 7 times in 7
+    on 2026-11-26 (RIMMANDRAKE_UNBLOCK_IDLE_STOP_OWN_RUNNER_REFUSES_SEVEN_TIMES)."""
+    rf = os.path.join(REPO, "src", "RimMandrake", "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import host_guard
+    with host_guard.instance_env(None if name == DEFAULT else name):
+        return host_guard._reentrant(host_guard.lock_path())
+
+
 def child_env(name, base=None):
     """-> a copy of the environment aimed at game `name`: RM_GAME_INSTANCE, and RIMFLOW_DRIVER_LOCK with it when this
     shell pins one (that variable names the lock of the game RM_GAME_INSTANCE names: `env b` exports both). Changing
@@ -542,7 +555,9 @@ def bridge_refusal(name, purpose=None, timeout=120, new_run=False, seat=None, de
     if held:
         return ("%s is another live driver's: %s\n  what passes: its run ends or releases it (another run's game "
                 "is never stopped or handed out)" % (_n(name), held))
-    env = child_env(name)                   # the bridge of the game being stopped, whatever this shell drives
+    if not new_run and own_take(name) is not None:
+        return None          # this process drives under the game's live take: the bridge is ours, whatever its seat
+    env = child_env(name)                  # the bridge of the game being stopped, whatever this shell drives
     host = bridge_host_args(name)
     try:
         r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle"] + host + ["--for", purpose]

@@ -103,9 +103,55 @@ def t_the_next_job_starts_the_game():
           "the-next-job-starts-the-game: the tick runs the idle stop after this tick's admission")
 
 
+def t_the_lanes_own_guard_does_not_refuse_its_stop():
+    """The real `rw_game.sh down` on a fake machine (fake_two_games), sent as the idle stop sends it: no RW_GAME_GUARDED,
+    so the script takes its own RUNNER guard and stops under it. Measured 2026-11-26: that guard read as another seat's
+    live hold, 7 refusals and 0 stops in tick.log. A foil first: a job's live guard on the game still refuses the stop."""
+    import subprocess
+    sys.path.insert(0, os.path.dirname(HERE))
+    import fake_two_games as F
+    I, _sent, _run = fresh()
+    w = F.World(F.REPO)
+    sh = os.path.join(w.repo, "infrastructure", "stevedesktop", "rw_game.sh")
+    lock_b = os.path.join(w.root, "b", "DRIVER_LOCK.json")
+
+    def run(_T, _cmd):
+        if T.REMOTE_RUNNER_B not in _cmd:
+            return 0, "already stopped"          # Steve1: no game on this fake machine
+        import time_budget
+        r = w.run([sh, "down"], instance="b", timeout=time_budget.CALL_S)
+        return r.returncode, (r.stdout + r.stderr).strip()
+    try:
+        b = w.start_b()
+        holder = subprocess.Popen([sys.executable, os.path.join(w.repo, "src", "RimMandrake", "rimflow", "host_guard.py"),
+                                   "run", "--seat", "RUNNER", "--for", "a job drives b", "--", "sleep", "120"],
+                                  env=dict(w.env, RM_GAME_INSTANCE="b", RIMFLOW_DRIVER_LOCK=lock_b),
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        try:
+            for _ in range(200):
+                if os.path.exists(lock_b):
+                    break
+                F.time.sleep(0.05)
+            rc, text = run(T, T.REMOTE_RUNNER_B)
+            check(rc == 75 and F.alive(b) and w.kills() == [],
+                  "the-lanes-own-guard-does-not-refuse-its-stop: foil, a job's guard on the game refuses, it lives: %s %s"
+                  % (rc, text[-200:]))
+        finally:
+            holder.kill()
+            holder.wait()
+        I.step(T, now=T0, run=run)
+        out = I.step(T, now=T0 + I.IDLE_STOP_S + 1, run=run)
+        check(out.get(T.STEVE2) == "stopped" and F.wait_dead(b) and w.kills() == ["taskkill /PID %d" % b],
+              "the-lanes-own-guard-does-not-refuse-its-stop: an idle game, no job, no other holder: stopped %s %s"
+              % (out, w.kills()))
+    finally:
+        w.close()
+
+
 def main():
     for t in (t_a_game_in_use_is_never_stopped, t_an_idle_game_is_stopped_after_the_idle_time,
-              t_a_refused_stop_waits_and_is_named, t_the_next_job_starts_the_game):
+              t_a_refused_stop_waits_and_is_named, t_the_next_job_starts_the_game,
+              t_the_lanes_own_guard_does_not_refuse_its_stop):
         t()
     print("FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0

@@ -1,6 +1,7 @@
 # BOUNDARY: a SteveDesktop game that no job uses is stopped, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/testq/idle_stop.py`, and its caller in `testq.py` (`cmd_tick`, after `games_reading`).
+Code: `src/RimMandrake/Utils/testq/idle_stop.py`, and its caller in `testq.py` (`cmd_tick`, after `games_reading`). The
+stop it sends passes through `rw_game.sh down` and `game_instance.py` (`bridge_refusal`, `own_take`).
 Item: `RIMMANDRAKE_FIX_STEVEDESKTOP_TOP_WASTE_HE_SAID_END_THIS`. The owner's words (2026-11-25): "If you're not running
 the live game, kill them for the memory and simplicity." Each promise has a test of its name in
 `src/RimMandrake/Utils/testq/selftest_idle_stop.py`.
@@ -27,6 +28,10 @@ first tick that finds it not in use.
   `rw_game.sh down` (Steve2 through its own clone and instance), once, and starts a new idle clock.
 - **a-refused-stop-waits-and-is-named.** A `down` that refuses (a holder uses the game) is logged with its words and is
   not asked again before `RETRY_S`.
+- **the-lanes-own-guard-does-not-refuse-its-stop.** `rw_game.sh down` takes its own RUNNER host guard, and the stop under
+  that guard passes: `game_instance.bridge_refusal` passes a process that drives under the game's live take it inherited
+  (`own_take`). A job's or a helper's live guard on the game still refuses the `down`. Measured 2026-11-26: 7 refusals and
+  0 stops in `tick.log`, each one the script's own guard (RIMMANDRAKE_UNBLOCK_IDLE_STOP_OWN_RUNNER_REFUSES_SEVEN_TIMES).
 - **the-next-job-starts-the-game.** No code here: the worker's load (`rw_game.sh init && up --wait`) starts a stopped
   game, as it does after every reboot.
 
