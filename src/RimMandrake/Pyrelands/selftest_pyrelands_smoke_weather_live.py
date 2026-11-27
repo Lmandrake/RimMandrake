@@ -238,6 +238,9 @@ class Stop(Exception):
     pass
 
 
+PROBE_FITS = 30   # the twin's screen at the zoom a scene leaves: cells, a 50 x 50 sky over it (MEASURED refusal)
+
+
 class Game(object):
     """A twin of MapComponent_RM_SmokeWeather over a 250 map, two colonists and a burning strip."""
 
@@ -246,6 +249,7 @@ class Game(object):
         self.weather, self.age, self.last = "Clear", 0, "Clear"
         self.pawns, self.roof, self.fire_on, self.burned, self.shots = {}, set(), False, 0, 0
         self.gp, self.hp = 37, 113
+        self.calibrated, self.shot_rects = False, []
 
     def roofed(self, cell):
         return cell in self.roof
@@ -339,6 +343,12 @@ def run(game, env=None, judge=None):
             return game.call(tool, **kw)
 
         def screenshot(self, name=None, rect=None, ppc=None):
+            # play_zoom.shoot's refusal: its first rect is probed at the zoom the last call left, and a rect over
+            # PROBE_FITS cells does not fit there (ArchSmall 2026-11-27: the 50 x 50 sky refused)
+            if not game.calibrated and max(rect[2], rect[3]) > PROBE_FITS:
+                stop("UNMEASURED")("play-zoom calibration: rect %r does not fit the viewport" % (rect,))
+            game.calibrated = True
+            game.shot_rects.append(tuple(rect))
             game.shots += 1
             return "/fake/%s.png" % name
 
@@ -453,6 +463,23 @@ finally:
 print("[swc-st] planted pad=PAD on the measured site: %r" % v.get("smoke_weather_stage"))
 check("planted pad=PAD on the measured site: the stage reads UNMEASURED (the live run's reading)",
       str(v.get("smoke_weather_stage")) == "UNMEASURED", v)
+gm = Game()
+v, _ = run(gm, judge="smoke")
+print("[swc-st] zoom probe: first capture rect %r (limit <= %d cells), %d captures" % (
+    gm.shot_rects[0] if gm.shot_rects else None, PROBE_FITS, len(gm.shot_rects)))
+check("the first capture is the small zoom probe at the sky's middle, and the sky shots follow it",
+      gm.shot_rects and gm.shot_rects[0][2:] == (S.CAL_CELLS, S.CAL_CELLS) and len(gm.shot_rects) == 4
+      and all(r[2] > PROBE_FITS for r in gm.shot_rects[1:]), gm.shot_rects)
+real_cal = S.CAL_CELLS
+S.CAL_CELLS = 0   # the planted fault: the pre-repair scene, no probe before the 50 x 50 sky
+try:
+    v, _ = run(Game(), judge="smoke")
+finally:
+    S.CAL_CELLS = real_cal
+print("[swc-st] planted no zoom probe: stage %r" % v.get("smoke_weather_stage"))
+check("planted no zoom probe: the stage reads UNMEASURED (the live run's reading)",
+      str(v.get("smoke_weather_stage")) == "UNMEASURED", v)
+check("the probe rect lies at the middle of the sky", S.calibration_rect((10, 20, 50, 50)) == (32, 42, 6, 6))
 v, _ = run(Game(fault="things_unreadable"), judge="smoke")
 check("an unreadable geyser count: the stage reads UNMEASURED, never 'no geyser'",
       str(v.get("smoke_weather_stage")) == "UNMEASURED", v)

@@ -80,6 +80,10 @@ FIREBREAK = 6                  # cleared ground around the scene: over the burn 
 GAP = 10                       # cells between the strip and the room's wall: over HealReach, so the fire cannot reach R
 TAKE_TICKS = 250               # one SmokeCheckIntervalTicks: the spark's first spread before the smoke goes on
 SHOT_PX = 1500                 # a capture's long side at most (the agents' image limit)
+CAL_CELLS = 6                  # our own rule: the first capture's zoom probe, a rect this small at the sky's middle.
+#                                play_zoom.shoot probes its first rect at the zoom the last call left, and refuses when
+#                                that rect does not fit the screen (ArchSmall 2026-11-27: the 50 x 50 sky, 'Requested cell
+#                                rectangle does not fit in the viewport'); a 6 x 6 rect fits at any zoom a scene leaves
 PLANT_ENV = "PYRE_PLANT_SWC"   # the planted scene fault for the live twin: unroof (R's roof taken off as the smoke goes
 #                                on; smoke_spares_roofed must FAIL)
 JUDGE_ENV = "PYRE_SWC_JUDGE"   # a blind judge's verdict on the manifest's captures: "smoke" passes, anything else fails
@@ -343,6 +347,12 @@ def shot_ppc(rect):
     return max(4, SHOT_PX // max(rect[2], rect[3]))
 
 
+def calibration_rect(rect, cells=None):
+    """Pure. The zoom probe's rect: `cells` (CAL_CELLS) square at the middle of `rect`."""
+    c = cells or CAL_CELLS
+    return (rect[0] + (rect[2] - c) // 2, rect[1] + (rect[3] - c) // 2, c, c)
+
+
 def error_lines(lines):
     """Pure. _log_since lines -> the error and exception lines (the contract: a new error line in Player.log)."""
     return [str(m.get("text", ""))[:240] for m in lines or []
@@ -397,6 +407,8 @@ def register(suite, V):
 
     def shot(t, label):
         rect = V.padded_inside(state["geo"]["sky"], V._map_size(t)) if V._live(t) else state["geo"]["sky"]
+        if CAL_CELLS and not state.get("zoomProbe"):   # learns the zoom on a rect that fits; never judged, never listed
+            state["zoomProbe"] = t.screenshot(name="swc_zoomprobe", rect=calibration_rect(rect), ppc=shot_ppc(rect))
         path = t.screenshot(name="swc_%s" % label, rect=tuple(rect), ppc=shot_ppc(rect))
         state["shots"].append({"label": label, "path": path, "rect": list(rect)})
 
