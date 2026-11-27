@@ -43,6 +43,18 @@ SORTED = "tickets.md"
 SORT_CMD = "conductor_stops.py sort <ID> --to lane|next --why \"...\""
 
 
+OWN = "; its own: "     # list_dispatch.launch_bundle_row: a lead row the host left out ends with the host's reason
+WHY_CUT = 160
+
+
+def _why(why):
+    """-> the row's reason for a view line, at most WHY_CUT characters before the host's own reason. That reason stays
+    whole (the host bounds it at 200): the no_bundle hint sends the Conductor to it."""
+    s = str(why or "")
+    head, sep, own = s.partition(OWN)
+    return head[:WHY_CUT] + sep + own  # cut-ok: a view line; the whole reason stays in reading.json
+
+
 def _age(t, now):
     if not isinstance(t, (int, float)):
         return "age?"
@@ -112,7 +124,7 @@ def rows(rd, now, rests=None, sorted_of=None):
         d = (r or {}).get("decision")
         if d in KINDS:
             t = r.get("since")
-            out.append({"kind": d, "items": [iid], "mod": None, "why": "%s; %s" % (str(r.get("why") or "")[:160], KINDS[d]),  # cut-ok: a view line; the whole reason stays in reading.json
+            out.append({"kind": d, "items": [iid], "mod": None, "why": "%s; %s" % (_why(r.get("why")), KINDS[d]),
                         "age": _age(t, now), "_t": t if isinstance(t, (int, float)) else 9e18})
         elif d == "mod_work" and r.get("mod"):
             wu = r.get("wait_until")

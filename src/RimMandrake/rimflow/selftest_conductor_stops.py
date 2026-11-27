@@ -72,6 +72,13 @@ def t_the_four_kinds_go_to_the_conductor():
     # a clear of the lane's state cannot change what the host's sort read (a refusal note, a hold, a lease): the hint
     # names the host's reason, never `clear` (2026-11-27, item RIMMANDRAKE_LET_CLEAR_PASS_CHAIN_STOP_THREE_CLEARS_NO_LAUNCH)
     assert "list_dispatch.py clear" not in n1["why"] and "reason" in n1["why"], n1
+    # the lead row's why as list_dispatch.launch_bundle_row writes it: the host's line, then "; its own: <reason>". The
+    # host's line for an item system is 135 characters, so a cut of the whole why at 160 left 14 of the reason.
+    own = "a dated wait of its own ahead: 2026-12-01 (the owner's walk of Pyrelands; nothing to run before it)"
+    long_why = ("on SteveDesktop: NO BUNDLE: item:RIMMANDRAKE_READ_FIX_EB96DF47E5_WITH_FRESH_EYES has no ready member "
+                "(0 closed by the sort, 1 left out); its own: " + own)
+    n2 = CS().rows(reading({"N2": {"decision": "no_bundle", "why": long_why, "since": NOW - H}}), NOW, rests={})[0]
+    assert own in n2["why"], "the hint names the host's reason, so the row shows it whole: %s" % n2["why"]
     assert [r["items"][0] for r in rows][0] == "C1", "oldest first"
     assert CS().rows(reading({"X": {"decision": "chain_stop", "why": "w"}}), NOW, rests={})[0]["age"] == "age?", \
         "a row with no since says so, never 0"
