@@ -72,6 +72,16 @@ launcher is a fake that records the argv it was given.
   proves, never Fable); a subagent never puts a command in the background. The brief no longer says "no helpers", and
   it names no spend. The owner, 2026-11-26 2:33 PM PST: "Of course it should intelligently subagent fanout as needed."
   Version 0.3.0 (item `RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO`).
+- **fable-builders-may-call-codex.** The fan-out section carries the Codex text, so each run that gets the fan-out
+  section gets it too (the builder briefs and the Designer packet of a Fable mod): the run may call Codex through the
+  Codex door (`src/RimMandrake/Utils/gpt_consult.py`) when it judges a call useful (a second opinion on a design, a
+  review of code, hypotheses when stuck); an answer is evidence to weigh and the run checks each claim that it acts on;
+  a review of pipeline code follows `src/RimMandrake/rimflow/roles/code_review.md`. The text names no spend, no limit and
+  no count of calls. An unpinned mod's briefs, a codex Designer, the blind judge and the in-game driver carry no Codex
+  text. The owner, 2026-11-26: "Please also allow the fable wrecked machine run intelligently call out to codex if it
+  seems that would be useful." Test: `t_fable_builders_may_start_subagents` (`fanout_ok`) and
+  `t_other_runs_keep_their_helper_rules`. Version 0.3.0 (item
+  `RIMMANDRAKE_ALLOW_CODEX_CALLS_IN_WRECKED_MACHINES_FABLE_RUN_HE_ASKED`).
 - **other-runs-keep-their-helper-rules.** An unpinned mod's builder briefs are unchanged. A pinned mod's blind judge
   and in-game driver still start no helpers and no subagents, the Test Pilot still sits alone, and a codex or unpinned
   Designer gets no fan-out line. Version 0.3.0.

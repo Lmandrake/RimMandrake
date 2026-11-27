@@ -122,7 +122,8 @@ def role_for(role, mod, pins=None):
 # as needed." So a builder run on Fable may start subagents; each subagent takes its model from his ladder
 # (infrastructure/agents/Agent_Policy.md: sonnet for code a test proves and for searches, opus for code no test proves,
 # never a Fable subagent). A judge, the fresh reader of a fix and the live driver keep their own runs and rules: their
-# briefs never pass through with_fanout.
+# briefs never pass through with_fanout. The same section lets the run call Codex through gpt_consult.py (the owner,
+# 2026-11-26, item RIMMANDRAKE_ALLOW_CODEX_CALLS_IN_WRECKED_MACHINES_FABLE_RUN_HE_ASKED).
 FANOUT_TIERS = ("fable",)
 FANOUT_HEADING = "## Subagents: this run may start them"
 # the words a builder brief used to forbid helpers with, and what they read as once the fan-out section is added
@@ -153,7 +154,15 @@ def fanout_text(alias):
         "report before your last message: a subagent that still runs when your turn ends is killed, and its work "
         "is lost.",
         "- The blind judge, the fresh reader of a fix and the in-game driver are not your subagents. They are their "
-        "own runs, with their own models and rules."])
+        "own runs, with their own models and rules.",
+        "- The owner, 2026-11-26: \"Please also allow the fable wrecked machine run intelligently call out to codex if "
+        "it seems that would be useful.\" This run may call Codex through the Codex door, "
+        "`python3 src/RimMandrake/Utils/gpt_consult.py \"<question>\" -f <file>...`, when the run judges a call is "
+        "useful: a second opinion on a design, a review of code, or hypotheses when the run is stuck. The Codex door "
+        "is the only way to call Codex in this repo.",
+        "- An answer from Codex is evidence to weigh, not an order. The run checks each claim that it acts on. A "
+        "review by Codex of pipeline code follows the significance rule of "
+        "`src/RimMandrake/rimflow/roles/code_review.md`."])
 
 
 def with_fanout(text, alias):

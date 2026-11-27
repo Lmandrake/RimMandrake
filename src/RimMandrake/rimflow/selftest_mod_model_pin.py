@@ -547,6 +547,28 @@ def fanout_ok(text):
     return miss
 
 
+def codex_ok(text):
+    """-> the list of what the Codex text of `text` lacks (empty: it says all the brief owes). The owner, 2026-11-26:
+    "Please also allow the fable wrecked machine run intelligently call out to codex if it seems that would be useful."
+    Item RIMMANDRAKE_ALLOW_CODEX_CALLS_IN_WRECKED_MACHINES_FABLE_RUN_HE_ASKED."""
+    t = text or ""
+    need = (
+        ("the Codex door", r"src/RimMandrake/Utils/gpt_consult\.py"),
+        ("a call when the run judges it useful", r"when (?:the run|this run|you) judges? "
+                                                 r"(?:that )?a call is useful"),
+        ("a second opinion on a design", r"second opinion on a design"),
+        ("a review of code", r"review of code"),
+        ("hypotheses when stuck", r"hypotheses when (?:the run|this run) is stuck"),
+        ("an answer is evidence to weigh", r"evidence to weigh"),
+        ("check each claim acted on", r"checks each claim that it acts on"),
+        ("pipeline code review follows the significance rule",
+         r"src/RimMandrake/rimflow/roles/code_review\.md"))
+    miss = [n for n, rx in need if not re.search(rx, t)]
+    if BRIEF_SPEND_RX.search(t):
+        miss.append("names a spend or a cap")
+    return miss
+
+
 def builder_briefs(pins):
     """-> {kind: brief text} for one pinned or unpinned mod's builder launches: the offline build (launch_mod), the
     fixer and the steward (_execute_one), the builder on red deciders (cert_launch) and the holder (road_back_holder),
@@ -622,6 +644,27 @@ def t_fable_builders_may_start_subagents():
     check("fanout_line(st)" in inspect.getsource(DS.packet), "designer_stage.packet adds the fan-out line to its head")
 
 
+def t_fable_builders_may_call_codex():
+    """For a mod whose builders are on Fable, each builder run's brief (the offline build, the fixer, the steward, the
+    holder, the builder on red deciders) and the Designer's packet say the run may call Codex through the Codex door
+    when it judges a call useful, that an answer is evidence to weigh, and that a review of pipeline code follows
+    code_review.md. An unpinned mod's briefs and a codex Designer carry no Codex text."""
+    got = builder_briefs({PIN: "fable"})
+    for kind in ("offline_build", "fixer", "steward", "cert_red", "holder"):
+        miss = codex_ok(got.get(kind))
+        check(not miss, "the pinned mod's %s brief says the Codex text in full (missing: %s)" % (kind, miss))
+    import designer_stage as DS
+    p = fresh_store()
+    C.set_model(PIN, "fable", "selftest", p=p)
+    miss = codex_ok(DS.fanout_line({"mod": PIN, "stage": 2, "runner": "claude"}))
+    check(not miss, "the pinned mod's Designer packet line says the Codex text in full (missing: %s)" % miss)
+    check(DS.fanout_line({"mod": PIN, "stage": 2, "runner": "codex"}) is None, "a codex Designer run gets no Codex text")
+    for kind, text in sorted(builder_briefs({}).items()):
+        check("gpt_consult" not in text, "the unpinned mod's %s brief has no Codex text" % kind)
+    check("gpt_consult" not in (DS.fanout_line({"mod": UNPINNED_CONCEPT, "stage": 2, "runner": "claude"}) or ""),
+          "an unpinned concept's Designer gets no Codex text")
+
+
 def t_other_runs_keep_their_helper_rules():
     """An unpinned mod's builder briefs carry no fan-out section and keep their own words ("no helpers" in the builder
     on red deciders); a pinned mod's blind judge and in-game driver still start no helpers and no subagents; a codex
@@ -650,7 +693,7 @@ def main():
              t_build_cap_scales_by_the_pin_price, t_designer_run_now_chain_and_sweep_launch_on_the_pin,
              t_designer_launch_names_its_mod, t_an_unreadable_pin_launches_nothing, t_a_pin_it_cannot_price_launches_nothing,
              t_offline_build_ceiling_scales_by_the_pin_price, t_designer_task_budget_scales_by_the_pin_price,
-             t_fable_builders_may_start_subagents, t_other_runs_keep_their_helper_rules)
+             t_fable_builders_may_start_subagents, t_fable_builders_may_call_codex, t_other_runs_keep_their_helper_rules)
     try:
         for t in tests:
             try:
