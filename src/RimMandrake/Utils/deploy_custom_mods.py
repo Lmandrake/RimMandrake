@@ -163,6 +163,7 @@ if __name__ == "__main__" and _instance_arg(sys.argv[1:]):
         sys.exit("deploy_custom_mods.py: --instance: %s" % e)
 from game_paths import LOCAL_MODS, MODS_CONFIG            # noqa: E402
 import biomes_compose                                      # noqa: E402
+import deploy_index as DI                                  # noqa: E402
 
 _MODS = [LOCAL_MODS]
 _CONFIG = [MODS_CONFIG]
@@ -205,6 +206,7 @@ def shippable(rel):
 # once (DirEntry.is_file() is free from d_type and follows links, so a dangling
 # symlink is still dropped; the one DirEntry.stat() gives the size compare() needs).
 _INV = {}
+_MT = {}      # root -> {rel: mtime_ns}, from the same one stat as the size (the deploy index compares it)
 
 
 def inventory(root):
@@ -212,7 +214,7 @@ def inventory(root):
     hit = _INV.get(root)
     if hit is not None:
         return hit
-    out = {}
+    out, mts = {}, {}
     if os.path.isdir(root):
         stack = [""]
         while stack:
@@ -234,16 +236,20 @@ def inventory(root):
                     # filecmp raised FileNotFoundError and killed the whole plan
                     # (DEPLOY_PLANNER_FIX_CRASH_ON_DELETED, SWBestiary Karrask.png).
                     if shippable(rel) and e.is_file():
-                        out[rel] = e.stat().st_size
+                        st = e.stat()
+                        out[rel] = st.st_size
+                        mts[rel] = st.st_mtime_ns
                 except OSError:
                     continue                 # vanished mid-walk: not a file now
     _INV[root] = out
+    _MT[root] = mts
     return out
 
 
 def forget(root):
     """Drop root's cached inventory (after anything wrote or deleted under it)."""
     _INV.pop(root, None)
+    _MT.pop(root, None)
 
 
 def forget_all():
@@ -251,6 +257,7 @@ def forget_all():
     entry and exit, and a tool that imports this module and calls tree()/compare()
     over trees that may have changed since (preflight_bridge) clears it first."""
     _INV.clear()
+    _MT.clear()
 
 
 def tree(root):
@@ -510,8 +517,19 @@ def is_dll(rel):
     return rel.lower().endswith(".dll")
 
 
-def compare(src, dst, only=None):
-    """-> (new, changed, gone, same) rels; `only` narrows both trees to the rels it accepts (--gate: the DLLs)."""
+def same_indexed(src, dst, rel, size_s, size_d, index):
+    """Byte-equal by sha256, the game side taken from the deploy index while its size and time still match
+    (deploy_index.py); a game file with no valid entry is READ, and what was read is recorded."""
+    if size_s != size_d:
+        return False
+    mt = _MT.get(dst, {}).get(rel)
+    theirs = index.sha(os.path.join(dst, rel), size_d, mt)
+    return theirs == DI.hash_plain(os.path.join(src, rel))
+
+
+def compare(src, dst, only=None, index=None):
+    """-> (new, changed, gone, same) rels; `only` narrows both trees to the rels it accepts (--gate: the DLLs).
+    `index` (a deploy_index.Index) answers for the DST side: the game copy. Without it every equal-size pair is read."""
     si, di = inventory(src), inventory(dst)
     if only:
         si, di = {r: n for r, n in si.items() if only(r)}, {r: n for r, n in di.items() if only(r)}
@@ -521,7 +539,11 @@ def compare(src, dst, only=None):
     changed = []
     for r in sorted(s & d):
         try:
-            if not same_bytes(os.path.join(src, r), os.path.join(dst, r), si[r], di[r]):
+            if index is not None:
+                same_now = same_indexed(src, dst, r, si[r], di[r], index)
+            else:
+                same_now = same_bytes(os.path.join(src, r), os.path.join(dst, r), si[r], di[r])
+            if not same_now:
                 changed.append(r)
         except OSError:
             # vanished between the walk and the compare (a concurrent delete):
@@ -647,6 +669,9 @@ def main():
                     help="plan only, for a gate that reads the mod headers and stale DLLs: skips the def guard and "
                          "compares *.dll alone (the full plan took 260 s over the Windows mount in a supervisor tick, "
                          "RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS). NOT evidence that a mod's other files are deployed")
+    ap.add_argument("--full-read", dest="full_read", action="store_true",
+                    help="ignore the deploy index for this run: read every game file (and every def file for the def "
+                         "guard) and write the index again. For a person who doubts the index")
     args = ap.parse_args()
     forget_all()                               # a second main() in one process re-walks
     if args.gate and (args.apply or args.pull):
@@ -765,6 +790,19 @@ _STAGED = []
 
 
 def _run(args, targets, holds, mods_dir, active):
+    """The plan or the deploy, with the deploy index (deploy_index.py) open around it: the index is saved
+    whatever the verdict, and never decides one beyond what a read of the file would."""
+    import deploy_def_guard
+    idx = DI.Index(scope=mods_dir, full_read=getattr(args, "full_read", False), disabled=not _is_real_game(mods_dir))
+    deploy_def_guard.STORE = idx
+    try:
+        return _run_with(args, targets, holds, mods_dir, active, idx)
+    finally:
+        deploy_def_guard.STORE = None
+        idx.save()
+
+
+def _run_with(args, targets, holds, mods_dir, active, idx):
     names = [n for n, _ in targets]
     print("repo : %s" % SRC_ROOT)
     print("game : %s" % mods_dir)
@@ -803,7 +841,7 @@ def _run(args, targets, holds, mods_dir, active):
                 _STAGED.append(os.path.dirname(staged))
                 src = staged
         pid = package_id(src)
-        new, changed, gone, same = compare(src, dst, is_dll if args.gate else None)
+        new, changed, gone, same = compare(src, dst, is_dll if args.gate else None, index=idx)
         new, held_new = split_held(holds, name, new)
         changed, held_changed = split_held(holds, name, changed)
         # `gone` is filtered too, and that is not symmetry for its own sake.
@@ -943,7 +981,8 @@ def _run(args, targets, holds, mods_dir, active):
                         print("  ! FAILED to delete %s: %s" % (r, e))
                 wrote += pruned
             forget(dst)                # copy/prune wrote under it: re-inventory once
-            n2, c2, g2, _ = compare(src, dst)
+            idx.drop_under(dst, new + changed + gone)      # what a deploy wrote or deleted is read again, then recorded
+            n2, c2, g2, _ = compare(src, dst, index=idx)
             # Held files legitimately still differ after a deploy — that is the
             # whole point of holding them. Without this filter the verify step
             # reports "STILL DIFFERS" on a correct run, which trains people to
@@ -1060,7 +1099,7 @@ def _def_guard(args, targets, holds, mods_dir):
                 if full is not None and n not in known and pid not in full:
                     dead.append(n)              # orphan, never loads: out of scope
                     continue
-                post[n] = G.xml_files(p)
+                post[n] = G.xml_files(p, prune=G.NON_DEF_DIRS)   # not a target: only its Defs/ matter
     for n, src in targets:
         dst = os.path.join(mods_dir, n)
         s, d = G.xml_files(src), G.xml_files(dst)

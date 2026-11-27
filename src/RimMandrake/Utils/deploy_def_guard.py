@@ -74,15 +74,21 @@ DEPLOY_EXCLUDE_DIRS = frozenset({"Source", "__pycache__", ".git", "art_candidate
                                  "art_source", "_artsrc", "obj", "bin", ".vs"})
 
 
-def xml_files(root):
-    """{rel: abspath} for every .xml under root (dangling links skipped)."""
+# Folders of a mod that never hold a def file: the guard reads XML under <load root>/Defs/ only. A load root is
+# the mod root, Common, a version folder or a LoadFolders.xml entry, never one of these.
+NON_DEF_DIRS = frozenset({"Textures", "Sounds", "Assemblies", "Languages"})
+
+
+def xml_files(root, prune=()):
+    """{rel: abspath} for every .xml under root (dangling links skipped). `prune`: folder names not entered
+    (NON_DEF_DIRS, for the game copy of a mod that is not a target: they hold 75% of its folders)."""
     out = {}
     if not os.path.isdir(root):
         return out
     # scandir: DirEntry.is_file() comes free from d_type and follows links, so a
     # dangling link is skipped with no per-file stat (the old os.path.exists was one
     # 1.7 ms /mnt/c stat per XML).
-    skip = DEPLOY_EXCLUDE_DIRS
+    skip = DEPLOY_EXCLUDE_DIRS | frozenset(prune)
     stack = [root]
     while stack:
         dp = stack.pop()
@@ -138,20 +144,33 @@ def def_files(files):
 
 
 _CACHE = {}
+STORE = None        # a deploy_index.Index while a deploy plan runs: game-side parses are kept on the Linux drive
 
 
 def parse_defs(path):
-    """-> ([(type, defName)], [(fromKey, toKey)]) for one def file; cached by path+mtime."""
+    """-> ([(type, defName)], [(fromKey, toKey)]) for one def file; cached by path+mtime, and for a game-side
+    file (STORE.covers) kept across runs with its size and time (deploy_index.py)."""
     try:
-        key = (path, os.path.getmtime(path))
+        st = os.stat(path)
     except OSError:
         return [], []
+    key = (path, st.st_mtime_ns, st.st_size)
     if key in _CACHE:
         return _CACHE[key]
+    store = STORE if (STORE is not None and STORE.covers(path)) else None
+    if store is not None:
+        hit = store.parsed_get(path, st.st_size, st.st_mtime_ns)
+        if hit is not None:
+            val = ([tuple(d) for d in hit[0]], [(tuple(f), tuple(t)) for f, t in hit[1]])
+            _CACHE[key] = val
+            return val
     defs, aliases = [], []
+    unreadable = False
     try:
         root = ET.parse(path).getroot()
-    except (OSError, ET.ParseError):
+    except OSError:
+        root, unreadable = None, True
+    except ET.ParseError:
         root = None
     for el in (root if root is not None else []):
         if not isinstance(el.tag, str):
@@ -168,6 +187,8 @@ def parse_defs(path):
                 if f and t:
                     aliases.append(((ty, f), (ty, t)))
     _CACHE[key] = (defs, aliases)
+    if store is not None and not unreadable:
+        store.parsed_put(path, st.st_size, st.st_mtime_ns, [defs, aliases])
     return defs, aliases
 
 
