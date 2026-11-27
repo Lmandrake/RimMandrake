@@ -10,7 +10,8 @@ skips a tree whose exam does not pass (coverage_judge.plan, maturation_autonomy.
 
 THE MAP. A Reader is shown sheet.md, tree.json and the scenario text (designer_exam.md step 4), so what a scenario
 can have read is cut into units: one per leaf (the leaf's object in tree.json and every sheet line tagged with its id,
-with the section it sits in) and one shared unit (the tree's own fields, coverage aside as tree_hash leaves it, the
+with the section it sits in) and one shared unit (the tree's own fields, coverage aside as tree_hash leaves it and the
+floor's hash pin aside, since it pins concept_floor.json, a file no Reader is shown; the
 leaves' order, and every untagged sheet line: his words, open, delegated, pruning). The order of the sheet's lines is
 recorded beside them: a line added to, removed from or moved within one leaf's own lines is that leaf's change, and any
 other reorder is read by every scenario. A scenario's reads are its expect_source leaf and
@@ -44,7 +45,12 @@ import concept_tree as CT          # noqa: E402
 
 READS_FILE = "exam_reads.json"
 PLAN_FILE = "exam_retake_plan.json"
-SCHEMA = 2         # 2: the sheet's line order left the shared hash for its own record, sheet_order
+SCHEMA = 3         # 2: the sheet's line order left the shared hash for its own record, sheet_order
+#                    3: the floor's hash pin left the shared hash (PINS); a schema-2 map is still read (plan)
+READ_SCHEMAS = (2, 3)
+# fields of the tree that pin a file no Reader is shown (designer_exam.md step 4: sheet.md, tree.json and the scenario
+# text): a re-pin changes nothing a scenario read. The floor's `ref` and `off` stay in the shared unit.
+PINS = (("floor", "hash"),)
 PARTIAL, NONE_TOUCHED, WHOLE, CANNOT_RUN = "partial", "none_touched", "whole", "cannot_run"
 SCENARIO_KEYS = ("id", "text", "expect", "expect_source", "by")
 TAGGED = re.compile(CT.BULLET + r"\s*\[(?:leaf|core):([A-Za-z0-9_]+)\]")
@@ -85,7 +91,25 @@ def units(d):
     """-> ({leaf id: hash}, shared hash, sheet order) of the current tree.json and sheet.md; the order is one
     [section, leaf id or None] per sheet line. OSError/ValueError when either cannot be read (the caller's
     cannot_run)."""
-    tree = CT.load(d)
+    return units_of(CT.load(d), d)
+
+
+def legacy_shared(d, tree=None):
+    """The schema-2 shared hash (the floor's hash pin inside it) of `tree` (default the current tree.json) and the
+    current sheet.md: what a schema-2 map or a carried answer written before schema 3 recorded."""
+    return units_of(CT.load(d) if tree is None else tree, d, legacy=True)[1]
+
+
+def _unpinned(rest):
+    out = dict(rest)
+    for key, field in PINS:
+        if isinstance(out.get(key), dict) and field in out[key]:
+            out[key] = {k: v for k, v in out[key].items() if k != field}
+    return out
+
+
+def units_of(tree, d, legacy=False):
+    """units() of a given tree object and d's sheet.md; `legacy` keeps the PINS in the shared hash (schema 2)."""
     if not isinstance(tree, dict) or not isinstance(tree.get("leaves"), list):
         raise ValueError("tree.json has no leaves list")
     leaves = {}
@@ -108,6 +132,8 @@ def units(d):
                 untagged.append([section, ln.rstrip()])
                 order.append([section, None])
     rest = {k: v for k, v in tree.items() if k not in ("leaves", "coverage")}
+    if not legacy:
+        rest = _unpinned(rest)
     # the order of the leaves and of the sheet's lines is read by every scenario (a rule may say "the earlier line
     # wins"): the leaves' order is in the shared unit, the sheet's is returned for order_moved
     return ({k: CT.sha({"leaf": leaves[k], "sheet": tagged[k]}) for k in leaves},
@@ -283,8 +309,9 @@ def plan(d, scenarios=None, repo=None):
                     % READS_FILE)
     try:
         rec = _read(p)
-        if not isinstance(rec, dict) or rec.get("schema") != SCHEMA:
-            raise ValueError("schema %r, not %d" % (rec.get("schema") if isinstance(rec, dict) else rec, SCHEMA))
+        if not isinstance(rec, dict) or rec.get("schema") not in READ_SCHEMAS:
+            raise ValueError("schema %r, not one of %s" % (rec.get("schema") if isinstance(rec, dict) else rec,
+                                                           READ_SCHEMAS))
         units0, rows, shared0, order0 = rec["units"], rec["scenarios"], rec.get("shared"), rec["sheet_order"]
         if not (isinstance(units0, dict) and isinstance(rows, dict) and rows):
             raise ValueError("no units or no scenarios")
@@ -328,6 +355,11 @@ def plan(d, scenarios=None, repo=None):
     if gone:
         return _out(WHOLE, "leaf %s was removed: the leaves every scenario reads are not the ones it was answered on, "
                     "so the map cannot tell: retake the whole exam" % ", ".join(gone), changed=gone, against=against)
+    if rec["schema"] == 2 and shared != shared0:
+        shared0, why2 = _schema2_shared(d, rec, shared0)
+        if shared0 is None:
+            return _out(WHOLE, "the read map is schema 2, whose shared hash holds the floor's hash pin, and %s: the "
+                        "map cannot tell, retake the whole exam" % why2, against=against)
     if shared != shared0:
         return _out(WHOLE, "the shared part every scenario reads changed (his words, an untagged sheet line or the "
                     "tree's own fields): retake the whole exam", against=against)
@@ -370,6 +402,46 @@ def plan(d, scenarios=None, repo=None):
     return _out(PARTIAL, "re-run %d of %d (%s%s); carry %d answers forward" % (
         len(retake), len(sc), "changed leaves %s" % ", ".join(changed) if changed else "no leaf changed",
         "; " + "; ".join(notes) if notes else "", len(carry)), retake, carry, changed, against)
+
+
+def _exam_tree_from_git(d, want):
+    """-> the tree.json object whose tree_hash is `want`, from git history of d's tree.json, or None (no git, no such
+    commit). Every commit that touched tree.json is read: the danger of a cap is a wrong whole exam, and a read is
+    about 10 ms."""
+    import subprocess
+    try:
+        log = subprocess.run(["git", "-C", d, "log", "--format=%H", "--", "tree.json"], capture_output=True,
+                             text=True, check=True).stdout.split()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    for h in log:
+        try:
+            out = subprocess.run(["git", "-C", d, "show", "%s:./tree.json" % h], capture_output=True, text=True,
+                                 check=True).stdout
+            t = json.loads(out)
+        except (OSError, subprocess.CalledProcessError, ValueError):
+            continue
+        if isinstance(t, dict) and CT.tree_hash(t) == want:
+            return t
+    return None
+
+
+def _schema2_shared(d, rec, shared0):
+    """A schema-2 map's shared hash holds the floor's hash pin. -> (the schema-3 shared hash of the tree the exam was
+    taken on, None) when that tree is found in git history and proven to be the one the map hashed (its schema-2 shared
+    hash with the current sheet equals the map's, so the untagged sheet lines did not change either), else
+    (None, why)."""
+    if legacy_shared(d) == shared0:
+        return units(d)[1], None
+    old = _exam_tree_from_git(d, rec["exam"].get("tree"))
+    if old is None:
+        return None, "the tree the exam was taken on (%s) is not in git history" % str(rec["exam"].get("tree"))[:12]
+    try:
+        if legacy_shared(d, old) != shared0:
+            return None, "the exam's tree from git history with the current sheet does not give the map's shared hash"
+        return units_of(old, d)[1], None
+    except (OSError, ValueError) as e:
+        return None, "the exam's tree from git history cannot be read (%s)" % e
 
 
 def write_plan(d, p):
@@ -439,6 +511,7 @@ def carry(d, fresh_path, repo=None):
     else:
         cur, shared, order = units(d)
         got = {}
+        _restamp_control(d, prior, lambda why: cannot(p, why))
     car = {}
     for sid in p["carry"]:
         r = rec["scenarios"][sid]
@@ -463,6 +536,38 @@ def carry(d, fresh_path, repo=None):
     return p
 
 
+def _restamp_control(d, prior, cannot):
+    """No scenario retaken: the control Reader's answers stand, but the control copy names the tree it was made from
+    (copy.json base_tree), so a tree change no Reader reads (a PINS re-pin) leaves the gate refusing it. Remake the copy
+    from the current tree with the same leaf and strip phrases, and keep it only when it reads exactly as the copy the
+    control Reader was shown (every unit and the sheet order equal, PINS aside); else put the old copy back and refuse."""
+    import designer_stage as DS
+    cdir = os.path.join(d, DS.CONTROL_DIR)
+    try:
+        rec = _read(os.path.join(cdir, "copy.json"))
+        if not isinstance(rec, dict) or rec.get("base_tree") == DS.input_hash(d, "tree"):
+            return
+        before = units(cdir)
+        keep = {}
+        for n in ("tree.json", "sheet.md", "copy.json"):
+            with open(os.path.join(cdir, n), encoding="utf-8") as f:
+                keep[n] = f.read()
+    except (OSError, ValueError, TypeError, DS.Refused):
+        return          # no readable copy to remake: the gate names what is missing
+    leaf = (prior.get("control") or {}).get("broken_leaf") if isinstance(prior.get("control"), dict) else None
+    try:
+        DS.exam_control(d, leaf or rec.get("leaf"), strip=rec.get("strip") or [])
+        after = units(cdir)
+    except (OSError, ValueError, DS.Refused) as e:
+        after = "unreadable (%s)" % e
+    if after != before:
+        for n, text in keep.items():
+            with open(os.path.join(cdir, n), "w", encoding="utf-8") as f:
+                f.write(text)
+        cannot("the control copy made from the current tree does not read as the one the control Reader was shown: "
+               "rerun the control Reader on a fresh `designer_stage.py exam-control` copy")
+
+
 def carry_errors(ex, d):
     """designer_stage.exam_errors' check of a carried answer: its scenario, the shared unit and every leaf unit it read
     are as they were when it was answered, and the sheet's lines are not reordered beyond the leaves changed since the
@@ -476,6 +581,7 @@ def carry_errors(ex, d):
         cur, shared, order = units(d)
     except (OSError, ValueError) as e:
         return ["exam: carried answers cannot be checked: %s" % e]
+    legacy = legacy_shared(d)
     by_id = {CT.txt(s.get("id")): s for s in ex.get("scenarios") or [] if isinstance(s, dict)}
     errs = []
     if car:
@@ -497,7 +603,7 @@ def carry_errors(ex, d):
             errs.append("exam: carried answer %s is no scenario of this exam" % sid)
         elif c.get("hash") != scenario_hash(by_id[sid]):
             errs.append("exam: carried answer %s is stale: its scenario changed since it was answered; %s" % (sid, how))
-        if c.get("shared") != shared:
+        if c.get("shared") != shared and c.get("shared") != legacy:     # legacy: carried before schema 3
             errs.append("exam: carried answer %s is stale: the shared part of the tree or sheet changed; %s" % (sid, how))
         uh = c.get("unit_hashes") if isinstance(c.get("unit_hashes"), dict) else {}
         moved = sorted(u for u in (c.get("reads") or []) if uh.get(u) is None or cur.get(u) != uh.get(u))

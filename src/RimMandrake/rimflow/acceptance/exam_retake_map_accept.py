@@ -249,6 +249,15 @@ def map_cases(root):
     tn = copy.deepcopy(TREE)
     tn["advisory"] = ["tune sooner"]
     whole("map: tree content outside the leaves changed: whole exam", P(tn), "tree's own fields")
+    # the floor's hash is a pin of concept_floor.json, a file no Reader is shown (designer_exam.md step 4): a re-pin
+    # touches nothing a scenario read; a floor line switched off, or another floor, is read by every scenario
+    tf = dict(copy.deepcopy(TREE), floor={"ref": "concept_floor.json", "hash": "a" * 64, "off": []})
+    none("map: the floor's hash re-pinned, nothing else: looked, none touched",
+         P(dict(copy.deepcopy(tf), floor=dict(tf["floor"], hash="b" * 64)), old_tree=tf))
+    whole("map: a floor line switched off: whole exam",
+          P(dict(copy.deepcopy(tf), floor=dict(tf["floor"], off=["biome_scope"])), old_tree=tf), "tree's own fields")
+    whole("map: the tree names another floor file: whole exam",
+          P(dict(copy.deepcopy(tf), floor=dict(tf["floor"], ref="other_floor.json")), old_tree=tf), "tree's own fields")
     whole("map: a sheet line with no leaf tag changed: whole exam",
           P(new_sheet=SHEET.replace("- Tuning is delegated.", "- Tuning and pacing are delegated.")))
     whole("map: two leaves' sheet lines swapped, no text changed: the order every scenario reads moved, whole exam",
@@ -358,12 +367,12 @@ def control(d, sids_missed=("s0",)):
     return {"broken_leaf": "l0", "missed": True, "missed_ids": list(sids_missed)}
 
 
-def fixture(root, name):
+def fixture(root, name, extra=None):
     """A stage-5 concept whose exam passes on its current tree, with the read map recorded at exam time."""
     rd = os.path.join(root, name.split(":")[0])
     d = os.path.join(rd, "design", "concepts", "Foo")
     os.makedirs(d)
-    put(d, "tree.json", tree())
+    put(d, "tree.json", tree(extra))
     put(d, "sheet.md", sheet())
     put(d, "scenes.json", {"scenes": [], "showcases": []})
     st = {"stage": 5, "status": "open", "results": [], "history": []}
@@ -580,6 +589,139 @@ def a6(fx):
 
 
 
+FLOOR = {"floor": {"ref": "concept_floor.json", "hash": "a" * 64, "off": []}}
+
+
+def repin(d, h):
+    t = read(d, "tree.json")
+    t["floor"]["hash"] = h
+    put(d, "tree.json", t)
+
+
+def a7(root):
+    """A floor re-pin: none touched, and `carry --fresh {}` makes the standing exam pass its gate again. A floor line
+    switched off is still the whole exam."""
+    rd, d = fixture(root, "A7", FLOOR)
+    st = read(d, "stage.json")
+    repin(d, "b" * 64)
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.NONE_TOUCHED and len(p["carry"]) == 10, "a floor re-pin: outcome %r: %s" % (
+        p["outcome"], p.get("why")))
+    need(any("another tree" in e for e in DS.exam_errors(read(d, "exam.json"), d, st, rd)),
+         "the stale tree hash is not refused by the gate")
+    f = os.path.join(rd, "fresh_empty.json")
+    put(rd, "fresh_empty.json", {})
+    # a control copy that does not read as the program makes it (a hand edit) is never remade over: refused, kept
+    cs = os.path.join(d, DS.CONTROL_DIR, "sheet.md")
+    with open(cs, encoding="utf-8") as fh:
+        orig = fh.read()
+    with open(cs, "w", encoding="utf-8") as fh:
+        fh.write(orig + "- a line the control Reader was shown\n")
+    try:
+        ER.carry(d, f, repo=rd)
+        need(False, "a hand-edited control copy was remade and the carry went on")
+    except ER.Refused as e:
+        need("control" in str(e), "refused for another reason: %s" % e)
+    with open(cs, encoding="utf-8") as fh:
+        need("a line the control Reader was shown" in fh.read(), "the refused remake did not put the old copy back")
+    with open(cs, "w", encoding="utf-8") as fh:
+        fh.write(orig)
+    ER.carry(d, f, repo=rd)
+    errs = DS.exam_errors(read(d, "exam.json"), d, st, rd)
+    need(errs == [], "carry --fresh {} after a floor re-pin did not make the exam pass: %s" % errs)
+    t = read(d, "tree.json")
+    t["floor"]["off"] = ["biome_scope"]
+    put(d, "tree.json", t)
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.WHOLE, "a floor line switched off after the carry: outcome %r" % p["outcome"])
+
+
+def _legacy_shared(d):
+    """The schema-2 shared hash, written out here from its definition (the floor's hash pin inside it), so the test
+    does not take it from the code under test."""
+    t = read(d, "tree.json")
+    untagged = []
+    ids = {x["id"] for x in t["leaves"]}
+    for section, lines in CT.parse_sheet(os.path.join(d, "sheet.md")).items():
+        for ln in lines:
+            m = ER.TAGGED.match(ln)
+            if not (m and m.group(1) in ids):
+                untagged.append([section, ln.rstrip()])
+    return CT.sha({"tree": {k: v for k, v in t.items() if k not in ("leaves", "coverage")}, "sheet": untagged,
+                   "leaf_order": [x["id"] for x in t["leaves"]], "other_entries": []})
+
+
+def _git(rd, *a):
+    import subprocess
+    subprocess.run(["git", "-C", rd] + list(a), check=True, capture_output=True,
+                   env=dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t",
+                            GIT_COMMITTER_EMAIL="t@t"))
+
+
+def _as_schema_2(d):
+    rec = read(d, ER.READS_FILE)
+    rec["schema"], rec["shared"] = 2, _legacy_shared(d)
+    put(d, ER.READS_FILE, rec)
+
+
+def a8(root):
+    """A read map recorded before the pin left the shared unit (schema 2): unchanged, it still plans none touched; after
+    a re-pin it is read through the exam's own tree in git history, and with no such history it is the whole exam."""
+    rd, d = fixture(root, "A8", FLOOR)
+    _as_schema_2(d)
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.NONE_TOUCHED, "a schema-2 map, nothing changed: outcome %r: %s" % (p["outcome"], p["why"]))
+    repin(d, "b" * 64)
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.WHOLE, "a schema-2 map, re-pinned, no git history: outcome %r: %s" % (
+        p["outcome"], p["why"]))
+    repin(d, "a" * 64)
+    _git(rd, "init", "-q")
+    _git(rd, "add", "-A")
+    _git(rd, "commit", "-qm", "exam tree")
+    repin(d, "b" * 64)
+    _git(rd, "commit", "-qam", "re-pin")
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.NONE_TOUCHED, "a schema-2 map, re-pinned, exam tree in git: outcome %r: %s" % (
+        p["outcome"], p["why"]))
+    repair_leaves(d, ["l3"])
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.PARTIAL and p["retake"] == ["s3"], "a schema-2 map, re-pinned and l3 repaired: %r %s" % (
+        p["outcome"], p.get("retake")))
+    t = read(d, "tree.json")
+    t["floor"]["off"] = ["biome_scope"]
+    put(d, "tree.json", t)
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.WHOLE, "a schema-2 map, a floor line switched off: outcome %r" % p["outcome"])
+
+
+def a9(root):
+    """A carried answer recorded under the schema-2 shared hash still passes the gate on an unchanged tree."""
+    rd, d = fixture(root, "A9", FLOOR)
+    repair_leaves(d, ["l3"])
+    ER.carry(d, fresh_file(d, ["s3"], rd), repo=rd)
+    ex = read(d, "exam.json")
+    old = _legacy_shared(d)
+    for c in ex["carried"].values():
+        c["shared"] = old
+    put(d, "exam.json", ex)
+    errs = DS.exam_errors(ex, d, read(d, "stage.json"), rd)
+    need(errs == [], "a schema-2 carried answer on an unchanged tree is refused: %s" % errs[:2])
+    for c in ex["carried"].values():
+        c["shared"] = "0" * 64
+    put(d, "exam.json", ex)
+    errs = DS.exam_errors(ex, d, read(d, "stage.json"), rd)
+    need(any("shared part" in e for e in errs), "a carried answer with a wrong shared hash passes: %s" % errs)
+
+
+def pins_case(name, fn, root):
+    try:
+        fn(root)
+        check(name, True)
+    except Exception as e:
+        check(name, False, "%s: %s" % (type(e).__name__, e))
+
+
 def main():
     root = tempfile.mkdtemp(prefix="exam_retake_")
     try:
@@ -591,6 +733,10 @@ def main():
                          ("A5: a scenario whose text changed is re-run, not carried", a5),
                          ("A6: the coverage judge still never looks at a tree whose exam has not passed", a6)):
             case(name, fn, root)
+        for name, fn in (("A7: a floor re-pin is none touched, and the restamped exam passes its gate", a7),
+                         ("A8: a schema-2 map: unchanged none, re-pinned read through git or whole", a8),
+                         ("A9: a schema-2 carried answer still passes on an unchanged tree", a9)):
+            pins_case(name, fn, root)
     finally:
         shutil.rmtree(root, ignore_errors=True)
     n = len(FAILS)
