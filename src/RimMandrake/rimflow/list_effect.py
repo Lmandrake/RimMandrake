@@ -392,7 +392,37 @@ def close_item(iid, text, why, publish):
         return LIVE_WAIT, said
     if r.returncode and ("%s is already `done`" % iid) in said:     # model's SECOND-close refusal: its run closed it first
         return 0, said
+    if r.returncode and "WRITTEN, NOT PUBLISHED" in said and "closed at" in said:
+        return WRITTEN_NOT_LANDED, said         # the close stands and only waits for its publish: not a refusal
+    if r.returncode:
+        return r.returncode, refusal_line(said)
     return r.returncode, said
+
+
+WRITTEN_NOT_LANDED = 4      # a rimflow write's --publish exit: the event stands, its landing failed (ledger_landing.py)
+# The publish wrapper's line after a verb that wrote nothing: a consequence of the refusal, never its cause.
+NOTHING_TO_PUBLISH = "nothing to publish: this command wrote no ledger or prose path"
+# Each cause of a refused close, its words in the close's own refusal, and its repair. A fault of form is returned with
+# its repair: the Conductor's owed view lists the row (conductor_stops.KINDS close_refused).
+CLOSE_CAUSES = (
+    ("an owed criterion", re.compile(r"has not earned its close|still owes|owed criterion|An owed criterion"),
+     "verify the criterion at its level (rimflow verify --criterion), or a Work run does the owed work"),
+    ("a card's picked option names work the close does not account for", re.compile(r"decided by card"),
+     "a run names each piece of work in the close's words (done in <sha> | filed <ID>), then closes"),
+    ("an operational item needs its live line", re.compile(r"needs a live line|--live"),
+     "close with --live naming what must stay alive (CLAUDE.md §An operational item is done only when it is running)"),
+    ("a guard", re.compile(r"\bguard\b", re.I), "read the guard's own line: it names its path to pass"),
+)
+
+
+def refusal_line(said):
+    """-> 'close refused (<cause>): <the close's own words>; repair: <repair>'. The publish wrapper's line is dropped."""
+    text = " ".join(" ".join(ln.split()) for ln in str(said or "").splitlines()
+                    if ln.strip() and ln.strip() != NOTHING_TO_PUBLISH)
+    for cause, rx, repair in CLOSE_CAUSES:
+        if rx.search(text):
+            return "close refused (%s): %s; repair: %s" % (cause, text, repair)
+    return "close refused (a cause this tool does not know): %s" % (text or "(the close printed nothing)")
 
 
 def conductor_need(text, now, path=None):

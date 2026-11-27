@@ -26,7 +26,7 @@ attach, 2 were left out of their work bundle, and 4 tickets waited on mods that 
 ## PROMISES
 
 - **the-four-kinds-go-to-the-conductor.** `rows` lists each item whose decision is `chain_stop`, `stopped`,
-  `no_bundle` or `adopt_too_heavy`, at once (no clock first), with its kind, its reason and its age in the kind.
+  `no_bundle`, `adopt_too_heavy` or `close_refused` (its reason names the cause and repair, part 6), at once (no clock first), with its kind, its reason and its age in the kind.
 - **a-resting-mod-sorts-after-an-hour.** When a mod has rested `REST_S` (1 hour) and open `mod_work` tickets wait on
   it, `rows` gives one line for that mod with its tickets and the rest's age. A ticket with a dated wait of its own
   ahead, and a ticket on the mod's sorted list, is not on the line.

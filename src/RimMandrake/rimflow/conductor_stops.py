@@ -31,7 +31,8 @@ CONCEPTS = os.path.join(REPO, "design", "concepts")
 KINDS = {"chain_stop": "at the chain limit: list_dispatch.py clear <ID> for one more run, route it, or drop it",
          "stopped": "a run ended with no next act: list_dispatch.py clear <ID>, route it, or drop it",
          "no_bundle": "left out of its work bundle: list_dispatch.py clear <ID>, or drop it",
-         "adopt_too_heavy": "its check is too heavy to attach: `rimflow shape <ID> --enter` for a lighter check"}
+         "adopt_too_heavy": "its check is too heavy to attach: `rimflow shape <ID> --enter` for a lighter check",
+         "close_refused": "its check holds and the close was refused: the reason names the cause and its repair"}
 # His words (2026-11-26): "Conductor sorts after 1 hour." A clock, not a limit: it ends no work. Danger without it: a
 # passed mod rests and its tickets wait for a run that never comes (Gimme Some Slack: 3 tickets, 45 h).
 REST_S = 3600

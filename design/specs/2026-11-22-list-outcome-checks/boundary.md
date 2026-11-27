@@ -83,6 +83,12 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
 - **a-refused-close-is-not-sent-again-unchanged.** When `rimflow close` refuses, the beat records the refusal with the
   item's event count, says it once on the Needs Conductor line, and sends no close for that item until the item or its
   check changes. A pending live line or an unreadable git read is checked again because either can recover between beats.
+- **a-refused-close-says-its-own-cause.** A refused `close_item` returns `close refused (<cause>): <the close's own
+  words>; repair: <repair>` (`refusal_line`, `CLOSE_CAUSES`: an owed criterion, a card's unaccounted work, a missing
+  live line, a guard, else "a cause this tool does not know"). The publish wrapper's "nothing to publish" line is
+  dropped: it is a consequence, never the cause. A close that is written and waits only for its publish returns 4
+  (written, not landed), not a refusal. Why: all 26 refusals of 2026-11-23 to 26 led with that line
+  (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 6).
 - **a-close-of-an-item-already-done-is-not-a-refusal.** `close_item` returns 0 when `rimflow close` refuses because that
   item is already done. An item already dropped, another item's name in the text, and every other refusal stay refusals.
   Why: on 2026-11-23 a run closed its item while the beat was at work, and the beat raised a Needs Conductor line.

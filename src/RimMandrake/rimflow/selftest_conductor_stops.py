@@ -55,13 +55,15 @@ LANE = {"C1": {"decision": "chain_stop", "why": "its chain holds 3 lane runs", "
         "N1": {"decision": "no_bundle", "why": "left out of WB-x", "since": NOW - 2 * H},
         "H1": {"decision": "adopt_too_heavy", "why": "its ## verify runs x.py", "since": NOW - 60},
         "W1": {"decision": "waiting", "why": "a dated wait", "since": NOW - 5 * H},
+        "X1": {"decision": "close_refused", "why": "close refused (an owed criterion): x; repair: y", "since": NOW - 3 * H},
         "R1": {"decision": "routed", "why": "routed to judge", "since": NOW - 5 * H}}
 
 
 def t_the_four_kinds_go_to_the_conductor():
     rows = CS().rows(reading(LANE), NOW, rests={})
     kinds = {r["items"][0]: r["kind"] for r in rows}
-    assert kinds == {"C1": "chain_stop", "S1": "stopped", "N1": "no_bundle", "H1": "adopt_too_heavy"}, kinds
+    assert kinds == {"C1": "chain_stop", "S1": "stopped", "N1": "no_bundle", "H1": "adopt_too_heavy",
+                     "X1": "close_refused"}, kinds
     h1 = [r for r in rows if r["items"] == ["H1"]][0]
     assert h1["age"] == "1m", "no clock comes first: a minute-old stop is listed (%s)" % h1["age"]
     c1 = [r for r in rows if r["items"] == ["C1"]][0]
@@ -97,7 +99,7 @@ def t_the_owed_view_shows_them():
     w = model.replay([], strict=True)
     rows = CS().rows(reading(LANE), NOW, rests={})
     out = "\n".join(owed.view(w, "BENCH", now=NOW, stops=(rows, None)))
-    assert "STOPS FOR YOU (4)" in out and "C1" in out and "chain_stop" in out, out
+    assert "STOPS FOR YOU (5)" in out and "C1" in out and "chain_stop" in out, out
     blind = "\n".join(owed.view(w, "BENCH", now=NOW, stops=(None, "the lane reading is 200 min old")))
     assert "STOPS FOR YOU: could not look (the lane reading is 200 min old)" in blind, blind
     assert "STOPS FOR YOU" not in "\n".join(owed.view(w, "BENCH", now=NOW)), "no stops given: no block"

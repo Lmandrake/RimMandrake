@@ -460,6 +460,37 @@ def t_a_close_of_an_item_already_done_is_not_a_refusal():
     chk(lambda: fake("closed at abc", 0)[0] == 0, "a close that landed is a close")
 
 
+def t_a_refused_close_says_its_own_cause():
+    """RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 6: all 26 refusals of 2026-11-23 to 26 led with the publish's
+    "nothing to publish", which hides the cause (an owed criterion, a card's work, a live line)."""
+    import types
+    L = LE()
+    real = L.subprocess.run
+    pub = "nothing to publish: this command wrote no ledger or prose path\n"
+
+    def fake(text, rc, err=""):
+        L.subprocess.run = lambda *a, **k: types.SimpleNamespace(returncode=rc, stdout=text, stderr=err)
+        try:
+            return L.close_item("AN_ITEM", "t", "w", False)
+        finally:
+            L.subprocess.run = real
+    rc, out = fake(pub + "close refused: AN_ITEM was decided by card, and the card's picked option states work this "
+                   "close does not account for: - needs a real in-world brake", 1)
+    chk(lambda: rc == 1 and out.startswith("close refused (a card's picked option names work") and "nothing to publish" not in out,
+        "a card refusal leads with its own cause and its repair, not the publish's text (%s)" % out[:120])
+    rc, out = fake(pub, 1, err="close: AN_ITEM has not earned its close at dae26de412: fail its newest run")
+    chk(lambda: out.startswith("close refused (an owed criterion") and "dae26de412" in out,
+        "an owed criterion leads, read from stderr too (%s)" % out[:120])
+    rc, out = fake(pub + "close: AN_ITEM needs a live line: it is an Operations alarm.", 1)
+    chk(lambda: out.startswith("close refused (an operational item needs its live line"), "a live-line refusal names it")
+    rc, out = fake(pub + "something new went wrong", 2)
+    chk(lambda: out.startswith("close refused (a cause this tool does not know)") and "something new" in out,
+        "an unknown refusal is said as unknown, with its text")
+    rc, out = fake("closed at abc. WRITTEN, NOT PUBLISHED: ./publish exited 2: REFUSED: nothing to publish: HEAD is "
+                   "already on origin/main", 2)
+    chk(lambda: rc == 4, "a close that is written and only waits for its publish is not a refusal (rc %s)" % rc)
+
+
 def t_a_dry_beat_writes_nothing():
     L = LE()
     iid = "RIMMANDRAKE_TEST_LIST_EFFECT_DRY_BEAT"
@@ -606,7 +637,7 @@ def main():
                   t_the_tick_obeys_pause_and_pipe_off,
                   t_the_tick_launches_nothing_and_files_nothing,
                   t_a_refused_close_is_not_sent_again_unchanged,
-                  t_a_close_of_an_item_already_done_is_not_a_refusal, t_a_dry_beat_writes_nothing,
+                  t_a_close_of_an_item_already_done_is_not_a_refusal, t_a_refused_close_says_its_own_cause, t_a_dry_beat_writes_nothing,
                   t_closed_reads_item_states_for_a_check, t_both_ticks_keep_an_operational_item_open_until_its_live_promise_holds):
             try:
                 t()
