@@ -371,6 +371,32 @@ def t_steve2_worker_is_a_steve_lane(r):
           "steve2-worker-is-a-steve-lane: an old Steve2 restarts with its fresh PID and runs rows (%s)" % (recycled,))
 
 
+def t_a_test_worker_never_writes_this_machines_real_list(r):
+    """2026-11-27 06:52 PST: t_steve2_worker_is_a_steve_lane ran an attempt with RM_GAME_INSTANCE=b and no
+    TESTQ_CMD_COMPOSE, so the worker ran the real `modcheck compose Mock`. On Archmagi that swapped ArchSmall's live
+    ModsConfig.xml to MINIMAL under a live run (RIMMANDRAKE_TRACE_ARCHSMALL_TIER_SWAP_UNDONE_BEFORE_LAUNCH). Each
+    attempt's shell is stubbed here: nothing runs."""
+    code = ("import worker as W\ncalls, said = [], []\n"
+            "a = W.Attempt.__new__(W.Attempt)\na.job = {'mod': 'Mock'}\na.aid = 'J0.a1'\n"
+            "a.say = said.append\na.load = lambda: True\na.modsconfig_sha = lambda: 'x'\n"
+            "a.sh = lambda cmd, log_name=None, timeout=None: (calls.append(cmd), (0, ''))[1]\n"
+            "a.compose_then_load()\n"
+            "f = getattr(W, 'real_list_cmd', None)\n"
+            "swap = f('TESTQ_CMD_TIERSWAP', 'REAL') if f else 'no real_list_cmd'\n"
+            "print(json.dumps([calls, said, swap]))")
+    test = r.py(code, TESTQ_CMD_COMPOSE=None, RM_GAME_INSTANCE="b")
+    told = r.py(code, TESTQ_CMD_COMPOSE="echo told", TESTQ_CMD_TIERSWAP="echo swap", RM_GAME_INSTANCE="b")
+    real = r.py(code, TESTQ_CMD_COMPOSE=None, TESTQ_SKIP_PULL=None)
+    name = "a-test-worker-never-writes-this-machines-real-list"
+    check(isinstance(test, list) and not any("cli.py compose" in c for c in test[0])
+          and any("compose: skipped" in s for s in test[1]) and test[2] is None,
+          "%s: a test's worker runs no real compose and no real tier swap, and says so (%s)" % (name, test,))
+    check(isinstance(told, list) and told[0][:1] == ["echo told Mock"] and told[2] == "echo swap",
+          "%s: a test's own compose and tier-swap commands still run (%s)" % (name, told,))
+    check(isinstance(real, list) and any("cli.py compose" in c for c in real[0]) and real[2] == "REAL",
+          "%s: the lane's worker still composes and swaps for real (%s)" % (name, real,))
+
+
 def t_steve2_reads_its_own_install(r):
     """J20261124T001426Z-9581b9: Steve2's worker checked and installed the companion in Steve1's Steam install, said FRESH,
     and the game loaded the old one."""
@@ -454,7 +480,7 @@ def t_a_proof_that_crashes_is_unmeasured_not_fail(r):
 def main():
     tmp = tempfile.mkdtemp(prefix="testq_steve2_")
     r = Rig(tmp)
-    for t in (t_steve2_reads_its_own_install, t_site_saves_reach_steve2, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
+    for t in (t_a_test_worker_never_writes_this_machines_real_list, t_steve2_reads_its_own_install, t_site_saves_reach_steve2, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
               t_fault_drain_waits_for_both_workers, t_filler_fills_an_idle_game, t_visit_feed_one_mod_per_game,
               t_steve2_off_by_default, t_two_jobs_run_at_once_one_per_game,
               t_steve2_respects_the_machine_pause_and_its_own, t_steve2_stop_file_wins,

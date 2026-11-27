@@ -1,6 +1,6 @@
 # BOUNDARY: the SteveDesktop lane drives Steve1 and Steve2 at once, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `games_reading`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, `Attempt.load`'s fresh PID checks, `Attempt.mods_dir`, `Attempt.companion_dir`, the kept environment of `spawn`, `proof_verdict`), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
+Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `games_reading`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, `Attempt.load`'s fresh PID checks, `Attempt.mods_dir`, `Attempt.companion_dir`, the kept environment of `spawn`, `proof_verdict`, `real_list_cmd` and its two calls in `compose_then_load` and the tier swap), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
 Item: `RIMMANDRAKE_FILL_BOTH_STEVEDESKTOP_GAMES_HE_SAYS_IT_HOLDS_TWO`, written 2026-11-23. The owner's words that night:
 *"Fill up Steve Desktop please... it can support two live games at a time."* Each promise has a test of its name in
 `src/RimMandrake/Utils/testq/selftest_testq_steve2.py`. This page covers only these parts of the files named; the rest
@@ -64,6 +64,12 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
 - **steve2-reads-its-own-install.** The Mods folder that Steve2's worker attests, and the companion that it checks and
   installs, are those of Steve2's own install (`<data folder>/game`), never Steve1's. With no data folder named, the
   folder does not exist and the job ends before its load.
+- **a-test-worker-never-writes-this-machines-real-list.** A worker run by a test (`TESTQ_SKIP_PULL=1`) that names no
+  `TESTQ_CMD_COMPOSE` runs no compose, and says `compose: skipped`; one that names no `TESTQ_CMD_TIERSWAP` runs no
+  tier swap and ends INVALID/LOAD by that name. A command the test names still runs, and the lane's own worker still
+  composes and swaps for real. (2026-11-27 06:52 PST: this page's recycled-worker test, with `RM_GAME_INSTANCE=b` and
+  no compose command, ran the real `modcheck compose Mock` and put ArchSmall's live list on MINIMAL under a live run:
+  RIMMANDRAKE_TRACE_ARCHSMALL_TIER_SWAP_UNDONE_BEFORE_LAUNCH.)
 - **site-saves-reach-steve2.** `sync_test_mods.site_saves` pushes each registered site save into every target Saves
   folder it is given (`--also-saves`), and the tick's copy names Steve2's Saves
   (`/mnt/d/ClaudeWork/rimmandrake/instances/b/Saves`) while Steve2 is switched on. (A Pyrelands job on a game with no

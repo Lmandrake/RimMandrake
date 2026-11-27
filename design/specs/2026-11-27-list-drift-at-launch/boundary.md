@@ -5,7 +5,10 @@ five calls: `repair_game_reset`, `restore_own`, `restore_before`, `--restore-ful
 `src/RimMandrake/Utils/game_instance.py` (`launch`, `mods_config`, `list_line`).
 Item: `RIMMANDRAKE_TRACE_ARCHSMALL_TIER_SWAP_UNDONE_BEFORE_LAUNCH`, written 2026-11-27. On 2026-11-26 a tier write to
 ArchSmall's list at 03:47 PST was gone by the 04:08 launch: an older list was back, with an old mtime (a copy that kept
-its source's mtime). The writer is unknown. A run recorded a tier that the game did not load.
+its source's mtime). A run recorded a tier that the game did not load. The writer was found on 2026-11-27: a selftest's
+worker attempt ran the real `modcheck compose` with `RM_GAME_INSTANCE=b`, which copied a clone's MINIMAL list over
+ArchSmall's (guarded in `infrastructure/stevedesktop/worker.py` `real_list_cmd`, page
+`design/specs/2026-11-23-steve-two-games-lane/boundary.md`).
 Each promise has a test of its name in `src/RimMandrake/Utils/selftest_list_drift_at_launch.py`, which also runs each
 test on a planted fault and fails unless that fault turns it red. This page covers only these parts of the files named.
 

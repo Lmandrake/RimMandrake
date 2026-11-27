@@ -952,6 +952,17 @@ CHECKS_RUN = "python3 src/RimMandrake/Utils/testq/stage6_checks.py run"
 PROOF_BUILD = "python3 src/RimMandrake/Utils/testq/proof_build.py"
 
 
+def real_list_cmd(env_key, default):
+    """-> the command that writes this machine's real mod list: the test's own (`env_key`) when set; None for a test's
+    worker (TESTQ_SKIP_PULL=1) that set none; else `default`. 2026-11-27: a selftest's attempt with RM_GAME_INSTANCE=b
+    and no TESTQ_CMD_COMPOSE ran the real compose, and on Archmagi that put ArchSmall's live list on MINIMAL under a live
+    run (RIMMANDRAKE_TRACE_ARCHSMALL_TIER_SWAP_UNDONE_BEFORE_LAUNCH)."""
+    cmd = os.environ.get(env_key)
+    if cmd:
+        return cmd
+    return None if os.environ.get("TESTQ_SKIP_PULL") == "1" else default
+
+
 def repair_reset_list(d):
     """Put the before-copy back if a crash reset the live list; never raises, and a refusal costs the job nothing (the
     swap itself refuses by name). Only SteveDesktop's runner owns its list: the archmagi lane's is the owner's. The
@@ -1316,8 +1327,12 @@ class Attempt:
         down first when it was launched on another list, or when its launch list is unknown and the compose moved
         ModsConfig. A compose that fails, or a down that fails, is only noted: the stale-load restart still repairs."""
         try:
+            cmd = real_list_cmd("TESTQ_CMD_COMPOSE", COMPOSE_BASE)
+            if cmd is None:
+                self.say("compose: skipped (a test's worker never composes this machine's real list)")
+                return self.load()
             before = self.modsconfig_sha()
-            cmd = (os.environ.get("TESTQ_CMD_COMPOSE") or COMPOSE_BASE) + " " + shlex.quote(self.job["mod"])
+            cmd += " " + shlex.quote(self.job["mod"])
             # a hung compose (python.exe over WSL interop) would hold the attempt, and so one game of the lane
             rc, tail = self.sh(cmd, log_name="compose.log", timeout=1800)  # budget: class=call
             want = self.modsconfig_sha()
@@ -1735,8 +1750,11 @@ class Attempt:
         rc, tail = self.sh(self.cmd_down(), timeout=300)
         if rc != 0:
             return self.fail("INVALID", "LOAD", "game down before the tier swap failed: " + tail)
-        swap = os.environ.get("TESTQ_CMD_TIERSWAP") or TIER_SWAP % shlex.quote(
-            "testq %s on SteveDesktop: the worker holds this machine's game guard" % self.aid)
+        swap = real_list_cmd("TESTQ_CMD_TIERSWAP", TIER_SWAP % shlex.quote(
+            "testq %s on SteveDesktop: the worker holds this machine's game guard" % self.aid))
+        if swap is None:
+            return self.fail("INVALID", "LOAD",
+                             "a test's worker never swaps this machine's real list: set TESTQ_CMD_TIERSWAP")
         rc, tail = self.sh(swap + " " + shlex.quote(tier), log_name="tier_swap.log", timeout=10800)  # budget: class=deploy
         if rc != 0:
             return self.fail("INVALID", "LOAD", "modset_builder --tier %s --apply failed: %s" % (tier, tail[-300:]))
