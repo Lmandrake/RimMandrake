@@ -1,4 +1,4 @@
-"""LIVE test of "the wind carries the fire" (RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE). UNRUN as of 2026-11-17.
+"""LIVE test of "the wind carries the fire" (RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE).
 
 Game up on the pyrelands tier, a Pyrelands map current, the bridge held:
     python.exe src\\RimMandrake\\Pyrelands\\wind_burn_live.py
