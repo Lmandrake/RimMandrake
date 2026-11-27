@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46029680000000006
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1641776
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RUT_BrineBattery__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'STYLE_EARTHLY', 'DESC_MISS', 'DEPARTURE_MISSING', 'F_SIZE_JUMP', 'STYLE_CARTOON']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b66a93764f8e06f64339e3d63584a0891547c26e637423bc8198ab031ac97ad2",
+  "east.png": "b679c72e524e8aecb8f5eee66220bcb7bff5f37fa516e966c310bc6bbce38d83",
+  "north.png": "dbbfb0f35501b3fbe73fdba3e53cb792494d8928a9ed74c3fd1b3c9d78f6d6d0",
+  "scale.png": "f14ed6bf36e057129a7bb4ec157931601d464ff447c22496d17f313210566d56",
+  "siblings.png": "2845d6ed53a0cbe6c2225c5c901bd7d34428d923f5a098412441e779535963a4",
+  "facings.png": "0753aef83f681bfc14be2743b88e7e8e43ba455ec633713889401f3cc61a08ce"
+ },
+ "source_sha256": {
+  "south": "6272055ff327f1e9f7c86e2b2761d5730c70ab26f96a717e35f4936e5b13db55",
+  "east": "0531dc467036c280b243f365ce81666124d056429aec520a40e23d9496f9c64d",
+  "north": "ca970e2b4e1dcbee84e49b0f06c408d07c930b43c06776d92d922e45b048bc00",
+  "scale": "8210de62c2212ceed67743891339d1dff5414b199d4f4c4e810f250a77ece201",
+  "siblings_RUT_BrineBattery_south": "3f0287bea642821b38c6e774f9bbd3e0b17348509e67b78aaf81107109fe7413",
+  "siblings_RUT_BrineBattery_east": "1791b798b28558cb16dd55ea569d15d0307fab600a2620cd9157a7633576f63d",
+  "siblings_RUT_BrineBattery_north": "cf41cd482c553f495d3e41876d99564c8870e20faf96fd35a01ab2b9dc645e80"
+ }
+}

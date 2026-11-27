@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 59.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4858344
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1614996
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Sulleth__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING', 'SIBLING_MISMATCH']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d5d3566d9d569152e7b3785c22d177c5de5a5b1808de43876ce2839d90a6e268",
+  "east.png": "1aa538abb755c091a126861f825dedb45ae29b9dc29af3d95c9a655f3d3d4bf0",
+  "north.png": "658c9cfea64422a053ce230abc54982533fb7fad58e23fd330aa8625fba1bc40",
+  "scale.png": "828034ff8bf3e215a458bf84aa7217b6e6875908ec182898b234e7bfb14a9928",
+  "siblings.png": "0e276bcc8121d92cbcceed8f271a4b5a4b202683e1cc11580781cf67bb45673b",
+  "facings.png": "72a6439dbe65971524b602abe551db63c744882c53a3d44f75692bcb461a1df4"
+ },
+ "source_sha256": {
+  "south": "8fdb74541244bbd2028b1a4a737caa3aec09d17f4ad06a7ea76316cb9dc015ee",
+  "east": "7879a67069e0092d1b97caf0283d7cd47f6e5e12de2866046fbfbe1ee97d9fda",
+  "north": "3386b0f30b90f1db7c0dfc57e683091ec3f612af59002a73de250a46b64797eb",
+  "scale": "0d9302ed2475eb5168e5fab3fb006d66650dde54f36d9cbf7d2fd604634da3d0",
+  "siblings_RM_Sulleth_south": "720096a091f1dea63ac8903336079c7bb1d8d7d6883d2e638f20eac305a56117",
+  "siblings_RM_Sulleth_east": "e5fdb3073944f198c8ac5837f9355f20bb0ba74d5b2db55d40b65e454a9bf032",
+  "siblings_RM_Sulleth_north": "4fe0f7a2e25ebe90e8af44398432a5a1304a530aae9177181a7b6b29919d053e"
+ }
+}

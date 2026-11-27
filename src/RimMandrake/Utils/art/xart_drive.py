@@ -482,7 +482,10 @@ def wire_young(text: str, kind: str, tex: str) -> str:
         g = re.search(r"<bodyGraphicData>.*?</bodyGraphicData>", li, re.S)
         if not g:
             raise ValueError(f"{kind}: a young stage has no bodyGraphicData")
-        body = re.sub(r"<texPath>[^<]*</texPath>", f"<texPath>{tex}</texPath>", g.group(0), count=1)
+        # a comment on the replaced line spoke of the adult art: the young look gets its own
+        body = re.sub(r"<texPath>[^<]*</texPath>(?:[ \t]*<!--.*?-->)?",
+                      f"<texPath>{tex}</texPath>   <!-- {LOOKS_ITEM}: the commissioned young look -->",
+                      g.group(0), count=1)
         li = li[:g.start()] + body + li[g.end():]
         # a female adult picture on a young stage would hide the young look for every female
         li = re.sub(r"\s*<femaleGraphicData>.*?</femaleGraphicData>", "", li, flags=re.S)

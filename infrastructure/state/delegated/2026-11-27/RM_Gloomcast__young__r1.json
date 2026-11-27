@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5053302
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1628376
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gloomcast__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['OWNER_NOTE_IGNORED', 'STYLE_EARTHLY', 'SIBLING_MISMATCH', 'DESC_MISS', 'F_SIZE_JUMP', 'ALPHA_HALO']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6f1be8355737f5ce945f1900f8b5a4210c93a171b136b39b92ef758a3263ede3",
+  "east.png": "b498ffc50569a5c330d8b66fdd98a24a24aa59168aef2393a2b212aa6056e0ee",
+  "north.png": "002d9da62ccfbe1d99fcb43226c2a57c82bb0aed30b2127c333862ee9efaaeb1",
+  "scale.png": "ab552a72216a13221779162b1fb81ec2bec4d117882e6abf901df6781f6363fa",
+  "siblings.png": "9b75b87d7150e351d9313cb135d580845a4e2f90beec3214700cf37fa6d60f97",
+  "facings.png": "3f31cd28b67686da79178f25245cbcdd741c5190966bafde69cfbb234a51d4c6"
+ },
+ "source_sha256": {
+  "south": "5ee4a9c6603579444058eef3a4ea49199a56a98c08f389559be63e2168b09759",
+  "east": "de376cc95ed54c00322d2b341907cd6bd97f32e35d978779142cd947db374c1b",
+  "north": "28420cc2582b1bea1966853cbd3ff3d04bb94cb93ab2ea065d85c9e45b5de519",
+  "scale": "d0adc55427b9cf022804d6902548ac5edd275596069d5a2a6af0b5bc70fafb16",
+  "siblings_Gloomcast_south": "b21b5d7436cc43350c2cf95517d97627c9e2fc3296f7777f12e1ddffc2b2deba",
+  "siblings_Gloomcast_east": "daacdb6da11f42c6f9c9c0a5b1aa2084f496b366eeccb5de29bee35fbdb727d5",
+  "siblings_Gloomcast_north": "9ecef64a8ea3fe0abcb89b439e49e90c51dd2fb91fa0db820ec84dc1f49a06d4"
+ }
+}

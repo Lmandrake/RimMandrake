@@ -60,5 +60,11 @@
   "north.png": "fa3728eea972833eef349649d53cfe776a2b9c7aed98faa088fa41f1c0f88be0",
   "scale.png": "422351973ebfbfaccf6e71ed6becc03cf4d8e807483b9c5f0006fa7aff6f3566",
   "facings.png": "c81da5ce4069c43b73e5504adbf4ce68b7029973eaa7e99fb9a493d54a123e68"
+ },
+ "source_sha256": {
+  "south": "213ad316db3768427eedf246a6bae88110713206ee3af87dc87a6b2ab140c760",
+  "east": "b3edf4f5f80cc82c87b10c43d42e72f792b1fef5ff98cbf4a8bfe589aaccb8b8",
+  "north": "53ce64bef9997c2c7677c82a7f2df3c18b8dc9b6d1a84fb8e486cfe0e10e01c3",
+  "scale": "f47d3b92adeac2e81c71ce622875ea69cb9d321e81138f3eadfd475f55cecf09"
  }
 }

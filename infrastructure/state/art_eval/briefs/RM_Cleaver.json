@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Cleaver",
+ "nearest_earth_animal": "crab",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "body made of five or six separate sharp, angular blue crystal shards",
+   "quote": "Five or six sharp angular shards of blue crystal"
+  },
+  {
+   "feature": "loosely joined shards held together by light along their fracture planes",
+   "quote": "held loosely together by stress-light along their fracture planes"
+  },
+  {
+   "feature": "no head and no legs",
+   "quote": "A Cleaver has no head and no legs"
+  }
+ ],
+ "body_plan": null,
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:26:39-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Tetchik",
+ "nearest_earth_animal": "beetle",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "body built of many tiny plates, not a smooth carapace with two wing-cases",
+   "quote": "of tiny snapping plates"
+  },
+  {
+   "feature": "verdigris-green and brass colouring, like oxidised metal",
+   "quote": "verdigris and brass"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:29:41-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,52 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Oovu__faces",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth FLAG (facing_scale_lint gate, plan serpent): south d_south 0.444 (band 0.64..1.52); south feet -0.2656 (band -0.03..0.03)"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "644f79870b974ebe4d774ed3b919e7230bd4870e59c68d00f85dfa5dddb5cf11",
+  "east.png": "5c72e4eb646f1f67066c491e565e994a8d5cc611c308ce8dc94ce8b5e29c43a8",
+  "north.png": "2f8eaf0100fc1a11255f8f5206213babb569b08e29881738c924c47ae45b0b32",
+  "scale.png": "f84f3cf5a9c6abe0b504a78274cdb0194172cf15dae6f4f37729c17e65fd4a1b",
+  "facings.png": "9028438c97129ef2ee23b76be41d2fe243b8ad090f5b753dc9698748f998fed9"
+ },
+ "source_sha256": {
+  "south": "f8e3f33d301ca6d2c564084e2b6b9bedac7db3229f581d8cf3d6d49cb4985ac5",
+  "east": "9dd1b5a83aaf105b13ccb04d7733949b0a10d0ad2fc5d47c17963ede925ce876",
+  "north": "f0f8d534a11d3685d818cf8e7aaf2bff832b7151d2f91b7b6914e2a13f71bd44",
+  "scale": "bf35c6921bc451050686f4f819894c42287c2c7fd3cadd27f24ba704a1f07030"
+ }
+}

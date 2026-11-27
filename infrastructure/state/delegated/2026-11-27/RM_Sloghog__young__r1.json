@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4695772
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1636656
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Sloghog__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING', 'DESC_MISS', 'F_SIZE_JUMP', 'F_INCONSISTENT']; polish ['STYLE_EARTHLY', 'LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9eb448d9cce10cff671d9ea54f8976e7d8933f3aad87f5f6997ef764786dd22c",
+  "east.png": "f8da81ed33fd39a2675d6ffbd225d56ebe2c991bfe8b624afaad3849ddf1f6f9",
+  "north.png": "743dec497dca8c4f765427bd22963aa8859e0d5d55facb3e4473a1ee36ae34bb",
+  "scale.png": "1407c6a3326f66e05874bff318225a84f185bd000b72f2f9a7130ee94e8c2c02",
+  "siblings.png": "5bfd14b6707f6ac34647c23959a594cbe6e600579df74494c1215b765fba64fd",
+  "facings.png": "d473377b4d7f2f8668d8879a2390a899be43dfa630560ed75054161c55330b3d"
+ },
+ "source_sha256": {
+  "south": "31cdd6aeee85a6a9090883fc4104aa746ba8fc4a59d0f2f940f1476be23393dd",
+  "east": "b1ab81d407f063318da39563712ba73fe152e082607a6e42c5af9700cbb1b36a",
+  "north": "23c9a9da9f17c9f1724e5469f5458c41d8e572d14c20945e090d6697a2097c9d",
+  "scale": "94a7013d04b5fa2401ba85c8042f31c3d501810a116f44167165a5291dbcbbcf",
+  "siblings_RM_Sloghog_south": "e414f648f51f6e118bda24819d49c8580956fad56313b632d6ed736cb2c13bf2",
+  "siblings_RM_Sloghog_east": "95daf62d30ac97289953999a894b58bcfe751268e1e17f2ae3f9dee79d939747",
+  "siblings_RM_Sloghog_north": "5fe059ba5748a1b22a8248b604ea97274983201ccd9bcf536ca6e25bb3b9b756"
+ }
+}

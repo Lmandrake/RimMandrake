@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 66.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4820296
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1654116
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Bozzuga__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['STYLE_EARTHLY', 'DEPARTURE_MISSING', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6f9cf2722b9e5976bf242577fa64596b2ccfe090bcf3a466e67de7a5471cf80e",
+  "east.png": "ed63d558646a76ad69b8ed1983b52fe3430d34886a1f794de72c51f2e941ff1e",
+  "north.png": "80ba71a83100c91a9e176761edf565e1896fbc105b506b12d89b0894ce395ee7",
+  "scale.png": "379ce659a7453abe96aa28feb34f2b3797feebcae75653c1436987e2cedce0c9",
+  "siblings.png": "9ca44ed8ababb62545c1e65fff7b4e37656728ac12fd32b4a10e12a3f3793d76",
+  "facings.png": "92ea79d2464ec4f7d93a0c90cc4f39bdc63fd1f4dc619070a22825abfe458054"
+ },
+ "source_sha256": {
+  "south": "cc7bf04704e52636c6d8d3f8cdfb0ac45cb0db6b2731956cc63bbd11e608aa7c",
+  "east": "d4e489294fe89beea018e571233b086c07ed27eca38614d203e90cfa3256b3fb",
+  "north": "bc4010a95393056b3ce5a816dda961c68f7352f11cd22d173a81daaefaa426df",
+  "scale": "4d608f9aecb2a8f542fe27d55e0f1918eee8666c69d4dccbc905c6b40acbbcd8",
+  "siblings_RM_Bozzuga_south": "dd7182736ff5ebc6b6638d8935eb31d6e6afa1fb5ed089e660679cbd8b43860f",
+  "siblings_RM_Bozzuga_east": "c5d3173f0e44e570e5bce216d0d1279093bf7ffa7b4c215ff4a212a72e33238f",
+  "siblings_RM_Bozzuga_north": "99920811b0ba1ee4c8e05b8fc7f6e074ac110e8e523db8bb301ceacfdaf34482"
+ }
+}

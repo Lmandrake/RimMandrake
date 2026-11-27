@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4691894
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.9
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1573976
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Gelagrub__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "be0391950f68235915a886004eecd30376d13e8a0fc85ffd444ca0fc4f0b64bd",
+  "east.png": "93609bd1b3bc5062e5cfe1d3551c03da81b0be3008601b0d0bb08f06a5956f65",
+  "north.png": "f46aca4d5c8d2312bafb51591d0c0a39af938c7ef898081ea9942e470ced2f2b",
+  "scale.png": "58044522e0f0628e0311efac33bb76cb844b643cbeafeb418bb02eac4a4499cf",
+  "siblings.png": "8f72db29691bbc98b3e68a3eabd09532ed4e8622d8fb9e278474a29abe41329a",
+  "facings.png": "7a620a884be3392d321cfeb8c1cf8433937cd19092d0989ac1f41aacb0451aef"
+ },
+ "source_sha256": {
+  "south": "aab814d4d585cadf587d3266f59cdbcb73fd4decdc25bb103c854268fe1d0aa1",
+  "east": "93609bd1b3bc5062e5cfe1d3551c03da81b0be3008601b0d0bb08f06a5956f65",
+  "north": "0d4e53a68300a9990e6000aa6518a36d09d6ec287413c26a12c3a21b8608edef",
+  "scale": "5c83e2587309c71f7635644c5070b1b13946da74e6570782d71c0983e5c28ab8",
+  "siblings_Gelagrub_south": "ebeaa51b8cfafcae413d3a982ce5c3970522fab4bc9f541e11fce7a18bcc3e08",
+  "siblings_Gelagrub_east": "7a5cb9489047ba6b5a31e31561cc4e7fc032a991740d86ad58a206a33cf1d03b",
+  "siblings_Gelagrub_north": "e5e3e7bc19a54fa02de908455264f2a8463cfb3eb86470a1af40aa9bdc710a59"
+ }
+}

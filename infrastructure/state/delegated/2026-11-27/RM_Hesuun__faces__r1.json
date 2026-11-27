@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.44814879999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 31.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1561236
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Hesuun__faces",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c89be4d398be0724308e56aa7444e0d3f5971dfb6f95775c5168477400c5a746",
+  "east.png": "e7beb837cc382fd06a39ad344dd4b463dbfa306d528990ef371375b9b42d2a01",
+  "north.png": "d40d895a7174e5872bd426520f904cc15f8adba256596b5edf6414eb363d2ccb",
+  "scale.png": "dde06f8a33a32640a0193f5e8ee4d1736a24fd5212f8cf097e949c0b7051f2e0",
+  "facings.png": "8286f300feb5b62facc0b23794df4f40926ed8d35a2e23b2d8961b8e7d89230d"
+ },
+ "source_sha256": {
+  "south": "c89be4d398be0724308e56aa7444e0d3f5971dfb6f95775c5168477400c5a746",
+  "east": "1702b1e88c5ae971b7e4805b703a0bb2178d9fa1110b5d7ae9c02ed4e46d1f80",
+  "north": "d40d895a7174e5872bd426520f904cc15f8adba256596b5edf6414eb363d2ccb",
+  "scale": "585e0bbcb9339da3265656019c3ffa1ea25d2dd3cf261170c7668a52bd227d1f"
+ }
+}

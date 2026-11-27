@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46996499999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 25.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1594916
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Skalder__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled ['K2'], own blocking ['SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "7cfe488d734ffb643c4a0c8ef0ffcdc4ab7b6fca23f033fd1768cdb57a526248",
+  "east.png": "f3efd4a0fa7aef91b619895a51bac21fabe7229547ca6c71056dc597b4e54365",
+  "north.png": "a567bac8ac9b3ff829b2ca0fc5883ef6f6ba871796e22940c1457ce7c1921a51",
+  "scale.png": "e76ce23de0073c90f6077676fea339a1e3c67b45ac4e5aed8b9d16a4e3019065",
+  "siblings.png": "f44865e1489138d60830281fac4e9f6e63f7272303938309975f987420f38136",
+  "facings.png": "20713bd5bb86b5f03238da2c0e16f5de7853a85133cead52d49384816205b685"
+ },
+ "source_sha256": {
+  "south": "a53612c9d9575219775984dec726cbc65235d8b2e9bf7ea0336a456509dbc75c",
+  "east": "47c36167f14741eab5eb88fd5a3338fe990f621ac80c6f074af40e6496809b13",
+  "north": "0dfa0b8117efc7662e24f263892a7b8fc3340c1fa9f6df82918f2671de6c6ade",
+  "scale": "1b9322a0878bf4b20171dd67a2fbe2adc9c007bfe6d75d75c1eae9d7194e89c0",
+  "siblings_Skalder_south": "3c361e748cad9a06332d7dc5267cdfe8c1d1ff38ff22e81cf0e048a006c8c327",
+  "siblings_Skalder_east": "aa4dc02c8a75f3962c8f2305b1850edad348240dd116df011cb3042ec61bd688",
+  "siblings_Skalder_north": "19dbcd4c841c164dd10f30ab58a3317e6df8f435555909c9f158902a1fb5841a"
+ }
+}

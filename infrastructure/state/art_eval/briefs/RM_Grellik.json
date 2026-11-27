@@ -1,21 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Grellik",
  "nearest_earth_animal": "weevil",
  "earth_body_named": true,
  "departures": [
-  "a fat, slow weevil whose shell is overgrown with fungus caps",
-  "fungal growth sprouting out of the shell joints",
-  "a long weevil snout under the fungus"
+  {
+   "feature": "fungus growing out of its shell",
+   "quote": "the fungus lives in its shell and out of it"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T03:57:55-08:00",
  "source": "description only (no image)"
 }

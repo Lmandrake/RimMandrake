@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.475045
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 22.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Ronto__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'F_INCONSISTENT']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "bd213f707f6a98aa5e9174022fb7f8766d8abc3bd4dc668b2fc783f39401c431",
+  "east.png": "969996a348f7bffbce04be8d843f697577dbb431bc290abee3a778c0114e6fb4",
+  "north.png": "72d75d50d50f7f53e672343e861ee3bad9da2089a5936db71a9195c2ec18604d",
+  "scale.png": "0e273c3b18636592aa29a3b98625c99c4166dbf1d63106740f6c86ac248541da",
+  "siblings.png": "40d22cafaece0527d8d8a0f88c5dd13ada94be2763494950d7bdbf43eeff1d02",
+  "facings.png": "5e1b734964c45f4f05c05ed318e2eb2a946fbd156b1549fc8c8a2a816cdd44e8"
+ },
+ "source_sha256": {
+  "south": "6c9b63c6ddc27da7b4e1853a4a3799d9d0571cac07aafa16dec1f2709e03da3f",
+  "east": "bb88e92cb682f7c8889f34a599c0e1f9c5cff8b9561483f7290d0780e20ad3e0",
+  "north": "c02e9af215f51683698f41accc9ed35236379fd4f677d284a9fd272fcc73bd1d",
+  "scale": "f70c462e85b0d0961cbd1675e4164fa4ed38b375dffa35884806c6dc055ead9d",
+  "siblings_Ronto_south": "378c4963f7f1480933ca2b6bec3258efde4655d9a66b80092b5a44ed11def412",
+  "siblings_Ronto_east": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098",
+  "siblings_Ronto_north": "19a6998371371a26d2d68cbdaf4c6d911a3326592f5148a9181a080874899da9"
+ }
+}

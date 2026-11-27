@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 63.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4953672
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 39.8
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 31.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1674676
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Tirbak__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH', 'STYLE_EARTHLY', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH', 'STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "542275737a6a179ebfe4d72cf8b11a3f4f54ba96a317f4c3cae4865fd7372801",
+  "east.png": "29c7f6938cabe1171611547fc4c2c352972b3a156ddb0befb6e0c6b9ebe4f403",
+  "north.png": "e5ecb5eba6c91e95c30706ec0c2a98e94a492c5efd9cccc29e17da961be21b28",
+  "scale.png": "a54fd83f2b078269630a353e8c59bdc6fc02cfaf6846896ee75b230f8be9fa9b",
+  "siblings.png": "a4bd87295d3ff46efbc3d83ca0cd2ab13bb98f5407d6cf0adb4c5f37ad8b74d2",
+  "facings.png": "af7a01199e461c01aa4a7f21e6d10dabe2939c6501cafbd01200ee9a805eaf6d"
+ },
+ "source_sha256": {
+  "south": "4acaf9bf44f692bf95c7fd1a2fccc28025343fbeb70e0e1c27a948fb1811ff53",
+  "east": "d29cad80938d8360f46f25ddb07247fcf3fd16a157ae00802d1db36fc9b35446",
+  "north": "d890c3c61a6a7c52ee4a4ba90d0bbfa21a6139c644ac08fd61a18f35d97123c8",
+  "scale": "7fb8ae5d379e5a5175dc5fe67635e66a2c15a6fa0fa46fb7c7d9d2afaba0d777",
+  "siblings_RM_Tirbak_south": "06fa6c0e7556fdab9ebd9a7c6c90f4db4e245f4b95019929339e7bf435e83caf",
+  "siblings_RM_Tirbak_east": "092c49b70bc63098a8e20fc25c241b72c2296f6940fdbdcbec49483134c0992e",
+  "siblings_RM_Tirbak_north": "8a772b078909205ded25edb486b92ad45250814c9d8db73c61f1d2882589ab4d"
+ }
+}

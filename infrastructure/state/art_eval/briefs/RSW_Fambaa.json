@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Fambaa",
- "nearest_earth_animal": "sauropod",
+ "nearest_earth_animal": "giant salamander",
  "earth_body_named": true,
  "departures": [
-  "a huge swamp amphibian with reptile-scaled hide",
-  "a long neck and broad back built for hauling loads",
-  "blue-green swamp colouring with a frilled crest along the head and neck"
+  {
+   "feature": "scaly reptilian hide instead of smooth moist amphibian skin",
+   "quote": "had the scaly hide of reptiles"
+  },
+  {
+   "feature": "large body, far bigger than any Earth amphibian",
+   "quote": "large herbivorous amphibians"
+  }
  ],
- "body_plan": "swimmer",
+ "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T04:01:11-08:00",
  "source": "description only (no image)"
 }

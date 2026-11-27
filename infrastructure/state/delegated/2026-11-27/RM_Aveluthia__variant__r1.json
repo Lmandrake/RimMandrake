@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 61.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48570579999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 29.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 32.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15524960000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Aveluthia__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "76535b3c92e43b0e2dc0ed9ef16ab2af37183f1745417b5f35cbe0e085cb9fef",
+  "east.png": "03b810f0d0152a86e8f86004f18f5bfd9316830e28edaa25f9a613d7952bc3e7",
+  "north.png": "10b68d3fe3f38aa916cf275c4dfd8aacf421aabac92b322e36532fb070d46f41",
+  "scale.png": "d446bbe69d4cb7338a316c8437d2ebeecca9714692779ed136d04c91da41aca2",
+  "siblings.png": "5000f257a5df1605a3bf791a19fc9e7b1d56c009afc68b145b41cb04ad36acaf",
+  "facings.png": "67a8b78a87a652f788f01cdecc89c92d1d9cf284026fe1caae79c3cb6a2b9bcf"
+ },
+ "source_sha256": {
+  "south": "d3079c7e5affe10a2db984bfff9483fbf2d85d5be51498390db21f160ad23aa0",
+  "east": "03b810f0d0152a86e8f86004f18f5bfd9316830e28edaa25f9a613d7952bc3e7",
+  "north": "68396a8c019512f087092131c778153ec50ba0d643ca400ef9c5648425cd3efd",
+  "scale": "58998c518199c40e9a652bf3c145a89e614d9b19195a3b4921f18e53ebd574ba",
+  "siblings_RM_Aveluthia_south": "2fd0196f019db4a646c0793b42b56de36bc18deb634ebc36f61c3550be8f1e01",
+  "siblings_RM_Aveluthia_east": "bbdba019ca5f62e762eaf4642509b5550c910b59f7f36fb75dcf849e142b71b2",
+  "siblings_RM_Aveluthia_north": "1baafd6d0fb8faac493f839c8657c915db058bd22403785a7d6b961b7fba0a2f"
+ }
+}

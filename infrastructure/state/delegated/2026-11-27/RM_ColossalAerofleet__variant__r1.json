@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46143939999999994
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 22.8
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1613436
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ColossalAerofleet__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['F_INCONSISTENT', 'F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d338325fb040f0da177ad90ef836b795a391365e0d63054773d9dbee34c82c7f",
+  "east.png": "ba4530284da3d10587cd7ba2537b39666539e98abfe6a6d5b507ce9da8c77722",
+  "north.png": "6ee6c35eba90f928c1180ab493fcfbd5ff7fc858fb6e8cff1d54251c284d1c30",
+  "scale.png": "72eecce9c9fcdbf19a3a5aa8ce8f9e2932836cc67f1af8d0b0e57e33ce2e8def",
+  "siblings.png": "57f104f245251ba5ce62453e745b9e6a9d43c2ed6331394e7f640e38b256c026",
+  "facings.png": "85a19f78d5e8f210a8cfe3ddaaed3cc578428b375d4ba9d797ca597c7221c69f"
+ },
+ "source_sha256": {
+  "south": "ba12bf2206140a129c394bf38693067960f4739953f1df59b56e1ef863e61e83",
+  "east": "cb85c63ff4cb9c0ef837003cb7373cbf7164136c7e1495193996a5e187c14ffb",
+  "north": "d64695b89385da0a5f24d3184cb208c67b51e5cd540f41a61c5c6bab0ea3b11c",
+  "scale": "fc759665366a9e75cac3af05257d13c88f22101a2300e2f7606b44e4814d6f00",
+  "siblings_RM_ColossalAerofleet_Bell_south": "a90453395a97ec6856f2961032c5ac1d39952103556966771147f6dee9390cf5",
+  "siblings_RM_ColossalAerofleet_Bell_east": "c1d60aca5b029a1b4580ac9dc528a423d6234c78e869f4a154f524becc56c7c8",
+  "siblings_RM_ColossalAerofleet_Bell_north": "cedcc442365eab6482ddbe3606eb8a9debb337e588f1db04219c948c2d244fc5"
+ }
+}

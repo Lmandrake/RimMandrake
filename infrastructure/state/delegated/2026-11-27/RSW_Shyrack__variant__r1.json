@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4741788
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 17.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.209788
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Shyrack__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a115393bac632f3ccf1af7332ed1154581b6c90cf4cc88c479d924ce4aa29da5",
+  "east.png": "94b55e5419e5e3979093dc1d0449efd73eaffb3c9bd990afc28b2c64843e1cad",
+  "north.png": "8567e0cca50c6a2ab6b9f9aa1fb36a512e04fcb079ee11bd391ac0b218dbb992",
+  "scale.png": "bce926f3ada7f5e3f4321352a78aa37141ca19783f345c7b84d23a7d8ec97ba5",
+  "siblings.png": "c9a86ab707a09316c4a31f458c83770cbc1c3431c552582dd8fac119bbe17a09",
+  "facings.png": "ad5b96d75989892f64cc78d611b0d691b57193a80d3a07fdfa43ad9904551035"
+ },
+ "source_sha256": {
+  "south": "a115393bac632f3ccf1af7332ed1154581b6c90cf4cc88c479d924ce4aa29da5",
+  "east": "e837ccec122f642ee8aa692f813675522a7f0af432a1ddfcdb1335117e5d4712",
+  "north": "0bb97b99107a4924e046860f831d03a2df829239ebf1ebbf6241ca2ab22cce08",
+  "scale": "6661288136a7d689455af0b68748afd405d0f55656036c449502333aa4e81f2b",
+  "siblings_Shyrack_south": "38d0e3bb14411adac727b8cdc4cfacdd3c872f3d1297d12640faef57025f1174",
+  "siblings_Shyrack_east": "04f3a27615b54e958b045977f62c2ca0eb7190d60e04ebba48e17f878e15b90a",
+  "siblings_Shyrack_north": "afd8f66c9e2f2b3994e95d7b639213454c76b0bbb3d3386001f315d582a8bc36"
+ }
+}

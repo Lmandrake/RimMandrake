@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 57.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4861004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 31.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1610736
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_FeralGrazer__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'STYLE_CARTOON', 'SIBLING_MISMATCH', 'DEPARTURE_MISSING']; polish []",
+  "gpt regen: unsettled ['K1', 'K3'], own blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f97a56001a6b2156032ba9998d697ea27c3563dccf416bdf79c190d9e6be6a92",
+  "east.png": "2adbe81319f0faea15eb36ac677ddb4a7276c5e27a0a361fee06ced26ad87cc0",
+  "north.png": "c047efe119aae2e5a2d2bb8c82adac8838a08efaeaf99153de3e35e3c2054c2a",
+  "scale.png": "8f2a85c1c28738d035afd61f094661aa15b88ea6dec8434caf07ac276172f6a8",
+  "siblings.png": "6b4012ad9843c317478eae79a4703bfb089a800b6c8740a79f65263650b3740f",
+  "facings.png": "e46280cc983f3d6cc4396b4192a27d303140e43b55a12156df0603f328acc84e"
+ },
+ "source_sha256": {
+  "south": "f1e69f53ae3736614f77837ff71f188f536faa43ed809de9706317428d3cd9c0",
+  "east": "153ecfa44441cdaea3142ab384b9f80e9adce50c6aed52b52d00eb01790a85c0",
+  "north": "eed9f65b3d3c580c5e2c8f662375b1eb7b82249928e41fa3dd106846f5e12eb1",
+  "scale": "3983fd12bbae02801f0a9e188c46cb73ec95e388eba31061fbc88b3bd334826b",
+  "siblings_FeralGrazer_south": "01a9e653cef0b079cef4d5adeadf226110efaf00d3ac1c840f47be40abaa6db6",
+  "siblings_FeralGrazer_east": "ddcf17e6518296225d75e6fec2fb7af1e937c3662dadfa0e5ddfb724fcced145",
+  "siblings_FeralGrazer_north": "c476808d413ac30140fc6a928893b4541e79075e204f9601ca55556b673f4a84"
+ }
+}

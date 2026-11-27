@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 55.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4863272
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 40.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 25.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1718076
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_FeralNerf__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'STYLE_EARTHLY']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "32dea2be83f4e1981d76ad090ffb893ac95285c34c78f16319799dee8ba57e49",
+  "east.png": "b02232718efc579f96395adf6dff33c70e13b63e8dcdcf96853b044aaf0d2370",
+  "north.png": "cb5b1df1779bcee16e11da2b5129e10d040585331a4e685df2ed63c8dce351ab",
+  "scale.png": "4cc721ce34914405e3758543f080c8795ec3d4d9acedc81639226caae47ec17f",
+  "siblings.png": "a7d1c45f64e8b30426f8f2e9a4fe5507b0ad2caa1fbc2bcce71bc61280ea0370",
+  "facings.png": "b067c202b302b49118c24680decb7d77bb64c1b4d4db089c36fa729fb3852a19"
+ },
+ "source_sha256": {
+  "south": "f6b3843564303d01ebd59c37d03ad67fd5d466426029a69e79817e7bb4488fba",
+  "east": "c4bdf528174309f38e397a6c888656a5bf612fab8e5897b00ef2efeaf8ca2914",
+  "north": "fdc56e83d404471c10ed77bba5a5e74d65d89ae0dfe8ce45e0a44874d082c9c1",
+  "scale": "939b1e008bfcf05194b0283b8e92f93542dc3fb7609478892172db16666b28e1",
+  "siblings_FeralNerf_south": "a0060ea348821f8c5ce276c5978c3cfcea454a428b7f25a0a1867bf4eaf82087",
+  "siblings_FeralNerf_east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+  "siblings_FeralNerf_north": "7fe6f50df8a7e84c9f6874bb071cc38c22e5712d0d9687a9de75e6b765bc007b"
+ }
+}

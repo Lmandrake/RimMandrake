@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Karrobel",
+ "nearest_earth_animal": "armadillo",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "thick wedge-shaped body",
+   "quote": "A thick, wedge-bodied scuttler"
+  },
+  {
+   "feature": "body tapers to a head that is a hardened blade",
+   "quote": "tapering to a hardened blade of a head"
+  },
+  {
+   "feature": "a pair of banded, mud-caked plates on the back",
+   "quote": "a pair of banded, mud-caked plates"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:07:23-08:00",
+ "source": "description only (no image)"
+}

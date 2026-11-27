@@ -1,0 +1,39 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Ollopom",
+ "nearest_earth_animal": "aquatic rodent",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "six legs",
+   "quote": "six-legged"
+  },
+  {
+   "feature": "green fur",
+   "quote": "green-furred"
+  },
+  {
+   "feature": "gnawing teeth on the underside of the body",
+   "quote": "On their underside, they had gnawing teeth"
+  },
+  {
+   "feature": "three pairs of paddle-like claws",
+   "quote": "three pairs of paddle-like claws"
+  },
+  {
+   "feature": "flukes used as rudders",
+   "quote": "Their flukes were used as rudders"
+  }
+ ],
+ "body_plan": "swimmer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:09:44-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 46.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4659584
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1573976
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gennok__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e5f36da8d42077a14df7c5557b55f6e6e2b6480207c15d81477c2f191f7b0465",
+  "east.png": "bc6f3784d9945c4e2c165c753f1687faa85e685752da23e7547198bbdae8e5d2",
+  "north.png": "d1436dbc85cd849b61c88635270db62a38a94450cc800c9500de0be14553bb9c",
+  "scale.png": "a8023d906cbe578999ed186543beb75dc83c565d5e37524ced06e72d018bae59",
+  "siblings.png": "616e4a8b07eb6cd103c22f4317e9210a5e37b4e4826f58af9e0ae0c9e5bed60f",
+  "facings.png": "4d0c5ffa22f4130736f10e288a4de1c11078b9e03fbd22f1b4db84ce3c8e6a34"
+ },
+ "source_sha256": {
+  "south": "022864d0406242d109026b351d3e6389630620e1ae30df1e85304bf17acade35",
+  "east": "28463695b7a3ed98992b05a55f5b94b7b5982131b0c27a2d75200284b0324af1",
+  "north": "d1436dbc85cd849b61c88635270db62a38a94450cc800c9500de0be14553bb9c",
+  "scale": "1e754ce5f256d0875391242d19a0d43025cdea196f963b5efabd3dd0d6cad353",
+  "siblings_RM_Gennok_south": "699ed634c1a8a1e7e501cf9c828b35da12ddac3741863602133ab90e0bbd5f87",
+  "siblings_RM_Gennok_east": "e218a21efa1f745763883b46d49392bf835d44ddb7ace89af2313ccfcd7e24e8",
+  "siblings_RM_Gennok_north": "b33a9cd1324dd9349459b3dd75bf0178a26f7b685bf37aab0e3206f3231bc6fa"
+ }
+}

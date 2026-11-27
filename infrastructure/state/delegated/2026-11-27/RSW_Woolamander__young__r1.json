@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.471761
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Woolamander__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "bba72a2cffa086115aa8662628998d889e7ae24b81c4f52a89fb4cb48481f307",
+  "east.png": "14b8d78879a734d306065f50afe6fc1c87e365b324900fb1c810287bd1875fd2",
+  "north.png": "fee06e50dc3c420f9736726c799925719a75dcce3919a77437ae6e435ffed3f0",
+  "scale.png": "ff0afe729aa21086810cb6643519233c4a01d4456aa542ccd20ecd84ebdc1b7e",
+  "siblings.png": "7e939779e5220553161b4ab78bf8eff0c2785eeb3804b2e72be2a19747d389b9",
+  "facings.png": "b166e5820adad77fdfe018d736376e236c6713905d6493f80291fd882f8a11e2"
+ },
+ "source_sha256": {
+  "south": "12bc796e04efeda9fcca1198e7e2507b1f4c240c8cb2f06bcc72ed27b9234207",
+  "east": "ad14648794ada39e9733c12e1f703da8c4656135e29f511d249d81d5d0835f1e",
+  "north": "347a5136056657de0421130e1bba12e31f58505642934662562348cffeb008d8",
+  "scale": "8b5321cf81c76dc1298c8232dd22b74caa2f9a11a786011682dc6c5c4d26fb30",
+  "siblings_Woolamander_south": "dde20fec818cff8eb0f7eef7dc465ada9c37d3354e61fa7f36007fe11835b1b6",
+  "siblings_Woolamander_east": "5b634ca8b872725e36672df31f8df49239503a143c915ab748c4db658df36e38",
+  "siblings_Woolamander_north": "91e66d60fb7684607b3f9d3af4a625590990962aeb066eb62446e7bb6557154d"
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 61.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48688159999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 37.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 26.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1680776
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Karrobel__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'DEPARTURE_MISSING', 'STYLE_EARTHLY']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'DEPARTURE_MISSING', 'STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6d1135a6b1a9fc1c9981bf2c3b3a99b3c0793cc34eb350f9046caccea8c638a5",
+  "east.png": "9ed3a82b34b365c69b151cda83944b5cbc580c2268e6dbc06fbfe48fd885eed1",
+  "north.png": "236d38ed5bb59aa8f1ab696451fa7809da61b2d4af5865d181f9b35fe85c829c",
+  "scale.png": "dff71dc480b7572d47d649f53718f51bef7bc4d36a8bafa9e157b9de9004d0f5",
+  "siblings.png": "a871c0e084b559e610b40bf616d9c9d7b6422e59a34057f00c04f19e346be66d",
+  "facings.png": "a10bda2d01751a71e68136cdabd3bf93fc6f73ed3c6ca56a365f152f7eccc075"
+ },
+ "source_sha256": {
+  "south": "08a6157dc33bef8219a80a3bf81e1346b070be0ee6ff218cade10f6d855b6ec8",
+  "east": "c0a568f68a330a9fa404ddad8cbaaad59c87bc5af69dde554f231340d0bc4604",
+  "north": "bf3631b6dcb6f9fc0054125de78acb6237aa719724747b816c84f528817aa4b2",
+  "scale": "ea6100fd36c3af641f8e17dfe8ae218c80a891dd11166436becf415bddc0139e",
+  "siblings_RM_Karrobel_south": "90d0386648a8e20a4bfd9bafcfbb60f1a154fdd6256a06e575231088ceca0160",
+  "siblings_RM_Karrobel_east": "ab81c619d455fe612465810fd88800f03f6b60bab34c9b8750c0ab269e857b5d",
+  "siblings_RM_Karrobel_north": "0ef870d2ebd2c446ecd18e311f4409275199bfca02c23f55671296b32a72a3aa"
+ }
+}

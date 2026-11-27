@@ -1,0 +1,39 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RUT_EmperorVulture",
+ "nearest_earth_animal": "vulture",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "body is a long, flat sac with translucent skin, not a feathered bird body",
+   "quote": "a long, flat, translucent-skinned sac"
+  },
+  {
+   "feature": "two pairs of membrane vanes instead of feathered wings",
+   "quote": "slung between two pairs of membrane vanes"
+  },
+  {
+   "feature": "vanes ribbed like a kite, stretched on hollow bone spars",
+   "quote": "ribbed like a kite and stretched on hollow spars of bone"
+  },
+  {
+   "feature": "a cluster of jointed, hook-tipped feeding limbs hanging below, folded around a radial mouth (no beak)",
+   "quote": "Below hangs a cluster of jointed, hook-tipped feeding limbs folded around a radial mouth"
+  },
+  {
+   "feature": "no head; a ring of dark pits along the leading edge instead of eyes",
+   "quote": "it has no head to speak of, only a ring of dark pits along the leading edge"
+  }
+ ],
+ "body_plan": "flyer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:03:38-08:00",
+ "source": "description only (no image)"
+}

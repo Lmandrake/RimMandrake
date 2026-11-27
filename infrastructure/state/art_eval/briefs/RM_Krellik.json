@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Krellik",
+ "nearest_earth_animal": "crab",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "body covered in plates of hydrocarbon frost instead of a chitin shell",
+   "quote": "plated in hydrocarbon frost"
+  },
+  {
+   "feature": "each plate is clear crystal",
+   "quote": "each plate a clear crystal"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:36:35-08:00",
+ "source": "description only (no image)"
+}

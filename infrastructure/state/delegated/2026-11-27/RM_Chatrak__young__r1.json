@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 56.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4916818
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 47.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1666676
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Chatrak__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said really_bad); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'STYLE_OFF', 'STYLE_CARTOON', 'DESC_MISS']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'STYLE_OFF', 'X_CROP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "7d34dc1076a96d2ffdc692f808230e6a8023763492d221e7ba2fde86ce973880",
+  "east.png": "7373a83ae37777341d79053c6b1f028970e4ce47e5a1b5bd7b8022324d41b83f",
+  "north.png": "cd2e6599388168271dd05ec57a74ade92cecc7c79bbe8d4157efe3564e6e6241",
+  "scale.png": "da2b2eaba7d1170671a4682ec26f7ed2a1c3e62d728e022ae687d3ecf74d49c3",
+  "siblings.png": "5572c46bd68aae9c3fb4f51cf2efb90104399a190f1e4b14ff20541594067e45",
+  "facings.png": "f54414b3fcd944022f95e20cf3dedec9403879b04bf38a0ce6db555695290bdc"
+ },
+ "source_sha256": {
+  "south": "bd68d1d9ac96af74cbc35c548135829a61e0b30752ef2f63375507395f9e0e92",
+  "east": "89d3f858138c290abac34f9de99521d8b4b8d446d6687eb993f8089ced98fa69",
+  "north": "0bba2206745e9e29a976b285d983f9e483fec26e134d49514a38ac30d8dd897f",
+  "scale": "aa0ad5033028138017d3533b11ce9e858e35679e1cf510578c2d465518b98568",
+  "siblings_RM_Chatrak_south": "1ea001f795d414b0203edefbb4d268fff50ff838253efce19f4bf36c0a1cc9ca",
+  "siblings_RM_Chatrak_east": "6aef1e9b46ccdbd9437b59922693c133b1ee2e3410a760f2c18a50e79eecf877",
+  "siblings_RM_Chatrak_north": "d200232e339f2f26184d40b2559dada05938361d69c7c87fac0ce2a70e160d12"
+ }
+}

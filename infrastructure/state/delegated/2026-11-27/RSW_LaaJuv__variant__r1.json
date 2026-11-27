@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 51.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47325839999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 19.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1592376
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_LaaJuv__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'DESC_MISS']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d855f33d4215cfb5d17dc40ec18c529cd927a02d98f8bb214f3da56c1f118f2a",
+  "east.png": "3489c10816a258ffdad4479acc4c6d3f6be42f1e9d247e6ee0a06f94e42e3972",
+  "north.png": "572067db5c3a19a5020c6aa0fb9f61bd4d25bb8d48ac0bbac2cad876f7751247",
+  "scale.png": "264d0dcc9ffff466f4193a55fadc939854ace1e955476e6130bf592f4b36fb5e",
+  "siblings.png": "3a6cb13d99a02261709539a322f73fb4f23b91bf4fa19ff969ea26f8c935bda0",
+  "facings.png": "fb6e05dd1eb27cf97e41178c49c47986a2471bda201084ea1e7ca746afb31ecf"
+ },
+ "source_sha256": {
+  "south": "d855f33d4215cfb5d17dc40ec18c529cd927a02d98f8bb214f3da56c1f118f2a",
+  "east": "80b38d03b08a5ccdcce2825a02a4a3359cca004d8a55be5d0f190ffbc649ff56",
+  "north": "d4defbfdf74b8af11198ef8103f43ce2adbf655375b27ef50673e8911100bb76",
+  "scale": "f5a994e2cd969d7310c1f210e0a07c744b05429c97381d24da1565d71cd27713",
+  "siblings_Laa_south": "5592efbd5f7d71d0aaf9b24e4359f488164a555562eaff95d93f68c87e238613",
+  "siblings_Laa_east": "bb8b78176d45a7568760139b01ab2b5e999c920e27049d1ace04c40d2d659208",
+  "siblings_Laa_north": "df7beae389c6094455460e770d7962f75ee2de962fe712be4d16be6a246db250"
+ }
+}

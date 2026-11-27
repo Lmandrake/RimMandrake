@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47182879999999994
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 52.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1594476
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Grellik__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'STYLE_CARTOON', 'F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['SIBLING_MISMATCH', 'STYLE_CARTOON']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6f43d753918b97057fd53f73d7e23a5cfc6746f6fa616eb53fbab63be4e55f1a",
+  "east.png": "14b077d81355685d0160eb2fad8ce380d6e52d4489ecc07e9c951d089cc45d3b",
+  "north.png": "61fb7b052c26e3b23317b051028dbed5709d7d4391a2357d4a47bfdf6d8736d6",
+  "scale.png": "c64ddbd383f6dfcd6d4a7a771da15462c3102e638ef8cc843e70bc76f2543996",
+  "siblings.png": "0f837871f401e926410dbe6a01138e02011689f9904fac1bda96c7ff849b8e4c",
+  "facings.png": "c06faf6f838d9039fc836a5e602aca1043f43887e99cf4eeb0ac5295cacf6971"
+ },
+ "source_sha256": {
+  "south": "e084ca1591b6fe268c3dbd5706cbc6d8d2574a59cf261f8022d4ad738e7845bb",
+  "east": "fcfe6e7ae31648ff650ff6f6baa26c62d062416cf3d33ef36552ad281fa67ba2",
+  "north": "b38f3ce8899548438dc44eb1bbd62bf6a204132ca10fe571e441cd8e656f19f5",
+  "scale": "cbc016aa6dc43f2eed0c76b302385172d808cac373c55b75544254b652dc1dbb",
+  "siblings_Grellik_south": "16ff2485b8a728afa46efd6a64176516513710c9196b67ffcead7428832b28a6",
+  "siblings_Grellik_east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+  "siblings_Grellik_north": "2e5fd847e22d6fa457e6b3a2ab3e7bb25c15395fcfad7941d2292073d8cf6403"
+ }
+}

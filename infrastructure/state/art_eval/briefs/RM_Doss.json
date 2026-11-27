@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Doss",
+ "nearest_earth_animal": "shrimp",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "pink all over while alive, the colour of a cooked shrimp",
+   "quote": "pink from birth as though it had already been cooked"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:59:32-08:00",
+ "source": "description only (no image)"
+}

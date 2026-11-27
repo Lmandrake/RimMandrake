@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 61.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4939072
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 38.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1579756
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Corinathoth__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH', 'STYLE_CARTOON']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9d3ad083ccfe6a294ff915e53a6b6f5688f9de7a14308fcc792838b05b67a480",
+  "east.png": "c1b313864671cc2938d993e1612455dfecf84448e7a6355c36c24961d2832d29",
+  "north.png": "cfba1c7d2c36d6d9c02a5ae394a623486536ae531118bf5b45a3618e7813cbe1",
+  "scale.png": "2765ee5431bd35daa6b3f2514ca8fbd08e533d901e1c244f4b9c2e6c5fda06fc",
+  "siblings.png": "3c51bd96769110e2996a840e1a4e04f3f504b57052c0e3cae7aedbe424b9e680",
+  "facings.png": "70ff502eba68585e9a5de7d2fc8ae93dc57843568eccd39fb544e1001fee1ca1"
+ },
+ "source_sha256": {
+  "south": "882031592736768b48e7436aff09a800605f25107738ca31baa3037e88758a7b",
+  "east": "55e8858fe38f9d698881209098fe36f137e84c8286fdd07e60adb2ab69539176",
+  "north": "1bd61e698727e5e91695bbe5cb7cff420d9d12942b80738da7042ff04efec3ad",
+  "scale": "e5fc5d1c29eb520de90e444cb2f4050b2562d16728efad12156b87c09b30fcab",
+  "siblings_Corinathoth_south": "77d97c4c65e56a8175f9b55fdba5968a0f776d497d192b536f53694fe62cce23",
+  "siblings_Corinathoth_east": "3e38592bf32ad456b70d38d1665a92f8243ab29d73eb6c84c1fbec936e6967e2",
+  "siblings_Corinathoth_north": "f3d011c1137d6788ed3104c6dc95f3b5b70b9eb63d9e67ef5798f76b882a5339"
+ }
+}

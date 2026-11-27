@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5058618
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 30.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Fambaa__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "069a2496da6838938f73f8580c9766a8df7af38c453a24fb683d626f08235333",
+  "east.png": "a3b1e9e3dcd280ae0e7e12e40f95353ccbedd42f38a62492c5c57ba4979f72f7",
+  "north.png": "03f23c3b8954730c30de8ba67adb8f0af52749c5a24166fdbe185f303da065a8",
+  "scale.png": "9262fddec3980e9a6921544cb1fe562b65e7800d4486b0ffe6dbf038b7d8e4bb",
+  "siblings.png": "cfeb2ca1f11c0734232d48ca4d1b1dfcb7b4aa8635b166c71da887390cab42a6",
+  "facings.png": "edc2aa90b8eacf20f3fcc6f321e1489dc6d190db409878b5157112b60e955a05"
+ },
+ "source_sha256": {
+  "south": "ef650adbe1066f4aa3e1099829d21093a89c9a4e0ad3e41325b2d1da8030c66c",
+  "east": "3cfbe986e44bec7841e1d947a5090ed0a86643f84e1b384d0d9b50dbfea7513c",
+  "north": "0d4a7f24be5dc1e47274cff3fe513fd955613a04ed77271156289208912734c9",
+  "scale": "ef88f27c0e24cd7c0bbb754c2a08bc33b82c807490e185debcd5ab685b92c62b",
+  "siblings_Fambaa_south": "a7b5e7d29c9d78ad4ceb5a7feed910047d0c2f280c5e1c06e807693eca890579",
+  "siblings_Fambaa_east": "bd28b2b3bc3586c9b7b3bcb250a5a3050c2e057c0cbe7c8cfb268c054cebbbc0",
+  "siblings_Fambaa_north": "da72dc52ca00bff2d7a05dba740c258677115b1da81670b6d85d664ddc977b38"
+ }
+}

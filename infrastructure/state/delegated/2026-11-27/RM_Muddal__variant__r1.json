@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48324939999999994
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 29.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1633176
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Muddal__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3aea05c7a71cabe6755082fd09bcd84ca85f11b5f095f1c07756d9ad3d54c2da",
+  "east.png": "27be098a97bf0d2fc3c1a046b09bc984d40df1e4cd5506e830f3128276954eda",
+  "north.png": "9c38634a447c819c2b87a5df1153d0d21d0bf7ffc43cc0a91e07b270b5344707",
+  "scale.png": "da02e1604301f8596ac790857d4e45a8eb96dbe11a237777e9e08da128858087",
+  "siblings.png": "006c9c8e9854fa50d88da7b0e5cff8a9e9a4e374bbc8c8de6d14af4abc7b12ba",
+  "facings.png": "132a7707fa6f4ddde85d0faaf248a1bd3f0bcc7f88cc9ce9d49aa93326037eeb"
+ },
+ "source_sha256": {
+  "south": "3c035f2946b7ba4e5d6f3bf9d6a23d526997b91631fd1999889fe7112a7e4766",
+  "east": "4b74fc0836339b857376b54b8ef855b7b5831fedad3b3affc28208c700d9eda9",
+  "north": "d1a6c998ea493e6c0afd80e450e0f08b43ede349b02c4f0c6f2ac1df5c33dfad",
+  "scale": "9fef13831671ce3e92220309f3698bbadfb412d32b6a6cf1b2823bb3996d3617",
+  "siblings_RM_Muddal_south": "8df96b7334a52a5c0f82af258d0eb58c13b7a2be1515409eb02a7e32b6c3b4e4",
+  "siblings_RM_Muddal_east": "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
+  "siblings_RM_Muddal_north": "b1498a2d77f177c8e24576f44377cf68e12805a3ee3f22697b804b203789e539"
+ }
+}

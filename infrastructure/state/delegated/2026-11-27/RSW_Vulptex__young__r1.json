@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4746278
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 34.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1612056
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Vulptex__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f3dbdbdacf56c4ea5b6ad2583c61054ed42416e24b89959d3adf077086b53436",
+  "east.png": "17b12d35e4d2ca87d07e23d1bf29c8b039e891780f3cfe279b978f1e8e88d070",
+  "north.png": "323597059c51553ed1d2700af8abcf748b08713ab4cea9c0da5a0b94d9411466",
+  "scale.png": "126017a070b1acb4b59b6c9ba45ac05195afb28f204339778d1e61631fe38b33",
+  "siblings.png": "b1c9b4bf7f3a208f2330f2c976becb91e4978bb0d7de2cbcf7f6c9536b451c03",
+  "facings.png": "df9fa56f854201ab08fc47ec35c27b988a97f2e68f96720409190c398078bde0"
+ },
+ "source_sha256": {
+  "south": "4706ec9f978b2ba3ca7535f6c80123897e162a2ece21935eaf81d5a31139b34c",
+  "east": "8d380f29492b2db398b2a3a6eead91afc4545a076caebe2c0113c7872641cb6c",
+  "north": "8c3b3acc113c4434955881b9e19c81f4006f46348270a69d48a64d3170dff4c5",
+  "scale": "00d683d6cf52fa6ca48693b0ac5cc2f6b56300b9019d110ecca4760c2c6f8666",
+  "siblings_Vulptex_south": "ab90ac7c245ac39da9e516f5b504a7ad9fb690fb028091cd4588b06e40354456",
+  "siblings_Vulptex_east": "ab315bbef61ca3ade62f3ef7a778c67fd8a4c56a7223aff8745caaf2fa55829a",
+  "siblings_Vulptex_north": "ddfb0c397a9fe79567babdcb6e8c689dd81d9d80cfb185dac95b057da50913e2"
+ }
+}

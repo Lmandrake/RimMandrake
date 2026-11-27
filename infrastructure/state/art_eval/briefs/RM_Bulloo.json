@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Bulloo",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "floats aloft, body held up off the ground",
+   "quote": "A small, floating, gas-filled creature"
+  },
+  {
+   "feature": "inflated, gas-filled balloon-like body",
+   "quote": "gas-filled"
+  },
+  {
+   "feature": "thick gel visibly oozing from the body",
+   "quote": "slowly weeping a thick gel"
+  }
+ ],
+ "body_plan": "flyer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:25:52-08:00",
+ "source": "description only (no image)"
+}

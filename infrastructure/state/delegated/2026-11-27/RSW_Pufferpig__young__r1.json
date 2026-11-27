@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 51.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4734906
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 22.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1594936
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Pufferpig__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "89b254658177147701de724d2449ceafad202e5d49ec66d791dd910ea2a59a79",
+  "east.png": "8e86e104b4bd0d49fe77126c21ea2e04325ad4d6e2883f289c09487cbab7a149",
+  "north.png": "a80e60b47187c4a15e5c8e21fccd2a3aefa1732b0ce344181a548563de79f1b5",
+  "scale.png": "6eff0ba665c5a21d2c3a88fab902ed558ced0fe731328ff49354ac5cc3d042e3",
+  "siblings.png": "47ed3467c5faf597344c18618d36847eb09e24470edb8653fd529a79900a80e4",
+  "facings.png": "ba20a746c6dd32a4a7302e70bf5706fa37f7e601fe0fd8fb0a3ca05879d9468a"
+ },
+ "source_sha256": {
+  "south": "4f56b6a0db0aadd24f333149f3baed6613ef6031239896c17ce4e08995d5c165",
+  "east": "58a7d890e5b083e9e88f36b084a39e992004e4dcb880b5dadbf657ee212a8877",
+  "north": "6dbc3990e26ba820721c7d78c9d536607079076e29a39b6bd0d0992098c1c4ac",
+  "scale": "cd5bc3033756484a7cb5a8cfb98a719911ab654c6199af9acb29f8bafa7b4c40",
+  "siblings_Pufferpig_south": "2821e70b530293b8024938c3db374ba083e51b9d814a87cdf0df988f8a737647",
+  "siblings_Pufferpig_east": "c5397f9673221b606c833303ca83e0a5318550307f999a5b1576f3b895a3f6b3",
+  "siblings_Pufferpig_north": "ed6eda455aa11d434aee1e789e96229a197623f3770f5d66f8084e28e61c287c"
+ }
+}

@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46347040000000006
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Zeer__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "fcc445aafd7f9b3b0310ff470986e7b13b472e5c905b6a97466362da90fad1bc",
+  "east.png": "fd120d94511e02cffd45968f953f8c87541a5a8ecad2d4dd1c9bc71785217302",
+  "north.png": "eb752a2f9c9e3bdfda53ee19b441d3b35f73fce61c7567ca426220dbe735751a",
+  "scale.png": "22ca9cf2225088b05d787eb0667ee1f7c1f7e97a31337614249c1577cb8d5c8f",
+  "siblings.png": "e9bccd05f2f7550916321700597d96f44af55790ef27f702ee84dfc9782bce6f",
+  "facings.png": "058d59143976e6b4296820ab01a2218caca285b422cc839c28beb55f58d99e11"
+ },
+ "source_sha256": {
+  "south": "fcc445aafd7f9b3b0310ff470986e7b13b472e5c905b6a97466362da90fad1bc",
+  "east": "544eeeacb54f99df15e810f110e4a88f0edb33436ac0e160ab3ecf8d58594ba9",
+  "north": "b159276a0aeb04b83aaa4fe25ce62129dca7e920fcf9172809af5df0678ad93e",
+  "scale": "58b4f776f091706a200dbbc047c5e3442f91937c3b7d3f7cb7c0d36158fcec60",
+  "siblings_Zeer_south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2",
+  "siblings_Zeer_east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+  "siblings_Zeer_north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768"
+ }
+}

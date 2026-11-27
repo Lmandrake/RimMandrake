@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 51.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4875264
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 30.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1567176
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Dewback__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3000e2fa06385fd937a584334be2b2958bed0184d6dc2209eaf3391bb0636bf3",
+  "east.png": "5ceba61a6bf037c1cce7d728b266ddef970f15105b438daacc57173702bdf60c",
+  "north.png": "713eac91b61b7bf3c8ad13571978ac9ba3cb3024d2aaf50f39bd980e71a4ef1d",
+  "scale.png": "fbc00465f0f916c46f292d960712c9d91a564dd5377e89f463c46be8ffb9b4b6",
+  "siblings.png": "32a11b8167811bf6e59342c71d2112df25c975562f40cfd7421bd406262597b3",
+  "facings.png": "2d26e2a23878edfc3000c5452fae35cca4ead0b20c1eb6e6dfc4dd405659dc33"
+ },
+ "source_sha256": {
+  "south": "9050d1f07bfce72fe08b8c831955d35245c4dc857f49a698aba30fa9329d65b1",
+  "east": "4bc594a1d5625d965d462684f70516ae0ada5d396752755c8e8916415b718bae",
+  "north": "fcc6cd3c8a7ca1c74522bc8c00e27ae59952ae219efc831e0c139fb58b9b6523",
+  "scale": "676ca76fafb0cace3048a1ade138299bf9c70c5ba746445ebfdf96187b24288e",
+  "siblings_Dewback_south": "156f5ffa5b68397abd49ce9d9b5168fd9dd3974c1464ef4530bce27c3cf0a447",
+  "siblings_Dewback_east": "49577c5778b0ce45e6af732c7e7edf006573bad9025b931a85775f5761307ae7",
+  "siblings_Dewback_north": "d74b9166295289714d8f7497fbd567f7346b4f85bd859092df45e36e5f643804"
+ }
+}

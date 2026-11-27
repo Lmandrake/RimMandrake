@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Thurrock",
+ "nearest_earth_animal": "elephant",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "a high hump over the shoulders",
+   "quote": "humped high over the shoulders"
+  },
+  {
+   "feature": "a short, curling trunk-lip instead of a long trunk",
+   "quote": "A short, curling trunk-lip"
+  },
+  {
+   "feature": "wet copper and teal hide",
+   "quote": "Its hide is a wet copper and teal"
+  },
+  {
+   "feature": "a pale mineral crust along the back",
+   "quote": "crusted pale with mineral bloom along the back"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:11:59-08:00",
+ "source": "description only (no image)"
+}

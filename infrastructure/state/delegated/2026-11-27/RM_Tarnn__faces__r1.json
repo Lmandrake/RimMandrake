@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.44923979999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 30.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16237959999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Tarnn__faces",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "58f970bf33a5968b3bcd00987e3bf76761a2c4684017835b6cb9c4e604c9e0c9",
+  "east.png": "27672d560106e56d79940a2c059f550671dbf8a408bbdc1da9964d55b281df80",
+  "north.png": "e5f04c5c97cc964ee7fda38b5b1c3076fef2821b23c2952f8b1cb2a825646b7b",
+  "scale.png": "2d62ce11aba882fcaa7035900f9ad82ed2d2ca9b979b0e8437d9b4a92d17b215",
+  "facings.png": "4947453a4898411fdbb73e2971fbf907a93e20796687404042366ccb8f130aa2"
+ },
+ "source_sha256": {
+  "south": "030abc2cb6901566bb1515fef9a0ccd13b923f3185e6ba3fa7b2100c20a0bfc7",
+  "east": "4e2ae6d94bcf41ed1258af08fae0a4e0133dc93eeb7758bc595b4fcd11c62cd2",
+  "north": "b41b39764eacd8416a3adf894eab0f127d0f215a3c9a8bc5ff1e0826aa9c716c",
+  "scale": "c1e341e8155871f5195d52d8ca36b488892abdfe699aee313493e8e66d51b385"
+ }
+}

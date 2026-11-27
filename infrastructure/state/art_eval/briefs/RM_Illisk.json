@@ -1,21 +1,39 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Illisk",
  "nearest_earth_animal": "piranha",
  "earth_body_named": true,
  "departures": [
-  "flat-sided bruise-green body, hand length",
-  "a jaw too big for its head with a double row of triangular teeth always open",
-  "slick gristly hide, not scaled"
+  {
+   "feature": "bruise-green body colour",
+   "quote": "bruise-green"
+  },
+  {
+   "feature": "jaw oversized for the head",
+   "quote": "a jaw too big for its head"
+  },
+  {
+   "feature": "double row of triangular teeth",
+   "quote": "a double row of triangular teeth"
+  },
+  {
+   "feature": "mouth held open, teeth always showing",
+   "quote": "it never seems to close"
+  },
+  {
+   "feature": "slick, gristly body surface",
+   "quote": "mostly slick gristle"
+  }
  ],
  "body_plan": "swimmer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T04:27:11-08:00",
  "source": "description only (no image)"
 }

@@ -1,21 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Sketto",
- "nearest_earth_animal": "bat",
+ "nearest_earth_animal": "pterosaur",
  "earth_body_named": false,
  "departures": [
-  "the canon sketto (see canon entry sketto)",
-  "a lean flying reptile with four narrow wings",
-  "fanged jaws and a long prehensile tail"
+  {
+   "feature": "four wings instead of two",
+   "quote": "four narrow wings"
+  },
+  {
+   "feature": "fanged jaws",
+   "quote": "fanged jaws"
+  },
+  {
+   "feature": "long prehensile tail",
+   "quote": "a long, prehensile tail"
+  }
  ],
  "body_plan": "flyer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T04:35:58-08:00",
  "source": "description only (no image)"
 }

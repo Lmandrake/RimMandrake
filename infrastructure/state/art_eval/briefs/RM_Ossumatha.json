@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Ossumatha",
+ "nearest_earth_animal": "boar",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "pitch-black plated body instead of hide or bristles",
+   "quote": "pitch-black, plated muscle"
+  },
+  {
+   "feature": "shovel-shaped lower jaw",
+   "quote": "a shovel-shaped lower jaw"
+  },
+  {
+   "feature": "four glowing yellow eyes above the jaw",
+   "quote": "four yellow eyes glowing above it"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:00:56-08:00",
+ "source": "description only (no image)"
+}

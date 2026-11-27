@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.472785
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Ollopom__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish ['SCALE_WRONG']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ff221a14ea12136f89d3dacff81a1c16ce5a0aee186073db581d2ecda69e3f60",
+  "east.png": "ddf3ce134fc46fddf5f3fe59ac1412db14e542d839685122497095229eac6b0b",
+  "north.png": "c5c7a801c52287914244a72ed407e906605626dcc7bf2c2a6e649370d26705ae",
+  "scale.png": "741df4b10bd057a31663c1b2ce7769fc27a9625e2e137da69e14b3c20ee66afa",
+  "siblings.png": "06fd2293b6871694ce68b6370bc93855b4272e1f6a5f7f1742702389fa77a09a",
+  "facings.png": "3f7ea4f7398d7d26b73f3aa5daf9ba457245e3d673ff71854072fe4b9fe45195"
+ },
+ "source_sha256": {
+  "south": "8068cdbdbfff72fa0ca7bbff78783e551449e2c0e616a904d5c8a20d8a497cb1",
+  "east": "6fe09d95c3e6a5b51514d25abcf52b00037bfda63d660b60e8ec2976a8225dbd",
+  "north": "c5c7a801c52287914244a72ed407e906605626dcc7bf2c2a6e649370d26705ae",
+  "scale": "77664e7d567059aeddf571b9f85ce5184e9e6df7fbbeb86129edf0def32884b3",
+  "siblings_Ollopom_south": "f87c456bd145cd299b004d56686247d8e073c419d1c1a5194d603fad72d0ab8f",
+  "siblings_Ollopom_east": "fc86c8a4cc725d09219b81e9a28f0248ea2568bf4290f714b60653034091febc",
+  "siblings_Ollopom_north": "f27c02d9d4d932aaf01b10c06182526b0dddf2faa843974fab22db38930b50cf"
+ }
+}

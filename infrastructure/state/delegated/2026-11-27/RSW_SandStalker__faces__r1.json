@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 56.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4724748
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 52.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1515256
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_SandStalker__faces",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K2', 'K3'], own blocking ['F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2c67d0c30cc240854feae1b7617d2d7764d149fa01c97f78a84d00df77e7f078",
+  "east.png": "2b31b4026b35f5bfe2ae4f3ed0e9ece963d28fe8ed9796a457281717ed133dfb",
+  "north.png": "81be8a169fc6c731638517c34705c940ba709297ce175d84f415304f34017fc3",
+  "scale.png": "115832c8635ef8c85e8a4338fdd8996d2dd6eb6223f6cd6c5ac02de81cfcee33",
+  "facings.png": "17d52a5fb5092da1157d1c8d5d043d8d17c7be24f125d80bad486a586c7f395c"
+ },
+ "source_sha256": {
+  "south": "2c67d0c30cc240854feae1b7617d2d7764d149fa01c97f78a84d00df77e7f078",
+  "east": "2b31b4026b35f5bfe2ae4f3ed0e9ece963d28fe8ed9796a457281717ed133dfb",
+  "north": "81be8a169fc6c731638517c34705c940ba709297ce175d84f415304f34017fc3",
+  "scale": "5db113e53a461b6b71aa6ec0c3fbce51667dcb5759397c634fc64d90e88a0d3d"
+ }
+}

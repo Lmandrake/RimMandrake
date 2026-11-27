@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 69.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5172874
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 45.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1615996
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Dactillion__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH', 'CANON_MISS']; polish []",
+  "gpt regen: unsettled ['K1', 'K3'], own blocking ['F_SIZE_JUMP', 'CANON_MISS']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "27ae5c73f2fa5bdff535662fa7fca5d0fa615159008f774415a5fe488076fc9c",
+  "east.png": "12019c17f804c14bb793eb2239de4697d942b437221abe1a4634501d0bf4f155",
+  "north.png": "76767e41a2f3f20c932849ebe49ba7d10ba6a9a2f79f51c7da91b19616bdbd73",
+  "scale.png": "468f10971d24fa78635ed49e271978f880d90ebc2f05803b002745b3c6108a43",
+  "siblings.png": "f102846af933d5c948e7f36c49394482d7f7fe602642e48c2383459fb10b801b",
+  "facings.png": "873a429a6ae7bbe1f3cddd18e247d32114cd55ca6579c4ce1c337a912f058117"
+ },
+ "source_sha256": {
+  "south": "95c7d4e2bfba42731d4b41b17388ad1206022ac8fa6a7d5d5a49ee19b354c2a2",
+  "east": "cdff2a42d6e30a9c126b98d59c13dc69e717bb18a5b30e0fbba6e6fc023e2979",
+  "north": "4fffdf32def844c67ec1c3f329a1869f437e0f7d54a09414052c4430dbf41e34",
+  "scale": "ef2135853eead9b4fc7b135df1dad5d67f96e958da5c6f05907c950b37520e43",
+  "siblings_Dactillion_south": "b27a3dbd4d3e02a737860a443d538d6e31cbac396af8d535c52feefefb55fe84",
+  "siblings_Dactillion_east": "2ce661b0cee2decc27da473a2c8cdb508de14f13ebcdd77e38e0a8904898c9d6",
+  "siblings_Dactillion_north": "4302d3127e52c7c0cffc0bd10058547b1159cb9e59d2bc1e221dc403bc5a7da5"
+ }
+}

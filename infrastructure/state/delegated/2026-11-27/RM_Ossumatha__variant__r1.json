@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4608476
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.4
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Ossumatha__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e2d45de3c75001859c67dd8a773481090aa552dd2f868a46eeb9e70bb99a1d22",
+  "east.png": "beeceb4431bd68c27fbc3a34dc6a4655a9136c2c970c8abfd033338b76e3181a",
+  "north.png": "6d6ef05e4df2454bb9ad6c0a7e3772730434f87d3403727b065cdc652cc99732",
+  "scale.png": "15a58f72abb24c991f9bede49e7510e9e610a28fecee1f177481d6e949ad74a0",
+  "siblings.png": "e3880e17c96d45db72327f32c70dcdd158f82f2beac53f57bce71df03595f18f",
+  "facings.png": "561f6397b4ae9b103f7d42d95df1452eb1415be1f22724e3161fbc0ee2d13b6a"
+ },
+ "source_sha256": {
+  "south": "49eac1278b0d465e9e6dc5c82b1caf504b67ea1b29060dc356e0ce91b546be52",
+  "east": "8904de713ec86593b5fd118e1a16b29776f30f7d02012bc80c5cd38cf020034c",
+  "north": "0b7d00600dd76bd4584a94b3a65e85f8af5cc1b99a4545739e60760b72865b14",
+  "scale": "d9a2281134e823a0e84323e9f382ae881b4c4a7dee30b6d494af87d62627074b",
+  "siblings_RM_Ossumatha_south": "a6cbc284e18e2d5c4beaf656e694e64aa254de883efdb0e22cc7c96632ffaae2",
+  "siblings_RM_Ossumatha_east": "4b0d197f8388a68795103f61485b235a57bd6426b290940c81fabf40d1516ac8",
+  "siblings_RM_Ossumatha_north": "b5886b5f69488cfa4927c69b0164b3afb2dd5ba37f0cd898eb61a92a7bfb47d0"
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Blinker",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "soft upright teardrop-shaped body, pale translucent blue",
+   "quote": "A soft upright teardrop of pale translucent blue"
+  },
+  {
+   "feature": "walks upright on two thin trailing arms used like crutches, no legs",
+   "quote": "walking on two thin trailing arms like crutches"
+  },
+  {
+   "feature": "no face; a single large lens-window in its place with a yellow interior visible through it",
+   "quote": "a single large lens-window with the yellow interior showing through it"
+  },
+  {
+   "feature": "a third, shorter arm held over the lens-window like a hand shading a torch",
+   "quote": "a third shorter arm held over it like a hand over a torch"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:25:38-08:00",
+ "source": "description only (no image)"
+}

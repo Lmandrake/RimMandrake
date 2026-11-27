@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46729519999999997
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1649703
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Candler__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1b58e7fe61289c70c1529d1dc1dac4dd50be03fa32cc8e8fb095f4ed6339c337",
+  "east.png": "a2c2c0f786f4c5cd58777e5091fc929274158ab9087e0ea35f5664ea152bd99a",
+  "north.png": "2f2ce917e655a8812c2ab7c9e8f0c3d5ff717a179873f749ab1205ad8b195ad9",
+  "scale.png": "9673f2b9f0987b4b91e1530c87175416a8c7216db3d02a1eab23cf290d5261e2",
+  "siblings.png": "44bfde21230b4eeb757ed6c0582f7c7482410268ef38c0cc7bfd8bd608ef7bbb",
+  "facings.png": "b916dec84c38cc089cd882d9a5f624c1a9d77be4a16ae940a761e84a54dee36b"
+ },
+ "source_sha256": {
+  "south": "f65a45f8c1bbac17cdf19445860650acdfb02ac674ef144777e5a81028968d01",
+  "east": "a2c2c0f786f4c5cd58777e5091fc929274158ab9087e0ea35f5664ea152bd99a",
+  "north": "d78daa3ee146af86d50f18a52f0871cc51f1f35b0e9af893710825263d3bd87c",
+  "scale": "473c459b4fff1897cf9257053bf9a49981b645fbf0880e6ccf9aae6bbd338105",
+  "siblings_Candler_south": "dbfb11c458a7ee63ea13db99d299ea5898a8665108fc6170383466047222041a",
+  "siblings_Candler_east": "e8017f22ecb33d29ec72e8fbe6b9fb02ebec57b8ac0e5b9dc33afb642efa2b0c",
+  "siblings_Candler_north": "0a0fb31522e800dcf19aa451768e3708c0aa332896ef5fc97b3b1984827cb4a5"
+ }
+}

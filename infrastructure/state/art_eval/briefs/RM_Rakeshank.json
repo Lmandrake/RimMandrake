@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Rakeshank",
+ "nearest_earth_animal": "giraffe",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "neck ends in a long, narrow beak instead of a mammal head",
+   "quote": "its neck rises into a long, narrow beak"
+  },
+  {
+   "feature": "four impossibly long, thin legs",
+   "quote": "four impossibly long, thin legs"
+  },
+  {
+   "feature": "body slung very high on the legs",
+   "quote": "its body slung so high"
+  },
+  {
+   "feature": "hide pulled tight so every rib, hip and spine knuckle shows",
+   "quote": "every rib, hip and knuckle of spine shows through"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:58:48-08:00",
+ "source": "description only (no image)"
+}

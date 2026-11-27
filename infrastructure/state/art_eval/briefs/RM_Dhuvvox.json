@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Dhuvvox",
+ "nearest_earth_animal": "beetle",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "body shaped like a small glazed nodule, not a segmented insect body",
+   "quote": "little glazed nodules"
+  },
+  {
+   "feature": "surface looks like slag, not chitin",
+   "quote": "think them slag"
+  },
+  {
+   "feature": "bodies glitter",
+   "quote": "a floor of quick glitter"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:05:28-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 71.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5126934
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 26.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15928560000000003
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Jamel__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH', 'DEPARTURE_MISSING']; polish []",
+  "gpt regen: unsettled ['K1', 'K3'], own blocking ['F_SIZE_JUMP', 'DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c011299c3ddc1fb6a9a57a328a6d7f78435617f3e41f67fa9dfbe9071fc37808",
+  "east.png": "610c1f275ae4919ecac67b60743717e73bfca2f8e7de2a5c65ce53694ee917ef",
+  "north.png": "56958f095443cd2300240dd39d10e81b0f69120575cda1d56ab96b17361eebbe",
+  "scale.png": "a394951cda66a60a288860c9966ccc9901e3cca0dd06901b2743ac69f15ae8b9",
+  "siblings.png": "02ad0f25dd304e4833c771e6d42b47b20259026135749d375ef3523af4543713",
+  "facings.png": "93ccd8cb919d54979b9295ef308877f7eb2b27fd503ce5a49c88b541dbd72901"
+ },
+ "source_sha256": {
+  "south": "d36d5e63571d85d1caa586a7e326c70258cfe9704214bdd67e53943453660b23",
+  "east": "f6919e87877197e4e3d72fc73232ca591ab691cc8c19f65d53196ea215a1b70e",
+  "north": "b75661987461ac12ec80916dc6a728bf50c604624bf72c5a37b673ac1ac525a1",
+  "scale": "09ea39ed98e289d66b362a076c16fa6aabb03eae2c8d1c8cd31fecdb962b3d3a",
+  "siblings_Jamel_south": "2835f052dc203a3aba7adfc3c018bf959383a8d918d55d7e28a3a1ae07ef9b38",
+  "siblings_Jamel_east": "1b17ef32a1c6d1aac8dd628554242baee904b77ac63c4853ab24e826b617ccdf",
+  "siblings_Jamel_north": "32212b86d2b0e4026a781a32cefedc88f216203cde8eada66011d5b141940253"
+ }
+}

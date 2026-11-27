@@ -1,21 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Karrimeth",
- "nearest_earth_animal": "hermit crab",
+ "nearest_earth_animal": "snail",
  "earth_body_named": false,
  "departures": [
-  "a thumb-sized humped pale grey shell, salt-frosted",
-  "small legs barely visible under the shell rim",
-  "one lone straggler of a swarm, not a carpet of many"
+  {
+   "feature": "humped shell, thumb-sized",
+   "quote": "a thumb-sized humped shell"
+  },
+  {
+   "feature": "salt-frosted shell surface",
+   "quote": "salt-frosted"
+  },
+  {
+   "feature": "pale grey shell",
+   "quote": "pale grey"
+  },
+  {
+   "feature": "shown as a dense carpet of thousands of individuals rather than one animal",
+   "quote": "a moving carpet thousands strong"
+  }
  ],
- "body_plan": "walker",
+ "body_plan": null,
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T04:27:39-08:00",
  "source": "description only (no image)"
 }

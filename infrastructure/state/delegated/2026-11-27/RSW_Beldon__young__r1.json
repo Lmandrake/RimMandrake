@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48405719999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 41.3
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Beldon__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'STYLE_OFF']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2e3156723b670e36b262cbcf298903719900eff46cd681a37ae2ea66507c1999",
+  "east.png": "00cc2c968a6e68b107abd0749ad1097deba1517b0d7329dc0ec997846352a36a",
+  "north.png": "8298699b81e1f41486ab18d20a769771dfde92a0d853e33e5059af9a77be4245",
+  "scale.png": "bbe158dfccbea5b0ca650081a80a6c5cce4623e0e55c4494e56741e0c746817d",
+  "siblings.png": "cc5be5b2c4d9b672bf7ea33c604e9181d365db9f598d5a6472f47d0b4f4b8432",
+  "facings.png": "1ee7e1572232a1c379a40635fb88a3d8d53ea9795623f8968ad703e93b236d1c"
+ },
+ "source_sha256": {
+  "south": "500ed75b0135c8fcebc891420d4c67fe385a65816fa96bdcc7325ebe5dc4ebc7",
+  "east": "db2040634b7dcd04e50e607c6f8891849cb07e72088222871cb0bc55bf91eebb",
+  "north": "dd680745cb9e4c4dc8841addf91a51e780eabc6ead0c430cd885068caf8fc6a6",
+  "scale": "feea5fd20f1ff59a11ffcb4739b4d9c30436cfe9370dff1bca8ba7f3809c03f8",
+  "siblings_Beldon_south": "9d81799ecf9a0be2556a4b6330bbc90102fe1fbc88dee8b1530998363abdc482",
+  "siblings_Beldon_east": "cede05f5faf76e1b758456447d14d1682a2bbd64d4a64557c340c77cc7669aca",
+  "siblings_Beldon_north": "8812dccba18bc3c185052986cab28961ba4fb81ea588fd64ae61732ecd41c8f3"
+ }
+}

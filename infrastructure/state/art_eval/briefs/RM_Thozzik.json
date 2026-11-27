@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Thozzik",
+ "nearest_earth_animal": "wasp",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "armoured body plating, heavier than a wasp's thin exoskeleton",
+   "quote": "An armoured hive insect"
+  },
+  {
+   "feature": "toxin sacs that are fungal fruiting bodies growing out of the insect's body",
+   "quote": "toxin sacs are the fruiting bodies of an internal fungus"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:30:10-08:00",
+ "source": "description only (no image)"
+}

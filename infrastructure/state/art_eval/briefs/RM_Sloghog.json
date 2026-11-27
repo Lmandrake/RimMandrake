@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Sloghog",
+ "nearest_earth_animal": "warthog",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "fields of warts covering both flanks",
+   "quote": "Wart fields down both flanks"
+  },
+  {
+   "feature": "tusks capped in a mineral crust",
+   "quote": "tusks capped in mineral crust"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:10:30-08:00",
+ "source": "description only (no image)"
+}

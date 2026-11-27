@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46500179999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 38.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16029559999999998
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Tauntaun__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['OWNER_NOTE_IGNORED', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['OWNER_NOTE_IGNORED']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "859c61f8fe0124d59ad8a2c4264dbce660e8876cadb0c5096fb48d756901be2f",
+  "east.png": "c6001b154060e9cba58f4f1c37dea237e03be906a09a332792f2e2abbc9891fc",
+  "north.png": "a3cfeba6545332031567320f3b33adbec105742884947aaf3e2d430f5b924c54",
+  "scale.png": "566b300757346f7f49a7a6cb66e9fed263d4a219c89d2a3785f0753fc7badf21",
+  "siblings.png": "8b4982fedb7c84fc7dcfc126c40d54a4eb6fa58e702f1a009f837a66b1bf0a43",
+  "facings.png": "b59a55c2b711e4a546748e00a57d8d1ebf1b183bd570d063e4af271f6a06292a"
+ },
+ "source_sha256": {
+  "south": "e19dbf81422fe8606d4d1ee9d8a6c23f9ae79ec83fadc5ab660bac048a0d28ee",
+  "east": "bc817c66bdd6917910abf709ab1c09e2be38230530b5721f8af6d049c6d14384",
+  "north": "e8a987eb371b953808d8122136721d5b4c693c9835e8fb7d467682790cb445b7",
+  "scale": "643b82fa64d40b44b6790407537eb3bb479aa3029d9cad0ae8a711dcd72f82ae",
+  "siblings_RSW_Tauntaun_Canon_south": "54256ce93ad9bb12ed2c9cdb4ba295404b8dc93b2875ff201e469b837cd5d4ec",
+  "siblings_RSW_Tauntaun_Canon_east": "27e976bc5fea092659db109edbe221d33ee507b3c72f6408e663e0eb6bd806f4",
+  "siblings_RSW_Tauntaun_Canon_north": "d5141e04d0f4ac9a382dd7eb66690e8e4193c7cf5c24e3ef908f307766166c5b"
+ }
+}

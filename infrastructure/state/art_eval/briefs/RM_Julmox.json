@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Julmox",
+ "nearest_earth_animal": "tortoise",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "body is a low, wide, flat slab shape",
+   "quote": "Low and wide as a cooling slab"
+  },
+  {
+   "feature": "feet spread out into flat plates",
+   "quote": "on feet spread into plates"
+  },
+  {
+   "feature": "body has seams with lids that close over them",
+   "quote": "lids down over every seam"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:05:44-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 35.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4487782
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 15.5
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_FeralGrazer__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e45539d012ef23f6d2c70265c9d7c37d0a25ac53e50423184fb2b2edaaedee27",
+  "east.png": "079b34f85cf76ac6ce09656405d000d58fed2a5260cd23d0ea69a7004838ec90",
+  "north.png": "ffc298a36f394e831fd9bb49e8b8d161867841a26221bd37da3e7fa4dfb18321",
+  "scale.png": "0174d3f4c2adb7317adb2ba70634b6002c3b839e4aeca8ac96bea94d93e00b88",
+  "siblings.png": "6b4012ad9843c317478eae79a4703bfb089a800b6c8740a79f65263650b3740f",
+  "facings.png": "ab76781ed0ee7f778162e28c798ac8871d50fab453c646b6cc08f0bea3f8c222"
+ },
+ "source_sha256": {
+  "south": "c41b7e82a7ab644908078a10f92459f4650fd89f26dce88ce68d0add70871093",
+  "east": "abb076ff6d8d8e16438a42c1e1b7df01781b92231de267ccf071be3617a4e902",
+  "north": "0905287e7051798378ca3009cb0153b73132c6d5d6aa633bc347f14c97df5ec0",
+  "scale": "6d0a4f1384892786f44cd99238992543563d1fdc9f3b7b46f2d762f19b992e72",
+  "siblings_FeralGrazer_south": "01a9e653cef0b079cef4d5adeadf226110efaf00d3ac1c840f47be40abaa6db6",
+  "siblings_FeralGrazer_east": "ddcf17e6518296225d75e6fec2fb7af1e937c3662dadfa0e5ddfb724fcced145",
+  "siblings_FeralGrazer_north": "c476808d413ac30140fc6a928893b4541e79075e204f9601ca55556b673f4a84"
+ }
+}

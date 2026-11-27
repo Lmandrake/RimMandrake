@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 46.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4705194
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Bolotaur__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a6257f424d44da05608a3884a04a22d1196c6ab6febb51f17176b2f4d169db7f",
+  "east.png": "d77685cecacceaeeefb6f0783ea2c608917602ddd5172a7403e4e0744534df9d",
+  "north.png": "40471b4c5f29a96250b6a3c1542f330d79547579ca7df59c0d37f0788cd79520",
+  "scale.png": "9fa0c600045696ecd5b15c47d4adc24dd01a61c8e25902bff4462e098b7665df",
+  "siblings.png": "3f0b378c2844fc60a3c86e7d8adda8ebd7de75ed2d30a5b0ee7aaec3309c0b83",
+  "facings.png": "cb76686dd5f0cbc5db5dd255e9479d04ff1666e6d5e14bca198238b528d0519e"
+ },
+ "source_sha256": {
+  "south": "1edb496ce976fc978593002093fb044cd849aa742193e2744475d6535ea4bf39",
+  "east": "d0d8dbf1c9c119ba7b7eff75acce3b5a31e7c27529944b8ef8e6af49549f4ef8",
+  "north": "40471b4c5f29a96250b6a3c1542f330d79547579ca7df59c0d37f0788cd79520",
+  "scale": "ea4720abca628cbe3dbd60ec79b6612e04678e161197da8a513c91f5c988b2fd",
+  "siblings_Bolotaur_south": "846fa4d4f6213c621d58c0a21f097e9ae45bf004e51ca4d3a00db854758e3c1e",
+  "siblings_Bolotaur_east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b",
+  "siblings_Bolotaur_north": "801f040f7596c13db9e73983fa190dbea3011192655f1a8782b021abce41c0a1"
+ }
+}

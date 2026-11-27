@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Excretor",
+ "nearest_earth_animal": "rhinoceros",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "three horns, where a rhinoceros carries one or two",
+   "quote": "three-horned"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:10:04-08:00",
+ "source": "description only (no image)"
+}

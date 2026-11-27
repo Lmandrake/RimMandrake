@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Shaak",
+ "nearest_earth_animal": "hippo",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "round, bulbous body",
+   "quote": "A bulbous herd herbivore"
+  },
+  {
+   "feature": "enormous body set on four short legs",
+   "quote": "Its enormous body rests on four short legs"
+  },
+  {
+   "feature": "small head held low, out of proportion to the body",
+   "quote": "a small head carried low to graze"
+  },
+  {
+   "feature": "leathery brown hide",
+   "quote": "The leathery hide is brown"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:35:41-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_SootGristleswarm",
+ "nearest_earth_animal": "rat",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "soot-black body colouring",
+   "quote": "soot-black"
+  },
+  {
+   "feature": "greasy sheen on the body surface",
+   "quote": "grease-sheened"
+  },
+  {
+   "feature": "eyes like glowing embers",
+   "quote": "ember-eyed"
+  }
+ ],
+ "body_plan": null,
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:29:17-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Hesuun",
+ "nearest_earth_animal": "woodlouse",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "body is an articulated colony made of wax, not a shelled or fleshy animal",
+   "quote": "An articulated colony of wax"
+  },
+  {
+   "feature": "comb-like plates on the underside of the belly",
+   "quote": "comb-like plates beneath its belly"
+  },
+  {
+   "feature": "wagon-sized body",
+   "quote": "the size of a wagon"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:33:52-08:00",
+ "source": "description only (no image)"
+}

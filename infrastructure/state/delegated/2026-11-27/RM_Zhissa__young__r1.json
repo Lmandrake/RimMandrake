@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4677426
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1607536
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Zhissa__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'STYLE_EARTHLY', 'F_SIZE_JUMP']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c03216360fd8b694560b48b26b06f6bd620b08bfe41c154fb871621ab7d06a57",
+  "east.png": "3cb2b53d015438383066fc5d1562018abf576d21c9a2300c56a1567a1886cd4c",
+  "north.png": "9f09e753bee51b89c00eb4b6b1b9aef2157efd467cab5b72d89138a1d5fa7ebc",
+  "scale.png": "bfc4cf8bdb0ad76fe847d776d53d022b2559b759b7ebe9732db8ad98a6f4e4a8",
+  "siblings.png": "583f43ab6046591c4cc297aabf6c797d0a7f72d8a2b381ed6df50be3d9af98d1",
+  "facings.png": "c19a49b13216638692144ca976e4c4d1e8ec4de117766a5632fb865632e18477"
+ },
+ "source_sha256": {
+  "south": "70389a2425d5bcf9f7e85d974063b0c695895a516c3d581287fbf91492281359",
+  "east": "6b02fdefc41d67c41e409471777839d2649f66592117065d7918cf8191daaf47",
+  "north": "4620f56959cf43af536c0de91913a5d7abf0ec5640a5950be446db383a5c5a7f",
+  "scale": "00566548861587dfb7461e01253e294922196191ed6cd4c89368c4562a7268c5",
+  "siblings_RM_Zhissa_south": "dff87fe690976185e5bb7bf954cede90767864cd0ab9a9792dd8010a38aafe79",
+  "siblings_RM_Zhissa_east": "7fe45737f5025e4487e5a936691f9b8068828505a86dc86b89b4efb16b800200",
+  "siblings_RM_Zhissa_north": "8f0a90d7a75aca1578987928b88b33b92d56656bf87f15b133802b309b4ebf40"
+ }
+}

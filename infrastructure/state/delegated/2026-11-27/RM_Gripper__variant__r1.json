@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4456498
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 15.6
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gripper__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ce9d10e07c43775793a238b79cfd96057b34c67c8f0ee40e2c60e27a60a1656a",
+  "east.png": "a6d8eaa1f3d541bd4de24ccdb5daa59c6a198e99b1fe7f935e830ca9a42ecea4",
+  "north.png": "62126406d7a5bb61efd2f3628459afe34426b991b8f581f7c984a8e1dffd6931",
+  "scale.png": "c82dde9e08df0071b9ee43ff0f54dd65621727c54b81e4880e69dc6537e8c3c4",
+  "siblings.png": "89dfbcd0c2ff9b22a75e3fbc90128790eff0c29ab366d0f2a04050f6cad64c9d",
+  "facings.png": "78a7098620c02051c0aebc366cfc0426ef0e245bf1dcae8129b0959f34b7776e"
+ },
+ "source_sha256": {
+  "south": "84c427f95f3a2ceeb8d88328da0e156525df3936e8aa50cef33b850529297976",
+  "east": "c9ef55827ad1f78415ce336300ee26c974c3b3845abc42f353e95b1711c9c7ed",
+  "north": "2cc301fc79b9fe475af040331babda16a215d4ebf1a582685571d3ce567b7f77",
+  "scale": "bc629ac07d1e048b8c715b1c54bd34b0ac5adeb1ff53b9eee045cd25338270aa",
+  "siblings_RM_Gripper_south": "d9fb751b15daea96838108500989b37a664fc60b540693be04278f19b6c5ce96",
+  "siblings_RM_Gripper_east": "6e8d9b74a22398b267672ba6bf6d9909d8121ba4dded385c40ad9390b398911d",
+  "siblings_RM_Gripper_north": "cc4c48969cf211ccd8a4c4f34b09525d6e89c47cf82170c5c48d701495f01302"
+ }
+}

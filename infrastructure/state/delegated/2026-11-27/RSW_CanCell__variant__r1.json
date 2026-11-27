@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4511258
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_CanCell__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8ab0efca39d9176d4e1a5450f3a8c6ea1073f98af9dd926d9aa69d7de6e1bbcc",
+  "east.png": "c0a4e2124c6b6a4585ccb52945421c6ac31d3320a57904938cbc643995a0743f",
+  "north.png": "0c6fd4f8b954521a43a5c0180e2648db85d9f1aa68aa5b4ae942bd2f90dd4f13",
+  "scale.png": "4d9bf248d336a9b10605ed8d3293c27d6e4dd468fa14040f7a90c2c7a6eac8d1",
+  "siblings.png": "32ab934a35e9c68e1238717fb4b37d5c33de5df69df6e226d46e09e6fa661f7a",
+  "facings.png": "e293bb4b7f39d6669de113be8c3aa4fb306f48bf67a1de7d36d4398a948c3249"
+ },
+ "source_sha256": {
+  "south": "3a963bd20634c7be6821db5dc95ce18db2496d52ccfb99ca62d963c2cb9bfbba",
+  "east": "4b06eac1266397b120b7983ce6dd25853e19cc037607e9d600d120387926d8af",
+  "north": "337ff5a03b2f27c21908f4e52dff466ecbf51d84ad878b014cf38809b911791d",
+  "scale": "b5c6522d3c0c65e9c220ff148062b5b879f8dc38215d9700736b647f56598dbb",
+  "siblings_CanCell_south": "8de1723550f2c08264b3649fe1d9c5d1ca829d4a37b9f65e0b0cd5838c7423bf",
+  "siblings_CanCell_east": "87080714c396f03bf7b60c7acd18155fb19d0b8e69ffeb649f7509c58c962a29",
+  "siblings_CanCell_north": "48797a6e4ae10105e93759ef872f5415c487fe5b6a911e6c0a2d1ed1f3d08555"
+ }
+}

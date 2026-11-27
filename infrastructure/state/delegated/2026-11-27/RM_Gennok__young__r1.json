@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 62.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5052947999999999
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 43.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 25.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1659816
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gennok__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['STYLE_EARTHLY', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9d079b9f7d5244390f929c2115db5d637041bf62d3a28af61a66db9ac0c09925",
+  "east.png": "a072a5eea12bd9fb18bf98976f0126a103e463db2d3c81425b28ac5b060f7f19",
+  "north.png": "9c4b1df554150d1e5b663c3c7bf80af03b43f49b23123b8c5b89f35a7c552857",
+  "scale.png": "68ccd783eefd44c9d7303c80dccdf2ccab5b835ae3196fdd85e04f87f7fdd92b",
+  "siblings.png": "616e4a8b07eb6cd103c22f4317e9210a5e37b4e4826f58af9e0ae0c9e5bed60f",
+  "facings.png": "fe7a46ca5494ca4e04fce533617de25e40a8aa755023413b9cb8d3882e865334"
+ },
+ "source_sha256": {
+  "south": "641a764d1ef78a9b5b5c3214dce3cd66ac79c87d365c42aadce1be40c2c2f96c",
+  "east": "e93ab0c99cad76755a7dbbfb6f2e92200806417c606fead7b8c351aaa769bb14",
+  "north": "94d70e6ead2c8b6cbd0e495ec02973142a5545d9e0aa791f0075800208244f57",
+  "scale": "e97e101b5df2962537fa795270a4a5cd863161454bd59514b0bd34c9ab190f88",
+  "siblings_RM_Gennok_south": "699ed634c1a8a1e7e501cf9c828b35da12ddac3741863602133ab90e0bbd5f87",
+  "siblings_RM_Gennok_east": "e218a21efa1f745763883b46d49392bf835d44ddb7ace89af2313ccfcd7e24e8",
+  "siblings_RM_Gennok_north": "b33a9cd1324dd9349459b3dd75bf0178a26f7b685bf37aab0e3206f3231bc6fa"
+ }
+}

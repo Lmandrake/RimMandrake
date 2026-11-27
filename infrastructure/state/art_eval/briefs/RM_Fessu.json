@@ -1,0 +1,39 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Fessu",
+ "nearest_earth_animal": "flatfish",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "body is crystal rather than flesh",
+   "quote": "more crystal than flesh"
+  },
+  {
+   "feature": "translucent lattice body",
+   "quote": "a translucent lattice of frozen hydrocarbon"
+  },
+  {
+   "feature": "a living thread at the core of the lattice",
+   "quote": "grown around a thread of something alive"
+  },
+  {
+   "feature": "snowflake-flat body",
+   "quote": "flat as a snowflake"
+  },
+  {
+   "feature": "growth rims added around the edge",
+   "quote": "each night's fall adds a rim to it"
+  }
+ ],
+ "body_plan": "swimmer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:36:39-08:00",
+ "source": "description only (no image)"
+}

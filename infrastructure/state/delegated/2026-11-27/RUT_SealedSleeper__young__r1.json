@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 62.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4851386
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 30.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16099760000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RUT_SealedSleeper__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1183252794dde6c050c39c00589e0ec3c015e036705548217d0bb64614c7399b",
+  "east.png": "f7c3e7ba5f31a1743806b1e4791500ee0b071d5a7126f24eae693104a252807f",
+  "north.png": "0efb9f851e4c06e33fcdde67509d69a51cdd4cb4f4e595fede813c215e5032e2",
+  "scale.png": "382c0c10afa4225298c54e8c3ea87f11ec3a08104fc669649b0c7553a71cefba",
+  "siblings.png": "0a1c67d44c54d8004db14ae2ef8226e25679916cd8e91b33e6852b275d7122dd",
+  "facings.png": "5fdf12c307b1ee2bc01564d56911a6f975149f76844e6d395bc3cb7f56873ec9"
+ },
+ "source_sha256": {
+  "south": "852fe376c646f7c3b509541687989cac883ad7720d81e13f23ede00e527da4ab",
+  "east": "18bc675bd61cc088812aa72e8d205ba6351d9c9700c850971d28dad5f9c6594a",
+  "north": "3a7f6c564a537ede7c47e03ef3b699bc4062ef361ee45630b0e081b91afbdc41",
+  "scale": "44c82518decf003e90b43ddaf12b5a1d498de6bcba374aac75a66f60a6cfad8c",
+  "siblings_RUT_SealedSleeper_south": "3621704881f428ec606dd6dccdf21ab1a9ee7ba56c1c8330f02cac8d57ab2428",
+  "siblings_RUT_SealedSleeper_east": "838b1bc326f5f070a4dbd4dd48ee66a8337f23491889d865933f0b2bf54b8d4d",
+  "siblings_RUT_SealedSleeper_north": "bbc4dbb6fa058dd1ac0f69ba81b6542c2125e1377364dcfd134a8b8cedf23193"
+ }
+}

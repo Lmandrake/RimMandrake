@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4558014
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1536336
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Ivvol__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'STYLE_EARTHLY', 'DESC_MISS']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3e4ff04253ff1b0a1a93de255741983dc5819768cd063a921a68f25ff46c2f11",
+  "east.png": "c776f4c3493769affadde13114b0bc72f4f24674e2aeed214477334e88340745",
+  "north.png": "6cb602d6ce1d111923540df41376c323804bbf85337964d78df76285868d6180",
+  "scale.png": "cb12bd56264caf8fbecff4bdc9c4ea342734faade3a129e7fff266c2a2622059",
+  "siblings.png": "49b4c18429910bf81c10579fcde5401d0e9a190e5a5a0d25331fa646cf6a23de",
+  "facings.png": "a9147ee26bd7d0be8d411cbb128f4b41ff202b33cae2df2138e295f6e7b2cea6"
+ },
+ "source_sha256": {
+  "south": "a45a420efb07bfc28b8cb144e16feed431eebb68859b661329bb618acb5eb6d8",
+  "east": "8d1a4ecdf5c61182ce5765b55eeff7e2cc1b2d1dc551ef0bb7f97679642f6135",
+  "north": "4b581c15f0dd7215944948f776b044ab29a2f0371deacffcde6d30f34b94bcd4",
+  "scale": "0343cd1fca98631c5cc777b46c00d5652da14e03ea07e36a3c3301c8b5725455",
+  "siblings_RM_Ivvol_south": "fdd3bc159be99ba90cbc325efb12b8999bb24e533d9ce83bb8707b3af4ff969d",
+  "siblings_RM_Ivvol_east": "c946f879d1c7d0f23cd8c6e69fd8be68a304f9f2f4bb71a42f5e6e80535aa32f",
+  "siblings_RM_Ivvol_north": "b2d2907eff76e368fc4af4a3e780bc29d612604cf13c41858c0c7d8f3ea3ac80"
+ }
+}

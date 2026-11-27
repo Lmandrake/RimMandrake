@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Lylek",
+ "nearest_earth_animal": "praying mantis",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "stands tall on long, spear-like legs",
+   "quote": "standing high on spear-like legs"
+  },
+  {
+   "feature": "raised pincers covered in spikes, not mantis grasping forelegs",
+   "quote": "raised, spiked pincers"
+  },
+  {
+   "feature": "two long tentacles around the mouth, beside powerful mandibles",
+   "quote": "Powerful mandibles and two long tentacles crowd its mouth"
+  },
+  {
+   "feature": "ridged carapace",
+   "quote": "ridged carapace"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:33:47-08:00",
+ "source": "description only (no image)"
+}

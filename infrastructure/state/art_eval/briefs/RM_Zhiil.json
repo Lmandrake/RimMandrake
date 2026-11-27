@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Zhiil",
+ "nearest_earth_animal": "fish fry",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "black body with ridges along it",
+   "quote": "black, ridged fry"
+  },
+  {
+   "feature": "spines raised",
+   "quote": "spines raised"
+  }
+ ],
+ "body_plan": "swimmer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:36:54-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,33 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Gristleswarm",
+ "nearest_earth_animal": "crab",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "exposed gristle at the joints, leathery and grey",
+   "quote": "Exposed gristle at the joints gone leathery and grey"
+  },
+  {
+   "feature": "back plates crazed with a cracked pattern like dried mud",
+   "quote": "back plates crazed like dried mud"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [
+  {
+   "feature": "body built of exposed gristle and armour plates",
+   "quote": "a scuttler of gristle and plate",
+   "why": "quote not in the description"
+  }
+ ],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:26:50-08:00",
+ "source": "description only (no image)"
+}

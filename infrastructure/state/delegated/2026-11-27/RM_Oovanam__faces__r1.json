@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4531438
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 31.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1657596
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Oovanam__faces",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'STYLE_EARTHLY']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_SIZE_JUMP', 'STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e9aa84bf2c508e1df249c2f425a183f1f0fafda658debdca2a09b280a13661e4",
+  "east.png": "ba486bcc98ccbe662ffe569c19d1419a97db7870e5b4a3211a761736155cb3cb",
+  "north.png": "6e7eb9a9324cd3e3f3953ae6ce7efa1c221f11da0f08258e479afd05a27f18a7",
+  "scale.png": "03e771b1e8a152664a6b3e34f569ac57d01a7422f8f3910540124ff91ee93488",
+  "facings.png": "cb7a34fb53ae16e8a9d0b5bcd63a11d8ecb598b8d4a8064e8736d3fdc49be381"
+ },
+ "source_sha256": {
+  "south": "a27cfac4ba0e9476344ec6d495243686fe8a536caa62afcaa6bd34b94b703291",
+  "east": "c0bdbb3cf6eff1e64b5a71f0cb10e1a24ffd812050db23a4dc00bc52c47ba161",
+  "north": "6e7eb9a9324cd3e3f3953ae6ce7efa1c221f11da0f08258e479afd05a27f18a7",
+  "scale": "27ab61610b6fbb49b8ddfae02d13c0caf45050f9e338759280be2f4133b81c9c"
+ }
+}

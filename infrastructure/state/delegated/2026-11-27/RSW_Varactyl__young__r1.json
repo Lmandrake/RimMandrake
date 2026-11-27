@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48178160000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.5
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Varactyl__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'F_SIZE_JUMP']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f59e11221ff2fdd0db24c62ae815e5de5ae8c2dc3d3c9764feb84bc07a1882dc",
+  "east.png": "24fe7779052d83890db95dd0d75581bfd0b33c65cae7c1d1be808871dcc877b9",
+  "north.png": "5917362b4428e5fdbdee96238d2729c5a1f0ab9ccc1182fd45937531a1445daf",
+  "scale.png": "a3abfde9594b10166cd9f91229df18e5e4ca7318cbd394dba2581db5e8e762d6",
+  "siblings.png": "7eec00a76cdc2c2c90f0142b5b0d9a4821a6e0b122758d80d53f2a7c9003c57e",
+  "facings.png": "f75bc9fe965f0839d7a1a88889a5ff2a89d343cf0443852324ac0a2cfda9e00b"
+ },
+ "source_sha256": {
+  "south": "5610370a2ea926167f44c5a75b9904b161df8aaa326c48a264e7360fc53ac658",
+  "east": "66d1cdfaf4305991f1846a00e31bb7f2e64ffc804acdf8546ff2fddfc0aa8522",
+  "north": "01a2b6b39651374801e4c9783e630935ab96c7b1da6275ed636dc9be393c142d",
+  "scale": "8f21d727e8563e2b178d1fd12866e3b39f9e65a9eb6e175ff68f674540c2f231",
+  "siblings_Varactyl_f_south": "56f97cefdd6b063a4eaae406a73edd1bef5f5f97cf8434d4136c129de86600e7",
+  "siblings_Varactyl_f_east": "3be3ff4c0664cbb92a453101d0b7d960f66f6e0d337a9d638b654499704c527d",
+  "siblings_Varactyl_f_north": "7e8a79c5ff8249a852c31f19a85fd3348826836b2a5567d8c1883b13ba361e26"
+ }
+}

@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Oovu",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "bell body made of frozen hydrocarbon jelly",
+   "quote": "A bell of frozen hydrocarbon jelly"
+  },
+  {
+   "feature": "body shaped as a hanging cup",
+   "quote": "a hanging cup"
+  },
+  {
+   "feature": "crystal rim on the cup",
+   "quote": "a crystal rim"
+  }
+ ],
+ "body_plan": "flyer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:36:54-08:00",
+ "source": "description only (no image)"
+}

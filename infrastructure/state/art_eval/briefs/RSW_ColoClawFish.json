@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_ColoClawFish",
+ "nearest_earth_animal": "eel",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "a pair of clawed forelimbs",
+   "quote": "a pair of clawed forelimbs"
+  },
+  {
+   "feature": "whisker-like lures",
+   "quote": "whisker-lures"
+  },
+  {
+   "feature": "pale body",
+   "quote": "A pale cave eel"
+  }
+ ],
+ "body_plan": "serpentine",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:02:39-08:00",
+ "source": "description only (no image)"
+}

@@ -197,7 +197,7 @@
         <label>ronto calf</label>
         <labelPlural>ronto calves</labelPlural>
         <bodyGraphicData>
-          <texPath>RimStarWars/SWBestiary/Ronto/Ronto</texPath>
+          <texPath>RimStarWars/SWBestiary/Ronto/RontoYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -211,7 +211,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>RimStarWars/SWBestiary/Ronto/Ronto</texPath>
+          <texPath>RimStarWars/SWBestiary/Ronto/RontoYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <drawSize>4.0</drawSize>
           <shadowData>
             <volume>(0.7, 0.6, 0.4)</volume>
@@ -238,5 +238,10 @@
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
-  </PawnKindDef>
+  <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned colour variant (commission.csv) -->
+  <alternateGraphicChance>0.35</alternateGraphicChance>
+  <alternateGraphics>
+    <li><texPath>RimStarWars/SWBestiary/Ronto/RontoVariant</texPath></li>
+  </alternateGraphics>
+</PawnKindDef>
 </Defs>

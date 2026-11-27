@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Bozzuga",
+ "nearest_earth_animal": "toad",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "the entire head is one mouth, with no separate snout, jaw or face",
+   "quote": "the whole head is mouth"
+  },
+  {
+   "feature": "salt-white warts mottle the silt-coloured body",
+   "quote": "mottled with salt-white warts"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:07:08-08:00",
+ "source": "description only (no image)"
+}

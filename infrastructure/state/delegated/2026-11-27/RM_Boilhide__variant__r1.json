@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45310760000000005
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 10.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Boilhide__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "fe2910728b1e4b9001a2e96482b9023c90a5cc570500b3d5e1db3896519b49a5",
+  "east.png": "c98803c81476415865bd92ead85181865914bbe064fb1a91f679e64b084ec8e9",
+  "north.png": "d6597c61a026da605673d415fdbf6199423d56c6207aea55cc39a0e1068cc8b2",
+  "scale.png": "c6e46851bba3b12a48982b4af5d108499f8e4b0f034db1c8714279c738f2efbc",
+  "siblings.png": "6705deceb8b3edc55e816b257f09cada0e4fa8cac7de1897be5b82b83ac7b2b8",
+  "facings.png": "09e55fd8cbc8d2b8bac9ffd6b1a1e12ec8f5c9318026243e4140bde62d253091"
+ },
+ "source_sha256": {
+  "south": "c07f71521abbe103153a5c44eac8e69f836c28b25d119f31d94ad3792b4d79cc",
+  "east": "204371ff9e80186b8cce052f111d02963d36a31aead020d30da018e813cba9e5",
+  "north": "8b5768538c0efb52ef8136835742a31ab4f0d81fefa2ae5491c4bd0099d1815e",
+  "scale": "96c9157e0d5ee18267743f0e77c81c8954cf1480ed40bc35a5bdfc2293e752f8",
+  "siblings_RM_Boilhide_south": "1ed04aa58035367f6c3aa40a87967087d7a0f1d08e192dda1197577dc0c64ce6",
+  "siblings_RM_Boilhide_east": "eebe31da4ccbac17344c0969a4f3dc1bf1d8bbdd3e23c980bbf2418097d4b28a",
+  "siblings_RM_Boilhide_north": "b2ecfffdbcd0345547c36be78ce1ce06eabe28c0da4fa6175360a56125e48491"
+ }
+}

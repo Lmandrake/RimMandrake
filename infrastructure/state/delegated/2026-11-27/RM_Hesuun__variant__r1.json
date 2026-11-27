@@ -1,0 +1,49 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Hesuun__variant",
+ "decision": "HOLD_INPUT",
+ "reasons": [
+  "missing panels ['south', 'east', 'north', 'facings']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "single.png": "ebb1c17585e37ca656eab7e60aabd49131c5b4c4cd19678a6cc8088ad782ef2e",
+  "scale.png": "b5c0756e3471a2f28b5d536a65b6c62093bec5480f723f036d8e7bc79bf91caf",
+  "siblings.png": "ce3568200d9d7ebc2f80ab249cfe42187a79dca9dd6f4a26720439685181e2cd"
+ },
+ "source_sha256": {
+  "single": "bd1e8fbef335e9c105628c231a56389d07f20e52be58fe41276cbc5a33aaac26",
+  "scale": "8b26b71ee8bd6450ea194ec76bd3105d1ab00c2147b67e3c65fc50a8573593c2",
+  "siblings_RM_Hesuun": "1702b1e88c5ae971b7e4805b703a0bb2178d9fa1110b5d7ae9c02ed4e46d1f80"
+ }
+}

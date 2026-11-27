@@ -1,22 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Shoal",
- "nearest_earth_animal": "fish",
+ "nearest_earth_animal": "fish school",
  "earth_body_named": false,
  "departures": [
-  "ONE sprite shows the whole shoal: eight to fifteen small pale lozenge bodies, not a single animal",
-  "the lozenges are strung on a single glowing yellow thread that connects them all",
-  "the bodies spread as one loose net, small gaps between each",
-  "no single large body, no legs"
+  {
+   "feature": "the bodies are small pale lozenges, not fish",
+   "quote": "small pale lozenges"
+  },
+  {
+   "feature": "all the bodies are strung together on one glowing yellow thread",
+   "quote": "strung on a single glowing yellow thread"
+  },
+  {
+   "feature": "a group of eight to fifteen bodies",
+   "quote": "a shoal of eight to fifteen"
+  },
+  {
+   "feature": "the group is arranged as one loose net, not a free school",
+   "quote": "moving as one loose net"
+  }
  ],
- "body_plan": "swimmer",
+ "body_plan": null,
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T03:59:18-08:00",
  "source": "description only (no image)"
 }

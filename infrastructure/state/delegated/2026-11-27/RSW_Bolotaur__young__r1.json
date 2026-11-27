@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 57.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.483803
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 26.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1570676
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Bolotaur__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "28a9aeedff993593acfd29c4fa639f97ec601125da7eac04666015290470eb14",
+  "east.png": "0c0098a00c17e949cff5500f5a33de095a3041ed7a8b3c7dcff641deb95ee197",
+  "north.png": "2bbb370e48918c53e488c3da1bc3b5c878a9e333d4a81c0f9c4ccaa8881ee697",
+  "scale.png": "9a016f2db34e07acefddea3d1b4007dc54df02f4eb6c0648faafe88e0a2c829c",
+  "siblings.png": "3f0b378c2844fc60a3c86e7d8adda8ebd7de75ed2d30a5b0ee7aaec3309c0b83",
+  "facings.png": "720475fa101ed160798dfd36e3170a50e000b14c168c889df164234c5b90c562"
+ },
+ "source_sha256": {
+  "south": "a27975e0c74b52e789a879a62373b0862a253e52cf06ff4e4c6ef067008e7dc7",
+  "east": "f554cce3f8a1a3d3cc49290980258c1fcbb0ff264022ff03d23c2d4eabca20eb",
+  "north": "95f38365edb8dd3d477429db89ee2d08f3240282ab463127ea680cf6856dda2e",
+  "scale": "0c14515702676b5cdd75707294876ee4996f2f194c88443fe2d4d7daab563732",
+  "siblings_Bolotaur_south": "846fa4d4f6213c621d58c0a21f097e9ae45bf004e51ca4d3a00db854758e3c1e",
+  "siblings_Bolotaur_east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b",
+  "siblings_Bolotaur_north": "801f040f7596c13db9e73983fa190dbea3011192655f1a8782b021abce41c0a1"
+ }
+}

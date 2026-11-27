@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4622666
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 27.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 16.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15850560000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Chorn__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "137ad3514ea6e14aecb17d1e993da1c3b91e7fb55b51b732184aeb40cbd3a639",
+  "east.png": "62c12b0d2b3f6177651a1cc7560f67c4aaa953804a19a9508af5a67e60603aaa",
+  "north.png": "5116c6e674a614a71723b6a86af20aeafe04edd4fe580800497221d9f8e57c43",
+  "scale.png": "a3ae7ab69ee6e7fb005fd36c4e002c240b3cdfccbf11a45d52a3475f76da33ff",
+  "siblings.png": "543898272e1d946a984bc623b9f450ba47f98a3cbb30ab5f08a74308738be15b",
+  "facings.png": "f8b129be14d21954fbb9ab543913746fef35a92bf6acd2753cccf0a2c1da0e1e"
+ },
+ "source_sha256": {
+  "south": "c10e0cf469cd8cfdd9b4c9a48fc87d20261c473851e13e642751f5a12bd9a3d5",
+  "east": "8a9b195c4513ef9b9a947658e9739914a95f38a71b0c209142682be3281dce5e",
+  "north": "efa140b31db98bf568e1e8f2ad42702d97ad1d43259ff94b27fc74934697bbd9",
+  "scale": "871c0d6e83290d5caca0850ccca04c265db4dec6c0e4fbc23731587a87fd2c0b",
+  "siblings_RM_Sollak_south": "f736806f7435f61c0680c04fc69ef06e3d3ba7255c7031e4d91be4089d1d23d8",
+  "siblings_RM_Sollak_east": "d676d34ad8cf35d7d1fe1e28b3c19a9cb78f1f19f2c24da823c001876aab22c1",
+  "siblings_RM_Sollak_north": "0ca18c3b3fcca47d09beb6b44ea856ce64754bad4b65200c151deffd388f7c0f"
+ }
+}

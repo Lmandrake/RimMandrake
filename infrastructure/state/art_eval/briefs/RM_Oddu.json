@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Oddu",
+ "nearest_earth_animal": "clam",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "a sac of clear jelly attached to the shell",
+   "quote": "a sac of clear jelly"
+  }
+ ],
+ "body_plan": null,
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:36:38-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 50.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48046619999999995
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 22.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1623716
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Kybuck__female",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['OWNER_NOTE_IGNORED']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ce44f2cbd1105b79adf6ffac037ab6277700ce6df769bbc8496a847b47811e12",
+  "east.png": "e9662111e1fb5c7cd4629d02f78733af02f4f8fa9574e36e226334b6d819dc50",
+  "north.png": "0ec47ae4649d9d21948e11ab2f2d70a1a231361632f6fdea0077b6eccfd1b076",
+  "scale.png": "8cf6ea49043c39810b77abcb6c465120414c934edc0b62cc8baea4a98f3863f7",
+  "siblings.png": "5f8be24d43ee6f8469d056a827586477ffb50360d3418add06801b1296993189",
+  "facings.png": "9c610e346f4fa28afdc6c664af9783131667fc4e4f434447782b0623831f5768"
+ },
+ "source_sha256": {
+  "south": "97b0a7cb20a2ece90eb1a090cb6ea33139d17bc2e63a7c0b53be9dd096e48e23",
+  "east": "20173c9cbd7f8e54a457eb50d070e0206329f249a499e01df631041bf72611a2",
+  "north": "9f2d53393372633416b1785d82f6f6d4e3f6e79da375f213ce9e80234f9aa925",
+  "scale": "63ca1161dccdce7bfb8439f5114ee8a515675244c80e4ca0935709f97bd92cd3",
+  "siblings_Kybuck_south": "4487d2badd999c830e9fec3b4e228ab7223f0219b894946d056c8517ee187ed5",
+  "siblings_Kybuck_east": "32df41efef2bb5b7c8159a27cbc6a7526d66604fe679211e363c052d08082cd3",
+  "siblings_Kybuck_north": "a73315992b06fc2bd804465e304d07202e8d4abb05f3ec9a81132cfdcdb1f89d"
+ }
+}

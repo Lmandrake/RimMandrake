@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Jimvu",
+ "nearest_earth_animal": "lizard",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "six legs",
+   "quote": "six-legged"
+  },
+  {
+   "feature": "skin blotched with violet",
+   "quote": "violet-blotched skin"
+  },
+  {
+   "feature": "a hooked beak in place of a lizard's jaws",
+   "quote": "a hooked beak"
+  },
+  {
+   "feature": "a row of purple knobs running down the neck",
+   "quote": "a row of purple knobs down its neck"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:15:16-08:00",
+ "source": "description only (no image)"
+}

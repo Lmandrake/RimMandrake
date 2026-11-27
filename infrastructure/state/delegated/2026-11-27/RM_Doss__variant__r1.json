@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4647792
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 31.8
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Doss__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2263f3ce703bbac7084a3ea0a2751fb6900c9fb885b172b86b323e7e3fe093d8",
+  "east.png": "049b54024ba937946031425fc86aeb19889ec8436b44453ea66fd5a18adb92cb",
+  "north.png": "cbcb4826105794b2e202823778ba9e640179c6b71921a471b8f0988b9c8ca77e",
+  "scale.png": "50e382dc149b28e6705e4e16e4390f46ad2312c66e7488ec3f9ec9a5b6bb1135",
+  "siblings.png": "ec2783f324dcdb91bc0552a697ad170080254b8abfbcb95cf8b11a1753862796",
+  "facings.png": "c33fb6623b0ecbca62e71a7673b83ae01b9fea11d72dd2a96660157225dabe63"
+ },
+ "source_sha256": {
+  "south": "bfb0494fb71d9e9f795bd7c7d476548cb6b789ccef46af9eb01d3f90a16652c5",
+  "east": "f98885b3682c73d5a773ab102a53ad86137332d57e6da1c8dcd08856b6622536",
+  "north": "cbcb4826105794b2e202823778ba9e640179c6b71921a471b8f0988b9c8ca77e",
+  "scale": "61d67368e144b393524b391306902e552d0d5d9488b0e0fdcaab1383c9482a06",
+  "siblings_RM_Doss_south": "b66f175162959c09be5b988e56bf4e8dbeb81c9dd74908c674a22da4cf132723",
+  "siblings_RM_Doss_east": "7221b0d9aecd45b4a4e4cf73dc6ee2b02ffd315271427869576cdbe1b335cc6b",
+  "siblings_RM_Doss_north": "ae20bc61eaededaa4e7beda3c19db04a4008f24f699dda19bcd0c924c7b8fddd"
+ }
+}

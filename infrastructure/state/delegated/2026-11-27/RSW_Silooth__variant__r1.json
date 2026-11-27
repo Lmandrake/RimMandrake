@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47622760000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 17.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1570816
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Silooth__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "acce385efea0dff64eecdc1ae90f6249e314628733d23da1313e0a361370d25a",
+  "east.png": "0a4b5735f9e86fde1f38c0fa4ea616f6bc852ef039b27527c9c811bb8fbc262e",
+  "north.png": "089c8090a3fdf0dd0460b1c7455c71d74ede5a4816995c9efcb01bc38d79baf6",
+  "scale.png": "684d1d13216e29238bd4e40282829d8d8a6799800ad1272551fdd04c34b60858",
+  "siblings.png": "8ba1b3e8116119ad141cab538c7fe981b1e3656c9e40e25a1e963df02608715f",
+  "facings.png": "d8357f55c2f970e6cdac7b65561ae6a1b1d92e2f6190b6fc27e441342370c3f1"
+ },
+ "source_sha256": {
+  "south": "5a65a13b7cb836911192228d4be0b6c99bda94407178ba454d83b9d656f30906",
+  "east": "0a4b5735f9e86fde1f38c0fa4ea616f6bc852ef039b27527c9c811bb8fbc262e",
+  "north": "0858793bea44c9ca0ca65310fa64f150dee71d3dd50e7c2f6dac762817ac9b6d",
+  "scale": "5ec22baeaba382746f1e3ed9d77636005da4fd6825a35a3ba4ebc4d29560764b",
+  "siblings_Silooth_south": "7a567e48adff5d609d2bdc6c0695214cefda6102aec9404ad916c4e2679626ea",
+  "siblings_Silooth_east": "47e4a579b26b49f8b90c02eecb85ee361655b1192a2e731a0f095792f6ac1eb0",
+  "siblings_Silooth_north": "a358803f61660a4b0bd5741066d0b8757b46469e980d2086f830b64f63dea40f"
+ }
+}

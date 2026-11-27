@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_SumpMouse",
  "nearest_earth_animal": "mouse",
  "earth_body_named": true,
  "departures": [
-  "palm-sized silver-grey mouse",
-  "absurdly broad splayed snowshoe feet",
-  "a coat beaded with shed oil"
+  {
+   "feature": "very broad, splayed snowshoe-like feet",
+   "quote": "absurdly broad, splayed snowshoe feet"
+  },
+  {
+   "feature": "coat beaded with droplets of oil",
+   "quote": "its coat beaded with shed oil"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T03:57:08-08:00",
  "source": "description only (no image)"
 }

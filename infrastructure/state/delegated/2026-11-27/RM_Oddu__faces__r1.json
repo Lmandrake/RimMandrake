@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 51.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46959259999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 48.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 31.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1792336
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Oddu__faces",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'F_SIZE_JUMP', 'STYLE_EARTHLY']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['F_INCONSISTENT', 'F_SIZE_JUMP', 'OWNER_NOTE_IGNORED', 'STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d5c0e60804da8ba9eb3e4c49009a8043a288480e9ccfe6bc17c166dc416e82e0",
+  "east.png": "71ba123e245c32deb25203ea78fd1ef95b6dc7234ea65722ced12d4e01869a52",
+  "north.png": "d5bf9aac7c328ba5eae3af96c81b56012162c0723e77d878c892d4031bf297c3",
+  "scale.png": "f6419ab1fcc0c364e4022501e7238a82b760c9cc45329f278bed7da1878e3703",
+  "facings.png": "382dd9914d58b23d28e4e44dd48606d5119b3a402611906730528cf6ef258e8b"
+ },
+ "source_sha256": {
+  "south": "d5c0e60804da8ba9eb3e4c49009a8043a288480e9ccfe6bc17c166dc416e82e0",
+  "east": "8c80b89d35ca4f1a4be36eaf27f98b89911fdbb04ca7970ff5421386f2a6ac9c",
+  "north": "fd61d2ccbb6f99b7f694c690750f0e540a31abf37d49f086804718925a726854",
+  "scale": "b5c9d3b8ecf23edf5e970719337a79b3cb4dae44b39b0bf954603c727cadb215"
+ }
+}

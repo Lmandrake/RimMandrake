@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 76.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.515039
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 44.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1592876
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Mott__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_SIZE_JUMP', 'STYLE_EARTHLY', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K4'], own blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2a9c87f9accc280fcdb5e3e9c44ebd5a1f3a70160ecfe20b4fa988208eaa1dba",
+  "east.png": "fec4c1d21a4942d25f591f3bc2502ab2db83137c8d81580f0f582f973675cb49",
+  "north.png": "c30cc6f739d1be8e2578bb1e2d2e90d57137796d1dc193354970014c0c482291",
+  "scale.png": "d6a8976e9afe73eb1f80c752743539563967eb79518016748e49efc39e55edc9",
+  "siblings.png": "de1a3947b35adfd8c5124fcecf98b71f2c579a8fbf272030fc6694e4552870c0",
+  "facings.png": "20ce3688048f5b593e54d852d5647419c493038781a1334cbdc42951787403cf"
+ },
+ "source_sha256": {
+  "south": "66f3ec2686d545fbd3324de104b0824f98c7c077010971315c735c9fb85377e2",
+  "east": "3f51e5bec1edae92ecb27a7080d7096ba3128e8fd5ee9fa15f9e6aaed104d9f7",
+  "north": "ea8c138e07c067996fe45fba43510af23967635b28fa7d6e9c9fb5b04dcbc8b6",
+  "scale": "ac35785c6eb24e4083cb3350a7f44581363d1f1e02ecf3994f3945f6e9f70991",
+  "siblings_Mott_m_south": "ab4d411f8091e0405a4b26a20813ad37e74a7fac0320694236566219eaadb532",
+  "siblings_Mott_m_east": "83aebfc2d39de2d015073c1487c9aa113d2676aa3743a64ee1a358ca78259b1f",
+  "siblings_Mott_m_north": "68fed1b7c644369c3f5c10904419ec063795dc4102768b806f32c6bc446fccf2"
+ }
+}

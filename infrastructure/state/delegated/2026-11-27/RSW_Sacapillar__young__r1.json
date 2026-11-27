@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 66.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4936132
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 55.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1655216
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Sacapillar__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'STYLE_CARTOON']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "678739c801f368452bbec7c45210ed2e1ed2ac3549507f8327ab1d0d1dd014ee",
+  "east.png": "1c2abde1674f4795ccf9a6b7fd260872b26710af94d3f7055da8f51e6d2101cf",
+  "north.png": "372771284143588244d04eba5f806cee78a05670966003c78ad7eb21ab0dfaec",
+  "scale.png": "fc4b57fcde9cb928c03a5f1219b4e98293388e520d1d733db78f04a9451aee71",
+  "siblings.png": "dc4b3a8dee1f402aa3948167acbef1018fea190657ba180e4f4d16277acc0df4",
+  "facings.png": "8e4933bb3e6bf37b12e3b276210bb0f22c3d2392eb4324cafddb4ece2252ed60"
+ },
+ "source_sha256": {
+  "south": "c74d8858bea45b5218804e046fcca617f3931377c22219de91c1b04a03d2398f",
+  "east": "17296a9ef928fda4ba71a567ed075af9b7a87fcbc5d02bcac110db8882715ad5",
+  "north": "e374d4fa2bac4e35484789c4afda16488976fb958c3387a1226a607bd7b82849",
+  "scale": "f6aa14bef3055ebd1b7eccfef60348562710b32126f635ef179bc2a967586fca",
+  "siblings_SacaPillar_south": "d25b14fdabcb7a47974099758016759fa600ac33918faf583a5a334d40c1ff97",
+  "siblings_SacaPillar_east": "b836282de6f845aecac2d128728de27173774974569cd2e743f3c2b6a689523b",
+  "siblings_SacaPillar_north": "818de67366b1ffc221b1bc407839f3d87bce50048969d0a9543e2038c4e3e2e5"
+ }
+}

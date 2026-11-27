@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 70.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5062702
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 64.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1558156
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Clodhopper__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_SIZE_JUMP', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d489cb411e35e6bd31feaa6594066396fb91a8ab4a626501483f2683aa59fe04",
+  "east.png": "c5ca5ddaaf42e5f13298f37d292dc79a31115005f10e49e06e8f37edc46112d0",
+  "north.png": "f3b7410d9419dbe852cc8d6b14517ab0373a8377f0061926af16e344047a5638",
+  "scale.png": "22a2d7f7f0dcfb885009d75e16140f5b08f0c38da31fb63e5b8b18a9bacb89e9",
+  "siblings.png": "66b9395b9ec6c4b4721f89bcd0348650714eb2f1899a801ae7ccb05359f39d3c",
+  "facings.png": "09e842d79f7ee2009493a28dc158dc46554d54d2da24c2ab768184de9e32cb1d"
+ },
+ "source_sha256": {
+  "south": "90ec9291295c1490783d0f7502b31f78d9e6f60db3c64ea1cabd98026fa982af",
+  "east": "f2ce34aca197e2a72e9257b2433d3804c4b706bf6752a89f1b47d2582b5d179a",
+  "north": "cf03f3eb45de5b51336048fc48f46cdb9a459511f276ee4ec9d8e6a3e9252255",
+  "scale": "676d288dfbec833c7d39f219367131f21558e5db47a851cb6b8f8069fff0c760",
+  "siblings_Clodhopper_south": "b1ac24655a6e4b634e20e71a1a5e40426ad8498f55ceab7db63052eb8ecd46c5",
+  "siblings_Clodhopper_east": "1911f471f272a5c9d77c74624dd200b600e4d7c7effb674508ec3bc9c5eccb66",
+  "siblings_Clodhopper_north": "e506752c86f8111da14cacba655068d20e70ce5ba2dd8c09e3c7f3c1f6882e3d"
+ }
+}

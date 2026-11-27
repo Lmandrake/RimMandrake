@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 56.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47570840000000003
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1626356
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Murrol__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'STYLE_OFF']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ca4b7bf9d3436ede6a34747ecc3e9673772ad3a84cf71e6d5892946b2821d805",
+  "east.png": "10efe53fe32066e25f63f8c5b686b71edcbfbd90fa39d9310734d5bd75454b0b",
+  "north.png": "76cc722e42ac13795aa5c364d5c1a1175838f545310c5369e77b61a6a263f578",
+  "scale.png": "f74853a32990a2ec6234edc103b8b5243694d2c86361cb9ee3bcb072d250b916",
+  "siblings.png": "e16f1058aec703cec8c1bc39f009407c9e26aaf8e573614c6b05fc331678d6db",
+  "facings.png": "5666aa25a2c8ffc504e5723d4abf0ddddf9e4b68eae1edd3e81c3aed89470081"
+ },
+ "source_sha256": {
+  "south": "15fef25fb99e6c98a073a5d8632b084dd628948a985ef28bd6175cab135afb37",
+  "east": "9876d0703ba97515a9dfbe95602f0ae51668e3385367ab169deaac3ba4570056",
+  "north": "fa356b207a8055e34c6910167906a1c1f6310d9a3b1a4179651bd3f063bb012f",
+  "scale": "3fba20efc7def0573a94da634fdb9ec4797783d325509b6737e99b1ab2625561",
+  "siblings_RM_Murrol_south": "7ea7e0729c91d0a090800e5ed03aba5e1d58f7c1c4857912280490e0e0f40f5e",
+  "siblings_RM_Murrol_east": "985488ed8c02820009526f5647b4184d086f0e48531fe55d1ed53d811ccff504",
+  "siblings_RM_Murrol_north": "22f4ca95c1cac32672a1c61ce67e88eaa4f42d727baa346659a7c1b55bb58fca"
+ }
+}

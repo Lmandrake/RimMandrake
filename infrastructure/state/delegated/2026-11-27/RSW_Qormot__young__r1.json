@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.467277
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 34.8
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1610676
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Qormot__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "64578f033ae7181c23148aae7c199c9b976dd2c2fc14747ebee1ec8e813318cb",
+  "east.png": "eb1247f7d4503f2823fd70b9e83e1917d204ea3a66a2406367d3cdd3e4464651",
+  "north.png": "0555d37f7ba218d5eee0061b6b07c5443cbf3e30d6593fa9447ee2ead5aeb894",
+  "scale.png": "769149d2de4c4d1931ecced1bc41a0e23d3a2e54a33886c30945799c621f42d3",
+  "siblings.png": "27fab3c5d0b05966d7311ccfce437438d06c9112316570e6ccd774b444361870",
+  "facings.png": "a2407b401ef6eb938ec2f0e662165d19e4e28bd249ce9cde914934a4de91f1ee"
+ },
+ "source_sha256": {
+  "south": "6dc86147a8736fad61c56de17b08d0fc02c81d244bae5c565aef9a806a9ea479",
+  "east": "6ff604905a12cecf7fa9db7ebde437c9dd1f733fc7970c595c5235e4184f19e9",
+  "north": "ef6023ba7903586781a525f4b831ba83d558f8781ba05ec23aeff1abac2b0b01",
+  "scale": "1c14d24e00665a0d46f38ee2018ac5f090831f9222a973c85629558a8c53537d",
+  "siblings_Qormot_south": "9a2ff586540f3f5dcd386e13aa7758c2122357b42f1ff902d1eaa53bd3ab6c07",
+  "siblings_Qormot_east": "145cdcb69e596f0cb5f456dd87550f0588d85dc048630067f5148939b991341d",
+  "siblings_Qormot_north": "1b81b5987e806c8c2ee799f77609ff6e2387ca3ef44066603360031ca7d8b839"
+ }
+}

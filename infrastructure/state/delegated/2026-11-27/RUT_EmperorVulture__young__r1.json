@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 56.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4783782
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 40.8
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1661956
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RUT_EmperorVulture__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING', 'STYLE_OFF']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ea8b7c890bc7cb92d82755574a024bef28ee58787a21e304f10ae0590f3490e1",
+  "east.png": "b806be58abfa9cd34810ce73cb1860e88aabbcccbbd69e03257bc8e021ef6a5f",
+  "north.png": "6e115618b79429e16416ae7618ef446633c6a2c219b0d42db849bf4e68f9d42e",
+  "scale.png": "af7e63ea178d117627057f59d57f2e8c58f8be2bd3ae11accd4b67ce91914d7e",
+  "siblings.png": "04e364a42e727e0663f5eca2c151bf8491e55620e0d630bd4b8f4cd2afde3659",
+  "facings.png": "838eb394c0d6d8ee9c327a6e9845dab61aeb73a4315da0aa10fe258819c1d496"
+ },
+ "source_sha256": {
+  "south": "734f29ce877bfb2af4a12478a016657fdb17f306b7ea8700d8eaba32aaf37910",
+  "east": "5b7f7c84de5da6a2cbf219041c9d0d72f00b72a10ad795e3f0f2f47e5da4ee63",
+  "north": "c13d7331441a155fae5cb3cbea21b849802512bbadefac48119a6a27782b6cfa",
+  "scale": "702a3d054808aed0d685958b752d36dedba7ef6a1d14827951c7df9e7938af20",
+  "siblings_RUT_EmperorVulture_south": "5f63030396b0f0a31ce7be3d5c9037df7baac36d3a4695d975c3c6604ef094ae",
+  "siblings_RUT_EmperorVulture_east": "81eb20ba36c3818b00695129a973b8159c34f3cf4ed31799e0eb24260915e4ec",
+  "siblings_RUT_EmperorVulture_north": "17c45c085dcea55749a53339b048c80a5f83fc361067b4f33f76601cd6b327b4"
+ }
+}

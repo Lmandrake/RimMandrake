@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Kinrath",
+ "nearest_earth_animal": "spider",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "only four legs, not a spider's eight",
+   "quote": "Kinrath had four legs"
+  },
+  {
+   "feature": "a single leg-like appendage growing out of the face",
+   "quote": "a leg-like, poisonous appendage coming out of their faces"
+  },
+  {
+   "feature": "large body, far bigger than any Earth spider",
+   "quote": "large, non-sentient arachnoids"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:12:31-08:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Ossivel",
+ "nearest_earth_animal": "frog",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "throat formed as a row of organ pipes",
+   "quote": "throat like a rank of organ pipes"
+  },
+  {
+   "feature": "knee-high to a person, far larger than a frog",
+   "quote": "Knee-high"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:28:13-08:00",
+ "source": "description only (no image)"
+}

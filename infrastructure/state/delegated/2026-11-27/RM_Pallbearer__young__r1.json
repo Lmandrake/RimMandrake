@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 51.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.467145
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 38.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1630136
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Pallbearer__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP', 'F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9802230bb81f9a41306cb1d24ea037efe6aa0194fabb5fb0c0c69fcb5d1d2df1",
+  "east.png": "c13f67503d596df941341f4f4048c5d0c1e1ccc7f17054b8ec627806ed71fd04",
+  "north.png": "3bdc623e54e07083b9fa6f1b317d1ac7792a8921283de9326cc306a7fd9105dd",
+  "scale.png": "496cb0c536e795c71588b52eb130be74f210b93bd2d08068ca3f8464eaf2952f",
+  "siblings.png": "b763ab3942514b6a027772f28233b8cafdbaa0e716b4974749000e0e1252ab0f",
+  "facings.png": "dce34b06ec8ca5a39d70e0fdaf86945a0efdbe9169d25fe42fc755197646334f"
+ },
+ "source_sha256": {
+  "south": "8d734ec7eb0597e81ec370d3d10df2d2a616bc79d328c91ac3b83904b2883a14",
+  "east": "cbb62ac0cda12e3019ca79eac1678f497f380bf10cdadb60975e46f859b7db44",
+  "north": "df61fcbf40af32fa7f88086371ea31a0827ea2d41c370e564854fac9048ad653",
+  "scale": "fda8668e56cdff771304da99600fb7149d90cac96ebf6734aba42954f9ddfbb0",
+  "siblings_RM_Pallbearer_south": "f541f640cf64299f5166999eb5638bf98d5a6d1c5f0cc80b44bc1011d4c26b34",
+  "siblings_RM_Pallbearer_east": "4f49c7f68e6366d7e83a318e099d21fee493da87869ec2a9f501c1741f46b489",
+  "siblings_RM_Pallbearer_north": "5494983d613b8d58dd45036aac839ba586a030675d06ea796810a0276fb387ef"
+ }
+}

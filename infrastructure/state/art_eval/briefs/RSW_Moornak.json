@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Moornak",
+ "nearest_earth_animal": "bear",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "too many small dark eyes on the head",
+   "quote": "too many small dark eyes"
+  },
+  {
+   "feature": "eyes placed asymmetrically across the head",
+   "quote": "set asymmetrically across its lowered head"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:36:57-08:00",
+ "source": "description only (no image)"
+}

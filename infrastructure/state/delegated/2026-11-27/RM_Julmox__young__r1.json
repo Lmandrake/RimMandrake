@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 55.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47094420000000004
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 16.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1559316
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Julmox__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['OWNER_NOTE_IGNORED', 'STYLE_EARTHLY', 'DESC_MISS', 'DEPARTURE_MISSING', 'SIBLING_MISMATCH', 'F_SIZE_JUMP']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1972ec63e2c276e5072a5cad43d8f72d374987c37700c50957b7ff236cc2253c",
+  "east.png": "73117ddc3c38c5d294fc7ccc0c375bb7d78198e0b10b9ba6b7d5af864c33dfc5",
+  "north.png": "4d3f8d0a199d8fd68d5f3e2df52e371fc66357ad2c17df5177898fa5c6c57a6a",
+  "scale.png": "601d79caed84f6e3cb1c866bcff07446cd8e85eee108526a033eb630f4467fd1",
+  "siblings.png": "1bc2cec576f560b9a7bb8d1e8986d0a8443632d1904919ec264bb78fd8f048e3",
+  "facings.png": "fd0cf8a8126fe367ec7213cfe6b6502c014a1a7ee5f087f1146e77fd412752c6"
+ },
+ "source_sha256": {
+  "south": "ed99a685b3f3598c243ebdd47671a5c0404ef380c945b8007af49ede9ebbfe20",
+  "east": "557965862d3a2f92a009ebc5f80cfc5153f8dd79070ee994a01867109ce823ff",
+  "north": "30b636a122e45039d0e7084a4bd5962cb479b32bd030f1241ef89b46812dba71",
+  "scale": "244302b83f5b3e1b6d432100d493a8f3b206822f2dfd2df049d0e3453a923203",
+  "siblings_RM_Julmox_south": "055659622b93b09c66aff32a94f0d7e64f5bc21192209cb74b3f36be2c0ba0a3",
+  "siblings_RM_Julmox_east": "c4a7597b3b5864d122386e51f3f40e1e8e260c02b1468d7776dd6ca6a4a3d29c",
+  "siblings_RM_Julmox_north": "712294cc4ae414728391320d4d0e21415c458a08ce5611251759516dfb1c949f"
+ }
+}

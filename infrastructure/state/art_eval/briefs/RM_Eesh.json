@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Eesh",
+ "nearest_earth_animal": "minnow",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "no fins anywhere on the body",
+   "quote": "finless sliver"
+  },
+  {
+   "feature": "bare skin with no scales",
+   "quote": "no scales at all"
+  },
+  {
+   "feature": "mirror-like reflective skin",
+   "quote": "the skin is a heat-mirror"
+  }
+ ],
+ "body_plan": "swimmer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:59:44-08:00",
+ "source": "description only (no image)"
+}

@@ -37,7 +37,7 @@ DOC = """<?xml version="1.0" encoding="utf-8"?>
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Foo/RM_Foo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Foo/RM_Foo</texPath>   <!-- a note about the adult art -->
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.1</drawSize>
         </bodyGraphicData>
@@ -113,6 +113,8 @@ def main() -> int:
     check([g.findtext("texPath") for g in b] == ["T/RM_FooYoung", "T/RM_FooYoung", "Things/Pawn/Animal/RM_Foo/RM_Foo"],
           "young: baby and juvenile draw the young look, the adult stays", [g.findtext("texPath") for g in b])
     check([g.findtext("drawSize") for g in b] == ["1.1", "1.6", "2.2"], "young: each stage keeps its own drawSize")
+    check("a note about the adult art" not in y.split("RM_FooYoung")[1].split("\n")[0],
+          "young: a comment about the adult art does not stay on the young texPath line")
     ls = kind(y, "RM_Foo").find("lifeStages")
     check(ls[0].find("femaleGraphicData") is None, "young: no female adult picture is left on a young stage")
     check(ls[0].find("dessicatedBodyGraphicData") is not None, "young: the dessicated graphic stays")

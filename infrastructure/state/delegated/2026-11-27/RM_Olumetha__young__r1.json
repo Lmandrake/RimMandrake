@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 55.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4738406
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 32.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1642636
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Olumetha__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'STYLE_EARTHLY', 'DEPARTURE_MISSING']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['OWNER_NOTE_IGNORED', 'STYLE_EARTHLY', 'F_EAST_NOT_PROFILE']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ba6a3b743d45472bf90763c7a0369063c862c25d2042c20dd0ac7043924f842e",
+  "east.png": "deef5df9c8794b1d6c3ecfae41df2a8aa14659ba43b5b87edcf259b3e9ab3204",
+  "north.png": "3a2a60083ea113b630b4bca0254824450a04acf866cf7ef921533a9b687c36a5",
+  "scale.png": "2f14990b0277d8f58a6694deb6b436f4afb6ddc7a3ee5035b419d4a779c67b7a",
+  "siblings.png": "ad4891a40aedf81224206d6a025b43fe652231cdafcd848a4e59635ea637469e",
+  "facings.png": "8402e9e1c66e21ec149e94b57a61942ba5fd4e75fe1347233b74f27d285b08bb"
+ },
+ "source_sha256": {
+  "south": "96c9567a6ae22fc7ee0290603812d042e55fb3ad6d105d3f3201583c7a2929fc",
+  "east": "9ef22f41bce41867c87f2b01374e0cdfd935e2fe65692267d9e59ee6da006812",
+  "north": "0cf8232eebf50b3936f8654459d41b38227650f35ab2a383fed8a208fe3b49cc",
+  "scale": "bfd7cee2f754b35a90b6bad561a2a80cc3755d2b2625336d879761688b744415",
+  "siblings_RM_Olumetha_south": "b5d0d52fa9f530d01e4798d671df19ac93aa501ad054f1d962b419816a4dc267",
+  "siblings_RM_Olumetha_east": "b773273fb4c8c427b32aed6e4769c6777d42a96b97dd70d905a8718a83322bfb",
+  "siblings_RM_Olumetha_north": "ec6ea61d92ac4f450a41dd9fe1ddb3485a75dccdd3627ac98f79ba2ce339e261"
+ }
+}

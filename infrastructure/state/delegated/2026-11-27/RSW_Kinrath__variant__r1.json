@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48821100000000006
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1619736
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Kinrath__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6ca22e0e9736514bfb41aae99fcbc15d60d8d3fa19f8e927677a0d8a420fe81a",
+  "east.png": "3347dcc0e04550f37b3dea3147ef5b0f8f8bf0e91ae3c72d5ddda503f915dcc0",
+  "north.png": "ab4a2943575a16a8fbd58b8aa30ed5696b843c6d4afee6c38f1334f9df61dae5",
+  "scale.png": "113da7f6883fcaa494cc98197ceac72fa3c9fc458da195d4c147caa0173950f8",
+  "siblings.png": "11bb6e17f3f3d38483a500dc94b3e9fd0561ef2e30a26bd803ccce32d306b1e2",
+  "facings.png": "e26aed41cff6f3fd380b698e86ad7796ba50ce1455ac23fe0c67aadd0652639a"
+ },
+ "source_sha256": {
+  "south": "910dfdf06ae3d30504019281a2584405892e4c2cb0db9f0908117402c46b383d",
+  "east": "4a5048f5026f529b5e6eaa01d29a88d606be61da969716e8d68e2f211f22613e",
+  "north": "a34183e453077d47d22f303bb332edc38c28231c6ade22b44aabb1c09f262875",
+  "scale": "2004fb612e7e5150424ae952615ea7d450171bc30415062a619ee61d5efa5eb8",
+  "siblings_Kinrath_south": "8f71ade410e925b9202fac04dba832272f80e5f8b92e4e5d84d1cc3ee17685e2",
+  "siblings_Kinrath_east": "7b329492a519dcae0883542e0619fd0ece1b5799807e50b04b111d962f2ecca5",
+  "siblings_Kinrath_north": "8c84187972efc3016ac993d1ffe1bbf3202a14b63af89be64184060ee369e7e5"
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47760020000000003
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1571276
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Urusai__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3283435107cbbe169933004e160e6f8c4713424d60c39ef6acc0de1a6325d842",
+  "east.png": "fe5a092da418ae605f510a8dfbd2be5c681c6499cc5341d90600cff64e06dce6",
+  "north.png": "39b48a0bea0b4ccf25a67b660270253c25df6fb624b1dbded8e50c72baa9ad3d",
+  "scale.png": "d2c68154fd8d4a927c4dd54c94583c52a7644794ca38537f76783b05577ae563",
+  "siblings.png": "44d5fca2ee1ef00afb4d8b9391de60c60d9ab01bdfdd393ce6ddc0d2090893df",
+  "facings.png": "fe38035971d5e14633a301cf6cd370920ed97c4ad646f0329a3ad8079873f3a0"
+ },
+ "source_sha256": {
+  "south": "4cc0c98ef3a63f1782cf1e3fc237d53d4fd40369a52e0681c9b6edf48f941e89",
+  "east": "fe5a092da418ae605f510a8dfbd2be5c681c6499cc5341d90600cff64e06dce6",
+  "north": "efb439f671772806256dfce8cec2298894d8f36326158478dbca301ccec0f143",
+  "scale": "2bbea118c75c860a1995a7e3758c53664d86e4a0765411339f63a1434659a0c6",
+  "siblings_Urusai_south": "d039cd1862d98b15ff2148b29d526a51e988fff688de24ca8465a34b2bef464b",
+  "siblings_Urusai_east": "504beaf157bf7607f598ba34857a0d185dac081a0b5cb7ca95cb90e4bb58b029",
+  "siblings_Urusai_north": "5dc0bf818833d3cc348382ce51b77627fc03aa0befdcb088dbd17f16eacb7083"
+ }
+}

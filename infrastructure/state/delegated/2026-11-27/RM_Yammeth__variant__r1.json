@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.469558
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 25.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16032159999999998
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Yammeth__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9cb2f9eb46b8ea181fe500c5865cde4107ad6cb12f0207020c42f9f1a3592e61",
+  "east.png": "8c17fa500f449118c19b7c8d0c776bc1aaa645eb8ee237074ab51455e53beaf0",
+  "north.png": "1b94a313b2edaea383021b192cf1665073d59bef5c279ea57b4e6c69112c21d2",
+  "scale.png": "11467f2304829e406c89ecd9dd3d7daa8b525c186b2702bab6b8042cfacb3733",
+  "siblings.png": "2955b8d1cb8f10a8b9bf507253bf2179c150f6cc48c8627b331be0226efdf800",
+  "facings.png": "403c49135cdba9cc1beacf92d25c1e29c729a5d0f8bbcdb59b619a48d5521d45"
+ },
+ "source_sha256": {
+  "south": "d3dc59da8c041746b9c03ca94bca2f47f86bef36663cc251b7d81de2c86655e7",
+  "east": "885ba8c769b3d802a791a7f034ca79f0d3da59e2e899c929ac2f1a51accef568",
+  "north": "6736c01a581da1b3373a7ecd18e68901237c6bf12d035e4228bc1bc46cb685d3",
+  "scale": "8a653c664f168924a7edb15d5ff2512cbfacc81e8e1a5ca2a21044987e338aea",
+  "siblings_RM_Yammeth_south": "03555f27c0d22372d6d6a5c71848fbdda268df938961b61838d5f96a57be108c",
+  "siblings_RM_Yammeth_east": "3601ff8203913163c81d1820b83ffe92fd1a65ac1801ca7b0c42f36398738fb0",
+  "siblings_RM_Yammeth_north": "3fc8029386feab424dd1cb8f9a64dc1c1f50ddfe47da38937a7e5e3bdec7fa3d"
+ }
+}

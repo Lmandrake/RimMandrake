@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Olumetha",
+ "nearest_earth_animal": "hippo",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "a heavy wedge-shaped brow made of fused plates",
+   "quote": "a heavy wedge of fused plates for a brow"
+  },
+  {
+   "feature": "four glowing yellow eyes set beneath the plated brow",
+   "quote": "four glowing yellow eyes beneath it"
+  },
+  {
+   "feature": "inky black body colour",
+   "quote": "inky black"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:00:43-08:00",
+ "source": "description only (no image)"
+}

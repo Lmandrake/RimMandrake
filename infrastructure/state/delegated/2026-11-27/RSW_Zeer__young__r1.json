@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.465124
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 34.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1658116
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Zeer__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "350119a31387fb4c069014ab8d86c2b64099f7325a01cb059fe5fc84113366ec",
+  "east.png": "e9ded2a116816cebc483a68d062a5be097e60619da657f9d86cf58f085e83ffb",
+  "north.png": "3a20834557d85980df1e940750ccf2b34af38befdd2940455753af648467ffcb",
+  "scale.png": "acf77ec0739da5302a42b17aa93ea032a445e7cc64eff6ac7f5ab039d1d75b40",
+  "siblings.png": "e9bccd05f2f7550916321700597d96f44af55790ef27f702ee84dfc9782bce6f",
+  "facings.png": "07a918a6b7ab749fb161631dc2b5ff63ad78d89797eaa73287f67201286546e0"
+ },
+ "source_sha256": {
+  "south": "c9a839a078eb77fd4e9e0d57c5ca851c74c5153ab8f7c7f77e265407a073f533",
+  "east": "1dd1ed2405b199176353e97d4b4b98ef26df188c1adff905051acd531686f916",
+  "north": "1de06baf459e6029e9dd5e66f6a10184a5cff4a64955dcdedd87c3a6d30e6f90",
+  "scale": "5e8bd47baca861f130d2a97a696ccf4a7a88947ad758d3e97367b16d4ee2bb69",
+  "siblings_Zeer_south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2",
+  "siblings_Zeer_east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+  "siblings_Zeer_north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768"
+ }
+}

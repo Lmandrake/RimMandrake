@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_TeeMuss",
+ "nearest_earth_animal": "tapir",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "long legs, not a tapir's short stocky legs",
+   "quote": "long-legged"
+  },
+  {
+   "feature": "mottled tan coat",
+   "quote": "mottled tan"
+  },
+  {
+   "feature": "shaggy mane",
+   "quote": "a shaggy mane"
+  },
+  {
+   "feature": "tusks rising from the lower jaw",
+   "quote": "lower-jaw tusks"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:15:37-08:00",
+ "source": "description only (no image)"
+}

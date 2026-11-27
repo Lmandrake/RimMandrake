@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Massiff",
+ "nearest_earth_animal": "monitor lizard",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "a crest of spines raked backward along the body",
+   "quote": "a crest of backward-raked spines"
+  },
+  {
+   "feature": "armoured body",
+   "quote": "armoured reptilian predator"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:34:08-08:00",
+ "source": "description only (no image)"
+}

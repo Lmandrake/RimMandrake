@@ -1,22 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RUT_BrineBattery",
  "nearest_earth_animal": "turtle",
  "earth_body_named": false,
  "departures": [
-  "squat, low disc-shaped body like a fitted lid whose rim sits flush against the pool floor, not a domed carapace",
-  "rubbery, smooth, flexible-looking shell covering, not hard plated scutes",
-  "no protruding head, neck, flippers or tail breaking the lid outline",
-  "sits submerged at the deepest point of a hypersaline pool, its underside pressed onto the mineral bed"
+  {
+   "feature": "rubbery, not hard, shell",
+   "quote": "rubbery-shelled"
+  },
+  {
+   "feature": "body shaped like a lid that fits closely over the pool floor",
+   "quote": "like a fitted lid"
+  }
  ],
  "body_plan": null,
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T03:23:21-07:00",
+ "at": "2026-11-27T04:11:27-08:00",
  "source": "description only (no image)"
 }

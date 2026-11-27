@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Drifter",
+ "nearest_earth_animal": "jellyfish",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "a bladder covered in pale blue skin, not a gel bell",
+   "quote": "A head-sized bladder of pale blue skin"
+  },
+  {
+   "feature": "hovers in air just above the floor instead of swimming in water",
+   "quote": "drifting a hand's breadth above the floor"
+  },
+  {
+   "feature": "heavy yellow liquid pooled in the lower third of the bladder",
+   "quote": "a heavy yellow slosh settled in its lower third"
+  }
+ ],
+ "body_plan": "flyer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T03:59:05-08:00",
+ "source": "description only (no image)"
+}

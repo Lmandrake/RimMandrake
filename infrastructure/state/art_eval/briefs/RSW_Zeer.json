@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Zeer",
+ "nearest_earth_animal": "giraffe",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "tan coat crossed by dark rust-brown bands, not giraffe patches",
+   "quote": "a tan coat crossed by dark rust-brown bands"
+  },
+  {
+   "feature": "two pale horns hooked back from the head, not short giraffe ossicones",
+   "quote": "two pale horns hooked back from the head"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:04:44-08:00",
+ "source": "description only (no image)"
+}

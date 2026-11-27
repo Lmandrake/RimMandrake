@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 54.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5040728
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1571576
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_ScaldWalker__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "575733cd40d1c1164d94c821364bb3ab5a1749dd427c6ade59f0128d9db9eedb",
+  "east.png": "5301988fa6854090f32acbdf7ed9f36f14e92a0f188090e7fb6bef4e70f9cea1",
+  "north.png": "c3e2b9744875baff5a0c21e27a40ab0d89e179918baa5bca1c8591c95c065e39",
+  "scale.png": "e3730a8df995ba3574cdabdd09caf709828c1d4f15073cf6549c63593b125e34",
+  "siblings.png": "75c58c152863d712771e2414b0aa981e67293eb76e695d1e359f70dc04ce6e39",
+  "facings.png": "311d2b33b3d722bb349a87a8af8df52a71aa10bd989eaefd9aa47aca1baa5719"
+ },
+ "source_sha256": {
+  "south": "30deeb1377a72910957b23161e91eef932f32d3c8bfbcda99362c242648187e0",
+  "east": "630dba0cf6ece1d9e2227f375fe517284c3b1ef28f76db3ceeb836a8ab1cd346",
+  "north": "b8128542cfb0329c83ef3abe92b5e0ee9b612dfd69735617fb3a7eefa4485435",
+  "scale": "06c512f7f683b7a73a06c376e895627aa7f8d9c055aae65d0229bb93153b9d8a",
+  "siblings_RM_ScaldWalker_south": "9358fc695e8a14295764dda91a43bfefe9350eb65892994706d5950306e97d5c",
+  "siblings_RM_ScaldWalker_east": "a7a0f1b807385d5388d6e48f4e8057b0be4aabd3ce1c507eebc7b20709514e82",
+  "siblings_RM_ScaldWalker_north": "09f10749d072eb5d7ccec51e5d795e2b6c510b0f2cfdefba781f26fd097b8afd"
+ }
+}

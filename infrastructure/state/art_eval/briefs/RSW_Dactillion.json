@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Dactillion",
+ "nearest_earth_animal": "pterosaur",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "thick scaled hide covering the body (not a pterosaur's thin membrane or fuzz)",
+   "quote": "thick, scaled hides"
+  },
+  {
+   "feature": "a mix of bird and lizard features in the body",
+   "quote": "shared both avian and lizard traits"
+  },
+  {
+   "feature": "prominent limbs suited to climbing rock",
+   "quote": "its prominent limbs allowed it to scale the rocky side"
+  },
+  {
+   "feature": "one pair of long, thin wings",
+   "quote": "long, thin wings"
+  }
+ ],
+ "body_plan": "flyer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:08:57-08:00",
+ "source": "description only (no image)"
+}

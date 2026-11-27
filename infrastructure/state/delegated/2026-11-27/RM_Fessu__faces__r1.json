@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 74.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.49421919999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 33.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16994959999999998
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Fessu__faces",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'F_TOPDOWN', 'F_SOUTH_NOT_FRONT', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['F_INCONSISTENT', 'F_TOPDOWN', 'DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4c4a6fbe14d9086a9a8f3d5473c136de611901ffefc4037e28df1ad1e962d068",
+  "east.png": "fbb3df0f0b134e3fe883e479bca43a12a7964fdf8dceaf874295be8ae01076f0",
+  "north.png": "b4f50f3c85519b42c95cbf30ef4d9f00af8e90676441346c49881cf52e7b2c67",
+  "scale.png": "1baac2748080c14bff6c8ab179b2b138af76edd933c3d8085c4087f308f3841b",
+  "facings.png": "0ecb0c673c5f6615b757b512a652f8f998c360403b5d93d6632427441c2787ee"
+ },
+ "source_sha256": {
+  "south": "4c4a6fbe14d9086a9a8f3d5473c136de611901ffefc4037e28df1ad1e962d068",
+  "east": "234ce9d91841bc4c78caff7179979eefe44ddf2e1d7888bfd3dbd7d3ba94387f",
+  "north": "b4f50f3c85519b42c95cbf30ef4d9f00af8e90676441346c49881cf52e7b2c67",
+  "scale": "26aa3d4025d13d38eb3f8b23118dcd0f1c900dc056f0d8f9a79e4e1875642e85"
+ }
+}

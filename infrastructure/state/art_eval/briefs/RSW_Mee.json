@@ -1,21 +1,23 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_Mee",
- "nearest_earth_animal": "fish",
+ "nearest_earth_animal": "sardine",
  "earth_body_named": true,
  "departures": [
-  "the canon mee scalefish (see canon entry meescalefish)",
-  "silver-blue schooling fish",
-  "a single line of bioluminescent dots along the flank"
+  {
+   "feature": "a single line of bioluminescent dots running along the flank",
+   "quote": "a single line of bioluminescent dots along the flank"
+  }
  ],
  "body_plan": "swimmer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T04:34:24-08:00",
  "source": "description only (no image)"
 }

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 54.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.49066220000000005
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 25.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1584676
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Thurrock__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "25e5766235d044d9158aa1ae64e4ba5302d250d2a5688061104755438d926ea7",
+  "east.png": "6849dacaf561da8b65d51326076853d8a69d9e9a902dbc543467c5a1abcaba5d",
+  "north.png": "2339a0be6affc2f2acf31c9c3f1f5e5d629560239fae3f666435c1da62b20263",
+  "scale.png": "5f1023830f5e05ffadf657bbbedfd24cf7862c5e914716eb3d1068b9492d8e74",
+  "siblings.png": "0bb1f8c9315ec662b30010b938bc68210da97bd6b5e99f7f8314c0a75bc6329d",
+  "facings.png": "0e9a40a42f0515762b31e6dde8f628a10117ca8d7768b53a112c138ef0253eee"
+ },
+ "source_sha256": {
+  "south": "25e5766235d044d9158aa1ae64e4ba5302d250d2a5688061104755438d926ea7",
+  "east": "1512d0145e3fcbc84c5705f542530dcc22ee87bbe3d1e91da933cc16df7de965",
+  "north": "76ca7f06af4577ffa66a02da74d6b6e8a65a1af59327b46d9ce603a9624c3a19",
+  "scale": "715a174902850f9aa1b8a385746657963cac4f8f5f96ccb4ec84841eacab9495",
+  "siblings_RM_Thurrock_south": "1b6a69ea295301d23fa016249f1422e9068d385dd4a84edb0636b25313a5894b",
+  "siblings_RM_Thurrock_east": "6c64679bf0a378645633811c7dee2ae3a6d1880f3db7a2eb2c3a9002cde4b85f",
+  "siblings_RM_Thurrock_north": "32e6f15d29f3d325ce5fa3acce031c410fa85de5d8e626b32b5c8b7545c45bc8"
+ }
+}

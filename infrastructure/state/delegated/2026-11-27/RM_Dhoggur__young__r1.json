@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4593536
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16102960000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Dhoggur__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED', 'STYLE_EARTHLY', 'DESC_MISS', 'F_SIZE_JUMP']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8c249ffc1b432e953a9a6f12dfb513bbc7dff380312b002be2a79747d1a3181d",
+  "east.png": "2aaaf21b4c3786046da313e1e7ab5953167eb6a00ef53f23b345d7f2e2092473",
+  "north.png": "b64f526a3123889c15810c40a1784514fe2b57c3d38d7b6c4f171e981dcefce9",
+  "scale.png": "a5156e1fa1c44edc68aa7c11a5e7659325a84d26dd1b61663de41fdd273cc06b",
+  "siblings.png": "4897050c16e71097d085e1f9bea07aacb2b40af34dfaf4c2afd0567fc923d357",
+  "facings.png": "f4714738e3b6e8119775a04b9b68aacd8d402ce8f573341a8798840b6d39e786"
+ },
+ "source_sha256": {
+  "south": "e08e68106ce302786c3913343b275d1a9ad38ec4c063ddf0354cb247713045c2",
+  "east": "3bcbfc7d9337503617760c5961b44e6f3e0ef3bdbceb223b18b04f1fd5fe1652",
+  "north": "436d4218a7bfda13d190cf264792b1a988f64f388cf7cd9824d838f47207a640",
+  "scale": "499b88ee38ca313687f5a177e6a3212843726a4322bdf56cf9cdc482fb885c0f",
+  "siblings_RM_Dhoggur_south": "d1f3eafb69cf3e28f770c15867be2ad34bc0317f27508eb11e98644a767f3f8c",
+  "siblings_RM_Dhoggur_east": "948188e777ef9336733d7570f826e654602ac47e2425f48bbdf82de63f652c40",
+  "siblings_RM_Dhoggur_north": "88d5f753ba970252ecfe41b28c74b0087d1269384bf8f62f6127e8080348c012"
+ }
+}

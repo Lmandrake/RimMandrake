@@ -62,5 +62,14 @@
   "scale.png": "e3b0946f43d4840cabea857f9b1386c83520ba8afe9725476486c6fab455a5f3",
   "siblings.png": "5bc1f0f2a1d38a3b387f5431b150c20ecdb4468cf8d7d0955f21cb26f963bdb3",
   "facings.png": "e3d9abc0a0b34aabedd34761520cfe0ad088c171f28fcaaf25aa839dfec68664"
+ },
+ "source_sha256": {
+  "south": "436ed2ec0edec21de0018dd727a1d7a5d0451382b77d7d242acfb5271ebaef2d",
+  "east": "94e34aab87933cff1d42f7dbb0c5f009b6c3e221184e41dc3621ab5c5eaeb1b0",
+  "north": "d0d651fea471437a5d3f2978d4f366279d6c3918615e6d412d6a82b85e26d27c",
+  "scale": "df9381b68a3fc8c1bf695ce23f48cdf3ca9d6a5350cfab4529ca3524b0a4239b",
+  "siblings_Uvak_south": "4774644e6d3586ea430ae5059a896f2ab2fc03b10d58468c9284c074588c3cee",
+  "siblings_Uvak_east": "937f534c2a6b3bfe37a931a649dc9ac0a2b109706b2a09bc402808164b1b16b4",
+  "siblings_Uvak_north": "1a4dba32dce704d8430f8d680a3eb53730eefddaaa846ab8f54590dca7fe5ea0"
  }
 }

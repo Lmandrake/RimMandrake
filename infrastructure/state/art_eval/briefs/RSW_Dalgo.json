@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Dalgo",
+ "nearest_earth_animal": "theropod dinosaur",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "swept-back fan-shaped crest on the head",
+   "quote": "a swept fan crest"
+  },
+  {
+   "feature": "tail ending in a broad, flat blade-shaped tip",
+   "quote": "a broad, blade-like tail tip"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:04:01-08:00",
+ "source": "description only (no image)"
+}

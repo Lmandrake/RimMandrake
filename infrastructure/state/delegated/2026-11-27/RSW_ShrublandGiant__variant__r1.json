@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4587074
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15750960000000003
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_ShrublandGiant__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d4fd0ec6511288c2b13731368474b1a81e44bdf9dbc527dca0cd1034ab7d5f3f",
+  "east.png": "c0cc032b2869fd43e24915063dbe98c9e12db3243de0e02e0c3b8896fdeee2c0",
+  "north.png": "ba17a7d936beffa586f6c33a8248ce64bfb88a0c2010b8a800ad4d530cd05477",
+  "scale.png": "49d757684fb509933e9c18aea1ba0f6254eac677c2a0eabecf17b922f09965b3",
+  "siblings.png": "379a77f2acae724713f66eccfe2f534f8141f11197e3c17caef58c5ba96136f6",
+  "facings.png": "983c38e9c791df9af186f5d4aee8458697ab134df09855485e5053220527f6af"
+ },
+ "source_sha256": {
+  "south": "8999d1a3831a8536396d1749169be7e4d7da08a390d63753799fb7dc03a6a7ca",
+  "east": "e3f835e1bbf64383119737017923eabb45540451fcabef3d1fd1f8254a7eb22e",
+  "north": "6b9448070d8dc07cf980dbd9fa6043c63c1d6238b82d859ce4c8c477d5f143c9",
+  "scale": "df73631c61c39a79457d8fed7d15232e897429245bc4707d6fce6018c434a7ba",
+  "siblings_RSW_ShrublandGiant_south": "4200f66f731353eb36709e2d8985fb883d1fd74628c89bdd029c320b3d83e586",
+  "siblings_RSW_ShrublandGiant_east": "8aa98ed20a6810c1997160f2b3bbdfd35b4434966d9dc470dff92ff5ed3e0394",
+  "siblings_RSW_ShrublandGiant_north": "4f35a47cfece50486f598e3585756cc93836e8b2fcb9c6624380376c77ed5e04"
+ }
+}

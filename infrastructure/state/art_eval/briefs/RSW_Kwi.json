@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Kwi",
+ "nearest_earth_animal": "iguanodon",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "blue skin over the whole body",
+   "quote": "blue-skinned"
+  },
+  {
+   "feature": "black stripes marking the blue skin",
+   "quote": "marked with black stripes"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:33:14-08:00",
+ "source": "description only (no image)"
+}

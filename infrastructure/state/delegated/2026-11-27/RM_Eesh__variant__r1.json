@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4775886
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 30.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 16.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1576736
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Eesh__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'STYLE_CARTOON', 'SIBLING_MISMATCH']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "235fdc3c92dcd0c63c424f9e4edf0de67d5167d078de3a068bd4862785ec2afd",
+  "east.png": "030b5611f3ac7d49fbd44161fdf0a03fd1b9c69b69a126b9abf9f07f029d5734",
+  "north.png": "412c2c0f0270953c8edb7e2f9d8af569f4b742dfea12c377cb6d7e7b52f3bcf2",
+  "scale.png": "5846ce98c5fe44492a4bfb04b079ccb239186d57cdb328e04015f62372abb643",
+  "siblings.png": "98b96528496ec276d475706d5c06e58fd1ab8ca702427a1fee4525268cfa02b6",
+  "facings.png": "7bb58710ef6d8266bd28eb80560ef4805bb729a685ad88669702be101f917cc9"
+ },
+ "source_sha256": {
+  "south": "dcf5182b3e0ae5bedaca1e34b48942e09cedb3e25ae356767d486204bba1d3a6",
+  "east": "030b5611f3ac7d49fbd44161fdf0a03fd1b9c69b69a126b9abf9f07f029d5734",
+  "north": "88191f8e79989db7f082f8557bdb338d36a3728eae4f66a1b33a49b8ba3837a9",
+  "scale": "68ba70fcf1353815072f33b025efc7e1b6bbb06c687285877d30cc39ddc79235",
+  "siblings_RM_Eesh_south": "9991625f8cf03c92c581d0bca49b0ca8f42fd92e24a49ba5a7b8b0dbe0e09a70",
+  "siblings_RM_Eesh_east": "1323da1a2c5077e80f567d1de8be151a99cc6a3c5340da89a8d9e5f21272d541",
+  "siblings_RM_Eesh_north": "512b36294b63eb31d70c4da0c9cd1849c4e5d27c3304cd2bd1f708f0bf52ffa7"
+ }
+}

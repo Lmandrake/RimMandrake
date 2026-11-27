@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47604820000000003
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Hrumph__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "44b7200b01762b41441fd7777ec8db33ceb36fa919de4e6e6fa241a7aefcb231",
+  "east.png": "3c07327ecb4aeeef181765477af0841f44979781679ea5568824669a39a4ba65",
+  "north.png": "53dbb71b7c6135fc057ab8fef25aa24cfa04b6f187c50bff27f36a052ff1244e",
+  "scale.png": "9aa2a9dcd36b20f65b400e38678488faf8ca880dd31032760e432f4cff211275",
+  "siblings.png": "5f3868190649089b7acb0081523b92d2effea4108e38d1f0ae891fd62ca296d2",
+  "facings.png": "86df3493de2f3d2c62b05c7df9ddf8c03e8328d465bc195f9b1fce2a730c6e87"
+ },
+ "source_sha256": {
+  "south": "44b7200b01762b41441fd7777ec8db33ceb36fa919de4e6e6fa241a7aefcb231",
+  "east": "28f0a75c2209d0647e107e57cb7fa417a4a9b3a56df34e41efb24efa7b2492b1",
+  "north": "f913226cbd1fa7521a728399522837538df67049f16c52c70914850cd70b994b",
+  "scale": "317de4ed33933be6420e74842588c5dd66e7eab1c5edde3bc9d63e6b9436a0bf",
+  "siblings_Hrumph_south": "0004338235546cab7aa4eecd8ae639092f7e961d5b0e49018b87afb6fb636979",
+  "siblings_Hrumph_east": "dad8444da393832763ccfeb7e4c96e89be64d4adbe60084a2b1427f61ec59be2",
+  "siblings_Hrumph_north": "d3556a341d5431d99274b08c30662afcdbdf50406109fbffe1e5ddad09b320f8"
+ }
+}

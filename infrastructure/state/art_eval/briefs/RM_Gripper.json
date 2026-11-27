@@ -1,0 +1,35 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RM_Gripper",
+ "nearest_earth_animal": "beetle",
+ "earth_body_named": true,
+ "departures": [
+  {
+   "feature": "carapace pitted like struck flint",
+   "quote": "carapace pitted like struck flint"
+  },
+  {
+   "feature": "salt rime crusted at every seam of the body",
+   "quote": "salt rime at every seam"
+  },
+  {
+   "feature": "forelegs clutching a scrap of material",
+   "quote": "forelegs always gripping some scrap or other"
+  },
+  {
+   "feature": "fist-sized body, far larger than an ordinary beetle",
+   "quote": "A fist-sized beetle"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:10:16-08:00",
+ "source": "description only (no image)"
+}

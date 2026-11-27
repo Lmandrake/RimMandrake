@@ -1,0 +1,31 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Iriaz",
+ "nearest_earth_animal": "giraffe",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "greenish body colour",
+   "quote": "A greenish herd grazer"
+  },
+  {
+   "feature": "two horns that sweep backward",
+   "quote": "two backward-sweeping horns"
+  },
+  {
+   "feature": "yellow-orange spots over the shoulders and back",
+   "quote": "yellow-orange spots across its shoulders and back"
+  }
+ ],
+ "body_plan": "walker",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:04:16-08:00",
+ "source": "description only (no image)"
+}

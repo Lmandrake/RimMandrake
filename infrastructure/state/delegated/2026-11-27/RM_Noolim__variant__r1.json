@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 53.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.472014
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 24.9
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1585916
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Noolim__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING', 'STYLE_EARTHLY', 'STYLE_OFF']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['DEPARTURE_MISSING', 'STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b7c0fe14c3a53f68b5d48bb15cd9b9203c8fcfd94f4e0b7c89c63ee86eb65ca8",
+  "east.png": "fedf40db2aa2104f2555be2b5fc194b231436e20c9c329cdb96b14c9405b384f",
+  "north.png": "4f729e26289319905d1e6d357f90a077afa8d60df6fd373074fcca65d2cb5a21",
+  "scale.png": "4c4ea2c6322174f4207f30be6e4421ee0e02100cf3008bf88485665eef9d0d78",
+  "siblings.png": "d6af0eeb11dea7902b9f6c61e4e1d55bb4c986826278170b650be07d868adef4",
+  "facings.png": "204fcfee232718beace562147adcd6b1627c3088edb8ae4338558ff75982074d"
+ },
+ "source_sha256": {
+  "south": "c57212f384b3dc508d03d3934851354cebb9e5c5591f68d755eae260879a167c",
+  "east": "dc604602683a427dcfb4161f2091a8f050e240e583fe1cc468f30e983c56d4fc",
+  "north": "3fd78e85ca493824278378c0895b17ea69aa23494e6c4dba8b6ddbf7fcd0d113",
+  "scale": "f2a2d222e4fc1f2ff79ecbbc8f9849be1c946c8b1802dbeb50ad9b1173b53be4",
+  "siblings_RM_Noolim_south": "5f0f81e730a2694dd60a72e97b2ec3aa09a280dcac7872a6377a8604ec3f05f2",
+  "siblings_RM_Noolim_east": "89a8a05d2d750cf6b0b977bc9d1b542aa7604a3b0163fa58463ac1769a01bc44",
+  "siblings_RM_Noolim_north": "fd7ed6e0a47129da69ff0fac162344635cdeb0a5caf782371a0a0e64eb1f8a25"
+ }
+}

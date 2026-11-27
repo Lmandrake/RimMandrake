@@ -1,0 +1,27 @@
+{
+ "schema": "rm-art-eval/departures@v2",
+ "subject": "RSW_Urusai",
+ "nearest_earth_animal": "macaw",
+ "earth_body_named": false,
+ "departures": [
+  {
+   "feature": "four wings instead of two",
+   "quote": "four-winged"
+  },
+  {
+   "feature": "a body that is part reptile and part bird, not a plain bird",
+   "quote": "reptavian"
+  }
+ ],
+ "body_plan": "flyer",
+ "dropped": [],
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
+ },
+ "at": "2026-11-27T04:01:39-08:00",
+ "source": "description only (no image)"
+}

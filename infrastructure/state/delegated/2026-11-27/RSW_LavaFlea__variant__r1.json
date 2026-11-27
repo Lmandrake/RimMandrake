@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.477424
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1527476
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_LavaFlea__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'F_INCONSISTENT']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "46ecdf1a22c3e35ac863df42d722f4b3f9477b0bcd8eefa8f5e62efc40dbf2c0",
+  "east.png": "e635c5a82cf5736b7572d6ed00225afce32b31bb574ca6b68015ac2b4315755a",
+  "north.png": "1ee12edf273266baaaad2f9f620e4e0613d628b3d8e3cd497de6ec24a7811e52",
+  "scale.png": "998ec04a68508316d6b42ae10875d460e7a978e73a917d0805f52b2570425d85",
+  "siblings.png": "d75ef7a74233ed6d5fb9593b9c13d5919144665424877121e9cf84e76d89d326",
+  "facings.png": "d26371d284e3b1566aeedc0167fe20fc6ef5139f3b8a358a57b9f898e55a16da"
+ },
+ "source_sha256": {
+  "south": "b5b3701f3f7caa63814a7cf0a7264ab5d7b317f4c47737f973da4a4a5dc9c3d5",
+  "east": "e635c5a82cf5736b7572d6ed00225afce32b31bb574ca6b68015ac2b4315755a",
+  "north": "f0903c04b3a09140d8b9ecbb2f43b3b1643757b002b44bce958d793dbe0c67f5",
+  "scale": "bcfb84377c2f3e8aca495d881b873f6507bdba5ceff8f57b1f2932ed6d494c3a",
+  "siblings_LavaFlea_south": "dd1ffd05b4db9db1ab0d600e9332e23586dd0722e4c92e87208c3ac9fb715f15",
+  "siblings_LavaFlea_east": "09a8885de8d2b5b0254cb134fe706845b57b712a72e8d327b81f21ea14204335",
+  "siblings_LavaFlea_north": "ca828e556b61e29a5d9e334be2f8191c480f5f6be16e8ea54d472a96cad866d8"
+ }
+}

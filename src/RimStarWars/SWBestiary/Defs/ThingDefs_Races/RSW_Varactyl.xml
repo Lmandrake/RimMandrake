@@ -169,21 +169,13 @@
         <label>varactyl chick</label>
         <labelPlural>varactyl chicks</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Varactyl/Varactyl_f</texPath>   <!-- owner card 2026-10-22: male uses the female art -->
+          <texPath>swanimals/Varactyl/Varactyl_fYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
           </shadowData>
         </bodyGraphicData>
-        <femaleGraphicData>
-          <texPath>swanimals/Varactyl/Varactyl_f</texPath>
-          <drawSize>1.5</drawSize>
-          <shadowData>
-            <volume>(0.4, 0.3, 0.3)</volume>
-            <offset>(0,0,0.0)</offset>
-          </shadowData>
-        </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
           <drawSize>1.5</drawSize>
@@ -191,21 +183,13 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Varactyl/Varactyl_f</texPath>   <!-- owner card 2026-10-22: male uses the female art -->
+          <texPath>swanimals/Varactyl/Varactyl_fYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <drawSize>3.75</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
             <offset>(0,0,0.0)</offset>
           </shadowData>
         </bodyGraphicData>
-        <femaleGraphicData>
-          <texPath>swanimals/Varactyl/Varactyl_f</texPath>
-          <drawSize>3.75</drawSize>
-          <shadowData>
-            <volume>(0.6, 0.45, 0.45)</volume>
-            <offset>(0,0,0.0)</offset>
-          </shadowData>
-        </femaleGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Varactyl/Varactyl_Dessicated</texPath>
           <drawSize>3.75</drawSize>

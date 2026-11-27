@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 66.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.506142
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 48.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 15.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1590476
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Grank__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT', 'STYLE_CARTOON', 'SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1', 'K4'], own blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "eb271838bc4a3ca71cb5ef9321a61bf9c3e505a6e6eb21484b8b68d0acef2f35",
+  "east.png": "707db94096f6cb8eea5f5c2b6017f50598dcdb0a3aa429d0a962d8d0402322b6",
+  "north.png": "79d524f805aec6c203b83c78ea024c6fa4aa12a03387bc351657bd3140dd70b2",
+  "scale.png": "f48000b11e40db358aeac4c8a8ff3892516754d251061ba9b2c2339d0da98011",
+  "siblings.png": "5701a69fe84fd82d05626cd928fe937ea28c054a84c4669b99629b71bb5234bd",
+  "facings.png": "1ca104b070d13b713c16a96fa0ba4e1f341058df9a861fe3a9bac8909780c393"
+ },
+ "source_sha256": {
+  "south": "e1d4605a500f3ce1f8cd76d57b2b678c7511faededc9fb3a780750da89fa835b",
+  "east": "83634386a957f97289c816fd4193e8e446d8a705a4f5f2e933ae102875ca3f45",
+  "north": "7c7909a5b9406f1efa4de8d69d3770a8a47b1a8b82cc609ef70ecdb05c7a2723",
+  "scale": "fc0a5e09b13c7fce04ea03058e6f87f6c70ff4bb09445d4f8de4b656613050d2",
+  "siblings_Grank_south": "945535183a2a4718cc300fde8e980b4d0a79771b2b976f45fad2ec31b55c4bd8",
+  "siblings_Grank_east": "aadfd68ae831d4258354f323f780ac470e0b45e48c99a1166809d9db12b281e5",
+  "siblings_Grank_north": "8ec5c032f167c5d0dfd17aabedeb1a04ee48bb390eed3573e34efddc09c29b94"
+ }
+}

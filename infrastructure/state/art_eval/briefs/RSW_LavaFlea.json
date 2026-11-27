@@ -1,21 +1,27 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RSW_LavaFlea",
  "nearest_earth_animal": "flea",
- "earth_body_named": false,
+ "earth_body_named": true,
  "departures": [
-  "the canon Mustafar lava flea (see canon entry lavaflea): ONE riderless arthropod, no person sitting on it",
-  "a large arthropod with a hard shell and long jointed legs",
-  "a mount-sized body, empty saddle area"
+  {
+   "feature": "large arthropod body, far bigger than an Earth flea",
+   "quote": "large arthropods"
+  },
+  {
+   "feature": "a protective shell over the body",
+   "quote": "its protective shell"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T04:06:18-08:00",
  "source": "description only (no image)"
 }

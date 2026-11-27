@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 66.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4914938
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 42.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 25.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1646356
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Vellak__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'OWNER_NOTE_IGNORED', 'F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K4'], own blocking ['SIBLING_MISMATCH', 'F_INCONSISTENT', 'F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8842779f7f12a787d2201d3483f2d3fddd844ed8e13b9647672cc6d6c71a70e3",
+  "east.png": "39a6191dce2e583daba810f740b4e7ed7b83dfe37efbeee5983001633a6b7599",
+  "north.png": "0ba07c45a0aeb02447c4db5a51fbbbd9dc0259ca7308313ffecd97ff36d3e062",
+  "scale.png": "cd7a475b27a54f80a2b6d7f4e49459b8a9886518cb13906f4087f26f3e3a3901",
+  "siblings.png": "ed74a3fe21e932696373fbff13140cba4d653110a1cdf4755a9f1da6fa1f15f4",
+  "facings.png": "b0e58b85a9c895ecb7ec80597e2ac3714636a4479c278bcb7c72195e0cfb9261"
+ },
+ "source_sha256": {
+  "south": "a521b76dd8a912198569a13e84b80efbfdf2fcc45da17185d00be4fa1614cb86",
+  "east": "0661350075f22a4bdac39fcb1144f68815288ac37a3c64206329af165ab89eb1",
+  "north": "5ebc99c841e26793f17e083d68ef453f99217acd7361983c2ceaf76401172f85",
+  "scale": "1b1f7a3c51e8de4c8ee828181378253121727487cc4b3e745058e6601f279e95",
+  "siblings_RM_Vellak_south": "7b8f75708adc19877cff4853494285ae66d0fdcf392c758d0a9ba3b43fe0c204",
+  "siblings_RM_Vellak_east": "8a2eed2f99925a69bdf77bd9c6d53f240225d74b6964c2150282811a90b6da97",
+  "siblings_RM_Vellak_north": "e3eb7013f22e23391d26ae46e46e51b393ba746dc602cf3c96cfd9daf0fa02bc"
+ }
+}
