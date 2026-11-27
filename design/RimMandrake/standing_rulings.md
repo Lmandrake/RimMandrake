@@ -347,6 +347,12 @@ What this means, and how to check that it was applied:
   - no BiomeDef or patch under `src/` carries `heatKind`, `heatOffsetC` or any per-biome sun field;
   - the selftest gives the same numbers at the same elevation in every biome
     (`DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL`).
+- **Where Direct Sun ships is still open: merged into Baroque Biomes, or a stand-alone mod** (owner, Thu 2026-11-26 9:10
+  PM PST, OWNER event `1795756206289623411` on `SUNSHADE_MIGRATE_MOVE_NOT_CHANGE`): *"Direct Sun is surprising to see,
+  but it's an essential mod that's quite welcome to develop alongside us. It's mechanics are integral to the setting and
+  many Baroque Biomes, so it's a required mod for Baroque Biomes that can also stand alone... or can it? I want to
+  record in the mod that we are still evaluating whether to merge it into Baroque Biomes or take on the potential extra
+  work of making it stand-alone (not yet clear)."*
 
 ## Every DLC is assumed — owner, 2026-09-19/25/26
 
