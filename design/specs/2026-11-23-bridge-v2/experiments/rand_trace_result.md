@@ -52,6 +52,23 @@ thread.
      `tick_and_rand_references.md`): the `world.camera` track is equal in all three runs `[measured]`, so the rate cannot
      part them, unless a frame-time read inside the rate does `[guess ~25%]`.
 
+## Next theories for tick 53 (GPT, 2026-11-27; hypotheses, none tested)
+
+From `gpt_consult.py` over this page. The plant draws may be downstream: `WildPlantSpawner` runs in `MapPostTick`, after the
+pawn ticks.
+
+1. **Live inputs race inside the path jobs.** `PathFinder.ScheduleBatchedPathJobs` schedules a managed
+   `PathGridDoorsBlockedJob.Execute` that reads live pawn positions, jobs and doors on a worker thread while the tick goes
+   on. Probe: run that job at once at scheduling time (the path still delivered on the next tick) and compare again.
+2. **Random toils built before the write-back.** `JobDriver.ExposeData` (PostLoadInit) calls `SetupToils()`; some
+   `MakeNewToils` draw a wait. Probe: at arm, compare (pawn ID, driver type, each toil's `defaultDuration`).
+3. **Pawn tick order.** `TickList` appends `thingsToRegister`; the order inside a bucket may differ by load, and
+   `PatherTick` collision checks see earlier pawns. Probe: the ordered pawn IDs entering `Pawn.Tick`, from tick 1.
+4. **Path restoration at load.** `Pawn.PostMapInit → TryResumePathingAfterLoading → StartPath` rebuilds `curPath`. Probe:
+   after load, compare each moving pawn's (Position, nextCell, nextCellCostLeft, nextCellCostTotal).
+5. **Frame-counted job-loop guard while paused.** `Pawn_JobTracker.StartJob` counts `jobsGivenThisTick` by
+   `RealTime.frameCount`. Probe: whether its over-10 branch runs before tick 53.
+
 ## What it decides
 
 - **One save and one written-back random state cannot repeat a run on a map with fish water.** The fish fleck parts
