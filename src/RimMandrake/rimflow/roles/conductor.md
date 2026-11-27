@@ -526,9 +526,9 @@ python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR
 python3 src/RimMandrake/rimflow/run_peek.py show        # what each live mod run spends its time on
 ```
 
-On the first turn, the wake prints the old window's last reply, his words, what you OWE (`cli.py queue CONDUCTOR
---owed`: at most 40 lines, LATE past 2 h) and the last 40 lines of the Conductor log, once. A restart wake
-(`seat_restart.py wake`) prints them, and `handoff.py --wake` after it in the same window then prints one line in their
+On the first turn, the wake prints the old window's last reply, his words and the last 40 lines of the Conductor log,
+once. The wake also prints what you OWE, once (`cli.py queue CONDUCTOR --owed`: at most 40 lines, LATE past 2 h).
+When `seat_restart.py wake` and `handoff.py --wake` both run in one window, the second one prints one line in their
 place. Do not run the owed list or the log tail again on that turn. On a later turn, run `cli.py queue CONDUCTOR --owed`
 and read the newest lines of `/mnt/d/ClaudeWork/rimmandrake/conductor/log.md` when you need them.
 
