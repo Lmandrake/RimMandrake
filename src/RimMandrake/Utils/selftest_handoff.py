@@ -236,10 +236,11 @@ check(len(names) >= 1, "this seat has handoffs to choose between (%d)" % len(nam
 stamped = []
 for fn in names:
     # Mirror production: both paths (pre-move handoffs live in history under
-    # items/) and AM so the rename commit is not mistaken for authorship.
+    # items/) and A, the commit that ADDED the file, so neither the rename
+    # commit nor a later edit is mistaken for authorship.
     rel = os.path.join("infrastructure", "state", "handoffs", fn)
     old_rel = os.path.join("infrastructure", "state", "items", fn)
-    ts = handoff.sh("git", "log", "-1", "--format=%cI", "--diff-filter=AM", "--",
+    ts = handoff.sh("git", "log", "-M", "-1", "--format=%cI", "--diff-filter=A", "--",
                     rel, old_rel)
     if ts:
         stamped.append((handoff._to_utc_z(ts), fn))

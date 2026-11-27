@@ -381,6 +381,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_run_end_wake_result.py", "seconds": 2},
     {"test": "src/RimMandrake/rimflow/selftest_detached_wake.py", "seconds": 5},
     {"test": "src/RimMandrake/rimflow/selftest_run_end_wake_slim.py", "inputs": ["src/RimMandrake/rimflow/run_end_wake.py", "design/specs/2026-11-26-wake-state-changes-only/boundary.md"], "seconds": 1},
+    {"test": "src/RimMandrake/Utils/selftest_handoff_pick_by_add.py", "inputs": ["src/RimMandrake/Utils/handoff.py", "src/RimMandrake/Utils/selftest_handoff_pick_by_add.py"], "seconds": 2},
     {"test": "src/RimMandrake/rimflow/selftest_wake_reads_once.py", "inputs": ["src/RimMandrake/rimflow/seat_restart.py", "src/RimMandrake/rimflow/wake_words.py", "src/RimMandrake/rimflow/owed.py", "src/RimMandrake/Utils/handoff.py", "design/specs/2026-11-26-wake-reads-once/boundary.md"], "seconds": 2},
     {"test": "design/specs/2026-11-23-agent-work-to-code/acceptance/rank5_wake_result_accept.py", "inputs": ["src/RimMandrake/rimflow/run_end_wake.py", "src/RimMandrake/rimflow/detached_helper.py", "design/specs/2026-11-23-wake-carries-result/boundary.md"], "seconds": 3},
     {"test": "src/RimMandrake/rimflow/selftest_continuation_progress.py", "seconds": 5},

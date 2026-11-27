@@ -129,7 +129,11 @@ def own_hold(who, me):
 
 
 def _seat_restart():
-    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake"))
+    # Both dirs: seat_restart imports its rimflow siblings bare (`import effort`), so the package root alone raised
+    # ModuleNotFoundError in bridge_gate whenever nothing had put rimflow/ on sys.path first.
+    for d in (os.path.join(ROOT, "src", "RimMandrake"), RIMFLOW):
+        if d not in sys.path:
+            sys.path.insert(0, d)
     from rimflow import seat_restart
     return seat_restart
 
@@ -349,8 +353,13 @@ def previous_handoff():
     #   * Not alphabetical: this repo has BOTH naming schemes in flight,
     #     `..._20260906C` and `..._202609062326`, and digits sort before letters,
     #     so the newest file sorted THIRD. Filenames are not a clock.
+    #   * Not the LAST commit that touched the file: a later edit of an old
+    #     handoff (a typo fix, an answered pointer) made it the "newest", and
+    #     --wake showed it as the predecessor. The rank is the commit that ADDED
+    #     the file, so an edit never changes the pick
+    #     (RIMMANDRAKE_FIX_WAKE_HANDOFF_PICK_EDITED_OLD_FILE_WON).
     best = (None, None)
-    times = _corpus_commit_times()
+    times = _corpus_add_times()
     for fn in handoff_files():
         ts = times.get(fn)
         if ts and (best[1] is None or ts > best[1]):
@@ -893,12 +902,25 @@ def _corpus_commit_times():
     # keys here are BASENAMES, and the log is newest-first with first-sighting-wins,
     # so including the historical items/ path keeps every pre-move handoff's ORIGINAL
     # commit time. Query only the new path and all 82 collapse to the move commit's
-    # timestamp — `previous_handoff()` picks "newest by commit time", so it would then
-    # pick an arbitrary one and wake the seat on the wrong predecessor. AM then drops
+    # timestamp, and --harvest and --cull would then read one time for every file.
+    # (`previous_handoff()` ranks by `_corpus_add_times()`, never this.) AM then drops
     # the move commit itself, which is a pure rename (R) touching all 82 at once and
     # would otherwise become every file's "newest" time — the same collapse by another
     # route. Each handoff keeps the time of the commit that actually WROTE it.
-    out = sh("git", "log", "--format=@@%cI", "--name-only", "--diff-filter=AM", "--",
+    return _corpus_times("AM")
+
+
+def _corpus_add_times():
+    """{handoff filename: ts of the newest commit that ADDED it, ledger format}, in one git call. The predecessor pick
+    (previous_handoff) ranks by this, so a later edit of an old handoff never makes it the newest. The items/ path and
+    -M keep each pre-move handoff's add time: the 2026-09-19 move is a rename (R), which the A filter drops."""
+    return _corpus_times("A")
+
+
+def _corpus_times(diff_filter):
+    # -M explicitly: rename detection is what turns the 2026-09-19 move into R (dropped by the filter) and not D+A
+    # (which would stamp all 82 with the move's time); a user's diff.renames=false must not change the answer.
+    out = sh("git", "log", "-M", "--format=@@%cI", "--name-only", "--diff-filter=" + diff_filter, "--",
              "infrastructure/state/handoffs/*_HANDOFF_*.md",
              "infrastructure/state/items/*_HANDOFF_*.md")
     times, ts = {}, ""
