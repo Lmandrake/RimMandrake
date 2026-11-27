@@ -50,7 +50,13 @@ with scene.open(GAME, contract=looks, needs={"mods": [MOD], "map": MAP, "calm": 
         things = {"wall": dict(thing="Wall", stuff="Steel", at=[(x, WALL_Z) for x in range(2, 25)]),
                   "cord": dict(thing="PowerConduit", at=[(x, 6) for x in range(2, 25)])}
         things.update({lamp: dict(thing="WallLamp", at=cell, rot=ROT, style=STYLE[look]) for lamp, cell, look in zip(LAMPS, LAMP_CELLS, LOOKS)})
+        held = s.read("static:" + SETTINGS, "enabled") if planted else None
         s.stage(station=STATION, things=things)
+        if planted:   # a plant that does not hold says nothing about the mod: read it after the set and after the staging
+            after = s.read("static:" + SETTINGS, "enabled")
+            if held.v is not False or after.v is not False:
+                raise scene.Fault("STAGING_FAULT", detail="the master switch's plant did not hold: enabled read %r after the set, "
+                                  "%r after the staging" % (held.v, after.v))
         run = s.run(until=looks.end, limit=looks.limit)
         shot = s.shot(rect=STATION, name="wall_lamps_all_looks")
         print(run, run.receipt, shot)

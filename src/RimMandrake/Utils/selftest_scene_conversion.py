@@ -226,6 +226,23 @@ def t_wall_lamps_plays_to_its_end():
     folder, _text = play(SCENES["wall_lamps"], W)
     v = judged(folder)
     must(v.outcome == "MOD FAILURE", "a lamp that draws the vanilla art was judged %s" % v.outcome)
+    off = ("static:RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings", "enabled")
+    W = lamp_world(drawn_vanilla=True)      # the plant, and the switch reads off: the run goes on to its judge
+    scene.LAUNCH.update(plant="master_switch_off")
+    W.game.values[off] = ("ok", False)
+    folder, _text = play(SCENES["wall_lamps"], W)
+    must(judged(folder).outcome == "MOD FAILURE", "a planted run whose switch held off")
+    W = lamp_world()                        # the plant did not hold (the switch reads on): a staging fault, never a verdict
+    scene.LAUNCH.update(plant="master_switch_off")
+    W.game.values[off] = ("ok", True)
+    try:
+        play(SCENES["wall_lamps"], W)
+    except scene.Fault as e:
+        must(e.name == "STAGING_FAULT" and "did not hold" in e.detail, "%s %s" % (e.name, e.detail))
+    else:
+        raise AssertionError("a plant that did not hold was not a staging fault")
+    finally:
+        scene.LAUNCH.update(plant=None)
 
 
 def _a_contract(**kw):
