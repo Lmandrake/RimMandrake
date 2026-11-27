@@ -561,10 +561,13 @@ REPO_ROOT = Path(__file__).resolve().parents[4]
 ART_EVAL_RUNS = REPO_ROOT / "infrastructure" / "state" / "art_eval" / "runs"
 
 
-def _art_eval_record(run: str, target: str, runs_root: Path | None = None) -> tuple[dict | None, str]:
+def _art_eval_record(run: str, target: str, runs_root: Path | None = None,
+                     texpath: str | None = None) -> tuple[dict | None, str]:
     """-> (TARGET's latest record in production art-eval run RUN when that record is a REGEN, why-not). The latest
     decision wins (FILLQUEUE_GATE_FIX_STALE_REGEN_AFTER_ESCALATE): a subject judged REGEN, REGEN, then ESCALATE at
-    round 3 is the owner's call now, and an older REGEN line must not still file a redraw."""
+    round 3 is the owner's call now, and an older REGEN line must not still file a redraw.
+    A commissioned look is judged as subject `<TARGET>__<look>` (xart_drive.py): its record counts for a row of TARGET
+    only when the row's TEXPATH is the record's own target_texpath (a look's REGEN never redraws the adult)."""
     if not isinstance(run, str) or not re.fullmatch(r"[A-Za-z0-9_.-]+", run or "") or run.startswith("."):
         return None, f"source_run {run!r} is not a run id"
     d = (runs_root or ART_EVAL_RUNS) / run
@@ -575,7 +578,8 @@ def _art_eval_record(run: str, target: str, runs_root: Path | None = None) -> tu
         if json.loads(meta.read_text()).get("test", True) is not False:
             return None, f"source_run {run} is a --test run (it may file nothing)"
         recs = [json.loads(ln) for ln in dec.read_text().splitlines() if ln.strip()]
-        mine = [r for r in recs if r.get("subject") == target]
+        mine = [r for r in recs if r.get("subject") == target or (
+            texpath and str(r.get("subject") or "").startswith(target + "__") and r.get("target_texpath") == texpath)]
     except Exception as e:                                           # noqa: BLE001 — not a dict/list: fail closed
         return None, f"source_run {run}: unreadable ({type(e).__name__}: {e})"
     if not any(r.get("decision") == "REGEN" for r in mine):
@@ -734,7 +738,7 @@ def gate_row(row: dict, jobs: list[dict], gate_get, runs_root: Path | None = Non
         return False, {"verdict": bad.get("verdict"),
                        "reason": f"{bad.get('id')}: {bad.get('reason')} (source_run {run} exempts only REGEN/KEPT "
                                  f"art, never {bad.get('verdict')}: fail closed)"}
-    r, why = _art_eval_record(run, named, runs_root)
+    r, why = _art_eval_record(run, named, runs_root, texpath=row.get("target_texpath"))
     if r is None:
         return False, dict(rec, reason=rec["reason"] + f" (art-eval marker does not verify: {why})")
     if any(v.get("verdict") == "REFUSED_KEPT" for v in refused):

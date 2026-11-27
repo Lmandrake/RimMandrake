@@ -3927,7 +3927,11 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                                        # FILLQUEUE_GATE_FIX_STALE_REGEN_AFTER_ESCALATE: round 3 escalated it to the
                                        # owner; the older REGEN records must not still file a redraw
                                        {"subject": "ST_Esc", "decision": "REGEN"},
-                                       {"subject": "ST_Esc", "decision": "ESCALATE"}])
+                                       {"subject": "ST_Esc", "decision": "ESCALATE"},
+                                       # a commissioned look is judged as <def>__<look> (xart_drive): its REGEN
+                                       # exempts that def's row at the record's own texPath only
+                                       {"subject": "ST_Look__young", "decision": "REGEN",
+                                        "target_texpath": "Things/ST_LookYoung"}])
             run_dir("test_r1", True, [{"subject": "ST_RegenT", "decision": "REGEN"}])
             dec = td / "sheet.decisions.json"
             dec.write_text(json.dumps({"sheetId": "st_sheet", "decisions": {
@@ -3958,6 +3962,8 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                     row("ae_unconf_no", "ST_Unconf", source_run="prod_r1"),
                     row("ae_bad_id_no", "ST_Regen_b", source_run="../prod_r1"),
                     row("ae_escalated_no", "ST_Esc", source_run="prod_r1"),
+                    row("ae_look_ok", "ST_Look", target_texpath="Things/ST_LookYoung", source_run="prod_r1"),
+                    row("ae_look_adult_no", "ST_Look", target_texpath="Things/ST_Look", source_run="prod_r1"),
                     # FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT: the exemption read only the WORST facing, so a REGEN
                     # facing hid an UNCONFIRMED or KEPT sibling and the art-eval marker filed the whole row
                     row("ae_mix_unconf_no", "ST_MixU", source_run="prod_r1", facings=["east", "south"]),
@@ -3980,7 +3986,7 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                         ("ST_Multi", "south"): "DONOR", ("ST_Multi", "north"): "REFUSED_KEPT",
                         "ST_Regen": "REFUSED_REGEN", "ST_RegenT": "REFUSED_REGEN", "ST_Accepted": "REFUSED_REGEN",
                         "ST_KeptOk": "REFUSED_KEPT", "ST_KeptBare": "REFUSED_KEPT", "ST_Unconf": "REFUSED_UNCONFIRMED",
-                        "ST_Regen_b": "REFUSED_REGEN", "ST_Esc": "REFUSED_REGEN", "ST_Ruled": "REFUSED_KEPT", "ST_NotRuled": "REFUSED_KEPT",
+                        "ST_Regen_b": "REFUSED_REGEN", "ST_Esc": "REFUSED_REGEN", "ST_Look": "REFUSED_REGEN", "ST_Ruled": "REFUSED_KEPT", "ST_NotRuled": "REFUSED_KEPT",
                         "ST_SlotOk": "REFUSED_KEPT", "ST_Prefill": "REFUSED_KEPT", "ST_Delegated": "REFUSED_KEPT",
                         "ST_Keep": "REFUSED_KEPT", "ST_SlotPick": "REFUSED_KEPT", "ST_SlotPrefill": "REFUSED_KEPT",
                         "ST_Other": "REFUSED_KEPT",
@@ -3994,7 +4000,7 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
             with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
                 rc = fill_queue.main(["--input", str(art)] + dirs, gate=_FakeEligibilityGate(verdicts))
             filed = {p.stem for p in q.pending.glob("*.json")}
-            want = {"none_ok", "ae_regen_ok", "ae_kept_ok", "ruled_ok", "ruled_slot_ok"}
+            want = {"none_ok", "ae_regen_ok", "ae_kept_ok", "ruled_ok", "ruled_slot_ok", "ae_look_ok"}
             ok("gate: exactly the eligible and verified-exempt rows are filed", filed == want,
                f"filed={sorted(filed)} stderr={err.getvalue()[-1500:]}")
             ok("gate: a refusal exits 1", rc == 1, rc)

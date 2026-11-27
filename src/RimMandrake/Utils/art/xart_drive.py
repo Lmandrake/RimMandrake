@@ -839,7 +839,7 @@ def refile_row(q: Path, jid: str, fix: str = "") -> dict:
     row = {"id": f"{base}_v{n + 1}", "rimflow_item_id": LOOKS_ITEM, "prompt": j["prompt"] + (f" FIX from review: {fix}" if fix else ""),
            "facings": [f] if f else [], "target_def": j.get("target_def"), "target_texpath": j.get("target_texpath"),
            "install_to": j["install_to"], "priority": 45, "biome_neutral": True,
-           "style_notes": j.get("style_notes") or "", "drawsize": j.get("drawsize") or 1.0}
+           "style_notes": _clean_fix(j.get("style_notes") or "")}     # no drawsize: fill_queue measures the def's
     w = h = (j.get("canvas") or {}).get("width", 256)
     if j.get("reference") and Path(j["reference"]).is_file():
         row["reference"] = j["reference"]
@@ -854,7 +854,13 @@ ADULT_REF = ("The attached image is the ADULT of this species, as accepted in th
 ONE_COAT = ("Paint ONE colouring and pattern and keep it identical in every view of this animal. ")
 
 
-def regen_rows(q: Path, row: dict, fix: str) -> list[dict]:
+def _clean_fix(fix: str) -> str:
+    """The judge's fix without a sentence that mentions an outline or keyline (retired, owner 2026-10-04; fill_queue
+    refuses a row that still asks for one, even when the judge asked to remove it)."""
+    return " ".join(x for x in re.split(r"(?<=[.!?])\s+", fix) if not re.search(r"outline|keyline", x, re.I))
+
+
+def regen_rows(q: Path, row: dict, fix: str, run: str | None = None) -> list[dict]:
     """The next version of a whole look the judge sent back, built against the cause the first renders showed: a young or
     female look drawn from text alone came out as another species (its east master now carries the adult's east as
     anatomy guidance; north/south derive from that east), and a variant's facings reskinned one by one drifted apart in
@@ -862,10 +868,12 @@ def regen_rows(q: Path, row: dict, fix: str) -> list[dict]:
     import artledger as L
     jobs = look_jobs(row, q)
     if [f for f, _ in jobs] == [""]:
-        return [refile_row(q, jobs[0][1], fix)]
+        return [dict(refile_row(q, jobs[0][1], _clean_fix(fix)), **({"source_run": run} if run else {}))]
     east = dict(jobs).get("east")
     rows = []
-    r0 = refile_row(q, east, fix)
+    r0 = refile_row(q, east, _clean_fix(fix))
+    if run:
+        r0["source_run"] = run          # the art-eval REGEN that sends it back (fill_queue's ART_EVAL_REDRAW marker)
     base = r0["id"]
     tmpl = r0["install_to"].replace("_east.png", "_{facing}.png")
     if row["slot"] in ("variant", "female_pack"):
@@ -886,22 +894,23 @@ def regen_rows(q: Path, row: dict, fix: str) -> list[dict]:
 def cmd_refile(a) -> int:
     q, hold = artpipe(), held()
     rows = []
-    fixes = {}
+    fixes, src_run = {}, {}
     for run in a.from_run or []:
         rj = REPO / "infrastructure/state/art_eval/runs" / run / "regen_jobs.json"
-        for g in json.loads(rj.read_text()) if rj.is_file() else []:
-            fixes[g["target_def"]] = g["prompt"]
+        by = {g["target_def"]: g["prompt"] for g in (json.loads(rj.read_text()) if rj.is_file() else [])}
         for subj, d in decisions(run).items():
-            if d.get("decision") == "REGEN" and subj not in fixes:
-                fixes[subj] = "; ".join(d.get("reasons") or [])[:600]
-            elif d.get("decision") != "REGEN":
+            if d.get("decision") == "REGEN":
+                fixes[subj] = by.get(subj) or "; ".join(d.get("reasons") or [])[:600]
+                src_run[subj] = run
+            else:
                 fixes.pop(subj, None)
+                src_run.pop(subj, None)
     for r in commission_rows():
         if r["install_mod"].split("/")[1] in hold:
             continue
         subj = subject_of(r)
         if subj in fixes and look_status(r, q, hold) == "COMPLETE":
-            rows += regen_rows(q, r, fixes[subj])
+            rows += regen_rows(q, r, fixes[subj], src_run.get(subj))
             continue
         for f, j in look_jobs(r, q):
             if a.failed and job_state(q, j) == "failed" and not (rescued_dir() / f"{j}.png").is_file():
