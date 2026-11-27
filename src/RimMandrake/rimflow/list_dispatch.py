@@ -2055,7 +2055,12 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         if only and facts.get("items") is not None:     # the Conductor's run-now: these items, every gate
             gone = [i for i in only if i not in facts["items"]]
             facts = dict(facts, lane_items=facts["items"], items={i: facts["items"][i] for i in only if i in facts["items"]})
-        rows, launches = decide(cfg, st, facts, now, account)
+        # the Codex lane (codex_lane.py): while the Claude room is short it takes the test-proven tickets first, and
+        # the Claude lane does not see them; a run-now (--only) is the Conductor's and goes to Claude
+        import codex_lane as CL
+        lane_facts, cx_rows = (facts, []) if only else CL.step(cfg, st, facts, now, fx, apply, account)
+        rows, launches = decide(cfg, st, lane_facts, now, account)
+        rows = cx_rows + rows
         try:
             old = old_step(cfg, st, facts.get("old"), now, fx, write=apply and not only)
         except Exception as e:  # noqa: BLE001 - the no-home step never stops the lane's own rows; the reading says it

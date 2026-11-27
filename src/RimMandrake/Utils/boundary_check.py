@@ -138,6 +138,7 @@ PAGES = {
     "design/specs/2026-11-22-steve-idle-takeable/boundary.md": "src/RimMandrake/Utils/selftest_steve_idle_takeable.py",
     "design/specs/2026-11-24-ingame-visit-owed/boundary.md": "src/RimMandrake/Utils/selftest_ingame_visit_owed.py",
     "design/specs/2026-11-23-list-dispatch/boundary.md": "src/RimMandrake/rimflow/selftest_list_dispatch.py",
+    "design/specs/2026-11-27-codex-lane/boundary.md": "src/RimMandrake/rimflow/selftest_codex_lane.py",
     "design/specs/2026-11-24-work-bundles/boundary.md": "src/RimMandrake/rimflow/selftest_work_bundle.py",
     "design/specs/2026-11-25-temporary-work-bundle-monitor/boundary.md":
         "src/RimMandrake/rimflow/selftest_work_bundle_monitor.py",

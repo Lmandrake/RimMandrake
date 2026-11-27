@@ -125,6 +125,10 @@
    "n": 1,
    "why": "reads of one file again after a transient drvfs errno; no outcome of the work is counted or spent"
   },
+  "src/RimMandrake/rimflow/codex_lane.py::plan::int(r.get('voids') or 0) >= max_voids": {
+   "n": 1,
+   "why": "counts system failures only (a unit gone, no answer from the door, no clone, no diff): none is the work's, so no try of the ticket is spent; at the bound the Claude lane takes the ticket, and a refusal at his leave line is no strike"
+  },
   "src/RimMandrake/rimflow/control.py::_fault_alarm::n >= FAULT_LIMIT": {
    "n": 1,
    "why": "the system-fault meter itself: it counts machine faults by design and charges nothing"

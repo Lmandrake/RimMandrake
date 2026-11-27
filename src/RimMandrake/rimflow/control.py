@@ -102,6 +102,7 @@ FAMILIES = {                        # the 7 launch families of the re-measure (0
     "probe": "selftest probes (rm-probe-*)",
     "list_effect": "list_effect.py tick (rm-list-effect): runs list items' outcome checks, closes what holds; launches nothing",
     "list_dispatch": "list_dispatch.py tick (rm-list-dispatch): one detached helper per list item whose outcome check fails",
+    "codex_lane": "codex_lane.py work unit (rm-codex-lane-*): one Codex try of one test-proven list ticket, in its own scratch clone",
     "quiet_scan": "quiet_scan.py tick (rm-quiet-scan): one Sonnet run that reads quiet files while no mod step is live",
 }
 STAGES = ("intake", "designer", "preflight", "offline_build", "blind_challenge", "in_game", "pre_human", "his_walk",
