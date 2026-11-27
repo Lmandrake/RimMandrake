@@ -8,7 +8,6 @@
   the calibrated `maturation_advance` brief hash, so it waits for that brief's next calibration.
 - `publish.py` `land_ledger` `blob`: not handled: a `git cat-file` that fails on a shard that exists reads as an empty shard.
   The pre-push `ledger_lint` refuses the commit that would follow.
-- `publish.py` `split_pre_existing`: the second `try` block, after `return still, pre`, never runs.
 - `publish.py` `warn_owner_shard`: in a held clone, the WARNING can name OWNER.jsonl lines that are already on origin.
 - `cli.py` `cmd_implemented`: the refusal of an unpublished sha still prints `git pull --rebase`; `./publish` is the command.
 - `cli.py` `_bridge_other_host_locked`: the refusal prints the taker's own `--for` as the holder's.
