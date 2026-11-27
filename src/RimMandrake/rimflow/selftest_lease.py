@@ -67,7 +67,7 @@ def fresh(name, commits=()):
     return d
 
 
-def env(seat="FOUNDRY", ttl=None):
+def env(seat="FOUNDRY", ttl=None, role_unit=None):
     e = {k: v for k, v in os.environ.items()
          if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RIMFLOW_GITINDEX",
                       "RIMFLOW_LEASE_TTL", "RIMFLOW_DISPATCH_LOCK")}
@@ -79,13 +79,17 @@ def env(seat="FOUNDRY", ttl=None):
     e["RIMFLOW_GITINDEX"] = os.path.join(CTX["dir"], "gitfixture.json")
     if ttl is not None:
         e["RIMFLOW_LEASE_TTL"] = str(ttl)
+    if role_unit is not None:                        # "" = no launched run (a principal window); else that run's unit
+        e.pop("RM_ROLE_UNIT", None)
+        if role_unit:
+            e["RM_ROLE_UNIT"] = role_unit
     return e
 
 
 def run(*args, **kw):
     cli = kw.get("cli", CLI)
     p = subprocess.run([sys.executable, cli] + list(args), capture_output=True, cwd=REPO,
-                       env=env(kw.get("seat", "FOUNDRY"), kw.get("ttl")))
+                       env=env(kw.get("seat", "FOUNDRY"), kw.get("ttl"), kw.get("role_unit")))
     return p.returncode, p.stdout.decode("utf-8", "replace"), p.stderr.decode("utf-8", "replace")
 
 
@@ -397,6 +401,34 @@ def report():
                  r["items"]["OLD_SEES_RESERVED_PROBE_FIXTURE"], ", ".join(r["rank"]) or "none"))
 
 
+def t_a_live_lease_of_another_run_stops_a_drop():
+    """RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW, 2026-11-27: a pipeline sweep run dropped that item as
+    not worth the touch 11 minutes after a work-bundle run claimed it; the bundle run built and proved the work, and its close was
+    then refused (`dropped` is terminal). A drop or supersede of an item under another run's live lease is refused and names the
+    holder; the holder's own drop, a drop with --despite-lease, and a principal's drop (no launched run) go on."""
+    fresh("drop_under_lease")
+    A, B = "rm-detached-bench-holder-probe", "rm-detached-bench-sweeper-probe"
+    for iid in ("HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE", "HELD_BY_A_DROPPED_BY_A_PROBE_FIXTURE",
+                "HELD_BY_A_SUPERSEDED_BY_B_PROBE_FIXTURE", "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE", "REPLACEMENT_PROBE_FIXTURE"):
+        ok("file", iid, "--for", "BENCH", "--title", "t", seat="BENCH", role_unit=A)
+    for iid in ("HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE", "HELD_BY_A_DROPPED_BY_A_PROBE_FIXTURE",
+                "HELD_BY_A_SUPERSEDED_BY_B_PROBE_FIXTURE", "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE"):
+        ok("claim", iid, seat="BENCH", role_unit=A)
+    err = refused("live lease", "drop", "HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE", "--reason", "not worth the touch",
+                  seat="BENCH", role_unit=B)
+    assert A in err and "--despite-lease" in err, "the refusal names the holder and its path to pass:\n" + err
+    assert not [e for e in events("drop") if e["id"] == "HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE"], "a refused drop wrote nothing"
+    refused("live lease", "supersede", "HELD_BY_A_SUPERSEDED_BY_B_PROBE_FIXTURE", "--by", "REPLACEMENT_PROBE_FIXTURE",
+            seat="BENCH", role_unit=B)
+    ok("drop", "HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE", "--reason", "r", "--despite-lease", "its holder died",
+       seat="BENCH", role_unit=B)
+    ok("drop", "HELD_BY_A_DROPPED_BY_A_PROBE_FIXTURE", "--reason", "r", seat="BENCH", role_unit=A)
+    out = ok("drop", "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE", "--reason", "r", seat="BENCH", role_unit="")
+    dropped = {e["id"] for e in events("drop")}
+    assert {"HELD_BY_A_DROPPED_BY_B_PROBE_FIXTURE", "HELD_BY_A_DROPPED_BY_A_PROBE_FIXTURE",
+            "HELD_BY_A_DROPPED_BY_PRINCIPAL_PROBE_FIXTURE"} <= dropped, dropped
+
+
 def _read():
     saved = model.EVENTS
     try:
@@ -420,7 +452,8 @@ if __name__ == "__main__":
                    t_start_still_works_and_reclaim_revokes,
                    t_replay_judges_by_event_timestamps,
                    t_real_ledger_lock_lives_in_this_clones_git_dir,
-                   t_old_reader_tolerates_leases):
+                   t_old_reader_tolerates_leases,
+                   t_a_live_lease_of_another_run_stops_a_drop):
             case(fn.__name__, fn)
         report()
     finally:

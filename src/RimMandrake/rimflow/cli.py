@@ -2637,6 +2637,34 @@ def _successor_refusal(w, iid, by):
     return None
 
 
+def _lease_stops_end(w, iid, verb, seat, despite):
+    """None, or the refusal of a `drop`/`supersede` of an item that ANOTHER run holds under a live lease. Measured
+    2026-11-27: a pipeline sweep run dropped RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW as not worth the
+    touch 11 minutes after a work-bundle run claimed it; the bundle run built and proved the work, and its close was refused,
+    because `dropped` is terminal (selftest_lease.py t_a_live_lease_of_another_run_stops_a_drop). The holder's own run, a
+    principal (the owner or the Conductor window: one warning line) and `--despite-lease "<why>"` go on."""
+    it = w.items.get(iid)
+    if it is None or not it.lease or model.lease_status(it, model.epoch_now()) != "live":
+        return None
+    holder = (it.lease.get("role_unit") or "").strip()
+    mine = (os.environ.get("RM_ROLE_UNIT") or "").strip()
+    if mine and holder == mine:
+        return None
+    who = "run %s" % holder if holder else "a window with no launched run"
+    held = "%s is under a live lease of seat %s (%s), taken %s, until %s" % (
+        iid, it.lease.get("seat"), who, it.lease.get("taken"), it.lease.get("expires"))
+    if despite:
+        print("%s despite the live lease: %s; why: %s" % (verb, held, despite), file=sys.stderr)
+        return None
+    if principal.who(seat=seat):
+        print("WARNING: %s; the %s goes on as a principal's act, and its holder's work cannot then be closed." % (held, verb),
+              file=sys.stderr)
+        return None
+    return ("%s refused: %s. Its holder is working it, and a %s now strands that work: an item that is `dropped` or "
+            "`superseded` cannot be closed. Leave the item to its holder (or write it a note), or wait until the lease "
+            "lapses; if you know the holder is gone, pass --despite-lease \"<why>\"." % (verb, held, verb))
+
+
 def cmd_drop(args, seat):
     """`drop <ID> --reason R [--successor S | --release-dependents]` (RIMFLOW_FIX_BLOCKS_LIFT_ON_CLOSE, redesign G6).
     A dropped item never delivers, so a drop while open blocks wait on it is REFUSED at write unless the dropper says
@@ -2644,6 +2672,9 @@ def cmd_drop(args, seat):
     closes); `--release-dependents` with `--why` releases them (offered again at the next read; their next failure
     re-attributes). No automatic retry: the dropper decides, once."""
     _, w = load()
+    stop = _lease_stops_end(w, args.id, "drop", seat, getattr(args, "despite_lease", None))
+    if stop:
+        die(stop)
     succ = getattr(args, "successor", None)
     rel = bool(getattr(args, "release_dependents", False))
     if succ and rel:
@@ -2684,6 +2715,9 @@ def cmd_supersede(args, seat):
     """`supersede <ID> --by S`: refused when S is unfiled, is ID, or its own chain leads back to ID (a supersession
     cycle would hold every block on either for ever: priority.follow)."""
     _, w = load()
+    stop = _lease_stops_end(w, args.id, "supersede", seat, getattr(args, "despite_lease", None))
+    if stop:
+        die(stop)
     why = _successor_refusal(w, args.id, args.by)
     if why:
         die("supersede refused: " + why)
@@ -5352,11 +5386,13 @@ def build_parser():
     s.add_argument("--successor", metavar="ID", help="the item that replaces it: blocks on it follow ID")
     s.add_argument("--release-dependents", action="store_true",
                    help="release every block waiting on it (needs --why)")
+    s.add_argument("--despite-lease", metavar="WHY", help="drop it although another run holds it under a live lease: why")
 
     s = add("supersede", "a better item replaces it", cmd_supersede)
     s.add_argument("id")
     s.add_argument("--by", required=True)
     s.add_argument("--reason")
+    s.add_argument("--despite-lease", metavar="WHY", help="supersede it although another run holds it under a live lease: why")
 
     s = add("raise", "put an open item at the top of its seat's `next` (escalation)",
             _simple("raise", (("reason", "reason"),)))

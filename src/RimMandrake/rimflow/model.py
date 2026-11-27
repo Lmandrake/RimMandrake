@@ -2978,7 +2978,8 @@ def _apply_lease(ev, item, seat):
             cur["expires"], cur["renewed"] = ev["expires"], ts
             return
         item.lease = {"token": tok, "seat": seat, "taken": ts, "expires": ev["expires"],
-                      "renewed": ts, "released": None}
+                      "renewed": ts, "released": None,
+                      "role_unit": (ev.get("role_unit") or "").strip()}   # the launched run that took it ("" = a window)
         return
     if cur is None or cur["token"] != tok:
         raise TransitionError(

@@ -1,0 +1,3 @@
+A run that drops or supersedes a ticket must first check that no other run holds the ticket under a live lease. On 2026-11-27 a pipeline sweep run dropped RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW as not worth the touch 11 minutes after a work-bundle run claimed it. The bundle run built and proved the work, and its close was then refused, because dropped is terminal. rimflow drop and supersede now refuse a live lease of another run and name the holder; --despite-lease passes.
+item: RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW
+home: src/RimMandrake/rimflow/cli.py drop
