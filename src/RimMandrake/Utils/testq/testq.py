@@ -218,10 +218,16 @@ def heartbeat(job_id):
 
 
 # An orphan stops getting the 60 s tick's heartbeat (OPS_TESTQ_UNSTICK_ECPK). Ticks stalled 7-15 min
-# on Nov 21 and 23 (done_once). Use the steward's five-minute guard so a missed tick alone is not a hang.
+# on Nov 21 and 23 (done_once), and the tick that admits a SteveDesktop job is busy about 5 min starting it (14:06:56 to
+# 14:11:43, 2026-11-27), so a healthy job's first heartbeat comes late. STALE_S only names the reading at the waiter's own
+# deadline (hung, not timeout): the steward's five-minute guard.
 # budget: danger=a worker that stopped its heartbeat reads as running (ticks stalled 7 to 15 min, Nov 21 and 23); ends no work:
-# budget: a wait reads HUNG; the job goes on
-HUNG_S = 300
+# budget: at the deadline a wait reads HUNG instead of TIMEOUT; the job goes on
+STALE_S = 300
+# Before the deadline, or with none, a silence this long ends the wait as hung: 10 x the longest tick silence on record
+# (15 min). A shorter guard read a healthy job hung twice in one run (RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER).
+# budget: danger=a waiter with no --timeout waits forever on a job whose worker died; evidence=orphaned jobs stop getting the tick's heartbeat (OPS_TESTQ_UNSTICK_ECPK); longest=900s (tick stalls of 7 to 15 min, Nov 21 and 23)
+HUNG_S = 9000
 
 
 def _wait_record(job_id):
@@ -278,11 +284,14 @@ def wait_for(job_id, timeout=None, *, now=None, sleep=time.sleep):
                     not isinstance(row, dict) or not {"chain", "row", "verdict"} <= row.keys() for row in rows):
                 return reading("unreadable", "done record has an invalid outcome or rows")
             return reading("done", res.get("cause"), res["outcome"], rows)
-        if state == "running" and now() - beat >= HUNG_S:
-            return reading("hung", "no heartbeat for at least %ds" % HUNG_S)
+        silent = now() - beat if state == "running" else 0
         remaining = deadline - clock()
         if remaining <= 0:
+            if silent >= STALE_S:
+                return reading("hung", "no heartbeat for at least %ds" % STALE_S)
             return reading("timeout", "job is still %s" % state)
+        if silent >= HUNG_S:
+            return reading("hung", "no heartbeat for at least %ds" % HUNG_S)
         sleep(min(1, remaining))
 
 

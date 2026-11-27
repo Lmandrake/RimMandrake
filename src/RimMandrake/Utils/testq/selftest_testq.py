@@ -728,6 +728,37 @@ def t_wait_detects_a_stale_heartbeat():
         check(rc == 5 and "hung" in out and "heartbeat" in out, "a stale heartbeat reads hung at the deadline")
 
 
+def t_wait_keeps_waiting_through_a_late_first_heartbeat():
+    """RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: the tick that admits a SteveDesktop job is busy
+    about 5 min starting it (14:06:56 to 14:11:43, 2026-11-27), so the job's first heartbeat comes late; `testq.py wait`
+    read that healthy job as hung twice in one run, long before its deadline. Hung is judged at the waiter's deadline."""
+    with wait_queue() as T:
+        job = {"id": WAIT_JOB}
+        path = T.q("running", WAIT_JOB + ".json")
+        S.dump({"job": job}, path)
+        os.utime(path, (time.time() - 600,) * 2)     # 10 min without a heartbeat, the job alive
+        clock = [0]
+        rows = [{"chain": "c", "row": "r", "verdict": "PASS"}]
+
+        def finish_after_sleep(seconds):
+            clock[0] += seconds
+            T.move(WAIT_JOB, "running", "done", {"job": job, "result": {"outcome": "DONE", "rows": rows}})
+
+        got = T.wait_for(WAIT_JOB, 60, now=None, sleep=finish_after_sleep)
+        check(got.get("state") == "done", "a late first heartbeat before the deadline keeps the wait going (got %r)" % (got,))
+        os.remove(T.q("done", WAIT_JOB + ".json"))      # a done record wins the scan: each case starts with none
+        S.dump({"job": job}, path)
+        os.utime(path, (time.time() - 600,) * 2)
+        got = T.wait_for(WAIT_JOB, None, sleep=finish_after_sleep)
+        check(got.get("state") == "done", "with no deadline, a 10 min silence does not end the wait (got %r)" % (got,))
+        os.remove(T.q("done", WAIT_JOB + ".json"))
+        S.dump({"job": job}, path)
+        os.utime(path, (time.time() - T.HUNG_S - 60,) * 2)
+        got = T.wait_for(WAIT_JOB, None, sleep=lambda s: None)
+        check(got.get("state") == "hung" and T.HUNG_S >= 10 * 15 * 60,
+              "with no deadline, a silence of HUNG_S (10 x the 15 min tick stall on record) reads hung (got %r)" % (got,))
+
+
 def t_wait_stops_on_unknown_or_cancelled():
     with wait_queue() as T:
         rc, out = wait_command(T)
@@ -852,7 +883,8 @@ def t_worker_schema_refresh():
 
 def main():
     t_worker_schema_refresh()
-    for test in (t_wait_returns_recorded_rows, t_wait_detects_a_stale_heartbeat, t_wait_stops_on_unknown_or_cancelled,
+    for test in (t_wait_returns_recorded_rows, t_wait_detects_a_stale_heartbeat, t_wait_keeps_waiting_through_a_late_first_heartbeat,
+                 t_wait_stops_on_unknown_or_cancelled,
                  t_wait_distinguishes_unreadable_empty_and_zero, t_wait_prints_a_short_result):
         test()
     try:
