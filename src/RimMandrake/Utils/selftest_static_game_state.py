@@ -155,6 +155,7 @@ REVIEWED = {
     "src/RimMandrake/Pyrelands/Source/CompFurnaceWarmthAura.cs::ownerGame": "the Game guard for byMap",
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs::lastMap": "reference cache, re-read when the map or its component changes",
     "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs::lastComp": "with lastMap",
+    "src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs::cache": "graphic cache keyed by (Graphic, look stage): Graphic objects are GraphicDatabase assets that outlive games; a pure function of its key, no game ids",
     # FlowWorks, triaged by STATIC_STATE_FIX_RELOAD_TICK_MEMOS (2026-10-26)
     "src/RimMandrake/FlowWorks/Source/Machinery/RM_PipeStraightVariantsDraw.cs::mats": "material cache keyed by (Texture2D, Material) asset objects, never game ids; assets outlive games",
     "src/RimMandrake/FlowWorks/Source/Rivers/RM_Weir.cs::foam": "material cache keyed by frame/variant/alpha; pure function of its key",
