@@ -1,0 +1,106 @@
+{
+ "judge_model": "claude-opus-5-5",
+ "judge_run": "rm-detached-bench-world-mountains-redraw-peaks-not-fields-1795766829 (ticket lane judge run 1; did not make the work, which is fc14689e9 by the 2026-10-20 FOUNDRY helper)",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS (RM_WorldPeaks, World/RM_Peaks atlases, built fc14689e9)",
+ "brief_calibration": "art_judge_brief is UNTESTED in infrastructure/state/judge_calibration.json: this refusal is stored and shown only (standing_rulings §A refusal carries its path to pass)",
+ "overall": "REFUSED",
+ "question": "do the ranges read as BIG mountains, not small pictures of mountains?",
+ "live_state": {
+  "game": "ArchBig",
+  "utc": "2026-11-27T08:15Z",
+  "world": "Ash'karr, seed archaeologist, coverage 0.3",
+  "RM_WorldPeaks.Info": "peaks 17497 (low sun 9144, snowy 1983, skipped on road/river 889); on=True substellar=(0,0)",
+  "settings": {
+   "worldSunPeaks": true,
+   "worldSoftHills": true,
+   "worldBorderBlend": "True (restored after the hard-border frames)"
+  }
+ },
+ "captures": "D:\\ClaudeWork\\rimmandrake\\scratch\\peaks_judge_2026-11-27\\{dewhorn,dewhorn_w,graycrags,twilightcrags}_{soft,hard}_{900,320}.png; capture script capture.py and capture_soft.json beside them",
+ "verdicts": [
+  {
+   "picture": "infrastructure/state/delegated/2026-11-27/WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS_evidence/crop_dewhorn_soft_320.png",
+   "view": "Dew Horn, altitude 320, soft borders",
+   "verdict": "REDO",
+   "violated": "E4",
+   "quote": "His note on a subject is a requirement, quoted verbatim. A candidate that ignores his note is REDO.",
+   "his_note": "2026-10-24: \"make mountains look BIG/mountainous rather than just little pics of mountains.\" 2026-10-20: \"Mountains dont look like mountains they look like farm fields or something.\"",
+   "seen": "At altitude 320, on Dew Horn (tile 17225), Dew Horn west (11870), Gray Crags (17028) and Twilight Crags (3331), every hilly hex carries one small peak token about half a hex across. Hundreds of identical tokens sit in a regular hex lattice. The range reads as a stippled texture laid over the ground, close to his 2026-10-20 'farm fields', not as a massif. No ridge line, no continuous silhouette and no height cue joins neighbouring tokens, so no range reads bigger than one hex. The lit/shaded split and the turn toward the substellar point cannot be seen at this size. At altitude 900, the planet cap fills about a third of the frame, the peaks are a fine grain under the settlement icons, and no mountain reads at all.",
+   "redo_brief": "Draw ranges that span hexes (a range mesh or oversized back-to-front peaks that merge into a massif, his 2026-10-24 ruling that mountains may bleed over neighbouring hexes), with the lit/shade split large enough to read at 320."
+  },
+  {
+   "picture": "infrastructure/state/delegated/2026-11-27/WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS_evidence/crop_graycrags_soft_320.png",
+   "view": "Gray Crags (night side), altitude 320, soft borders",
+   "verdict": "REDO",
+   "violated": "E4",
+   "seen": "Same as Dew Horn: a lattice of small identical tokens, one per hex, over brown ground. No massif and no readable light direction."
+  },
+  {
+   "picture": "infrastructure/state/delegated/2026-11-27/WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS_evidence/crop_twilightcrags_soft_320.png",
+   "view": "Twilight Crags (night side), altitude 320, soft borders",
+   "verdict": "REDO",
+   "violated": "E4",
+   "seen": "A dense carpet of tiny tokens in the outline of the range. The densest read is a texture, not mountains."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\scratch\\peaks_judge_2026-11-27\\dewhorn_soft_900.png",
+   "view": "altitude 900",
+   "verdict": "REDO",
+   "violated": "E4",
+   "seen": "The peaks are a fine grain under the settlement icons. No mountain reads at the whole-cap view."
+  },
+  {
+   "picture": "D:\\ClaudeWork\\rimmandrake\\scratch\\peaks_judge_2026-11-27\\*_hard_*.png",
+   "view": "hard borders",
+   "verdict": "UNSURE",
+   "why": "The hard-border frames differ from the soft ones by a mean of 0.13-0.29 grey levels: worldBorderBlend=False was set, but jawa/world_commit may not rebuild our blend overlay, so a hard-border view is UNMEASURED. The peaks draw above the blend (queue 3510 over 3505), so the verdict on the peaks does not depend on it."
+  }
+ ],
+ "not_applicable": "The sprite inputs of the brief (facings, true-scale panel beside a human, 32 px/cell copy, footprint) do not apply to world-map hill decals; the inputs judged are the in-game captures that the ask names.",
+ "passed_from_the_card": "Built and drawn as specified at the mechanism level (A1 L0, A2 L1 passed 2026-10-21; live now 17497 peaks, on). Not judged separately: the ask is one question.",
+ "proposals": [
+  "A world-map art clause in art_judge_brief.md: a world-map landform is judged at the altitudes he looks at (900 and 320), with the settlement icons on, and a range must read as one landform across hexes, not as a per-hex token (source: his 2026-10-24 words). Proposal only."
+ ],
+ "contract": {
+  "item": "WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS",
+  "family": "art_judge_brief",
+  "sha": "fc14689e937d",
+  "passed": [
+   {
+    "clause": "E1",
+    "evidence": [
+     "World/RM_Peaks atlases from world_peak_decals.py (our own generator, no donor art)"
+    ]
+   },
+   {
+    "clause": "E2",
+    "evidence": [
+     "the atlases are generated art made on purpose for this slot, not a borrowed vanilla texture"
+    ]
+   }
+  ],
+  "refusals": [
+   {
+    "clause": "E4",
+    "criterion_hash": "",
+    "evidence": [
+     "infrastructure/state/delegated/2026-11-27/WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS_evidence/crop_dewhorn_soft_320.png",
+     "infrastructure/state/delegated/2026-11-27/WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS_evidence/crop_graycrags_soft_320.png",
+     "infrastructure/state/delegated/2026-11-27/WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS_evidence/crop_twilightcrags_soft_320.png",
+     "D:\\ClaudeWork\\rimmandrake\\scratch\\peaks_judge_2026-11-27\\dewhorn_soft_900.png"
+    ],
+    "observed": "At altitude 320, on Dew Horn (tile 17225), Dew Horn west (11870), Gray Crags (17028) and Twilight Crags (3331), every hilly hex carries one small peak token about half a hex across. Hundreds of identical tokens sit in a regular hex lattice. The range reads as a stippled texture laid over the ground, close to his 2026-10-20 'farm fields', not as a massif. No ridge line, no continuous silhouette and no height cue joins neighbouring tokens, so no range reads bigger than one hex. The lit/shaded split and the turn toward the substellar point cannot be seen at this size. At altitude 900, the planet cap fills about a third of the frame, the peaks are a fine grain under the settlement icons, and no mountain reads at all.",
+    "would_pass": "At altitude 320 a range reads as one large landform that spans several hexes: a continuous silhouette or ridge line, faces lit and shaded in one direction that can be seen at that size, and no regular per-hex lattice. At altitude 900 the big ranges can still be seen as mountains between the icons.",
+    "smallest_fix": {
+     "what": "Do the redraw specified in MOUNTAINS_REDRAW_BIG_NOT_LITTLE_PICS (options A range mesh, B oversized back-to-front peaks 2-3x a hex, C relief film), which he allowed to bleed over neighbouring hexes (2026-10-24). The cheapest first try is option B on the existing RM_WorldPeaks code: raise the size tunables (sizeMountains 1.32, sizeImpassable 1.42) toward 2-3, thin the cells so not every hex stamps, and sort back to front. That needs a live look at 320 and 900, not a full redesign.",
+     "attainable": "yes",
+     "cost": "rerun"
+    },
+    "criterion_verdict": "sound",
+    "criterion_why": "His own words name the outcome (BIG, not little pictures; not farm fields). A drawn range that spans hexes is attainable: the code already has size tunables and he allowed overlap into neighbouring hexes.",
+    "new_since": "first"
+   }
+  ]
+ }
+}

@@ -19,3 +19,15 @@ Mountains: "Peaks lit toward the sun". Draw each mountain as a cluster of 3-5 pe
 ## Built 2026-10-20 (helper)
 
 Built fc14689e9 (+ DLL 9ef991aa7). Not done from the card: per-biome hero sets (the hook exists: World/RM_Peaks/<BiomeDefName>/<Kind>; no art shipped). Peaks are omitted on any tile with a road or river, as the card asked; if ranges look holed along rivers, set `skipRoadsRivers` false. The DLL could not be deployed while the game runs (file locked); textures are deployed.
+
+## spec
+
+Draw world-map mountains as sun-lit peak clusters (owner card 2026-10-20 above): RM_WorldPeaks replaces the vanilla hill quads, each peak cluster turned toward the substellar point, hard lit/shaded split, snowcaps on cold lit faces, denser cells for Impassable, no peaks on road/river tiles, Mod Settings toggle `worldSunPeaks` default on. Built at fc14689e9 (see "Built" below).
+
+## verify
+
+A3 is a taste call by a judge agent (not the maker): in-game captures of Dew Horn and the night-side Crags at altitude 900 and close-up 320, soft and hard borders, judged against design/RimMandrake/art_judge_brief.md and the 2026-10-20 card: do the ranges read as BIG mountains, not small pictures of mountains? PASS closes; a refusal names what to redraw.
+
+## refs
+file: src/RimMandrake/BiomesShell/Source/RM_WorldPeaks.cs
+file: src/RimMandrake/Utils/art/world_peak_decals.py
