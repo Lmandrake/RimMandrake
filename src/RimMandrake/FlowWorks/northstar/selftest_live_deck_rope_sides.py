@@ -87,6 +87,14 @@ check("census_cells: east-west reads his square and the one north",
 check("census_cells: north-south reads the squares beside him",
       set(L.census_cells((5, 100), (5, 105), (5, 102))) == {"-1,0", "1,0", "-1,1", "1,1"})
 
+# the closing summary reads each bridge's verdict where draw_order keeps it (job J20261127T143530Z-06eb9e printed three
+# PASS verdicts and then "0 of 3 PASS ... UNMEASURED": the summary read readings[name]["rope_sides"])
+kept = {"ew2": {"draw_order": {"rope_sides": {"verdict": "PASS"}}}, "ew4": {"draw_order": {"rope_sides": {"verdict": "FAIL"}}},
+        "ns4": {"draw_order": {}}}
+got = L.rope_sides_summary(kept, ["ew2", "ew4", "ns4"]) if hasattr(L, "rope_sides_summary") else None
+check("the summary reads each bridge's kept verdict (PASS, FAIL, none read)",
+      got == (1, [("ew4", "FAIL"), ("ns4", "UNMEASURED")]), got)
+
 for f in fails:
     print("  FAIL " + f)
 print("selftest_live_deck_rope_sides: %s (%d faults)" % ("FAIL" if fails else "PASS", len(fails)))

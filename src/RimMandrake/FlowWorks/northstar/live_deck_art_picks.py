@@ -305,6 +305,14 @@ def rope_sides(ew, by_tag, spans):
         vlo, vhi, lo, hi, nlo)
 
 
+def rope_sides_summary(readings, names):
+    """(PASS count, [(name, verdict)] of the bridges not PASS) from the verdicts draw_order keeps in
+    readings[name]["draw_order"]["rope_sides"]; a bridge with none reads UNMEASURED -- pure."""
+    got = [(n, ((readings.get(n) or {}).get("draw_order") or {}).get("rope_sides", {}).get("verdict", "UNMEASURED")) for n in names]
+    bad = [g for g in got if g[1] != "PASS"]
+    return len(got) - len(bad), bad
+
+
 def draw_order(w, out, stations, readings, experiment):
     """RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: the readings that say what decides whether a cable
     covers the colonist. Per bridge: how the colonist is drawn at the close and the default zoom, and every section draw on
@@ -410,9 +418,8 @@ def main(argv=None):
             json.dump(readings, f, indent=1)
         w.say("WROTE %s" % os.path.join(a.out, "readings.json"))
         if a.draw_order and a.rope_sides:
-            got = [(n, (readings.get(n, {}).get("rope_sides") or {}).get("verdict", "UNMEASURED")) for n in [s_[0] for s_ in stations]]
-            bad = [g for g in got if g[1] != "PASS"]
-            w.say("ROPESIDES: %d of %d PASS%s" % (len(got) - len(bad), len(got), "" if not bad else "; not PASS: %s" % bad))
+            ok, bad = rope_sides_summary(readings, [s_[0] for s_ in stations])
+            w.say("ROPESIDES: %d of %d PASS%s" % (ok, len(stations), "" if not bad else "; not PASS: %s" % bad))
             if bad:
                 sys.exit(1)
         return
