@@ -404,10 +404,11 @@ def plan(d, scenarios=None, repo=None):
         "; " + "; ".join(notes) if notes else "", len(carry)), retake, carry, changed, against)
 
 
-# a hang guard on each git call, never a speed bar: a hung git (a stuck index lock, a dead mount) would hold the plan
-# forever. Measured need: the whole tree.json history of ExplosiveKnockback (21 commits) in 0.8 s for the log and
-# 0.3 s for every show together, 2026-11-26.
-GIT_TIMEOUT_S = 300
+# a hang guard on each git call, never a speed bar (the call class of time_budget): a hung git would hold the plan
+# forever. Measured need: the whole tree.json history of ExplosiveKnockback (21 commits) in 0.8 s, 2026-11-26.
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+import time_budget as _TB          # noqa: E402
+GIT_TIMEOUT_S = _TB.CALL_S
 
 
 def _exam_tree_from_git(d, want):
