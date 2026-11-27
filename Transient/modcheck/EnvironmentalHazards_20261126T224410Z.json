@@ -1,0 +1,590 @@
+{
+ "mod": "EnvironmentalHazards",
+ "stamp": "20261126T224410Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "launch_held_colonist_warning",
+    "components": [
+     {
+      "name": "nobody_held_launch_dialog_is_vanilla",
+      "toggle": "launchHeldColonistWarningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(30)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 2 thing(s) across 900 cell(s); 2 pawn(s) left alone.",
+         "cellsExamined": 900,
+         "outOfBounds": 0,
+         "destroyed": 2,
+         "pawnsSkipped": 2,
+         "undestroyableSkipped": 0,
+         "perCategory": {
+          "Building": 1,
+          "Item": 1
+         },
+         "samples": [
+          {
+           "x": 125,
+           "z": 125,
+           "def": "RM_SalvageWinch",
+           "category": "Building"
+          },
+          {
+           "x": 127,
+           "z": 125,
+           "def": "ChunkSlagSteel",
+           "category": "Item"
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/destroy_batch",
+          "faults": [],
+          "frameOpen": 120154,
+          "frameReply": 120154,
+          "sameFrame": true,
+          "rows": 2,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "gone",
+            "id": "RM_SalvageWinch24650",
+            "x": 125,
+            "z": 125,
+            "got": {
+             "def": "RM_SalvageWinch",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlagSteel24651",
+            "x": 127,
+            "z": 125,
+            "got": {
+             "def": "ChunkSlagSteel",
+             "destroyed": "True"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 2,
+          "left": [
+           {
+            "def": "Human",
+            "id": "Human348",
+            "x": 128,
+            "z": 117,
+            "why": "a pawn: never destroyed by this tool",
+            "blocking": false
+           },
+           {
+            "def": "Human",
+            "id": "Human354",
+            "x": 131,
+            "z": 118,
+            "why": "a pawn: never destroyed by this tool",
+            "blocking": false
+           }
+          ],
+          "digest": "bb7797e3da48883b"
+         },
+         "ticksGame": 218,
+         "operation": {
+          "OperationId": "op_0e33ddca769b4c7689eb57491b703bf9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 218
+         }
+        }
+       },
+       {
+        "call": "launch confirmation text (GravEngine24652)",
+        "result": {
+         "text": "Are you sure you want to launch?\n\nYour current map, as well as anything not on gravship substructure, will be permanently lost. The launch process is destructive, meaning you won't be able to return. Build a grav anchor to prevent this map from being destroyed.\n\n<color=#FF3333FF>Warning: </color>The following people will be left behind:\n  - <color=#D09B61FF>Johnson Johnson</color>\n  - <color=#D09B61FF>Tycho Preston</color>\n  - <color=#D09B61FF>Humberto Sullivan</color>"
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "held_colonist_named_with_what_holds_them",
+      "toggle": "launchHeldColonistWarningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "spawn_pawn Colonist hostile=False",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human24653",
+           "name": "Pyrrha",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 132,
+           "z": 125,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/spawn_pawn",
+          "faults": [],
+          "frameOpen": 120223,
+          "frameReply": 120223,
+          "sameFrame": true,
+          "rows": 1,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "pawn",
+            "id": "Human24653",
+            "x": 132,
+            "z": 125,
+            "got": {
+             "cell": "132,125",
+             "faction": "PlayerColony",
+             "kind": "Colonist",
+             "spawned": "True",
+             "xenotype": "Baseliner"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 0,
+          "left": [],
+          "digest": "bea962d5bfd2dd79"
+         },
+         "ticksGame": 218,
+         "operation": {
+          "OperationId": "op_e8f59edc9a47446fadc6bc5fcb27286c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 54
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 218
+         }
+        }
+       },
+       {
+        "call": "brine jacket takes Human24653",
+        "result": {
+         "encase": {
+          "success": true,
+          "method": "Boolean TryEncase(Verse.Pawn, Verse.Map)",
+          "result": "True",
+          "thingArgs": [
+           {
+            "arg": 0,
+            "thing": "Human24653",
+            "type": "Pawn",
+            "foundAt": "current map, by ThingID"
+           }
+          ],
+          "ticksGame": 218,
+          "operation": {
+           "OperationId": "op_bd8f269ee2254fccaa4ab19c4a6f1984",
+           "Status": "Completed",
+           "Success": true,
+           "DurationMs": 40
+          },
+          "state": {
+           "programState": "Playing",
+           "hasCurrentGame": true,
+           "paused": true,
+           "timeSpeed": "Paused",
+           "tick": 218
+          }
+         },
+         "pawn": [
+          {
+           "id": "Human24653",
+           "name": "Pyrrha",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "factionHostile": false,
+           "x": 132,
+           "z": 125,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ]
+        }
+       },
+       {
+        "call": "launch confirmation text (GravEngine24652)",
+        "result": {
+         "text": "Are you sure you want to launch?\n\nYour current map, as well as anything not on gravship substructure, will be permanently lost. The launch process is destructive, meaning you won't be able to return. Build a grav anchor to prevent this map from being destroyed.\n\n<color=#FF3333FF>Warning: </color>The following people will be left behind:\n  - <color=#D09B61FF>Johnson Johnson</color>\n  - <color=#D09B61FF>Tycho Preston</color>\n  - <color=#D09B61FF>Humberto Sullivan</color>\n  - <color=#D09B61FF>Pyrrha Trovatelli</color>\n\n<color=#FF3333FF>Warning: </color>Held inside something, and will be lost if the ship leaves without freeing them:\n  - <color=#D09B61FF>Pyrrha Trovatelli</color> (inside crystallised figure)"
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "setting_off_launch_dialog_is_vanilla",
+      "toggle": "launchHeldColonistWarningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "launch confirmation text (GravEngine24652)",
+        "result": {
+         "text": "Are you sure you want to launch?\n\nYour current map, as well as anything not on gravship substructure, will be permanently lost. The launch process is destructive, meaning you won't be able to return. Build a grav anchor to prevent this map from being destroyed.\n\n<color=#FF3333FF>Warning: </color>The following people will be left behind:\n  - <color=#D09B61FF>Johnson Johnson</color>\n  - <color=#D09B61FF>Tycho Preston</color>\n  - <color=#D09B61FF>Humberto Sullivan</color>\n  - <color=#D09B61FF>Pyrrha Trovatelli</color>"
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 0,
+        "foggedNow": 0,
+        "releasedByUnfog": [],
+        "sweepPasses": 0,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human348": [
+           "Ascetic 0",
+           "Bloodlust 0"
+          ],
+          "Human351": [
+           "Pyromaniac 0",
+           "Neurotic 1"
+          ],
+          "Human354": [
+           "NightOwl 0",
+           "Nudist 0",
+           "Abrasive 0"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "none-needed"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 9,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "restore_touched_settings [('launchHeldColonistWarningEnabled', 'True')]",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 8.275,
+     "body": 3.498,
+     "teardown": 0.265
+    }
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\LAUNCH_HELD_COLONIST_WARNING_1.det\\design\\validation_walks\\RimMandrake\\EnvironmentalHazards.md",
+  "acceptance": {
+   "overall": "INDETERMINATE",
+   "rows": [
+    {
+     "row": "launch_held_colonist_warning/nobody_held_launch_dialog_is_vanilla",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "launch_held_colonist_warning/held_colonist_named_with_what_holds_them",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "launch_held_colonist_warning/setting_off_launch_dialog_is_vanilla",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "launch_held_colonist_warning"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 3,
+    "UNMEASURED": 0,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": true,
+  "invalid": [],
+  "leads": [],
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true,
+  "targeted": {
+   "chains": [
+    "launch_held_colonist_warning"
+   ],
+   "of_chains": 9,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain launch_held_colonist_warning: named by --chains"
+   ],
+   "rows_run": [
+    "nobody_held_launch_dialog_is_vanilla",
+    "held_colonist_named_with_what_holds_them",
+    "setting_off_launch_dialog_is_vanilla"
+   ],
+   "scope": {
+    "launch_held_colonist_warning": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "nobody_held_launch_dialog_is_vanilla",
+      "held_colonist_named_with_what_holds_them",
+      "setting_off_launch_dialog_is_vanilla"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  }
+ },
+ "benign_stops": []
+}
