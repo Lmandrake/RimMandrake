@@ -17,3 +17,18 @@ Owner, 2026-10-13 (corrected scope): *"for all PAWNS on the map, record their vi
 - GPT's second review: `design/RimMandrake/test_control/test_control_review_gpt_20261013.md` (prompt beside it). First build = its §5: six channel groups (pawn vitals, threat changes, clock/action ledger, UI/letters, critical subjects, coverage heartbeat) + two controls (safe time-advance gate, row governor), with its acceptance-proof table.
 - Owner's rulings that bind the build: `design/RimMandrake/debug_process.md` § "Test disturbances" — corrected anomaly with no damage may PASS; damage to the test restarts the row; every threat is logged AND gets a test-environment item; long time runs allowed only when clearly worth it; protected colonists only in tests labelled as not about health/needs/death; two suites (isolated + integration).
 - Measured cause of pass 7's deaths: malnutrition during long tick advances, not the clock-set jump.
+
+## verify
+- A1 (L0): `python3 src/RimMandrake/Utils/run_selftests.py --only selftest_telemetry selftest_governor` green.
+- A2 (L1): `python.exe src/RimMandrake/bridgetools/prove_vitals_governor.py` on a free game (gimmesomeslack tier: the bridge and Gimme Some Slack, all five expansions, quicktest maps); every case PASS.
+
+## criteria
+- A1 L0: monitor core, governor and vitals telemetry selftests green (selftest_telemetry.py, selftest_governor.py).
+- A2 L1: GPT s5 acceptance cases pass live on the small list (prove_vitals_governor.py), colony loss and hostile colonist raise red RimPulse alarms.
+
+## refs
+file: src/RimMandrake/bridgetools/prove_vitals_governor.py
+file: src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitalsCore.cs
+file: src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVitalsTools.cs
+file: src/RimMandrake/Utils/modcheck/governor.py
+tier: gimmesomeslack
