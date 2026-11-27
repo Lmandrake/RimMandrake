@@ -92,7 +92,7 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **waits-are-not-launched.** An item that waits on an open item reads `waits_on` and names that item. An item with a
   dated wait in the future reads `waiting`. An old item that nobody named, whose dated wait has passed and whose check
   still fails, reads `reshape` and launches nothing (plan: a date never launches old work). An item with no check that is
-  due for Shape goes on to `shape`. A blocked item reads `blocked`, unless its block is stale (the next promise).
+  due for Shape goes on to `shape`. A blocked item reads `blocked`, unless its block is stale (the next promise) or it is a lane-cause ticket whose cause ended in two incidents (the last promise).
 - **blocked-idle-window-open-is-due.** The age line (P-5 of the retired Producer, revived by the Conductor 2026-11-25;
   `design/RimMandrake/retired_v3_role_duties_2026-11-23.md`). A block idle past `block_idle_days` since the item's last
   own event, whose `needs` window opened `block_window_min` times or more since (`game-up`: the game came UP;
@@ -281,5 +281,15 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   step 1 reads it against now). live when the ask names in-game captures, a screenshot, a live game or "on this build".
 - **each-limit-names-its-danger.** Each numeric setting in `list_dispatch.json` has a `_<name>_doc` that names the danger
   it guards.
+- **a-lane-cause-ticket-seen-in-two-incidents-gets-one-work-run.** A SteveDesktop lane-cause ticket
+  (`lane_ticket.CAUSE_ITEM`) that the steward holds blocked carries `lane_cause` facts: its own ledger events read by
+  `lane_ticket.incidents` (one steward block is one ended incident, a lift is a live one). It has no outcome check, and the
+  steward's block normally keeps every run off the cause until the next incident. With two ended incidents (`OFFER_AT`)
+  and no live one, the tick offers it one Work run (`kind lane_cause`, opus, never in a bundle) past the block, with a
+  brief that carries each incident's end time, alarm text and recovery. With one ended incident, or a live incident, it
+  reads `blocked` with the steward's reason. A Work run that started after the latest ended incident spends the offer
+  (`blocked`, naming the run); a third ended incident makes one more. An incident record that cannot be read reads `blind`
+  (could not look) and is never offered. The earlier runs of the ticket stop no later offer. The gates (pause, off, hold,
+  slots, load, account) bind an offer like any launch. The rule that counts incidents lives in `lane_ticket.py` only.
 
 Later lists beside this page: `polish.md` (none yet).

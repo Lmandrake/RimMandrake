@@ -1,6 +1,6 @@
 # BOUNDARY: one SteveDesktop ticket per lane cause
 
-Code: `src/RimMandrake/Utils/testq/lane_ticket.py`, `src/RimMandrake/Utils/testq/steward.py`.
+Code: `src/RimMandrake/Utils/testq/lane_ticket.py`, `src/RimMandrake/Utils/testq/steward.py`; the offer is read by `src/RimMandrake/rimflow/list_dispatch.py`.
 
 ## ACCEPTS
 
@@ -29,5 +29,11 @@ Code: `src/RimMandrake/Utils/testq/lane_ticket.py`, `src/RimMandrake/Utils/testq
 - **cause-identity.** A changed state or cause gets a different ticket, even during a continuous outage.
 - **incident-lifecycle.** Recovery ends the incident and leaves its cause ticket on a named wait. A return lifts the wait and notes the same ticket at the first rung.
 - **pick-the-filler-has-not-seen.** A pick that the filler's last pass did not see (its `fill_seen.json` record names another verdict) is not a fault until `FILL_PASS_GRACE_S` passes with no newer filler pass. A pick that the filler chose and did not queue, or one with no filler record, is a fault at once.
+- **a-lane-cause-ticket-seen-in-two-incidents-gets-one-work-run.** `incidents(events)` reads a cause ticket's own ledger
+  events: a steward block (`WAIT`) is one ended incident, with the alarm text and the recovery note before it, and an
+  `unblock` is a live one. `offer(inc, run_times)` returns `offer` for two ended incidents, no live one and no Work run
+  after the latest end; `blocked` for fewer than two ended; `live` while an incident is live; `spent` after that one run
+  (the next ended incident offers one more); `could_not_look` for an event time that cannot be read, never zero incidents.
+  Tested in `selftest_list_dispatch.py` (the ticket lane acts on it). The steward still blocks the ticket at each recovery.
 
 The acceptance script exercises pure key identity and incident timing. The Operations clock and ingest threshold are exercised in `selftest_ops_watch.py` and `selftest_ingest.py`.

@@ -1703,6 +1703,131 @@ def t_the_pause_command_edits_one_line_and_nothing_else():
         chk(lambda: "code_review_pause" in str(e), "a file with no pause line is refused, naming the line to add")
 
 
+# ---- a lane-cause ticket whose cause was seen in two incidents gets one Work run between incidents -------------------
+# (item RIMMANDRAKE_OFFER_TWICE_SEEN_LANE_CAUSE_NOTHING_WORKS_IT; page design/specs/2026-11-23-lane-cause-once/boundary.md)
+
+def _lt():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "lane_ticket_under_test", os.path.join(REPO, "src", "RimMandrake", "Utils", "testq", "lane_ticket.py"))
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+CAUSE = "STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_YVBFTB"
+WAITTXT = "steward: waiting for lane cause IDLEEMPTY_YVBFTB (SteveDesktop lane IDLE_EMPTY)"
+
+
+def _ts(n):
+    import time as _t
+    return _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime(1_799_000_000 + n))
+
+
+def _incident(n, t0, live_at_end=False):
+    """The ledger events of incident number n starting at offset t0: its alarm, its recovery and the steward's block."""
+    ev = []
+    if n == 1:
+        ev.append({"event": "spawn", "name": CAUSE, "title": "alarm one: lane IDLE_EMPTY since 11:56", "ts": _ts(t0)})
+    else:
+        ev.append({"event": "unblock", "id": CAUSE, "reason": "steward: lane cause returned", "ts": _ts(t0)})
+        ev.append({"event": "note", "id": CAUSE, "text": "steward: lane IDLE_EMPTY again since 18:03 (alarm %d)" % n,
+                   "ts": _ts(t0 + 5)})
+    if not live_at_end:
+        ev.append({"event": "note", "id": CAUSE, "text": "steward: SteveDesktop lane proven again: job J%d DONE" % n,
+                   "ts": _ts(t0 + 100)})
+        ev.append({"event": "block", "id": CAUSE, "reason": WAITTXT, "ts": _ts(t0 + 110)})
+    return ev
+
+
+def t_a_lane_cause_ticket_seen_in_two_incidents_gets_one_work_run():
+    LT = _lt()
+    one = _incident(1, 0)
+    two = one + _incident(2, 1000)
+    three = two + _incident(3, 2000)
+
+    def verdict(events, runs=()):
+        return LT.offer(LT.incidents(events), list(runs))[0]
+    chk(lambda: verdict(two) == "offer", "two ended incidents and no live incident: offered to the ticket lane")
+    chk(lambda: verdict(one) == "blocked" and "1 ended" in LT.offer(LT.incidents(one), [])[1],
+        "one ended incident stays blocked by the steward, and says how many ended")
+    chk(lambda: verdict(two + _incident(3, 2000, live_at_end=True)) == "live" and verdict(three[:-2] + _incident(4, 3000, True)) == "live",
+        "a live incident stays with the steward, however many incidents ended before")
+    last2 = LT.incidents(two)["ended"][-1]["at"]
+    chk(lambda: verdict(two, [last2 + 30]) == "spent", "a ticket that had its one Work run is not offered again for the same two incidents")
+    chk(lambda: verdict(two, [last2 - 5000]) == "offer", "a Work run before the second incident ended is no run between incidents")
+    last3 = LT.incidents(three)["ended"][-1]["at"]
+    chk(lambda: verdict(three, [last2 + 30]) == "offer" and verdict(three, [last2 + 30, last3 + 30]) == "spent",
+        "a third ended incident makes one more offer, and its run spends it")
+    chk(lambda: verdict(one + [{"event": "unblock", "id": CAUSE, "ts": _ts(500)}] ) == "live", "a return after the last block is a live incident")
+    bad = two[:3] + [dict(two[3], ts="not a time")] + two[4:]
+    chk(lambda: LT.offer(LT.incidents(bad), [])[0] == "could_not_look", "an incident record with an unreadable time reads could not look")
+    chk(lambda: LT.offer(LT.incidents([{"event": "block", "id": CAUSE, "reason": WAITTXT}] * 2), [])[0] == "could_not_look",
+        "a steward block with no time reads could not look, never ended")
+    chk(lambda: LT.offer(LT.incidents(None), [])[0] == "could_not_look", "no record at all reads could not look")
+    ev = LT.incidents(two)["ended"]
+    chk(lambda: len(ev) == 2 and "alarm one" in ev[0]["alarm"] and "alarm 2" in ev[1]["alarm"]
+        and "J1 DONE" in ev[0]["recovery"] and "J2 DONE" in ev[1]["recovery"] and ev[0]["at"] < ev[1]["at"],
+        "each ended incident keeps its alarm text, its recovery and its end time")
+    chk(lambda: verdict(two + [{"event": "block", "id": CAUSE, "reason": "a hand block", "ts": _ts(3000)}]) == "offer",
+        "a block that is not the steward's wait ends no incident and starts none")
+
+    # decide: the ticket has no outcome check and is blocked; the offer, and only the offer, launches it
+    def row(events, runs=(), blocked=True):
+        lc = LT.incidents(events)
+        return dec_row({"A": it(state="ready", blocked=blocked, effect=None, verdict=None, lane_cause=lc,
+                                blocked_reason=WAITTXT, title="SteveDesktop lane IDLE_EMPTY")},
+                       st={"items": {"A": {"attempts": [{"at": r, "unit": "u%d" % k, "model": "opus", "cap": 12, "kind": "lane_cause"}
+                                                        for k, r in enumerate(runs)]}}},
+                       runs={"A": {"ended": ["u%d" % k for k in range(len(runs))]}})
+    r = row(two)
+    chk(lambda: r["decision"] == "launch" and r.get("kind") == "lane_cause" and r.get("model") == "opus",
+        "decide: two ended incidents read launch, a lane_cause run, opus (case 1)")
+    chk(lambda: row(one)["decision"] == "blocked" and "waiting for lane cause" in row(one)["why"],
+        "decide: one ended incident reads blocked with the steward's reason (case 2)")
+    chk(lambda: row(two + _incident(3, 2000, True))["decision"] == "blocked", "decide: a live incident reads blocked (case 3)")
+    chk(lambda: row(two, runs=[last2 + 30])["decision"] == "blocked" and row(three, runs=[last2 + 30])["decision"] == "launch",
+        "decide: the one run spends the offer, and a third incident offers one more (case 4)")
+    chk(lambda: row(three, runs=[last2 + 30])["why"] != "" and "run 2" in row(three, runs=[last2 + 30])["why"],
+        "decide: the second offer is no 'ended with no LEFT OPEN' stop, and counts its own run")
+    cnl = dec_row({"A": it(state="ready", blocked=True, effect=None, verdict=None, lane_cause={"unreadable": "ts bad"},
+                           blocked_reason=WAITTXT)})
+    chk(lambda: cnl["decision"] == "blind" and cnl.get("could_not_look"), "decide: an unreadable incident record reads blind (could not look), never launch")
+    plain = dec_row({"A": it(state="ready", blocked=True, effect=None, verdict=None, blocked_reason="owner said wait")})
+    chk(lambda: plain["decision"] != "launch", "decide: a blocked ticket with no check and no lane_cause facts is not launched")
+    chk(lambda: row(two)["decision"] == "launch" and dec_row({"A": it(state="ready", blocked=True, effect=None, verdict=None,
+        lane_cause=LT.incidents(two), blocked_reason=WAITTXT)}, cfg=dict(CFG, enabled=False))["decision"] == "disabled",
+        "decide: the lane's own gates still bind an offer")
+
+    # the brief the offered run gets: both incidents' times, alarm text and recovery
+    d = LD()
+    br = d.lane_cause_brief_text("A", it(state="ready", effect=None, title="SteveDesktop lane IDLE_EMPTY"), dict(r))
+    chk(lambda: "alarm one" in br and "alarm 2" in br and "J1 DONE" in br and "J2 DONE" in br and _ts(110) in br,
+        "the offered run's brief carries both incidents: end time, alarm text and recovery")
+    chk(lambda: "cmd:" not in br and "check holds" not in br, "the offered run's brief names no outcome check (the ticket has none)")
+
+    # gather: the observer keeps the events of a cause ticket; the facts read from them
+    op = d.Openings()
+    for e in two:
+        op.observe(e, None, True)
+    op.observe({"event": "note", "id": "SOME_OTHER_ITEM", "text": "x", "ts": _ts(1)}, None, True)
+    chk(lambda: list(op.cause_events) == [CAUSE] and len(op.cause_events[CAUSE]) == len(two),
+        "the replay observer keeps the events of lane-cause tickets only")
+    x = type("X", (), {"id": CAUSE, "blocked": True, "blocked_reason": WAITTXT})()
+    chk(lambda: d.lane_cause_facts(x, op) == LT.incidents(two), "lane_cause_facts reads a steward-blocked cause ticket's incidents")
+    x2 = type("X", (), {"id": CAUSE, "blocked": False, "blocked_reason": None})()
+    x3 = type("X", (), {"id": "RIMMANDRAKE_SOME_OTHER_ITEM_X", "blocked": True, "blocked_reason": WAITTXT})()
+    chk(lambda: d.lane_cause_facts(x2, op) is None and d.lane_cause_facts(x3, op) is None,
+        "lane_cause_facts reads nothing for a ticket the steward does not hold blocked")
+    op.cause_events[CAUSE][2]["ts"] = "garbage"      # the first incident's steward block
+    chk(lambda: "unreadable" in (d.lane_cause_facts(x, op) or {}), "lane_cause_facts says could not look when an event time cannot be read")
+
+
+def dec_row(items, iid="A", **kw):
+    rows, _launches, _ = run(items, **kw)
+    return rows[iid]
+
+
 def main():
     for t in (t_decide_is_pure_and_says_why_on_every_row,
               t_the_check_runs_before_every_attempt,
@@ -1748,7 +1873,8 @@ def main():
               t_a_check_that_stays_blind_gets_a_repair_run,
               t_the_code_review_pause_holds_every_review_ticket,
               t_the_shipped_pause_names_the_three_kinds_and_only_them,
-              t_the_pause_command_edits_one_line_and_nothing_else):
+              t_the_pause_command_edits_one_line_and_nothing_else,
+              t_a_lane_cause_ticket_seen_in_two_incidents_gets_one_work_run):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a promise whose test cannot run is a FAIL, never a crash

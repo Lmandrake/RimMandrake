@@ -41,6 +41,11 @@ oldest item that another waits on, then oldest filing, one decision:
                   idle past block_idle_days whose `needs` window (game UP, a bridge free) opened block_window_min times
                   since is stale; it does not stop the lane, and an item with no check it makes due for Shape. A block
                   with no end (block_end) is stale after block_idle_days whatever its needs, where its route is open
+  lane cause      a SteveDesktop lane-cause ticket that the steward holds blocked (lane_ticket.py) carries no check. Its
+                  cause ended in two incidents and none is live: one Work run (opus, kind lane_cause, never in a bundle)
+                  past the block, whose brief names each incident's end, alarm and recovery; a Work run since the latest
+                  ended incident spends the offer, a third ended incident offers one more. One ended incident or a live
+                  one reads blocked; a record that cannot be read reads blind
   mod_work        its home is mod:<folder>, or every repo path it names is inside one mod's folder (mod_work.of): it
                   waits for that mod's Maturation Pipeline run; no check runs, nothing is adopted, closed or launched.
                   A home that cannot be read reads blind ("could not look")
@@ -545,8 +550,19 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("off", it["off"])
             continue
         claimed = it.get("claimed") if not att else None     # the lease of a run of ours never stops our next run
-        shape = judge = live_game = repair = False
-        if not it.get("effect"):
+        shape = judge = live_game = repair = offer = False
+        lc = it.get("lane_cause")       # a lane-cause ticket the steward holds blocked (lane_ticket.py): it has no check
+        if lc is not None and not claimed:
+            word, lwhy = _lane_ticket().offer(lc, [a.get("at") or 0 for a in done])
+            if word == "offer":
+                offer = True        # two incidents ended: one Work run between incidents, past the steward's block
+            elif word == "could_not_look":
+                put("blind", "the incident record of its lane cause could not be read (%s); nothing launches it" % lwhy)
+                continue
+            else:
+                put("blocked", "%s; the item is blocked: %s" % (lwhy, it.get("blocked_reason") or "no reason given"))
+                continue
+        if not it.get("effect") and not offer:
             acc = it.get("accept")
             if claimed:
                 put("claimed", "%s; the holder works it, so its check is not attached" % claimed)
@@ -587,7 +603,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
             else:
                 put("close", "the check holds: the work is done (%s)" % _one(it.get("out"), 160))
             continue
-        if not shape and not judge and verdict != "fails":
+        if not shape and not judge and not offer and verdict != "fails":
             if run.get("bundle") or run.get("live"):    # a live run on it holds nothing back: say so, not blind
                 put("in_bundle" if run.get("bundle") else "live", "its check is unmeasured (%s), but %s works it"
                     % (_one(it.get("out") or verdict, 120), "the live work bundle %s" % run["bundle"]
@@ -634,7 +650,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if it.get("waits_on"):
             put("waits_on", "it waits on the open item(s) %s" % ", ".join(it["waits_on"]))
             continue
-        if it.get("blocked") and not it.get("block_stale"):
+        if it.get("blocked") and not it.get("block_stale") and not offer:
             put("blocked", "the item is blocked: %s" % (it.get("blocked_reason") or "no reason given"))
             continue
         wu = it.get("wait_until")
@@ -684,8 +700,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
                  "read the refusal on %s, then act on its reason: drop it, re-home it, or `list_dispatch.py clear %s --why "
                  "...` for one more run" % (iid, iid))
             continue
-        if work and not shape:      # a Work run on an earlier, cleared check is no Shape run
-            last = work[-1]
+        if work and not shape and not offer:    # a Work run on an earlier, cleared check is no Shape run; an offer's new
+            last = work[-1]                     # incident is its own reason to run, so earlier runs stop nothing
             if len(work) >= max_runs:
                 stop("%d Work runs (%s) ended and the check still fails; %d is the most" % (
                     len(work), ", ".join(str(a.get("unit")) for a in work), max_runs),
@@ -785,6 +801,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
             continue
         if shape:
             model, mwhy = "opus", "a Shape run is a judgement, and does the work too when the item is small"
+        elif offer:
+            model, mwhy = "opus", "finding the cause of a lane stop is a diagnosis that no test proves"
         elif judge:
             model, mwhy = "opus", "a judge run is a judgement on work it did not make"
         elif look:
@@ -809,6 +827,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("judge", "judge run %d: %s (%s); the ask: %s%s" % (
                 len(work) + 1, model, mwhy, _one((it.get("route") or {}).get("ask"), 160),
                 "; it takes %s for its captures" % game if game else ""))
+        elif offer:
+            row.update(model=model, cap=cap, run_n=len(work) + 1, kind="lane_cause", lane_cause=lc["ended"])
+            put("launch", "Work run %d: %s (%s); its lane cause ended in %d incidents and no Work run is on it since the "
+                          "latest (%s)" % (len(work) + 1, model, mwhy, len(lc["ended"]), _one(it.get("blocked_reason"), 100)))
         elif shape:
             row.update(model=model, cap=cap, run_n=1, kind="shape")
             put("shape", "Shape run: %s (%s); %s" % (model, mwhy, it.get("shape_why") or "due for Shape"))
@@ -1185,6 +1207,19 @@ def _read_next(st, iids, runs):
         a["next"] = str(n.get("text")) if n else None
 
 
+def lane_cause_facts(x, op):
+    """-> the incidents of a SteveDesktop lane-cause ticket that the steward holds blocked (lane_ticket.incidents), or None
+    for any other ticket. The ticket's own ledger events are the record: a steward block is one ended incident, and a
+    lift is a live one (lane_ticket.py). A record that cannot be read is {"unreadable": why}, never zero incidents."""
+    try:
+        LT = _lane_ticket()
+        if not (LT.CAUSE_ITEM.fullmatch(x.id) and x.blocked and (x.blocked_reason or "").startswith(LT.WAIT)):
+            return None
+        return LT.incidents(op.cause_events.get(x.id))
+    except Exception as e:  # noqa: BLE001 - lane_ticket.py could not be loaded: could not look, never "no incidents"
+        return {"unreadable": "%s: %s" % (type(e).__name__, e)}
+
+
 def block_facts(world, x, now):
     """-> (the open items that x's block waits on, whether a block with no open predecessor still holds). Whether a block
     holds at all is priority.block_holds, the one rule of every offer path."""
@@ -1209,16 +1244,39 @@ def block_facts(world, x, now):
 WINDOW_EVENTS = {"game-up": ("game", "UP", "the game came UP"), "bridge": ("bridge", "released", "a bridge went free")}
 
 
+def _lane_ticket():
+    """The steward's pure lane_ticket.py, loaded by path: it lives in Utils/testq, whose other modules share names with
+    this folder's (schema, testq), so that folder is never put on sys.path."""
+    global _LT
+    if _LT is None:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "lane_ticket", os.path.join(REPO, "src", "RimMandrake", "Utils", "testq", "lane_ticket.py"))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _LT = mod
+    return _LT
+
+
+_LT = None
+
+
 class Openings(object):
-    """A replay observer: each item's last own event, and the times each `needs` window opened. One pass, no reread."""
+    """A replay observer: each item's last own event, the times each `needs` window opened, and the events of each
+    SteveDesktop lane-cause ticket (lane_ticket.incidents reads them). One pass, no reread."""
 
     def __init__(self):
         self.last, self.opened = {}, {k: [] for k in WINDOW_EVENTS}
         self.filed = {}     # {item: the role unit that filed it, None for a hand} (chain_depth)
+        self.cause_events = {}      # {lane-cause ticket: its events, oldest first; a time that cannot be read stays as written}
 
     def observe(self, ev, world, ok):
         if not ok:
             return
+        who = ev.get("id") or ev.get("name")
+        if who and who.startswith("STEVE_LANE_UNSTICK_") and _lane_ticket().CAUSE_ITEM.fullmatch(who):
+            self.cause_events.setdefault(who, []).append(
+                {k: ev.get(k) for k in ("event", "ts", "reason", "text", "title") if ev.get(k) is not None})
         import model as LM
         t = LM.epoch(ev.get("ts")) if ev.get("ts") else None
         if t is None:
@@ -1632,7 +1690,8 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
             if os.path.isfile(p):
                 with open(p, encoding="utf-8", errors="replace") as f:
                     acc = accept_script(f.read())
-        if not x.effect and not acc and not sdue and not sf["route"]:
+        lane_cause = lane_cause_facts(x, op)
+        if not x.effect and not acc and not sdue and not sf["route"] and lane_cause is None:
             continue
         waits, blocked = block_facts(w, x, now)
         mw = ({"mod": None, "why": mw_cause, "unreadable": mw_cause} if mw_mods is None else
@@ -1640,7 +1699,7 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
         d = {"state": x.state, "blocked": blocked, "blocked_reason": x.blocked_reason,
              "effect": x.effect, "waits_on": waits, "events": len(x.history), "title": x.title,
              "filed": LM.epoch(x.created_at) if x.created_at else None, "blocks_others": iid in waited_on,
-             "caused_by": x.caused_by, "needs": getattr(x, "needs", None), "home": (getattr(x, "home", None) or {}).get("home"), "mod_work": mw, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
+             "caused_by": x.caused_by, "needs": getattr(x, "needs", None), "home": (getattr(x, "home", None) or {}).get("home"), "mod_work": mw, "lane_cause": lane_cause, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
              "raised": LM.raise_key(x) if x.raised is not None else None, "block_stale": stale,
              # a Shape split is a naming: the run that wrote it read the old item against now (old-work filter)
@@ -1811,6 +1870,45 @@ Steps:
            stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "") + (
         GAME % {"game": row["game"], "item": iid} if row.get("game") else "") + (
         REPAIR % {"n": row["repair_check"], "item": iid} if row.get("repair_check") else "") + _reader(it)
+
+
+def lane_cause_brief_text(iid, it, row):
+    """The brief of the one Work run that a lane-cause ticket gets between incidents. It names no outcome check: the ticket
+    has none. It carries each ended incident: when it ended, its alarm text and its recovery."""
+    inc = []
+    for k, e in enumerate(row.get("lane_cause") or [], 1):
+        inc.append("  incident %d, ended %s\n    alarm:    %s\n    recovery: %s" % (
+            k, e.get("ended") or "-", _one(e.get("alarm"), 600) or "(no alarm text on the ticket)",
+            _one(e.get("recovery"), 600) or "(no recovery note on the ticket)"))
+    return """Work list item {item} (the Workshop Pipeline's Work stage, a lane-cause run, run {n}).
+
+Title: {title}
+
+This ticket names the cause of a SteveDesktop test-lane stop that has now come back. The steward blocks the ticket while the
+lane is healthy and lifts the block when the cause returns, so no run looked for the cause between incidents. The ticket
+lane offers this one run now, between incidents, while the lane is healthy. The ticket has no outcome check.
+
+The ended incidents (the whole record of each is the ITEM PACKET below):
+{inc}
+
+Steps:
+0. Start the item, before anything else:
+   python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "Workshop Pipeline lane-cause run (list_dispatch.py)" --publish
+1. First read the ticket against now (CLAUDE.md, Old work is filtered): when the cause is already fixed by a later commit,
+   close the ticket with that sha; when it is stale or wrong, drop it with the reason. Else read the ITEM PACKET below,
+   then the lane's own record of those times: steward.jsonl, tick.log and
+   infrastructure/stevedesktop/RUNBOOK.md. Find what the incidents have in common, and whether the alarm was true or a
+   fault of the alarm's own timing or reading.
+2. Fix the cause where you find it, in this run, test first (CLAUDE.md, Touching code has a cost). Land with
+   ./publish -m "{item}: <what>" <explicit paths>.
+3. End with exactly one of these on the item:
+   - `python3 src/RimMandrake/rimflow/cli.py close {item} --sha <published sha> --evidence "<what ran>" --seat BENCH --why
+     "<why the cause is gone>" --publish`, when you fixed the cause and the fix is running (an operational fix closes
+     with its --live promise).
+   - a note whose text starts `LEFT OPEN:` with what you found and the ONE next act, when the cause is known and not
+     fixed. The ticket stays blocked by the steward until its next incident.
+   - a note with your evidence, when you found no cause. Do not close the ticket then.
+""".format(item=iid, n=row.get("run_n", 1), title=it.get("title") or "-", inc="\n".join(inc) or "  (none)")
 
 
 GAME = """
@@ -2074,6 +2172,8 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
         if row.get("kind") == "shape":
             import list_shape as LS
             brief = LS.brief_text(iid, it, row)
+        elif row.get("kind") == "lane_cause":
+            brief = lane_cause_brief_text(iid, it, row)
         elif row.get("kind") == "judge":
             brief = judge_brief_text(iid, it, row, makers=[a.get("unit") for a in s.get("attempts") or [] if a.get("unit")]
                                      + ([it["shape_unit"]] if it.get("shape_unit") else []))
