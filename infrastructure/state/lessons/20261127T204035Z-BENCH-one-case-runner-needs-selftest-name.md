@@ -1,0 +1,3 @@
+A script that runs one case of a rimflow selftest must have a name that matches selftest*.py. filing_gate.run_unit() looks for a selftest program in the process line. When the name does not match, a fixture 'rimflow file' that sets RM_ROLE_UNIT is gated as a real helper run: it exits 6, and it writes a refusal row into the real dispatcher state (/mnt/d/ClaudeWork/rimmandrake/dispatcher/filing_refusals/<unit>.jsonl). Seen 2026-11-27: run_lapsed_case.py failed this way, and selftest_lease_onecase.py passed.
+item: RIMMANDRAKE_READ_FIX_D89E0951B8_WITH_FRESH_EYES
+home: skills/using-rimflow/references/traps.md
