@@ -4,12 +4,16 @@ the loaded dev world, read back what it must not disturb, and save under a NEW n
 design/Jawa/worldbuilding/big_repaint_plan_2026-10-21.md (item BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL).
 
     python3 src/RimMandrake/Utils/remake/repaint_stamp.py --plan          offline: the steps and the bars, no bridge
-    python3 src/RimMandrake/Utils/remake/repaint_stamp.py                 DRY RUN on the bridge: load R3, import apply:false
-    python3 src/RimMandrake/Utils/remake/repaint_stamp.py --apply         stamp, validate, commit, read back, save
+    python.exe src/RimMandrake/Utils/remake/repaint_stamp.py              DRY RUN on the bridge: load R3, import apply:false
+    python.exe src/RimMandrake/Utils/remake/repaint_stamp.py --apply      stamp, validate, commit, read back, save
 
 Only a seat holding the bridge runs the last two (`rimflow bridge take --for "big repaint stamp"`), with the game up on
-a list that loads RM_SleepingIce and RM_Wastes. Every bar is checked before the next write; the first failed bar stops
-the run with nothing saved. R3 is never overwritten; an existing REPAINT save is never overwritten.
+a list that loads RM_SleepingIce and RM_Wastes (R3's own 325-mod list). The bridge binds Windows loopback, so the live
+runs go under Windows python.exe, with AGENT_STORAGE_ROOT passed through WSLENV. Every bar is checked before the next
+write; the first failed bar stops the run with nothing saved. R3 is never overwritten; an existing REPAINT save is never overwritten.
+
+Load a byte copy of R3 under another name (--source): with R3 itself loaded the companion runs CAMPAIGN and refuses
+jawa/world_mutators_audit (design/specs/2026-11-23-canonical-save-guard/boundary.md: "copy it, load the copy").
 
 Then the offline proof (step 9), read-only:
     python3 src/RimMandrake/Utils/remake/repaint_biomes.py verify-save "<Saves>/ASHKARR_DEV_START_2026-10-21_REPAINT.rws" \
@@ -79,7 +83,7 @@ def bar(ok, what, r):
         raise Stop("%s: %s" % (what, json.dumps(r, default=str)[:600]))
 
 
-def run(rb, apply, paths, log):
+def run(rb, apply, paths, log, source=SOURCE_SAVE):
     def call(tool, params):
         r = rb.call(tool, params)
         log.append({"tool": tool, "params": params, "result": r})
@@ -88,7 +92,9 @@ def run(rb, apply, paths, log):
     import game_paths
     if apply and os.path.exists(os.path.join(game_paths.SAVES, TARGET_SAVE + ".rws")):
         raise Stop("%s.rws already exists: never overwritten" % TARGET_SAVE)
-    r = call("rimworld/load_game_ready", {"saveName": SOURCE_SAVE})
+    # R3's own 325-mod list names 7 ids that are not installed (measured 2026-11-26), so the load passes
+    # ignoreModCompatibility, as the 2026-11-26 loads of R3 did; without it the mismatch dialog holds the load.
+    r = call("rimworld/load_game_ready", {"saveName": source, "ignoreModCompatibility": True})
     bar(r.get("success", True) is not False, "load", r)
     wi = call("jawa/world_info_get", {})
     bar(wi.get("tilesCount") == EXPECT_TILES, "grid size", {"tilesCount": wi.get("tilesCount")})
@@ -121,6 +127,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--plan", action="store_true", help="print the steps and bars; no bridge")
+    ap.add_argument("--source", default=SOURCE_SAVE,
+                    help="the save to load: a byte copy of R3 under another name. R3 itself is canonical, so the companion "
+                         "runs CAMPAIGN on it and refuses jawa/world_mutators_audit, the readback bar")
     ap.add_argument("--log", help="JSON log of every call (default: under the agent storage root)")
     a = ap.parse_args(argv)
     for p in (STAMP, SCALD):
@@ -137,7 +146,7 @@ def main(argv=None):
     host, port, token = resolve_endpoint()
     try:
         with RimBridge(host, port, token, timeout=600.0) as rb:
-            print(run(rb, a.apply, paths, log))
+            print(run(rb, a.apply, paths, log, a.source))
     except Stop as e:
         print("STOPPED, nothing saved: %s" % e)
         code = 1

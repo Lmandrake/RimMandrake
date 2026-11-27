@@ -11,6 +11,7 @@ we're building now is the big repaint! Right now!").
         [--edits tile_biome_edits.csv] [--decode-by-name] --out <tiles_biome_only.csv>
     python3 src/RimMandrake/Utils/remake/repaint_biomes.py check <tiles_biome_only.csv>     the stamp's bar, exit 0/1
     python3 src/RimMandrake/Utils/remake/repaint_biomes.py verify-save <stamped.rws> --against <csv>   exit 0/1
+    python3 src/RimMandrake/Utils/remake/repaint_biomes.py verify-save --canon --against <csv>   the canon.yml start, 0/1/3
     python3 src/RimMandrake/Utils/remake/repaint_biomes.py selftest
 
 --decode-by-name (2026-11-02): the dump that matched R3's 325-mod set is gone, so the build decodes each tile hash as
@@ -348,16 +349,12 @@ def cmd_check(a):
     return 1 if bad else 0
 
 
-def cmd_verify_save(a):
-    """Read-only: the stamped save's biome layer equals the stamp CSV, tile by tile (plan section 3 step 9)."""
+def verify_one(save, stamp, dump=None):
+    """-> the problems that keep a save's biome layer from equalling the stamp, tile by tile; [] is a pass."""
     import worldmap
-    stamp = _read_stamp(a.against)
-    if not os.path.exists(a.save):
-        print("FAIL: no save at %s" % a.save)
-        return 1
-    g = worldmap.WorldGrid(a.save, os.path.join(a.dump or _dump_dir(), "defs"))
+    g = worldmap.WorldGrid(save, os.path.join(dump or _dump_dir(), "defs"))
     arr = g.arrays["tileBiome"]
-    drows, dhash = _defs(a.dump or _dump_dir(), "BiomeDef")
+    drows, dhash = _defs(dump or _dump_dir(), "BiomeDef")
     base, problems = decode_by_name(arr, list(drows) + sorted(src_biome_defnames()), dhash)
     if len(arr) != EXPECT_TILES:
         problems.append("%d tiles, expected %d" % (len(arr), EXPECT_TILES))
@@ -365,12 +362,53 @@ def cmd_verify_save(a):
     off = [t for t in range(min(len(arr), EXPECT_TILES)) if base.get(t) != want.get(t)]
     if off:
         problems.append("%d tile(s) differ from the stamp, first %s" % (len(off), [(t, base[t], want.get(t)) for t in off[:5]]))
-    for p in problems:
-        print("FAIL:", p)
-    if not problems:
-        print("PASS %s: %d tiles equal %s, %d biomes" % (os.path.basename(a.save), EXPECT_TILES, a.against,
-                                                         len(set(base.values()))))
-    return 1 if problems else 0
+    return problems, len(set(base.values()))
+
+
+def canon_targets(canon_yml=None, saves_dir=None, repo=REPO):
+    """-> [(label, path)] of the canonical start save that canon.yml names: the live Saves file and the world/ copy."""
+    import canon_save
+    name = canon_save.start_savegame_name(canon_yml) if canon_yml else canon_save.start_savegame_name()
+    if saves_dir is None:
+        import game_paths
+        saves_dir = game_paths.SAVES
+    return name, saves_dir, [("Saves", os.path.join(saves_dir, name)), ("repo", os.path.join(repo, "world", name))]
+
+
+COULD_NOT_LOOK = 3
+
+
+def cmd_verify_save(a):
+    """Read-only: the stamped save's biome layer equals the stamp CSV, tile by tile (plan section 3 step 9).
+    --canon: the save is the canonical start that canon.yml names, both its Saves file and its world/ copy (the item's
+    outcome check: every tool that loads the dev start meets the repainted biomes). Exit 0 pass, 1 fail, 3 could not
+    look (the Saves folder is not readable from here)."""
+    stamp = _read_stamp(a.against)
+    if a.canon:
+        name, saves_dir, targets = canon_targets()
+        if not os.path.isdir(saves_dir):
+            print("COULD NOT LOOK: the Saves folder %s is not readable from here" % saves_dir)
+            return COULD_NOT_LOOK
+        print("canon.yml planet.start_savegame: %s" % name)
+    elif a.save:
+        targets = [("save", a.save)]
+    else:
+        print("REFUSED: name a save or pass --canon")
+        return 2
+    bad = False
+    for label, path in targets:
+        if not os.path.exists(path):
+            print("FAIL %s: no save at %s" % (label, path))
+            bad = True
+            continue
+        problems, nb = verify_one(path, stamp, a.dump)
+        for p in problems:
+            print("FAIL %s %s: %s" % (label, os.path.basename(path), p))
+        if problems:
+            bad = True
+        else:
+            print("PASS %s %s: %d tiles equal %s, %d biomes" % (label, os.path.basename(path), EXPECT_TILES, a.against, nb))
+    return 1 if bad else 0
 
 
 def cmd_selftest(_a):
@@ -418,6 +456,13 @@ def cmd_selftest(_a):
     assert check_stamp(rows, dict(prov, moved={"RM_Wasteland->RM_Wastes": 3}), decl), "a short move passed"
     bad_rows = rows[:-1] + [(EXPECT_TILES - 1, "RM_Wasteland")]
     assert check_stamp(bad_rows, prov, decl | {"RM_Wasteland"}), "an old name left on a tile passed"
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        cy = os.path.join(td, "canon.yml")
+        open(cy, "w").write("planet:\n  start_savegame: X_REPAINT.rws\n")
+        nm, sd, tg = canon_targets(cy, saves_dir=os.path.join(td, "Saves"), repo=td)
+        assert nm == "X_REPAINT.rws" and tg == [("Saves", os.path.join(td, "Saves", "X_REPAINT.rws")),
+                                                 ("repo", os.path.join(td, "world", "X_REPAINT.rws"))], (nm, tg)
     print("selftest PASS (%d BiomeDefs declared under src/)" % len(names))
     return 0
 
@@ -437,7 +482,8 @@ def main(argv=None):
     b.add_argument("--reference", default="r3-2026-10-21", choices=["r3-2026-10-21", "none"],
                    help="the histogram a --decode-by-name decode must equal before anything is written")
     k = sub.add_parser("check"); k.add_argument("csv")
-    v = sub.add_parser("verify-save"); v.add_argument("save"); v.add_argument("--against", required=True)
+    v = sub.add_parser("verify-save"); v.add_argument("save", nargs="?"); v.add_argument("--against", required=True)
+    v.add_argument("--canon", action="store_true", help="verify the canonical start canon.yml names (Saves + world/ copy)")
     v.add_argument("--dump")
     sub.add_parser("selftest")
     a = ap.parse_args(argv)
