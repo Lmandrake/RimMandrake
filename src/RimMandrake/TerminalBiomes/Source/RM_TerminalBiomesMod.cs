@@ -334,6 +334,55 @@ namespace RimMandrake.TerminalBiomes
             biomeListBuffer = null;
         }
 
+        /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST (RIMMANDRAKE_GREY_TWO_LEGACY_MASTERS_THE_KIT_NAMES_EVERY_ROW, 2026-11-26):
+        /// the master switches, read from the Active properties above (each mechanic reads its Active property, never the raw
+        /// field): "Mod enabled" over the four biome switches, each biome switch over its kit, each kit switch over its numbers.
+        /// The giant's burn hours sit under the Grey Sea, not the giant, because the watcher reads them too (half the hours).
+        /// Independent (their read sites consult no other switch): cages passable beneath (a def write at startup and window
+        /// close), the deepfire light-seekers (read inside a seek job that its own seeker's switch already gates) and the
+        /// hazard-clock inspect lines. The cross-biome block is read by nothing; its master greys it all the same.</summary>
+        internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
+            .Declare("masterEnabled", "scaldEnabled", "chillEnabled", "twilightSeaEnabled", "greySeaEnabled")
+            .Declare("scaldEnabled", "scaldS1SteamSkyEnabled", "scaldS2SteamCatchEnabled", "scaldS4VentFieldsEnabled", "scaldS5SailWalkerEnabled",
+                     "scaldS7SteamExposureEnabled", "scaldThurlspongeWrecksEnabled", "airHeatEnabled")
+            .Declare("scaldS1SteamSkyEnabled", "scaldS1bVentFlashEnabled")
+            .Declare("airHeatEnabled", "airHeatC")
+            .Declare("chillEnabled", "chillCryoponicsEnabled", "chillFloorBedEnabled", "chillWaxProcessionEnabled")
+            .Declare("twilightSeaEnabled", "suulkEnabled", "vauliskEnabled", "twilightPaneStrikeEnabled", "twilightDeckAccumulationEnabled",
+                     "twilightWellDriftEnabled", "twilightSunSphereGraceDays", "twilightFloraDressingEnabled", "twilightFloraLightCompsEnabled",
+                     "channelCurrentEnabled")
+            .Declare("suulkEnabled", "suulkFrequencyMultiplier", "twilightSuulkPressureScalingEnabled")
+            .Declare("vauliskEnabled", "vauliskQuickReveal")
+            .Declare("twilightPaneStrikeEnabled", "twilightPaneStrikeFrequency")
+            .Declare("twilightDeckAccumulationEnabled", "twilightDeckAccumulationRate")
+            .Declare("twilightWellDriftEnabled", "twilightDriftCadence", "twilightWellAvoidsCurrent")
+            .Declare("channelCurrentEnabled", "channelCurrentStrength", "channelCurrentExactPace", "channelFirstEntryWarning", "channelSinkOutcome",
+                     "undersurgeFrequency")
+            .Declare("greySeaEnabled", "greyHullCrustEnabled", "greyLampDrawnEnabled", "greyLampWatcherEnabled", "greyLampGiantEnabled",
+                     "greyLampGiantBurnHours", "greyCrownRetractionEnabled")
+            .Declare("greyHullCrustEnabled", "greyHullCrustRate", "greyHullCrustSaltSnowMultiplier", "greyHullCrustBerthMultiplier", "greyTearFreeEnabled")
+            .Declare("greyTearFreeEnabled", "greyTearFreeDamage")
+            .Declare("greyLampGiantEnabled", "greyLampGiantMinRadius")
+            .Declare("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage")
+            .Independent("twilightCagesPassableBeneath", "seekGlowDrawnToDeepfire", "hazardClockInspectEnabled")
+            .Name("masterEnabled", "Mod enabled").Name("scaldEnabled", "The Scald").Name("chillEnabled", "The Chill")
+            .Name("twilightSeaEnabled", "The Twilight Sea").Name("greySeaEnabled", "The Grey Sea")
+            .Name("scaldS1SteamSkyEnabled", "S1 — standing steam sky").Name("airHeatEnabled", "Hot air")
+            .Name("suulkEnabled", "The suulk — lamp-grazer").Name("vauliskEnabled", "The vaulisk — counterfeit lure")
+            .Name("twilightPaneStrikeEnabled", "Pane strikes").Name("twilightDeckAccumulationEnabled", "Deck accumulation")
+            .Name("twilightWellDriftEnabled", "Skylight drift").Name("channelCurrentEnabled", "Channel current")
+            .Name("greyHullCrustEnabled", "Hull crystallisation").Name("greyTearFreeEnabled", "Tear-free launch")
+            .Name("greyLampGiantEnabled", "The giant breaks bright lamps").Name("crossBiomeEnabled", "Enable outside the Scald biome");
+
+        private static object GetField(string n) => typeof(RM_TerminalBiomesSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+        private static void SetField(string n, object v) => typeof(RM_TerminalBiomesSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
+
+        private static System.IDisposable Dependent(Listing_Standard list, params string[] keys) =>
+            RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
+
+        /// <summary>The Reset-all button (after the confirmation): every Terminal Biomes setting back to its shipped value.</summary>
+        public static void ResetAllFields() { ResetFields(new List<string>(shippedDefaults.Keys).ToArray()); }
+
         private static string biomeListBuffer;
         private static Vector2 scrollPos;
         private static float viewHeight = 2000f;
@@ -385,27 +434,32 @@ namespace RimMandrake.TerminalBiomes
             list.Begin(viewRect);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Terminal Biomes", ResetAllFields);
 
             if (Group(list, "Mod and biome switches", RimMandrake.Shared.SettingScope.Now, new[] { "masterEnabled", "scaldEnabled", "chillEnabled", "twilightSeaEnabled", "greySeaEnabled" }))
             {
                 list.CheckboxLabeled("Mod enabled", ref masterEnabled,
                     "Off: this mod's defs still load (nothing on a saved game silently "
                   + "disappears), but every toggle below is treated as off regardless of "
-                  + "its own state. Takes effect on what is on the map now; the map-generation scatters "
+                  + "its own state, and greys out with its value kept (three stay live on their own: cages passable "
+                  + "beneath, light-seekers drawn to deepfire, and the hazard clocks). Takes effect on what is on the map now; the map-generation scatters "
                   + "(vaulisk lure, Scald wreck sponge and sail set-pieces, floor flora) simply skip on maps made afterwards.");
                 list.Label("BIOMES (each independently toggleable, owner ruling §7 Q1)");
-                list.CheckboxLabeled("The Scald", ref scaldEnabled,
-                    "A perched, boiling crater lake with its own kit (steam sky, steam-catch "
-                  + "condenser, vent fields, drifting wrecks) and margin fishing table. Off switches the whole Scald kit off.");
-                list.CheckboxLabeled("The Chill", ref chillEnabled,
-                    "A black mirror of liquid fuel ringed by a frozen crust, with its own "
-                  + "catch table. Off switches off the Chill's growers and wax procession.");
-                list.CheckboxLabeled("The Twilight Sea", ref twilightSeaEnabled,
-                    "A hypersaline terminal sea, moldy shore to shore, with its own fishing "
-                  + "table. Off switches off the suulk, vaulisk, pane strikes, light economy, flora and channel current.");
-                list.CheckboxLabeled("The Grey Sea", ref greySeaEnabled,
-                    "A hypersaline terminal sea, salt-encrusted and shrinking, with its own "
-                  + "fishing table. Off switches off the hull crust and the lamp response.");
+                using (Dependent(list, "scaldEnabled", "chillEnabled", "twilightSeaEnabled", "greySeaEnabled"))
+                {
+                    list.CheckboxLabeled("The Scald", ref scaldEnabled,
+                        "A perched, boiling crater lake with its own kit (steam sky, steam-catch "
+                      + "condenser, vent fields, drifting wrecks) and margin fishing table. Off switches the whole Scald kit off.");
+                    list.CheckboxLabeled("The Chill", ref chillEnabled,
+                        "A black mirror of liquid fuel ringed by a frozen crust, with its own "
+                      + "catch table. Off switches off the Chill's growers and wax procession.");
+                    list.CheckboxLabeled("The Twilight Sea", ref twilightSeaEnabled,
+                        "A hypersaline terminal sea, moldy shore to shore, with its own fishing "
+                      + "table. Off switches off the suulk, vaulisk, pane strikes, light economy, flora and channel current.");
+                    list.CheckboxLabeled("The Grey Sea", ref greySeaEnabled,
+                        "A hypersaline terminal sea, salt-encrusted and shrinking, with its own "
+                      + "fishing table. Off switches off the hull crust and the lamp response.");
+                }
                 list.GapLine();
             }
 
@@ -413,90 +467,105 @@ namespace RimMandrake.TerminalBiomes
             {
                 list.Label("Off leaves the biome, its terrain and every def in place; only the "
                            + "named mechanic stops acting.");
-                list.CheckboxLabeled("S1 — standing steam sky", ref scaldS1SteamSkyEnabled,
-                    "The permanent boil's-breath weather lock and its rare still days.");
-                list.CheckboxLabeled("S1b — vent-flash sky pulses", ref scaldS1bVentFlashEnabled,
-                    "Every few hours the whole sky briefly whitens and a geyser is heard letting go "
-                  + "off-camera — the shore's rhythm, felt map-wide instead of only beside a vent. "
-                  + "Purely cosmetic. Rides S1: with the steam sky off there is nothing to flash.");
-                list.CheckboxLabeled("S2 — steam-catch condenser", ref scaldS2SteamCatchEnabled,
-                    "The buildable condenser that drinks a vent's clean breath for water.");
-                list.CheckboxLabeled("S4 — vent fields", ref scaldS4VentFieldsEnabled,
-                    "Natural vents S2's condenser keys on.");
-                list.CheckboxLabeled("S7 — steam exposure", ref scaldS7SteamExposureEnabled,
-                    "The clock that makes the standing steam lethal to an unprotected pawn. Off: "
-                  + "nobody accumulates scald exposure and any exposure already carried heals off. "
-                  + "The water still burns to wade in either way — that is S8's own switch, in the "
-                  + "Environmental Hazards Kit's settings.");
-                list.CheckboxLabeled("Hot air: the steam changes the map's temperature (plants feel it too)", ref airHeatEnabled,
-                    RimMandrake.Shared.AirHeatSetting.Tip);
-                if (airHeatEnabled)
+                using (Dependent(list, "scaldS1SteamSkyEnabled", "scaldS1bVentFlashEnabled", "scaldS2SteamCatchEnabled", "scaldS4VentFieldsEnabled", "scaldS7SteamExposureEnabled", "airHeatEnabled", "airHeatC"))
                 {
-                    list.Label("  Hotter by: " + airHeatC.ToString("0") + " °C");
-                    airHeatC = Mathf.Round(list.Slider(airHeatC, 0f, 30f));
+                    list.CheckboxLabeled("S1 — standing steam sky", ref scaldS1SteamSkyEnabled,
+                        "The permanent boil's-breath weather lock and its rare still days.");
+                    using (Dependent(list, "scaldS1bVentFlashEnabled"))
+                        list.CheckboxLabeled("S1b — vent-flash sky pulses", ref scaldS1bVentFlashEnabled,
+                            "Every few hours the whole sky briefly whitens and a geyser is heard letting go "
+                          + "off-camera — the shore's rhythm, felt map-wide instead of only beside a vent. "
+                          + "Purely cosmetic. Rides S1: with the steam sky off there is nothing to flash.");
+                    list.CheckboxLabeled("S2 — steam-catch condenser", ref scaldS2SteamCatchEnabled,
+                        "The buildable condenser that drinks a vent's clean breath for water.");
+                    list.CheckboxLabeled("S4 — vent fields", ref scaldS4VentFieldsEnabled,
+                        "Natural vents S2's condenser keys on.");
+                    list.CheckboxLabeled("S7 — steam exposure", ref scaldS7SteamExposureEnabled,
+                        "The clock that makes the standing steam lethal to an unprotected pawn. Off: "
+                      + "nobody accumulates scald exposure and any exposure already carried heals off. "
+                      + "The water still burns to wade in either way — that is S8's own switch, in the "
+                      + "Environmental Hazards Kit's settings.");
+                    list.CheckboxLabeled("Hot air: the steam changes the map's temperature (plants feel it too)", ref airHeatEnabled,
+                        RimMandrake.Shared.AirHeatSetting.Tip);
+                    using (Dependent(list, "airHeatC"))
+                    {
+                        list.Label("  Hotter by: " + airHeatC.ToString("0") + " °C");
+                        airHeatC = Mathf.Round(list.Slider(airHeatC, 0f, 30f));
+                    }
                 }
                 list.GapLine();
             }
 
             if (Group(list, "The Scald's map-generation scatter (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "scaldS5SailWalkerEnabled", "scaldThurlspongeWrecksEnabled" }))
             {
-                list.CheckboxLabeled("S5 — sail + walker set-pieces", ref scaldS5SailWalkerEnabled,
-                    "Drifting bubble-sail wrecks (placed when a map is made) and the bottom-walker surfacing sighting "
-                  + "(a live incident, which also stops at once when this is turned off).");
-                list.CheckboxLabeled("Thurlsponge colonises wrecks", ref scaldThurlspongeWrecksEnabled,
-                    "Each salvage wreck in the shallows is ringed with thurlsponge (harvestable for Steel) "
-                  + "when the map is made. Off: thurlsponge grows only on the open floor. Affects map generation.");
+                using (Dependent(list, "scaldS5SailWalkerEnabled", "scaldThurlspongeWrecksEnabled"))
+                {
+                    list.CheckboxLabeled("S5 — sail + walker set-pieces", ref scaldS5SailWalkerEnabled,
+                        "Drifting bubble-sail wrecks (placed when a map is made) and the bottom-walker surfacing sighting "
+                      + "(a live incident, which also stops at once when this is turned off).");
+                    list.CheckboxLabeled("Thurlsponge colonises wrecks", ref scaldThurlspongeWrecksEnabled,
+                        "Each salvage wreck in the shallows is ringed with thurlsponge (harvestable for Steel) "
+                      + "when the map is made. Off: thurlsponge grows only on the open floor. Affects map generation.");
+                }
                 list.GapLine();
             }
 
             if (Group(list, "The Chill's growers and wax procession", RimMandrake.Shared.SettingScope.Now, new[] { "chillCryoponicsEnabled", "chillFloorBedEnabled", "chillWaxProcessionEnabled" }))
             {
-                list.CheckboxLabeled("Chill cryoponics vat", ref chillCryoponicsEnabled,
-                    "The sealed, powered vat that grows the Chill's six deep-bed plants anywhere, "
-                  + "carrying its own cryogenic bath. Off: the vat gives no cold bath, so the bed "
-                  + "plants only grow where the surroundings already allow it.");
-                list.CheckboxLabeled("Chill floor growing bed", ref chillFloorBedEnabled,
-                    "The plain growing bed that can only be built on the Chill's seabed. Off: no "
-                  + "new beds can be placed; existing ones keep working.");
-                list.CheckboxLabeled("Chill wax procession", ref chillWaxProcessionEnabled,
-                    "The floor's giant: slow wax colonies that pause to shed dead filter sheets for "
-                  + "the crew to haul back. Off: colonies still walk the floor but shed no new sheets.");
+                using (Dependent(list, "chillCryoponicsEnabled", "chillFloorBedEnabled", "chillWaxProcessionEnabled"))
+                {
+                    list.CheckboxLabeled("Chill cryoponics vat", ref chillCryoponicsEnabled,
+                        "The sealed, powered vat that grows the Chill's six deep-bed plants anywhere, "
+                      + "carrying its own cryogenic bath. Off: the vat gives no cold bath, so the bed "
+                      + "plants only grow where the surroundings already allow it.");
+                    list.CheckboxLabeled("Chill floor growing bed", ref chillFloorBedEnabled,
+                        "The plain growing bed that can only be built on the Chill's seabed. Off: no "
+                      + "new beds can be placed; existing ones keep working.");
+                    list.CheckboxLabeled("Chill wax procession", ref chillWaxProcessionEnabled,
+                        "The floor's giant: slow wax colonies that pause to shed dead filter sheets for "
+                      + "the crew to haul back. Off: colonies still walk the floor but shed no new sheets.");
+                }
                 list.GapLine();
             }
 
             if (Group(list, "The suulk (TWILIGHT_DANGER_LIGHTWEB_1)", RimMandrake.Shared.SettingScope.NextPulse, new[] { "suulkEnabled", "suulkFrequencyMultiplier", "twilightSuulkPressureScalingEnabled" }))
             {
-                list.CheckboxLabeled("The suulk — lamp-grazer", ref suulkEnabled,
-                    "A soft, slow drifter that arrives on a several-day cadence and feeds on the "
-                  + "brightest player-owned light, dimming and eventually destroying it. Nearly "
-                  + "harmless to pawns; the danger is to the light economy, not to life.");
-                if (suulkEnabled)
+                using (Dependent(list, "suulkEnabled", "suulkFrequencyMultiplier", "twilightSuulkPressureScalingEnabled"))
                 {
-                    list.Label("  Arrival frequency: " + suulkFrequencyMultiplier.ToString("0.0") + "x");
-                    suulkFrequencyMultiplier = list.Slider(suulkFrequencyMultiplier, 0.1f, 3f);
+                    list.CheckboxLabeled("The suulk — lamp-grazer", ref suulkEnabled,
+                        "A soft, slow drifter that arrives on a several-day cadence and feeds on the "
+                      + "brightest player-owned light, dimming and eventually destroying it. Nearly "
+                      + "harmless to pawns; the danger is to the light economy, not to life.");
+                    using (Dependent(list, "suulkFrequencyMultiplier", "twilightSuulkPressureScalingEnabled"))
+                    {
+                        list.Label("  Arrival frequency: " + suulkFrequencyMultiplier.ToString("0.0") + "x");
+                        suulkFrequencyMultiplier = list.Slider(suulkFrequencyMultiplier, 0.1f, 3f);
+                    list.CheckboxLabeled("Suulk pressure scales with constellation size", ref twilightSuulkPressureScalingEnabled,
+                        "On: each LIT lamp or cage the colony owns makes a suulk arrival more likely, up to "
+                      + "certain at four. Off: the chance stays at the one-lamp level however many you carry "
+                      + "(none at all still draws none).");
+                    }
                 }
-                list.CheckboxLabeled("Suulk pressure scales with constellation size", ref twilightSuulkPressureScalingEnabled,
-                    "On: each LIT lamp or cage the colony owns makes a suulk arrival more likely, up to "
-                  + "certain at four. Off: the chance stays at the one-lamp level however many you carry "
-                  + "(none at all still draws none).");
                 list.GapLine();
             }
 
             if (Group(list, "The vaulisk lure (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "vauliskEnabled" }))
             {
-                list.CheckboxLabeled("The vaulisk — counterfeit lure", ref vauliskEnabled,
-                    "A rare, one-per-map ambush predator disguised as a lit lamp-bladder plant "
-                  + "carrying a false, steady (never-breathing) glow. Swaps to a fightable pawn "
-                  + "when approached. Turning it on only places lures on newly generated maps; turning it off also "
-                  + "stops lures already on a map from revealing.");
+                using (Dependent(list, "vauliskEnabled"))
+                    list.CheckboxLabeled("The vaulisk — counterfeit lure", ref vauliskEnabled,
+                        "A rare, one-per-map ambush predator disguised as a lit lamp-bladder plant "
+                      + "carrying a false, steady (never-breathing) glow. Swaps to a fightable pawn "
+                      + "when approached. Turning it on only places lures on newly generated maps; turning it off also "
+                      + "stops lures already on a map from revealing.");
                 list.GapLine();
             }
 
             if (Group(list, "Vaulisk reveal", RimMandrake.Shared.SettingScope.Now, new[] { "vauliskQuickReveal" }))
             {
-                list.CheckboxLabeled("The vaulisk springs the moment it is touched", ref vauliskQuickReveal,
-                    "On: it reveals as soon as anyone comes within reach or a colonist is ordered to harvest or cut it. "
-                  + "Off: it checks only every half-minute or so, so a pawn may walk right past it.");
+                using (Dependent(list, "vauliskQuickReveal"))
+                    list.CheckboxLabeled("The vaulisk springs the moment it is touched", ref vauliskQuickReveal,
+                        "On: it reveals as soon as anyone comes within reach or a colonist is ordered to harvest or cut it. "
+                      + "Off: it checks only every half-minute or so, so a pawn may walk right past it.");
                 list.GapLine();
             }
 
@@ -504,121 +573,138 @@ namespace RimMandrake.TerminalBiomes
             {
                 list.Label("The waveglass lid sheds panes onto the floor and, "
                            + "while a gravship sits there, onto its own deck — one pane system.");
-                list.CheckboxLabeled("Pane strikes", ref twilightPaneStrikeEnabled,
-                    "Both the ordinary background shed (harmless veil-fall litter) and the rare "
-                  + "whole-pane strike, which CAN kill a pawn caught in its ~15-second shadow "
-                  + "warning. Off: neither fires; any pane already on the ground stays and is "
-                  + "still harvestable.");
-                if (twilightPaneStrikeEnabled)
+                using (Dependent(list, "twilightPaneStrikeEnabled", "twilightPaneStrikeFrequency"))
                 {
-                    list.Label("  Frequency (litter and whole-pane strikes): " + twilightPaneStrikeFrequency.ToString("0.0") + "x");
-                    twilightPaneStrikeFrequency = list.Slider(twilightPaneStrikeFrequency, 0.25f, 3f);
+                    list.CheckboxLabeled("Pane strikes", ref twilightPaneStrikeEnabled,
+                        "Both the ordinary background shed (harmless veil-fall litter) and the rare "
+                      + "whole-pane strike, which CAN kill a pawn caught in its ~15-second shadow "
+                      + "warning. Off: neither fires; any pane already on the ground stays and is "
+                      + "still harvestable.");
+                    using (Dependent(list, "twilightPaneStrikeFrequency"))
+                    {
+                        list.Label("  Frequency (litter and whole-pane strikes): " + twilightPaneStrikeFrequency.ToString("0.0") + "x");
+                        twilightPaneStrikeFrequency = list.Slider(twilightPaneStrikeFrequency, 0.25f, 3f);
+                    }
                 }
                 list.GapLine();
             }
 
             if (Group(list, "Deck accumulation (TWILIGHT_PANE_STRIKE_1)", RimMandrake.Shared.SettingScope.Now, new[] { "twilightDeckAccumulationEnabled", "twilightDeckAccumulationRate" }))
             {
-                list.CheckboxLabeled("Deck accumulation", ref twilightDeckAccumulationEnabled,
-                    "While a gravship sits on the Twilight floor, panes can also land on its own "
-                  + "hull footprint and must be cleared (deconstructed, same as any salvage) before "
-                  + "it can launch. This only ever DELAYS a launch behind a job the colony can "
-                  + "always do — never disables the engine. Off: no new panes land on a deck, and "
-                  + "the launch check stops looking for them; any pane already there stays but no "
-                  + "longer blocks anything.");
-                if (twilightDeckAccumulationEnabled)
+                using (Dependent(list, "twilightDeckAccumulationEnabled", "twilightDeckAccumulationRate"))
                 {
-                    list.Label("  Rate: " + twilightDeckAccumulationRate.ToString("0.0") + "x");
-                    twilightDeckAccumulationRate = list.Slider(twilightDeckAccumulationRate, 0f, 3f);
+                    list.CheckboxLabeled("Deck accumulation", ref twilightDeckAccumulationEnabled,
+                        "While a gravship sits on the Twilight floor, panes can also land on its own "
+                      + "hull footprint and must be cleared (deconstructed, same as any salvage) before "
+                      + "it can launch. This only ever DELAYS a launch behind a job the colony can "
+                      + "always do — never disables the engine. Off: no new panes land on a deck, and "
+                      + "the launch check stops looking for them; any pane already there stays but no "
+                      + "longer blocks anything.");
+                    using (Dependent(list, "twilightDeckAccumulationRate"))
+                    {
+                        list.Label("  Rate: " + twilightDeckAccumulationRate.ToString("0.0") + "x");
+                        twilightDeckAccumulationRate = list.Slider(twilightDeckAccumulationRate, 0f, 3f);
+                    }
                 }
                 list.GapLine();
             }
 
             if (Group(list, "The Twilight Sea's light economy", RimMandrake.Shared.SettingScope.Now, new[] { "twilightWellDriftEnabled", "twilightDriftCadence", "twilightWellAvoidsCurrent", "twilightCagesPassableBeneath", "twilightSunSphereGraceDays" }))
             {
-                list.CheckboxLabeled("Skylight drift", ref twilightWellDriftEnabled,
-                    "Skylights age, warn, close and reopen elsewhere on the sea floor. Off: "
-                  + "whatever wells exist stay as they are, no ledger clock runs.");
-                if (twilightWellDriftEnabled)
+                using (Dependent(list, "twilightWellDriftEnabled", "twilightDriftCadence", "twilightWellAvoidsCurrent"))
                 {
-                    list.Label("  Cadence: " + (twilightDriftCadence == 0 ? "frozen (sandbox)" : twilightDriftCadence == 1 ? "week (shipped)" : "slow"));
-                    if (list.RadioButton("  Frozen — sandbox, wells never age", twilightDriftCadence == 0)) twilightDriftCadence = 0;
-                    if (list.RadioButton("  Week — the shipped pace", twilightDriftCadence == 1)) twilightDriftCadence = 1;
-                    if (list.RadioButton("  Slow — roughly double the week", twilightDriftCadence == 2)) twilightDriftCadence = 2;
+                    list.CheckboxLabeled("Skylight drift", ref twilightWellDriftEnabled,
+                        "Skylights age, warn, close and reopen elsewhere on the sea floor. Off: "
+                      + "whatever wells exist stay as they are, no ledger clock runs.");
+                    using (Dependent(list, "twilightDriftCadence", "twilightWellAvoidsCurrent"))
+                    {
+                        list.Label("  Cadence: " + (twilightDriftCadence == 0 ? "frozen (sandbox)" : twilightDriftCadence == 1 ? "week (shipped)" : "slow"));
+                        if (list.RadioButton("  Frozen — sandbox, wells never age", twilightDriftCadence == 0)) twilightDriftCadence = 0;
+                        if (list.RadioButton("  Week — the shipped pace", twilightDriftCadence == 1)) twilightDriftCadence = 1;
+                        if (list.RadioButton("  Slow — roughly double the week", twilightDriftCadence == 2)) twilightDriftCadence = 2;
+                        list.CheckboxLabeled("  Wells keep out of the current's lanes", ref twilightWellAvoidsCurrent,
+                            "On: a twilight well never opens in the middle of a current lane (TB-3). Off: any standable cell may host one.");
+                    }
                 }
-                list.CheckboxLabeled("Wells keep out of the current's lanes", ref twilightWellAvoidsCurrent,
-                    "On: a twilight well never opens in the middle of a current lane (TB-3). Off: any standable cell may host one.");
                 list.CheckboxLabeled("Cages passable beneath", ref twilightCagesPassableBeneath,
                     "The floating farm doesn't use up surface space because it floats above you. "
                   + "Off: a cage occupies its cells like a normal building. Applies at once, including to cages "
                   + "already built (their cells are re-read into the path grid).");
-                list.Label("Sun-sphere grace period before it dims to a husk: " + twilightSunSphereGraceDays.ToString("0.#") + " days");
-                twilightSunSphereGraceDays = list.Slider(twilightSunSphereGraceDays, 0.5f, 10f);
+                using (Dependent(list, "twilightSunSphereGraceDays"))
+                {
+                    list.Label("Sun-sphere grace period before it dims to a husk: " + twilightSunSphereGraceDays.ToString("0.#") + " days");
+                    twilightSunSphereGraceDays = list.Slider(twilightSunSphereGraceDays, 0.5f, 10f);
+                }
                 list.GapLine();
             }
 
             if (Group(list, "Floor flora placement (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "twilightFloraDressingEnabled" }))
             {
-                list.CheckboxLabeled("Floor flora placement (Route B)", ref twilightFloraDressingEnabled,
-                    "Tithemoss on wild lamp-plants at map generation; gleamfloss, farwick buds and tollhorn seeded "
-                  + "when a skylight opens, and floss and buds dying when it closes. Off: those four only appear if "
-                  + "something else places them. Turning it on only reaches newly generated maps; the skylight seeding "
-                  + "and clearing also stop at once when it is turned off.");
+                using (Dependent(list, "twilightFloraDressingEnabled"))
+                    list.CheckboxLabeled("Floor flora placement (Route B)", ref twilightFloraDressingEnabled,
+                        "Tithemoss on wild lamp-plants at map generation; gleamfloss, farwick buds and tollhorn seeded "
+                      + "when a skylight opens, and floss and buds dying when it closes. Off: those four only appear if "
+                      + "something else places them. Turning it on only reaches newly generated maps; the skylight seeding "
+                      + "and clearing also stop at once when it is turned off.");
                 list.GapLine();
             }
 
             if (Group(list, "Floor flora light behaviour", RimMandrake.Shared.SettingScope.Now, new[] { "twilightFloraLightCompsEnabled" }))
             {
-                list.CheckboxLabeled("Floor flora light behaviour", ref twilightFloraLightCompsEnabled,
-                    "Gloamurn banks a well's light and glows only after the well closes; murkspindle wilts in strong "
-                  + "light. Off: gloamurn stays dark and murkspindle ignores light.");
+                using (Dependent(list, "twilightFloraLightCompsEnabled"))
+                    list.CheckboxLabeled("Floor flora light behaviour", ref twilightFloraLightCompsEnabled,
+                        "Gloamurn banks a well's light and glows only after the well closes; murkspindle wilts in strong "
+                      + "light. Off: gloamurn stays dark and murkspindle ignores light.");
                 list.GapLine();
             }
 
             if (Group(list, "Channel current (TWILIGHT_CHANNEL_CURRENT_1)", RimMandrake.Shared.SettingScope.Now, new[] { "channelCurrentEnabled", "channelCurrentStrength", "channelCurrentExactPace", "channelFirstEntryWarning", "channelSinkOutcome", "undersurgeFrequency" }))
             {
-                list.CheckboxLabeled("Channel current", ref channelCurrentEnabled,
-                    "The dense floor current that carries a pawn or a dropped item along the "
-                  + "Twilight Sea's channels, the undersurge that widens it, and the bank works "
-                  + "(weir, silt-trap, stake-line) built into it. Off: the bed becomes ordinary "
-                  + "slow terrain, a weir catches nothing but its edge still gathers, and nothing "
-                  + "errors.");
-                if (channelCurrentEnabled)
+                using (Dependent(list, "channelCurrentEnabled", "channelCurrentStrength", "channelCurrentExactPace", "channelFirstEntryWarning", "channelSinkOutcome", "undersurgeFrequency"))
                 {
-                    list.Label("  Current strength: " + channelCurrentStrength.ToString("0.0") + "x");
-                    channelCurrentStrength = list.Slider(channelCurrentStrength, 0.25f, 3f);
-                    list.CheckboxLabeled("  Exact current pace", ref channelCurrentExactPace,
-                        "On: the current carries at its true speed (items at half a walking pawn's pace in the margin) "
-                      + "and grabs a pawn the moment it wades in. Off: the older, slightly slower stepped pace, and a "
-                      + "pawn can sometimes wade a short way before the current notices it.");
-                    list.CheckboxLabeled("  First-entry warning", ref channelFirstEntryWarning,
-                        "A one-time message and mood-free alert the first time each colonist steps "
-                      + "onto the bed.");
-                    list.Label("  Sink outcome (§3's ruled ladder):");
-                    if (list.RadioButton("    Recoverable (default)", channelSinkOutcome == RM_SinkOutcome.Recoverable, 0f))
+                    list.CheckboxLabeled("Channel current", ref channelCurrentEnabled,
+                        "The dense floor current that carries a pawn or a dropped item along the "
+                      + "Twilight Sea's channels, the undersurge that widens it, and the bank works "
+                      + "(weir, silt-trap, stake-line) built into it. Off: the bed becomes ordinary "
+                      + "slow terrain, a weir catches nothing but its edge still gathers, and nothing "
+                      + "errors.");
+                    using (Dependent(list, "channelCurrentStrength", "channelCurrentExactPace", "channelFirstEntryWarning", "channelSinkOutcome", "undersurgeFrequency"))
                     {
-                        channelSinkOutcome = RM_SinkOutcome.Recoverable;
-                    }
-                    if (list.RadioButton("    Recoverable, but injured (permanent scar)", channelSinkOutcome == RM_SinkOutcome.RecoverableInjured, 0f))
-                    {
-                        channelSinkOutcome = RM_SinkOutcome.RecoverableInjured;
-                    }
-                    if (list.RadioButton("    Lost (gone at arrival, no corpse)", channelSinkOutcome == RM_SinkOutcome.Lost, 0f))
-                    {
-                        channelSinkOutcome = RM_SinkOutcome.Lost;
-                    }
-                    list.Label("  Undersurge frequency:");
-                    if (list.RadioButton("    Off", undersurgeFrequency == RM_UndersurgeFrequency.Off, 0f))
-                    {
-                        undersurgeFrequency = RM_UndersurgeFrequency.Off;
-                    }
-                    if (list.RadioButton("    Rare (default)", undersurgeFrequency == RM_UndersurgeFrequency.Rare, 0f))
-                    {
-                        undersurgeFrequency = RM_UndersurgeFrequency.Rare;
-                    }
-                    if (list.RadioButton("    Common", undersurgeFrequency == RM_UndersurgeFrequency.Common, 0f))
-                    {
-                        undersurgeFrequency = RM_UndersurgeFrequency.Common;
+                        list.Label("  Current strength: " + channelCurrentStrength.ToString("0.0") + "x");
+                        channelCurrentStrength = list.Slider(channelCurrentStrength, 0.25f, 3f);
+                        list.CheckboxLabeled("  Exact current pace", ref channelCurrentExactPace,
+                            "On: the current carries at its true speed (items at half a walking pawn's pace in the margin) "
+                          + "and grabs a pawn the moment it wades in. Off: the older, slightly slower stepped pace, and a "
+                          + "pawn can sometimes wade a short way before the current notices it.");
+                        list.CheckboxLabeled("  First-entry warning", ref channelFirstEntryWarning,
+                            "A one-time message and mood-free alert the first time each colonist steps "
+                          + "onto the bed.");
+                        list.Label("  Sink outcome (§3's ruled ladder):");
+                        if (list.RadioButton("    Recoverable (default)", channelSinkOutcome == RM_SinkOutcome.Recoverable, 0f))
+                        {
+                            channelSinkOutcome = RM_SinkOutcome.Recoverable;
+                        }
+                        if (list.RadioButton("    Recoverable, but injured (permanent scar)", channelSinkOutcome == RM_SinkOutcome.RecoverableInjured, 0f))
+                        {
+                            channelSinkOutcome = RM_SinkOutcome.RecoverableInjured;
+                        }
+                        if (list.RadioButton("    Lost (gone at arrival, no corpse)", channelSinkOutcome == RM_SinkOutcome.Lost, 0f))
+                        {
+                            channelSinkOutcome = RM_SinkOutcome.Lost;
+                        }
+                        list.Label("  Undersurge frequency:");
+                        if (list.RadioButton("    Off", undersurgeFrequency == RM_UndersurgeFrequency.Off, 0f))
+                        {
+                            undersurgeFrequency = RM_UndersurgeFrequency.Off;
+                        }
+                        if (list.RadioButton("    Rare (default)", undersurgeFrequency == RM_UndersurgeFrequency.Rare, 0f))
+                        {
+                            undersurgeFrequency = RM_UndersurgeFrequency.Rare;
+                        }
+                        if (list.RadioButton("    Common", undersurgeFrequency == RM_UndersurgeFrequency.Common, 0f))
+                        {
+                            undersurgeFrequency = RM_UndersurgeFrequency.Common;
+                        }
                     }
                 }
                 list.GapLine();
@@ -626,31 +712,34 @@ namespace RimMandrake.TerminalBiomes
 
             if (Group(list, "The Grey Sea files your ship (GREYSEA_HULL_CRUST_BUILD_1)", RimMandrake.Shared.SettingScope.Now, new[] { "greyHullCrustEnabled", "greyHullCrustRate", "greyHullCrustSaltSnowMultiplier", "greyHullCrustBerthMultiplier", "greyTearFreeEnabled", "greyTearFreeDamage" }))
             {
-                list.CheckboxLabeled("Hull crystallisation", ref greyHullCrustEnabled,
-                    "While a gravship sits parked on the Grey Sea floor, salt rimes its plating (about "
-                  + "a day), salts its outer doors shut one by one (from about two and a half days), and "
-                  + "after long neglect jackets the hull in crust that must be chipped off before "
-                  + "launch (ramping in from day five, up to a third of the hull by about a quadrum). Chipping pays "
-                  + "salt and sets the clock back. A salted door always yields to a short no-tool job "
-                  + "from either side, and crust only ever delays a launch. Off: nothing new grows, "
-                  + "salted doors open normally and crust no longer blocks launch.");
-                if (greyHullCrustEnabled)
+                using (Dependent(list, "greyHullCrustEnabled", "greyHullCrustRate", "greyHullCrustSaltSnowMultiplier", "greyHullCrustBerthMultiplier", "greyTearFreeEnabled", "greyTearFreeDamage"))
                 {
-                    list.Label("  Pace: " + greyHullCrustRate.ToString("0.00") + "x");
-                    greyHullCrustRate = list.Slider(greyHullCrustRate, 0.25f, 3f);
-                    list.Label("  Salt-snow speed-up: " + greyHullCrustSaltSnowMultiplier.ToString("0.0") + "x");
-                    greyHullCrustSaltSnowMultiplier = list.Slider(greyHullCrustSaltSnowMultiplier, 1f, 4f);
-                    list.Label("  Brine-berth speed-up (brine channel or chimney field within 5 cells): "
-                        + greyHullCrustBerthMultiplier.ToString("0.0") + "x");
-                    greyHullCrustBerthMultiplier = list.Slider(greyHullCrustBerthMultiplier, 1f, 3f);
-                    list.CheckboxLabeled("Tear-free launch (always available)", ref greyTearFreeEnabled,
-                        "The gravship engine gains a costly forced launch on the Grey Sea floor: it rips all crust off the hull, "
-                      + "unsalts every door, and damages every hull building. Never needs a working colonist, so crust can never "
-                      + "strand a colony. Off: crust must be chipped off by hand.");
-                    if (greyTearFreeEnabled)
+                    list.CheckboxLabeled("Hull crystallisation", ref greyHullCrustEnabled,
+                        "While a gravship sits parked on the Grey Sea floor, salt rimes its plating (about "
+                      + "a day), salts its outer doors shut one by one (from about two and a half days), and "
+                      + "after long neglect jackets the hull in crust that must be chipped off before "
+                      + "launch (ramping in from day five, up to a third of the hull by about a quadrum). Chipping pays "
+                      + "salt and sets the clock back. A salted door always yields to a short no-tool job "
+                      + "from either side, and crust only ever delays a launch. Off: nothing new grows, "
+                      + "salted doors open normally and crust no longer blocks launch.");
+                    using (Dependent(list, "greyHullCrustRate", "greyHullCrustSaltSnowMultiplier", "greyHullCrustBerthMultiplier", "greyTearFreeEnabled", "greyTearFreeDamage"))
                     {
-                        list.Label("  Hull damage per building: " + (greyTearFreeDamage * 100f).ToString("0") + "% of max HP (never lethal)");
-                        greyTearFreeDamage = list.Slider(greyTearFreeDamage, 0.05f, 0.8f);
+                        list.Label("  Pace: " + greyHullCrustRate.ToString("0.00") + "x");
+                        greyHullCrustRate = list.Slider(greyHullCrustRate, 0.25f, 3f);
+                        list.Label("  Salt-snow speed-up: " + greyHullCrustSaltSnowMultiplier.ToString("0.0") + "x");
+                        greyHullCrustSaltSnowMultiplier = list.Slider(greyHullCrustSaltSnowMultiplier, 1f, 4f);
+                        list.Label("  Brine-berth speed-up (brine channel or chimney field within 5 cells): "
+                            + greyHullCrustBerthMultiplier.ToString("0.0") + "x");
+                        greyHullCrustBerthMultiplier = list.Slider(greyHullCrustBerthMultiplier, 1f, 3f);
+                        list.CheckboxLabeled("Tear-free launch (always available)", ref greyTearFreeEnabled,
+                            "The gravship engine gains a costly forced launch on the Grey Sea floor: it rips all crust off the hull, "
+                          + "unsalts every door, and damages every hull building. Never needs a working colonist, so crust can never "
+                          + "strand a colony. Off: crust must be chipped off by hand.");
+                        using (Dependent(list, "greyTearFreeDamage"))
+                        {
+                            list.Label("  Hull damage per building: " + (greyTearFreeDamage * 100f).ToString("0") + "% of max HP (never lethal)");
+                            greyTearFreeDamage = list.Slider(greyTearFreeDamage, 0.05f, 0.8f);
+                        }
                     }
                 }
                 list.GapLine();
@@ -658,38 +747,45 @@ namespace RimMandrake.TerminalBiomes
 
             if (Group(list, "The Grey Sea answers your light (GREYSEA_LAMP_RESPONSE_BUILD_1)", RimMandrake.Shared.SettingScope.Now, new[] { "greyLampDrawnEnabled", "seekGlowDrawnToDeepfire", "greyLampWatcherEnabled", "hazardClockInspectEnabled", "greyLampGiantEnabled", "greyLampGiantBurnHours", "greyLampGiantMinRadius", "greyCrownRetractionEnabled" }))
             {
-                list.CheckboxLabeled("Small things drawn to the light", ref greyLampDrawnEnabled,
-                    "Litter-pickers, salt crabs and the pink immu come and linger in a lit area. "
-                  + "Harmless; the busiest ground on the map is around your lamps.");
+                using (Dependent(list, "greyLampDrawnEnabled"))
+                    list.CheckboxLabeled("Small things drawn to the light", ref greyLampDrawnEnabled,
+                        "Litter-pickers, salt crabs and the pink immu come and linger in a lit area. "
+                      + "Harmless; the busiest ground on the map is around your lamps.");
                 list.CheckboxLabeled("Light-seekers are drawn to deepfire", ref seekGlowDrawnToDeepfire,
                     "Creatures that seek out light also come to deepfire light (painted floors, glowing pawns, the glow tank), "
                   + "whoever it belongs to. They linger at it and never eat it. Needs Luminous Pigment. Safe mid-game.");
-                list.CheckboxLabeled("The watcher and the scrape-sign", ref greyLampWatcherEnabled,
-                    "Halfway to the giant's hours, a fessk comes to the edge of a bright lamp's light and "
-                  + "watches (it never enters, never attacks, leaves when approached). Three quarters "
-                  + "of the way, fresh scrape-sign appears in the silt at the light's edge. These are the "
-                  + "warnings: switch the lamp off and its clock is gone.");
+                using (Dependent(list, "greyLampWatcherEnabled"))
+                    list.CheckboxLabeled("The watcher and the scrape-sign", ref greyLampWatcherEnabled,
+                        "Halfway to the giant's hours, a fessk comes to the edge of a bright lamp's light and "
+                      + "watches (it never enters, never attacks, leaves when approached). Three quarters "
+                      + "of the way, fresh scrape-sign appears in the silt at the light's edge. These are the "
+                      + "warnings: switch the lamp off and its clock is gone.");
                 list.CheckboxLabeled("Show hazard clocks when inspecting", ref hazardClockInspectEnabled,
                     "A bright lamp in the Grey Sea says how long it has burned steadily; a twilight well says whether it is "
                   + "opening, standing or waning and how long is left; a grav engine on the Grey Sea says how many crust "
                   + "cells still hold the deck. Text only: it changes nothing else. Applies now.");
-                list.CheckboxLabeled("The giant breaks bright lamps", ref greyLampGiantEnabled,
-                    "A powered lamp at least as bright as the radius below, left burning without a break "
-                  + "for the hours below, reads to the reefback as a rival's mark. It comes and breaks that "
-                  + "lamp — never the ship, never your people — then leaves. Torches and braziers never "
-                  + "count, a lamp it cannot reach is never answered, and switching the lamp off at any "
-                  + "point resets it completely.");
-                if (greyLampGiantEnabled)
+                using (Dependent(list, "greyLampGiantEnabled", "greyLampGiantBurnHours", "greyLampGiantMinRadius"))
                 {
-                    list.Label("  Hours of steady burn before it comes: " + greyLampGiantBurnHours.ToString("0.0"));
+                    list.CheckboxLabeled("The giant breaks bright lamps", ref greyLampGiantEnabled,
+                        "A powered lamp at least as bright as the radius below, left burning without a break "
+                      + "for the hours below, reads to the reefback as a rival's mark. It comes and breaks that "
+                      + "lamp — never the ship, never your people — then leaves. Torches and braziers never "
+                      + "count, a lamp it cannot reach is never answered, and switching the lamp off at any "
+                      + "point resets it completely.");
+                    // the burn hours stay live with the giant off: the watcher comes at half of them
+                    list.Label("  Hours of steady burn before it comes (the watcher at half): " + greyLampGiantBurnHours.ToString("0.0"));
                     greyLampGiantBurnHours = list.Slider(greyLampGiantBurnHours, 2f, 24f);
-                    list.Label("  Brightest-lamp threshold (glow radius; standing lamp 12, sun lamp 14, floodlight 24): "
-                        + greyLampGiantMinRadius.ToString("0.0"));
-                    greyLampGiantMinRadius = list.Slider(greyLampGiantMinRadius, 9f, 24f);
+                    using (Dependent(list, "greyLampGiantMinRadius"))
+                    {
+                        list.Label("  Brightest-lamp threshold (glow radius; standing lamp 12, sun lamp 14, floodlight 24): "
+                            + greyLampGiantMinRadius.ToString("0.0"));
+                        greyLampGiantMinRadius = list.Slider(greyLampGiantMinRadius, 9f, 24f);
+                    }
                 }
-                list.CheckboxLabeled("Brine crowns pull in during salt snow", ref greyCrownRetractionEnabled,
-                    "While salt snow falls, brine crowns draw their membranes in and show only their spines. "
-                  + "Picture only: nothing about the crown changes but its look. Takes effect within a few seconds.");
+                using (Dependent(list, "greyCrownRetractionEnabled"))
+                    list.CheckboxLabeled("Brine crowns pull in during salt snow", ref greyCrownRetractionEnabled,
+                        "While salt snow falls, brine crowns draw their membranes in and show only their spines. "
+                      + "Picture only: nothing about the crown changes but its look. Takes effect within a few seconds.");
                 list.GapLine();
             }
 
@@ -701,7 +797,9 @@ namespace RimMandrake.TerminalBiomes
                 list.Label("RM_TerminalBiomes_CrossBiomeUnsupported".Translate());
                 list.CheckboxLabeled("Enable outside the Scald biome", ref crossBiomeEnabled,
                     "Master switch for the section below.\n\n" + "RM_TerminalBiomes_CrossBiomeUnsupported".Translate());
-                if (crossBiomeEnabled)
+                // the text box keeps its own buffer: while greyed, show (and keep) the saved list, never a half-typed one
+                if (!crossBiomeEnabled) biomeListBuffer = crossBiomeBiomeList;
+                using (Dependent(list, "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage"))
                 {
                     list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
                         "Apply to any non-Scald biome. Off: only the biomes named below.");

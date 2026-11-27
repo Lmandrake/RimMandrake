@@ -245,6 +245,47 @@ namespace RimMandrake.Greentide
             biomeListBuffer = null;   // re-read from the (reset) field at the next draw
         }
 
+        /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST (RIMMANDRAKE_GREY_TWO_LEGACY_MASTERS_THE_KIT_NAMES_EVERY_ROW, 2026-11-26):
+        /// each sub-switch now greys the controls it used to hide, values kept (the pairs are the old hide-when-off blocks).
+        /// Read against each read site: each dependent number is read only on a path its master's flag gates (the mire
+        /// hediff, the cross-biome churnmud, the Frenzy dose, the stench projectile, the stellock branch drop, the illisk and
+        /// vurrak comps, the thurrock aura, the greatbole catastrophe, the air-heat and ant-raid appliers). One corner: the
+        /// fever mark reads only its own switch, so a pawn who already carries the Frenzy when it is switched off can still
+        /// earn the mark. Greentide has no whole-mod switch.
+        /// Independent: switches with no dependents and numbers read whatever any switch says (the lace's bleed hours apply to
+        /// laces already made; the shaking and healing thresholds have no switch of their own).</summary>
+        internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
+            .Declare("mireEnabled", "mireSeverityMultiplier")
+            .Declare("crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage")
+            .Declare("frenzyEnabled", "frenzySeverityMultiplier", "feverMarkEnabled")
+            .Declare("feverMarkEnabled", "feverMarkGrantsImmunity")
+            .Declare("stenchGrenadeEnabled", "stenchGrenadeRadiusMultiplier")
+            .Declare("stellockLaceEnabled", "stellockBranchChance")
+            .Declare("shoalHideEnabled", "shoalNonBlastFactor")
+            .Declare("vurrakAmbushEnabled", "vurrakTriggerBodySize", "vurrakFirstRevealPause")
+            .Declare("thurrockFellingEnabled", "thurrockFellingPace")
+            .Declare("greatboleCatastropheEnabled", "greatboleCatastropheThreshold")
+            .Declare("airHeatEnabled", "airHeatC")
+            .Declare("antRaidsEnabled", "antRaidStrength")
+            .Independent("buriedCacheEnabled", "plantDensity", "movementDifficulty", "canopySwarmEnabled", "stellockLaceHours",
+                         "thurrockProvokedWallDamage", "roilEnabled", "fruitfallEnabled", "greatboleShakingThreshold",
+                         "greatboleHealingThreshold", "greatboleSeedPlantingEnabled", "greatboleServantsEnabled")
+            .Name("mireEnabled", "Mire hazard enabled").Name("crossBiomeEnabled", "Enable outside the Greentide biome")
+            .Name("frenzyEnabled", "The Frenzy enabled").Name("feverMarkEnabled", "Survivors become specialists")
+            .Name("stenchGrenadeEnabled", "Stench smoke grenades enabled").Name("stellockLaceEnabled", "Stellock branches and the lace research")
+            .Name("shoalHideEnabled", "Illisk hide").Name("vurrakAmbushEnabled", "Vurrak ambush")
+            .Name("thurrockFellingEnabled", "Thurrock fells trees").Name("greatboleCatastropheEnabled", "The catastrophe can happen")
+            .Name("airHeatEnabled", "Hot air").Name("antRaidsEnabled", "Giant ant raids");
+
+        private static object GetField(string n) => typeof(RM_GreentideSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+        private static void SetField(string n, object v) => typeof(RM_GreentideSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
+
+        private static System.IDisposable Dependent(Listing_Standard list, params string[] keys) =>
+            RimMandrake.Shared.SettingsKitMastersDrawer.Dependent(list, Masters, GetField, SetField, keys);
+
+        /// <summary>The Reset-all button (after the confirmation): every Greentide setting back to its shipped value.</summary>
+        public static void ResetAllFields() { ResetFields(new List<string>(shippedDefaults.Keys).ToArray()); }
+
         private static string searchQuery = "";
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
@@ -292,14 +333,18 @@ namespace RimMandrake.Greentide
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.SettingsKitMastersDrawer.ResetAllButton(list, "Greentide", ResetAllFields);
 
             if (Group(list, "Churnmud and the mire", RimMandrake.Shared.SettingScope.Now, new[] { "mireEnabled", "buriedCacheEnabled", "mireSeverityMultiplier" }))
             {
                 list.CheckboxLabeled("Mire hazard enabled", ref mireEnabled,
                     "Standing on churnmud escalates the RM_Mired hediff (slowed, then stuck). "
                   + "Off: churnmud is inert underfoot — no NREs, the terrain just does nothing.");
-                list.Label("Mire severity: " + mireSeverityMultiplier.ToString("0.00") + "x");
-                mireSeverityMultiplier = list.Slider(mireSeverityMultiplier, 0.25f, 3f);
+                using (Dependent(list, "mireSeverityMultiplier"))
+                {
+                    list.Label("Mire severity: " + mireSeverityMultiplier.ToString("0.00") + "x");
+                    mireSeverityMultiplier = list.Slider(mireSeverityMultiplier, 0.25f, 3f);
+                }
                 list.CheckboxLabeled("Buried caches enabled", ref buriedCacheEnabled,
                     "Loose items left on churnmud long enough get buried (dig them back out, nothing "
                   + "is destroyed). Off: items just sit there like any other terrain.");
@@ -332,7 +377,9 @@ namespace RimMandrake.Greentide
                 list.Label("RM_Greentide_CrossBiomeUnsupported".Translate());
                 list.CheckboxLabeled("Enable outside the Greentide biome", ref crossBiomeEnabled,
                     "Master switch for the section below.\n\n" + "RM_Greentide_CrossBiomeUnsupported".Translate());
-                if (crossBiomeEnabled)
+                // the text box keeps its own buffer: while greyed, show (and keep) the saved list, never a half-typed one
+                if (!crossBiomeEnabled) biomeListBuffer = crossBiomeBiomeList;
+                using (Dependent(list, "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage"))
                 {
                     list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
                         "Apply to any non-Greentide biome. Off: only the biomes named below.");
@@ -354,7 +401,7 @@ namespace RimMandrake.Greentide
                     "Covers both routes: the jungle handing it out on its own as an ambient disease, "
                   + "and a colonist taking a harvested RM_FrenzyDose on purpose. Off: neither ever "
                   + "applies the hediff.");
-                if (frenzyEnabled)
+                using (Dependent(list, "frenzySeverityMultiplier", "feverMarkEnabled", "feverMarkGrantsImmunity"))
                 {
                     list.Label("  Dose strength: " + frenzySeverityMultiplier.ToString("0.00") + "x");
                     frenzySeverityMultiplier = list.Slider(frenzySeverityMultiplier, 0.5f, 2f);
@@ -363,7 +410,7 @@ namespace RimMandrake.Greentide
                       + "RM_FeverMark in their health tab — earned only by reaching the coma stage and "
                       + "being tended out of it alive, never by an early cure. Off: the Frenzy behaves "
                       + "exactly as before, no mark is ever applied.");
-                    if (feverMarkEnabled)
+                    using (Dependent(list, "feverMarkGrantsImmunity"))
                     {
                         list.CheckboxLabeled("    Marked colonists are resistant to catching it again", ref feverMarkGrantsImmunity,
                             "The qualification half of the reward: a fever-marked colonist is dropped from "
@@ -383,7 +430,7 @@ namespace RimMandrake.Greentide
                   + "explosion, no gas, no flee. The reek is real rot-stink gas, so it costs your "
                   + "own colonists and animals the same lingering-exposure risk it costs anyone "
                   + "else caught in it.");
-                if (stenchGrenadeEnabled)
+                using (Dependent(list, "stenchGrenadeRadiusMultiplier"))
                 {
                     list.Label("  Cloud radius: " + (StenchGrenadeBaseRadius * stenchGrenadeRadiusMultiplier).ToString("0.0")
                         + " cells (" + stenchGrenadeRadiusMultiplier.ToString("0.00") + "x)");
@@ -408,7 +455,7 @@ namespace RimMandrake.Greentide
                     "On: felling a Greentide tree on a Greentide map can drop a stellock branch; studying branches "
                   + "reveals the stellock lace research. Off: no branches drop and the research is an ordinary "
                   + "visible project. Laces already made still work either way.");
-                if (stellockLaceEnabled)
+                using (Dependent(list, "stellockBranchChance"))
                 {
                     list.Label("  Branch drop chance per felled tree: " + stellockBranchChance.ToStringPercent());
                     stellockBranchChance = list.Slider(stellockBranchChance, 0f, 1f);
@@ -423,7 +470,7 @@ namespace RimMandrake.Greentide
                 list.CheckboxLabeled("Illisk hide", ref shoalHideEnabled,
                     "On: bullets, blades, claws and fists barely scratch an illisk; only blasts hurt it at full strength. "
                   + "Off: an illisk takes damage like any small animal.");
-                if (shoalHideEnabled)
+                using (Dependent(list, "shoalNonBlastFactor"))
                 {
                     list.Label("  Damage that is not a blast gets through at: " + (shoalNonBlastFactor * 100f).ToString("0") + "%");
                     shoalNonBlastFactor = list.Slider(shoalNonBlastFactor, 0f, 1f);
@@ -437,7 +484,7 @@ namespace RimMandrake.Greentide
                     "On: a vurrak lies flat along the water's edge, invisible as silted bank, and bites whatever heavy "
                   + "enough steps on it. Lighter animals only make it flinch and show itself. Off: it never hides and "
                   + "never bites on contact; it is an ordinary slow riverbank animal.");
-                if (vurrakAmbushEnabled)
+                using (Dependent(list, "vurrakTriggerBodySize", "vurrakFirstRevealPause"))
                 {
                     list.Label("  Weight that sets it off (body size): " + vurrakTriggerBodySize.ToString("0.00")
                              + " (a person is 1.00)");
@@ -454,7 +501,7 @@ namespace RimMandrake.Greentide
                 list.CheckboxLabeled("Thurrock fells trees", ref thurrockFellingEnabled,
                     "On: a thurrock herd batters the trees around it as it browses, and a tree beaten low enough comes "
                   + "down as a fallen trunk and wood. Off: it is a huge browser that fells nothing.");
-                if (thurrockFellingEnabled)
+                using (Dependent(list, "thurrockFellingPace"))
                 {
                     list.Label("  Felling pace: " + thurrockFellingPace.ToString("0.00") + "x (how often the herd's blows land; higher fells more trees per hour)");
                     thurrockFellingPace = list.Slider(thurrockFellingPace, 0.25f, 3f);
@@ -487,7 +534,7 @@ namespace RimMandrake.Greentide
                 list.CheckboxLabeled("  The catastrophe can happen", ref greatboleCatastropheEnabled,
                     "Off: a greatbole never dies from being mined out, no matter how much of its footprint is removed. "
                   + "The Great Shaking and the violent healing still fire.");
-                if (greatboleCatastropheEnabled)
+                using (Dependent(list, "greatboleCatastropheThreshold"))
                 {
                     list.Label("  The catastrophe: " + (greatboleCatastropheThreshold * 100f).ToString("0") + "% removed");
                     greatboleCatastropheThreshold = list.Slider(greatboleCatastropheThreshold, 0.1f, 0.99f);
@@ -515,7 +562,7 @@ namespace RimMandrake.Greentide
             {
                 list.CheckboxLabeled("Hot air: the fog changes the map's temperature (plants feel it too)", ref airHeatEnabled,
                     RimMandrake.Shared.AirHeatSetting.Tip);
-                if (airHeatEnabled)
+                using (Dependent(list, "airHeatC"))
                 {
                     list.Label("  Hotter by: " + airHeatC.ToString("0") + " °C");
                     airHeatC = Mathf.Round(list.Slider(airHeatC, 0f, 30f));
@@ -528,7 +575,7 @@ namespace RimMandrake.Greentide
                 list.CheckboxLabeled("Giant ant raids", ref antRaidsEnabled,
                     "On: the hidden giant ant colony can be chosen for raids like any hostile faction, and its ants charge "
                   + "straight at your colony. Off: it is never chosen for a raid; ants already on a map stay.");
-                if (antRaidsEnabled)
+                using (Dependent(list, "antRaidStrength"))
                 {
                     list.Label("  Raid strength: " + antRaidStrength.ToString("0.00")
                              + "x (how many ants a raid of the same size sends; 1.00 is the shipped number)");
