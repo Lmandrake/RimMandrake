@@ -1,0 +1,2 @@
+A Designer call that says 'nothing found argues against the reading' must first search design/ and the neighbour mods for the subject's own verbs. Wrecked Machines turn 2 (2026-11-26) took 'a colonist carries a big wreck by hand' without reading design/RimMandrake/salvage_lift_policy_2026-11-01.md ('droid only') or design/Jawa/wrecked_machines_resurrection.md (the building hauler); the owner corrected it within the hour, and the call cost a third turn.
+home: src/RimMandrake/rimflow/roles/designer_dialogue.md
