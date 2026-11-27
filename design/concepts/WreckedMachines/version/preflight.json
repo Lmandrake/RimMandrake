@@ -1,0 +1,233 @@
+{
+ "mod": "WreckedMachines",
+ "version": "0.1.0",
+ "program": "design/concepts/WreckedMachines/version/pilot_throwaway/preflight_wreckedmachines.py (throwaway, no model)",
+ "table": "design/concepts/WreckedMachines/version/test_table.json",
+ "at": "2026-11-27T05:38:54-08:00",
+ "dump": {
+  "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
+  "provenance": {
+   "captured_utc": "2026-11-27T06:22:12Z",
+   "defs_total": "59395",
+   "mod_count": "318",
+   "game_version": "1.6.4871 rev591",
+   "modlist_fingerprint": "d66ead97de339ac9"
+  }
+ },
+ "seconds": 13.43,
+ "verdict": "refuse",
+ "refusals": 3,
+ "refusals_by_route": {
+  "Stage 3 (the bar is sound; the build is owed)": 1,
+  "Stage 3 (the scene is written; its mod list is owed)": 2
+ },
+ "stage3_owed": [
+  "T_ONBOARDED_SET",
+  "T_ONBOARDING_COMPLETE",
+  "T_ONBOARDING_TABLE_OFFLINE",
+  "T_LEVEL_NUMBERS",
+  "T_REPAIR_STATE_WALK",
+  "T_NEIGHBOUR_NAMES",
+  "T_FORGE_GATES_GONE",
+  "T_DISTILLATION_LOADS",
+  "sc_old_save",
+  "T_LATER_STAYS_OUT"
+ ],
+ "checks": [
+  {
+   "id": "C0_version_locked",
+   "what": "the Design Version is locked, and the test table is for it",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "VERSION.json 0.1.0, state locked",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C1_bars_complete",
+   "what": "the table holds exactly the locked bars (version/locked_bars.json), each once",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "30 locked, 30 in the table",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C2_every_bar_has_a_test",
+   "what": "every bar names at least one deciding test; every named test is defined; no exploration, look or support-only row decides a bar",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "30 bars",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C3_every_test_has_a_stage",
+   "what": "every test names a stage of 2, 4-5, 6 or 8 that fits its kind, and each bar proves at the highest stage of its deciders",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "48 tests",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C4_test_files_real",
+   "what": "every built test's file exists",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "33 built tests",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C5_read_files_real",
+   "what": "every file or folder that a test reads exists",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C6a_table_flags_true",
+   "what": "the table's flags are true: no test marked new is already built, and each entry_exists equals what the file holds",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "read with designer_stage.entry_point_exists",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.039
+  },
+  {
+   "id": "C6_built_deciders_run",
+   "what": "every built deciding test runs green today; a deciding test that is specified and not built is Stage 3 work, not a refusal",
+   "verdict": "refuse",
+   "refusals": [
+    "sc_text_names_no_setting: red today (rc 1: sc_text_names_no_setting: FAIL 3 components, 1 not PASS); it decides inv_distillation_module, levels_told_apart, no_setting_named. the read finds the setting's words in the mod's texts as built (the log names each hit). plan.md 'Changed': 'The setting words leave every text, and no text calls a level Repaired'. That is the build's work at Stage 3, and this check is its red-first reading"
+   ],
+   "evidence": "33 deciding tests; 1 not green or not written; 5 specified for Stage 3: T_DISTILLATION_LOADS, T_LATER_STAYS_OUT, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE, T_REPAIR_STATE_WALK",
+   "smallest_fix": "Stage 3 does the build work that each line names, then remakes the table",
+   "route": "Stage 3 (the bar is sound; the build is owed)",
+   "seconds": 0.039
+  },
+  {
+   "id": "C7_game_reason_written",
+   "what": "every in-game test says why an offline test cannot decide it; every full-list test says why",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "27 in-game tests; whether each reason is true is the Stage 4 challenger's question, not this program's",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C8_held_statements_placed",
+   "what": "every held look statement for this mod is placed on a bar and a test (the placement is the ingest)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "2 line(s) of design/RimMandrake/validation_holding/*.md match 'wreck|kludg|refurbish|smelter|vanometric|emanator|ancient component|alloy forge'; 0 placed; the table's note: 0 held look statements name this mod: a grep of design/RimMandrake/validation_holding/*.md for 'wreck|kludg|refurbish|smelter|vanometric|emanator|ancient component|alloy forge' finds 2 line(s) (design/RimMandrake/validation_holding/flowworks_walk_20261120.md:77, design/RimMandrake/validation_holding/flowworks_walk_20261120.md:164), and each is FlowWorks' ruined bridge (RM_SuspensionWreck), not a machine of this mod",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.006
+  },
+  {
+   "id": "C9_defs_real",
+   "what": "every def named exists: ours (RM_/RUT_/RSW_) in the repo's Defs or Patches or as a C# type; the factory mod's and the base game's, as the scenes' script names them, in the def dump",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "16 names checked (11 from validation.py's ORIGINAL and staging constants); dump captured 2026-11-27T06:22:12Z, 51180 defs, 318 mods",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 1.845
+  },
+  {
+   "id": "C10_mods_real",
+   "what": "every packageId of the mod's small list and its modcheck environment is a mod in the dump's mod list or the repo; every in-game test names a tier",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "tier wreckedmachines_solo: brrainz.rimbridgeserver, void.charactereditor, mandrake.rm.wreckedmachines, VanillaExpanded.VFEFactory, petetimessix.researchreinvented, mandrake.rm.flowworks",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.03
+  },
+  {
+   "id": "C10b_tiers_defined",
+   "what": "every tier that an in-game test names is defined (a tier of a scene's own is built with its scene)",
+   "verdict": "refuse",
+   "refusals": [
+    "sc_study_without_research_reinvented: tier wreckedmachines_no_research_reinvented is not defined in modset_builder.TIERS (the small list without Research Reinvented (plan.md; small_list.json 'Tests may run on a smaller tier of their own'))",
+    "sc_cannery_tier: tier wreckedmachines_cannery is not defined in modset_builder.TIERS (the small list plus Vanilla Cooking Expanded (plan.md; floor.json line test_isolation))"
+   ],
+   "evidence": "3 tiers named: wreckedmachines_cannery, wreckedmachines_no_research_reinvented, wreckedmachines_solo",
+   "smallest_fix": "Stage 3 defines each named tier in src/RimMandrake/Utils/modset_builder.py (all five expansions, the zoom mod and Character Editor stay on it), then remakes the table",
+   "route": "Stage 3 (the scene is written; its mod list is owed)",
+   "seconds": 0.03
+  },
+  {
+   "id": "C11_scene_kinds",
+   "what": "every in-game test has a kind; a B or C tag carries its evidence, a B tag its budget; no bar rests on a hunt alone; a scene that stages a raid says so",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "27 in-game tests: A 27, B 0, C 0",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.001
+  },
+  {
+   "id": "C12_locked_files_unchanged",
+   "what": "the locked bar files match the blobs pinned in version/bars.md",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "9 pins (stage.json is state and is not compared)",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.012
+  },
+  {
+   "id": "C13_scenes_and_checks_wired",
+   "what": "every scene is in the table with its own entry point; every acceptance scene decides the leaves it is required for; every coverage_rest and showcase name resolves; every check of the tree has a test",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "32 scenes, 12 tree checks, 3 showcases",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C14_bridge_tools_real",
+   "what": "every jawa/ tool that validation.py calls, and every one that plan.md names, is registered in src/RimMandrake/bridgetools",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "44 tool names",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.202
+  },
+  {
+   "id": "C15_items_real",
+   "what": "every ticket that a test names exists in the ledger",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "1 items: RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 0.236
+  },
+  {
+   "id": "C16_small_list",
+   "what": "the mod's small list passes small_list.py check (every mod it patches or requires, all five expansions, a zoom mod, Character Editor)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "ok    WreckedMachines: tier wreckedmachines_solo, 16 mods",
+   "smallest_fix": null,
+   "route": null,
+   "seconds": 10.886
+  }
+ ]
+}

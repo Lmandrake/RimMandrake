@@ -1,0 +1,2385 @@
+{
+ "mod": "WreckedMachines",
+ "version": "0.1.0",
+ "made": "2026-11-27T05:38:26-0800",
+ "made_by": "design/concepts/WreckedMachines/version/pilot_throwaway/make_test_table.py (throwaway, no model), steward run RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
+ "stages": {
+  "2": "preflight (a program)",
+  "4-5": "blind offline challenge and game-logic testing",
+  "6": "in-game acceptance",
+  "8": "his live walk"
+ },
+ "rule": "a bar passes when every test in decides passes; proves_at is the highest stage among them; supports add evidence but decide nothing",
+ "pairs_from": [
+  "R1 decides: each scene that the coverage judge names for the bar with ok true, in either round: the full round (rm-coverage-judge-1795778084, coverage_verdict.json at git 89b10e6f1a) and the signed delta round that closed its seven gaps (coverage_verdict.json at the lock). The delta round's checklist holds only what it read again",
+  "R2 decides: each acceptance scene whose `requirement` in scenes.json names the bar",
+  "R3 decides: each name in a coverage_rest `by` list for the bar: a scene decides; a leaf brings that leaf's deciders",
+  "R4 an exploration scene accepts no bar (scenes.json: its `question` only): where R1 or R3 names one, the offline test that its question names by check id (C_...) decides in its place, and the exploration scene is a support",
+  "R5 decides: T_ONBOARDED_SET and T_ONBOARDING_COMPLETE for each bar that a scene decides whose kind_note counts a machine only 'once its onboarding has landed' or 'once its machine's art is in' (the coverage judge's reason for its repair g3: those two checks fix the full list of machines, so the note cannot let a missing machine pass)",
+  "R6 decides: the offline test of a check that a coverage_rest `why` names for the bar",
+  "R7 decides: T_LATER_STAYS_OUT for an inventory bar whose scope is `later` and that no scene decides (delegated call, after Pyrelands' T_CUT_STAYS_CUT: the version's reading of such a bar is that 0.1.0 does not ship it half-built)",
+  "R8 supports: the offline test of a check that the bar's leaf text, or a meeting whose members hold the bar, names; a showcase scene that exercises the bar; an interaction scene whose `features` name the bar; a built offline test whose file names the bar id or one of its deciding scenes",
+  "R9 supports: LOOK_STAGE8 for a bar with a deciding scene that holds for his review (`hold: owner_review`)",
+  "R10 supports, written by the steward with its ground (STEWARD_SUPPORTS): a check of the tree that no other rule pairs supports the bar whose locked text reads the same thing. A support decides nothing, so no bar moves"
+ ],
+ "written_by_the_steward": [
+  "tests.<id>.why_game (marked why_game_by)",
+  "tests.<id>.cheaper_why (marked cheaper_why_by)",
+  "the specified tests' files and T_LATER_STAYS_OUT (rule R7)",
+  "the two proposed tier names (tests.<id>.tier where tier_defined is false)"
+ ],
+ "checks_map": {
+  "C_kernel_fuzz": "T_KERNEL_FUZZ",
+  "C_salvage_rule_offline": "T_SALVAGE_RULE",
+  "C_onboarded_set": "T_ONBOARDED_SET",
+  "C_onboarding_complete": "T_ONBOARDING_COMPLETE",
+  "C_onboarding_table_offline": "T_ONBOARDING_TABLE_OFFLINE",
+  "C_level_numbers": "T_LEVEL_NUMBERS",
+  "C_repair_state_walk": "T_REPAIR_STATE_WALK",
+  "C_neighbour_names": "T_NEIGHBOUR_NAMES",
+  "C_forge_gates_gone": "T_FORGE_GATES_GONE",
+  "C_distillation_loads": "T_DISTILLATION_LOADS",
+  "C_old_save": "sc_old_save",
+  "C_power_mark": "sc_marks_agree (the scene's kind_note: 'this scene re-reads the fault of the first look (record contradiction c_bolt_on_powered_machine) and classes it')"
+ },
+ "checks_with_no_bar": {},
+ "stage3_build_list": {
+  "T_ONBOARDED_SET": "C_onboarded_set",
+  "T_ONBOARDING_COMPLETE": "C_onboarding_complete",
+  "T_ONBOARDING_TABLE_OFFLINE": "C_onboarding_table_offline",
+  "T_LEVEL_NUMBERS": "C_level_numbers",
+  "T_REPAIR_STATE_WALK": "C_repair_state_walk",
+  "T_NEIGHBOUR_NAMES": "C_neighbour_names",
+  "T_FORGE_GATES_GONE": "C_forge_gates_gone",
+  "T_DISTILLATION_LOADS": "C_distillation_loads",
+  "sc_old_save": "C_old_save",
+  "T_LATER_STAYS_OUT": "rule R7"
+ },
+ "stage3_also": [
+  "define the two tiers of the scenes that run on a tier of their own (tests.<id>.tier where tier_defined is false) in src/RimMandrake/Utils/modset_builder.py",
+  "sc_text_names_no_setting is red today on the mod's texts as built: the build takes the setting's words out (plan.md, 'Changed')",
+  "T_STATIC and T_LINT_DEFS read the build before 0.1.0: the build changes their clauses with the ladder",
+  "sc_wreck_link_tags: the count line is new (scenes.json kind_note)"
+ ],
+ "counts_before_first_run": {
+  "GENERATOR_RUNS": 200,
+  "RUIN_MAPS": 6,
+  "FLOOD": 12,
+  "STUDY_DAYS": 6,
+  "ORDINARY_MAPS": 20,
+  "ORDINARY_WANT": 1,
+  "source": "src/RimMandrake/WreckedMachines/validation.py"
+ },
+ "held_statements": [],
+ "held_note": "0 held look statements name this mod: a grep of design/RimMandrake/validation_holding/*.md for 'wreck|kludg|refurbish|smelter|vanometric|emanator|ancient component|alloy forge' finds 2 line(s) (design/RimMandrake/validation_holding/flowworks_walk_20261120.md:77, design/RimMandrake/validation_holding/flowworks_walk_20261120.md:164), and each is FlowWorks' ruined bridge (RM_SuspensionWreck), not a machine of this mod",
+ "unlisted_suites": {
+  "src/RimMandrake/WreckedMachines/selftest_wm_scenes.py": "proof-harness completeness: each scene of validation.py has its asserted start, its control and no forbidden act after the start, on a fake game; not a mod behaviour",
+  "src/RimMandrake/bridgetools/selftest_wreck_reads.py": "the generic bridge reads that the scenes use (thing_set_sample, install_blueprint, study record, processor_fill, reach_edge, caravan reads), with planted faults; a test of the bridge, not of the mod",
+  "src/RimMandrake/WreckedMachines/prove_alloy_forge_offline.py": "the offline proof of the alloy forge's gates (--vfef <VFE Factory mod dir>): the gates leave the mod when the forge is onboarded (plan.md); its patch interpreter is what T_ONBOARDING_TABLE_OFFLINE is to reuse (tree check C_onboarding_table_offline)"
+ },
+ "tests": {
+  "T_KERNEL_FUZZ": {
+   "id": "T_KERNEL_FUZZ",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py",
+   "check": "C_kernel_fuzz",
+   "observes": "The seeded fuzz of the shipped Verse-free kernel (src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py): for every settings value the ratios stay ordered Wrecked, Kludged, Refurbished and below the Original.",
+   "reads": [
+    "src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.2,
+    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.62s total -> OK",
+    "at": "2026-11-27T13:09:16Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_KERNEL_FUZZ.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py"
+   }
+  },
+  "T_SALVAGE_RULE": {
+   "id": "T_SALVAGE_RULE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_salvage_rule.py",
+   "check": "C_salvage_rule_offline",
+   "observes": "src/RimMandrake/WreckedMachines/selftest_salvage_rule.py stays green (the shipped salvage source against its fake engine, 41 variants) after the smelter's levels change.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/selftest_salvage_rule.py"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 4.1,
+    "last": "salvage rule: OK (fuzz salvage: 3000 cases, 8003 steps, 0.04s, 0 failures; 41 variants executed, 40 red)",
+    "at": "2026-11-27T13:09:21Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_SALVAGE_RULE.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py"
+   }
+  },
+  "T_ONBOARDED_SET": {
+   "id": "T_ONBOARDED_SET",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
+   "check": "C_onboarded_set",
+   "observes": "The list of ancient machines equals the production machines found in the factory mod's own defs (18 with Vanilla Cooking Expanded, 17 without) plus the vanometric power cell and the psychic emanator. A factory update that adds a machine turns this red.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_onboarded_set); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+  },
+  "T_ONBOARDING_COMPLETE": {
+   "id": "T_ONBOARDING_COMPLETE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
+   "check": "C_onboarding_complete",
+   "observes": "Each ancient machine has: a Wrecked, a Kludged and a Refurbished def; a carried form for its wreck; two restoration projects, each with its studied-thing requirement; pictures of its own for Wrecked and Kludged in each facing (8 for a large machine); one row in the onboarding table; one line in Mod Settings.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_onboarding_complete); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+  },
+  "T_ONBOARDING_TABLE_OFFLINE": {
+   "id": "T_ONBOARDING_TABLE_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
+   "check": "C_onboarding_table_offline",
+   "observes": "Each onboarding row read against the factory mod's real XML with the patch interpreter of prove_alloy_forge_offline.py: the Kludged process list is not empty and is a strict part of the donor's list (or the one process, for a machine with one); the Refurbished list equals the donor's list.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_onboarding_table_offline); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+  },
+  "T_LEVEL_NUMBERS": {
+   "id": "T_LEVEL_NUMBERS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
+   "check": "C_level_numbers",
+   "observes": "A baseline that can be diffed: the level ratios, breakdown factors, power values, mood offsets, repair costs, study lengths, project costs, placement weights and chances, and the component's rarity. No number here passes or refuses a bar.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_level_numbers); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table",
+   "support_only": true,
+   "note": "the tree: 'No number here passes or refuses a bar.' A baseline that can be diffed"
+  },
+  "T_REPAIR_STATE_WALK": {
+   "id": "T_REPAIR_STATE_WALK",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
+   "check": "C_repair_state_walk",
+   "observes": "The offline walk of the repair state machine in the shipped kernel against a fake game (plan.md, offline simulation): every state and event, with the rows 'a cancel never loses the machine', 'the level changes only on complete work' and 'the signal fires once for each change'.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_repair_state_walk); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+  },
+  "T_NEIGHBOUR_NAMES": {
+   "id": "T_NEIGHBOUR_NAMES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
+   "check": "C_neighbour_names",
+   "observes": "The names that four neighbours read still resolve after the build: Cold Storage (the level extension, the place rule, RatioFor, RM_WM_AncientComponent), the Cuisine mod's stasis ladder, the Armoury's recipes on the smelter's and the forge's levels, and ResearchRetag's research tabs. A patch that matches nothing logs nothing, so each neighbour's patch is counted as applied.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_neighbour_names); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+  },
+  "T_FORGE_GATES_GONE": {
+   "id": "T_FORGE_GATES_GONE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py",
+   "check": "C_forge_gates_gone",
+   "observes": "After the alloy forge's onboarding: the projects RM_WM_AlloyForgeRestoration and RM_WM_PlasteelAlloying and the settings alloyForgeProgressiveGate and plasteelAlloyEnabled are absent, and ResearchRetag names neither project.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_forge_gates_gone); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+  },
+  "T_DISTILLATION_LOADS": {
+   "id": "T_DISTILLATION_LOADS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py",
+   "check": "C_distillation_loads",
+   "observes": "The distillation machine's patch still applies to FlowWorks' defs (an offline patch read), until the machine moves to FlowWorks.",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_distillation_loads); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+  },
+  "sc_old_save": {
+   "id": "sc_old_save",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "check": "C_old_save",
+   "observes": "A save made on the factory mod without this mod, holding working factory machines, loads with this mod added: the machines stand and work as before, and the log is clean (floor line save_compat).",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_old_save",
+   "floor_line": "save_compat (floor.json names this check for it)",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified at the lock of 0.1.0 (tree check C_old_save); Stage 3 builds it and records it red first (maturation.py red-seen)"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table",
+   "tier": "wreckedmachines_solo",
+   "entry": "scene_old_save",
+   "entry_exists": false,
+   "why_game": "floor.json line save_compat: the game's own save loader resolves an older save's machines against the defs with this mod added; no offline reader of a save applies the game's def resolution",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command_note": "small list wreckedmachines_solo; entry ABSENT until written",
+   "test_kind": "A"
+  },
+  "T_LINT_DEFS": {
+   "id": "T_LINT_DEFS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/lint_wreckedmachines_defs.py",
+   "observes": "static clauses over the mod's defs as built (graded defs, lines, thought stages, sliders)",
+   "reads": [
+    "src/RimMandrake/Utils/lint_wreckedmachines_defs.py"
+   ],
+   "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py",
+   "support_only": true,
+   "note": "reads the build before 0.1.0 (the ladder by replaceTags); the build of 0.1.0 changes its clauses with the ladder",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.6,
+    "last": "wreckedmachines lint (data): 10 graded defs, 3 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
+    "at": "2026-11-27T13:09:22Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_DEFS.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py"
+   }
+  },
+  "T_LINT_PLANTS": {
+   "id": "T_LINT_PLANTS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_wreckedmachines_lint.py",
+   "observes": "the lint's own planted-defect selftest: each clause goes red on its planted defect",
+   "reads": [
+    "src/RimMandrake/Utils/selftest_wreckedmachines_lint.py"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py",
+   "support_only": true,
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 26.8,
+    "last": "WreckedMachines lint planted-defect selftest: 17/17 ok",
+    "at": "2026-11-27T13:09:49Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_PLANTS.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py"
+   }
+  },
+  "T_STATIC": {
+   "id": "T_STATIC",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "observes": "validation.py static_checks(): the tier shapes of the build before 0.1.0 (process counts, canOverclock, shared replaceTags, research gate, every setting read)",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/validation.py",
+   "support_only": true,
+   "note": "asserts the place rule PlaceWorker_BuildOverLowerGrade and replaceTags, which plan.md removes ('Changed'): the build of 0.1.0 rewrites these clauses with the ladder; a red here after that change is the check's, not the mod's",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "last": "STATIC: PASS (0 findings)",
+    "at": "2026-11-27T13:09:49Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_STATIC.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/WreckedMachines/validation.py"
+   }
+  },
+  "sc_menu_and_research": {
+   "id": "sc_menu_and_research",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_menu_and_research",
+   "entry_exists": true,
+   "observes": "no level of any ancient machine is in the build menu before or after the research, the Wrecked level included; the conveyors, the hopper, the booster, the heatsink and the factory floor are there once their own research is done; the base game's electric smelter is in its own tab",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "the build menu is made by the running game from the defs after every patch, this mod's startup edits and the research state; an XML read sees none of the three together",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_menu_and_research",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_no_handouts": {
+   "id": "sc_no_handouts",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_no_handouts",
+   "entry_exists": true,
+   "observes": "no working ancient machine and no Ancient Component is in any generator's output; no recipe makes a component; a machine taken apart at any level, the Refurbished level included, leaves ordinary scrap and no component",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "the reward, loot and trader-stock generators are the loaded game's own (Core and the expansions), and a patch that matches nothing logs nothing (plan.md, risks, 'The base game's hand-outs'): only the generators' output shows what a colony can be handed",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_no_handouts",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "kind A: the generators' lists are read; the runs only show the read against the game. One generic bridge function is owed: run a ThingSetMakerDef or a TraderKindDef's stock N times and list the defs.",
+   "counts_before_first_run": {
+    "runs_per_generator": 200,
+    "source": "src/RimMandrake/WreckedMachines/validation.py (the builder's constants, commit d8f8bd53b3, written before the scenes' first run)"
+   },
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_ruin_holds_wrecks": {
+   "id": "sc_ruin_holds_wrecks",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_ruin_holds_wrecks",
+   "entry_exists": true,
+   "observes": "over the set, wrecks lie in ruin rooms, of more than one kind of machine, each at the Wrecked level; at least one Ancient Component lies in a ruin room; none of either lies outside a ruin room; no map is flooded with them",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads placement: the game's map generation with this mod's step in it",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_ruin_holds_wrecks",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "the tester tags the kind on evidence. Minimum Force: the map generation is the mod's decision under test, so the scene forces nothing in it; it only chooses a tile or a map feature that holds a ruin.",
+   "cheaper_why": "the placement is the mod's decision under test (kind_note: Minimum Force, 'the scene forces nothing in it'); a state read of the placement list is the scene's start, and only generated maps show where the wrecks land",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "counts_before_first_run": {
+    "ruin_maps": 6,
+    "flooded_above": 12,
+    "source": "src/RimMandrake/WreckedMachines/validation.py (the builder's constants, commit d8f8bd53b3, written before the scenes' first run)"
+   },
+   "kind_tag_note": "scenes.json kind_note: 'the tester tags the kind on evidence'; no tag is guessed here",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_rare_wreck_ordinary_map": {
+   "id": "sc_rare_wreck_ordinary_map",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_rare_wreck_ordinary_map",
+   "entry_exists": true,
+   "observes": "some maps hold exactly one wreck, standing among rubble, at the Wrecked level; many maps hold none; no map holds several; no Ancient Component lies on an ordinary map; each wreck found stands on a cell that a colonist can reach on foot from the map's edge with no mining, and its Uninstall order is available",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads placement: the game's map generation with this mod's step in it",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_rare_wreck_ordinary_map",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "random by design: the tester writes X of Y before the first run (kind B). A scene that ends short of X goes to the Conductor, who decides whether X was a guess.",
+   "cheaper_why": "random by design (kind_note): the chance is read only over generated maps; the control (ordinary placement off, no map holds a wreck) runs in the same pass",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "counts_before_first_run": {
+    "ordinary_maps_in_one_run": 20,
+    "maps_with_a_wreck_wanted": 1,
+    "source": "src/RimMandrake/WreckedMachines/validation.py (the builder's constants, commit d8f8bd53b3, written before the scenes' first run)"
+   },
+   "kind_tag_note": "no B tag is written here: scenes.json says 'random by design' and that the tester tags the kind on evidence. As scripted, one run of the scene holds its own sample (20 ordinary maps, at least 1 with a wreck) and its control, so one run gives one verdict. A tester who tags it B writes tag_evidence, budget and x_of_y before the first counted run",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_carry_wreck_home": {
+   "id": "sc_carry_wreck_home",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_carry_wreck_home",
+   "entry_exists": true,
+   "observes": "the colonist uninstalls, hauls and installs each wreck; the same Wrecked machine stands at the far cell on the plain floor; the colonist's job at each step is the uninstall, the haul and the install, and the script gave no command that moves a thing; every wreck def has a carried form; the mass of each wreck against one colonist's capacity is recorded beside the row and is not judged",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads carrying: the game's uninstall, haul and install jobs on a carried form",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_carry_wreck_home",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "one generic bridge function is owed: place the install blueprint of a carried building.",
+   "cheaper_why": "one colonist and one order for each act (the third step of the cheap ladder): the uninstall, the haul and the install are three acts of one carry, read as the colonist's own jobs. The other clauses are a state read of every wreck def's carried form in the same pass, and the mass, which is recorded and not judged",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_study_opens_first_project": {
+   "id": "sc_study_opens_first_project",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_study_opens_first_project",
+   "entry_exists": true,
+   "observes": "the researcher goes to the wreck and studies it, and comes back to it on later days with no new order; the colonist who cannot research never does; the wreck's text shows its study rising; a message says when the study is complete; the project is then open and is finished at the bench; a second wrecked smelter then needs no study",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads study: the base game's study comp as a job on a building",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_study_opens_first_project",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "depends on the spike sc_study_spike (models.md, Study on a building). One generic bridge function is owed: read the game's study record for a kind of thing.",
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. The bar refuses a study that 'took no time that a player would notice' (leaf study_opens_research, `lazy`), and the row expects a researcher who 'comes back to it on later days with no new order': a scene inside one day cannot show a return on a later day. Its clauses are the steps of one study (locked, studied by himself, the text rising, open, finished at the bench); each step needs the state that the step before made, so a scene for each would play the same study again",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "counts_before_first_run": {
+    "study_days": 6,
+    "source": "src/RimMandrake/WreckedMachines/validation.py (the builder's constants, commit d8f8bd53b3, written before the scenes' first run)"
+   },
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_second_study": {
+   "id": "sc_second_study",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_second_study",
+   "entry_exists": true,
+   "observes": "the second project is locked until the Kludged machine is studied and open after it; the study's progress is the same after the reload as before it",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads study: the base game's study comp as a job on a building",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_second_study",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. The bar refuses a study that 'took no time that a player would notice' (leaf study_opens_research, `lazy`), and the row expects a researcher who 'comes back to it on later days with no new order': a scene inside one day cannot show a return on a later day. It holds a save and reload in the middle of a study, which needs a study in progress. Its one fixed wait, two days, is its control: with no study of the Kludged machine, time alone opens nothing",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "counts_before_first_run": {
+    "study_days": 6,
+    "source": "src/RimMandrake/WreckedMachines/validation.py (the builder's constants, commit d8f8bd53b3, written before the scenes' first run)"
+   },
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_repair_on_machine": {
+   "id": "sc_repair_on_machine",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_repair_on_machine",
+   "entry_exists": true,
+   "observes": "the order is given on the machine, not from the build menu; the colonist hauls the materials to the wreck and works on it; the wreck is at its cell at every read; at the end a Kludged smelter stands there, facing east; the repair goes on after the reload; the signal fired once, with the machine, Wrecked and Kludged",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the offline walk (T_REPAIR_STATE_WALK) reads the repair's logic and 'leaves out colonist jobs and paths'; plan.md, risks: 'The offline walk reads the logic; sc_repair_on_machine reads the identity' (power connection, facing, the machine in sight while colonists haul and work)",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_repair_on_machine",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. T_REPAIR_STATE_WALK decides the repair's logic offline. What is left for the game is the leaf's own sentence, 'colonists bring the materials and work at it where it stands', and only the clock shows colonists' hauling and work. Its clauses (the order on the machine, the haul and the work, the machine at its cell at every read, the level and the facing at the end, the reload, the signal) are readings of one repair; a scene for each would stage and play the same repair again",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_repair_cancelled": {
+   "id": "sc_repair_cancelled",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_repair_cancelled",
+   "entry_exists": true,
+   "observes": "after each cancel the wreck stands at its cell at the Wrecked level; every delivered material lies beside it or is back in the stockpile, and the count of materials on the map is the count at the start; a new repair order on the same wreck is accepted",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the offline walk (T_REPAIR_STATE_WALK) reads the repair's logic and 'leaves out colonist jobs and paths'; plan.md, risks: 'The offline walk reads the logic; sc_repair_on_machine reads the identity' (power connection, facing, the machine in sight while colonists haul and work)",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_repair_cancelled",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. T_REPAIR_STATE_WALK decides the repair's logic offline. What is left for the game is the leaf's own sentence, 'colonists bring the materials and work at it where it stands', and only the clock shows colonists' hauling and work. The three cancels come at three moments of a repair (before a delivery, after part of the materials, during the work), and colonists' work must bring the repair to each. Its longest wait is its control: a fourth, uncancelled repair completes, which shows that a repair could complete in this scene",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_levels_do_their_work": {
+   "id": "sc_levels_do_their_work",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_levels_do_their_work",
+   "entry_exists": true,
+   "observes": "the Wrecked machines offer nothing and use no power; the Kludged smelter offers a part of the smelter's jobs that is not empty and refuses the others; the Refurbished smelter offers every job of the Original and takes longer for the same product; the Kludged drill makes its one product slower than the Refurbished drill; the Refurbished one is slower than the Original",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the onboarding read (T_ONBOARDING_TABLE_OFFLINE) 'leaves out whether the part is useful and what the C# changes at startup'; the levels are applied by C# at startup onto the factory mod's processor, and the work, the power and the mood are read on the running machine",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_levels_do_their_work",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "if jawa/container_fill does not reach the factory mod's processor, one generic bridge function is owed to place a process's inputs.",
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. 'takes longer for the same product' is a reading of the clock: the scene makes one product at each level and counts its own waits until the product is out. The applied speed as a state read is taken for every machine by sc_every_machine_onboarded; this scene shows on two machines that the product comes at that speed. Its clauses are that one comparison on the smelter and on the drill",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_levels_under_settings": {
+   "id": "sc_levels_under_settings",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_levels_under_settings",
+   "entry_exists": true,
+   "observes": "at every value the order holds: Wrecked gives nothing, Kludged is below Refurbished, and Refurbished is below the Original; at the lowest value the applied speed or power of the Kludged and of the Refurbished level is below its shipped reading, and at the highest value it is above it; the settings screen shows each value and says when it takes effect",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the onboarding read (T_ONBOARDING_TABLE_OFFLINE) 'leaves out whether the part is useful and what the C# changes at startup'; the levels are applied by C# at startup onto the factory mod's processor, and the work, the power and the mood are read on the running machine",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_levels_under_settings",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_forge_plasteel": {
+   "id": "sc_forge_plasteel",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_forge_plasteel",
+   "entry_exists": true,
+   "observes": "the Kludged forge offers obsidian and no plasteel and no gravlite, with all research done; the Refurbished forge offers plasteel and gravlite and makes plasteel; the old forge projects and the two old forge settings are not in the game",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the onboarding read (T_ONBOARDING_TABLE_OFFLINE) 'leaves out whether the part is useful and what the C# changes at startup'; the levels are applied by C# at startup onto the factory mod's processor, and the work, the power and the mood are read on the running machine",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_forge_plasteel",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_cell_and_emanator": {
+   "id": "sc_cell_and_emanator",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_cell_and_emanator",
+   "entry_exists": true,
+   "observes": "the wrecked cell gives no power and its lamp is dark; the Kludged cell gives less than the Refurbished one and lights fewer of its lamps, and both give less than the base game's cell; the colonist beside the wrecked emanator has no thought from it; the Kludged emanator's thought is weaker than the Refurbished one's, and both are weaker than the base game's",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the onboarding read (T_ONBOARDING_TABLE_OFFLINE) 'leaves out whether the part is useful and what the C# changes at startup'; the levels are applied by C# at startup onto the factory mod's processor, and the work, the power and the mood are read on the running machine",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_cell_and_emanator",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_component_gate": {
+   "id": "sc_component_gate",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_component_gate",
+   "entry_exists": true,
+   "observes": "with no component the order is unavailable and its reason names the Ancient Component; after the cancel the Kludged smelter stands at its cell and the component lies beside it or in the stockpile (count one); with the order given again, the Kludged smelter is listed at its cell at every read until the work is complete, the colonist hauls to it and works on it, and no frame or build-menu blueprint appears; the smelter then becomes Refurbished at the same cell and facing, and no component is left; the Refurbished smelter offers no further repair order and no order that reaches the Original",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the offline walk (T_REPAIR_STATE_WALK) reads the repair's logic and 'leaves out colonist jobs and paths'; plan.md, risks: 'The offline walk reads the logic; sc_repair_on_machine reads the identity' (power connection, facing, the machine in sight while colonists haul and work)",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_component_gate",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. T_REPAIR_STATE_WALK decides the repair's logic offline. What is left for the game is the leaf's own sentence, 'colonists bring the materials and work at it where it stands', and only the clock shows colonists' hauling and work. Its clauses follow one Ancient Component through one Kludged smelter: the order unavailable without it, the cancel that gives it back, the repair that uses it up, the Refurbished machine that offers no more. Each needs the state that the one before made",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_three_looks_rows": {
+   "id": "sc_three_looks_rows",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_three_looks_rows",
+   "entry_exists": true,
+   "observes": "the reader names every level right in every row and facing, and says of each wreck that it is a machine and not debris",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads the pictures: what the renderer draws at play zoom",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_three_looks_rows",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "owner_review",
+   "kind_note": "the 18 factory machines can be captured as their art lands; a row counts once its machine's art is in.",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_marks_agree": {
+   "id": "sc_marks_agree",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_marks_agree",
+   "entry_exists": true,
+   "observes": "a powered machine shows no no-power mark and its text reads powered; the broken-down machine shows the breakdown mark and its text says so; the power cell, which takes no power, shows no power mark at all",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads the pictures: what the renderer draws at play zoom",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_marks_agree",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "this scene re-reads the fault of the first look (record contradiction c_bolt_on_powered_machine) and classes it: the mod, or the staged scene.",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_switch_machine_off": {
+   "id": "sc_switch_machine_off",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_switch_machine_off",
+   "entry_exists": true,
+   "observes": "with its line off the autoloom is in the build menu behind the factory mod's research and its restoration projects are gone; with its line off the generators produce a working vanometric power cell; the wrecks and Kludged machines on the map stand unchanged through every switch; the last read equals the first read field by field; each line's label says when its change takes effect; with a line off the placement list holds no wreck of that machine, and with the line on again it holds it as it shipped",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "a Mod Settings line is applied to the loaded defs, the build menu and the generators at run time (the re-derivation of every def edit from the shipped def when a setting is applied, plan.md 'Kept as built'); only the loaded game shows the machine given back",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_switch_machine_off",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "cheaper_why": "a state read with no clock and no colonist's work: one line off, a read, the line on, a read. Its clauses are the fields of those reads (build menu, projects, generators, the machines that stand, the placement list, the labels), and 'the last read equals the first read field by field' needs every field in one pass",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_all_switches_off": {
+   "id": "sc_all_switches_off",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_all_switches_off",
+   "entry_exists": true,
+   "observes": "every production machine is in the build menu as the factory mod has it; the ruin holds no wreck of this mod; the generators produce the base game's working cell and emanator; the log holds no error and no warning of this mod",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "a Mod Settings line is applied to the loaded defs, the build menu and the generators at run time (the re-derivation of every def edit from the shipped def when a setting is applied, plan.md 'Kept as built'); only the loaded game shows the machine given back",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_all_switches_off",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_text_names_no_setting": {
+   "id": "sc_text_names_no_setting",
+   "kind": "offline",
+   "stage": "4-5",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_text_names_no_setting",
+   "entry_exists": true,
+   "observes": "no hit; no level is called Repaired in a text that a player reads; no description stops in the middle of a sentence (a fresh reader reads the changed texts once)",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\"",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "offline: no game is needed.",
+   "command_note": "validation.py has no command line for one offline chain: this line calls the chain as selftest_wm_scenes.text_scene does and exits 1 unless every component reads PASS",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.1,
+    "last": "sc_text_names_no_setting: FAIL 3 components, 1 not PASS",
+    "at": "2026-11-27T13:09:49Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_text_names_no_setting.txt",
+    "result": "FAIL",
+    "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\""
+   },
+   "red_today": "the read finds the setting's words in the mod's texts as built (the log names each hit). plan.md 'Changed': 'The setting words leave every text, and no text calls a level Repaired'. That is the build's work at Stage 3, and this check is its red-first reading"
+  },
+  "sc_wreck_link_tags": {
+   "id": "sc_wreck_link_tags",
+   "kind": "offline",
+   "stage": "4-5",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+   "entry": "main",
+   "entry_exists": true,
+   "observes": "each such Wrecked def carries the matching draw-in tag and holds no comp that could join a net; the count of Wrecked defs read equals the count of ancient machines",
+   "reads": [
+    "src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "offline: no game is needed. The script exists and is green on the smelter; the count line is new.",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.4,
+    "last": "wrecked_links: 9 wrecked defs judged, 5 owe pipes, 7 owe conduit, 0 problems",
+    "at": "2026-11-27T13:09:49Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_wreck_link_tags.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py"
+   },
+   "partial": "scenes.json kind_note: 'The script exists and is green on the smelter; the count line is new.' The count of Wrecked defs against the count of ancient machines is built with the onboarding (Stage 3)"
+  },
+  "sc_whole_journey": {
+   "id": "sc_whole_journey",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_whole_journey",
+   "entry_exists": true,
+   "observes": "every step completes by colonists' work; at each step the selected machine's text and orders say what it needs next; the repair goes on after the reload and the machine stands at one level; the Kludged smelter makes steel and the lamp is lit; the smelter ends Refurbished; the cell's last repair is unavailable and names the missing component, and the cell goes on working at Kludged; the log holds no error of this mod; a capture is taken at each change of level",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "bar whole_journey asks for the run itself, 'nothing done by a command': colonists' jobs, the clock, a save and a reload; plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.'",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_whole_journey",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "owner_review",
+   "kind_note": "time is compressed at top speed; every job and wait is real. If this scene costs more than a visit can afford, it is split at the save in the middle, and each half starts from a save that play made.",
+   "cheaper_why": "the bar is the whole run by colonists' work ('With every ancient machine on and nothing done by a command'); each step alone has its own cheaper scene, and none of them reads that one colony gets from a wreck in a ruin to a Refurbished machine. The scene splits at its mid-way save if one visit cannot afford it (scenes.json kind_note)",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_whole_second_order": {
+   "id": "sc_whole_second_order",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_whole_second_order",
+   "entry_exists": true,
+   "observes": "the run reaches the same end state as sc_whole_journey with the two machines swapped: the power cell ends Refurbished and the smelter stays Kludged and names the missing component; the study done in the ruin counts at home; the study's progress is the same after the reload",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "bar whole_journey asks for the run itself, 'nothing done by a command': colonists' jobs, the clock, a save and a reload; plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.'",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_whole_second_order",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "cheaper_why": "the same run as sc_whole_journey read for its second machine; it shares that scene's start",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_uninstall_during_repair": {
+   "id": "sc_uninstall_during_repair",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "interaction",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_uninstall_during_repair",
+   "entry_exists": true,
+   "observes": "the repair is cancelled first; the delivered materials lie where the cell stood; the colonist carries the cell at the Wrecked level and installs it; a new repair order on it is accepted",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the offline walk (T_REPAIR_STATE_WALK) reads the repair's logic and 'leaves out colonist jobs and paths'; plan.md, risks: 'The offline walk reads the logic; sc_repair_on_machine reads the identity' (power connection, facing, the machine in sight while colonists haul and work)",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_uninstall_during_repair",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "features": [
+    "wreck_comes_home",
+    "repair_on_the_machine"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_repair_needs_ground": {
+   "id": "sc_repair_needs_ground",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "interaction",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_repair_needs_ground",
+   "entry_exists": true,
+   "observes": "on the plain floor the order is unavailable and its reason names the factory floor; on factory floor the order is available; the game accepts the floor order under the standing wreck, the wreck stands unchanged while the floor is laid, and its order is then available; the wreck that was carried onto factory floor installs there and its order is available. Both ways must work (rule R_ground).",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, risks, 'Ground': read from the game's source and 'not yet seen in play'; the scene reads in play whether the game accepts factory floor under a standing wreck (GenConstruct.CanPlaceBlueprintOver)",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_repair_needs_ground",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. plan.md, risks, 'Ground': the rule is read from the game's source and 'not yet seen in play'. The scene shows in play that a colonist lays factory floor under a standing wreck and that a carried wreck installs on factory floor; both are colonists' jobs on the clock",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "features": [
+    "wreck_comes_home",
+    "repair_on_the_machine"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_study_without_research_reinvented": {
+   "id": "sc_study_without_research_reinvented",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_no_research_reinvented",
+   "tier_defined": false,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_study_without_research_reinvented",
+   "entry_exists": true,
+   "observes": "the wreck offers the study gizmo; the first project is locked and names the wreck as not studied; the researcher studies the wreck and comes back to it with no new order; the wreck's text shows the study rising; when the study is complete the project opens and is finished at the bench",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads study: the base game's study comp as a job on a building",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_study_without_research_reinvented",
+   "command_note": "tier wreckedmachines_no_research_reinvented (NOT DEFINED in modset_builder.TIERS: Stage 3 defines it; the name is proposed)",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "tier_why": "the small list without Research Reinvented (plan.md; small_list.json 'Tests may run on a smaller tier of their own')",
+   "cheaper_why": "The span that scene_size.py reads is the sum of the scene's wait ceilings. Each long wait is a loop that ends at the reading it waits for, so the scene plays as long as the colonists' work takes at the shipped values, and that is not measured before the build. The bar refuses a study that 'took no time that a player would notice' (leaf study_opens_research, `lazy`), and the row expects a researcher who 'comes back to it on later days with no new order': a scene inside one day cannot show a return on a later day. The coverage judge asked for this scene (record decision d_stage5_judge_fix_read): the mod's small list holds Research Reinvented, so no other scene shows the base game's study alone. It plays the flow of sc_study_opens_first_project on a list without that mod",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_cannery_tier": {
+   "id": "sc_cannery_tier",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_cannery",
+   "tier_defined": false,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_cannery_tier",
+   "entry_exists": true,
+   "observes": "no level of the cannery is in the build menu before or after the research; the placement list holds the cannery's wreck; the Wrecked cannery offers nothing and has a carried form; the Kludged cannery offers a part of the donor's processes that is not empty; the Refurbished cannery offers all of them and works slower than the factory mod's own; the wreck and the Kludged cannery each offer their repair order",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the onboarding read (T_ONBOARDING_TABLE_OFFLINE) 'leaves out whether the part is useful and what the C# changes at startup'; the levels are applied by C# at startup onto the factory mod's processor, and the work, the power and the mood are read on the running machine",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_cannery_tier",
+   "command_note": "tier wreckedmachines_cannery (NOT DEFINED in modset_builder.TIERS: Stage 3 defines it; the name is proposed)",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": null,
+   "tier_why": "the small list plus Vanilla Cooking Expanded (plan.md; floor.json line test_isolation)",
+   "cheaper_why": "the one scene on the list with Vanilla Cooking Expanded (plan.md: 'Each of the two tiers serves one scene'). A load of that list is its cost, so every read of the cannery (build menu, placement list, levels, orders, carried form) is taken on the one load. It is a state read with no clock and no colonist's work",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_every_machine_onboarded": {
+   "id": "sc_every_machine_onboarded",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_every_machine_onboarded",
+   "entry_exists": true,
+   "observes": "for every machine: the first project is locked and names that machine's wreck; the wreck offers study and a repair order that is unavailable for the research and available after it; the Kludged level offers its repair order to Refurbished; the Wrecked level offers no process and gives no power; the Kludged processes are a non-empty strict part of the donor's (or its one product); the Refurbished processes equal the donor's; the Refurbished level works slower or weaker than the Original; what the loaded game offers equals the machine's onboarding row",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: the onboarding read (T_ONBOARDING_TABLE_OFFLINE) 'leaves out whether the part is useful and what the C# changes at startup'; the levels are applied by C# at startup onto the factory mod's processor, and the work, the power and the mood are read on the running machine",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_every_machine_onboarded",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "a state read for every machine; a machine counts once its onboarding has landed. The live result is read, not the offline table: the levels are applied by C# at startup.",
+   "cheaper_why": "a state read for every machine (scenes.json kind_note), with no clock and no colonist's work, so nothing in it can be spoiled. Its clauses are the fields of one read for each machine, and the loaded game is compared with the machine's onboarding row in the same pass",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_caravan_wreck_home": {
+   "id": "sc_caravan_wreck_home",
+   "kind": "live_minimal",
+   "test_kind": "A",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "tier": "wreckedmachines_solo",
+   "tier_defined": true,
+   "file": "src/RimMandrake/WreckedMachines/validation.py",
+   "entry": "scene_caravan_wreck_home",
+   "entry_exists": true,
+   "observes": "the caravan loads the carried wreck with the colonists and the pack animal, travels and arrives home with it; colonists install it there and the same Wrecked autoloom stands at the home cell",
+   "reads": [
+    "src/RimMandrake/WreckedMachines/validation.py",
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads carrying: the game's uninstall, haul and install jobs on a carried form",
+   "why_game_by": "steward, from the locked text it quotes",
+   "why_full_list": null,
+   "command": "python.exe src/RimMandrake/Utils/modcheck/cli.py run WreckedMachines --chains scene_caravan_wreck_home",
+   "command_note": "tier wreckedmachines_solo",
+   "item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "hold": "immediate",
+   "kind_note": "the caravan's travel is real; time is compressed.",
+   "cheaper_why": "sc_carry_wreck_home reads carrying on one map; a wreck found on another tile comes home only by caravan, and a carried form that no caravan can load fails 'carry it away' for every wreck that is not at home (the coverage judge's repair, record decision d_stage5_judge_fix_read)",
+   "cheaper_why_by": "steward, from the scene's row and script as read on 2026-11-27",
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "a scene is run at its stage (Stage 6)"
+   }
+  },
+  "sc_study_spike": {
+   "id": "sc_study_spike",
+   "kind": "exploration",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": null,
+   "observes": "Does the base game's own study work on a building in play: does a researcher take the study by himself after one switch, does the research screen name the unstudied machine, and what does a player see when Research Reinvented's study of the same machine is on top? (models.md, Study on a building; the first thing built.)",
+   "reads": [],
+   "support_only": true,
+   "read_by": [],
+   "runs_today": {
+    "ran": false,
+    "why": "an exploration accepts no bar (scenes.json); its question is read by a look in the running game"
+   },
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads study: the base game's study comp as a job on a building",
+   "why_game_by": "steward, from the locked text it quotes"
+  },
+  "sc_first_look_built_mod": {
+   "id": "sc_first_look_built_mod",
+   "kind": "exploration",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": null,
+   "observes": "What does the mod as built before 0.1.0 look and play like: can the grades be told apart, does a build-over read as a repair, what is a study session, what can be carried? Played on 2026-11-26 on ArchSmall (look_01.md; keeper save WRECKED_MACHINES_FIRST_LOOK_2026_11_26); its readings are record decision d_first_look_read. It accepts no bar.",
+   "reads": [],
+   "support_only": true,
+   "read_by": [],
+   "runs_today": {
+    "ran": false,
+    "why": "an exploration accepts no bar (scenes.json); its question is read by a look in the running game"
+   },
+   "why_game": "plan.md, offline simulation: 'No: study, carrying, placement and the pictures. Each is the game's own machinery (a job on a building, the uninstall chain, map generation, the renderer), and a fake of it would be a copy that proves only itself.' This scene reads the pictures: what the renderer draws at play zoom",
+   "why_game_by": "steward, from the locked text it quotes"
+  },
+  "sc_rider_salvage_rule": {
+   "id": "sc_rider_salvage_rule",
+   "kind": "exploration",
+   "stage": "4-5",
+   "scene_kind": "exploration",
+   "file": null,
+   "observes": "After the build of 0.1.0 changes the smelter's levels, does the one salvage rule still pay what it paid before? Read by the offline selftest src/RimMandrake/WreckedMachines/selftest_salvage_rule.py (the shipped source against its fake engine, with planted faults). No bar of 0.1.0 judges the rule; this is its regression reading until it moves (check C_salvage_rule_offline).",
+   "reads": [],
+   "support_only": true,
+   "read_by": [
+    "T_SALVAGE_RULE"
+   ],
+   "runs_today": {
+    "ran": false,
+    "why": "an exploration accepts no bar (scenes.json); its question is read by T_SALVAGE_RULE"
+   }
+  },
+  "sc_rider_distillation": {
+   "id": "sc_rider_distillation",
+   "kind": "exploration",
+   "stage": "4-5",
+   "scene_kind": "exploration",
+   "file": null,
+   "observes": "After the build of 0.1.0, does the distillation machine's patch still apply to FlowWorks' defs, and does its text name no setting? Read offline (check C_distillation_loads and the text read of sc_text_names_no_setting). No bar of 0.1.0 judges what the machine does; its working form moves to FlowWorks.",
+   "reads": [],
+   "support_only": true,
+   "read_by": [
+    "T_DISTILLATION_LOADS"
+   ],
+   "runs_today": {
+    "ran": false,
+    "why": "an exploration accepts no bar (scenes.json); its question is read by T_DISTILLATION_LOADS"
+   }
+  },
+  "T_LATER_STAYS_OUT": {
+   "id": "T_LATER_STAYS_OUT",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py",
+   "observes": "the two inventory rows that 0.1.0 leaves for a later version are not shipped half-built: no turret line (no def of the mod names a turret: record inv_turret_line search_scope) and no wealth exclusion (no WealthWatcher or MarketValue patch in the mod's C#: record inv_wealth_exclusion search_scope). Red first on a planted turret def and a planted wealth patch",
+   "reads": [
+    "src/RimMandrake/WreckedMachines"
+   ],
+   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py",
+   "new": true,
+   "built_in_stage": "3",
+   "runs_today": {
+    "ran": false,
+    "why": "specified by the Stage 2 steward (rule R7); Stage 3 builds it and records it red first"
+   },
+   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table",
+   "delegated": "delegated: evidence-for-ask: a locked bar of scope `later` with no scene is decided by an absence check, as Pyrelands' two cut bars are (T_CUT_STAYS_CUT); the other choice, his card to take the two ids out of the locked bars, has no recorded evidence for it"
+  },
+  "LOOK_STAGE8": {
+   "id": "LOOK_STAGE8",
+   "kind": "look",
+   "stage": "8",
+   "file": null,
+   "observes": "the owner walks the mod: gameplay, fun, theme, UI (his act); the scenes that hold for his review are staged for it",
+   "reads": [],
+   "support_only": true,
+   "command": "owner walk",
+   "runs_today": {
+    "ran": false,
+    "why": "Stage 8: the owner's own walk"
+   }
+  }
+ },
+ "bars": [
+  {
+   "id": "inv_grade_ladder",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_repair_on_machine",
+    "sc_levels_under_settings",
+    "sc_component_gate"
+   ],
+   "supports": [
+    "sc_ruin_holds_wrecks",
+    "sc_carry_wreck_home",
+    "sc_study_opens_first_project",
+    "sc_whole_journey",
+    "T_KERNEL_FUZZ"
+   ],
+   "pair_rules": {
+    "sc_repair_on_machine": "R1 full round",
+    "sc_levels_under_settings": "R1 full round",
+    "sc_component_gate": "R1 delta round",
+    "sc_ruin_holds_wrecks": "R8 showcase smelter_comes_home",
+    "sc_carry_wreck_home": "R8 showcase smelter_comes_home",
+    "sc_study_opens_first_project": "R8 showcase smelter_comes_home",
+    "sc_whole_journey": "R8 showcase smelter_comes_home",
+    "T_KERNEL_FUZZ": "R10 steward: record.json inv_grade_ladder proof_note: 'Offline today: the kernel fuzz is green (15000 cases) on the shipped kernel file'"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_smelter_line",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_levels_do_their_work",
+    "sc_menu_and_research",
+    "sc_three_looks_rows",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "supports": [
+    "sc_ruin_holds_wrecks",
+    "sc_carry_wreck_home",
+    "sc_study_opens_first_project",
+    "sc_repair_on_machine",
+    "sc_component_gate",
+    "sc_whole_journey",
+    "LOOK_STAGE8"
+   ],
+   "pair_rules": {
+    "sc_levels_do_their_work": "R1 full round",
+    "sc_menu_and_research": "R1 full round",
+    "sc_three_looks_rows": "R1 full round",
+    "T_ONBOARDED_SET": "R5",
+    "T_ONBOARDING_COMPLETE": "R5",
+    "sc_ruin_holds_wrecks": "R8 showcase smelter_comes_home",
+    "sc_carry_wreck_home": "R8 showcase smelter_comes_home",
+    "sc_study_opens_first_project": "R8 showcase smelter_comes_home",
+    "sc_repair_on_machine": "R8 showcase smelter_comes_home",
+    "sc_component_gate": "R8 showcase smelter_comes_home",
+    "sc_whole_journey": "R8 showcase smelter_comes_home",
+    "LOOK_STAGE8": "R9"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_power_cell_line",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_cell_and_emanator",
+    "sc_levels_under_settings",
+    "sc_carry_wreck_home",
+    "sc_switch_machine_off"
+   ],
+   "supports": [],
+   "pair_rules": {
+    "sc_cell_and_emanator": "R1 full round",
+    "sc_levels_under_settings": "R1 full round",
+    "sc_carry_wreck_home": "R1 full round",
+    "sc_switch_machine_off": "R1 delta round"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_emanator_line",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_cell_and_emanator",
+    "sc_marks_agree",
+    "sc_carry_wreck_home",
+    "sc_no_handouts"
+   ],
+   "supports": [
+    "sc_levels_under_settings",
+    "sc_switch_machine_off"
+   ],
+   "pair_rules": {
+    "sc_cell_and_emanator": "R1 full round",
+    "sc_marks_agree": "R1 full round",
+    "sc_carry_wreck_home": "R1 full round",
+    "sc_no_handouts": "R1 delta round",
+    "sc_levels_under_settings": "R8 showcase relics_in_the_house",
+    "sc_switch_machine_off": "R8 showcase relics_in_the_house"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_study_the_wreck",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_study_opens_first_project",
+    "sc_second_study",
+    "sc_study_without_research_reinvented"
+   ],
+   "supports": [
+    "sc_ruin_holds_wrecks",
+    "sc_carry_wreck_home",
+    "sc_repair_on_machine",
+    "sc_component_gate",
+    "sc_whole_journey"
+   ],
+   "pair_rules": {
+    "sc_study_opens_first_project": "R1 full round",
+    "sc_second_study": "R1 full round",
+    "sc_study_without_research_reinvented": "R1 delta round",
+    "sc_ruin_holds_wrecks": "R8 showcase smelter_comes_home",
+    "sc_carry_wreck_home": "R8 showcase smelter_comes_home",
+    "sc_repair_on_machine": "R8 showcase smelter_comes_home",
+    "sc_component_gate": "R8 showcase smelter_comes_home",
+    "sc_whole_journey": "R8 showcase smelter_comes_home"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_study_without_research_reinvented"
+   ],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_ancient_component",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_component_gate"
+   ],
+   "supports": [
+    "sc_ruin_holds_wrecks",
+    "sc_carry_wreck_home",
+    "sc_study_opens_first_project",
+    "sc_repair_on_machine",
+    "sc_whole_journey"
+   ],
+   "pair_rules": {
+    "sc_component_gate": "R1 full round",
+    "sc_ruin_holds_wrecks": "R8 showcase smelter_comes_home",
+    "sc_carry_wreck_home": "R8 showcase smelter_comes_home",
+    "sc_study_opens_first_project": "R8 showcase smelter_comes_home",
+    "sc_repair_on_machine": "R8 showcase smelter_comes_home",
+    "sc_whole_journey": "R8 showcase smelter_comes_home"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_donor_smelter_hidden",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_menu_and_research",
+    "sc_switch_machine_off",
+    "sc_every_machine_onboarded",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "supports": [
+    "sc_three_looks_rows",
+    "sc_forge_plasteel"
+   ],
+   "pair_rules": {
+    "sc_menu_and_research": "R1 full round",
+    "sc_switch_machine_off": "R1 full round",
+    "sc_every_machine_onboarded": "R1 delta round",
+    "T_ONBOARDED_SET": "R5",
+    "T_ONBOARDING_COMPLETE": "R5",
+    "sc_three_looks_rows": "R8 showcase ancient_factory_floor",
+    "sc_forge_plasteel": "R8 showcase ancient_factory_floor"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_mod_settings",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_switch_machine_off",
+    "sc_all_switches_off",
+    "sc_levels_under_settings",
+    "sc_ruin_holds_wrecks",
+    "sc_cannery_tier"
+   ],
+   "supports": [
+    "sc_cell_and_emanator"
+   ],
+   "pair_rules": {
+    "sc_switch_machine_off": "R1 full round",
+    "sc_all_switches_off": "R1 full round",
+    "sc_levels_under_settings": "R1 full round",
+    "sc_ruin_holds_wrecks": "R1 full round",
+    "sc_cannery_tier": "R1 delta round",
+    "sc_cell_and_emanator": "R8 showcase relics_in_the_house"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_cannery_tier"
+   ],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_wrecks_draw_links",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "sc_wreck_link_tags"
+   ],
+   "supports": [],
+   "pair_rules": {
+    "sc_wreck_link_tags": "R1 full round"
+   },
+   "held": [],
+   "offline_decides": [
+    "sc_wreck_link_tags"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "approved",
+   "impl": "present"
+  },
+  {
+   "id": "inv_alloy_forge_gates",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_forge_plasteel"
+   ],
+   "supports": [
+    "sc_menu_and_research",
+    "sc_three_looks_rows",
+    "T_FORGE_GATES_GONE"
+   ],
+   "pair_rules": {
+    "sc_forge_plasteel": "R1 full round",
+    "sc_menu_and_research": "R8 showcase ancient_factory_floor",
+    "sc_three_looks_rows": "R8 showcase ancient_factory_floor",
+    "T_FORGE_GATES_GONE": "R10 steward: record.json inv_alloy_forge_gates scope_note: 'the late plasteel project and the two forge settings end with the forge's onboarding'"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "opened_by_owner",
+   "impl": "present"
+  },
+  {
+   "id": "inv_one_salvage_rule",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_SALVAGE_RULE"
+   ],
+   "supports": [
+    "sc_rider_salvage_rule"
+   ],
+   "pair_rules": {
+    "T_SALVAGE_RULE": "R1 full round+R4",
+    "sc_rider_salvage_rule": "R1 full round+R4"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_SALVAGE_RULE"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "not_opened",
+   "impl": "present"
+  },
+  {
+   "id": "inv_distillation_module",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_DISTILLATION_LOADS",
+    "sc_text_names_no_setting"
+   ],
+   "supports": [
+    "sc_rider_distillation"
+   ],
+   "pair_rules": {
+    "T_DISTILLATION_LOADS": "R1 full round+R4",
+    "sc_rider_distillation": "R1 full round+R4",
+    "sc_text_names_no_setting": "R1 full round"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_DISTILLATION_LOADS",
+    "sc_text_names_no_setting"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "not_runnable_today": [
+    "T_DISTILLATION_LOADS",
+    "sc_text_names_no_setting"
+   ],
+   "scope": "opened_by_owner",
+   "impl": "present"
+  },
+  {
+   "id": "inv_wreck_found_in_world",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_ruin_holds_wrecks",
+    "sc_rare_wreck_ordinary_map",
+    "sc_caravan_wreck_home"
+   ],
+   "supports": [
+    "sc_carry_wreck_home",
+    "sc_study_opens_first_project",
+    "sc_repair_on_machine",
+    "sc_component_gate",
+    "sc_whole_journey"
+   ],
+   "pair_rules": {
+    "sc_ruin_holds_wrecks": "R1 full round",
+    "sc_rare_wreck_ordinary_map": "R1 full round",
+    "sc_caravan_wreck_home": "R1 delta round",
+    "sc_carry_wreck_home": "R8 showcase smelter_comes_home",
+    "sc_study_opens_first_project": "R8 showcase smelter_comes_home",
+    "sc_repair_on_machine": "R8 showcase smelter_comes_home",
+    "sc_component_gate": "R8 showcase smelter_comes_home",
+    "sc_whole_journey": "R8 showcase smelter_comes_home"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "approved",
+   "impl": "absent"
+  },
+  {
+   "id": "inv_ancient_component_source",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_ruin_holds_wrecks",
+    "sc_no_handouts",
+    "sc_rare_wreck_ordinary_map"
+   ],
+   "supports": [
+    "sc_carry_wreck_home",
+    "sc_study_opens_first_project",
+    "sc_repair_on_machine",
+    "sc_component_gate",
+    "sc_whole_journey"
+   ],
+   "pair_rules": {
+    "sc_ruin_holds_wrecks": "R1 full round",
+    "sc_no_handouts": "R1 full round",
+    "sc_rare_wreck_ordinary_map": "R1 delta round",
+    "sc_carry_wreck_home": "R8 showcase smelter_comes_home",
+    "sc_study_opens_first_project": "R8 showcase smelter_comes_home",
+    "sc_repair_on_machine": "R8 showcase smelter_comes_home",
+    "sc_component_gate": "R8 showcase smelter_comes_home",
+    "sc_whole_journey": "R8 showcase smelter_comes_home"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [],
+   "scope": "approved",
+   "impl": "absent"
+  },
+  {
+   "id": "inv_wealth_exclusion",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_LATER_STAYS_OUT"
+   ],
+   "supports": [],
+   "pair_rules": {
+    "T_LATER_STAYS_OUT": "R7"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_LATER_STAYS_OUT"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "not_runnable_today": [
+    "T_LATER_STAYS_OUT"
+   ],
+   "scope": "later",
+   "impl": "absent"
+  },
+  {
+   "id": "inv_grade_changed_signal",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_repair_on_machine",
+    "T_REPAIR_STATE_WALK"
+   ],
+   "supports": [],
+   "pair_rules": {
+    "sc_repair_on_machine": "R1 full round",
+    "T_REPAIR_STATE_WALK": "R6"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_REPAIR_STATE_WALK"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "T_REPAIR_STATE_WALK"
+   ],
+   "scope": "approved",
+   "impl": "absent"
+  },
+  {
+   "id": "inv_turret_line",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "4-5",
+   "decides": [
+    "T_LATER_STAYS_OUT"
+   ],
+   "supports": [],
+   "pair_rules": {
+    "T_LATER_STAYS_OUT": "R7"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_LATER_STAYS_OUT"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "not_runnable_today": [
+    "T_LATER_STAYS_OUT"
+   ],
+   "scope": "later",
+   "impl": "absent"
+  },
+  {
+   "id": "inv_more_factory_machines",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "sc_menu_and_research",
+    "sc_three_looks_rows",
+    "sc_cannery_tier",
+    "sc_every_machine_onboarded",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "supports": [
+    "sc_forge_plasteel",
+    "LOOK_STAGE8"
+   ],
+   "pair_rules": {
+    "sc_menu_and_research": "R1 full round",
+    "sc_three_looks_rows": "R1 full round",
+    "sc_cannery_tier": "R1 delta round",
+    "sc_every_machine_onboarded": "R1 delta round",
+    "T_ONBOARDED_SET": "R5",
+    "T_ONBOARDING_COMPLETE": "R5",
+    "sc_forge_plasteel": "R8 showcase ancient_factory_floor",
+    "LOOK_STAGE8": "R9"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_cannery_tier",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "scope": "approved",
+   "impl": "absent"
+  },
+  {
+   "id": "only_by_repair",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_menu_and_research",
+    "sc_no_handouts",
+    "sc_cannery_tier",
+    "sc_component_gate"
+   ],
+   "supports": [
+    "sc_old_save"
+   ],
+   "pair_rules": {
+    "sc_menu_and_research": "R1 full round",
+    "sc_no_handouts": "R1 full round",
+    "sc_cannery_tier": "R1 delta round",
+    "sc_component_gate": "R1 delta round",
+    "sc_old_save": "R10 steward: the leaf's accept line 'A colony that loads an older save keeps the working factory machines that already stand in it'; floor.json line save_compat names check C_old_save"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_cannery_tier"
+   ]
+  },
+  {
+   "id": "wreck_is_found",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_ruin_holds_wrecks",
+    "sc_rare_wreck_ordinary_map"
+   ],
+   "supports": [
+    "T_REPAIR_STATE_WALK"
+   ],
+   "pair_rules": {
+    "sc_ruin_holds_wrecks": "R1 full round",
+    "sc_rare_wreck_ordinary_map": "R1 full round",
+    "T_REPAIR_STATE_WALK": "R8 meeting machine_level"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": []
+  },
+  {
+   "id": "wreck_comes_home",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_carry_wreck_home",
+    "sc_caravan_wreck_home"
+   ],
+   "supports": [
+    "T_REPAIR_STATE_WALK",
+    "sc_uninstall_during_repair",
+    "sc_repair_needs_ground"
+   ],
+   "pair_rules": {
+    "sc_carry_wreck_home": "R1 full round",
+    "sc_caravan_wreck_home": "R1 delta round",
+    "T_REPAIR_STATE_WALK": "R8 meeting machine_level",
+    "sc_uninstall_during_repair": "R8 interaction",
+    "sc_repair_needs_ground": "R8 interaction"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": []
+  },
+  {
+   "id": "study_opens_research",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_study_opens_first_project",
+    "sc_second_study",
+    "sc_whole_second_order",
+    "sc_study_without_research_reinvented",
+    "sc_every_machine_onboarded",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "supports": [
+    "T_REPAIR_STATE_WALK"
+   ],
+   "pair_rules": {
+    "sc_study_opens_first_project": "R1 full round",
+    "sc_second_study": "R1 full round",
+    "sc_whole_second_order": "R1 full round",
+    "sc_study_without_research_reinvented": "R1 delta round",
+    "sc_every_machine_onboarded": "R1 delta round",
+    "T_ONBOARDED_SET": "R5",
+    "T_ONBOARDING_COMPLETE": "R5",
+    "T_REPAIR_STATE_WALK": "R8 meeting machine_level"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_study_without_research_reinvented",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ]
+  },
+  {
+   "id": "repair_on_the_machine",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_repair_on_machine",
+    "sc_repair_cancelled",
+    "sc_repair_needs_ground",
+    "sc_component_gate",
+    "sc_every_machine_onboarded",
+    "sc_cannery_tier",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "supports": [
+    "T_REPAIR_STATE_WALK",
+    "sc_uninstall_during_repair"
+   ],
+   "pair_rules": {
+    "sc_repair_on_machine": "R1 full round",
+    "sc_repair_cancelled": "R1 full round",
+    "sc_repair_needs_ground": "R1 full round",
+    "sc_component_gate": "R1 delta round",
+    "sc_every_machine_onboarded": "R1 delta round",
+    "sc_cannery_tier": "R2",
+    "T_ONBOARDED_SET": "R5",
+    "T_ONBOARDING_COMPLETE": "R5",
+    "T_REPAIR_STATE_WALK": "R8 meeting machine_level",
+    "sc_uninstall_during_repair": "R8 interaction"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_cannery_tier",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ]
+  },
+  {
+   "id": "levels_of_function",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_levels_do_their_work",
+    "sc_forge_plasteel",
+    "sc_cell_and_emanator",
+    "sc_levels_under_settings",
+    "sc_every_machine_onboarded",
+    "sc_cannery_tier",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "supports": [
+    "T_LEVEL_NUMBERS",
+    "T_REPAIR_STATE_WALK",
+    "T_ONBOARDING_TABLE_OFFLINE",
+    "T_KERNEL_FUZZ"
+   ],
+   "pair_rules": {
+    "sc_levels_do_their_work": "R1 full round",
+    "sc_forge_plasteel": "R1 full round",
+    "sc_cell_and_emanator": "R1 full round",
+    "sc_levels_under_settings": "R1 full round",
+    "sc_every_machine_onboarded": "R1 delta round",
+    "sc_cannery_tier": "R1 delta round",
+    "T_ONBOARDED_SET": "R5",
+    "T_ONBOARDING_COMPLETE": "R5",
+    "T_LEVEL_NUMBERS": "R8 leaf text",
+    "T_REPAIR_STATE_WALK": "R8 meeting machine_level",
+    "T_ONBOARDING_TABLE_OFFLINE": "R8 meeting onboarding_table",
+    "T_KERNEL_FUZZ": "R10 steward: the check reads 'the ratios stay ordered Wrecked, Kludged, Refurbished and below the Original'; the leaf says 'no repaired machine does it as well as the Original'"
+   },
+   "held": [],
+   "offline_decides": [
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_cannery_tier",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ]
+  },
+  {
+   "id": "last_repair_needs_component",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_component_gate",
+    "sc_ruin_holds_wrecks",
+    "sc_no_handouts"
+   ],
+   "supports": [],
+   "pair_rules": {
+    "sc_component_gate": "R1 full round",
+    "sc_ruin_holds_wrecks": "R1 full round",
+    "sc_no_handouts": "R1 full round"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": []
+  },
+  {
+   "id": "levels_told_apart",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_three_looks_rows",
+    "sc_marks_agree",
+    "sc_text_names_no_setting",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "supports": [
+    "T_REPAIR_STATE_WALK",
+    "LOOK_STAGE8"
+   ],
+   "pair_rules": {
+    "sc_three_looks_rows": "R1 full round",
+    "sc_marks_agree": "R1 full round",
+    "sc_text_names_no_setting": "R1 full round",
+    "T_ONBOARDED_SET": "R5",
+    "T_ONBOARDING_COMPLETE": "R5",
+    "T_REPAIR_STATE_WALK": "R8 meeting machine_level",
+    "LOOK_STAGE8": "R9"
+   },
+   "held": [],
+   "offline_decides": [
+    "sc_text_names_no_setting",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": [
+    "sc_text_names_no_setting",
+    "T_ONBOARDED_SET",
+    "T_ONBOARDING_COMPLETE"
+   ]
+  },
+  {
+   "id": "switch_gives_machine_back",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_switch_machine_off",
+    "sc_all_switches_off",
+    "sc_forge_plasteel"
+   ],
+   "supports": [
+    "T_LEVEL_NUMBERS"
+   ],
+   "pair_rules": {
+    "sc_switch_machine_off": "R1 full round",
+    "sc_all_switches_off": "R1 full round",
+    "sc_forge_plasteel": "R1 full round",
+    "T_LEVEL_NUMBERS": "R8 leaf text"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": []
+  },
+  {
+   "id": "no_setting_named",
+   "source": "tree.json",
+   "kind": "offline",
+   "proves_at": "4-5",
+   "decides": [
+    "sc_text_names_no_setting"
+   ],
+   "supports": [
+    "T_NEIGHBOUR_NAMES"
+   ],
+   "pair_rules": {
+    "sc_text_names_no_setting": "R1 full round",
+    "T_NEIGHBOUR_NAMES": "R8 leaf text"
+   },
+   "held": [],
+   "offline_decides": [
+    "sc_text_names_no_setting"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_decider_runnable_today": false,
+   "any_test_runnable_today": false,
+   "not_runnable_today": [
+    "sc_text_names_no_setting"
+   ]
+  },
+  {
+   "id": "wrecks_join_lines",
+   "source": "tree.json",
+   "kind": "offline",
+   "proves_at": "4-5",
+   "decides": [
+    "sc_wreck_link_tags"
+   ],
+   "supports": [],
+   "pair_rules": {
+    "sc_wreck_link_tags": "R1 full round"
+   },
+   "held": [],
+   "offline_decides": [
+    "sc_wreck_link_tags"
+   ],
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": []
+  },
+  {
+   "id": "whole_journey",
+   "source": "tree.json",
+   "kind": "live",
+   "proves_at": "6",
+   "decides": [
+    "sc_whole_journey",
+    "sc_whole_second_order"
+   ],
+   "supports": [
+    "T_REPAIR_STATE_WALK",
+    "LOOK_STAGE8"
+   ],
+   "pair_rules": {
+    "sc_whole_journey": "R1 full round",
+    "sc_whole_second_order": "R1 full round",
+    "T_REPAIR_STATE_WALK": "R8 meeting machine_level",
+    "LOOK_STAGE8": "R9"
+   },
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "not_runnable_today": []
+  }
+ ]
+}

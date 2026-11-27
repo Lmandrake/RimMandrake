@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "WreckedMachines",
   "version": "0.1.0",
-  "stage": "preflight",
-  "stage_label": "Preflight (Stage 2)",
-  "since": "2026-11-27T04:54:02-08:00",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-27T05:35:44-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -57,6 +57,27 @@
         "version",
         "hold",
         "locked"
+      ]
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-27T05:35:44-08:00",
+      "by": "BENCH",
+      "why": "Preflight (Stage 2) ran: version/preflight.json reads refuse with 3 refusals, each of them build work on a sound bar, none a fault of the spec; the test table holds the 30 locked bars; steward run on RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
+      "unit": "rm-detached-bench-rimmandrake-steward-wreckedmachines-pref-1795784228",
+      "item": "RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
+      "confirmed": {
+        "steward_confirms": "read: version/preflight.json (program pilot_throwaway/preflight_wreckedmachines.py, 19 checks, 17 pass, verdict refuse, 3 refusals) and version/test_table.json (30 locked bars, 48 tests, 15 bars runnable today). Each remaining refusal is unbuilt behaviour or an unbuilt check part, not a spec fault: (1) C6 sc_text_names_no_setting is red today because the built mod's texts still hold the setting's words, an unbuilt behaviour that plan.md gives to the build ('The setting words leave every text'); (2) and (3) C10b the tiers of sc_study_without_research_reinvented and sc_cannery_tier are not defined in modset_builder.TIERS, an unbuilt part of two checks whose scene entries are written. Ten more tests are specified and not built (stage3_build_list), which the spec counts as Stage 3 work. The 13 checks of real files, defs, mods, bridge tools, items, pins, stages, kinds and held statements pass; the preflight refused 29 of 29 planted faults. Verdict: the Stage 2 exit is met for the spec; the refusals go to the offline build",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Preflight (Stage 2) ran: version/preflight.json reads refuse with 3 refusals, each of them build work on a sound bar, none a fault of the spec; the test table holds the 30 locked bars; steward run on RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record",
+        "steward_confirms"
       ]
     }
   ],

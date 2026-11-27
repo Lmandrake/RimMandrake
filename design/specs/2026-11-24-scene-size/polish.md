@@ -1,1 +1,3 @@
 # polish: the scene size check
+
+- `src/RimMandrake/rimflow/scene_size.py` (`span_ticks`, and the finding text "plays N game days"): a wait loop that ends early with `break` is counted at its full count. So the text says "plays 12.0 game days" of a scene whose waits are ceilings (WreckedMachines `scene_study_opens_first_project`, 2026-11-27: two loops of 24 waits, each with a `break` at the reading). For an entry whose waits sit in a loop with a `break`, say "may play up to N game days". risk: a reader takes the ceiling for the measured play, and shrinks or refuses a scene that plays a quarter of a day.
