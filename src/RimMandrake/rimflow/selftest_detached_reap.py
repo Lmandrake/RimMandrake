@@ -200,7 +200,8 @@ def t_a_reused_det_clone_takes_the_seat_identity():
 def main():
     try:
         for t in (t_a_leftover_child_is_ended_and_the_clone_returned, t_an_unmarked_process_in_the_clone_keeps_it,
-                  t_another_units_marker_is_not_this_runs, t_a_blind_scan_kills_nothing, t_a_child_of_another_users_process_does_not_blind_the_scan,
+                  t_another_units_marker_is_not_this_runs, t_a_blind_scan_kills_nothing,
+                  t_a_child_of_another_users_process_does_not_blind_the_scan,
                   t_a_reused_det_clone_takes_the_seat_identity, t_role_launch_scan_rules_out_zombies):
             try:
                 t()
