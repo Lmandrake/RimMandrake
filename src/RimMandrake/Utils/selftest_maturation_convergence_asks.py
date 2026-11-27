@@ -38,16 +38,18 @@ def rnd(judge, gaps, tags):
 RISING = {"coverage_rounds": [rnd("j1", 3, {"first": 3}), rnd("j2", 5, {"unfixed": 2, "late": 3}),
                               rnd("j3", 8, {"unfixed": 4, "changed": 4})]}
 FALLING = {"coverage_rounds": [rnd("j1", 6, {"first": 6}), rnd("j2", 2, {"unfixed": 2})]}
+LEVEL = {"coverage_rounds": [rnd("j1", 4, {"first": 4}), rnd("j2", 4, {"unfixed": 4})]}
 HOLD = os.path.join("src", "RimMandrake", "rimflow", "mod_owner_hold.json")
 
 
 def tree(mods=("Free", "Held", "Passed"), hold=None, record=None):
-    """A temp root: each named mod diverges at Stage 3; Calm converges. hold / record: the hold file's and Passed's
+    """A temp root: each named mod diverges at Stage 3; Calm converges; Still is FLAT. hold / record: the hold file's and Passed's
     stage_record.json text or data (None: not written)."""
     root = tempfile.mkdtemp(prefix="maturation_convergence_asks_")
     for m in mods:
         w(root, os.path.join(MC.CONCEPTS, m, "stage.json"), RISING)
     w(root, os.path.join(MC.CONCEPTS, "Calm", "stage.json"), FALLING)
+    w(root, os.path.join(MC.CONCEPTS, "Still", "stage.json"), LEVEL)
     if hold is not None:
         w(root, HOLD, hold)
     if record is not None:
@@ -62,7 +64,11 @@ def lines_by_mod(root):
 def t_a_diverging_stage_asks_the_conductor():
     root = tree(mods=("Free",))
     try:
-        lines = MC.needs_lines(MC.read_all(root))
+        d = MC.read_all(root)
+        lines = MC.needs_lines(d)
+        check("a-diverging-stage-asks-the-conductor: the fixture holds a CONVERGING, a FLAT and an UNMEASURED stage",
+              d["mods"]["Calm"]["3"]["verdict"] == MC.CONV and d["mods"]["Still"]["3"]["verdict"] == MC.FLAT
+              and d["mods"]["Free"]["6"]["verdict"] == MC.UNM, {m: d["mods"][m]["3"]["verdict"] for m in d["mods"]})
         check("a-diverging-stage-asks-the-conductor: one line, for Free's Stage 3 only",
               len(lines) == 1 and lines[0].startswith("Free Stage 3 (Offline build) DIVERGING"), lines)
         check("a-diverging-stage-asks-the-conductor: the line carries open and new by round",
