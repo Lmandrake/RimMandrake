@@ -92,6 +92,8 @@ def t_the_check_holds_on_a_review_record():
     assert f.holds(SHA, [PATH], dirty, lambda rel: rel == PATH) == 0, "a FLAGGED file holds though check --record reads DIRTY"
     assert f.holds(SHA, [PATH], dirty, unreadable) == 2, "flags that cannot be read on a DIRTY file: could not look"
     assert f.holds(SHA, [PATH], ok, unreadable) == 0, "a READ-CLEAN record holds without the flags"
+    crash = lambda argv: types.SimpleNamespace(returncode=1, stdout="")
+    assert f.holds(SHA, [PATH], crash, none) == 2, "a check that printed nothing (rc 1, a crash) is could not look"
     # the real flag reader, on a moved root: a flag counts only on the bytes it was made on
     import code_review_status as CRS
     old_root = CRS.ROOT

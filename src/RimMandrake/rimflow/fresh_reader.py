@@ -67,7 +67,7 @@ def parse_title(t):
 
 
 def pages(paths, runner=None):
-    """-> {path: (page or None, tests or None)} from code_review_status.page_states."""
+    """-> {path: (page or None, tests or None, state)} from code_review_status.page_states."""
     try:
         import code_review_status as CR
         states = CR.page_states(paths) if runner is None else runner(paths)
@@ -158,7 +158,7 @@ def holds(sha, paths, runner=None, flagged=None):
             worst = 2
             continue
         print(out or "could not look: %s printed nothing (rc %s)" % (p, r.returncode))
-        worst = max(worst, 1 if out.startswith(("DIRTY", "STALE", "OPEN")) or r.returncode == 1 else 2)
+        worst = max(worst, 1 if out.startswith(("DIRTY", "STALE", "OPEN")) or (r.returncode == 1 and out) else 2)
     return worst
 
 
