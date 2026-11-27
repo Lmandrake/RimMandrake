@@ -1539,6 +1539,12 @@ def _git_show(root, commit, path):
         return None
 
 
+def _git_has_commit(root, commit):
+    r = subprocess.run(["git", "-C", root, "cat-file", "-e", "%s^{commit}" % commit], capture_output=True, text=True,
+                       timeout=1800)  # budget: class=call
+    return r.returncode == 0
+
+
 LOCK_PINNED = ("tree.json", "sheet.md", "scenes.json", "floor.json", "exam.json", "record.json", "plan.md", "stage.json",
                "coverage_verdict.json")
 
@@ -1598,6 +1604,7 @@ def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None, blo
     event, OWNER:<tsn>, or the Conductor window's act under the five-acts ruling (owner 2026-11-19; a removal names
     lost: and undo:); an agent never changes a bar on its own word. -> {"ok", "why", "ids"}."""
     import concept_tree as CT
+    from_git = show is None     # a test's show reads no clone, so no clone says whether its commit exists
     show = show or (lambda c, p: _git_show(root, c, p))
     v, verr = read_json(root, mod, "version/VERSION.json")
     if not isinstance(v, dict):
@@ -1630,6 +1637,12 @@ def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None, blo
             return {"ok": False, "why": "VERSION.json has no locked_from_commit to derive the locked bars from"}
         rec, tree = show(c, rel(mod, "record.json")), show(c, rel(mod, "tree.json"))
         if not isinstance(tree, dict):
+            if from_git and not _git_has_commit(root, c):
+                # another cause than a commit with no tree.json, so another answer (2026-11-27: the tick had stamped
+                # a HEAD that never landed, and each helper clone read "tree.json at ... cannot be read")
+                return {"ok": False, "why": "VERSION.json locked_from_commit %s is not a commit in this clone: the lock "
+                        "named a commit that never reached origin/main. Set locked_from_commit to the commit of "
+                        "origin/main that holds the same locked files, with a journal line" % c}
             return {"ok": False, "why": "tree.json at %s cannot be read" % c}
         rows = ((rec or {}).get("inventory") or [] if isinstance(rec, dict) else []) + (tree.get("leaves") or [])
         ids = list(dict.fromkeys(x["id"] for x in rows if isinstance(x, dict) and isinstance(x.get("id"), str)))

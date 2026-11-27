@@ -769,6 +769,35 @@ def _measure(fn):
         return UNM
 
 
+def landed_lock_commit(root, mod, upstream="origin/main"):
+    """RIMMANDRAKE_STAMP_LOCK_COMMIT_ON_MAIN_DISPATCH_HEAD_NEVER_LANDED: the commit that a lock names is one that every
+    clone can read (design/specs/2026-11-27-lock-commit-is-landed/boundary.md). HEAD when origin/main holds it. When
+    HEAD holds commits that origin/main lacks (a ledger commit that the next landing replays under another sha), the
+    landed commit under them, and only if each locked file is the same there as at HEAD. A locked file that differs
+    raises: that lock would name bars that no other clone can read. -> a sha, or UNMEASURED outside a git clone."""
+    def git(*a):
+        p = subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True, timeout=1800)  # budget: class=call
+        return p.stdout.strip() if p.returncode == 0 and p.stdout.strip() else None
+    head = git("rev-parse", "--verify", "-q", "HEAD^{commit}")
+    if not head:
+        return UNM
+    if not git("rev-parse", "--verify", "-q", upstream + "^{commit}"):
+        return head     # a clone with no such ref (a test's bare tree): nothing says that HEAD is not landed
+    base = git("merge-base", head, upstream)
+    if base == head:
+        return head
+    if not base:
+        raise RuntimeError("the lock of %s: HEAD %s and %s share no commit, so no landed lock commit can be named"
+                           % (mod, head[:10], upstream))
+    differ = [f for f in M.LOCK_PINNED
+              if M._git_blob(root, base, M.rel(mod, f)) != M._git_blob(root, head, M.rel(mod, f))]
+    if differ:
+        raise RuntimeError("the lock of %s: %s differ(s) between HEAD %s and %s, the last commit of this clone that %s "
+                           "holds. Land the mod's concept files first; the lock then names a commit that every clone "
+                           "can read" % (mod, ", ".join(differ), head[:10], base[:10], upstream))
+    return base
+
+
 def autolock_and_land(root, mod, now=None, land=None):
     """Lock a new mod's Design Version at 0.1.0 as the pipeline (his Evidence-for-Ask ruling), write the delegated
     record his daily digest reads, and land both in one landing. -> the landing's last line (PUBLISHED <sha>).
@@ -780,7 +809,7 @@ def autolock_and_land(root, mod, now=None, land=None):
     stj = stj if isinstance(stj, dict) else {}
     tree, _ = M.read_json(root, mod, "tree.json")
     spent = (stj.get("budget") or {}).get("spent")
-    p = subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=60)
+    commit = landed_lock_commit(root, mod)      # raises before anything is written
     day = time.strftime("%Y-%m-%d", time.localtime(now))
     why = ("the concept tree is locked and no recorded evidence says 0.1.0 is wrong: a new mod's first Design Version "
            "is 0.1.0 (his Evidence-for-Ask ruling, 2026-11-15)")
@@ -790,7 +819,7 @@ def autolock_and_land(root, mod, now=None, land=None):
          "bars_met": UNM,
          "judge_rounds": _measure(lambda: len(CJ.rounds(stj, d))),
          "tokens_spent": spent if isinstance(spent, int) else UNM,
-         "locked_from_commit": p.stdout.strip() if p.returncode == 0 and p.stdout.strip() else UNM,
+         "locked_from_commit": commit,
          "measured_from": {"bars_total": "coverage_judge.required_ids(record.json inventory + tree.json leaves)",
                            "judge_rounds": "coverage_judge.rounds(stage.json)", "tokens_spent": "stage.json budget.spent",
                            "bars_met": "not measured at the lock: the preflight and judges measure it"},
