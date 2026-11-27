@@ -28,11 +28,13 @@ PARTS = {
     "bridge_Futuristic_B": ("Futuristic_B", "magenta"),
     "heavy_bridge_A": ("heavy_jetty_A", "black"),
     "heavy_bridge_B": ("heavy_jetty_A", "black"),    # judge: steel towers hid the cement -> the concrete pylons
+    "heavy_bridge_Scrapper_B": ("Scrapper_C", "chain"),     # his Scrapper pick's tower and chain on heavy B's geometry
 }
 # judge repairs (GPT judge, 2026-11-22): steel C's A-frame cables crossed the walkway north/south -> twin lattice masts;
 # heavy B's portal crossbeam read as a gate over the walkway -> twin box columns, no beam
 GEOM_FIX = {"steel_jetty_C": dict(posts="twin", post_out=0.1), "heavy_jetty_B": dict(posts="twin"),
-            "bridge_Futuristic_B": dict(posts="twin", post_inset=0.16), "heavy_bridge_B": dict(posts="twin")}
+            "bridge_Futuristic_B": dict(posts="twin", post_inset=0.16), "heavy_bridge_B": dict(posts="twin"),
+            "heavy_bridge_Scrapper_B": dict(posts="twin")}
 # the four looks of the steel bridge share one silhouette in the geometry options, so at default zoom they differed only by
 # deck surface (GPT four-look judge, 2026-11-22: FAIL; Industrial C ~ Modern A, Industrial A ~ Modern B). Each look gets its
 # own structure: Scrapper low and slack, Industrial massive and heavy-cabled, Modern slim and sparse, Futuristic tall and taut.

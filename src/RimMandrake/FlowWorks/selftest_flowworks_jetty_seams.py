@@ -25,6 +25,11 @@ For each jetty tier (steel, heavy) in each of the four looks, the ThingStyleDef 
    wrap mode RM_DeckArt.cs sets on its piece materials, four sub-pixel phases, alpha cut at 0.5 as the Cutout shader
    does) at several zooms, and scores every join with the same seam statistic.
 
+7. RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: every BRIDGE style in BRIDGES (the Scrapper heavy
+   bridge, generated in his picks' manner by gen_tiles.py, its pieces pinned byte for byte by
+   selftest_flowworks_deck_strips.py) is read by checks 1-4 and 6 the same way; checks 5 and 7's derivation have no case
+   (its pieces are cut from one generated strip, not derived by seam_strips.py).
+
 Can-fail: --canfail plants a framed piece (the shipped east picture) as one jetty's MID, and Steel Scrapper's pieces made with
 a hard wrap cut (the 2026-11-25 defect), both in memory, and samples every piece with Unity's default Repeat wrap (the
 2026-11-26 hairline); it must FAIL on all three, each by its own check.
@@ -45,6 +50,8 @@ STYLES = os.path.join(HERE, "Defs", "Pits", "ThingDefs", "RM_SuspensionStyles.xm
 EXT = "RimMandrake.FlowWorks.Pits.RM_DeckArtExtension"
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 TIERS = ("Steel", "Heavy")
+# bridge styles drawn as root/mid/tip/solo pieces whose look had no generated pick (doc item 7)
+BRIDGES = ("RM_SuspensionDeck_Heavy_Scrapper",)
 PIECES = ("root", "mid", "tip", "solo")
 
 sys.path.insert(0, GEN)
@@ -174,85 +181,84 @@ def check(canfail=False):
     root = ET.parse(STYLES).getroot()
     styles = {sd.findtext("defName"): sd for sd in root.findall("ThingStyleDef")}
     cases = 0
-    for tier in TIERS:
-        for look in LOOKS:
-            name = "RM_SuspensionJetty_%s_%s" % (tier, look)
-            sd = styles.get(name)
-            if sd is None:
-                fails.append("%s: no such ThingStyleDef" % name)
+    names = ["RM_SuspensionJetty_%s_%s" % (tier, look) for tier in TIERS for look in LOOKS] + list(BRIDGES)
+    for name in names:
+        sd = styles.get(name)
+        if sd is None:
+            fails.append("%s: no such ThingStyleDef" % name)
+            continue
+        li = [e for e in sd.findall("modExtensions/li") if e.get("Class") == EXT]
+        if not li:
+            fails.append("%s: no RM_DeckArtExtension, so it draws its framed picture once per square (two blocks)" % name)
+            continue
+        e = li[0]
+        for k in ("strip", "post", "cable"):
+            if not e.findtext(k):
+                fails.append("%s: no %s" % (name, k))
+        if not e.findtext("strip"):
+            continue
+        tl = {}
+        for p in PIECES:
+            f = tex(e.findtext("strip") + "_" + p)
+            if not os.path.exists(f):
+                fails.append("%s: piece not installed: %s" % (name, os.path.relpath(f, HERE)))
                 continue
-            li = [e for e in sd.findall("modExtensions/li") if e.get("Class") == EXT]
-            if not li:
-                fails.append("%s: no RM_DeckArtExtension, so it draws its framed picture once per square (two blocks)" % name)
-                continue
-            e = li[0]
-            for k in ("strip", "post", "cable"):
-                if not e.findtext(k):
-                    fails.append("%s: no %s" % (name, k))
-            if not e.findtext("strip"):
-                continue
-            tl = {}
+            tl[p] = GT.load(f)
+        for k in ("post", "cable"):
+            if e.findtext(k) and not os.path.exists(tex(e.findtext(k))):
+                fails.append("%s: %s not installed: %s" % (name, k, e.findtext(k)))
+        if len(tl) < 4:
+            continue
+        if canfail and name == "RM_SuspensionJetty_Heavy_Scrapper":
+            tl["mid"] = GT.load(os.path.join(TEX, "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_east.png"))
+        for p, a in tl.items():
+            if a.shape != (GT.T, GT.T, 4):
+                fails.append("%s %s: canvas %s" % (name, p, a.shape))
+        if any(a.shape != (GT.T, GT.T, 4) for a in tl.values()):
+            continue
+        for p, edges in (("mid", (0, GT.T - 1)), ("root", (GT.T - 1,)), ("tip", (0,))):
+            band = tl[p][int(GT.T * 0.2):int(GT.T * 0.8), :, 3]
+            typical = np.percentile(band.mean(0), 10)
+            for x in edges:
+                if band[:, x].mean() < 0.85 * typical:
+                    fails.append("%s %s: the deck does not run to column %d, where it meets the next piece" % (name, p, x))
+        seqs = {1: ["solo"], 2: ["root", "tip"], 3: ["root", "mid", "tip"], 4: ["root", "mid", "mid", "tip"]}
+        for n, seq in seqs.items():
+            ew = GT.compose([tl[p] for p in seq])
+            for way, strip in (("EW", ew), ("NS", np.rot90(np.rot90(ew, 1), -1))):
+                for r in GT.seam_ratios(strip, n):
+                    cases += 1
+                    worst = max(worst, r)
+                    if r > GT.SEAM_MAX:
+                        fails.append("%s: %d squares %s seam ratio %s > %.2f" % (name, n, way, r, GT.SEAM_MAX))
+        for a, b in (("root", "tip"), ("root", "mid"), ("mid", "mid"), ("mid", "tip")):
+            for w in GPU_WIDTHS:
+                r = gpu_join_ratio(tl[a], tl[b], wrap, w)
+                cases += 1
+                worst = max(worst, r)
+                if r > GT.SEAM_MAX:
+                    fails.append("%s: the %s|%s join as the GPU draws it at %d px a cell (%s wrap) scores %s > %.2f" % (
+                        name, a, b, w, wrap, round(r, 2), GT.SEAM_MAX))
+        if name in SS.SOURCES:
+            # (his generated picks' deckWidth is their generation geometry, pinned by selftest_flowworks_deck_strips.py;
+            # an open grating's holes make its opaque-row count read narrower than its deck)
+            rows = np.where(tl["mid"][..., 3].mean(1) > 0.5 * 255)[0]
+            dw = float(e.findtext("deckWidth") or "nan")
+            if not abs(dw - len(rows) / float(GT.T)) <= 0.02:
+                fails.append("%s: deckWidth %s, the painted deck is %.2f of a cell" % (name, dw, len(rows) / float(GT.T)))
+            wl = hard_wrap_pieces(name) if canfail and name == "RM_SuspensionJetty_Steel_Scrapper" else tl
+            four = GT.compose([wl["root"], wl["mid"], wl["mid"], wl["tip"]])
+            for r in wrap_ratios(four, [k * GT.T + GT.T // 2 - 1 for k in range(4)]):
+                cases += 1
+                worst = max(worst, r)
+                if r > GT.SEAM_MAX:
+                    fails.append("%s: the body's wrap inside a piece scores %.2f > %.2f (a seam at mid-square)" % (
+                        name, r, GT.SEAM_MAX))
+            made = SS.pieces_for(name)
             for p in PIECES:
-                f = tex(e.findtext("strip") + "_" + p)
-                if not os.path.exists(f):
-                    fails.append("%s: piece not installed: %s" % (name, os.path.relpath(f, HERE)))
-                    continue
-                tl[p] = GT.load(f)
-            for k in ("post", "cable"):
-                if e.findtext(k) and not os.path.exists(tex(e.findtext(k))):
-                    fails.append("%s: %s not installed: %s" % (name, k, e.findtext(k)))
-            if len(tl) < 4:
-                continue
-            if canfail and name == "RM_SuspensionJetty_Heavy_Scrapper":
-                tl["mid"] = GT.load(os.path.join(TEX, "RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionJetty_east.png"))
-            for p, a in tl.items():
-                if a.shape != (GT.T, GT.T, 4):
-                    fails.append("%s %s: canvas %s" % (name, p, a.shape))
-            if any(a.shape != (GT.T, GT.T, 4) for a in tl.values()):
-                continue
-            for p, edges in (("mid", (0, GT.T - 1)), ("root", (GT.T - 1,)), ("tip", (0,))):
-                band = tl[p][int(GT.T * 0.2):int(GT.T * 0.8), :, 3]
-                typical = np.percentile(band.mean(0), 10)
-                for x in edges:
-                    if band[:, x].mean() < 0.85 * typical:
-                        fails.append("%s %s: the deck does not run to column %d, where it meets the next piece" % (name, p, x))
-            seqs = {1: ["solo"], 2: ["root", "tip"], 3: ["root", "mid", "tip"], 4: ["root", "mid", "mid", "tip"]}
-            for n, seq in seqs.items():
-                ew = GT.compose([tl[p] for p in seq])
-                for way, strip in (("EW", ew), ("NS", np.rot90(np.rot90(ew, 1), -1))):
-                    for r in GT.seam_ratios(strip, n):
-                        cases += 1
-                        worst = max(worst, r)
-                        if r > GT.SEAM_MAX:
-                            fails.append("%s: %d squares %s seam ratio %s > %.2f" % (name, n, way, r, GT.SEAM_MAX))
-            for a, b in (("root", "tip"), ("root", "mid"), ("mid", "mid"), ("mid", "tip")):
-                for w in GPU_WIDTHS:
-                    r = gpu_join_ratio(tl[a], tl[b], wrap, w)
-                    cases += 1
-                    worst = max(worst, r)
-                    if r > GT.SEAM_MAX:
-                        fails.append("%s: the %s|%s join as the GPU draws it at %d px a cell (%s wrap) scores %s > %.2f" % (
-                            name, a, b, w, wrap, round(r, 2), GT.SEAM_MAX))
-            if name in SS.SOURCES:
-                # (his generated picks' deckWidth is their generation geometry, pinned by selftest_flowworks_deck_strips.py;
-                # an open grating's holes make its opaque-row count read narrower than its deck)
-                rows = np.where(tl["mid"][..., 3].mean(1) > 0.5 * 255)[0]
-                dw = float(e.findtext("deckWidth") or "nan")
-                if not abs(dw - len(rows) / float(GT.T)) <= 0.02:
-                    fails.append("%s: deckWidth %s, the painted deck is %.2f of a cell" % (name, dw, len(rows) / float(GT.T)))
-                wl = hard_wrap_pieces(name) if canfail and name == "RM_SuspensionJetty_Steel_Scrapper" else tl
-                four = GT.compose([wl["root"], wl["mid"], wl["mid"], wl["tip"]])
-                for r in wrap_ratios(four, [k * GT.T + GT.T // 2 - 1 for k in range(4)]):
-                    cases += 1
-                    worst = max(worst, r)
-                    if r > GT.SEAM_MAX:
-                        fails.append("%s: the body's wrap inside a piece scores %.2f > %.2f (a seam at mid-square)" % (
-                            name, r, GT.SEAM_MAX))
-                made = SS.pieces_for(name)
-                for p in PIECES:
-                    d = np.abs(np.round(made[p]).clip(0, 255) - tl[p]).max()
-                    if d > 1.0:
-                        fails.append("%s %s: differs from seam_strips.py's piece by %.0f" % (name, p, d))
+                d = np.abs(np.round(made[p]).clip(0, 255) - tl[p]).max()
+                if d > 1.0:
+                    fails.append("%s %s: differs from seam_strips.py's piece by %.0f" % (name, p, d))
     return fails, worst, cases
 
 
@@ -261,8 +267,8 @@ def main():
     fails, worst, cases = check(canfail)
     for f in fails:
         print("FAIL", f)
-    print("read %d piece joints, wraps and GPU-drawn joins over 8 jetty looks (piece wrap mode: %s); worst seam ratio %s, limit %.2f"
-          % (cases, "repeat (planted)" if canfail else shipped_wrap(), round(worst, 2), GT.SEAM_MAX))
+    print("read %d piece joints, wraps and GPU-drawn joins over %d jetty and bridge looks (piece wrap mode: %s); worst seam ratio %s, limit %.2f"
+          % (cases, 8 + len(BRIDGES), "repeat (planted)" if canfail else shipped_wrap(), round(worst, 2), GT.SEAM_MAX))
     if canfail:
         both = (any("seam ratio inf" in f or "seam ratio" in f for f in fails) and any("wrap inside a piece" in f for f in fails)
                 and any("as the GPU draws it" in f for f in fails))

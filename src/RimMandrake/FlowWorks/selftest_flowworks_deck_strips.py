@@ -7,6 +7,10 @@ are what the game draws.
    stand where his picture had them. The jetty looks he did not have generated carry their own look's picture re-cut into
    a strip (art_source/JettyBridgeRedesign/seam_strips.py, checked by selftest_flowworks_jetty_seams.py); no other style
    carries the extension, and none of those strips is one of his picked strips.
+   RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: a bridge look he had no pick for is generated in his
+   picks' manner (MANNER: his heavy B pick repainted in his Scrapper C pick's materials, gen_prompts EDIT_REFS) and held to
+   the same two rules: its pieces equal the generated tiles byte for byte, and its numbers equal the geometry it was
+   generated on; it borrows its look's picked post and cable, so those paths are named per entry.
 3. The C# piece chooser, strip turn, cable sag, hanger places and jetty cable targets (RM_DeckArt.cs RM_DeckArtMath) agree
    with this file's mirror on every length 1..8 and every direction.
 
@@ -40,7 +44,20 @@ PICKS = {
     "RM_SuspensionDeck_Steel_Modern": ("bridge_Modern_A", "Modern", "RM_SuspensionDeck_Steel", "Galv"),
     "RM_SuspensionDeck_Steel_Futuristic": ("bridge_Futuristic_A", "Futuristic", "RM_SuspensionDeck_Steel", "Cyan"),
 }
+# style defName -> (generated key, look folder, strip base name, post path under R, cable file): styles generated in the
+# manner of his picks for looks he had no pick for (doc item 2)
+MANNER = {
+    "RM_SuspensionDeck_Heavy_Scrapper": ("heavy_bridge_Scrapper_B", "Scrapper", "RM_SuspensionDeck_Heavy",
+                                         "Scrapper/RM_SuspensionDeck_Steel_Post", "Chain"),
+}
 PIECES = ("root", "mid", "tip", "solo")
+
+
+def drawn():
+    """Every style that must draw generated art: style -> (key, look, strip base, post path under R, cable file)."""
+    out = {st: (key, look, base, look + "/" + base + "_Post", cab) for st, (key, look, base, cab) in PICKS.items()}
+    out.update(MANNER)
+    return out
 
 
 def sha(p):
@@ -98,11 +115,11 @@ def check(canfail=False):
     fails = []
     # 1. bytes
     first = True
-    for style, (key, look, base, cab) in PICKS.items():
+    for style, (key, look, base, post_path, cab) in drawn().items():
         post, cable, _ = want_ext(key)
         pairs = [(os.path.join(TEX, R, look, "%s_Strip_%s.png" % (base, p)),
                   os.path.join(GEN, "generated", "tiles", "%s_%s.png" % (key, p))) for p in PIECES]
-        pairs.append((os.path.join(TEX, R, look, base + "_Post.png"), os.path.join(GEN, "generated", "posts", post + ".png")))
+        pairs.append((os.path.join(TEX, R, post_path + ".png"), os.path.join(GEN, "generated", "posts", post + ".png")))
         pairs.append((os.path.join(TEX, R, "Cables", "RM_Cable_%s.png" % cab), os.path.join(GEN, "generated", "cables", cable + ".png")))
         for inst, src in pairs:
             if not os.path.exists(inst):
@@ -126,19 +143,19 @@ def check(canfail=False):
     # RIMMANDRAKE_REDRAW_TIMBER_BRIDGE_FROM_HIS_THREE_PHOTOS: the timber looks carry their own beam-bridge art
     # (art_source/TimberBridge, selftest_flowworks_timber_bridge.py), never one of his picked strips
     timber = {"RM_SuspensionDeck_Timber_" + lk for lk in ("Scrapper", "Industrial", "Modern", "Futuristic")}
-    extra = sorted(set(carrying) - set(PICKS) - set(SS.SOURCES) - timber)
-    picked = {R + look + "/" + base + "_Strip" for (_, look, base, _) in PICKS.values()}
+    extra = sorted(set(carrying) - set(drawn()) - set(SS.SOURCES) - timber)
+    picked = {R + look + "/" + base + "_Strip" for (_, look, base, _, _) in drawn().values()}
     for style in sorted(set(carrying) & (set(SS.SOURCES) | timber)):
         if carrying[style].findtext("strip") in picked:
             fails.append("%s (a derived jetty look) draws one of his picked strips: %s" % (style, carrying[style].findtext("strip")))
     if extra:
         fails.append("styles he did not pick carry the picked art: %s" % extra)
-    for style, (key, look, base, cab) in PICKS.items():
+    for style, (key, look, base, post_path, cab) in drawn().items():
         e = carrying.get(style)
         if e is None:
             fails.append("%s: no RM_DeckArtExtension (the game draws the old art)" % style)
             continue
-        paths = {"strip": R + look + "/" + base + "_Strip", "post": R + look + "/" + base + "_Post", "cable": R + "Cables/RM_Cable_" + cab}
+        paths = {"strip": R + look + "/" + base + "_Strip", "post": R + post_path, "cable": R + "Cables/RM_Cable_" + cab}
         for k, v in paths.items():
             if e.findtext(k) != v:
                 fails.append("%s: %s is %r, want %r" % (style, k, e.findtext(k), v))

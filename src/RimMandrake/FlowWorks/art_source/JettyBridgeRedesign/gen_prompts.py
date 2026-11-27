@@ -92,7 +92,28 @@ DECKS = {
                        "Grey precast concrete deck panels between two massive riveted steel box girders along both long "
                        "edges; the girders dark gunmetal with dense rows of big rivets; the concrete scuffed and dusty. "
                        "Brutalist heavy industry: massive, tough, cement and steel."),
+    # ---- RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: the Scrapper heavy bridge, in the manner of
+    # his picks: heavy B's build (two massive riveted box girders, a deck between them, bolted joint plates; geometry
+    # option B) in the materials of his Scrapper pick bridge_Scrapper_C. Made as an edit of heavy_bridge_B's raw picture
+    # with bridge_Scrapper_C's raw picture as the material reference (EDIT_REFS).
+    "heavy_bridge_Scrapper_B": ("heavy_bridge", "B", "Scrapper", (JOINT, JOINT),
+                                "Hand-built from salvage, unmistakably heavy METAL: overlapping chipped green and faded "
+                                "brick-red ship-hull plates riveted in uneven rows as the deck panels, paint flaking to rust at "
+                                "the overlaps, between two massive riveted steel box girders along both long edges built from "
+                                "mismatched salvaged plate, rust orange and oxide brown with dense rows of big rivets and "
+                                "welded patch plates, rope lashings tied round the girders. Heavy honest rust: salvaged and "
+                                "kept running, massive and tough."),
 }
+
+# key -> (layout picture, material picture): raw pictures (gen_tiles.RAW) an edited option is made from, in that order
+EDIT_REFS = {"heavy_bridge_Scrapper_B": ("heavy_bridge_B", "bridge_Scrapper_C")}
+
+
+def edit_prompt(key):
+    """The prompt of an option made as an edit: image 1 gives the layout, image 2 the material."""
+    return ("Image 1 is a finished deck texture: keep its exact layout, canvas, outline, proportions, end plates, the two "
+            "edge girders and their rows, and the transparent background with a real alpha channel. Repaint it in the "
+            "material and finish of image 2. " + deck_prompt(key))
 
 
 def deck_prompt(key):

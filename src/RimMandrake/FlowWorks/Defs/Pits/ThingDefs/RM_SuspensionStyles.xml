@@ -249,6 +249,25 @@
       <shaderType>CutoutComplex</shaderType>  <!-- the _m mask: paint and stuff colour reach the steel, not the cement/wood -->
       <linkType>Basic</linkType>
     </graphicData>
+    <modExtensions>
+      <!-- RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: heavy B geometry in his Scrapper C pick's materials (gen_prompts heavy_bridge_Scrapper_B), drawn by RM_DeckArt; numbers = gen_render.py spec_for; post and chain are his Scrapper C pick's -->
+      <li Class="RimMandrake.FlowWorks.Pits.RM_DeckArtExtension">
+        <strip>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip</strip>
+        <post>RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post</post>
+        <cable>RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain</cable>
+        <deckWidth>0.84</deckWidth>
+        <postHeight>1.35</postHeight>
+        <postWidth>0.13</postWidth>
+        <postOut>0.09</postOut>
+        <postInset>0.16</postInset>
+        <cableThick>0.114</cableThick>
+        <fan>1</fan>
+        <doubled>true</doubled>
+        <sagLow>0.22</sagLow>
+        <hangerPitch>0.5</hangerPitch>
+        <hangerFactor>0.45</hangerFactor>
+      </li>
+    </modExtensions>
   </ThingStyleDef>
 
   <ThingStyleDef>
