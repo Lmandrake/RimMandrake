@@ -468,6 +468,42 @@ def _wait_raw(t, n, fast=None):
     _on_site(t)
 
 
+# Bar mechanics_switch_plain_no_biome: (method, args, expected). ScorchableHere(fireEcologyOn, terrain): every scorchable ground
+# kind the kernel names (IsScorchableGround), then the no-cases. FireTickMayRoll(pyrelandsOn, ashOn, fruitOn, spawned,
+# attachedToPawn, scorchable): each input that may say no, alone. Terrain names are vanilla/our defNames (RM_FireEcoKernel.cs).
+FIRE_GROUND_CASES = (
+    [("ScorchableHere", "True|%s" % g, True) for g in ("Soil", "SoilRich", "Sand", "Gravel", "RM_FE_Ash_Deep",
+                                                       "RM_FE_Ground_Sand", "RM_FE_Ground_Gravel", "RM_FE_Ground_Soil",
+                                                       "RM_FE_Ground_SoilRich")]
+    + [("ScorchableHere", "False|Soil", False), ("ScorchableHere", "False|RM_FE_Ash_Deep", False)]
+    + [("ScorchableHere", "True|%s" % g, False) for g in ("Concrete", "WaterShallow", "Ice", "MarshyTerrain")]
+    + [("FireTickMayRoll", "True|True|True|True|False|True", True),
+       ("FireTickMayRoll", "True|True|False|True|False|True", True),
+       ("FireTickMayRoll", "True|False|True|True|False|True", True),
+       ("FireTickMayRoll", "False|True|True|True|False|True", False),
+       ("FireTickMayRoll", "True|False|False|True|False|True", False),
+       ("FireTickMayRoll", "True|True|True|False|False|True", False),
+       ("FireTickMayRoll", "True|True|True|True|True|True", False),
+       ("FireTickMayRoll", "True|True|True|True|False|False", False)])
+
+
+def fire_ground_cases(call, cases=FIRE_GROUND_CASES):
+    """-> (rows, wrong, blind). `call(method, args)` is a jawa/static_call reply; a reply that is not a bool is blind,
+    never a pass. Pure over `call`, so selftest_pyrelands_fire_ground.py plants a biome-gated or a blind kernel."""
+    rows, wrong, blind = [], [], []
+    for method, args, want in cases:
+        reply = call(method, args)
+        got = None
+        if isinstance(reply, dict) and reply.get("success") is not False:
+            got = {"true": True, "false": False}.get(str(reply.get("result", "")).strip().lower())
+        rows.append("%s(%s)=%s want %s" % (method, args, got, want))
+        if got is None:
+            blind.append("%s(%s)" % (method, args))
+        elif got != want:
+            wrong.append("%s(%s)=%s want %s" % (method, args, got, want))
+    return rows, wrong, blind
+
+
 def _note(t, label, data):
     """Evidence record. Also echoed to stderr: the results JSON keeps only a ~300-char
     excerpt of a component's evidence, so the numbers would otherwise be lost."""
@@ -3534,24 +3570,29 @@ def gpt_hunt_plausible(t):
             _unmeasured(t, tribes[1])
     _independent(t)
 
-    # FIRE_ECOLOGY_DIAGNOSE_FOREST_FIRES_FRUIT (CONFIRMED and fixed 2026-10-15): vanilla Soil/Sand/Gravel are scorchable ground,
-    # so the fire-tick hook now also needs the map's biome to opt in (FireEcologyBiomeGate: the Pyrelands, or the cross-biome
-    # setting). A validation map is a Pyrelands map, where a Soil burn fruits by design, so the gate is measured by static_call
-    # against the real TemperateForest / RM_Pyrelands BiomeDefs and the current map's cached answer; the offline fuzz drives
-    # the same composition through the fire-tick gates (forest fire, cross-biome off/on).
-    with _comp(t, "fire_ecology_gated_by_biome", beyond_toggle=True):
-        r = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.FireEcologyBiomeGate", method="ProofForestGate")
-        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
-        _note(t, "ProofForestGate", text or r)
+    # Fire ecology follows the ground and the switches, never the biome (bar mechanics_switch_plain_no_biome, his cards of
+    # 2026-11-21). The biome gate of 2026-10-15 (FireEcologyBiomeGate) is deleted: a fire on scorchable ground (any RM_FE_
+    # terrain, deep ash included, or vanilla Soil/SoilRich/Sand/Gravel) dusts ash, stamps its burn and may bear scorch-fruit
+    # on any map. The fire-tick hook decides through two pure kernel calls (FireEcologyHook.cs: ScorchableHere feeds
+    # FireTickMayRoll), so the live row asks the DEPLOYED build those calls over the whole input range; the inputs carry no
+    # biome, so a temperate forest's Soil answers as the Pyrelands' does. The no-cases (paved, water, ice; the switches off;
+    # a burning pawn) are the control that the instrument can see a no. A deleted type that still answers is a stale build.
+    with _comp(t, "fire_ecology_by_ground_not_biome", beyond_toggle=True):
+        rows, wrong, blind = fire_ground_cases(lambda m, a: t.bridge_call(
+            "jawa/static_call", type="RimMandrake.Pyrelands.RM_FireEcoKernel", method=m, args=a))
+        _note(t, "fire ecology ground cases", {"cases": len(rows), "wrong": len(wrong), "limit": 0,
+                                               "blind": len(blind), "rows": rows})
         if _live(t):
-            if not text.startswith("FORESTGATE"):
-                _unmeasured(t, "ProofForestGate gave no answer (is the build with the probe deployed?): %r" % text[:200])
-            want = ("forestOff False", "forestEverywhere True", "forestListed True", "forestOtherListed False",
-                    "pyrelandsOff True", "mapCacheFollows True")
-            bad = [w for w in want if w not in text]
-            if bad:
-                _fail("fire ecology is not confined to the Pyrelands unless cross-biome opts a biome in (expected %s): %s"
-                      % (", ".join(bad), text))
+            if blind:
+                _unmeasured(t, "the kernel gave no bool for %d of %d cases (is the HEAD build deployed?): %s"
+                            % (len(blind), len(rows), blind[:3]))
+            if wrong:
+                _fail("fire ecology does not follow the ground and the switches alone (%d of %d cases wrong, limit 0): %s"
+                      % (len(wrong), len(rows), wrong))
+            old = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.FireEcologyBiomeGate", method="ProofForestGate")
+            if isinstance(old, dict) and old.get("success") is not False and old.get("result") not in (None, ""):
+                _fail("the deleted biome gate FireEcologyBiomeGate still answers: a stale build is deployed: %r"
+                      % str(old.get("result"))[:200])
     _independent(t)
 
     # FIREFOAM_DIAGNOSE_CANNOT_AIM_AT_FIRE: vanilla's default TargetingParameters has canTargetFires=false and
