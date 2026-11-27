@@ -563,12 +563,12 @@ def gate_case(plant=False, hours=8):
 
     real_tick, real_bound = AP.tick, AP.machine_bound_s
 
-    def tick(shadow=False, dry=False, seams=None):
+    def tick(dry=False, seams=None):
         m = (seams or {}).get("machines")
         if m is not None and cur:
             m.setdefault("order", cur[0].ms_order)
             m.setdefault("stop", cur[0].ms_stop)
-        return real_tick(shadow=shadow, dry=dry, seams=seams)
+        return real_tick(dry=dry, seams=seams)
     real_world = APS.World
     APS.World, AP.tick = GateWorld, tick
     if plant:   # before 44a3797f6e: no bound, so no write-now stop; the switch waits for the run for ever
