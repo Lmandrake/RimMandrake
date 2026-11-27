@@ -1635,6 +1635,60 @@ def t_a_code_bundle_gets_one_fresh_read():
         W.reader_step = orig
     chk(lambda: (rec4["id"], TMP) in seen and any(b == rec5["id"] for b, _ in seen),
         "reader: a bundle's end at finish (its run's clone) and the Conductor's end both run the reader step (%s)" % seen)
+    # the real path: only the filer is injected, so the step reads a real git clone (bundle_commits: fetch, log, parse)
+    # and its own owed drops a file that an open reader ticket names (open_reader_paths, the one read of the ledger,
+    # is patched). Every case above injects both reads, so a git read that lost the files passed them all.
+    got = _real_reader_path(W, lines)
+    chk(lambda: got["filed"] == 1 and got["fix"][:12] in got["effect"] and got["effect"].endswith(" src/a/fix.py"),
+        "reader, real git: the step files one reader over the code file of the bundle's commit, by its sha; not the "
+        "commit before it began, another item's commit, design prose or a file an open reader names (%s)" % got)
+
+
+def _real_reader_path(W, lines):
+    """A throwaway origin and clone: before (R7, before the bundle began), fix (R7: code, design prose, a file an open
+    reader names), other (another item). -> {"filed", "effect", "fix"} from W.reader_step with only its filer faked."""
+    import subprocess as sp
+    import fresh_reader as FRD
+    import time_budget as TB
+    g = tempfile.mkdtemp(prefix="reader-git-", dir=TMP)
+    org, cl = os.path.join(g, "origin.git"), os.path.join(g, "clone")
+    who = {"GIT_AUTHOR_NAME": "selftest", "GIT_AUTHOR_EMAIL": "selftest@invalid", "GIT_COMMITTER_NAME": "selftest",
+           "GIT_COMMITTER_EMAIL": "selftest@invalid", "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1"}
+
+    def git(*a, cwd=None, when=None):
+        env = dict(os.environ, **who)
+        if when:
+            env.update(GIT_AUTHOR_DATE="@%d +0000" % when, GIT_COMMITTER_DATE="@%d +0000" % when)
+        r = sp.run(["git"] + list(a), cwd=cwd or cl, env=env, capture_output=True, text=True, timeout=TB.CALL_S)
+        if r.returncode:
+            raise RuntimeError("git %s: %s" % (" ".join(a), r.stderr[-200:]))
+        return r.stdout.strip()
+
+    def commit(msg, files, when=None):
+        for f in files:
+            os.makedirs(os.path.dirname(os.path.join(cl, f)), exist_ok=True)
+            with open(os.path.join(cl, f), "a") as h:
+                h.write("x\n")
+        git("add", "--", *files)
+        git("commit", "-q", "-m", msg, when=when)
+        return git("rev-parse", "HEAD")
+    git("init", "-q", "--bare", "-b", "main", org, cwd=g)
+    git("clone", "-q", org, cl, cwd=g)
+    git("checkout", "-q", "-b", "main")
+    commit("R7: before the bundle began\n", ["src/a/old.py"], when=NOW - 3600)
+    fix = commit("R7: the fix\n", ["src/a/fix.py", "design/specs/x/boundary.md", "src/a/named.py"])
+    commit("OTHER_ITEM: not ours\n", ["src/a/zed.py"])
+    git("push", "-q", "origin", "main")
+    rec = W.store_write(dict(bundle_rec(W, ["R7"], at=NOW + 5), state="ended"))
+    filed = []
+    keep = W.open_reader_paths, FRD.owed_paths
+    W.open_reader_paths, FRD.owed_paths = (lambda root: {"src/a/named.py"}), (lambda sha, ps: list(ps))
+    try:
+        W.reader_step(rec["id"], cl, NOW + 100, say=lines.append, filer=lambda argv, root: filed.append(argv) or 0)
+    finally:
+        W.open_reader_paths, FRD.owed_paths = keep
+    eff = [a for x in filed for a in x if str(a).startswith("cmd:")]
+    return {"filed": len(filed), "effect": eff[0] if eff else None, "fix": fix, "said": lines[-1:]}
 
 
 def main():
