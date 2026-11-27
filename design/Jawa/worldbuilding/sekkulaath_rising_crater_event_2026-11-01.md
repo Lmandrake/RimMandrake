@@ -337,9 +337,11 @@ Filed as `SEKKULAATH_RISING_BUILD_THE_LAMPS_GO_OUT`. It ships with its slice of 
 
 ## Judgment
 
-Status: **not yet ruled.** A `delegation_policy.md` §4 opus judge returned REDO, confined to §5 and §6,
-and passed the site list and hard reads 2-8. Both defects are fixed in this text, which a new judge
-must rule. Brief:
+Status: **ruled KEEP, 2026-11-26**, round 2, by the `delegation_policy.md` §4 judge
+`rm-detached-bench-sekkulaath-rising-design-crater-event-1795766129` (a fresh Opus that did not make
+this note). Round 1 returned REDO, confined to §5 and §6, and passed the site list and hard reads 2-8.
+Round 2 checked the two repairs against the source and found both fixed and nothing broken by them.
+The owner's KEEP on the two card-19 clauses was recorded by the Conductor on 2026-11-26. Brief:
 `infrastructure/state/delegated/2026-11-01/sekkulaath_rising_judge_brief.md`.
 
 Round 1 defects: the six-limb set included the Bloom, whose severe branch ended the rising for good,

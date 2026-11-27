@@ -3,7 +3,7 @@
   "class": "design",
   "subject": "design/Jawa/worldbuilding/sekkulaath_rising_crater_event_2026-11-01.md",
   "maker": "relentless worker, generation 1",
-  "verdict": "PENDING: round 1 REDO fixed; a new delegation_policy §4 judge must rule",
+  "verdict": "KEEP",
   "gpt_prereview": {
     "model": "gpt_consult.py",
     "note": "pre-review, not a §4 judgment",
@@ -25,6 +25,20 @@
         "the Bloom among the rising limbs ends it for good via KillPermanentlyOnThisMap; won maps unhandled",
         "§5 contradicts colony_visibility_stat.md §4.3 unacknowledged; §10 cites a non-existent postfix"
       ]
+    },
+    {
+      "round": 2,
+      "judge": "rm-detached-bench-sekkulaath-rising-design-crater-event-1795766129 (fresh Opus 5.5, ticket lane judge run 1)",
+      "verdict": "KEEP",
+      "scope": "the two round-1 defects and anything their fixes broke (judge rule 2: one check of the repairs)",
+      "reasons": [
+        "§6 fixed: the rising names five limbs and no RM_Sekkulaath_Bloom; the Bloom's RM_CompTentacleEye.KillPermanently calls KillPermanentlyOnThisMap (RM_CompTentacleEye.cs:114), so leaving it out removes the end-for-good route; ForceEmergenceNear holds the three gates the note names (bestiary off, permanentlyKilled, chemSuppressedUntilTick; RM_MapComponent_TentacleWatch.cs:476-487), so a won map gets no emergence",
+        "§5 fixed: colony_visibility_stat.md §4.3 now records the exception and the RaidThreatPointsNow duty; EmpireLadder.cs:378,430 and RuthlessPursuingMechanoids.cs:834 do call DefaultThreatPointsNow as claimed; the exception is sound because §4.3's danger is a stat those systems were not designed to read, and this is one flat factor meant for all of them, which the owner's 'the whole world is now upset and more dangerous' asks for",
+        "§10 fixed: the non-existent RaidRedesigner postfix is gone; Spike_ThreatPointReplace.cs is compile-excluded as the note now says",
+        "no fix broke another clause; the item criteria (sites harmed and how §3, sites closed §4, the cut-scene beat §7, threat elsewhere §5, one IncidentDef §2) are each answered"
+      ]
     }
-  ]
+  ],
+  "judge": "rm-detached-bench-sekkulaath-rising-design-crater-event-1795766129 (fresh Opus 5.5, ticket lane judge run 1)",
+  "ruled": "2026-11-26"
 }
