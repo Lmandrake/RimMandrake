@@ -562,13 +562,15 @@ def tuning_checks():
         spec = C.pilot_spec(row["pilot"]) if row.get("pilot") else C.load_spec(P.ROOT / row["spec"])
         if any("artstore" in str(p) for p in C.source_files(spec).values()):
             continue
-        rec, bad = recs[(spec["subject"], spec["candidate"])], []
+        rec, bad = recs.get((spec["subject"], spec["candidate"])), []   # a truth-set row has no judged record: files only
         for panel, f in C.source_files(spec).items():
-            f = Path(f)
-            if not f.is_absolute() or P.ROOT / "infrastructure" not in f.parents or not f.is_file() \
-                    or C.sha256_file(f) not in (rec["source_sha256"][panel], rec["image_sha256"][panel + ".png"]):
+            f = Path(f) if Path(f).is_absolute() else P.ROOT / f    # a spec may name a repo-relative picture
+            if P.ROOT / "infrastructure" not in f.parents or not f.is_file() \
+                    or (rec is not None
+                        and C.sha256_file(f) not in (rec["source_sha256"][panel], rec["image_sha256"][panel + ".png"])):
                 bad.append((panel, str(f)))
-        check(f"regress: {spec['subject']} {spec['candidate']} pictures are committed and are the judged ones", not bad, bad)
+        check(f"regress: {spec['subject']} {spec['candidate']} pictures are committed"
+              + (" and are the judged ones" if rec is not None else " (no judged record: files only)"), not bad, bad)
 
     # a known miss is still a failed row; regress names it apart from a row that fails for a new reason
     row = {"expect": "ACCEPT", "known_miss": "CL-900"}

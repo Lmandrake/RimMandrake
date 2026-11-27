@@ -152,6 +152,50 @@ def main() -> int:
         check(Image.open(out).getchannel("A").getbbox()[3] - Image.open(out).getchannel("A").getbbox()[1] == 21,
               "feet: moved, never scaled")
         check(X._align_feet(td / "a.png", 70, td / "c.png") == td / "a.png", "feet: a shift that would cut the art is not made")
+    # cmd_wire: a one-picture variant of a kind that is about to turn Graphic_Multi waits (Hesuun); another kind wires
+    import contextlib
+    import io
+    import types
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        (td / "Defs").mkdir()
+        def_file = td / "Defs" / "Kinds.xml"
+        keep = {n: getattr(X, n) for n in ("REPO", "commission_rows", "look_status", "kind_index", "held", "artpipe",
+                                           "pack_sources")}
+        def run(kind_name, gclass):
+            text = DOC.replace("Graphic_Multi", gclass)
+            def_file.write_text(text)
+            row = {"race": kind_name, "kind": kind_name, "slot": "variant", "look": "variant", "facings": "",
+                   "tex_path": "Things/Pawn/Animal/RM_Foo/RM_FooVariant", "install_mod": "Mod/Mod", "job_id": "j_v1",
+                   "reference": "x.png"}
+            X.REPO = td
+            X.commission_rows = lambda: [row]
+            X.look_status = lambda r, q, h: "INSTALLED"
+            X.held = lambda: set()
+            X.artpipe = lambda: None
+            X.pack_sources = lambda r, rows: {}
+            X.kind_index = lambda: {kind_name: (def_file, None)}
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = X.cmd_wire(types.SimpleNamespace(subjects=[], dry_run=False))
+            return rc, buf.getvalue(), def_file.read_text(), text
+        try:
+            DOC_KIND = "RM_Foo"
+            X.FACE_KINDS["RM_Foo"] = ("east", ["south", "north"])
+            rc, out, after, before = run(DOC_KIND, "Graphic_Single")
+            check(rc == 0 and "waits" in out and after == before,
+                  "wire: a one-picture variant of a kind whose facings are owed waits, the def is not edited", (rc, out))
+            del X.FACE_KINDS["RM_Foo"]
+            rc, out, after, before = run(DOC_KIND, "Graphic_Single")
+            check(rc == 0 and "waits" not in out and "<alternateGraphics>" in after,
+                  "wire: a one-picture variant of a plain Graphic_Single kind is wired", (rc, out))
+            rc, out, after, before = run(DOC_KIND, "Graphic_Multi")
+            check(rc == 1 and "NOT WIRED" in out and after == before,
+                  "wire: a one-picture variant on a Graphic_Multi body is refused", (rc, out))
+        finally:
+            X.FACE_KINDS.pop("RM_Foo", None)
+            for n, v in keep.items():
+                setattr(X, n, v)
     print(f"{'OK' if not FAILS else 'FAILED'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 
