@@ -77,29 +77,36 @@ namespace JawaBench.BridgeTools
             U("install_minified_on_map_or_held", () =>
             {
                 string w;
-                var a = C.Classify(true, true, false, true, false, false, out w);
-                var b = C.Classify(true, false, true, true, false, false, out w);
+                var a = C.Classify(true, true, false, true, false, false, true, out w);
+                var b = C.Classify(true, false, true, true, false, false, true, out w);
                 return a == C.InstallMode.Install && b == C.InstallMode.Install ? null : a + "/" + b;
             });
             U("install_refuses_minified_nowhere", () =>
             {
                 string w;
-                var a = C.Classify(true, false, false, true, false, false, out w);
-                var b = C.Classify(true, true, false, false, false, false, out w);
+                var a = C.Classify(true, false, false, true, false, false, true, out w);
+                var b = C.Classify(true, true, false, false, false, false, true, out w);
                 return a == C.InstallMode.Refused && b == C.InstallMode.Refused && w != null ? null : a + "/" + b;
             });
             U("reinstall_standing_minifiable", () =>
             {
                 string w;
-                var a = C.Classify(false, true, false, true, true, true, out w);
+                var a = C.Classify(false, true, false, true, true, true, true, out w);
                 return a == C.InstallMode.Reinstall ? null : a.ToString();
             });
             U("refuse_not_minifiable_building", () =>
             {
                 string w;
-                var a = C.Classify(false, true, false, true, true, false, out w);   // a wall: standing, no carried form
-                var b = C.Classify(false, false, false, false, false, false, out w);
+                var a = C.Classify(false, true, false, true, true, false, true, out w);   // a wall: standing, no carried form
+                var b = C.Classify(false, false, false, false, false, false, true, out w);
                 return a == C.InstallMode.Refused && b == C.InstallMode.Refused && w != null ? null : a + "/" + b;
+            });
+            U("install_refuses_another_map", () =>
+            {
+                string w1, w2;   // the carried form lies spawned on the away map; the standing building stands there
+                var a = C.Classify(true, true, false, true, false, false, false, out w1);
+                var b = C.Classify(false, true, false, true, true, true, false, out w2);
+                return a == C.InstallMode.Refused && b == C.InstallMode.Refused && w1 != null && w2 != null ? null : a + "/" + b;
             });
             U("study_no_record_not_complete", () =>
             {

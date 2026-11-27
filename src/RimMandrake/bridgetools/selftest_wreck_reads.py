@@ -25,7 +25,7 @@ CS = os.path.join(HERE, "JawaBench.BridgeTools")
 CORE = "JawaBenchWreckReadsCore.cs"
 TOOLS = "JawaBenchWreckTools.cs"
 PROJ = os.path.join(HERE, "WreckReadsSelfTest", "WreckReadsSelfTest.csproj")
-N_UNITS = 20
+N_UNITS = 21
 
 # (planted fault: old -> new in the core, the unit that must go red)
 PLANTS = [
@@ -38,6 +38,8 @@ PLANTS = [
     ("if (!spawned && !held) {", "if (!spawned) {", "install_minified_on_map_or_held"),
     ("if (!spawned && !held) { why", "if (false) { why", "install_refuses_minified_nowhere"),
     ("return InstallMode.Reinstall;", "return InstallMode.Install;", "reinstall_standing_minifiable"),
+    ("if (!onThisMap) { why = \"the carried", "if (false) { why = \"the carried", "install_refuses_another_map"),
+    ("if (!onThisMap) { why = \"the building", "if (false) { why = \"the building", "install_refuses_another_map"),
     ("if (!buildingMinifiable) {", "if (false) {", "refuse_not_minifiable_building"),
     ("if (!hasRecord) return NoRecord;", "if (!hasRecord) return Complete;", "study_no_record_not_complete"),
     ("return timesDone >= required ? Complete : Partial;", "return timesDone > 0 ? Complete : Partial;", "study_partial_complete"),
@@ -59,7 +61,8 @@ WIRING = [
     ("jawa/thing_set_sample", [r"JawaBenchWreckReadsCore\.RunsRefusal\(runs\)", r"new JawaBenchWreckReadsCore\.Tally\(\)",
                                r"tally\.AddRun\(", r"tally\.Rows\(\)", r"\.Destroy\("]),
     ("jawa/install_blueprint", [r"JawaBenchWreckReadsCore\.Classify\(", r"GenConstruct\.PlaceBlueprintForInstall\(",
-                                r"GenConstruct\.PlaceBlueprintForReinstall\(", r"GenConstruct\.CanPlaceBlueprintAt\("]),
+                                r"GenConstruct\.PlaceBlueprintForReinstall\(", r"GenConstruct\.CanPlaceBlueprintAt\(",
+                                r"JawaBenchWreckReadsCore\.Classify\([^;]*t\.MapHeld == map"]),
     ("jawa/study_record", [r"JawaBenchWreckReadsCore\.StudyStatus\(", r"JawaBenchWreckReadsCore\.CompletedCount\(",
                            r"Find\.AnalysisManager\.TryGetAnalysisProgress\(", r"requiredAnalyzed"]),
     ("jawa/processor_fill", [r"JawaBenchWreckReadsCore\.Plan\(", r"\"AddFromThing\"", r"\"IngredientsOwners\"", r"\"processes\"\) as IEnumerable"]),

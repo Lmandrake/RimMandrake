@@ -83,22 +83,26 @@ namespace JawaBench.BridgeTools
 
         // isMinified: the thing is a MinifiedThing (a carried form); spawned: it lies on a map; held: a pawn carries it or it is in
         // an inventory; innerHasInstallBlueprint: the inner thing's def has an installBlueprintDef. isBuilding: a standing building;
-        // buildingMinifiable: its def can be minified. The engine makes an install blueprint only from a MinifiedThing
-        // (GenConstruct.PlaceBlueprintForInstall) and a reinstall blueprint only from a spawned building
-        // (GenConstruct.PlaceBlueprintForReinstall); anything else is refused by name, never attempted.
+        // buildingMinifiable: its def can be minified. onThisMap: the thing lies on, or is held on, the current map (MapHeld), where
+        // the blueprint goes; a carried form still on the away map of a caravan would else get a blueprint at home and read as
+        // arrived. The engine makes an install blueprint only from a MinifiedThing (GenConstruct.PlaceBlueprintForInstall) and a
+        // reinstall blueprint only from a spawned building (GenConstruct.PlaceBlueprintForReinstall); anything else is refused by
+        // name, never attempted.
         public static InstallMode Classify(bool isMinified, bool spawned, bool held, bool innerHasInstallBlueprint,
-                                           bool isBuilding, bool buildingMinifiable, out string why)
+                                           bool isBuilding, bool buildingMinifiable, bool onThisMap, out string why)
         {
             why = null;
             if (isMinified)
             {
                 if (!innerHasInstallBlueprint) { why = "the carried thing's inner def has no installBlueprintDef"; return InstallMode.Refused; }
                 if (!spawned && !held) { why = "the carried thing is neither on a map nor held by a pawn"; return InstallMode.Refused; }
+                if (!onThisMap) { why = "the carried thing is on another map than the current one"; return InstallMode.Refused; }
                 return InstallMode.Install;
             }
             if (isBuilding)
             {
                 if (!spawned) { why = "the building is not spawned on a map"; return InstallMode.Refused; }
+                if (!onThisMap) { why = "the building stands on another map than the current one"; return InstallMode.Refused; }
                 if (!buildingMinifiable) { why = "the building's def is not minifiable: it has no carried form"; return InstallMode.Refused; }
                 if (!innerHasInstallBlueprint) { why = "the building's def has no installBlueprintDef"; return InstallMode.Refused; }
                 return InstallMode.Reinstall;

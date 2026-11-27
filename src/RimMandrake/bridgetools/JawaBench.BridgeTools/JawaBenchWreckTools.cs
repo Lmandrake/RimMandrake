@@ -161,7 +161,7 @@ namespace JawaBench.BridgeTools
                 "Place the install blueprint of a carried (minified) building at a cell, the call Designator_Install makes " +
                 "(GenConstruct.PlaceBlueprintForInstall), so a colonist hauls and installs it by his own work; for a standing " +
                 "minifiable building, its reinstall blueprint (PlaceBlueprintForReinstall). The carried thing may lie on the map, be " +
-                "carried by a pawn or be in a pawn's inventory. Earlier install blueprints of the same thing are cancelled first, as the " +
+                "carried by a pawn or be in a pawn's inventory, on the current map (a thing on another map is REFUSED). Earlier install blueprints of the same thing are cancelled first, as the " +
                 "designator does. Checked with GenConstruct.CanPlaceBlueprintAt (the designator's own arguments): a refusal returns the " +
                 "engine's reason and places nothing. A thing that is not a minified or minifiable building is REFUSED BY NAME.",
             ResultDescription =
@@ -193,11 +193,9 @@ namespace JawaBench.BridgeTools
                 string why;
                 var mode = JawaBenchWreckReadsCore.Classify(
                     mini != null, t.Spawned, held, toInstall?.def?.installBlueprintDef != null,
-                    mini == null && t is Building, t.def.Minifiable, out why);
+                    mini == null && t is Building, t.def.Minifiable, t.MapHeld == map, out why);
                 if (mode == JawaBenchWreckReadsCore.InstallMode.Refused)
                     return Fail(t.def.defName + " (" + t.ThingID + "): " + why + ".");
-                if (mini != null && mini.Spawned == false && mini.MapHeld != map)
-                    return Fail("The carried thing is held on another map than the current one.");
 
                 var cell = new IntVec3(x, 0, z);
                 AcceptanceReport check;
