@@ -25,7 +25,9 @@ RIMMANDRAKE_ADMIT_LIVE_MOD_TESTS_STEVEDESKTOP_GAMES_SAT_IDLE (owner's card, 2026
   is switched, and the refusal names its repair. These jobs pass: a `--proofs` job, an Ops job, a job on the Archmagi lane.
   An unreadable switch file refuses.
 - **live-mod-admitted.** A live mod is in the Maturation Pipeline's advancing list, not on the owner's hold and not
-  switched off (`./pipe show` reads it ON). While SteveDesktop is switched, a test job of a live mod is admitted, whatever
+  switched off (`./pipe show` reads it ON). The advancing list is the one the Dispatch tick decides over: the list in
+  `rimflow/maturation_dispatch.json`, then each concept the tick discovers (a concept folder with a `stage.json` and no
+  exclude marker). While SteveDesktop is switched, a test job of a live mod is admitted, whatever
   its purpose and selection: a commission, a fix, a guard (a pipeline run's or the idle filler's) and a stage-6 checks job.
 - **not-live-stays-refused.** While SteveDesktop is switched, a test job of a mod the owner holds, of a mod `./pipe show`
   reads OFF and of a mod that is not in the Maturation Pipeline is refused, the idle filler's guard job included. A

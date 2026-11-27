@@ -87,10 +87,31 @@ def _control():
     return m
 
 
+def _discovered():
+    """-> the concepts the Dispatch tick adds to its advancing list by itself: a concept folder with a stage.json and no
+    exclude marker (maturation_autonomy.discovered, the tick's own rule, read from the control store's concept folder)."""
+    import importlib.util
+    m = sys.modules.get("maturation_autonomy")
+    if m is None:
+        d = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow"))
+        if d not in sys.path:
+            sys.path.append(d)      # its own imports (maturation, designer_stage) are its neighbours
+        spec = importlib.util.spec_from_file_location("maturation_autonomy", os.path.join(d, "maturation_autonomy.py"))
+        m = importlib.util.module_from_spec(spec)
+        sys.modules["maturation_autonomy"] = m
+        try:
+            spec.loader.exec_module(m)
+        except BaseException:
+            sys.modules.pop("maturation_autonomy", None)
+            raise
+    root = os.path.dirname(os.path.dirname(os.path.abspath(_control().concepts_dir())))
+    return [_control().key(x) for x in m.discovered(root)]
+
+
 def live_mod(mod):
-    """-> (True, None) when MOD is live, else (False, why). A live mod is in the Maturation Pipeline (the advancing list of
-    rimflow/maturation_dispatch.json, as `./pipe show` lists it), is not on the owner's hold and is not switched off
-    (`pipe off`): a mod `./pipe show` reads ON. Owner, by card 2026-11-25 11:02 PM PST: SteveDesktop's games take the test
+    """-> (True, None) when MOD is live, else (False, why). A live mod is in the Maturation Pipeline (the advancing list
+    that the Dispatch tick decides over: rimflow/maturation_dispatch.json's list, then the concepts the tick discovers), is
+    not on the owner's hold and is not switched off (`pipe off`): a mod `./pipe show` reads ON. Owner, by card 2026-11-25 11:02 PM PST: SteveDesktop's games take the test
     jobs of live mods. A state that cannot be read is not live, and the why says `could not look` with the cause."""
     if not (isinstance(mod, str) and mod.strip()):
         return False, "could not look: the job names no mod"
@@ -108,7 +129,12 @@ def live_mod(mod):
     if not listed:
         return False, "could not look: the pipeline's advancing list (rimflow/maturation_dispatch.json) is empty or unreadable"
     if _control().key(mod) not in listed:
-        return False, "%s is not live: it is not in the Maturation Pipeline's advancing list" % mod
+        try:
+            widened = _discovered()
+        except Exception as e:      # noqa: BLE001 - the tick's own rule could not be read: could-not-look, never "not in the pipeline"
+            return False, "could not look: the concepts the Dispatch tick discovers cannot be read (%s: %s)" % (type(e).__name__, e)
+        if _control().key(mod) not in widened:
+            return False, "%s is not live: it is not in the Maturation Pipeline's advancing list" % mod
     return True, None
 
 

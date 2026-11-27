@@ -28,6 +28,9 @@ HOLDS = os.path.join(TMP, "mod_owner_hold.json")
 with open(HOLDS, "w") as f:
     json.dump({"holds": []}, f)
 os.environ["RM_OWNER_HOLD_FILE"] = HOLDS
+CONCEPTS = os.path.join(TMP, "design", "concepts")     # the concept folders the Dispatch tick would discover: none but the test's
+os.makedirs(CONCEPTS)
+os.environ["RM_CONTROL_CONCEPTS"] = CONCEPTS
 SW = os.path.join(TMP, "host_work_switch.json")
 os.environ["RM_HOST_SWITCH_FILE"] = SW
 SAID = "I'd like to have SteveDesktop working 100% on closing out non-mod work today please."
@@ -139,6 +142,32 @@ def t_live_mod_admitted():
           "lane any of a live mod is admitted too")
 
 
+def t_widened_mod_admitted():
+    """The failure that happened, 2026-11-27 (seen by the run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT):
+    the Dispatch tick advanced WreckedMachines (a Designer concept it discovered: a concept folder with a stage.json), `pipe
+    show` read it ON, and the lane refused its test job as "not in the Maturation Pipeline's advancing list", because
+    live_mod read the shipped list only. The advancing list is the one the tick decides over: shipped, then discovered."""
+    plant()
+    for name, files in (("Widened", ["stage.json"]), ("Excluded", ["stage.json", ".maturation-exclude"]), ("NoStage", ["plan.md"])):
+        os.makedirs(os.path.join(CONCEPTS, name), exist_ok=True)
+        for f in files:
+            open(os.path.join(CONCEPTS, name, f), "w").write("{}")
+    live, why = P.live_mod("Widened")
+    check(live, "a concept the tick discovers (a stage.json, not on the shipped list) is live%s" % ("" if live else ": " + str(why)))
+    check(P.switch_refusal(live_job("Widened", "commission", {"chains": ["x"]}, "BENCH")) is None,
+          "  and its test job is admitted on the switched host")
+    for name, what in (("Excluded", "a concept folder with the exclude marker"), ("NoStage", "a concept folder with no stage.json")):
+        live, why = P.live_mod(name)
+        check(not live and "not live" in str(why), "%s is not live" % what)
+    C = sys.modules["control"]
+    C.switch("mod:Widened", True, "pipe off for the test", p=C.db_path())
+    live, why = P.live_mod("Widened")
+    check(not live, "a discovered concept that pipe show reads OFF is not live")
+    for name in ("Widened", "Excluded", "NoStage"):
+        import shutil
+        shutil.rmtree(os.path.join(CONCEPTS, name))
+
+
 def t_not_live_stays_refused():
     plant()
     for mod, why in (("Heldmod", "a mod the owner holds"), ("OffMod", "a mod that pipe show reads OFF"),
@@ -202,6 +231,7 @@ def main():
     t_filler()
     t_rerun_line()
     t_live_mod_admitted()
+    t_widened_mod_admitted()
     t_not_live_stays_refused()
     t_unreadable_state_refused()
     t_filler_live_mods()
