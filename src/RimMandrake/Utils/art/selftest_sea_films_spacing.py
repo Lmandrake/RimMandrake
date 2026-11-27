@@ -15,9 +15,11 @@ What this reads (the shipped source; constants are parsed, so it cannot drift):
      RM_WorldDecals takes its glyph spacing from the same function (one definition of a tile spacing).
   3. A tile spacing measured so, on a hand-made regular hex of circumradius R, equals sqrt(hex area) within 0.1 %
      (the 1.612 factor is the geometry, not a tuning).
-  4. Set destroys every Material of BlendMats, FlatMats and SwirlMats before it clears them.
+  4. Set destroys every Material of BlendMats, FlatMats and SwirlMats before it clears them, and then marks every world
+     layer dirty, so no built layer (the sea-floor layer included, which jawa/world_commit does not redraw) keeps
+     drawing with a destroyed Material.
   5. The committed RimMandrake.Biomes.dll is built from these two files (.srchash).
-Named mutants (the parent's sphere formula, a dropped Destroy, a wrong factor, a stale srchash) must each turn it red.
+Named mutants (the parent's sphere formula, a dropped Destroy, a dropped redraw, a wrong factor, a stale srchash) must each turn it red.
 
   python3 src/RimMandrake/Utils/art/selftest_sea_films_spacing.py            the shipped files
   python3 src/RimMandrake/Utils/art/selftest_sea_films_spacing.py --rev REV  the files at a git revision (red run)
@@ -90,6 +92,14 @@ def check(look, decals, srchash, look_b, decals_b):
             c = st.find("%s.Clear()" % cache)
             if d < 0 or (c >= 0 and d > c):
                 errs.append("Set clears %s without destroying its Materials first (a leak per bridge tuning)" % cache)
+        # a destroyed Material is still held by every submesh built with it: on the surface until the next redraw, and on
+        # the sea-floor layer (RM_SeabedLayer) for good, because jawa/world_commit regenerates the surface layer only. So
+        # Set must mark every world layer dirty after the destroy, as WriteSettings does for the floor toggle.
+        last_destroy = max(st.rfind("DestroyAll(%s.Values)" % c) for c in ("BlendMats", "FlatMats", "SwirlMats"))
+        dirty = st.find("SetAllLayersDirty()")
+        if dirty < 0 or dirty < last_destroy:
+            errs.append("Set destroys Materials that built layers still draw with, and marks no world layer dirty after "
+                        "(the sea-floor layer keeps them until its next redraw)")
     da = body(look, r"static void DestroyAll\(IEnumerable<Material> mats\)")
     if da is None or "UnityEngine.Object.Destroy(m)" not in da:
         errs.append("DestroyAll does not Destroy each Material")
@@ -120,6 +130,7 @@ def main(argv):
         mutants = {
             "the parent's sphere formula": (look.replace(mean, sphere), decals),
             "FlatMats not destroyed": (look.replace("DestroyAll(FlatMats.Values);", ""), decals),
+            "Set marks no layer dirty": (look.replace("Find.World?.renderer?.SetAllLayersDirty();", ""), decals),
             "wrong hex factor": (look.replace("return 1.612f * circ", "return 1.732f * circ"), decals),
             "decals keep their own copy": (look, decals.replace("RM_WorldLook.TileSpacingOf(verts, center)", "1.612f")),
         }
@@ -135,7 +146,7 @@ def main(argv):
     if errs:
         return 1
     print("OK sea films measure a tile from the water tiles (TileSpacingOf, shared with the decals); Set destroys its "
-          "Materials; DLL srchash matches; 5 mutants red")
+          "Materials and redraws every layer; DLL srchash matches; 6 mutants red")
     return 0
 
 

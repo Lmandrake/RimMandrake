@@ -29,7 +29,8 @@ namespace RimMandrake.Biomes
     //    distance to the coast. Tile elevations are not touched; no texture carries depth.
     //
     // Tunables are public statics so a bridge session can tune live: jawa/static_call RimMandrake.Biomes.RM_WorldLook Set
-    // "key|value", then jawa/world_commit (redraw only). Mod Settings expose on/off for each.
+    // "key|value"; Set marks every world layer dirty, so the planet and the sea floor redraw on the next frame. Mod
+    // Settings expose on/off for each.
     [StaticConstructorOnStartup]
     public static class RM_WorldLook
     {
@@ -704,7 +705,10 @@ namespace RimMandrake.Biomes
             BlendMats.Clear();
             FlatMats.Clear();
             SwirlMats.Clear();
-            return key + " = " + f.GetValue(null);
+            // every built layer still draws with the destroyed Materials: redraw them all, the sea-floor layer included
+            // (jawa/world_commit regenerates the surface layer only, so the floor would keep them until its next redraw)
+            if (Current.ProgramState == ProgramState.Playing) Find.World?.renderer?.SetAllLayersDirty();
+            return key + " = " + f.GetValue(null) + " (every world layer redraws next frame)";
         }
 
         public static string Info()
