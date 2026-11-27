@@ -7,7 +7,8 @@ Code: `src/RimMandrake/Utils/pre_design_concepts.py`, and its calls in `maturati
 "Pre-Design Concepts".
 
 ## ACCEPTS
-- A folder of Markdown files. Every `*.md` but `README.md` is one concept. The head of a concept file is the bullet
+- A folder of Markdown files. Every `*.md` but `README.md` and the `moved_<date>.md` records (the table of tickets moved
+  into the store) is one concept. The head of a concept file is the bullet
   lines `- **<Field>:** <text>` before the first `## ` line, with the fields Name, Kind, Gets, Added, From ticket, Code,
   Last offered, His answer, and an optional Went to. Added is a date `YYYY-MM-DD`. Last offered is `never` or a date.
 
@@ -27,6 +28,7 @@ Code: `src/RimMandrake/Utils/pre_design_concepts.py`, and its calls in `maturati
   offered longest ago; at most four; never one that went. `offered <name> --answer` writes today's date and his answer
   into the head and keeps the offer in `## Offers`, so the concept moves back in `due`. An unknown name is refused by
   name.
+- **a_moved_record_is_not_a_concept**: a page `moved_<date>.md` in the store (the table of tickets moved into it) is no concept: `check` passes with it, and the count, the names and `due` do not change.
 
 ## THE WEEKLY LINE (its test is in `src/RimMandrake/Utils/selftest_crystallize_weekly.py`)
 - **the-tick-writes-the-concepts-card-line-once-a-week**: the daily tick of `rm-crystallize.timer` runs `sweep`. Once

@@ -73,7 +73,7 @@ def t_check_passes_on_the_real_store():
     P = lib()
     t, d = tmp_root()
     try:
-        files = sorted(f for f in os.listdir(d) if f.endswith(".md") and f != "README.md")
+        files = sorted(f for f in os.listdir(d) if P.is_concept_file(f))
         assert files, "the real store holds no concept file"
         p = os.path.join(d, files[0])
         text = open(p, encoding="utf-8").read()
@@ -169,9 +169,26 @@ def t_due_puts_never_offered_first():
         shutil.rmtree(t)
 
 
+def t_a_moved_record_is_not_a_concept():
+    """A page `moved_<date>.md` (the record of tickets moved into the store) is no concept: `check` passes with it, and
+    the count, the names and `due` do not change."""
+    P = lib()
+    r = P.read_store(STORE)
+    t, d = tmp_root()
+    try:
+        open(os.path.join(d, "moved_2000-01-01.md"), "w", encoding="utf-8").write(
+            "# Tickets moved\n\nA table with no concept fields.\n")
+        rc, out = run([PROG, "check", "--store", d])
+        assert rc == 0, "check refuses a moved_ record: rc=%d %s" % (rc, out[-300:])
+        r2 = P.read_store(d)
+        assert r2["count"] == r["count"] and r2["names"] == r["names"], (r2["count"], r["count"], r2["names"])
+    finally:
+        shutil.rmtree(t)
+
+
 def main():
     tests = [t_check_passes_on_the_real_store, t_page_count_equals_store_count, t_unreadable_store_reads_unmeasured,
-             t_due_puts_never_offered_first]
+             t_due_puts_never_offered_first, t_a_moved_record_is_not_a_concept]
     failed = 0
     for t in tests:
         try:

@@ -16,7 +16,8 @@ RIMMANDRAKE_BUILD_IDEAS_LIST_AT_INTAKE_TWO_IDEAS_SAT_UNPLACED.
                                                       Conductor log; every run writes the reading (last_sweep.json)
         --store DIR    another store (tests); default design/pre_design_concepts of this repo
 
-A concept file is every *.md in the store but README.md. Its head is bullet lines `- **<Field>:** <text>`, with the
+A concept file is every *.md in the store but README.md and the records `moved_<date>.md` (a table of tickets moved into
+the store: no concept). Its head is bullet lines `- **<Field>:** <text>`, with the
 fields of FIELDS. `Last offered` is `never` or a date YYYY-MM-DD. An optional `- **Went to:**` with text says where the
 concept went when the owner picked it; such a concept no longer waits: it is not counted and never due.
 A store that cannot be read is UNMEASURED with its cause, never 0. An empty store is a measured 0.
@@ -65,12 +66,17 @@ def parse(path):
             "name": fields.get("Name") or os.path.splitext(name)[0], "went": fields.get("Went to", "")}
 
 
+def is_concept_file(name):
+    """True for a file of the store that is one concept: every *.md but README.md and a `moved_*.md` record."""
+    return name.endswith(".md") and name != "README.md" and not name.startswith("moved_")
+
+
 def read_store(store=STORE):
     """-> {"count": int|UNM, "names": [str], "concepts": [dict], "faults": [str], "why": str, "gone": [str]}.
     count and names hold the concepts that wait (no `Went to`)."""
     out = {"count": UNM, "names": [], "concepts": [], "faults": [], "why": "", "gone": []}
     try:
-        files = sorted(f for f in os.listdir(store) if f.endswith(".md") and f != "README.md")
+        files = sorted(f for f in os.listdir(store) if is_concept_file(f))
     except FileNotFoundError:
         out["why"] = "the store is missing (%s)" % store
         return out

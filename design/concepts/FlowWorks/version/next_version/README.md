@@ -92,8 +92,38 @@ Divergent work: anything that shifts or extends the 0.1.0 vision (`../vision.md`
 
 - **What:** each ticket below stays open in the rimflow ledger, with its own spec and history (`rimflow show <ID>`); this list is where a 0.2.0 Designer pass finds them. None moves a 0.1.0 bar.
 - **Why not 0.1.0:** the FlowWorks ticket sweep of 2026-11-22 (`design/concepts/FlowWorks/ticket_sweep_2026-11-22.md`) classed each KEEP_NEXT, or the owner's own words put it in v2 (target v2 on the ledger).
-  - `DIG_RIG_BUILD_BUCKET_OVER_THE_PIT` (v2, his words 2026-10-22), `FOUNTAIN_SCULPTURES_DESIGN_WATER_MEETS_ART` (v2 brainstorm), `SIEGE_RAID_BUILD_SHELLS_OVER_THE_PIT` (v2, "Eventually siege raids ..."; it stages a raid: paused)
+  - `DIG_RIG_BUILD_BUCKET_OVER_THE_PIT`, `FOUNTAIN_SCULPTURES_DESIGN_WATER_MEETS_ART` and `SIEGE_RAID_BUILD_SHELLS_OVER_THE_PIT` no longer stay open: the three tickets are pure v2 ideas, and each is closed with its whole text in the section "Three v2 ideas moved from tickets" below (2026-11-26)
   - `DROWNING_ESCAPE_FIX_READS_DECK_ABOVE`, `INDUSTRIAL_RUINS_FIX_HIDDEN_EH_DEPENDENCY`, `REFUSED_HANDOVER_DRAIN_FIX_PUDDLE_OVERSTAYS`, `RIMMANDRAKE_REFUSE_PITS_IN_LOOSE_GROUND_EVEN_BY_BRIDGE`, `RIMMANDRAKE_SHORT_DROWNED_ELECTRONICS_LIKE_RAIN_DOES`, `WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS`, `RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE` (sweep KEEP_NEXT)
 - **Acceptance test:** each ticket's own.
 - Also held for 0.2.0 (same bundle, 2026-11-26): `RIMMANDRAKE_ANIMATE_POUR_SPILL_SHEET_ARRIVES_ALL_AT_ONCE`. The dev pour's overflow still lays its whole spill in one call (`RM_SheetMath.ResolveSpills` fills each lip square to the sheet cap, nearest first). His walk of 2026-11-25, station 75, put how liquid sheets on the ground look and flow in the next version: "NEXT VERSION we need to do a LOT of work on what all the differnt fluids look like as thin sheets on the ground, how they flow, etc." (`RIMMANDRAKE_DESIGN_FLUID_THIN_SHEETS_TAR_SHOWED_MISTY_GREY`). A spill that grows ring by ring over time belongs to that design.
 - Also held for 0.2.0 (same bundle, 2026-11-26): `RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP`. Its owed criterion A3 (raiders breach a 4 m trench by fill; FAILED as MOD on 2026-10-24, r52.json, never re-run) is raider AI under a real raid: the raid proof moved to 0.2.0 by his words of 2026-11-23 (section above), and the raid pause stops its test.
+
+## Three v2 ideas moved from tickets (FlowWorks 0.2.0, moved 2026-11-26)
+
+Each of these three ledger tickets held only an idea: nothing built, no failure, no test. Each ticket was closed with the reason that this section keeps it, so the text of each ticket is whole here. All three are Divergent additions for FlowWorks 0.2.0. The table of the move: `design/pre_design_concepts/moved_2026-11-26.md`.
+
+### DIG_RIG_BUILD_BUCKET_OVER_THE_PIT (v2, owner 2026-10-22)
+- **Title (ledger):** "v2: a buildable dig rig (winch-and-bucket frame over a pit, operated by a colonist) that digs past the 2 m colonist cap; design start: design/RimMandrake/machine_dig_2026-10-21.md".
+- **His words** (OWNER `file` event, 2026-10-22T06:06:58Z, kind build, filed target v1, for FOUNDRY): "v2 has the buildable dig rig, for Utinni it's droids and labour mechs".
+- **Retarget** (OWNER, 2026-10-23T11:34:27Z, per ruling `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL`): to v2, with the reason "owner 2026-10-22 (DEEP_DIG note tsn 1792649216327168525): 'v2 has the buildable dig rig, for Utinni it's droids and labour mechs'; the item's own title says v2 but it was filed target=v1".
+- **Prose of the ticket:** the spec line is the title above. "What is left: proposed: nothing recorded as owed beyond the title." (The item file was restored 2026-11-12 from the ledger, by `RIMMANDRAKE_RECONCILE_FLOWWORKS_LEDGER_OPEN_WITHOUT_ITEM_FILE`.)
+- **Owner of the ticket:** BENCH from 2026-10-23: "Please redirect those FlowWorks actions back to Bench. I want Bench owning all Flowworks from now on to prevent mutual waiting." (OWNER, 2026-10-23).
+- **Sweep:** CONDUCTOR, 2026-11-23T00:46:37Z, "FlowWorks ticket sweep 2026-11-22: KEEP, FlowWorks 0.2.0 (next version; moves no 0.1.0 bar). Reading: Divergent addition, retargeted v2 by his note of 2026-10-22; not in 0.1.0 vision". Home `mod:FlowWorks`, group `pits-and-trenches` (2026-11-24).
+- **Design start:** `design/RimMandrake/machine_dig_2026-10-21.md`. Related: `DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL` (for Utinni, droids and labour mechs).
+- **Acceptance test:** none, an idea (no test was filed with the ticket).
+
+### FOUNTAIN_SCULPTURES_DESIGN_WATER_MEETS_ART (v2 brainstorm, owner 2026-10-23)
+- **Title (ledger):** "v2 brainstorm: artistic fountain sculptures (water spewing, counterpart to fire and glow sculptures) built on overspill".
+- **His words** (OWNER `file` event, 2026-10-23T12:46:56Z, whole): "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground. The water can be captured in a surrounding ditch then pumped back to the fountain as a proof-of-principle of the entire flow cycle as well as a neat artistic piece. Please commission that as art and as a review sheet item to watch work."
+- **Retarget** (OWNER, 2026-10-23T13:12:47Z, per ruling `FOUNTAIN_SCULPTURES_DESIGN_WATER_MEETS_ART`): to v2.
+- **Prose of the ticket (whole):** "spec: `design/RimMandrake/fountain_sculptures_v2_2026-10-23.md`: what exists (sheet-water overspill, FlameStatues, deepfire-lacquer glow, sprinkler spray mote, net draw, pump return), the vision and roster, mechanics, dependencies, risks and five open questions for the owner. v1 proof: `FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN`. NEXT: brainstorm documented 2026-10-23; NEXT: (retargeted to v2 2026-10-23) when v2 opens, put the doc's section 6 open questions to the owner as question cards."
+- **Sweep:** home `mod:FlowWorks`, group `fountains` (2026-11-24); held for 0.2.0 by the Work Bundle note of 2026-11-26T14:22:40Z.
+- **When this version opens:** put the five open questions of section 6 of `design/RimMandrake/fountain_sculptures_v2_2026-10-23.md` to him as question cards.
+- **Acceptance test:** none, a brainstorm.
+
+### SIEGE_RAID_BUILD_SHELLS_OVER_THE_PIT (v2, parked, owner 2026-10-31)
+- **Title (ledger):** "Siege raids come to launch weapons over deep pits (parked, v2: not built)".
+- **His words** (OWNER `file` event, 2026-10-31T18:19:13Z, kind build, target v2, filed through the Conductor per ruling `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`): "Eventually siege raids will come to launch weapons over the pits to deal with it."
+- **Prose of the ticket:** none (the ticket had no prose file).
+- **Sweep:** home `mod:FlowWorks`, group `pits-and-trenches` (2026-11-24). It stages a raid, so its test waits for the raid pause (`raid_pause.py show`).
+- **Acceptance test:** none, parked, not built.
