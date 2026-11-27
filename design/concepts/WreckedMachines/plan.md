@@ -1,6 +1,7 @@
 # Wrecked Machines 0.1.0: plan (Designer, stage 3)
 
-Run `rm-role-designer-1795773471`, 2026-11-27. The bars are in `tree.json`, his view of them in `sheet.md`, the scenes
+Written by run `rm-role-designer-1795773471`, 2026-11-27, and closed by run `rm-role-designer-1795776308` (the item,
+the next-version list and the fresh reader's fixes). The bars are in `tree.json`, his view of them in `sheet.md`, the scenes
 in `scenes.json`, the models in `models.md`. This page says how the build is put together, in what order, what it
 reuses, what can go wrong, and where a real choice of design is left to the builder. The Designer writes no code.
 
@@ -91,7 +92,7 @@ of its north-star lines judge a reading that the root replaced. The builder rewr
 when the smelter is end to end (step 4), and the Conductor re-validates its north star in that sitting (CLAUDE.md,
 North-star validation). Until then `tree.json` cites `root.md`, not the walk.
 
-## build item filed by this run
+## build item filed at this stage
 
 `RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL`: write the entry points of `scenes.json` in the
 mod's proof script, each with its asserted start and its control, and the bridge functions of step 2 that they need.
