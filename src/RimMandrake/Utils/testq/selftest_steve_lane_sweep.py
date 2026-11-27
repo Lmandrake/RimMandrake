@@ -64,8 +64,10 @@ def t_account_gate_refusing_every_launch_found():
     Planted (the code before 44a3797f6e: no bound, no write-now stop): STUCK on SteveDesktop; shipped: it switches."""
     p, c = OUT["gate_plant"], OUT["gate"]
     if p.get("error") or c.get("error"):
-        check("t_account_gate_refusing_every_launch_found", False, "part C did not run: %s" % (
-            p.get("error") or c.get("error"))[-600:])
+        # whole lines, never a cut by characters: a cut lands inside a path whose length differs from clone to clone,
+        # so ./publish could not match this red on origin/main (2026-11-27, RELAPSE_MATURATION_FIX_DIED_TWICE)
+        err = [ln.strip() for ln in str(p.get("error") or c.get("error")).splitlines() if ln.strip()]
+        check("t_account_gate_refusing_every_launch_found", False, "part C did not run: %s" % " | ".join(err[-3:]))
         return
     hits = [v for v in p["violations"] if v["detail"].get("machine") == "SteveDesktop"]
     sw = [s for s in c.get("switches") or [] if "SteveDesktop" in s]
