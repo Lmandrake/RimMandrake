@@ -86,6 +86,7 @@ DEFAULTS = {
     "ashWaterFertilityEnabled": True, "ashDryFertility": 0.7, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
     "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0,
     "blackRainWaterHours": 24, "blackRainDousingEnabled": True, "blackRainDousing": 40.0, "windCarriesFireEnabled": True,
+    "firePacePercent": 200,   # RM_BurnKernel.FirePacePercentDefault (bar fire_catches_and_runs; 100 = 0.1.0)
     "ambientAshEnabled": True, "ambientAshShare": 1.0, "ambientAshHeavy": False, "wildPlantRegrowDaysOverride": 0.0,
 }
 
