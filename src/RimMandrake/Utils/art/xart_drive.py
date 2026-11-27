@@ -107,8 +107,9 @@ def job_state(q: Path, jid: str) -> str:
 
 
 def render_file(q: Path, jid: str, shas: dict | None = None) -> Path | None:
-    """The finished render of a job: its _artsrc PNG, else the art store's copy (the daemon prunes _artsrc after 14 days;
-    the art ledger's artpipe backfill keeps every render by its job id)."""
+    """The render of a job to judge: a failed render that `rescue` fitted to its reference; else a done job's _artsrc PNG;
+    else the art store's copy (the daemon prunes _artsrc after 14 days; the art ledger's artpipe backfill keeps every
+    render by its job id)."""
     r = rescued_dir() / f"{jid}.png"       # a failed render fitted to its reference: never the raw that failed
     if r.is_file():
         return r
@@ -265,7 +266,8 @@ def look_spec(row: dict, q: Path, kinds: dict, out: Path) -> Path:
     imgs["scale"] = str(cp)
     if sib:
         imgs["siblings"] = sib
-    sp.update(subject=subj, candidate="r1", images=imgs, size=size, owner_kept=False, kept_install=[],
+    ver = max(int(re.search(r"_v(\d+)", j).group(1)) for _, j in look_jobs(row, q))
+    sp.update(subject=subj, candidate=f"r{ver}", images=imgs, size=size, owner_kept=False, kept_install=[],
               artpipe_job=look_jobs(row, q)[0][1].rsplit("_", 1)[0] if row["facings"] else row["job_id"],
               target_texpath=row["tex_path"], previous_prompt=None,
               provenance=(f"extra-art commission ({LOOKS_ITEM}; commission.csv row {row['race']} {row['slot']}): "
@@ -333,9 +335,16 @@ def decisions(run_id: str) -> dict:
     return out
 
 
-def verdict_file(subj: str) -> str | None:
-    hits = sorted(glob.glob(str(DELEGATED / "*" / f"{subj}.json")) + glob.glob(str(DELEGATED / "*" / f"{subj}__*.json")))
+def verdict_file(subj: str, candidate: str | None = None) -> str | None:
+    """The newest delegated verdict file the runner wrote for this subject (and candidate, when named)."""
+    pat = f"{subj}__{candidate}.json" if candidate else f"{subj}__*.json"
+    hits = sorted(glob.glob(str(DELEGATED / "*" / pat)))
     return str(Path(hits[-1]).relative_to(REPO)) if hits else None
+
+
+def _sha(p) -> str:
+    import hashlib
+    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
 # ---------------------------------------------------------------------------------------------------------- install
@@ -382,7 +391,7 @@ def cmd_install(a) -> int:
         if d.get("decision") != "ACCEPT":
             print(subj, "not ACCEPT:", d.get("decision"))
             continue
-        vf = verdict_file(subj)
+        vf = verdict_file(subj, d.get("candidate"))
         if not vf:
             print(subj, "ACCEPT but no delegated verdict file; not installed")
             bad += 1
@@ -396,6 +405,12 @@ def cmd_install(a) -> int:
             r = rows[subj]
             mod, tex = r["install_mod"], r["tex_path"]
             files = {f: sp["images"][f or "single"] for f, _ in look_jobs(r)}
+        judged = d.get("source_sha256") or {}
+        moved = [f or "single" for f, p in files.items() if judged.get(f or "single") != _sha(p)]
+        if moved:       # the spec was rebuilt (a later version) since this ACCEPT: never install what was not judged
+            print(subj, "NOT INSTALLED: the spec's pictures are not the ones this ACCEPT judged", moved)
+            bad += 1
+            continue
         for f, p in files.items():
             rel = f"{tex}_{f}.png" if f else f"{tex}.png"
             rc, line = install_png(mod, rel, Path(p), f"delegated: art {vf}", a.dry_run)
@@ -650,7 +665,9 @@ def cmd_faces_file(a) -> int:
         mod, tex, master = face_master(kind, out)
         sp = base_spec(kind)
         ref = str(L.store_path(L.store_put_file(master)))     # pinned: the daemon never reads a clone
-        fix = (SAME_SCALE + " FIX from review: " + fixes[kind]) if kind in fixes else ""
+        fix = (SAME_SCALE + " FIX from review: " + _clean_fix(fixes[kind])) if kind in fixes else ""
+        if a.regen_from:
+            rows.append({"source_run": a.regen_from})   # merged below: the art-eval REGEN that sends the set back
         rows.append({
             "id": f"owedface_{kind}_v{n}", "rimflow_item_id": FACES_ITEM, "target_def": kind, "target_texpath": tex,
             "facings": fac, "priority": 40, "biome_neutral": True, "canvas_w": 256, "canvas_h": 256,
@@ -659,6 +676,13 @@ def cmd_faces_file(a) -> int:
             "prompt": FACE_PROMPT.format(view="front" if view == "south" else "side", label=sp.get("label") or kind,
                                          desc=sp.get("description", ""), feat="; ".join(sp.get("departures") or [])) + fix,
         })
+    merged = []
+    for r in rows:
+        if merged and set(merged[-1]) == {"source_run"}:
+            merged[-1] = dict(r, **merged[-1])
+        else:
+            merged.append(r)
+    rows = merged
     p = out / "rows.json"
     p.write_text(json.dumps(rows, indent=1))
     cmd = [sys.executable, "fill_queue.py", "--input", str(p), "--no-derive-facings"] + (["--dry-run"] if a.dry_run else [])
@@ -726,7 +750,8 @@ def faces_spec(kind: str, q: Path, out: Path) -> Path:
                     "drawSize": tuple((sp.get("size") or {}).get("drawSize") or (1.0, 1.0))}, cp, pan / f"{subj}_scale_full.png")
     imgs["scale"] = str(cp)
     drawn = [f for f, _ in face_jobs(kind, q)]
-    sp.update(subject=subj, candidate="r1", images=imgs, owner_kept=False, kept_install=[], install_mod=mod,
+    sp.update(subject=subj, candidate=f"r{face_version(kind, q)}", images=imgs, owner_kept=False, kept_install=[],
+              install_mod=mod,
               target_texpath=tex, artpipe_job=f"owedface_{kind}_v{face_version(kind, q)}",
               installed_facings=[f for f in ("east", "south", "north") if f not in drawn and
                                  (REPO / "src" / mod / "Textures" / f"{tex}_{f}.png").is_file()],
