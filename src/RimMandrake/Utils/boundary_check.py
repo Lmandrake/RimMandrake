@@ -306,6 +306,7 @@ PAGES = {
         "src/RimMandrake/Utils/northstar_driver/selftest_run_exit_codes.py",
     "design/specs/2026-11-24-account-plan-one-file/boundary.md": "src/RimMandrake/Utils/selftest_account_plan.py",
     "design/specs/2026-11-25-account-plan-sweep/boundary.md": "src/RimMandrake/Utils/selftest_account_plan_sweep.py",
+    "design/specs/2026-11-27-steve-lane-sweep/boundary.md": "src/RimMandrake/Utils/testq/selftest_steve_lane_sweep.py",
     "design/specs/2026-11-24-live-gate-on-pipeline-host/boundary.md": "src/RimMandrake/rimflow/selftest_live_where_run.py",
     "design/specs/2026-11-25-deploy-shard-guard/boundary.md":
         "src/RimMandrake/rimflow/selftest_ledger_sparse_deploy.py",

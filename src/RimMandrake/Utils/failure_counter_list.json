@@ -109,6 +109,10 @@
    "n": 1,
    "why": "waits for another process's index.lock; the commit stays owed to the next ingest"
   },
+  "src/RimMandrake/Utils/testq/steve_lane_sweep.py::after_pass::gap < LS.RETRY_S": {
+   "n": 1,
+   "why": "an offline sweep's check (REPEAT): it reports a third equal refusal sooner than lane_stop.RETRY_S; it stops and escalates nothing"
+  },
   "src/RimMandrake/Utils/testq/testq.py::reconcile::rec.get('auto_retries', 0) < 1": {
    "n": 1,
    "why": "one automatic retry of a crashed attempt; the job then ends INTERRUPTED, which ingest notes with no verdict and no counter counts"
