@@ -68,7 +68,11 @@ NET_HOUR = 0.10                # the hediff's comment: +0.20 an hour gained, -0.
 RES_MAX = 0.5                  # 0.02 x (1 - res) per 250 ticks against 2.4 / 240 per 250 ticks: no net gain at res >= 0.5
 CAP_EPS = 1e-3                 # our own rule: a capacity read back through JSON, a change under it is no change
 BASELINER = "Baseliner"        # XenotypeDef (Data/Biotech/Defs/GeneDefs/XenotypeDefs.xml): no gene at all
-PAD = (130, 215)               # our own pick: the scene (80 x 29 with its firebreak) fits a 250 map, clear of the pads
+PAD = (130, 215)               # our own pick, tried first: the scene (80 x 29 with its firebreak) fits a 250 map
+PAD_STEP = 5                   # our own rule: when PAD's ground holds a thing no clearing removes, the next pads tried
+#                                lie on a 5-cell grid, nearest PAD first (pick_pad)
+STUCK_REACH = 1                # our own rule: a geyser's 2 x 2 footprint grown by one cell on each side, whatever its
+#                                rotation (SteamGeyser size (2,2), destroyable false: Core Buildings_Natural.xml)
 BEARING = 270                  # west: SetWindForTest's bearing (90 = +x), away from both colonists
 STRIP_W, STRIP_H = 40, 12      # the fire's strip: about 4.7 cells an hour at the shipped pace (fire_catches_live's
 #                                MEASURED day-one head of 113 cells), so 40 cells outlast READ_HOURS' first full-smoke hour
@@ -204,6 +208,27 @@ def fits(geo, size):
     """Pure. The scene with its firebreak lies inside the map."""
     x, z, w, h = geo["big"]
     return x >= 0 and z >= 0 and x + w <= size[0] and z + h <= size[1]
+
+
+def blocked(geo, stuck):
+    """Pure. The things no clearing removes (cells (x, z), each a 2 x 2 footprint from its cell) that touch the scene
+    with its firebreak, which _open_ground must leave bare. SITE (ArchSmall, 2026-11-27, site 1 tile 1496): a steam
+    geyser at (143, 221) stood in PAD's scene and the stage read UNMEASURED, 'could not be made open ground'."""
+    x, z, w, h = geo["big"]
+    r = STUCK_REACH
+    return [c for c in stuck or [] if c[0] + 1 + r >= x and c[0] - r < x + w and c[1] + 1 + r >= z and c[1] - r < z + h]
+
+
+def pick_pad(stuck, size, first=PAD, step=PAD_STEP):
+    """Pure. The pad for this map: `first` when its scene fits and no stuck thing touches it, else the nearest pad on a
+    `step` grid that does; None when no pad on the map does (the stage reads UNMEASURED SITE, never a verdict)."""
+    grid = sorted(((ax, az) for ax in range(0, size[0], step) for az in range(0, size[1], step)),
+                  key=lambda a: ((a[0] - first[0]) ** 2 + (a[1] - first[1]) ** 2, a))
+    for a in [tuple(first)] + grid:
+        g = geometry(a)
+        if fits(g, size) and not blocked(g, stuck):
+            return a
+    return None
 
 
 def _row(rows, name, ok, worst, limit, cases):
@@ -375,10 +400,24 @@ def register(suite, V):
         path = t.screenshot(name="swc_%s" % label, rect=tuple(rect), ppc=shot_ppc(rect))
         state["shots"].append({"label": label, "path": path, "rect": list(rect)})
 
+    def stuck_things(t):
+        """The cells of every thing on the map that no clearing removes (validation's RUIN_NOT_A_RUIN: the geysers);
+        UNMEASURED when a count cannot be read, never an empty list read as none."""
+        out = []
+        for d in V.RUIN_NOT_A_RUIN:
+            r = t.bridge_call("jawa/list_things", defName=d, limit=500)
+            if not V._live(t):
+                return []
+            if not isinstance(r, dict) or "countMatched" not in r or not r.get("scanned") \
+                    or len(r.get("things") or []) != r.get("countMatched"):
+                V._unmeasured(t, "SITE: list_things(%s) unreadable: %r" % (d, str(r)[:200]))
+            out += [(th.get("x"), th.get("z")) for th in r.get("things") or []]
+        return out
+
     def save():
         state["manifest"] = write_manifest(state["dir"], dict(
-            (k, state.get(k)) for k in ("scene", "geo", "numbers", "spec", "band", "res", "start", "reads", "shots",
-                                        "firesAtForce", "plantedFault", "judge")))
+            (k, state.get(k)) for k in ("scene", "pad", "stuck", "geo", "numbers", "spec", "band", "res", "start",
+                                        "reads", "shots", "firesAtForce", "plantedFault", "judge")))
 
     def judged(t, tag, opp, ver):
         print_rows(tag, opp + ver)
@@ -418,6 +457,14 @@ def register(suite, V):
             # red-first (contract): the 0.1.0 build has no smoke weather to force, and that is the mod's FAIL
             V._get_defs(t, "WeatherDef/%s;HediffDef/%s" % (SMOKE, CHOKE), "label")
             V._pad(t, PAD)
+            if V._live(t):
+                state["stuck"] = stuck_things(t)
+                state["pad"] = pick_pad(state["stuck"], V._map_size(t))
+                print("[swc-check] pad %r (PAD %r): %d stuck thing(s) on the map, %d in PAD's scene" % (
+                    state["pad"], PAD, len(state["stuck"]), len(blocked(geometry(PAD), state["stuck"]))), flush=True)
+                if state["pad"] is None:
+                    V._unmeasured(t, "SITE: no pad on the map clears the geysers %r" % state["stuck"])
+                V._pad(t, state["pad"])
             g = geometry(t.anchor)
             state["geo"] = g
             if V._live(t) and not fits(g, V._map_size(t)):

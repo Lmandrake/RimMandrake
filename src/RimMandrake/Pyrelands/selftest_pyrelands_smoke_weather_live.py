@@ -111,6 +111,37 @@ check("strip, room and both colonists lie in the scene", inside(g["strip"], g["s
       and inside((g["O"][0], g["O"][1], 1, 1), g["scene"]), g)
 check("the scene fits a 250 map at PAD, and a pad at the corner does not", S.fits(g, (250, 250))
       and not S.fits(S.geometry((10, 10)), (250, 250)))
+# the pad (SITE, ArchSmall 2026-11-27, site 1 tile 1496: a geyser stood in PAD's scene; the stage read UNMEASURED)
+GEYSERS_SITE1 = [(69, 157), (57, 233), (28, 97), (143, 221)]   # MEASURED: list_things SteamGeyser, 4 of 4, that map
+check("the measured site: the geyser at (143, 221) blocks PAD's scene", S.blocked(S.geometry(S.PAD), GEYSERS_SITE1)
+      == [(143, 221)], S.blocked(S.geometry(S.PAD), GEYSERS_SITE1))
+p1 = S.pick_pad(GEYSERS_SITE1, (250, 250))
+print("[swc-st] measured site 1: pad %r (PAD %r)" % (p1, S.PAD))
+check("the measured site: the pad picked fits and no geyser touches it", p1 is not None and p1 != S.PAD
+      and S.fits(S.geometry(p1), (250, 250)) and not S.blocked(S.geometry(p1), GEYSERS_SITE1), p1)
+check("no geyser: the pad is PAD", S.pick_pad([], (250, 250)) == S.PAD)
+check("a geyser one cell beyond the firebreak's reach does not block; one inside it does",
+      not S.blocked(S.geometry(S.PAD), [(S.geometry(S.PAD)["big"][0] - 3, S.PAD[1])])
+      and S.blocked(S.geometry(S.PAD), [(S.geometry(S.PAD)["big"][0] - 2, S.PAD[1])]))
+dense = [(x, z) for x in range(0, 250, 8) for z in range(0, 250, 8)]
+check("geysers every 8 cells: no pad, None (the stage reads UNMEASURED SITE)", S.pick_pad(dense, (250, 250)) is None)
+# the sweep: what the game varies here is the geysers' number and cells (and the map's size, 250 on the fixture)
+rng = random.Random(1127)
+LAYOUTS, none, worst_n, bad = 3000, 0, None, []
+for i in range(LAYOUTS):
+    n = rng.randint(0, 16)
+    size = rng.choice(((250, 250), (200, 200), (275, 275), (325, 325)))
+    gs = [(rng.randrange(size[0] - 1), rng.randrange(size[1] - 1)) for _ in range(n)]
+    pp = S.pick_pad(gs, size)
+    if pp is None:
+        none += 1
+        worst_n = n if worst_n is None else min(worst_n, n)
+    elif not S.fits(S.geometry(pp), size) or S.blocked(S.geometry(pp), gs):
+        bad.append((size, gs, pp))
+print("[swc-st] pad sweep: %d layouts (0..16 geysers, maps 200..325): %d with no pad (fewest geysers then %r), "
+      "%d picks that do not fit or touch a geyser (limit 0)" % (LAYOUTS, none, worst_n, len(bad)))
+check("pad sweep: every pad picked fits and touches no geyser", not bad, bad[:2])
+check("pad sweep: a pad is found on every layout of up to 16 geysers", none == 0, (none, worst_n))
 print("[swc-st] capture ppc %d for %r (long side %d px, limit %d)" % (S.shot_ppc(g["sky"]), g["sky"][2:],
                                                                       S.shot_ppc(g["sky"]) * 48, S.SHOT_PX))
 check("a capture's long side stays at or under SHOT_PX", S.shot_ppc(g["sky"]) * max(g["sky"][2:]) <= S.SHOT_PX)
@@ -210,8 +241,8 @@ class Stop(Exception):
 class Game(object):
     """A twin of MapComponent_RM_SmokeWeather over a 250 map, two colonists and a burning strip."""
 
-    def __init__(self, fault=None):
-        self.fault, self.clock, self.notes = fault, 0, []
+    def __init__(self, fault=None, geysers=()):
+        self.fault, self.clock, self.notes, self.geysers = fault, 0, [], list(geysers)
         self.weather, self.age, self.last = "Clear", 0, "Clear"
         self.pawns, self.roof, self.fire_on, self.burned, self.shots = {}, set(), False, 0, 0
         self.gp, self.hp = 37, 113
@@ -266,6 +297,12 @@ class Game(object):
             return {"pawns": [self.row(p) for p in self.pawns.values()]}
         if tool == "jawa/pawn_stats":
             return {"stats": [{"defName": "ToxicEnvironmentResistance", "value": 0.0}], "refused": []}
+        if tool == "jawa/list_things":
+            if self.fault == "things_unreadable":
+                return {"success": False, "error": "timeout"}
+            th = [{"def": "SteamGeyser", "x": x, "z": z} for x, z in self.geysers] if kw["defName"] == "SteamGeyser" \
+                else []
+            return {"success": True, "things": th, "countMatched": len(th), "scanned": 54669}
         if tool == "jawa/set_roof_batch":
             kind, rect = kw["ops"].split(":")
             x, z, w, h = [int(v) for v in rect.split(",")]
@@ -311,7 +348,7 @@ def run(game, env=None, judge=None):
         return f
 
     def spawn(t, x, z):
-        pid = "R" if (x, z) == tuple(g["R"]) else "O"
+        pid = "R" if (x, z) == tuple(S.geometry(t.anchor)["R"]) else "O"   # the pad the chain picked
         game.pawns[pid] = {"id": pid, "cell": (x, z), "sev": 0.0}
         return pid
 
@@ -331,13 +368,22 @@ def run(game, env=None, judge=None):
     def pad(t, xz):
         t.anchor = xz
 
+    def open_ground(t, rect, margin=0, soil=None):
+        """The real one's refusal: a geyser (destroyable false) left standing in the cleared rect is UNMEASURED SITE."""
+        x, z, w, h = rect
+        big = (x - margin, z - margin, w + 2 * margin, h + 2 * margin)
+        left = [c for c in game.geysers if any(big[0] <= c[0] + i < big[0] + big[2] and big[1] <= c[1] + j < big[1] + big[3]
+                                               for i in (0, 1) for j in (0, 1))]
+        if left:
+            stop("UNMEASURED")("SITE: %s could not be made open ground: %d SteamGeyser" % (V._rs(big), len(left)))
+
     ns = types.SimpleNamespace(
         _teardown=lambda **k: (lambda fn: fn), _comp=lambda t, n, **k: Comp(n), _live=lambda t: True,
         _independent=lambda t: None, _unmeasured=stop("UNMEASURED"), _fail=stop("FAIL"),
         _wait=lambda t, n, fast=None: game.advance(n), _note=lambda t, k, v: game.notes.append((k, v)),
         _load_registered_site=lambda t: (1, ""), _pad=pad, _rs=V._rs, _get_defs=get_defs, _map_size=lambda t: (250, 250),
         _ten_gate_on=lambda t: True, _set=lambda t, v: None, _extinguish=lambda t: None,
-        _open_ground=lambda t, rect, margin=0, soil=None: None, _spawn_colonist=spawn,
+        _open_ground=open_ground, _spawn_colonist=spawn, RUIN_NOT_A_RUIN=V.RUIN_NOT_A_RUIN,
         _plants=lambda t, p, rect, growth=1.0: None, _fire=fire, _count=count, _log_mark=lambda t: 0,
         _log_since=lambda t, m, limit=1000: ([{"type": "Error", "text": "planted"}] if game.fault == "error_line"
                                              else [{"type": "Message", "text": "ok"}]),
@@ -393,6 +439,23 @@ print("[swc-st] planted scene %s=unroof: %r" % (S.PLANT_ENV, v))
 check("the live twin's planted unroof fails smoke_spares_roofed", v.get("smoke_spares_roofed") == "FAIL", v)
 v, _ = run(Game(), judge="ash fall")
 check("a judge's 'ash fall' fails the sky", v.get("smoke_sky_reads_as_smoke") == "FAIL", v)
+
+v, _ = run(Game(geysers=GEYSERS_SITE1), judge="smoke")
+print("[swc-st] measured site 1 geysers, judge 'smoke': %r" % v)
+check("the measured site's geysers: all seven components PASS (the pad moves off the geyser)",
+      all(v.get(c) == "PASS" for c in COMPS), v)
+real_pick = S.pick_pad
+S.pick_pad = lambda stuck, size, **k: S.PAD   # the planted fault: the pre-repair scene, PAD whatever stands on it
+try:
+    v, _ = run(Game(geysers=GEYSERS_SITE1), judge="smoke")
+finally:
+    S.pick_pad = real_pick
+print("[swc-st] planted pad=PAD on the measured site: %r" % v.get("smoke_weather_stage"))
+check("planted pad=PAD on the measured site: the stage reads UNMEASURED (the live run's reading)",
+      str(v.get("smoke_weather_stage")) == "UNMEASURED", v)
+v, _ = run(Game(fault="things_unreadable"), judge="smoke")
+check("an unreadable geyser count: the stage reads UNMEASURED, never 'no geyser'",
+      str(v.get("smoke_weather_stage")) == "UNMEASURED", v)
 
 # ---- 4. the record
 check("validation.py registers smoke_weather_chokes", any(
