@@ -25,8 +25,10 @@ Code: `src/RimMandrake/rimflow/fresh_reader.py` (all of it), `src/RimMandrake/ri
 - **the-lane-offers-the-reader-ticket.** The lane decides `launch` on a reader ticket whose check fails, and its Work
   brief carries the reader part: each file with its boundary page and tests, "You are not <maker>", and "Do NOT read
   the diff" and the earlier findings.
-- **the-check-holds-on-a-review-record.** `holds` exits 0 when each file has a review record on its present bytes
-  (READ-CLEAN, or FLAGGED by a reader that fixed), 1 when one lacks it, 2 when the record could not be read.
+- **the-check-holds-on-a-review-record.** `holds` exits 0 when each file has a review record: READ-CLEAN on its present
+  bytes, or FLAGGED (by the reader that fixed, on its present bytes; or before a later fix changed it, since nobody
+  reviews a FLAGGED file again and its weekly examination reads it), 1 when one lacks it, 2 when the record could not be
+  read.
 - **the-rule-is-in-every-brief.** `fixer_rule.READER_RULE` is in `detached_helper.FOOTER`; `READER_LINE` is word for word
   in `CLAUDE.md` and `design/RimMandrake/standing_rulings.md`.
 

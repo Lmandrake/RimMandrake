@@ -106,6 +106,13 @@ def t_the_check_holds_on_a_review_record():
             with open(fp, "w") as fh:
                 fh.write("two")
             assert f.flagged_on_bytes(fp) is False, "a flag on older bytes is no record of the present bytes"
+            # a file FLAGGED before a later fix changed it: nobody reviews it again (code_review.md: "If you are the
+            # reader of a FLAGGED file, stop"), so its reader ticket holds; the weekly examination reads it (seen
+            # 2026-11-27: list_dispatch.py, flagged 2026-11-25, changed by 3318e30be0, kept its reader ticket red)
+            assert f.flag_kind(fp) == "older", "a flag on older bytes is still a flag (%s)" % f.flag_kind(fp)
+            assert f.holds(SHA, [fp], dirty) == 0, "a file flagged before the fix holds: nobody reviews it again"
+            os.remove(os.path.join(CRS.flag_dir(), "BENCH.jsonl"))
+            assert f.flag_kind(fp) is None and f.holds(SHA, [fp], dirty) == 1, "no flag and DIRTY: does not hold"
         finally:
             CRS.ROOT = old_root
 

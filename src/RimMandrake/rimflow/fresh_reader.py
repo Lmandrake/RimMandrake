@@ -9,8 +9,9 @@ reader. Why: 5 of 6 fresh-reader runs in the 7 days to 2026-11-26 were launched 
     python3 src/RimMandrake/rimflow/fresh_reader.py file --fix <sha> <path>...   the fixing run, before it ends
     python3 src/RimMandrake/rimflow/fresh_reader.py holds <sha> <path>...        the ticket's outcome check
 
-The ticket's check holds when each fixed file carries a review record on its present bytes (`code_review_status.py
-mark-clean`, or `flag` when the reader found and fixed something). The lane's brief for it names the fixed files, their
+The ticket's check holds when each fixed file carries a review record: `code_review_status.py mark-clean` on its
+present bytes, or a flag (`flag`, when the reader found and fixed something; or a flag from before the fix, since nobody
+reviews a FLAGGED file again). The lane's brief for it names the fixed files, their
 boundary pages and tests, and never the diff of the fix or the findings that led to it.
 """
 import argparse
@@ -100,25 +101,36 @@ or tickets that led to it: judge each file against its page and its tests. Read 
 """.format(maker=maker or "unknown", sha=sha or "?", rows="\n".join(rows) or "   (the title names no file)")
 
 
-def flagged_on_bytes(rel):
-    """-> True when `rel` is FLAGGED now and the flag was made on its present bytes. Raises when the flags cannot be read.
-    `check --record` reads DIRTY on a FLAGGED file (selftest_code_review_page_state.py pins it), so the flag is read here."""
+def flag_kind(rel):
+    """-> "present" when `rel` is FLAGGED now and the flag was made on its present bytes, "older" when it is FLAGGED on
+    older bytes (flagged before a later fix changed it), None when it is not flagged. Raises when the flags cannot be
+    read. `check --record` reads DIRTY on a FLAGGED file (selftest_code_review_page_state.py pins it), so the flag is
+    read here."""
     import code_review_status as CRS
     path = rel if os.path.isabs(rel) else os.path.join(REPO, rel)    # as `check --record` reads it: cwd=REPO
     try:
         rec = CRS.flags().get(CRS.canonical_rel(CRS.repo_rel(path)))
     except CRS.FlagsUnreadable as e:
         raise OSError(str(e))
-    return bool(rec) and rec.get("sha256") is not None and rec.get("sha256") == CRS.file_hash(rec["path"])
+    if not rec:
+        return None
+    return "present" if rec.get("sha256") is not None and rec.get("sha256") == CRS.file_hash(rec["path"]) else "older"
+
+
+def flagged_on_bytes(rel):
+    """-> True when `rel` is FLAGGED now and the flag was made on its present bytes."""
+    return flag_kind(rel) == "present"
 
 
 def holds(sha, paths, runner=None, flagged=None):
-    """-> 0 when each path has a review record on its present bytes (READ-CLEAN or FLAGGED), 1 when one lacks it,
-    2 when the record could not be read."""
+    """-> 0 when each path has a review record (READ-CLEAN on its present bytes, or FLAGGED: on its present bytes, or
+    before a later fix, since nobody reviews a FLAGGED file again), 1 when one lacks it, 2 when it could not be read."""
     import time_budget
     run = runner or (lambda argv: subprocess.run(argv, cwd=REPO, capture_output=True, text=True,
                                                  timeout=time_budget.CALL_S))
-    is_flagged = flagged or flagged_on_bytes
+    # a flag on older bytes holds too: a file FLAGGED before a later fix is never reviewed again (code_review.md, "If
+    # you are the reader of a FLAGGED file, stop"); its weekly examination reads it
+    is_flagged = flagged or flag_kind
     worst = 0
     for p in paths:
         try:
@@ -133,8 +145,11 @@ def holds(sha, paths, runner=None, flagged=None):
             worst = max(worst, 0 if out else 2)
             continue
         try:
-            if is_flagged(p):
-                print("FLAGGED  %s  (a flag on its present bytes: the reader found and fixed)" % p)
+            k = is_flagged(p)
+            if k:
+                print("FLAGGED  %s  (%s)" % (p, "a flag on its present bytes: the reader found and fixed" if k is True
+                                             or k == "present" else "flagged on older bytes, before a later fix: nobody "
+                                             "reviews it again; the weekly examination reads it"))
                 continue
         except Exception as e:  # noqa: BLE001 - flags that cannot be read leave the answer unknown, never DIRTY
             print(out or "could not look: %s printed nothing (rc %s)" % (p, r.returncode))
