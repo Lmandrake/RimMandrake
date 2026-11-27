@@ -91,17 +91,17 @@
   "test_blob": "5e034f27dc583dcad960ce5fbd31452e8804595e"
  },
  "T_ONBOARDING_TABLE_OFFLINE": {
-  "at": "2026-11-27T17:50:52Z",
+  "at": "2026-11-27T18:44:39Z",
   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
   "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
-  "last": "T_ONBOARDING_TABLE_OFFLINE: FAIL (15 lines read)",
-  "patch": "diff --git a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml\nindex fade2908ec..a0f4fcd5aa 100644\n--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml\n@@ -169,7 +169,7 @@\n         <!-- Part of the donor's list: the row's kludgedProcesses. -->\n         <processes>\n           <li MayRequire=\"Ludeon.RimWorld.Odyssey\">VFEFactory_CreateObsidian</li>\n-          <li MayRequire=\"OskarPotocki.VFE.Classical\">VFEFactory_AlloyBronze</li>\n+          <li>VFEFactory_AlloyBronze</li>\n         </processes>\n         <hideSettings>true</hideSettings>\n       </li>\n",
+  "last": "T_ONBOARDING_TABLE_OFFLINE: FAIL (17 lines read)",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedFishfarm.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedFishfarm.xml\n@@ -155,7 +155,6 @@\n         <notWorkingKey>VFEFactory_FactoryNotWorking</notWorkingKey>\n         <alwaysShowProgressBar>true</alwaysShowProgressBar>\n         <!-- The donor's XML lists no processes; the C# fills the Kludged list at startup (the row's kludgedProcessCount). -->\n-        <processes/>\n         <hideSettings>true</hideSettings>\n         <canOverclock>false</canOverclock>\n       </li>\n",
   "patch_files": [
-   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml"
+   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedFishfarm.xml"
   ],
-  "patch_sha": "d5fe9db7248291fa",
+  "patch_sha": "6725672c2b74f634",
   "rc": 1,
-  "test_blob": "a26a1fa9dcb2a3527a9244b5971eeaa83506fcab"
+  "test_blob": "33571b09eff6f883c33abbb85913993f246a7836"
  },
  "T_REPAIR_STATE_WALK": {
   "at": "2026-11-27T14:16:10Z",

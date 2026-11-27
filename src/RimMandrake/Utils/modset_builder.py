@@ -434,9 +434,14 @@ TIERS = {
                "the RM-tier mod with what it needs: VFE Factory (a hard dependency; VFE Core comes with it), Research "
                "Reinvented (its study opportunities are MayRequire on it) and FlowWorks (its distillation patch is "
                "a FindMod on it). No campaign layer: the RM-tier mod must play in a game without one. Harmony and "
-               "the five DLCs resolve by themselves.",
+               "the five DLCs resolve by themselves. The six Vanilla Expanded mods are here because the machine "
+               "lines name them with MayRequire (a process of the donor that needs that mod, and the cannery's whole "
+               "line on Vanilla Cooking Expanded): small_list.py counts each as needed, since a list without the mod "
+               "never loads those processes and proves nothing about them (added 2026-11-27, when the 20 lines landed).",
         "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.wreckedmachines", "VanillaExpanded.VFEFactory",
-                 "petetimessix.researchreinvented", "mandrake.rm.flowworks"],
+                 "petetimessix.researchreinvented", "mandrake.rm.flowworks",
+                 "vanillaexpanded.vbrewe", "vanillaexpanded.vcooke", "vanillaexpanded.gravship",
+                 "vanillaracesexpanded.genie", "vanillaexpanded.vchemfuele", "vanillaexpanded.vgeneticse"],
         "dlc": True,
     },
     "wreckedmachines_no_research_reinvented": {

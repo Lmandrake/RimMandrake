@@ -343,6 +343,37 @@ def main():
             say(any(attr in f for f in res["donor_fidelity"]), "PLANT that %s dropped from the Kludged level: check faults donor_fidelity" % attr,
                 "%d faults" % len(res["donor_fidelity"]), "at least 1 that names %s" % attr)
 
+        # ---- a donor whose XML lists no processes (the factory mod makes them in code: the fish farm). Each level keeps an empty
+        # <processes> element. With none, the game makes no list: the Kludged fish farm threw in the factory framework's config
+        # check at startup and the C# found no list to fill (live, 2026-11-27).
+        for donor_has_element in (True, False):
+            m, v = fresh()
+            f = os.path.join(v, "1.6", "Defs", "ThingDefs_Buildings", "Buildings_Factories.xml")
+
+            def empty(r):
+                for p in list(r.iter("processes")):
+                    if donor_has_element:
+                        for li in list(p):
+                            p.remove(li)
+                    else:
+                        p.getparent().remove(p)
+            edit(f, empty)
+
+            def count_row(r):
+                row = r.find(ob.LINE_TAG)
+                row.remove(row.find("kludgedProcesses"))
+                (row.find("kludgedProcessCount") if row.find("kludgedProcessCount") is not None
+                 else etree.SubElement(row, "kludgedProcessCount")).text = "2"
+            edit(staged(m), count_row)
+            rc, out = run(["stamp", "smelter", "--mod", m, "--vfef", v])
+            got = {}
+            if rc == 0:
+                for d in etree.parse(staged(m, "levels.xml")).getroot():
+                    if isinstance(d.tag, str) and d.findtext("defName") and d.find("comps/li/canOverclock") is not None:
+                        got[d.findtext("defName").rsplit("_", 1)[-1]] = len(d.findall("comps/li/processes"))
+            say(got == {"Kludged": 1, "Refurbished": 1}, "a donor with %s: the Kludged and the Refurbished level each keep one <processes> element"
+                % ("an empty process list" if donor_has_element else "a processor and no <processes> element"), "exit %d, %s" % (rc, got), "1 on both")
+
         # ---- land
         m, v = fresh()
         run(["stamp", "smelter", "--mod", m, "--vfef", v])

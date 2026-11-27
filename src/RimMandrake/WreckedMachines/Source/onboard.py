@@ -32,7 +32,8 @@ VFEFactory_AutomatedSmelter 260 steel, 300 W, heat 14, breakdown 3, MaxHitPoints
                power x1.1 (330 W); heat x1.15 (14 -> 16); canOverclock false; every donor process; the machine comp; a carried form only
                if refurbishedMovable; it draws the donor's own picture.
   A donor with no processor comp (the autofarmer) is stamped without process, breakdown or overclock handling. A donor whose XML
-  lists no processes (the fish farm: the factory mod fills them in code) keeps no <processes> element; a comment says the C# fills it.
+  lists no processes (the fish farm: the factory mod fills them in code) keeps an empty <processes> element (the game makes no list
+  without one); a comment says the C# fills it.
 
 Exit: 0 done / passes; 1 refused (a fault in the row, the stamp or the check); 2 COULD NOT LOOK (the donor or a file cannot be read:
 never a guess).
@@ -569,11 +570,15 @@ def derive(donor, row, level, key, number, tx, procs_kl):
             old = pr.find("processes")
             want = procs_kl
             if want is None or (not want and old is None):
+                # The element stays, empty: with no <processes> element the game makes no list, the factory framework's config
+                # check throws on the def at startup, and RM_ProcessLists finds no list to fill (live, the fish farm, 2026-11-27).
+                note = etree.Comment(" The donor's XML lists no processes; the C# fills the Kludged list at startup (the row's kludgedProcessCount). ")
                 if old is not None:
-                    old.addprevious(etree.Comment(" The donor's XML lists no processes; the C# fills the Kludged list at startup (the row's kludgedProcessCount). "))
-                    pr.remove(old)
+                    old.addprevious(note)
+                    pr.replace(old, mk("processes"))
                 else:
-                    pr.append(etree.Comment(" The donor's XML lists no processes; the C# fills the Kludged list at startup (the row's kludgedProcessCount). "))
+                    pr.append(note)
+                    pr.append(mk("processes"))
             else:
                 lst = mk("processes")
                 # a donor process that needs another mod keeps that condition, or the def names a process that is not loaded
@@ -589,6 +594,7 @@ def derive(donor, row, level, key, number, tx, procs_kl):
                     pr.append(lst)
         elif pr.find("processes") is None:
             pr.append(etree.Comment(" The donor's XML lists no processes; the C# fills the list at startup from the donor as loaded. "))
+            pr.append(mk("processes"))
     else:
         d.find("statBases").addprevious(etree.Comment(" The donor has no processor comp: the Kludged level's slower work is set by C#. ")) if kl else None
     if kl:

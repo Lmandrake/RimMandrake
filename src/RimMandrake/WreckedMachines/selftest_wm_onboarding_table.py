@@ -20,6 +20,11 @@ another operation class is COULD NOT LOOK, never skipped). Then each line of the
                         condition on the Kludged and the Refurbished def; a bare entry names a process that is not loaded on a
                         list without that mod, and the game reports a config error (seen live on the alloy forge, 2026-11-27)
 
+  list_exists           a Kludged or a Refurbished def with a processor comp has a <processes> element, empty or not. With no
+                        element the game makes no list: the factory framework's own config check throws on it at startup
+                        and this mod's startup code finds no list to fill (seen live on the Kludged fish farm, 2026-11-27).
+                        This row reads every line whose donor has a processor, also one whose list is made in code
+
 With --staged the lines waiting in Source/onboarding_staged/<key>/ are read too and printed apart; they decide nothing until
 they land. Left out, and read live instead (scene sc_levels_do_their_work): what the C# sets at startup: the processes that the
 factory mod makes in code (autoloom, machining bay, fish farm), a Kludged part given by a count, and the autofarmer, which has no
@@ -40,7 +45,7 @@ LINE_TAG = "RimMandrake.WreckedMachines.RM_MachineLineDef"
 PROC = 'comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]'
 STEAM = "/mnt/c/Program Files (x86)/Steam/steamapps"
 VFEF_DEFAULT = os.environ.get("RM_VFEF_DIR") or STEAM + "/workshop/content/294100/3686924415"
-ROWS = ("kludged_is_a_part", "refurbished_is_whole", "row_names_real", "conditions_kept")
+ROWS = ("kludged_is_a_part", "refurbished_is_whole", "row_names_real", "conditions_kept", "list_exists")
 
 
 class CouldNotLook(Exception):
@@ -156,6 +161,13 @@ def _procs(tree, defname):
     return [li.text.strip() for li in comp[0].xpath("processes/li") if li.text], True
 
 
+def _has_list(tree, defname):
+    """True when the def's processor comp has a <processes> element; None when the def or its processor comp is absent."""
+    d = tree.xpath('/Defs/ThingDef[defName="%s"]' % defname)
+    comp = d[0].xpath(PROC) if d else []
+    return bool(comp[0].xpath("processes")) if comp else None
+
+
 def _conds(tree, defname):
     """{process: the MayRequire on its entry, or None} of a def's processor."""
     d = tree.xpath('/Defs/ThingDef[defName="%s"]' % defname)
@@ -179,8 +191,11 @@ def read_line(tree, key, row):
         if named:
             bad["row_names_real"].append("%s: the row names processes %s and the donor has no process list" % (key, named))
         return bad, "no process list on the donor: not read by these rows"
+    for nm, dn in (("Kludged", kl), ("Refurbished", rf)):
+        if _has_list(tree, dn) is False:
+            bad["list_exists"].append("%s: the %s def %s has a processor comp and no <processes> element" % (key, nm, dn))
     if not D:
-        return bad, "the donor's process list is made in code at startup: read live, not here"
+        return bad, "the donor's process list is made in code at startup: its processes are read live, not here"
     K, kf = _procs(tree, kl)
     R, rfound = _procs(tree, rf)
     if K is None or R is None:
@@ -243,6 +258,8 @@ def _plant(tree, how):
         r.insert(0, r[-1])
     elif how == "kludged_drops_a_condition":
         [li for li in d if li.text == k[0].text][0].set("MayRequire", "Some.OtherMod")
+    elif how == "kludged_has_no_list":
+        k.getparent().remove(k)
     elif how == "row_names_a_foreign_process":
         row = [x for x in t.getroot().iter(LINE_TAG) if x.findtext("key") == "smelter"][0]
         LX.SubElement(row.find("kludgedProcesses"), "li").text = "VFEFactory_MakeKibble"
@@ -252,7 +269,7 @@ def _plant(tree, how):
 PLANTS = (("kludged_empty", "kludged_is_a_part"), ("kludged_is_everything", "kludged_is_a_part"),
           ("kludged_makes_what_the_donor_cannot", "kludged_is_a_part"), ("refurbished_lacks_one", "refurbished_is_whole"),
           ("refurbished_out_of_order", "refurbished_is_whole"), ("row_names_a_foreign_process", "row_names_real"),
-          ("kludged_drops_a_condition", "conditions_kept"))
+          ("kludged_drops_a_condition", "conditions_kept"), ("kludged_has_no_list", "list_exists"))
 
 
 def main():

@@ -155,6 +155,7 @@
         <notWorkingKey>VFEFactory_FactoryNotWorking</notWorkingKey>
         <alwaysShowProgressBar>true</alwaysShowProgressBar>
         <!-- The donor's XML lists no processes; the C# fills the Kludged list at startup (the row's kludgedProcessCount). -->
+        <processes/>
         <hideSettings>true</hideSettings>
         <canOverclock>false</canOverclock>
       </li>
