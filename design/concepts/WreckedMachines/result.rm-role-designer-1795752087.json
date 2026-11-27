@@ -1,0 +1,11 @@
+{
+ "run": "rm-role-designer-1795752087",
+ "stage": 1,
+ "outcome": "waiting_owner",
+ "summary": "Turn 1 sent (design/concepts/WreckedMachines/turn_01.md). It offers a look at the running mod first, writes the case for and against a generic version, and puts a root paragraph before him: ancient machines that no colony can make, found broken, studied at the machine itself, rebuilt in place grade over grade, never equal to the original. Three asks sent, all passed by a fresh Opus judge (a467e768ff82de4be) and narrowed on its review: a_root (is the paragraph the mod; the doubted word is 'any' in 'any RimWorld game', because the mod does not load without the factory mod), a_how_found (a wreck only in ancient-ruin rooms, or also now and then on an ordinary map; recommended: also on an ordinary map), a_riders (the alloy forge steps, the salvage rule and the distillation machine: outside the promise and working as today, or bars of their own; recommended: outside). Held for stage 2: how study feels (after the look), where an Ancient Component comes from, wealth. New core contradiction c_factory_mod_required.",
+ "quick_look": {
+  "offer": true,
+  "settles": ["c_grades_share_one_picture", "a_how_study_feels", "c_study_fights_build_over"],
+  "scene": "One save on the mod's small list: the smelter at all four grades side by side, the power cell and the psychic emanator at three grades each, a wreck with a colonist sent to study it (Research Reinvented is on the list), and a kludged smelter half-built over a wreck. He sees whether the grades can be told apart by eye, whether a grade built over the last reads as a repair or as a build menu, and what study at a wreck looks like today. A sitting with him, or an agent's walk that brings him zoomed captures; the Conductor stages it."
+ }
+}
