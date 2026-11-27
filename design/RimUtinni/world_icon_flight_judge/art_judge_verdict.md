@@ -1,62 +1,76 @@
-# The Utinni's world-map flight icon: art judge verdict (2026-11-27)
+# The Utinni's world-map flight icon: art judge verdict (2026-11-27, look 2)
 
 Item: `UTINNI_WORLDMAP_FLIGHT_ICON_1`, part `icon_style_judged`.
-Judge: rm-detached-bench-utinni-worldmap-flight-icon-1-1795789966 (claude-opus-5-5). This judge did not make the work.
+Judge: claude-opus-5-5, a blind-judge subagent of the detached run for this item. This judge did not make the work and
+did not make look 1.
 Brief: `design/RimMandrake/art_judge_brief.md`@9ad7d729e5, and `design/RimMandrake/standing_rulings.md` §The judge
-refuses flaws, not polish and §A refusal carries its path to pass. Look 1 of at most 2.
+refuses flaws, not polish and §A refusal carries its path to pass. This is look 2 of at most 2. It checks the one named
+flaw of look 1 ("our sprite does not draw in flight") and rules A2 and A3. There is no third look.
 
-The ask: from the in-flight globe captures (zoomed in and out), does the icon read as our ring-hull ship under the
-faction tint?
+The ask: from the new in-flight globe captures and the live read-back, does the globe in flight show our icon, does
+it read as our ring-hull ship under the faction tint, and is the icon's style acceptable?
 
-## Verdict: NAMED FLAW: our sprite does not draw in flight
+## Verdict: KEEP
 
-The only in-flight captures that exist show vanilla's glyph, not our ring-hull sprite. The art itself is not refused.
-The delivery to the screen is the flaw.
+- A2 (the icon style is acceptable): KEEP.
+- A3 (the globe in flight shows the icon, and it reads as our ring-hull ship): KEEP. The flaw of look 1 is fixed.
 
 ## Evidence
 
-- `capture_2026-09-24_zoomout.png` (here; also `Transient/utinni_flight_2026-09-24/utinni_flight_far_zoomout_2026-09-24.png`
-  at 6168adf820): the globe zoomed out with a live `Gravship` world object in flight (FOUNDRY's note of
-  2026-09-24T00:57Z: `jawa/world_objects_get def=Gravship` gave a count of 1). Next to the colony, the ship is a cyan
-  saucer with a dome and two windows. That is the vanilla `World/WorldObjects/Expanding/Gravship` glyph under the
-  player-faction tint. There is no ring and no hub.
-- `capture_2026-09-24_icon_crop_6x.png` (here): the same icon at a 6x crop. A flat hull, a raised dome and windows.
-  It is the "little pale blue dome-shaped thing" that the owner described on 2026-09-12.
-- `Transient/utinni_flight_2026-09-24/utinni_flight_far_zoomin_2026-09-24.png` (at 6168adf820, not copied here): the
-  globe zoomed in. No ship icon is visible in the frame. The capture was centred on the origin tile, not on the ship's
-  draw position, so the zoomed-in regime (the `texture` field) has no evidence at all.
-- These captures still stand for the current build. I measured on 2026-11-27 that the repo and the ArchBig deployed
-  copy are byte-identical: `Patches/UtinniWorldIcon.xml` md5 8507f5f9…, and both PNGs md5 324445cd… The patch and the
-  art have no commit since eaccb6bc00 (2026-09-12). `PatchOperationSettingGate.cs` had one 3-line commit (cbfe271eb0,
-  2026-09-26) for another setting. So no change touches what these captures show
-  (CLAUDE.md §After a change, only the checks that the change touches run again).
-- I did not take new captures. ArchBig was free, but no scene stages a gravship flight on the UtinniPatches small list
-  yet. The 2026-09-24 flight used the canonical campaign save on the full list, which is retired. The live part
-  `our_icon_draws_on_the_globe_in_flight_live` (work bundle WB-game-ship-20261126-164518, step 3) builds that scene.
-  A new capture before the cause is found would show the same glyph again [guess ~80%].
+- `captures_2026-11-27/modcheck_UtinniPatches_20261127T164911Z.json`: the chain `world_icon_in_flight` ran on ArchBig
+  on the UtinniPatches small list. All of its rows read PASS. The one live `Gravship` world object (id 106, faction
+  PlayerColony, tile 118865, ticksGame 2299) reads `expandingIcon` = `RUT_Utinni`
+  (`World/WorldObjects/Expanding/RUT_Utinni`) and `materialTexture` = `RUT_UtinniCaravan`
+  (`World/WorldObjects/RUT_UtinniCaravan`). This is the live object's texture, not the def. So the cause that look 1
+  could not name (the patch did not reach the drawn texture) is gone, in both zoom regimes.
+- `captures_2026-11-27/close_crop_x4.png` (from `world_icon_in_flight_close_1795798142.png`, altitude 160, centred on
+  the ship): the ship draws as OUR sprite. I see a toothed ring with the side bumps of the ship's hull, a dark-teal
+  hull, a dark keel line and a bright cyan hub disc in the centre. There is no dome and there are no windows. The
+  vanilla glyph that look 1 saw is not there. The player-faction cyan tint multiplies the sprite, and the ring and hub
+  still read, because the art carries its reading in value. A dark rectangle covers the lower half of the ship. The
+  full frame shows that it is the hover tooltip box at the screen centre, inside the tile hover square. It is not our
+  sprite: both textures are 64x64 with real alpha. The upper half that is visible shows the ring, the hub and the
+  bumps. That is enough to read the shape.
+- Shape reference: `design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.png`. It shows a ring
+  hull, an octagonal hub and a spoke to the west. The icon matches it: a ring, a central hub, the spoke stub and the
+  bumpy outer edge. Side by side, in scratch: `D:\ClaudeWork\rimmandrake\judge_utinni_icon\art_vs_ref.png`.
+- `captures_2026-11-27/world_icon_in_flight_mid_1795798146.png` (altitude 400), `mid_crop_x8.png` and
+  `world_icon_in_flight_far_1795798148.png` (altitude 900): the ship is still on its origin tile at tick 2299. So the
+  colony's cyan house icon draws over it, and no ship icon is visible at these zooms. These shots show neither our
+  icon nor vanilla's. The zoomed-out regime therefore rests on the live `expandingIcon` = `RUT_Utinni` read-back.
+  `RUT_Utinni.png` and `RUT_UtinniCaravan.png` are byte-identical (md5 324445cd…, measured on 2026-11-27). So the
+  zoomed-out icon is the same picture that the close shot shows drawing.
+- Art: `src/RimUtinni/UtinniPatches/Textures/World/WorldObjects/Expanding/RUT_Utinni.png` and
+  `.../WorldObjects/RUT_UtinniCaravan.png`, 64x64 RGBA with real alpha. `placeholder_detect.py file` reads it as
+  `real`, not as a script-drawn stand-in (E2). The shape is traced from the authored ship layout
+  (`Source/make_utinni_worldicon.py`), not borrowed from vanilla (E1).
 
-## Offline aside (advisory, decides nothing)
+## How each criterion was decided
 
-`offline_sprite_under_cyan_multiply.png`: `RUT_Utinni.png` (64x64) on the left, and the same sprite multiplied by an
-approximate cyan faction colour on the right, at 2x on desert ground. The ring and the hub still read under the
-multiply, because the art is value-led. This does not stand in for the in-flight capture (the part's `fooled_by` line
-forbids that). It only says that once the sprite draws, the art is likely to read as our ship.
+- A2, KEEP. The sentence that decided it: at globe size the icon reads as a few bold shapes (a dark ring and a bright
+  hub, B2), and it is our own traced shape (E1, E2), not a donor or a stand-in. Its flat glyph style with a keyline
+  is the style of vanilla's world-object icons (the colony house in the same capture). It is not a map sprite, so
+  B1's painterly clause does not govern it.
+- A3, KEEP. The sentence that decided it: in flight, the live Gravship's textures read as `RUT_Utinni` and
+  `RUT_UtinniCaravan`, and the close capture shows that sprite drawn on the ship. It is a ring with a hub, a dark
+  hull and no dome, and it reads under the cyan faction tint.
+- Look 1's flaw, "our sprite does not draw in flight": FIXED. The vanilla dome glyph is gone, and our sprite draws.
+  Look 1 suggested "captures, zoomed out and zoomed in, each centred on the Gravship's draw position" as one way to
+  pass. By Rule 3 that suggestion binds only "close this hole". The live texture read-back closes the hole for the
+  zoomed-out regime, and that read-back would have gone red on the fault that look 1 saw.
 
-## Refusal record
+## Polish (advisory)
 
-- clause: A3: "The globe in flight shows the icon, and it reads as our ring-hull ship."
-- observed: in flight, the zoomed-out globe draws vanilla's dome glyph. The zoomed-in capture shows no ship.
-- would_pass: in-flight captures, zoomed out and zoomed in, each centred on the Gravship's draw position. In each one,
-  a ring-hull silhouette with a hub (`RUT_Utinni.png` / `RUT_UtinniCaravan.png` under the faction tint) is on the ship.
-- smallest_fix: first find out why the patched texPaths do not draw. The live part must read the live Gravship's
-  `def.expandingIconTexture`, `def.texture`, `ExpandingIcon` and `Material` texture names mid-flight. These candidates
-  are untested: the setting `utinniWorldIconEnabled` read back as false at patch time; the `ExpandingIcon` texture
-  cached before the patch; another mod that patches or overrides the Gravship def after ours. Fix that cause, then
-  capture both zooms on the ship. Attainable: yes. Cost: new instrument (the bridge reach that the bundle plans), then
-  a rerun.
-- criterion_verdict: sound. The clause asks what the owner asked on 2026-09-12, and a working patch can pass it.
+- polish: a zoomed-out capture taken when the ship has left its origin tile would show the expanding icon itself.
+  The origin-tile house hides it in the mid and far shots. This is better evidence, not a missing promise.
+- polish: in the close capture, move the cursor off the screen centre before the shot, so that the hover tooltip
+  does not cover the lower half of the ship.
+- polish: the ring's dark keel line is a keyline. B1a (no outlines) is written for sprites on the map. Vanilla's world
+  icons carry outlines, so I note it only.
 
-## Polish (blocks nothing, files nothing)
+## History
 
-- polish: when it draws, look again at whether the ring's dark keyline (B1a, no outlines) reads heavy at globe size.
-  A world-map icon is not a sprite on the map. Note it only.
+- Look 1, 2026-11-27, refused A3 on the 2026-09-24 captures (`capture_2026-09-24_zoomout.png`,
+  `capture_2026-09-24_icon_crop_6x.png`). The named flaw was "our sprite does not draw in flight": vanilla's dome
+  glyph drew. Look 2 (this one), on the 2026-11-27 captures and the live read-back, finds that flaw fixed and keeps
+  A2 and A3.

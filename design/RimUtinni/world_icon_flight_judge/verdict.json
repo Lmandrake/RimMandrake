@@ -2,38 +2,50 @@
  "item": "UTINNI_WORLDMAP_FLIGHT_ICON_1",
  "family": "design/RimMandrake/art_judge_brief.md",
  "sha": "9ad7d729e5",
+ "judge": "claude-opus-5-5, blind-judge subagent of the detached run UTINNI_WORLDMAP_FLIGHT_ICON_1.det",
+ "look": 2,
  "given": {
   "inputs": [
-   "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_zoomout.png",
-   "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_icon_crop_6x.png",
-   "Transient/utinni_flight_2026-09-24/utinni_flight_far_zoomin_2026-09-24.png@6168adf820",
-   "design/RimUtinni/world_icon_flight_judge/offline_sprite_under_cyan_multiply.png"
+   "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/modcheck_UtinniPatches_20261127T164911Z.json",
+   "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/world_icon_in_flight_close_1795798142.png",
+   "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/close_crop_x4.png",
+   "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/world_icon_in_flight_mid_1795798146.png",
+   "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/mid_crop_x8.png",
+   "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/world_icon_in_flight_far_1795798148.png",
+   "src/RimUtinni/UtinniPatches/Textures/World/WorldObjects/Expanding/RUT_Utinni.png",
+   "src/RimUtinni/UtinniPatches/Textures/World/WorldObjects/RUT_UtinniCaravan.png",
+   "design/Jawa/worldbuilding/ship_build/exported/Gravship_v2_ring_2026-09-12.png"
   ],
   "criteria": {
-   "A3": "The globe in flight shows the icon, and it reads as our ring-hull ship (now a delegated art call, not his look)."
+   "A2": "The icon style is judged acceptable.",
+   "A3": "The globe in flight shows the icon, and it reads as our ring-hull ship (a Jawa-built Rakatan hulk seen top-down: a ring with a hub, dark hull, no dome; it must survive the player-faction tint)."
   }
  },
- "passed": [],
- "refusals": [
+ "passed": [
+  {
+   "clause": "A2",
+   "evidence": [
+    "src/RimUtinni/UtinniPatches/Textures/World/WorldObjects/Expanding/RUT_Utinni.png",
+    "src/RimUtinni/UtinniPatches/Textures/World/WorldObjects/RUT_UtinniCaravan.png",
+    "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/close_crop_x4.png"
+   ],
+   "note": "Bold dark ring and bright hub read at globe size (B2); our own shape traced from the ship layout, placeholder_detect reads 'real' (E1, E2); flat keyline glyph matches vanilla world-object icons."
+  },
   {
    "clause": "A3",
-   "criterion_hash": "4d87665f026af9e5",
    "evidence": [
-    "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_zoomout.png",
-    "design/RimUtinni/world_icon_flight_judge/capture_2026-09-24_icon_crop_6x.png",
-    "Transient/utinni_flight_2026-09-24/utinni_flight_far_zoomin_2026-09-24.png@6168adf820",
-    "design/RimUtinni/world_icon_flight_judge/offline_sprite_under_cyan_multiply.png"
+    "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/modcheck_UtinniPatches_20261127T164911Z.json",
+    "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/close_crop_x4.png",
+    "design/RimUtinni/world_icon_flight_judge/captures_2026-11-27/world_icon_in_flight_close_1795798142.png"
    ],
-   "observed": "In flight, the zoomed-out globe draws vanilla's cyan dome glyph (World/WorldObjects/Expanding/Gravship under the faction tint), not RUT_Utinni; the zoomed-in capture shows no ship. Patch and art bytes are unchanged since the capture (md5 measured 2026-11-27, repo = ArchBig deploy).",
-   "would_pass": "In-flight captures, zoomed out and zoomed in, each centred on the Gravship's draw position, that show the ring-hull silhouette with a hub under the faction tint.",
-   "smallest_fix": {
-    "what": "Read the live Gravship's def.expandingIconTexture, def.texture, ExpandingIcon and Material texture names mid-flight (part our_icon_draws_on_the_globe_in_flight_live, WB-game-ship-20261126-164518 step 3), fix the cause the reading names, then capture both zooms on the ship.",
-    "attainable": "yes",
-    "cost": "new instrument"
-   },
-   "criterion_verdict": "sound",
-   "criterion_why": "It asks what the owner asked on 2026-09-12; a working patch passes it.",
-   "new_since": "first"
+   "note": "Live Gravship reads expandingIcon=RUT_Utinni, materialTexture=RUT_UtinniCaravan (byte-identical PNGs); close capture shows our ring with hub, dark-teal hull, no dome, under the cyan faction tint. Look-1 flaw 'our sprite does not draw in flight' fixed. Mid/far shots show the origin-tile house over the ship; the zoomed-out regime rests on the live read-back."
   }
- ]
+ ],
+ "refusals": [],
+ "polish": [
+  "Capture zoomed out after the ship leaves its origin tile, so the expanding icon itself shows.",
+  "Move the cursor off screen centre before the close shot; the hover tooltip covers the ship's lower half.",
+  "The ring's dark keel line is a keyline (B1a is written for map sprites; vanilla world icons carry outlines). Note only."
+ ],
+ "history": "Look 1 (2026-11-27) refused A3 on the 2026-09-24 captures: NAMED FLAW 'our sprite does not draw in flight'. Look 2 finds it fixed; KEEP."
 }
