@@ -28,8 +28,43 @@ import governor as G
 
 OUT = {}
 def rec(case, ok, **ev):
-    OUT[case] = {"result": "PASS" if ok else "FAIL", **ev}
-    print(("PASS " if ok else "FAIL ") + case + "  " + json.dumps(ev, default=str)[:600], flush=True)
+    rec3(case, "PASS" if ok else "FAIL", **ev)
+
+def rec3(case, result, **ev):
+    """result: PASS | FAIL | UNMEASURED (the row could not look; its cause is in ev)."""
+    OUT[case] = {"result": result, **ev}
+    print(result + " " + case + "  " + json.dumps(ev, default=str)[:600], flush=True)
+
+# RimPulse reads alarms from the store's FIRST game only (telemetry/analysis.py: a lane game's live view alarms nothing),
+# so a red-alarm row is measured on ArchBig (RM_GAME_INSTANCE a or unset) and is UNMEASURED on any other game.
+PULSE_WAIT_S = 120   # hang guard: telemetryd down or blind. Need: alerts.json is rewritten every few s (6 s old, measured
+                     # 2026-11-27) and the armed TPS row is 1 s, so a real alarm shows in about 10 s; 120 s is over 10x that.
+
+def pulse_alarm(aid, since):
+    """-> (PASS|FAIL|UNMEASURED, evidence): a red `aid` alert in RimPulse's alerts.json written after `since`."""
+    inst = os.environ.get("RM_GAME_INSTANCE") or "a"
+    if inst != "a":
+        return "UNMEASURED", "RimPulse alarms read ArchBig only (analysis.py); this run drives game instance %r" % inst
+    sys.path.insert(0, str(_UTILS / "telemetry"))
+    from tcommon import cfg
+    path = os.path.join(cfg()["state"], "alerts.json")
+    end, last = time.time() + PULSE_WAIT_S, "alerts.json never read: " + path
+    while time.time() < end:
+        try:
+            with open(path, encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception as ex:   # noqa: BLE001 (a half-written file is retried; its cause is kept)
+            last = "alerts.json unreadable: %r" % ex
+            time.sleep(2); continue
+        if (d.get("at") or 0) >= since:
+            hit = [a for a in d.get("alerts") or [] if a.get("id") == aid and a.get("level") == "red"]
+            if hit:
+                return "PASS", hit[0]
+            last = "fresh alerts.json (at %s) holds no red %s: %s" % (d.get("at"), aid, [a.get("id") for a in d.get("alerts") or []])
+        else:
+            last = "alerts.json not rewritten since the trigger (at %s < %s): telemetryd blind or down" % (d.get("at"), since)
+        time.sleep(2)
+    return ("FAIL" if last.startswith("fresh") else "UNMEASURED"), last
 
 def ticks():
     # BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP: a failed read was None == None, so "no tick ran" passed blind
@@ -48,8 +83,28 @@ def fresh_map():
     lc = await_lifecycle(call, "map_ready", 120)
     if not lc.ok: raise SystemExit("UNMEASURED: no map after start: %s" % lc.reason)
     time.sleep(3)
+    # A quicktest map can roll a dormant insect hive (live 2026-11-27, ArchSmall: "Hive (Sorne Geneline, spawner,
+    # dormant)"), which the monitor rightly latches as an open threat, so every row read UNMEASURED. Each case wants a
+    # bland map: vanish the hostile threat structures first (jawa/quiet_site uses the monitor's own classifier) and
+    # read back that none is left.
+    q = call("jawa/quiet_site", action="apply", clearThreats=True)
+    if not q.get("success") or q.get("threatsAfter") != 0:
+        raise SystemExit("UNMEASURED: the map's hostile threat structures were not cleared before arm: %s"
+                         % json.dumps(q, default=str)[:300])
     ps = call("jawa/list_pawns", faction="player").get("pawns") or []
     return [p["id"] for p in ps if p.get("def") == "Human" and not p.get("dead")]
+
+def far_cell(from_id):
+    """A standable cell far from pawn `from_id`: the cell of the non-player pawn farthest from it (pawns stand only on
+    standable cells). -> (x, z) or SystemExit UNMEASURED."""
+    me = [p for p in call("jawa/list_pawns", faction="player").get("pawns") or [] if p.get("id") == from_id]
+    others = [p for p in call("jawa/list_pawns", faction="nonplayer").get("pawns") or []
+              if not p.get("dead") and isinstance(p.get("x"), int) and isinstance(p.get("z"), int)]
+    if not me or not others:
+        raise SystemExit("UNMEASURED: no far standable cell (colonist seen %s, other pawns %d)" % (bool(me), len(others)))
+    mx, mz = me[0]["x"], me[0]["z"]
+    far = max(others, key=lambda p: (p["x"] - mx) ** 2 + (p["z"] - mz) ** 2)
+    return far["x"], far["z"]
 
 def events():
     # the latch holds 512 (JawaBenchVitalsCore.LatchCapacity) and events returns only the NEWEST `limit`: a dropped
@@ -68,7 +123,7 @@ def arm(row, critical=None, **kw):
     assert r.get("armed"), r
     return r
 
-which = sys.argv[1:] or ["clock", "modal", "cluster", "raid", "downed", "death", "specimen", "colonyloss"]
+which = sys.argv[1:] or ["clock", "modal", "cluster", "raid", "downed", "death", "specimen", "hostile", "colonyloss"]
 
 if "clock" in which:
     cols = fresh_map()
@@ -119,37 +174,44 @@ if "modal" in which:
     # an empty trigger list also judges PASS/CLEAN: only a seen-then-corrected modal shows the correction path
     rec("modal_closed_corrected_may_pass", bool(ms) and v["outcome"] == G.PASS and v["validity"] == "CLEAN", governor=v["outcome"], notes=v["notes"])
 
+# cheaper_why: raid tests are paused (raid_pause.py, owner 2026-11-23), and neither bar needs a raid. The cluster bar is
+# "a hostile structure with no hostile pawn is a threat", decided by one harmless building that a non-humanlike faction
+# owns (the monitor's classifier counts every such building). The raid bar is "a hostile arrival stops a long step",
+# decided by one hostile pawn put down far from the colony while the step runs; nothing attacks, because the step
+# stops at once and the game stays paused.
 if "cluster" in which:
     cols = fresh_map()
     arm("proof_cluster", critical=cols[0])
-    r = call("jawa/fire_incident", incidentDef="MechCluster", forced=True, dryRun=False, points=800)
-    adv = call("jawa/safe_advance", ticks=2500, stopOn="threat_structure")
+    x, z = far_cell(cols[0])
+    b = call("jawa/build_batch", ops="Wall:%d,%d" % (x, z), stuff="Steel", faction="Mechanoid")
     call("jawa/vitals", action="sample")
     ev = events()
-    ts = [t for t in ev.get("triggers", []) if t["kind"] == "threat_structure"]
+    ts = [t for t in ev.get("triggers", []) if t["kind"] == "threat_structure" and "new hostile structure" in (t.get("detail") or "")]
     ha = [t for t in ev.get("triggers", []) if t["kind"] == "hostile_arrival"]
     st = call("jawa/vitals")
-    rec("dormant_cluster_threat_detected_without_hostile_pawn_count", len(ts) > 0,
-        fired=r.get("success"), advance=adv.get("state"), executed=adv.get("executed"), stopBy=adv.get("stopBy"), structures=st.get("threats"), structure_triggers=len(ts),
+    rec("hostile_structure_threat_detected_without_hostile_pawn_count", bool(b.get("survived")) and len(ts) > 0 and not ha,
+        built=b.get("survived"), cell=(x, z), structures=st.get("threats"), structure_triggers=len(ts),
         first_structure=ts[:1], hostile_pawn_triggers=len(ha))
 
 if "raid" in which:
     cols = fresh_map()
     arm("proof_raid", critical=cols[0])
+    x, z = far_cell(cols[0])
     t0 = ticks()
     r0 = call("jawa/safe_advance", ticks=25000, timeoutMs=500)
-    raid = call("jawa/fire_raid", dryRun=False, points=300)
+    sp = call("jawa/spawn_pawn", kindDef="Drifter", faction="hostile", x=x, z=z, count=1)
     for _ in range(240):
         s = call("jawa/safe_advance", action="status").get("advance") or {}
         if s.get("state") != "running": break
         time.sleep(0.5)
+    call("rimworld/pause_game", pause=True)
     sb = s.get("stopBy") or {}
-    rec("raid_during_long_step_interrupts_locally", r0.get("state") == "running" and s.get("state") == "stopped"
-        and s.get("executed", 0) < 25000 and sb.get("kind") == "hostile_arrival",
-        first_state=r0.get("state"), raid=raid.get("success"), raid_msg=str(raid.get("message"))[:200], state=s.get("state"),
-        executed=s.get("executed"), stopBy=sb, tick_from=t0, tick_to=ticks())
+    rec("hostile_arrival_during_long_step_interrupts_locally", r0.get("state") == "running" and bool(sp.get("success"))
+        and s.get("state") == "stopped" and s.get("executed", 0) < 25000 and sb.get("kind") == "hostile_arrival",
+        first_state=r0.get("state"), spawned=sp.get("success"), spawn_msg=str(sp.get("message") or sp.get("error"))[:200],
+        cell=(x, z), state=s.get("state"), executed=s.get("executed"), stopBy=sb, tick_from=t0, tick_to=ticks())
     v = G.judge(G.RowContract("proof_raid", actors=(cols[0],)), events()["triggers"], "PASS")
-    rec("raid_is_a_threat_with_env_item", any("TESTENV_HOSTILES" in e for e in v["env_items"]) and v["outcome"] != G.PASS,
+    rec("hostile_arrival_is_a_threat_with_env_item", any("TESTENV_HOSTILES" in e for e in v["env_items"]) and v["outcome"] != G.PASS,
         outcome=v["outcome"], validity=v["validity"], env_items=[e.split(" --for")[0] for e in v["env_items"]])
 
 if "downed" in which:
@@ -207,9 +269,25 @@ if "specimen" in which:
     v = G.judge(G.RowContract("proof_specimen", specimens=(sid,)), ev["triggers"], "FAIL")
     rec("specimen_lost_blocks_false_fail", bool(sl) and v["outcome"] == G.RESTART, specimen=sid, trigger=sl[:1], outcome=v["outcome"])
 
+if "hostile" in which:
+    # a colonist who turns on the colony (berserk: pawn.HostileTo(player) is true) latches colonist_hostile and raises
+    # RimPulse's red vitals:colonist_hostile alarm
+    cols = fresh_map()
+    arm("proof_hostile", critical=cols[0])
+    since = time.time()
+    m = call("jawa/pawn_mental", action="start", pawn=cols[1], state="Berserk")
+    call("jawa/vitals", action="sample")
+    ch = [t for t in events().get("triggers", []) if t["kind"] == "colonist_hostile"]
+    rec("colonist_turned_hostile_latched", bool(m.get("started")) and bool(ch),
+        started=m.get("started"), state=m.get("currentState"), pawn=cols[1], trigger=ch[:1])
+    pr, pev = pulse_alarm("vitals:colonist_hostile", since)
+    rec3("colonist_hostile_raises_red_rimpulse_alarm", pr, alert=pev)
+    call("jawa/pawn_mental", action="end", pawn=cols[1])
+
 if "colonyloss" in which:
     cols = fresh_map()
     arm("proof_colonyloss")
+    since = time.time()
     call("jawa/safe_advance", ticks=400)          # GameEnder ignores deaths before TicksGame 300
     call("jawa/debug_settings", action="set", field="enableStoryteller", value="false")   # no Man in Black rescue
     for c in cols:
@@ -222,6 +300,8 @@ if "colonyloss" in which:
     rec("colony_loss_detected_gameender_and_alive0", any("GameEnder" in (t.get("detail") or "") for t in cl) and any("alive colonists 0" in (t.get("detail") or "") for t in cl),
         advance=r.get("state"), executed=r.get("executed"), triggers=cl[:3],
         note="vanilla's Man in Black rescue (StrangerInBlackJoin at tick 581) cancels the countdown before the GameEnded letter")
+    pr, pev = pulse_alarm("vitals:colony_dead", since)
+    rec3("colony_loss_raises_red_rimpulse_alarm", pr, alert=pev)
     sl = call("jawa/send_letter", label="GameOver (injected by proof)", text="injected", letterDef="GameEnded")
     time.sleep(1.0)
     cl2 = [t for t in events().get("triggers", []) if t["kind"] == "colony_loss" and "GameEnded letter" in (t.get("detail") or "")]
@@ -232,6 +312,9 @@ os.makedirs(os.path.dirname(name), exist_ok=True)
 with open(name, "w") as f: json.dump(OUT, f, indent=1, default=str)
 print("wrote", name)
 # VITALSPROOF_FIX_EXIT0_AND_MIRROR_IMPORT: the old script exited 0 whatever rec() recorded.
-failed = [k for k, v in OUT.items() if v["result"] != "PASS"]
-print("%d/%d passed%s" % (len(OUT) - len(failed), len(OUT), ("; FAILED: " + ", ".join(failed)) if failed else ""))
-sys.exit(1 if failed or not OUT else 0)
+failed = [k for k, v in OUT.items() if v["result"] == "FAIL"]
+blind = [k for k, v in OUT.items() if v["result"] not in ("PASS", "FAIL")]
+print("%d/%d passed%s%s" % (len(OUT) - len(failed) - len(blind), len(OUT), ("; FAILED: " + ", ".join(failed)) if failed else "",
+                            ("; UNMEASURED: " + ", ".join(blind)) if blind else ""))
+# exit 1 = a row FAILED; 3 = no row failed but a row could not look (UNMEASURED) or no row ran
+sys.exit(1 if failed else 3 if blind or not OUT else 0)
