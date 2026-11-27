@@ -2309,6 +2309,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
             st["blind_hold"] = bh
         rd = {"schema": 1, "blind_hold": bh, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
               "old": old, "pause": facts.get("pause"),
+              "checks": facts.get("checks"),       # the outcome checks' batch (check_once.run_many)
               "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],

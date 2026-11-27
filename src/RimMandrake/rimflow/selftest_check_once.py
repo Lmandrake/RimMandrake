@@ -338,6 +338,10 @@ def t_the_ticks_run_their_checks_through_one_batch():
         with open(os.path.join(HERE, f), encoding="utf-8") as fh:
             src = fh.read()
         tick_part = src.split("def _tick(")[1] if f == "list_effect.py" else src.split("def gather(")[1].split("\ndef ")[0]
+        if f == "list_dispatch.py":
+            chk('"checks": facts.get("checks")' in src, "ticks: list_dispatch's reading carries the batch's counts")
+        else:
+            chk('"checks": cstats' in src, "ticks: list_effect's reading carries the batch's counts")
         chk("check_once.run_many" in tick_part and "LE.run(d[\"effect\"]" not in tick_part and "verdict, out = run(eff" not in
             tick_part, "ticks: %s runs its checks in one batch" % f)
 
