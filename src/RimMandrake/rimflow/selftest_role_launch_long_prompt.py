@@ -105,6 +105,29 @@ def t_pre_steps_do_not_eat_stdin():
           "a pre-launch step that reads stdin leaves the whole prompt to claude")
 
 
+def t_sync_step_does_not_eat_stdin():
+    """A role's own clone runs `./sync` first in the same unit (role-sync); with the prompt on stdin, a sync that reads
+    stdin must not take it. The layer is run for real: the test's dir is taken for a role clone, its ./sync reads
+    stdin, and a pre-launch step sits between the two layers."""
+    d = os.path.join(SD.TMP, "c6")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "sync"), "w") as f:
+        f.write("#!/bin/sh\ncat > /dev/null\n")
+    os.chmod(os.path.join(d, "sync"), 0o755)
+    real = RL.role_clones.is_role_clone
+    RL.role_clones.is_role_clone = lambda p: os.path.normpath(str(p)) == os.path.normpath(d)
+    try:
+        argv = RL.launch_argv(role(d, pre_launch=["true"]), "u6", long_msg(), os.path.join(SD.TMP, "u6.json"),
+                              os.path.join(SD.TMP, "u6.err"), "/usr/bin/claude", prompt_file=os.path.join(SD.TMP,
+                                                                                                         "u6.prompt.md"))
+    finally:
+        RL.role_clones.is_role_clone = real
+    check("role-sync" in argv, "the role-sync layer is in the unit's command")
+    got = run_unit_cmd(argv, d)
+    check(got is not None and got.startswith("HEAD-MARKER") and "TAIL-MARKER" in got,
+          "a role clone's ./sync that reads stdin leaves the whole prompt to claude")
+
+
 def t_no_file_long_is_refused():
     """With no prompt file named, a message over the safe size is refused by name, never put on argv."""
     d = os.path.join(SD.TMP, "c3")
@@ -145,8 +168,8 @@ def t_codex_by_stdin():
 
 
 def t_a_long_prompt_rides_stdin_never_argv():
-    for t in (t_launch_argv_by_file, t_pre_steps_do_not_eat_stdin, t_no_file_long_is_refused, t_launch_writes_the_file,
-              t_codex_by_stdin):
+    for t in (t_launch_argv_by_file, t_pre_steps_do_not_eat_stdin, t_sync_step_does_not_eat_stdin,
+              t_no_file_long_is_refused, t_launch_writes_the_file, t_codex_by_stdin):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a raise on the parent is a FAIL, said
