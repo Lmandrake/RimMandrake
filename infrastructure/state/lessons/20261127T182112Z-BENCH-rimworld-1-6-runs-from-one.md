@@ -1,0 +1,3 @@
+RimWorld 1.6 runs from one save and one written-back Rand state part on Verse.FishShadowComponent (Odyssey): it fires on GenTicks.IsTickInterval(WaterBody.GetHashCode()), and WaterBody's hash folds in the object identity hash, new at every load. Any IsTickInterval/HashOffset keyed on an object without a stable id (base.GetHashCode) is load-random; Thing.GetHashCode is thingIDNumber and is stable. Hold such a method off the global stream with Rand.PushState/PopState (jawa/rand_trace isolate=).
+item: RIMMANDRAKE_FIND_RAND_DRAWS_PARTING_RUNS_EVEN_STEP
+home: design/specs/2026-11-23-bridge-v2/experiments/rand_trace_result.md
