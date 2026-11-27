@@ -1,23 +1,24 @@
 {
- "mod": "WreckedMachines",
- "version": "0.1.0",
- "state": "open: admitted to the Designer 2026-11-26 on his go for the all-Fable experiment; no locked design yet",
- "ruled_on": "2026-11-26",
- "ruled_by": "owner",
- "owner_words": "2026-11-26 2:33 PM PST (on RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO): I authorize you to do an all fable experiment on wrecked machines. We can afford it. Let's see how it goes. Gather all those tickets together as a bundle, design run for it to clarify and put needed bars and tests, then let's see how fable 5.2 does. Hopefully beautifully. Of course it should intelligently subagent fanout as needed. | 2026-11-19 about 8:35 AM PST (on RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST): Ok, Wrecked Machines it is. It has a generic possible implementation and then the Utinni-specific weaving it into the god-ship concept. First decision would be whether we even bother with the generic version. I suspect it's a good, strong concept save for the much larger lift in terms of art generation, but we're pretty good at that. Then the Utinni specialization would bring in the holy aspects of repairing the work. Could even be extended to ship components and things. Needs a LOT of work using our modern Design passes of course, we didn't have anything like that before.",
- "record": "WreckedMachines",
- "bars_total": "UNMEASURED",
- "bars_met": "UNMEASURED",
- "judge_rounds": 0,
- "tokens_spent": 0,
- "measured_from": {
-  "bars_total": "no Designer tree yet; the Designer's Lock step sets the bars",
-  "tokens_spent": "no Designer stage has run on this concept"
- },
- "caveats": [
-  "the all-Fable experiment: every builder role on Fable 5.2 (pipe model WreckedMachines fable, act ct_000072); judges and the in-game driver keep their own models",
-  "Design Version 0.1.0 is locked by the pipeline for a new mod, without asking him (CLAUDE.md, Evidence-for-Ask)",
-  "the Designer's input: design/specs/2026-11-26-wrecked-machines-fable/tickets_bundle.md (10 open tickets read against the code)",
-  "first-touch Designer item RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST"
- ]
+  "mod": "WreckedMachines",
+  "version": "0.1.0",
+  "state": "locked",
+  "locked_on": "2026-11-27",
+  "locked_by": "pipeline",
+  "per_ruling": "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME",
+  "why": "the concept tree is locked and no recorded evidence says 0.1.0 is wrong: a new mod's first Design Version is 0.1.0 (his Evidence-for-Ask ruling, 2026-11-15)",
+  "bars_total": 30,
+  "bars_met": "UNMEASURED",
+  "judge_rounds": 2,
+  "tokens_spent": 58030927,
+  "locked_from_commit": "b53e34d70527cdd6ab1d8c37c74716851708ddc1",
+  "measured_from": {
+    "bars_total": "coverage_judge.required_ids(record.json inventory + tree.json leaves)",
+    "judge_rounds": "coverage_judge.rounds(stage.json)",
+    "tokens_spent": "stage.json budget.spent",
+    "bars_met": "not measured at the lock: the preflight and judges measure it"
+  },
+  "caveats": [
+    "stage.json `locked` is the concept tree's gate; this file is the Design Version lock",
+    "locked by the pipeline under his Evidence-for-Ask ruling, not on his card: version_evidence() read no recorded evidence against 0.1.0"
+  ]
 }
