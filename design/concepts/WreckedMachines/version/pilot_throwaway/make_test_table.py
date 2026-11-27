@@ -101,8 +101,8 @@ STEWARD_SUPPORTS = [
 CHECK_TESTS = [
     ("C_kernel_fuzz", "T_KERNEL_FUZZ", "src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py", None, True, "offline"),
     ("C_salvage_rule_offline", "T_SALVAGE_RULE", WM + "/selftest_salvage_rule.py", None, True, "offline"),
-    ("C_onboarded_set", "T_ONBOARDED_SET", WM + "/selftest_wm_onboarded_set.py", None, False, "offline"),
-    ("C_onboarding_complete", "T_ONBOARDING_COMPLETE", WM + "/selftest_wm_onboarding_complete.py", None, False, "offline"),
+    ("C_onboarded_set", "T_ONBOARDED_SET", WM + "/selftest_wm_onboarded_set.py", None, True, "offline"),
+    ("C_onboarding_complete", "T_ONBOARDING_COMPLETE", WM + "/selftest_wm_onboarding_complete.py", None, True, "offline"),
     ("C_onboarding_table_offline", "T_ONBOARDING_TABLE_OFFLINE", WM + "/selftest_wm_onboarding_table.py", None, False, "offline"),
     ("C_level_numbers", "T_LEVEL_NUMBERS", WM + "/selftest_wm_level_numbers.py", None, False, "offline"),
     ("C_repair_state_walk", "T_REPAIR_STATE_WALK", "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py", None, True, "offline"),
@@ -113,6 +113,11 @@ CHECK_TESTS = [
 ]
 # What a check test that Stage 3 built reads beside its own file (the change relation reads `reads`).
 BUILT_READS = {
+    # the table is Defs/MachineLines and the judge's records are evidence/art; each is named by its parent here, which exists
+    # before the first line and the first record do (the preflight refuses a path that is not there)
+    "T_ONBOARDED_SET": [WM + "/Defs"],
+    "T_ONBOARDING_COMPLETE": [WM + "/Defs", WM + "/Patches", WM + "/Textures", WM + "/Source/WreckedMachinesMod.cs",
+                              "design/concepts/WreckedMachines/version/evidence"],
     "T_REPAIR_STATE_WALK": [WM + "/Source/Kernel", WM + "/Source/SelfTest"],
     "T_DISTILLATION_LOADS": [WM + "/Patches/WreckedMachines_DistillationModule.xml", "src/RimMandrake/FlowWorks/About/About.xml",
                              "src/RimMandrake/FlowWorks/Defs", "src/RimMandrake/FlowWorks/Patches",
@@ -543,6 +548,14 @@ if T["sc_text_names_no_setting"]["runs_today"].get("result") != "PASS":
         "the read finds the setting's words in the mod's texts as built (the log names each hit). plan.md 'Changed': 'The "
         "setting words leave every text, and no text calls a level Repaired'. That is the build's work at Stage 3, and this "
         "check is its red-first reading")
+for _tid, _why in (
+        ("T_ONBOARDED_SET", "the onboarding table (Defs/MachineLines) does not hold a line for each of the 20 machines yet: the "
+                            "check is built and red first; it goes green when the last machine is onboarded (plan.md, order, step 7)"),
+        ("T_ONBOARDING_COMPLETE", "a machine on the table lacks a level def, a carried form, a studied project, a picture of its "
+                                  "own, the art judge's record or its Mod Settings line: the check is built and red first; it "
+                                  "goes green when every machine's onboarding is whole (plan.md, order, steps 4 to 7)")):
+    if T[_tid]["runs_today"].get("result") != "PASS":
+        T[_tid]["red_today"] = _why
 T["sc_wreck_link_tags"]["partial"] = ("scenes.json kind_note: 'The script exists and is green on the smelter; the count line is "
                                       "new.' The count of Wrecked defs against the count of ancient machines is built with the "
                                       "onboarding (Stage 3)")

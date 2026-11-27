@@ -1,6 +1,6 @@
 # WreckedMachines 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:22:45-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:31:41-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
 
 ## How a pair is made
 
@@ -18,8 +18,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:22:45-0800. A bar pa
 ## Counts
 
 - bars: 30 (locked: 30)
-- tests: 48 (10 built offline, 26 live scenes with their entry written, 7 specified for Stage 3, 4 explorations, 1 look)
-- built offline tests green today: 10, red: 0 (none)
+- tests: 48 (12 built offline, 26 live scenes with their entry written, 5 specified for Stage 3, 4 explorations, 1 look)
+- built offline tests green today: 10, red: 2 (T_ONBOARDED_SET, T_ONBOARDING_COMPLETE)
 - live scenes whose tier is not defined: none
 - bars with every decider runnable today: 23 of 30
 - bars with no deciding test: 0
@@ -65,8 +65,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:22:45-0800. A bar pa
 |---|---|---|---|---|
 | T_KERNEL_FUZZ | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py | PASS |
 | T_SALVAGE_RULE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_salvage_rule.py | PASS |
-| T_ONBOARDED_SET | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py | specified, Stage 3 builds it |
-| T_ONBOARDING_COMPLETE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py | specified, Stage 3 builds it |
+| T_ONBOARDED_SET | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py | FAIL |
+| T_ONBOARDING_COMPLETE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py | FAIL |
 | T_ONBOARDING_TABLE_OFFLINE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py | specified, Stage 3 builds it |
 | T_LEVEL_NUMBERS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py | specified, Stage 3 builds it |
 | T_REPAIR_STATE_WALK | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py | PASS |

@@ -1,7 +1,7 @@
 {
  "mod": "WreckedMachines",
  "version": "0.1.0",
- "made": "2026-11-27T06:22:45-0800",
+ "made": "2026-11-27T06:31:41-0800",
  "made_by": "design/concepts/WreckedMachines/version/pilot_throwaway/make_test_table.py (throwaway, no model), steward run RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
  "stages": {
   "2": "preflight (a program)",
@@ -44,8 +44,6 @@
  },
  "checks_with_no_bar": {},
  "stage3_build_list": {
-  "T_ONBOARDED_SET": "C_onboarded_set",
-  "T_ONBOARDING_COMPLETE": "C_onboarding_complete",
   "T_ONBOARDING_TABLE_OFFLINE": "C_onboarding_table_offline",
   "T_LEVEL_NUMBERS": "C_level_numbers",
   "T_NEIGHBOUR_NAMES": "C_neighbour_names",
@@ -89,9 +87,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.4,
-    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.61s total -> OK",
-    "at": "2026-11-27T14:22:04Z",
+    "seconds": 2.6,
+    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.63s total -> OK",
+    "at": "2026-11-27T14:30:21Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_KERNEL_FUZZ.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py"
@@ -111,9 +109,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.4,
+    "seconds": 5.0,
     "last": "salvage rule: OK (fuzz salvage: 3000 cases, 8003 steps, 0.04s, 0 failures; 41 variants executed, 40 red)",
-    "at": "2026-11-27T14:22:09Z",
+    "at": "2026-11-27T14:30:26Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_SALVAGE_RULE.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py"
@@ -127,16 +125,21 @@
    "check": "C_onboarded_set",
    "observes": "The list of ancient machines equals the production machines found in the factory mod's own defs (18 with Vanilla Cooking Expanded, 17 without) plus the vanometric power cell and the psychic emanator. A factory update that adds a machine turns this red.",
    "reads": [
-    "src/RimMandrake/WreckedMachines"
+    "src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
+    "src/RimMandrake/WreckedMachines/Defs"
    ],
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
-   "new": true,
-   "built_in_stage": "3",
    "runs_today": {
-    "ran": false,
-    "why": "specified at the lock of 0.1.0 (tree check C_onboarded_set); Stage 3 builds it and records it red first (maturation.py red-seen)"
+    "ran": true,
+    "rc": 1,
+    "seconds": 6.3,
+    "last": "T_ONBOARDED_SET: FAIL (4 rows, 3 not PASS)",
+    "at": "2026-11-27T14:30:32Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDED_SET.txt",
+    "result": "FAIL",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py"
    },
-   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+   "red_today": "the onboarding table (Defs/MachineLines) does not hold a line for each of the 20 machines yet: the check is built and red first; it goes green when the last machine is onboarded (plan.md, order, step 7)"
   },
   "T_ONBOARDING_COMPLETE": {
    "id": "T_ONBOARDING_COMPLETE",
@@ -146,16 +149,25 @@
    "check": "C_onboarding_complete",
    "observes": "Each ancient machine has: a Wrecked, a Kludged and a Refurbished def; a carried form for its wreck; two restoration projects, each with its studied-thing requirement; pictures of its own for Wrecked and Kludged in each facing (8 for a large machine); one row in the onboarding table; one line in Mod Settings.",
    "reads": [
-    "src/RimMandrake/WreckedMachines"
+    "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
+    "src/RimMandrake/WreckedMachines/Defs",
+    "src/RimMandrake/WreckedMachines/Patches",
+    "src/RimMandrake/WreckedMachines/Textures",
+    "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs",
+    "design/concepts/WreckedMachines/version/evidence"
    ],
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
-   "new": true,
-   "built_in_stage": "3",
    "runs_today": {
-    "ran": false,
-    "why": "specified at the lock of 0.1.0 (tree check C_onboarding_complete); Stage 3 builds it and records it red first (maturation.py red-seen)"
+    "ran": true,
+    "rc": 1,
+    "seconds": 2.2,
+    "last": "T_ONBOARDING_COMPLETE: FAIL (7 rows, 7 not PASS, 0 lines)",
+    "at": "2026-11-27T14:30:35Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDING_COMPLETE.txt",
+    "result": "FAIL",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py"
    },
-   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+   "red_today": "a machine on the table lacks a level def, a carried form, a studied project, a picture of its own, the art judge's record or its Mod Settings line: the check is built and red first; it goes green when every machine's onboarding is whole (plan.md, order, steps 4 to 7)"
   },
   "T_ONBOARDING_TABLE_OFFLINE": {
    "id": "T_ONBOARDING_TABLE_OFFLINE",
@@ -213,9 +225,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.0,
+    "seconds": 2.3,
     "last": "T_REPAIR_STATE_WALK: PASS",
-    "at": "2026-11-27T14:22:11Z",
+    "at": "2026-11-27T14:30:37Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_REPAIR_STATE_WALK.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py"
@@ -280,7 +292,7 @@
     "rc": 0,
     "seconds": 0.8,
     "last": "T_DISTILLATION_LOADS: PASS (7 rows, 0 not PASS)",
-    "at": "2026-11-27T14:22:12Z",
+    "at": "2026-11-27T14:30:38Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_DISTILLATION_LOADS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py"
@@ -329,9 +341,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.7,
+    "seconds": 1.9,
     "last": "wreckedmachines lint (data): 10 graded defs, 3 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
-    "at": "2026-11-27T14:22:14Z",
+    "at": "2026-11-27T14:30:40Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_DEFS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py"
@@ -351,9 +363,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 30.9,
+    "seconds": 30.1,
     "last": "WreckedMachines lint planted-defect selftest: 17/17 ok",
-    "at": "2026-11-27T14:22:45Z",
+    "at": "2026-11-27T14:31:10Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_PLANTS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py"
@@ -376,7 +388,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "STATIC: PASS (0 findings)",
-    "at": "2026-11-27T14:22:45Z",
+    "at": "2026-11-27T14:31:10Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_STATIC.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/validation.py"
@@ -989,7 +1001,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "sc_text_names_no_setting: PASS 3 components, 0 not PASS",
-    "at": "2026-11-27T14:22:45Z",
+    "at": "2026-11-27T14:31:10Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_text_names_no_setting.txt",
     "result": "PASS",
     "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\""
@@ -1015,9 +1027,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.4,
+    "seconds": 0.6,
     "last": "wrecked_links: 9 wrecked defs judged, 5 owe pipes, 7 owe conduit, 0 problems",
-    "at": "2026-11-27T14:22:45Z",
+    "at": "2026-11-27T14:31:10Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_wreck_link_tags.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py"
@@ -1375,7 +1387,7 @@
     "rc": 0,
     "seconds": 0.0,
     "last": "T_LATER_STAYS_OUT: PASS",
-    "at": "2026-11-27T14:22:45Z",
+    "at": "2026-11-27T14:31:10Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LATER_STAYS_OUT.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py"
