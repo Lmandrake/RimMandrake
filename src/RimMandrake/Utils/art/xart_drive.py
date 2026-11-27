@@ -773,14 +773,17 @@ def cmd_faces_wire(a) -> int:
     owed = json.loads(OWED.read_text())
     bad = 0
     for kind in a.kinds:
-        mod, tex, master = face_master(kind, data() / "faces")
+        if kind not in kinds:
+            print(kind, "no PawnKindDef"); bad += 1; continue
+        kf, kel = kinds[kind]
+        ls = kel.find("lifeStages")
+        tex = (ls[-1].findtext("bodyGraphicData/texPath") or "").strip() if ls is not None and len(ls) else ""
+        mod = str(kf.relative_to(REPO / "src")).split("/Defs/")[0]   # the census may owe it nothing once east lands
         need = [REPO / "src" / mod / "Textures" / f"{tex}_{f}.png" for f in ("east", "south", "north")]
         if not all(p.is_file() for p in need):
             print(kind, "NOT WIRED: facings missing", [p.name for p in need if not p.is_file()]); bad += 1; continue
-        f, _ = kinds[kind]
-        text = f.read_text() if kind in kinds else None
-        if text is None:
-            print(kind, "no PawnKindDef"); bad += 1; continue
+        f = kf
+        text = f.read_text()
         new = wire_multi(text, kind, tex)
         if not a.dry_run:
             f.write_text(new)

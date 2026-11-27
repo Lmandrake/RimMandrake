@@ -1,10 +1,28 @@
 {
- "judge_model": {},
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4586264
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 37.9
+   }
+  ]
+ },
  "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
  "subject": "RM_Tarruq__faces",
- "decision": "REGEN",
+ "decision": "ACCEPT",
  "reasons": [
-  "facing truth FLAG (facing_scale_lint gate, plan biped): south feet 0.0703 (band -0.03..0.03); north feet 0.0742 (band -0.03..0.03)"
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
  ],
  "prompt_versions": {
   "preamble": {
@@ -37,16 +55,16 @@
   }
  },
  "image_sha256": {
-  "south.png": "c76c4559aa00ced59e6a60fa7eba90bee5dc180b3580224d92bdd4c788ac70d3",
-  "east.png": "cdee3d79b00c13dbceb0c1ee77fc5a3fdb850314370149a221d8fd9f5ea0138d",
-  "north.png": "b017247ce49e6c13730dbeb616537803128cd07a872b113bec709601dcabfe6d",
-  "scale.png": "e8a3b3b895bcd6270e00eb454b478254e7df9d54ef163174e6a0f3238a4fe48a",
-  "facings.png": "0e979a35150ae668ace7d0c882ff36073cfb5fa7039579017537a3ca9ceac81c"
+  "south.png": "20da1c788b029611ddff27fc9a42e35001e6b44460726af5a637b3c47265dad0",
+  "east.png": "84587ce8805cec6e5465649f851fbb95ba2f3f22b7c0dc02c9b403aea6a5dff1",
+  "north.png": "f7d8a44e9b47a95699156f6a5cb1bc2078e23706666952d9e9e447847c78bd75",
+  "scale.png": "d4461b1b9252feabb74fe37b04ebfe0ae0b827a27a5e825a4d7c9f7b44fe5ac5",
+  "facings.png": "c5fbfebfe1a3db654907d73e62079d427a384a77638080d46b56540da8a140c8"
  },
  "source_sha256": {
-  "south": "c76c4559aa00ced59e6a60fa7eba90bee5dc180b3580224d92bdd4c788ac70d3",
-  "east": "48a95a8d27516b28ac5e0d3f87cb46fd943138232b059881cf69a656f78d481d",
-  "north": "b017247ce49e6c13730dbeb616537803128cd07a872b113bec709601dcabfe6d",
-  "scale": "74da7e3af72d6b865555dfbdf33a8fb703108593ca41d4dd8e240b99eede8598"
+  "south": "e92f82115616c0411080d402982af7ce9277aa019bde56d8c746d1a390a2d1f7",
+  "east": "84587ce8805cec6e5465649f851fbb95ba2f3f22b7c0dc02c9b403aea6a5dff1",
+  "north": "e0d496dd33cc622b05e79a36ff6d1470e13809565aa8594057b8c9ba13c7b40b",
+  "scale": "fd1c8b4994bf91a2512ce05561ae150d207de7de4e46e496aadd9c164768f9b3"
  }
 }
