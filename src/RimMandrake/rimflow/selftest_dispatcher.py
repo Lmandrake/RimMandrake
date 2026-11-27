@@ -1206,8 +1206,11 @@ def test_role_execute_and_dry():
     check("--setenv" in argv and "AGENT_SEAT=BENCH" in argv and any(a.startswith("PATH=/opt/bin:") for a in argv),
           "launch: seat env and claude's dir on PATH")
     i = argv.index("--")
-    check(argv[i + 1].endswith("claude_bounded.sh") and argv[i + 2:i + 4] == ["-p", briefed("hello")]
-          and argv[argv.index("--model") + 1] == "sonnet" and "json" in argv, "launch: claude_bounded -p, alias, json")
+    pin = [v for v in argv if v.startswith("StandardInput=file:")]
+    check(argv[i + 1].endswith("claude_bounded.sh") and argv[i + 2:i + 4] == ["-p", "--model"]
+          and argv[argv.index("--model") + 1] == "sonnet" and "json" in argv and len(pin) == 1
+          and open(pin[0][len("StandardInput=file:"):]).read() == briefed("hello"),
+          "launch: claude_bounded -p, alias, json; the prompt on stdin from its file (role_launch.prompt_path)")
     check(rec["scope"] == "claude-seat-BENCH-rm-role-conductor-1.scope" and rec["marker"] == "rm-role-conductor-1"
           and len(calls) == 1, "launch: the scope is named by the launcher (claude-seat-<seat>-<unit>), no MainPID query")
     check("CLAUDE_SCOPE_UNIT=claude-seat-BENCH-rm-role-conductor-1" in argv and "RM_ROLE_UNIT=rm-role-conductor-1" in argv,

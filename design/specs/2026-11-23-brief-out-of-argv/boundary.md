@@ -21,8 +21,6 @@ UNMEASURED (empty result file).
 
 - **a-pattern-that-matches-the-run-name-or-item.** The argv still holds the item id (`--name DETACHED <SEAT> <ITEM>`),
   the clone path and the unit name. A `pgrep -f` on one of those still matches the run's own wrappers.
-- **role-launches.** `role_launch.launch_argv` (rm-role-* units) still passes its brief as `-p`. No run of that kind was
-  killed this way.
 
 ## PROMISES (each one is owed a test of the same name)
 

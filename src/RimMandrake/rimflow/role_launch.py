@@ -3415,16 +3415,39 @@ def scope_bound_s(role):
     return int(max_s_of({}, dict(ROLE_DEFAULTS, **(role or {})))) + SCOPE_GRACE_S
 
 
-def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
+# danger=Linux refuses one argv string over MAX_ARG_STRLEN (131072 bytes): a Designer packet reached 131,339 bytes
+# on 2026-11-27 and two launches died `Argument list too long: 'systemd-run'`. A message over this size with no prompt
+# file is refused by name (a caller's test path), never put on the command line.
+ARGV_PROMPT_MAX = 32768
+
+
+def prompt_path(out):
+    """The run's prompt file, beside its out and err (run_paths): <unit>.prompt.md."""
+    return (out[:-len(".json")] if out.endswith(".json") else out) + ".prompt.md"
+
+
+def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None, prompt_file=None):
     """The transient unit's argv. A role's `pre_launch` (an argv or a list of argvs, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
-    (the Designer's coverage_judge.py); PRE_DONE_EXIT ends the unit 0 (stage5_program)."""
+    (the Designer's coverage_judge.py); PRE_DONE_EXIT ends the unit 0 (stage5_program).
+    The prompt: with `prompt_file`, the whole message is written there and the unit reads it as its stdin
+    (StandardInput=file:), which `claude -p` and agent_runner.py read when no prompt is on argv; the pre-launch and sync
+    steps get /dev/null, so none of them takes it (a-long-prompt-rides-stdin-never-argv,
+    design/specs/2026-11-27-role-launch-prompt-by-file/boundary.md). Without one (a test's path), a short message stays
+    positional and a longer one is refused."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     import form_fault as FF     # every launched brief carries the repair line (standing_rulings.md §A fault of form)
     if FF.BRIEF_LINE.strip() not in msg:
         msg = msg.rstrip() + "\n\n" + FF.BRIEF_LINE
-    cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
+    if prompt_file:
+        with open(prompt_file, "w", encoding="utf-8") as f:
+            f.write(msg)
+    elif len(msg.encode("utf-8")) > ARGV_PROMPT_MAX:
+        raise ValueError("role %s: a %d-byte message cannot ride the command line (limit %d here, 131072 in the "
+                         "kernel): pass prompt_file=" % (role.get("name"), len(msg.encode("utf-8")), ARGV_PROMPT_MAX))
+    on_argv = [] if prompt_file else [msg]
+    cmd = [bounded, "-p"] + on_argv + ["--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
         + EF.effort_args(role["model"], role.get("effort")) + ["--settings", _control_settings(role)] \
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
@@ -3436,7 +3459,7 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
         if role.get("resume_session"):
             raise ValueError("Codex cannot resume a Claude session")
         cmd = ["python3", os.path.join(role["clone"], "src/RimMandrake/Utils/agent_runner.py"),
-               "--cwd", role["clone"], "--prompt", msg, "--result", out + ".last.txt",
+               "--cwd", role["clone"]] + (["--prompt", msg] if on_argv else []) + ["--result", out + ".last.txt",
                "--events", out + ".events.jsonl", "--spend", out + ".spend.json",
                "--timeout", str(scope_bound_s(role))]
         for key, flag in (("codex_model", "--model"), ("codex_effort", "--effort"), ("codex_sandbox", "--sandbox")):
@@ -3458,7 +3481,8 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
             raise ValueError("role %s: pre_launch must be a non-empty argv list or a list of them, got %r"
                              % (role.get("name"), pre))
         # the pre-steps' words are quoted into the script; the claude argv (the message) stays positional, unquoted
-        script = " && ".join(" ".join(shlex.quote(x) for x in st) + " 1>&2" for st in steps)
+        # </dev/null: the unit's stdin is the prompt (prompt_file), and it is claude's alone
+        script = " && ".join(" ".join(shlex.quote(x) for x in st) + " 1>&2 </dev/null" for st in steps)
         # a step exiting PRE_DONE_EXIT did the run's work itself (stage5_program): the unit ends 0, the model never starts
         script = '%s; r=$?; [ "$r" -eq 0 ] && exec "$@"; [ "$r" -eq %d ] && exit 0; exit "$r"' % (script, PRE_DONE_EXIT)
         cmd = ["/bin/sh", "-c", script, "role-pre-launch"] + cmd
@@ -3466,10 +3490,12 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     if own:
         # a role's own clone (role_clones.py) is levelled first, so no step and no model runs stale code; a failed
         # sync ends the unit before anything starts (RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES)
-        cmd = ["/bin/sh", "-c", './sync 1>&2 || exit %d; exec "$@"' % role_clones.SYNC_FAILED_EXIT, "role-sync"] + cmd
+        cmd = ["/bin/sh", "-c", './sync 1>&2 </dev/null || exit %d; exec "$@"' % role_clones.SYNC_FAILED_EXIT,
+               "role-sync"] + cmd
     bound = scope_bound_s(role)
     return ["--user", "--quiet", "--collect",      # systemd-run's arguments; control.launch_unit names the unit
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
+            *(["-p", "StandardInput=file:" + prompt_file] if prompt_file else []),
             "--working-directory", role["clone"],
             "--setenv", "AGENT_SEAT=" + role["seat"], "--setenv", "RIMFLOW_SEAT=" + role["seat"],
             # the scope's name, chosen here and persisted with the run, and the marker every process of the run
@@ -3592,7 +3618,7 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run, level=None):
     tmpdir = run_tmp.prepare(unit) if runner is subprocess.run else None
     import control as C     # the one admission point (control.py)
     mod = role.get("mod") or (os.path.basename(os.path.normpath(role["concept"])) if role.get("concept") else None)
-    r = C.launch_unit(launch_argv(role, unit, msg, out, err, claude, session, tmpdir),
+    r = C.launch_unit(launch_argv(role, unit, msg, out, err, claude, session, tmpdir, prompt_file=prompt_path(out)),
                       {"family": "role", "unit": unit, "role": role.get("name"), "mod": mod, "model": role.get("model"),
                        "extra_units": [role_scope(role["seat"], unit)]},
                       runner=runner, clone=role.get("clone"), capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)  # budget: danger=a hung launch holds the Dispatcher's tick; longest=1.3s (admission to start of 1057 runs, control.db)
