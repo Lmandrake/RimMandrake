@@ -328,7 +328,7 @@ def t_gss():
         check("8.1 the shipped flat hose clears the width/wire floor", f / w >= DS.HOSE_WIDTH_OVER_WIRE_GE,
               (f / w, DS.HOSE_WIDTH_OVER_WIRE_GE))
     # 8.2: SL3 read the floor cords before and after the load and never compared them
-    sl = _func_src(os.path.join(GSS, "northstar", "proof_all.py"), "save_load")
+    sl = _func_src(os.path.join(GSS, "northstar", "proof_all.py"), "_save_load")   # the body; save_load is its wrapper that writes every row
     check("8.2 SL3 compares the floor cord sets", "_cord_set(cords_a)" in sl and "_cord_set(cords_b)" in sl)
     # 8.4: a refused fresh probe ({"success": False, "error": ...}) is truthy with no counters -- it read as fresh
     if _has(RL, "fresh_bad", "8.4"):

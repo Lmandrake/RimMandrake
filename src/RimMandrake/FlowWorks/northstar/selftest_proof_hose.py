@@ -435,9 +435,17 @@ def main():
     st, cl, dt = s3(ca, cb_relay, {"hoses": [dict(h) for h in ca["hoses"]]})
     check("sl3_verdict: only geometryHash differs right after load, the settled re-read matches -> PASS",
           (st, cl) == ("PASS", "MOD") and dt["runtimeBeforeRelay"] == {"geometryHash": 3} and dt["scribed"]["firstDiff"] is None, dt)
+    # the level of play (CHARTER §A test is as strict as the harm it guards; RIMMANDRAKE_LOOSEN_REPEAT_COMPARISONS_TO_GAMEPLAY_FISH_TRIPPED):
+    # the lay is made again after a load, and the curve it takes with the same ends costs nothing; a laid hose with no lay does
     st, cl, dt = s3(ca, cb_relay, {"hoses": [dict(h, geometryHash="ffff") if h["reel"] == [2, 1] else dict(h) for h in ca["hoses"]]})
-    check("sl3_verdict: the settled geometry still differs -> FAIL MOD naming geometryHash at that reel",
-          (st, cl) == ("FAIL", "MOD") and dt["settled"]["firstDiff"]["key"] == "geometryHash" and dt["settled"]["firstDiff"]["reel"] == [2, 1], dt)
+    check("sl3_verdict: the settled re-lay takes another curve with the same ends -> PASS, the re-laid reel named as evidence",
+          (st, cl) == ("PASS", "MOD") and dt["settled"]["relaidOtherCurve"] == [[2, 1]] and dt["settled"]["noLay"] == [], dt)
+    st, cl, dt = s3(ca, cb_relay, {"hoses": [dict(h, geometryHash="0000000000000000") if h["reel"] == [2, 1] else dict(h) for h in ca["hoses"]]})
+    check("sl3_verdict: a laid hose that has no lay on the settled re-read -> FAIL MOD naming that reel",
+          (st, cl) == ("FAIL", "MOD") and dt["settled"]["noLay"] == [[2, 1]], dt)
+    st, cl, dt = s3(ca, cb_relay, {"hoses": ca["hoses"][:2]})
+    check("sl3_verdict: a hose gone on the settled re-read -> FAIL MOD listing the lost reel",
+          (st, cl) == ("FAIL", "MOD") and dt["settled"]["lost"] == [[3, 1]], dt)
     cb_lost = {"hoses": [dict(h, transitions=0) if h["reel"] == [3, 1] else dict(h, look="Steel") if h["reel"] == [2, 1] else dict(h)
                          for h in ca["hoses"]]}
     st, cl, dt = s3(ca, cb_lost, {"hoses": ca["hoses"]})
@@ -482,12 +490,15 @@ def main():
             return {"success": True, "tick": self.tick, "hoses": hs}
     class RelayBadBridge(RelayBridge):
         settled_hash = "ffff"
+    class RelayNoLayBridge(RelayBridge):
+        settled_hash = "0000000000000000"
     saved_wp = Vc._wait_playing
     Vc._wait_playing = lambda B, *a, **kw: (True, 5)
     try:
         with contextlib.redirect_stdout(io.StringIO()):
             _, resr = run_fake(args_only=["save_load"], bridge_cls=RelayBridge)
             _, resrb = run_fake(args_only=["save_load"], bridge_cls=RelayBadBridge)
+            _, resrn = run_fake(args_only=["save_load"], bridge_cls=RelayNoLayBridge)
     finally:
         Vc._wait_playing = saved_wp
     r3 = ([r for r in resr["rows"] if r["id"] == "SL3_hoses_and_reel_styles_survive"] or [{}])[0]
@@ -498,9 +509,12 @@ def main():
     r3b = ([r for r in resrb["rows"] if r["id"] == "SL3_hoses_and_reel_styles_survive"] or [{}])[0]
     d3b = r3b.get("detail") if isinstance(r3b.get("detail"), dict) else {}
     fb = (d3b.get("settled") or {}).get("firstDiff") or {}
-    check("Proof.save_load SL3: the settled re-read's geometry differs -> FAIL MOD naming geometryHash, after = the settled hash",
-          (r3b.get("status"), r3b.get("class")) == ("FAIL", "MOD") and fb.get("key") == "geometryHash" and fb.get("reel") == [2, 1]
-          and fb.get("after") == "ffff", r3b)
+    check("Proof.save_load SL3: the settled re-read lays reel (2,1) on another curve -> PASS, the reel named as re-laid",
+          (r3b.get("status"), r3b.get("class")) == ("PASS", "MOD") and (d3b.get("settled") or {}).get("relaidOtherCurve") == [[2, 1]], r3b)
+    r3n = ([r for r in resrn["rows"] if r["id"] == "SL3_hoses_and_reel_styles_survive"] or [{}])[0]
+    d3n = r3n.get("detail") if isinstance(r3n.get("detail"), dict) else {}
+    check("Proof.save_load SL3: reel (2,1) still has no lay on the settled re-read -> FAIL MOD naming it",
+          (r3n.get("status"), r3n.get("class")) == ("FAIL", "MOD") and (d3n.get("settled") or {}).get("noLay") == [[2, 1]], r3n)
 
     class NoHoseBridge(FakeBridge):
         def hp(self, cmd, wait_s=20.0):

@@ -1083,6 +1083,8 @@ SL3_KEYS = ("far", "end", "state", "laid", "debugFlowing", "transitions",       
 # census read right after a reload, before the hose re-lays, hashes a null lay ("0000000000000000"). SL3 compares it on a
 # SETTLED re-read (V.lay_settled); every other key is scribed and is compared before any tick.
 SL3_RUNTIME = ("geometryHash",)
+# the census's hash of no lay (a null or empty lay); "" and None are an unread hash
+NO_LAY = (None, "", "0000000000000000")
 
 
 def _sl3_view(h):
@@ -1116,8 +1118,8 @@ def sl3_diff(c_a, c_b, keys=SL3_KEYS):
 
 
 def sl3_verdict(c_a, c_b, c_settled):
-    """SL3: every hose comes back with its scribed fields equal (read before any tick) and its lay geometry equal once the
-    reload has re-laid it (c_settled). Returns (status, class, detail). A scribed key or a reel lost/gained is the MOD; a
+    """SL3: every hose comes back with its scribed fields equal (read before any tick) and, once the reload has re-laid it
+    (c_settled), with a lay again; the curve of that lay may differ. Returns (status, class, detail). A scribed key or a reel lost/gained is the MOD; a
     geometryHash that differs only before the re-lay is not a finding; a re-read that never settled is UNMEASURED (HARNESS)."""
     if not (c_a or {}).get("hoses"):
         return "UNMEASURED", "SITE", {"why": "no hose before the save: nothing to survive"}
@@ -1131,9 +1133,18 @@ def sl3_verdict(c_a, c_b, c_settled):
         detail["why"] = "the reloaded hoses never settled their lay: geometryHash cannot be compared"
         detail["unsettled"] = unsettled[:12]
         return "UNMEASURED", "HARNESS", detail
+    # at the level of play (CHARTER §A test is as strict as the harm it guards): the reload makes each lay again, and a lay on
+    # another curve with the same ends costs nothing (the owner on GSS cords, 2026-10-22 and 2026-11-27). What must hold: every
+    # hose that had a lay before the save has one again, and no hose is lost or gained. The curve that changed is evidence only.
     g = sl3_diff(c_a, c_settled, SL3_RUNTIME)
+    moving = sl3_carried(c_a)
+    had = {tuple(h["reel"]): h.get("geometryHash") for h in c_a["hoses"]
+           if tuple(h["reel"]) not in moving and h.get("geometryHash") not in NO_LAY}
+    now = {tuple(h["reel"]): h.get("geometryHash") for h in (c_settled or {}).get("hoses") or []}
+    g["noLay"] = [list(r) for r in sorted(had) if r in now and now[r] in NO_LAY]
+    g["relaidOtherCurve"] = [list(r) for r in sorted(had) if r in now and now[r] not in NO_LAY and now[r] != had[r]]
     detail["settled"] = g
-    return ("FAIL" if g["firstDiff"] or g["lost"] or g["gained"] else "PASS"), "MOD", detail
+    return ("FAIL" if g["noLay"] or g["lost"] or g["gained"] else "PASS"), "MOD", detail
 
 
 def sl4_verdict(carry, r1a, r1b, r2a, r2b, carry_a, carry_b):
