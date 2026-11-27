@@ -118,6 +118,19 @@ def main():
         check(rc == 0 and rec.get("verdict") == "ROOM" and rec.get("clones_now") == 0 and rec.get("largest_clone_gb") == 0
               and rec.get("new_clone_from") == "store", "an empty pool: counted by the store's slim checkout, ROOM (%s)"
               % rec.get("why"))
+        new = mine.checkout_bytes(os.path.join(base, "store.git"), slim=True) / 1e9
+        free = shutil.disk_usage(base).free / 1e9
+        rc, rec, okf = run(base, round(free - 0.03 - 9.5 * new, 4))
+        # pool_admit subtracts the largest clone from each admission: an empty pool admits its first clone at margin >= 0,
+        # then each next one only while margin - its predecessors >= that one, so margin / new of 9.5 admits 9, not 10
+        check(rec.get("more_clones") == 9 and rec.get("verdict") == "SHORT",
+              "an empty pool with room for 9.5 slim clones: 9 more, SHORT, never the 10 that +1 gives (%s)" % rec.get("why"))
+        shutil.rmtree(os.path.join(base, "kept"))
+        rc, rec, okf = run(base, round(free - 1.0, 3))
+        # with no kept tree to size them by, the 2 machine check trees still owed are full checkouts of the store's HEAD
+        # (12 MB of text and 30 MB of media here), never the largest clone of an empty pool (0)
+        check(rc == 0 and abs(rec.get("kept_trees_owed_gb", 0) - 0.084) < 0.005,
+              "no kept tree and an empty pool: the 2 owed check trees reserved at a full checkout each (%s)" % rec.get("why"))
         shutil.rmtree(os.path.join(base, "store.git"))
         rc, rec, okf = run(base, 1)
         check(rc == 5 and rec.get("verdict") == "COULD_NOT_LOOK", "an empty pool and no store give no size to count by: "

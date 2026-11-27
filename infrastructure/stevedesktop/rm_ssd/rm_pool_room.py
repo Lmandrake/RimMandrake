@@ -8,11 +8,11 @@ clone and of the machine's kept check trees (publish.py kept_root). The pool adm
 free - largest clone - floor >= 0 (scratch_clone.pool_admit), and each one it admits takes a new clone's size, so the
 disk still holds
     more = floor(margin / new) + 1   (0 when margin < 0),   margin = free - floor - largest - owed
-more clones. `new` is the smallest slim clone in the pool (a helper's clone is slim: detached_helper.clone_full), else
+more clones (an empty pool: max(1, floor(margin / new)), as its first clone becomes the largest). `new` is the smallest slim clone in the pool (a helper's clone is slim: detached_helper.clone_full), else
 the slim checkout of the store's HEAD, counted from `git ls-tree` (each file and folder rounded up to a 4 KiB block;
 1.479 GB where a real slim clone's tree read 1.469 GB by du, 2026-11-26). The pool's other clones never size a new one:
 a parked warm spare is full, and a helper that takes it makes it slim (detached_helper.take_clone). `owed` is the machine's kept check trees not made yet (KEPT_TREES of them, each the size of the largest
-one there, else of the largest clone): the first publishes make them, and they stay.
+one there, else of a full checkout of the store's HEAD): the first publishes make them, and they stay.
 Writes ~/.local/state/rm-ssd/pool_room.json on every run, with one verdict:
     ROOM            the clones there now plus `more` reach TARGET_RUNS
     SHORT           they do not
@@ -60,9 +60,9 @@ def du_bytes(path):
     return int(r.stdout.split()[0])
 
 
-def slim_checkout_bytes(store):
-    """-> the bytes a slim checkout of `store`'s HEAD allocates: each file that a slim clone keeps (no SLIM_MEDIA) and
-    each folder, rounded up to a block. Raises on a git failure."""
+def checkout_bytes(store, slim):
+    """-> the bytes a checkout of `store`'s HEAD allocates: each file (a slim one keeps no SLIM_MEDIA) and each folder,
+    rounded up to a block. Raises on a git failure."""
     r = subprocess.run(["git", "--git-dir", store, "ls-tree", "-r", "-t", "-l", "--full-tree", "HEAD"],
                        capture_output=True, text=True, timeout=LS_TREE_TIMEOUT_S)
     if r.returncode != 0:
@@ -74,7 +74,7 @@ def slim_checkout_bytes(store):
         kind, size = meta.split()[1], meta.split()[3]
         if kind == "tree":
             total += BLOCK
-        elif kind == "blob" and not path.rsplit("/", 1)[-1].endswith(media):
+        elif kind == "blob" and not (slim and path.rsplit("/", 1)[-1].endswith(media)):
             total += -(-int(size) // BLOCK) * BLOCK
     return total
 
@@ -112,20 +112,30 @@ def measure():
         new, rec["new_clone_from"] = min(slim), "a slim clone"
     else:
         try:
-            new, rec["new_clone_from"] = slim_checkout_bytes(STORE) / 1e9, "store"
+            new, rec["new_clone_from"] = checkout_bytes(STORE, slim=True) / 1e9, "store"
         except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
             return dict(rec, verdict="COULD_NOT_LOOK", why="the pool holds no slim clone and the store's slim checkout "
                         "cannot be sized, so no clone size is known to count by: %s: %s" % (type(e).__name__, e))
-    tree = max(rec["kept_trees"].values()) if rec["kept_trees"] else largest
-    owed = max(0, KEPT_TREES - len(rec["kept_trees"])) * tree
+    owed_n = max(0, KEPT_TREES - len(rec["kept_trees"]))
+    if rec["kept_trees"] or not owed_n:
+        tree = max(rec["kept_trees"].values()) if rec["kept_trees"] else 0.0
+    else:
+        try:
+            tree = checkout_bytes(STORE, slim=False) / 1e9      # a kept check tree is a full checkout (publish.py)
+        except (OSError, RuntimeError, subprocess.TimeoutExpired) as e:
+            return dict(rec, verdict="COULD_NOT_LOOK", why="no kept check tree is there to size the %d owed ones by, and "
+                        "the store's full checkout cannot be sized: %s: %s" % (owed_n, type(e).__name__, e))
+    owed = owed_n * tree
     rec.update(largest_clone_gb=round(largest, 2), new_clone_gb=round(new, 2), kept_trees_owed_gb=round(owed, 2))
     margin = rec["free_gb"] - rec["floor_gb"] - largest - owed
     if margin < 0:
         more = 0
     elif new <= 0:
         more = None     # a new clone sized at 0 bytes: the count is unknown, never infinite
-    else:
+    elif names:
         more = int(math.floor(margin / new)) + 1
+    else:   # the first clone is admitted at margin >= 0 and then is the largest, which each later admission subtracts
+        more = max(1, int(math.floor(margin / new)))
     if more is None:
         return dict(rec, verdict="COULD_NOT_LOOK", why="a new clone sizes at 0 bytes (from %s), so the count is unknown "
                     "(free %.1f GB, floor %.1f GB)" % (rec["new_clone_from"], rec["free_gb"], rec["floor_gb"]))
