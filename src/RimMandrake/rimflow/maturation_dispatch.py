@@ -3451,7 +3451,8 @@ def item_live_run(item):
 def holder_spent(s, open_ids, t0=None):
     """-> why no automatic holder run goes on these open road-back items, or None. The last holder run on the road back
     (the tick's or a hand pilot-launch since it opened) ran on a set of items; it ended with those still open (the
-    set did not shrink) or it never started: never a second automatic try at the same items. A hand launch recorded
+    set did not shrink) or it never started: never a second automatic try at the same items. A run that closed every
+    item of its set leaves no try on new items. A hand launch recorded
     before the set was booked counts as having run on today's open set plus its own item."""
     rb = s.get("road_back") or {}
     if not isinstance(t0, (int, float)):    # t0: the stage record's road-back move (pilot_holders on a road-back hold)
@@ -3465,8 +3466,8 @@ def holder_spent(s, open_ids, t0=None):
     last = max(runs, key=lambda x: x.get("at") or 0)
     if not last.get("unit"):
         return "the last holder run on them (%s) never started" % last.get("item")
-    if set(open_ids) < set(last["ids"]):
-        return None
+    if set(open_ids) < set(last["ids"]) or not set(open_ids) & set(last["ids"]):
+        return None     # shrunk, or none of its items is open: it closed its set, and these are new items
     return "%sholder run %s on %s ended with them still open" % ("the hand " if last.get("hand") else "the ",
                                                                   last.get("unit"), ", ".join(last["ids"]))
 

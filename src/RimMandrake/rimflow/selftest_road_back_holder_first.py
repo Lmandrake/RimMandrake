@@ -74,6 +74,17 @@ def t_holder_spent_hands_to_fixers():
             and spent[0].get("decision") == "holder_spent"), (rs[0], spent[0].get("decision"))
 
 
+def t_a_holder_that_closed_its_set_is_no_spent_try_at_new_items():
+    # FlowWorks 2026-11-27: the holder ran on one item and closed it; five new road-back items (disjoint from that set)
+    # read as "ended with them still open" and paused the mod (alarm MATURATION_PAUSED)
+    s = {"road_back": {"at": NOW - 600}, "holder_road_back": [{"at": NOW - 300, "ids": ["OLD_ONE"], "item": "OLD_ONE",
+                                                               "unit": "rm-h"}]}
+    same = MD.holder_spent(s, ["OLD_ONE"])
+    new = MD.holder_spent(s, ["NEW_A", "NEW_B"])
+    mixed = MD.holder_spent(s, ["OLD_ONE", "NEW_A"])
+    return same and not new and mixed, (same, new, mixed)
+
+
 def t_non_pilot_unchanged():
     st = {"mods": {OTHER: state()}}
     rs, _ = holders([fixer_row(OTHER)], st, pilot=())
@@ -162,6 +173,7 @@ def t_a_wait_row_is_launch_wait():
 
 def main():
     tests = [t_driver_filed_items_are_read, t_pilot_holder_goes_first, t_holder_spent_hands_to_fixers,
+             t_a_holder_that_closed_its_set_is_no_spent_try_at_new_items,
              t_non_pilot_unchanged, t_busy_item_left_to_its_run, t_all_items_busy_is_a_wait,
              t_a_clone_held_by_a_live_run_is_a_wait, t_a_wait_row_is_launch_wait]
     fails = []
