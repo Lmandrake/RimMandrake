@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 49.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4793404
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 52.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1627616
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Krykna__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'CANON_MISS']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e9a07db436d216a043f9939a53d9b11c14b75f943aed6bf60827319fa533952b",
+  "east.png": "e5cf468310e5e7d68e49dbb4e1b73f94a0ad8f483e349eb270c3ee97a3f352e1",
+  "north.png": "2a1e983cddaa752c7cc194c04282f1060b1fc0f1dc6f9bc4c02f5732018e6da9",
+  "scale.png": "7a7c0de460b679996ca44ddc478f6f7f1d7da4934ba9a1e3044765aa7f3fad82",
+  "siblings.png": "7a99cd6d3cdaef6945f6c6274981bc53ae1b6a9827f731d27a2be479370df3fc",
+  "facings.png": "07254caf5b4208a3975db3f474a2cc3148bf24207ceda955bde2feddb72df170"
+ },
+ "source_sha256": {
+  "south": "e9a07db436d216a043f9939a53d9b11c14b75f943aed6bf60827319fa533952b",
+  "east": "e5cf468310e5e7d68e49dbb4e1b73f94a0ad8f483e349eb270c3ee97a3f352e1",
+  "north": "60d9624354570e3de49f8a36a2742440f5568bdf1825c6120a31ce2da1d03c4b",
+  "scale": "59cdd2699f3fb3b33371bdaa4a136271aca1b6ec4dfe57abf73f2a1ddca9111b",
+  "siblings_Krykna_south": "f37f0563e75c97676fbdc55ca77b22517ec1f248a9d720f4fde1c0ffac1600a8",
+  "siblings_Krykna_east": "37952e2a5ba094400055f10f8f56a7f668717dc95e0a3eafefda91b894e3f5ce",
+  "siblings_Krykna_north": "8cb8d8dfabb36a016fc16d4aae08b9f39d582cfedd14b0ae9245938431895eba"
+ }
+}

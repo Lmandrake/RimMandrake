@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4603062
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 33.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1619116
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Vennick__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "49d6428783997c498101cf23ea88f9b3a7cbbf7f1baeb670c203ec1bb202388e",
+  "east.png": "bcf11da3d262b695f590a4aebf920efa28b766458a733159852dfda616209062",
+  "north.png": "fe9e6caf236a5ed6a804d93d7ef3ae8b4891942c06e16f7f7138d0a8f017e01a",
+  "scale.png": "7b0a7ead78a8dd73913e1a0d880d383f1be9b28e2d1c572c0a74c751f1a8e203",
+  "siblings.png": "a86857031da2b2ac9d2e7d5068ed36c62271ae4fe9757565d4bf13d0a39cb913",
+  "facings.png": "78a266515704a0987008214a5a17acdcd652adb6b96798948bac02f3552bfe33"
+ },
+ "source_sha256": {
+  "south": "0d57aa52a2719d90e6a1607b020bb255f22c7e11cb580e62569f4b4cb9141e16",
+  "east": "f8365169600c829890fcf69cb71e9623e9c51114c95ad31eb3ae0e38d784ed55",
+  "north": "fe9e6caf236a5ed6a804d93d7ef3ae8b4891942c06e16f7f7138d0a8f017e01a",
+  "scale": "6cde4e5d90a4a53c0b9b19882572d1db7b003a9e94df2943b36add12b6e18515",
+  "siblings_RM_Vennick_south": "756c60053ae1f44f6242ff2b6070571f65b2159abe711d57de315c8bf9cec4f1",
+  "siblings_RM_Vennick_east": "eea1944a0d9dc518dfface29ad8e839980b5cc9a315b879882a1e437f39f41f4",
+  "siblings_RM_Vennick_north": "719a89c2881925cd2e7a59eadc47cce963d02b0e90c382e07ddd5b991a8efe62"
+ }
+}

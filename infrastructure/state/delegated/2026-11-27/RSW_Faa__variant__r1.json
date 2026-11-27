@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4614382
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 27.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16182960000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Faa__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['F_INCONSISTENT', 'DEPARTURE_MISSING', 'DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9c8aaef53dcb19420283fb94fc9cb85b312bd31e5e99aaa32c885162e0b39d71",
+  "east.png": "1e9bdf0c0a83b232a262771fa5fb3bc8547c7b6a9b65720342651fbb0cff90ca",
+  "north.png": "3d0fe40d8ebbf1fc1effff2340872304be3078ea323c6d060bcdf9c177b390c3",
+  "scale.png": "1027afc32b1bbf567518542ce2435e981f13ca15969e75a95e9a9fe117408cbe",
+  "siblings.png": "fa3ce6e4dd8e050c1181d4959f4f0900b5b7ea011f46e7c6db64ecdd7f500ac5",
+  "facings.png": "e07774c3caee2d86e51de5c486ceaddfc6e5c3f065d0e27e468040d14e6f098b"
+ },
+ "source_sha256": {
+  "south": "9c8aaef53dcb19420283fb94fc9cb85b312bd31e5e99aaa32c885162e0b39d71",
+  "east": "71ab341aae762338e47e25d2faf9f5a28c43a2fa4d8c62e5ada3875274290c9d",
+  "north": "3d0fe40d8ebbf1fc1effff2340872304be3078ea323c6d060bcdf9c177b390c3",
+  "scale": "244749ccde0af7a0443a9d3fbe90633928b5da1015413898de9cbaf71a191fc8",
+  "siblings_Faa_south": "4de5519281cd683929356465fb59700d4fde052903ecca3c6807b7273d3ac5d3",
+  "siblings_Faa_east": "de4e31756f6002e7bd7d28d8a7b1ab3a55c19aa74a4b654b5c64734cc1917588",
+  "siblings_Faa_north": "ecf26a553aa6a158ea24e95c6e20931a6f1b42d6c59bfe0ae1ecced6f71bfaae"
+ }
+}

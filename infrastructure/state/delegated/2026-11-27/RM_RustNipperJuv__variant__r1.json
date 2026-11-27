@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 81.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.6414218
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 24.8
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16583360000000003
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_RustNipperJuv__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'ALPHA_HALO']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3'], own blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'ALPHA_HALO']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "6355c70e8abdd1844032d49681be9b17fa76ccd14174273d5224fdcca8c14b25",
+  "east.png": "5287c770ffe79beac36ab3ec4888cb83d4da7445882d3e7c5b96c0b1a1b20343",
+  "north.png": "d2b0048b6fe4b4b0692151436c1d25d5f9339a6c62d09fa985c30a2c369417f9",
+  "scale.png": "4287e1d42afe025558f88f1ac6ed80223cbebfdf7043b35f263b9bba39d46c0f",
+  "siblings.png": "8466cd18953d24ccd5b913d2c1268265f8dbc8bfd29385d390d67eb2059a88df",
+  "facings.png": "2ca75b31d21bac978cfbfeb7a8add4b42773bd0c4a6027ebc55d30e75d955643"
+ },
+ "source_sha256": {
+  "south": "6355c70e8abdd1844032d49681be9b17fa76ccd14174273d5224fdcca8c14b25",
+  "east": "49664cdbd92134e31c5ea0a7b216f70b0d264d864e3953195eee9fd7bdd5c3d0",
+  "north": "d2b0048b6fe4b4b0692151436c1d25d5f9339a6c62d09fa985c30a2c369417f9",
+  "scale": "fc180bce72d22e315da89279865d8017eda850437badd07ef2545e2c6d264b90",
+  "siblings_RustNipper_south": "31e81b5d5331595e8b782728a79a99ea3d91f56793be30dcdb9f278a3442acde",
+  "siblings_RustNipper_east": "8aae2b9368e34afe9ea4cd4519ed33c271052fec0e7c18aae1db428be0ec4269",
+  "siblings_RustNipper_north": "d235ac6242454ee6dd7c57afc52e6b31f76e68528f5111bd34588ac698013f0c"
+ }
+}

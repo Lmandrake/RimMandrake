@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.464393
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 28.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1610916
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Thozzik__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "951bfb69aaa499893a212ddf027988517f22b31bd4da47b4f8f19da3d365843d",
+  "east.png": "f4fe193c46b7a9208478415ea2c1f13ec858a87cfb7b3cf9cc1d20b12a271ff3",
+  "north.png": "14de1fbc4cfd59cd02505cfc8da85cb2e5830da8ed9d82cb0542390676783015",
+  "scale.png": "5adc6360368b4fa069040ab7be437cc415e0ef5d82832c78bfd2089a410356ec",
+  "siblings.png": "d04ecd1f6b800e72604161dcc6c908564587ce57ece18c35e5fc07287bb45df5",
+  "facings.png": "6d38f8e51d13ef96f8d0f4de33e663b203c1a84c8347b7b6e53005c194905c49"
+ },
+ "source_sha256": {
+  "south": "951bfb69aaa499893a212ddf027988517f22b31bd4da47b4f8f19da3d365843d",
+  "east": "b5e0cd8f3a2a6bb5bd5f76b2f512057fa1a169c17398873e1b669c3bf5fbe3cc",
+  "north": "14de1fbc4cfd59cd02505cfc8da85cb2e5830da8ed9d82cb0542390676783015",
+  "scale": "d962eb0dce487ed59da0ee9f631df003d6bd35821ca5f46d52c603ca75c97f09",
+  "siblings_Thozzik_south": "b8eaff85da4369f8a822a5658e3f11ad0249c4de02258a5e285391b01e645ad2",
+  "siblings_Thozzik_east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+  "siblings_Thozzik_north": "db68ac88b9361f4908edbbea6a19e38a1dac87631bbf4d3af76c2bb03499020f"
+ }
+}

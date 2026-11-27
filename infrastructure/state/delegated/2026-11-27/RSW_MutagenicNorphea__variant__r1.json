@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4543768
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 21.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1592636
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_MutagenicNorphea__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4527f1329d6c9cf8fe7916ddb9dbc6f1e5e69e7a0ce9485263ed0f4187fcf0ea",
+  "east.png": "a3856e03aae85a5d5e6a19d7110b66942b727c8e7d43827dff737b2a43b73b61",
+  "north.png": "596d012b83832e09250eda116344534226bc4d68d5f56abaa2fc4a60d08f80ce",
+  "scale.png": "2d5820928064d6a76deae3c63e2acbbfc9033fdcdfda568f0fd8fd919f16e4fd",
+  "siblings.png": "67f47dd22e4f101d3fbc5422959778fb8f2c8d3cd5090cc1e724d0ef3f543707",
+  "facings.png": "470056dc30f966213a25ab09660790c5174f00a9e697d61e282cfd3ed3836292"
+ },
+ "source_sha256": {
+  "south": "4527f1329d6c9cf8fe7916ddb9dbc6f1e5e69e7a0ce9485263ed0f4187fcf0ea",
+  "east": "a3856e03aae85a5d5e6a19d7110b66942b727c8e7d43827dff737b2a43b73b61",
+  "north": "596d012b83832e09250eda116344534226bc4d68d5f56abaa2fc4a60d08f80ce",
+  "scale": "58832b92b5ecad8553a96aeb8424967bac75262d35cf2f93ccdefa40dcd57482",
+  "siblings_MutagenicNorphea_south": "a5c1eb9fcf03419064e8b21c01dc0d723797e34481c20acb568ac9867b9eb698",
+  "siblings_MutagenicNorphea_east": "b7e5e0aad674e127ff0b7766606f54f7e477058bead2f853ec38bc8e54afda7c",
+  "siblings_MutagenicNorphea_north": "cc47c75bf574ee08f2fa8f85a35bf8011e9bfa274257f40569d134d2116abe9f"
+ }
+}

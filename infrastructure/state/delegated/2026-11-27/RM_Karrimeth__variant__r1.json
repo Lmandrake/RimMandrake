@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46133460000000004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 30.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15177159999999998
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Karrimeth__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'STYLE_OFF']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8ed3f5d32015627a10915c6dbfa1385a378e65e8d758358c02027cde073c6695",
+  "east.png": "7d35238d8c1c81e6797b79d10623c252b92eeb02a50143d7aea9ecc540c9ee48",
+  "north.png": "45d909670fd316abc7d6d8ada5d9636053f2df8effba45875d8446a8b6151df4",
+  "scale.png": "ba76976dda716ab7c9e93a8e4915640a73ea7b1679a02b88dc5eed94217fccf0",
+  "siblings.png": "b163449b86b69a806c20d1b4baf4ed51690d8aba7765b539aba2e7dc1ed8b46a",
+  "facings.png": "752b1bfb928c1da55c7249f4aa6a652a07eae0a3b057dc54f07cf18f82c7f2fb"
+ },
+ "source_sha256": {
+  "south": "8ed3f5d32015627a10915c6dbfa1385a378e65e8d758358c02027cde073c6695",
+  "east": "7d35238d8c1c81e6797b79d10623c252b92eeb02a50143d7aea9ecc540c9ee48",
+  "north": "7f3ea9205dae8c17e954e6be5e6c9386fd28170a55be92ca895aa12c60dbda1c",
+  "scale": "ead723fa24cc0c926ae1a7b9779f1d1c6cf38dfca260c1787fb291554f8123c1",
+  "siblings_RM_Karrimeth_south": "162d8571b8e57d07a360b00ce6a63e7b21f14287d026f7e7326c8684096304a7",
+  "siblings_RM_Karrimeth_east": "ab1a07240937fba4d30dd29a923d356cd4a9d0c47d3f76bffeee847c4e6091e0",
+  "siblings_RM_Karrimeth_north": "5e5f33d275eb4708089633b9fb0a5c63e249729967daf21774e92034b2185f6e"
+ }
+}

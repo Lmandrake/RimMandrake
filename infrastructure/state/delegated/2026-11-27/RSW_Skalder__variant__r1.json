@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46431659999999997
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15235959999999998
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Skalder__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'DEPARTURE_MISSING', 'OWNER_NOTE_IGNORED']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a6b25da622aacb5855ff185075d0b7cee7e93eaad8c1f0d6bf09ca54c449953a",
+  "east.png": "a9cf417e203cae42bd17e567ec0f1cef21ac255a9e18825c9b92ce2ff321fc3e",
+  "north.png": "bdc8e19e5f9f6f8bd173d558d2a17573a39569bb21a426df895832648454a1af",
+  "scale.png": "44d5d07a9b1c853eee146973f2dd3bdfa7fdbdaaf77394a7b8da9d395a8ab0a7",
+  "siblings.png": "f44865e1489138d60830281fac4e9f6e63f7272303938309975f987420f38136",
+  "facings.png": "c55a62195a805fea98224f6323470e135109e2c4ff54be1fa4052d839cd277f8"
+ },
+ "source_sha256": {
+  "south": "a6b25da622aacb5855ff185075d0b7cee7e93eaad8c1f0d6bf09ca54c449953a",
+  "east": "69c82a149656aa6803fc9f8f0ce86753af70832be9dcdd745b8c0b76cd1d4edc",
+  "north": "bdc8e19e5f9f6f8bd173d558d2a17573a39569bb21a426df895832648454a1af",
+  "scale": "33cb8cbb6f739b491473500336e0d2edd8fe2e3b559cf633cb7d42e2d5cabae7",
+  "siblings_Skalder_south": "3c361e748cad9a06332d7dc5267cdfe8c1d1ff38ff22e81cf0e048a006c8c327",
+  "siblings_Skalder_east": "aa4dc02c8a75f3962c8f2305b1850edad348240dd116df011cb3042ec61bd688",
+  "siblings_Skalder_north": "19dbcd4c841c164dd10f30ab58a3317e6df8f435555909c9f158902a1fb5841a"
+ }
+}

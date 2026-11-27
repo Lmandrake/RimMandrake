@@ -1,0 +1,502 @@
+[
+ {
+  "id": "arteval_RM_Blinker__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Blinker__variant",
+  "prompt": "RimWorld creature sprite sheet of one animal, the blinker, in a second distinct colouring, shown in three views: a front view with the lens-window toward the viewer, a side view in profile, and a rear view seen from behind. A soft upright teardrop of pale translucent lavender-periwinkle blue with soft violet marbling and faint lilac-blue cell patches, about a metre tall, standing upright and walking on two thin trailing arms used like crutches, with no legs. Where a face would be is a single large lens-window with a glowing yellow interior showing through it. A third, shorter arm rises from the body and curls up in front of the lens-window, partly covering its top and one side the way a hand shades a torch; the arm's tip is held high above the ground, the yellow lens glows beneath it, and nothing hangs below the lens. The body colouring is identical in all three views: the same lavender-periwinkle hue and the same violet marbling pattern, with only the lighting changing local values (light from the upper left, deeper values on the lower and far sides). Front view: lens-window toward the viewer, the raised short arm shading it, the two crutch arms trailing to the ground on either side. Side view: the body in profile, the short arm curling up and forward over the lens, the two crutch arms trailing behind. Rear view: the smooth rear of the teardrop with the two crutch arms trailing to the ground, the lens-window and the raised arm hidden. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. The three views keep the same size and the same proportions.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, DEPARTURE_MISSING, F_INCONSISTENT, OWNER_NOTE_IGNORED, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/BlinkerVariant"
+ },
+ {
+  "id": "arteval_RM_CanopySwinger__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CanopySwinger__variant",
+  "prompt": "Three views of the same creature on a transparent background, painterly vanilla RimWorld style, realistic, soft painted edges, value and colour contrast against the ground carry the silhouette. The creature is an ookala, a drawn-out, narrow-bodied climber about twice as long as it is tall, that hangs in the gaps between giant trees by its hooked hands and the grip of its long tail. Match the body plan, proportions and slender limb construction of the adult ookala sibling (reference image). Limbs: every limb is thin, angular and rod-like, with one more joint than a normal limb, so each limb bends at two clearly visible sharp joints before the hooked hand. The straight sections between the joints are narrow and equal in width, and the contours at the joints are crisp and angular. The silhouette reads as spidery and segmented. The hands are small pale horn hooks. The tail is a slim tapering rope that curls once around a branch to grip it. Colourway, identical in all three views: the body and tail are moss-green, with dark brown bands of the same width and the same spacing along the body and tail. The limbs are darker olive-brown, and the hooks are pale horn. A light olive-ochre highlight runs along the upper surfaces only. The same green base hue, the same brown band colour and the same band spacing appear in the front view, the side view and the rear view. Front view (south): seen from the front, eyes toward the viewer, the long narrow body hangs vertically between thin angular limbs that reach up and out to hooked hands. Side view (east): seen from the side in profile, the elongated body runs horizontally, limbs folding out in visible segments, tail gripping behind. Rear view (north): seen from behind, showing the back, the banded tail and the haunches, with the eyes hidden, and with the same thin angular segmented limbs reaching up to hooked hands. All three views show the same animal with the same moss-green and dark brown banded palette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, SIBLING_MISMATCH, F_INCONSISTENT, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.1,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwingerVariant"
+ },
+ {
+  "id": "arteval_RM_Cleaver__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Cleaver__variant",
+  "prompt": "A single RimWorld creature sprite, the Cleaver variant, with a transparent background, painted in the soft-edged, realistic vanilla RimWorld style, where value and colour contrast against the ground carry the silhouette. The creature is a loose cluster of five or six separate sharp, angular crystal shards, with no head and no legs. Stress-light glows along the fracture planes and holds the shards together, and a few small loose fragments trail from the cluster as if just shed. The body is built to move by fracturing: one lead shard is thrown ahead of the others, and the remaining shards gather close around it, so the cluster looks fast, violent and slightly off balance. Every shard is deep violet amethyst, from dark plum in the shadowed facets through saturated violet in the mid-tones to pale lilac on the lit edges. The stress-light in the seams glows a single warm magenta-pink, and the same glow runs through every seam. This violet-amethyst colouring is the one distinct colouring of this variant, clearly different from the base cobalt-blue Cleaver. The creature is one object under one light, and it keeps the anatomy and silhouette of the sibling Cleaver.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.3,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/Crystal/Cleaver/CleaverVariant"
+ },
+ {
+  "id": "arteval_RM_Gristleswarm__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gristleswarm__variant",
+  "prompt": "A single knee-high scuttler of gristle and plate, the gristleswarm (variant), painted as a RimWorld creature sprite in the painterly vanilla RimWorld style, realistic, on a transparent background. Low, segmented, many-legged body with an armoured back. Colourway, identical on every facing: warm ochre and golden-tan back plates, crazed all over with a cracked pattern like dried mud, the cracks and mottling in dark brown; dark grey-brown legs; exposed gristle at the leg joints, leathery and grey, in cool grey against the warm plates. Front view: eyes toward the viewer, the head and the plated shoulders in warm ochre-tan with dark brown crackle, grey gristle at the leg joints. Side view: the full profile of the plated back in the same warm ochre-tan with dark brown mottling, legs dark grey-brown, grey gristle at each joint. Rear view, seen from behind: the plated back and hindquarters in the same warm ochre-tan with dark brown crackle, eyes hidden. All three views are one animal in one colourway: warm ochre-tan plates, dark brown mottling, dark grey-brown legs, grey leathery gristle joints. Soft painted edges; value and colour contrast against the ground carry the silhouette. The creature is small and compact, centred, with the whole body in frame.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Gristleswarm/RM_GristleswarmVariant"
+ },
+ {
+  "id": "arteval_RM_Julmox__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Julmox__variant",
+  "prompt": "Body: a low, wide, flat slab, like a cooling slab of rock, much wider than tall. Feet: spread into broad flat plates resting on the ground. Seams: the shell is divided into sealed plates, with lids closed over every seam, giving the look of a row of dull kettles along the skirts.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.8,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Julmox/RM_JulmoxVariant"
+ },
+ {
+  "id": "arteval_RM_Karrimeth__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Karrimeth__variant",
+  "prompt": "A single karrimeth, colour variant, as a RimWorld creature sprite: a thumb-sized, humped, domed shell on small hidden legs, a salt-crusted crawler of the dry flats. The anatomy and silhouette are those of the adult, kept exactly: a rounded humped shell, thumb-sized, low to the ground, with its small legs tucked out of sight beneath the dome. The variant has one distinct colouring: an olive-green shell base with cream salt-frosted mottling spread over the whole hump, and small cream crystals along the ridge of the shell. The curve of the hump and its back edge carry the same olive-green base and the same cream salt frosting, and natural painted shading stays inside the olive-green and cream palette. Soft painted edges, with value and colour contrast carrying the silhouette. Transparent background, painterly vanilla RimWorld style, realistic, natural lighting from the upper left.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.4,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Karrimeth/RM_KarrimethVariant"
+ },
+ {
+  "id": "arteval_RM_Murrin__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin__variant",
+  "prompt": "A single hand-length pool fish, the murrin, for a RimWorld sprite on a transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. Body: deep-keeled, with a tall rounded belly keel and a compact, laterally flattened shape. On its back rises one tall comb-like dorsal fin with distinct separate rays, standing well above the body. Colour: one palette across the whole fish and across every view. The back and flanks are olive green, and the belly and underside are cream. Every ray of the dorsal comb is olive with a cream tip, and the membrane between the rays is pale cream-olive. The pectoral fins are olive with cream edging, and the tail and other fin edges are olive with cream edging. The front view uses these same olive-and-cream comb rays and pectoral fins as the side view and the rear view. Shading uses muted grey-brown shadow on the olive and cream. Views: the front view shows the head with the eyes toward the viewer and the comb fin rising behind the head. The side view shows the full profile, with the deep keel and the tall comb fin in profile. The rear view shows the back, the tail and the comb fin seen from behind. Keep the same size and proportions on every view. The mood is gentle and calm.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.7,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Murrin/RM_MurrinVariant"
+ },
+ {
+  "id": "arteval_RM_Ossivel__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ossivel__variant",
+  "prompt": "A knee-high, round-bodied creature called an ossivel, in its herd colour variant, shown as three views of one single animal in a row: a front view with the eyes toward the viewer, a side view, and a rear view seen from behind. Transparent background. Painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. The animal is knee-high to a person, a plump round body on short sturdy legs, carried low. It is far larger than a frog. The throat is formed as a row of organ pipes: eight to ten bone-cream tubes of graded length, tallest in the centre, set side by side across the front of the throat like a rank of organ pipes, each tube holding pale jade-green fluid.\n\nONE COLOUR VARIANT, IDENTICAL ON ALL THREE VIEWS. The body base is warm russet-copper. The soft rounded body lobes along the back and flanks are dusky plum with fine cream speckles. The pipe tubes are bone-cream. The fluid in the pipes is pale jade-green. The belly is a lighter sandy copper. These four colours sit in the same places on the front view, the side view and the rear view, so the three views read as the same animal turned around. The palette is warm copper, plum and jade, with no blue-white and no yellow anywhere on the animal.\n\nFront view: the round body faces the viewer, the full row of bone-cream pipes with jade-green fluid is visible across the throat, the eyes are toward the viewer, and the plum lobes show at the shoulders. Side view: the animal in profile, the pipe row seen edge-on along the throat, the plum lobes with cream speckles along the back, the legs and body in russet-copper. Rear view: seen from behind, the rounded back and haunches in russet-copper with the plum lobes and cream speckles, the eyes hidden, and the tops of the jade-green pipes showing just past the shoulders.\n\nSame body proportions, same number of pipes, same lobe layout and same four colours on every view. Natural, believable anatomy, lit softly from above.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.9,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Ossivel/RM_OssivelVariant"
+ },
+ {
+  "id": "arteval_RM_Shulla__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shulla__variant",
+  "prompt": "A shoal of small slender fish, the shulla variant, each a hot-white sliver of a body with a warm orange-gold glow at its margins, darting together between hot vent plumes. Painterly vanilla RimWorld style, realistic, on a transparent background. Every fish has a heat-shimmer double edge: a second, pale, translucent ghost of its own silhouette sits a few pixels outside the body, wavering like air over a hot vent, with a thin dark gap between body and ghost. The doubled contour is clearly legible on every facing, around the back, snout, belly, tail and fin streamers. Each body is built from distinct painted planes with crisp value steps between them: head and gill plate, a pale back, a brighter belly, and separate dorsal, pectoral and tail fins. The forms match the adult sibling's proportions, while the colouring stays hot white with orange-gold margins. The edges are soft and painted. Value and colour contrast against the ground carry the silhouette: bright hot-white fish against darker, cooler water. The fish are restless and fast, packed in company, each facing the same way as the shoal. Keep the shoal's arrangement and the fish's size from the previous render.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, SIBLING_MISMATCH, DEPARTURE_MISSING, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.45,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Shulla/RM_ShullaVariant"
+ },
+ {
+  "id": "arteval_RM_SootGristleswarm__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SootGristleswarm__variant",
+  "prompt": "A soot gristleswarm, a small ground-dwelling swarm creature of the ash country: the ordinary gristleswarm run through a chimney. Low, wide body covered by overlapping segmented shell plates, with many jointed legs, a pack-defence animal. Soot-black, cool charcoal body, shell plates and legs, nearly black, with cool silver-blue highlights. The soot-black plates have a visibly oily, wet-looking surface: smooth, concentrated glossy reflections that follow the curve of each plate, a few sharp specular glints, and dark pooled grease in the seams between plates. The eyes glow like embers, orange-red, the only warm colour on the animal. One palette governs every facing: the front view (eyes toward the viewer), the side view and the rear view (seen from behind, showing the back plates, rear legs and hindquarters, eyes hidden) all use the same charcoal base, the same cool highlight hues and the same grease sheen on the plates. Warm brown and bronze are absent from the body. Realistic painterly vanilla RimWorld style, soft painted edges; value and colour contrast against the ground carry the silhouette. Transparent background. Small creature, readable at small size.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarmVariant"
+ },
+ {
+  "id": "arteval_RM_Sulleth__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sulleth__variant",
+  "prompt": "A single sulleth, a long, low grazer on quick slender legs, with a long, low-slung body and a back much longer than the animal is tall, a build unlike a deer's tall, short-backed frame. The hide is one dusky dark-plum violet over the whole body. Barred markings in a single fixed olive-moss green, a muted yellow-leaning green of mid value, run down the flank and across the shoulders and haunches. Shading changes only the lightness of the green, and its hue stays moss green on the dark plum hide. The neck is carried forward and the nose is lowered toward the next mouthful, in a calm grazing posture. The legs are slender and quick, with a docile, relaxed stance and soft ears. Colour palette: dusky dark-plum violet hide, olive-moss green bars, a slightly paler plum belly, and dark plum hooves. Transparent background. Painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. The creature is shown as a living animal, full body, centred.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.8,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Sulleth/RM_SullethVariant"
+ },
+ {
+  "id": "arteval_RM_Tetchik__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tetchik__variant",
+  "prompt": "A squat clicking beetle from the glower crust, shown in three views: front view with the eyes toward the viewer (south), side view (east), and rear view seen from behind (north). The same single individual appears in all three views. Its body is low and rounded, with six short legs tucked under the shell, a small head and short antennae. The pose, size and outer silhouette are identical in the three views.\n\nThe shell is built from many tiny overlapping metallic plates, dozens of them across the back, each plate a small snapping scale. The plates are laid in neat rows like fish scales, and each plate has its own small highlight and a thin brass edge. The rounded shell lobes keep their smooth overall shape, and the fine plate construction gives them their texture. The shell is not a smooth carapace and does not split into two wing-cases.\n\nColouring is one fixed variant palette on every view: a warm copper-brown base on the plates, teal verdigris patches of corrosion, and brass seams between the plates, like oxidised metal. The teal patches sit in the same places on the shell in every view. In the rear view the shell shows the same copper-brown, teal and brass, and the rear of the body shows the back of the shell, the haunches and the legs, with the eyes hidden. In the side view the same shell colours run along the flank.\n\nTransparent background. Painterly vanilla RimWorld style, realistic, soft painted edges, with value and colour contrast against the ground carrying the silhouette. Lighting comes from the upper left, and the shading is the same in all three views.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.55,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Tetchik/RM_TetchikVariant"
+ },
+ {
+  "id": "arteval_RM_Thozzik__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thozzik__variant",
+  "prompt": "A thozzik colour variant, a heavily armoured hive insect walker, painted as the same creature as the kept adult thozzik with only the colour changed. Realistic painterly vanilla RimWorld sprite on a transparent background, soft painted edges; value and colour contrast against the ground carry the silhouette. Body: six legs, a broad head shield, a heavy thorax and a swollen abdomen ending in a sting, all covered in thick overlapping chitin plates, much heavier than a wasp's thin exoskeleton. Fungal toxin sacs grow out of the flanks and abdomen as fruiting bodies, and orange shelf fungi grow in tiers along the back. Variant palette, identical on every facing: the armour plates are black-charcoal with amber-orange banding along the plate edges; the toxin sacs are pale sage-cream with fine darker speckles; the shelf fungi are orange. Each part keeps this colour in the front, side and rear views, and lighting changes only its value, never its hue. Rendering: glossy chitin with crisp, clearly separated plates, a bright localized specular highlight on the upper curve of each plate, and a darker value in the seams between plates, at the same gloss, plate definition and contrast as the kept adult. Views: the front view has the eyes toward the viewer and the head shield and the front legs in the foreground; the side view shows the profile of the head, thorax, abdomen and all legs on one side; the rear view is seen from behind and shows the back, the banded abdomen, the sting and the haunches, with the eyes hidden. Every view is the same creature, with the same palette, the same plates and the same sacs. Reference image: the kept adult for anatomy, pose and rendering; the palette above takes the place of the reference's colours.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, SIBLING_MISMATCH, F_INCONSISTENT, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "RM_TheRot/Fauna/Redrawn/Thozzik/ThozzikVariant"
+ },
+ {
+  "id": "arteval_RM_Vennick__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vennick__variant",
+  "prompt": "A single fist-sized silk-runner creature called a vennick, for RimWorld, drawn small and centred on a transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette, and the colour reads clearly at tiny size. Body: low, compact and quick, with slender legs built for running along thin high lines, and a head carried forward. Colouring, identical in every view: the body flanks, legs and underside are pale grey, a soft cool light grey with light, low-contrast grey-on-grey mottling, and the whole back is bone-white, one continuous bright band along the top of the body that catches the gloom against the pale grey flanks. The grey stays the same lightness and the mottling the same softness in every facing, so the south, east and north views read as one animal in one coat. The animal looks harmless and alert, a part of a swarm that moves like a current. Facings, drawn as three separate views of this same animal: south is the front view, eyes toward the viewer, the bone-white back visible as a bright band over the top of the body; east is the side view, head to the right, the bone-white back along the top edge and the pale grey flank below it; north is the rear view, seen from behind, showing the back, hindquarters and legs with the eyes hidden, the bone-white band running down the centre of the pale grey body. Style: flat even lighting from above, no cast shadow, no background scenery.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.35,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vennick/RM_VennickVariant"
+ },
+ {
+  "id": "arteval_RSW_Corinathoth__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Corinathoth__variant",
+  "prompt": "A massive, slow-moving herbivore from Maridun, the variant colouring of the corinathoth, painted as a RimWorld creature sprite sheet with three views of the same animal: front view with eyes toward the viewer, side view with the head to the right, and rear view seen from behind with the back, tail and haunches showing and the eyes hidden. Body plan, pose, size and silhouette are those of the sibling corinathoth: a huge heavy body on thick pillar legs, a broad head carrying a horned frill, a calm stance. The variant has ONE coat, identical in all three views: deep rust-red base hide covering the head, frill, neck, back, flanks, belly, legs and tail in one hue and value, with round dark brown spots of the same size and density scattered over the whole body. The spots wrap around the animal: on the chest and forelegs in the front view, along the flank in the side view, across the back and haunches in the rear view. Legs and belly carry the same rust-red as the back. The frill is rust-red with dark brown spots, and the horns and frill tips are pale bone. The colour is stated in these words and takes precedence over any colour in the reference image. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. The three views are the same animal turned, with one colour scheme and one spot pattern.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Corinathoth/CorinathothVariant"
+ },
+ {
+  "id": "arteval_RSW_Faa__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Faa__variant",
+  "prompt": "A small gold-olive scalefish, the faa, a fast predatory fish of warm shallow water, painted as a game sprite in the painterly, realistic style of vanilla RimWorld, on a transparent background. Three views of the same fish: a front view with the eyes toward the viewer, a side view facing right, and a rear view seen from behind showing the back and the tail. Body: slim, streamlined and quick-looking, olive-green on the back shading into warm gold on the flanks and a paler gold belly, with fine overlapping scales. Head: slim and pointed, with a small mouth, a short neat snout tip, thin closed lips, an opening no wider than one eye and no visible teeth; the eye is bright and alert. Marking: one clear, straight row of 7 to 9 evenly spaced, round violet dots of equal size runs along each flank from just behind the gill cover to the tail base at mid-flank height. The side view shows the whole row. The front and rear views show the row along both body edges. Tail fan: the same colour scheme in every view, a warm gold-tan membrane with darker olive-brown rays, with only light and shade changing from view to view. Soft painted edges; value and colour contrast against the ground carry the silhouette. Bold, simple shapes that stay readable at very small size.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.2,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/SeaBeasts/Faa/FaaVariant"
+ },
+ {
+  "id": "arteval_RSW_Krykna__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Krykna__variant",
+  "prompt": "A krykna, a pale six-legged predator from Atollon, painted as one distinct colour variant, for a RimWorld creature sprite on a transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. It has six jointed, sturdy legs, not a spider's eight, carrying the body low to the ground. The abdomen rises tall above the body like a towering dome or column, not slung low. The head is small and low-set, with a short beaked mouth in dark horn-grey, with no fangs or mandibles, and four round, glossy black bead eyes in two clear pairs set above the beaked mouth, with a visible gap between the pairs. The pose, size and silhouette match the owner-kept sibling krykna. The hide is pale grey. The tall abdomen is the same pale grey base with broad, soft rust-pink marbled bands wrapping around it, with a faint pink flush on the underside; the bands keep the same proportions and positions all the way round the abdomen. The abdomen is smooth grey and rust-pink only, and the legs and body share the same grey with the same faint pink at the joints. The animal is alive, alert and predatory. Transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, CANON_MISS, F_INCONSISTENT, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Krykna/KryknaVariant"
+ },
+ {
+  "id": "arteval_RSW_Mee__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mee__variant",
+  "prompt": "A mee scalefish, a small schooling sea fish of the Naboo shallows, painted as a single game sprite. The body is streamlined and adult-sized, covered in smooth fine scales. The whole body is one shared blue-violet colour with soft lilac iridescent patches across the flanks and back. The fins are teal. A single line of small glowing cyan bioluminescent dots runs along each flank from behind the gill to the tail base, and the dots stay visible on every facing. The same blue-violet fish with the same lilac patches and teal fins appears in all three views. East view: side view, the full flank with its cyan dot line in profile, head to the right. North view: rear view, seen from behind, showing the tail fin, the narrow back and the two flanks with a cyan dot line along each, eyes hidden. South view: front view, eyes toward the viewer, a narrow head-on body with the same blue-violet scales, lilac patches and teal fins, and a cyan dot line along each flank visible at both sides of the body. Transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.3,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/SeaBeasts/Mee/MeeVariant"
+ },
+ {
+  "id": "arteval_RSW_Pufferpig__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Pufferpig__variant",
+  "prompt": "A sprite sheet of one small barrel-bodied herbivore, the Pufferpig, with three views of the same individual: a front view (eyes toward the viewer, trunk hanging in front of the face), a side view facing right, and a rear view seen from behind (back, short tail and haunches, eyes hidden). The body is a round, heavy barrel on four short legs. The snout is a long flexible trunk, soft and mobile and slightly curled at the tip, ending in a small nostril pad. The back carries a row of short spikes lying flat, uninflated. One single colour variant is used on all three views, in exactly the same colours: warm amber-tan hide (about RGB 178,128,72); a darker brown honeycomb pattern over the head and back (about RGB 98,62,36); trunk in a slightly deeper warm tan-pink (about RGB 168,112,76); spikes dark brown with pale cream tips (about RGB 70,45,28 and 226,205,160); belly and inner legs a lighter warm tan; small dark eyes. Shadows on the hide are deeper warm brown. Hide hue, honeycomb colour, trunk colour and spike colour match exactly on the front, side and rear views, so the three views read as one animal seen from three sides. The animal is a plausible creature of a harsh alien world, realistic, with weight and a grounded stance. Painterly vanilla RimWorld style with soft painted edges; value and colour contrast against the ground carry the silhouette. Transparent background, the three views evenly spaced on one sheet, each filling its cell at the same scale.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Pufferpig/PufferpigVariant"
+ },
+ {
+  "id": "arteval_RSW_Runyip__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Runyip__variant",
+  "prompt": "A runyip, a squat forest herbivore from Yavin 4, drawn as a realistic painterly vanilla RimWorld creature sprite on a transparent background. Body: low, squat and stocky, with a short thick torso and short strong legs. Head: branching antlers in warm ivory, and a flexible, mobile snout with a pale warm tan-ivory muzzle. Feet: the front toes carry clawed toes, dark and curved, in place of hooves. Coat: one consistent colour scheme across every view. The coat is a warm golden-tan ground (warm orange-tan midtone), with dark brown stripes crossing it in soft bands. The stripe colour is the same dark brown on every view. The antlers and muzzle are warm ivory on every view. The same warm golden-tan, dark brown and warm ivory appear in the front view, the side view and the rear view. The light is neutral warm daylight in all views, so the white balance stays the same and shading only darkens or lightens these same warm hues, with no olive or green cast anywhere. The front view shows the face, eyes toward the viewer, snout and antlers. The side view shows the full profile, with the stripes running across the flank. The rear view shows the back, haunches and tail, with the eyes hidden. Soft painted edges; value and colour contrast against the ground carry the silhouette. Natural, realistic proportions, matching the vanilla RimWorld animal painting style, with the creature centred and complete in the frame.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 2.25,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Runyip/RunyipVariant"
+ },
+ {
+  "id": "arteval_RSW_ScrapNestBird__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_ScrapNestBird__variant",
+  "prompt": "A single oil-dark scavenger bird for a RimWorld colony game, standing and walking on the ground, medium-sized with strong legs, a heavy hooked scavenger's beak and a long trailing tail. Painterly vanilla RimWorld style, realistic, on a transparent background, with soft painted edges; value and colour contrast against the ground carry the silhouette. The palette is fixed: the neck and throat are an even charcoal-grey, continuous with the cheek; the wings are near-black with a teal-green oil sheen, like oil on water; the long tail is dark brown-black with an iridescent teal-violet sheen; the legs and beak are dark slate. The whole bird reads as one uniform oil-dark body, with only slight shifts in value, a little lighter on the sheen highlights and a little darker in the feather shadows. The wing coverts and flight feathers carry faint darker bars, and the tail carries faint darker bands along its length. The eyes are dark and watchful, the wings are folded neatly against the body, and the back, folded wings and long tail share the same brown-black iridescent palette. Lighting is soft and gentle, with painted highlights on the sheen.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 1.15,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBirdVariant"
+ },
+ {
+  "id": "arteval_RSW_Skalder__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Skalder__variant",
+  "prompt": "Three views of one skalder, a heavy herbivore from Florrum, in its variant colouring: front view with eyes toward the viewer, side view, and rear view seen from behind with eyes hidden. All three views show the same animal in one shared colour scheme. The hide is a muted sage grey-green of medium value, with pale blue-grey bands across the mantle ridges and along the flanks. The tusks are pale bone-cream. The grey-green hide covers the whole body in every view: in the side view and in the rear view the hide is the same sage grey-green as in the front view, with the same pale blue-grey banding and the same mantle tone. The variant looks lighter, cooler and greener than the adult's dark slate. Body plan: a heavy, thick-hided, broad quadruped with a huge ridged mantle covering the neck and back, rising in layered ridges that show clearly from the front, the side and from behind, and two tusks curving from the lower jaw. The thick hide has a rough, weathered, leathery texture. The pose, proportions and silhouette follow the adult sibling's render, as the reference image shows. Transparent background, painterly vanilla RimWorld style, realistic rendering with soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 3.8,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Skalder/SkalderVariant"
+ },
+ {
+  "id": "arteval_RSW_Tibidee__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Tibidee__variant",
+  "prompt": "A giant silicon-based mountain creature, the tibidee variant, for a RimWorld walker sprite. It has a heavy, bulky body with a stony, mineral-textured hide, thick pillar-like limbs, a broad head, and large bat-like wings folded against its flanks, with the upper wing surfaces covered in the same mottling as the body. The creature is gentle in posture and massive in scale. Its colouring is a warm tan-ochre hide as the body base colour, with fine dark-brown leopard-style rosette mottling of small spots of even size and density across the hide and across the wings. The wing membrane is deep crimson-red at the wing edges and underside, and the belly and chest are pale cream-tan. This colouring is darker, warmer and more heavily patterned than the pale adult, with the same base colour, the same fine mottle pattern at the same scale and in the same anatomical places, and the same crimson membrane throughout. The creature is painted as a single individual under soft light, with soft painted edges, and value and colour contrast against the ground carry the silhouette. Transparent background, painterly vanilla RimWorld style, realistic.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 8.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Tibidee/TibideeVariant"
+ },
+ {
+  "id": "arteval_RSW_Whisperbird__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Whisperbird__variant",
+  "prompt": "A realistic painterly vanilla RimWorld style sprite of a whisperbird, a golden rainforest bird from Yavin 4, on a transparent background. Soft painted edges; value and colour contrast against the ground carry the silhouette. Body: a slim, light torso covered in warm golden feathers, with folded golden wings and a long trailing golden tail that streams out behind the body. Neck and head: a clearly elongated, thin, bare blue-grey neck stretches forward between the golden torso and a small bald blue-grey head. The golden feathering ends at the shoulders. The skin of the neck is smooth and featherless, and it makes up about a third of the bird's body length. The head is bare and featherless, with the same blue-grey skin and small dark eyes. Beak: long, slim and straight from base to tip, pale orange-tan, with a pointed tip level with the line of the head. The mouth is closed. Feet: slender wader-like toes, thin and pale grey, with small inconspicuous claws that sit close to the toe tips. The feet are small against the body on every facing. The bird stands on the ground in a relaxed walking pose, drawn in the requested facing. Front view: eyes toward the viewer. Rear view, seen from behind: back, folded wings and trailing tail, head and beak turned away from the viewer. Side view: full profile showing the long bare neck, straight beak, golden body and long tail. The bird is shown at full size within a square frame, centred, with the tail included.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: CANON_MISS, CANON_MISS, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Whisperbird/WhisperbirdVariant"
+ },
+ {
+  "id": "arteval_RSW_YobshrimpJuv__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_YobshrimpJuv__variant",
+  "prompt": "A young yobshrimp, a small pale shrimp-like swimmer, too small yet to swarm a carcass with the rest of its kind, picking over what the shallows offer instead. It has a small, slim juvenile body held in a low swimming pose, with segmented body plates, a tapering tail, slender haunches and a pair of small dark eyes. Its chitin is pale sage-green, mottled with cream patches, and every body plate is rimmed with gold; the sage base, cream patches and gold plate rims sit in the same places on every plate. The creature is lit by soft, even, natural light from the upper left. Realistic painterly vanilla RimWorld creature sprite on a transparent background, soft painted edges, value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r1",
+  "drawsize": 0.8,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/YobshrimpVariant"
+ }
+]

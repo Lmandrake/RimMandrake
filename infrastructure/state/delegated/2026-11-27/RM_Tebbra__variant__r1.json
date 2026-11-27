@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.456774
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 24.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Tebbra__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3a6da138cd83a067bf80ab1dbcb66bac94b26575a487bad4dde7b9c6b72ac32c",
+  "east.png": "131ed5affc183acee5cbb79bfa3c0e9608bedc406233be01759d80ce062939b0",
+  "north.png": "10d344c3c7aff404160d2beb285c23412cc893e4b6bb1eb509e17fc8c26a6c9b",
+  "scale.png": "8b01bfb8d6e370369b552a5338028aea37566896515c3a60d38d9795dd59ba58",
+  "siblings.png": "674b485ab8ef43bfc105ed9de5cafdb030e27ac12c481faf8d3a9bbc9f80e631",
+  "facings.png": "cb0d7f7a9de0188ff77533b2ad9a5da2e353f6d31e1476e181f75e8676905cab"
+ },
+ "source_sha256": {
+  "south": "dc5356c53537c1783ee933d0648a2494cdbc4e96ec6b6627dff56d9a89c89d18",
+  "east": "2beff10667d460ee02caa33ae928dbd3c7ce6097d1a2c63e22606dbf9ac690e7",
+  "north": "10d344c3c7aff404160d2beb285c23412cc893e4b6bb1eb509e17fc8c26a6c9b",
+  "scale": "d137999653a0311313a38937ae7c75e6bb48af760a980a8e35ff1171c9576c76",
+  "siblings_RM_Tebbra_south": "1c6839cf2da47face6af3a4872eb21b237c21f67f3290ecfec5e5820f6707f70",
+  "siblings_RM_Tebbra_east": "a01e47ac793ccf10573f222ad26933ac3c266fc78b06d0ac083a55a0c27f6e41",
+  "siblings_RM_Tebbra_north": "ba227cf8b103cb99bb3ece5f6eafb6d28a7e9cceaa586a161dc25fe13ef3e9c9"
+ }
+}

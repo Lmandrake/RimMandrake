@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4529406
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Vekkit__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "06700fecab4de79f7f06edad3db8eec4fd2ba625e17b10e93c27ac7f8f6c8072",
+  "east.png": "9f7d1fff67d3feb838eb3af53a3a82f60c00d4390a37993c8243ed91aaefc395",
+  "north.png": "58307c2f579ab4a0022d1b1fa54f298329d550a22a15ec40c7612839c0cdb9f7",
+  "scale.png": "3b9ad3ce0575b7c85b4cd91c2253180e9c86b7342582109a0b8a2148ae0fa3ed",
+  "siblings.png": "a05e8a488c764d67b7bc2c2706571e3e0087062ea7a8ff3ab1cecc62ecdb30a4",
+  "facings.png": "2bad22f1e339d2a016fc4179d3382d688c227152a1e19228eb64b8ce0e2275af"
+ },
+ "source_sha256": {
+  "south": "0e453f392b84234e8a7eecd3a1069b81e4b4f351d3d859e24770d0ff88d665f9",
+  "east": "9f7d1fff67d3feb838eb3af53a3a82f60c00d4390a37993c8243ed91aaefc395",
+  "north": "58307c2f579ab4a0022d1b1fa54f298329d550a22a15ec40c7612839c0cdb9f7",
+  "scale": "8c8faea4f58170924c6964357fd87c7520a575707b588d14acb61bea3c289aac",
+  "siblings_RM_Vekkit_south": "e505c849c5a5e8f349e6195b9d619602d2b59c70ff4bd35f6ef31ff274cf5e3e",
+  "siblings_RM_Vekkit_east": "33a1ab7949e22cc6bac50f85ee8a72a5362833755f070fc8a429dbc2eb389b78",
+  "siblings_RM_Vekkit_north": "8d3e77ec770618813b0c18847516117e6042f0fc554a22d82ed80322a72078e6"
+ }
+}

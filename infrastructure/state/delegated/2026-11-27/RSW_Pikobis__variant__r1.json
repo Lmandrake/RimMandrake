@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 61.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5333608
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 21.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1557636
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Pikobis__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e339c5994a74059d37626ef0b560e239cb44d8ca47cd50860c04e7c449a86a50",
+  "east.png": "319e9439d6a24268ce6ae3a611a743f90d010bfb400bcf3a22220ae24e6a311b",
+  "north.png": "668aa4785b393d1b230b6fe27debbfda3f31b4488b3bea0e2d3f8801be7a4628",
+  "scale.png": "95ffd9ba7e786acef048fe9a9b6fe51d0684825579fae99efe572de7810559f6",
+  "siblings.png": "763165b5ed415b4c0657eb9c2909c5c245fd20d48dfed61c4e3f4e5924659c0e",
+  "facings.png": "4f5dec20adcc15e885a39330d4f7308ffb71af5208045ea6bf1552574b7561d1"
+ },
+ "source_sha256": {
+  "south": "e339c5994a74059d37626ef0b560e239cb44d8ca47cd50860c04e7c449a86a50",
+  "east": "2f4011eb098b1f2bc600a16634624b4782aed1359f17a6aa3baf396cc3ef2bc9",
+  "north": "87d4666f98ff42f73d093429c15b416e0ac250e27e4d7237dd466975f4bfec87",
+  "scale": "9a7ab98a82a51e769a11a60301fe498284b7e72783d667d0a21585cf983ccc51",
+  "siblings_Pikobis_south": "fefc8292d3756968667102f60797c1b31c437bd85584c9160bee16839736a5f4",
+  "siblings_Pikobis_east": "827b77ffdf9bf73aa223f5ddaed5a1c03505afd7dde4517c4bb894263d5cae5e",
+  "siblings_Pikobis_north": "727ef3af43925a09edcf6af0a5844e3451b31d1b1d0d66417c6392d9a6d1cc84"
+ }
+}

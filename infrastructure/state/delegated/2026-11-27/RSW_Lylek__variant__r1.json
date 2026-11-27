@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47082159999999995
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Lylek__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ebed5a2e544e90d819d372f3ea882cdf290dbccb53494022fbe33638bcf1a857",
+  "east.png": "022077a09a5da6fccc06afac9954ca0a6b286fbb12d51cd36838983e7df60467",
+  "north.png": "51167d8ea8d1607443eb6f85ab9ad3d0e1068bcc0851fa07e6e968d95d7697c0",
+  "scale.png": "f847054b4af73f300883818e64ab84e35a2719dd9ccc3fd2df8a924ad07fd9bb",
+  "siblings.png": "c4bf0dd2e140e8d64fde1df1cacf172a7f22023214ea437062a81288eaacb066",
+  "facings.png": "a6eb68ef51e7aa338621c4c6c42cb4e916c57fd5b60a859455bb6eccdb937ca1"
+ },
+ "source_sha256": {
+  "south": "f509b66c7bb8fddb38e19b0a6b5c0ce8e6cd14e36b50975c7a90b60b6e58379d",
+  "east": "022077a09a5da6fccc06afac9954ca0a6b286fbb12d51cd36838983e7df60467",
+  "north": "51167d8ea8d1607443eb6f85ab9ad3d0e1068bcc0851fa07e6e968d95d7697c0",
+  "scale": "54791dcf2188dbfe1f10a72914d33d54b537effbc14f80c24ff5fd05b5585830",
+  "siblings_Lylek_south": "45a881689ff6c196ffdc88a27d21af261b2754e6bc2ebe5bf2e2bf250024927d",
+  "siblings_Lylek_east": "09c30adf1b28b554df7571445def6ce9bb20510d50cce186832b83f03c61ec7f",
+  "siblings_Lylek_north": "e828736741d6208d304eb10f375eb0e789d99e26f45626f3f8885b353dc19830"
+ }
+}

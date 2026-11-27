@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 37.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4559856
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16326960000000001
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Pufferpig__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'CANON_MISS']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "63002b65a8cc078ae2c02f27d4f0766572df29d93980579dd35be7eaa02bfbcb",
+  "east.png": "f4257f5aef6512544c5913047e7361321dd35162baf389da275ac3190421c52a",
+  "north.png": "06144d0ae3ffce19bd610295cc95b17aae5ade4942250f99fdaf57278d521eb7",
+  "scale.png": "14c6bcadf14ebd3f2f3e1d01b69455a91adaf4b375addfba1d6218efe4cc8689",
+  "siblings.png": "47ed3467c5faf597344c18618d36847eb09e24470edb8653fd529a79900a80e4",
+  "facings.png": "c86c836b73485d33b82c70ed3999022fa81ddf329e0c757b3230910fb7167438"
+ },
+ "source_sha256": {
+  "south": "63002b65a8cc078ae2c02f27d4f0766572df29d93980579dd35be7eaa02bfbcb",
+  "east": "b2b42e5509adcac5763f9ddcc936dcc56ff4c9e8e174eb7c0dc8830fcb1cb2b5",
+  "north": "55b9775bc9dfe0849b3dbb47d25eab0b96c78cbbec0c953556f3e67aba69faaa",
+  "scale": "f53a6ce09bf9edc83458f207d2aa33d5420d3685f50957cd1466c3299f64fb92",
+  "siblings_Pufferpig_south": "2821e70b530293b8024938c3db374ba083e51b9d814a87cdf0df988f8a737647",
+  "siblings_Pufferpig_east": "c5397f9673221b606c833303ca83e0a5318550307f999a5b1576f3b895a3f6b3",
+  "siblings_Pufferpig_north": "ed6eda455aa11d434aee1e789e96229a197623f3770f5d66f8084e28e61c287c"
+ }
+}

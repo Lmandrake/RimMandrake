@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 33.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4494322
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 28.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1552256
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Wraid__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d5c8279ff7f4f086c8a052076a8a099e7e481e691feb1c27f5fc7d36bcf402fa",
+  "east.png": "0973f35fef56bfb56c913c21939165a9a9716f4dff7ab63b3f821cdc15fad463",
+  "north.png": "ab6a56116848d3e7d0f2c93de514bb530c66ad7cdb5ee692c931827b14383fbe",
+  "scale.png": "1a153a63d233a009010ba978ba893492eec94e8a5c701d96e9f772b6be87424f",
+  "siblings.png": "e5544d6980332f6a092c66d954c608d0296a80c7735b99ca707cd083044969ab",
+  "facings.png": "5ebc98c794e45320ceb08302283e6204612c2816714ce2930842f0384571fe74"
+ },
+ "source_sha256": {
+  "south": "d5c8279ff7f4f086c8a052076a8a099e7e481e691feb1c27f5fc7d36bcf402fa",
+  "east": "0973f35fef56bfb56c913c21939165a9a9716f4dff7ab63b3f821cdc15fad463",
+  "north": "ab6a56116848d3e7d0f2c93de514bb530c66ad7cdb5ee692c931827b14383fbe",
+  "scale": "dbbdba1611f6dae363da058641da5aacb0e396bf3f1c2a2397ed121877a0f215",
+  "siblings_Wraid_south": "0cef685e6fb917e5d8bd207469be386c29e442ea63544ea5d6fb943923513f78",
+  "siblings_Wraid_east": "f4ce0b1989e319fb4f90231e0b654f2837d90da2b19bc637adcda6d62127a480",
+  "siblings_Wraid_north": "88e5f6a2132d96e3f9f4952902c0bff47425bba1db155a71f1852eb8781db40b"
+ }
+}

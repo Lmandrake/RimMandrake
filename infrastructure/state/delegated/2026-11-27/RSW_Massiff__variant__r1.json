@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46062020000000004
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Massiff__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e7085b3342273ce26e881ebc09bf3a003664df73bc17f930e49e7090091a9087",
+  "east.png": "c43a8bb0fc99c41770f8b35f6077fa0bcdfe1a6459f2e36c5b924ab2d351fec9",
+  "north.png": "67eb342fbe42af30036b12860a1a417331521228ada98514019247380c2e1ab2",
+  "scale.png": "145315a629933f1cd6d3827b08fc3ea7c236355cdd2037d7e95d13ef74cf3c95",
+  "siblings.png": "cabdc64004aaefc9de2e8dcde881733589bc404aa7817e77d9760cb860672f9a",
+  "facings.png": "7a88376ad2130a3b55dab93d273e6271abe9a736d50ad6c4b2f88cfcad3844b5"
+ },
+ "source_sha256": {
+  "south": "e7085b3342273ce26e881ebc09bf3a003664df73bc17f930e49e7090091a9087",
+  "east": "c85e2cd03cb45c64b757e49f9386328447a08d0fd52f8d140038b116690d4c3f",
+  "north": "67eb342fbe42af30036b12860a1a417331521228ada98514019247380c2e1ab2",
+  "scale": "0868f82e4da4dbb6254d42e0fb32f599206e82b8fc362cb8597d281e0fdfbfb5",
+  "siblings_Massiff_south": "52d55cfe93999b27325a90f1c31c401be58355119eba9b8bdfbf3bf22c91ca3a",
+  "siblings_Massiff_east": "5b31cad119008627ea5bb80b9de87fc95c36231446d1afc06725098a783d833c",
+  "siblings_Massiff_north": "fcab6305c64e22cdcdf1d166e78a25da31a2877139a499f2d82207e55567beee"
+ }
+}

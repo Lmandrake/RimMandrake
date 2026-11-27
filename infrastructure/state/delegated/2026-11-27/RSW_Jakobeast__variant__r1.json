@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 37.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4578818
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Jakobeast__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f762101826f7e1917b9693c58ea12022cf6efdb6dd08aa10f4cb12bb33310fad",
+  "east.png": "685335527e54c970b4b4ed8ca6e0a5be6191485bff6345a6fe8ae6ab240f5c39",
+  "north.png": "b4714d363769f85d20b0f9e5a475d4c313e69c41a15910aaf10e237c8246bc6b",
+  "scale.png": "a70622c5e25b6d5640439979868b2310cb161af9af093debb12db21125a644d5",
+  "siblings.png": "15cc36d090cdeda799f11ba9c342bf628da172cc7d3b4e16536e883347210542",
+  "facings.png": "96d2d5993a7601e77ade8d102d616c817b3cbb03a5f5686ef596df9ce12303b7"
+ },
+ "source_sha256": {
+  "south": "f762101826f7e1917b9693c58ea12022cf6efdb6dd08aa10f4cb12bb33310fad",
+  "east": "a3a9cb44b76f1bb04f79e952f8ecd279a6168746e707e3f05b8426a3c1a014fe",
+  "north": "b4714d363769f85d20b0f9e5a475d4c313e69c41a15910aaf10e237c8246bc6b",
+  "scale": "7b61049a0fa5daf3575f530f0edca781e1cf16b0a1569247729a64335a524c8e",
+  "siblings_Jakobeast_south": "d03022ac662678b7f188699d46ebc0fc85ae48cbbaec431a2dddbd3cf6610023",
+  "siblings_Jakobeast_east": "cdad847c4e0badffcde0d76d179ec52f696e23358c5d22ee7519bc5d9549c0ae",
+  "siblings_Jakobeast_north": "636deb359fdd6445b6ffe2ae78f9ceac68f81df197af0c6dd84b0e5fc9f59c0f"
+ }
+}

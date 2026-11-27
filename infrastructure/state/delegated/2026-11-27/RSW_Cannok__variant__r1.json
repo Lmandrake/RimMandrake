@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 48.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4659172
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 18.4
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Cannok__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c62dae2053a1115157f18d8f8ecd3a9639fcc17e09a92ac3612d183e5fa69d15",
+  "east.png": "9b4b3dcf9eadf480658e77c7f9f0c018893affdef7232b4cb62e62944686849b",
+  "north.png": "96aecbfe308f082a2c1df46857f0c9e0421a5ca48c0ec683fa1622adae4a23d9",
+  "scale.png": "798914953d7193d2f4a499db8501a824c8075c8e2bbf67135cefffc70915f730",
+  "siblings.png": "33cbb9b54c2811ec704ee42e86c649a32aff61b35aca98220d70961d9cacf034",
+  "facings.png": "922a4c33d5d78186b695c280ed139d1af9a29214b7ace73437924b89947d27aa"
+ },
+ "source_sha256": {
+  "south": "c62dae2053a1115157f18d8f8ecd3a9639fcc17e09a92ac3612d183e5fa69d15",
+  "east": "5fb238fd801cc778797439bf339ae0a4a7fb24e254974952d68c8762b24e0003",
+  "north": "96aecbfe308f082a2c1df46857f0c9e0421a5ca48c0ec683fa1622adae4a23d9",
+  "scale": "9e09b4d8cbdb4104f8000e0da79de67125835cab1eb39f7e31a2d42b3deece39",
+  "siblings_Cannok_south": "bfb45443b26395416758f4c2d2f327ba3e7a30de1704d8fd0bbc9ec905e4bc53",
+  "siblings_Cannok_east": "5e7d585cca750b6e940e752f941be3733420b178e1f8ef2e4e662f536c64dee3",
+  "siblings_Cannok_north": "c822a2f2c1af489db3173e9d00478fb81ab754fb5d2afe36ad2eb25f6a1863a6"
+ }
+}

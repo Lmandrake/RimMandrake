@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4584322
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 22.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1576976
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Sketto__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1c2f79f6c3b7dc29d5fd2db82ecb24f898da39227f0bb4123c9524a9372ea068",
+  "east.png": "0809ceb563b915054aa6adf8c9d0bf17d0e1d3c54e6417ff4249a3dd62187566",
+  "north.png": "19fe727c58fb85c3c3391ea354cb8a1a102ef9bf35132f7591d30d09dc636541",
+  "scale.png": "dd0844fbd3faabfeb14cf7326e5ec3535e4fe2df7e795f9d2da2bc7164e6d692",
+  "siblings.png": "f5cf8c3d01d268b55fd80738cff1c2069a5cf7a343867769fe695629c685ef8a",
+  "facings.png": "5fb662428d3b81d2c2563945c543a41e1077265e7da397e1f9987c8b857cea9b"
+ },
+ "source_sha256": {
+  "south": "ac5878d98d40d1d196cb54c8060e8cbca4aec74b598ed8a770ddf304433aaf1f",
+  "east": "0809ceb563b915054aa6adf8c9d0bf17d0e1d3c54e6417ff4249a3dd62187566",
+  "north": "19fe727c58fb85c3c3391ea354cb8a1a102ef9bf35132f7591d30d09dc636541",
+  "scale": "7a8af1f19a67c602d4ca8e6ec9ac76cadfd8b039cfcb4b6bf804ab934c3f42b0",
+  "siblings_Sketto_south": "ff9c0c756f6acfac3799ae541593879eb6d2ebadcb4c3bdc7ef8d1e4d9006ef7",
+  "siblings_Sketto_east": "a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227",
+  "siblings_Sketto_north": "64d78cc494901ee58ebeaf14aa94df193a5e3ad69b7d4afe1b05719aa055bae7"
+ }
+}

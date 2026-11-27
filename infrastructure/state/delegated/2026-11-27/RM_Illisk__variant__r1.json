@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.453136
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 18.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Illisk__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING']; polish ['LEGIB_32', 'RES_LOW']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8f75b2b3285bb553f08f0384d5ffbf4be0edb862bf9ee17c5e4f8233a6c55fa9",
+  "east.png": "7fc39f396ccd990e04788afcbd9d1ab327f16774286a4060de682cedd85d0dd6",
+  "north.png": "e40b42db5dbc8634cb8b39af20a5e8ad5931a2fb05dfaa1574048cb8bc9e17f9",
+  "scale.png": "39f9f2073cbcb7ec91caf0b13698bccaf9681b805bf48e33ecf46f625e27405e",
+  "siblings.png": "2d434a36c59c50ac972ef8cf0ebe13925c435199307b429a8271719461404511",
+  "facings.png": "2b68bbad3da5bd35b9c62e40b38e098815225db76016fa6c18e7e6287057e15c"
+ },
+ "source_sha256": {
+  "south": "8f75b2b3285bb553f08f0384d5ffbf4be0edb862bf9ee17c5e4f8233a6c55fa9",
+  "east": "7bff1a620849c1907fd02f2408b8f65881054493d3e77a46309daa024aa1e7e7",
+  "north": "3363c0530c27f75374b0ebb5c839a1d1e6863933d77f97e5f4064f4fd2a973f5",
+  "scale": "14fc26690c8d0c5207f442484cb87d63a4936d41b997db1ba5deb09af6fcfeb9",
+  "siblings_RM_Illisk_south": "e443ec4f696ccac0a1a01971d99c0547161ff8014cf4dee2de544ca1a78bbc73",
+  "siblings_RM_Illisk_east": "62660dc520c66cd4284646475a5c0793506dd4171a2eba6d531c3e2c9a33f401",
+  "siblings_RM_Illisk_north": "a79373e3d7275101ca6c0393569c938a4ff9388eb673ff88b952868b77cce85b"
+ }
+}

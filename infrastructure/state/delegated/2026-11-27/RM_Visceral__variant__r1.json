@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 50.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.467851
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 15.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15761360000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Visceral__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "538c19052c9a26b8a2c7e28649f33c09f634cc204a3103530938ce01a55822a6",
+  "east.png": "bb84201fe2bb63dc9d2fab4bb6fda16477ec2ba1cb08c1645a3c10840de32e60",
+  "north.png": "40d06555a64bf4bf81309ff947324a431f7df5fbba0d9dd041dd27a42472326b",
+  "scale.png": "80ff9bcc25353dc99a8ce513da9f5f0f5d4f9c28f2eee2fe2389e085ffdf06f0",
+  "siblings.png": "8445f6ed083a1e24a27adf0dc2177e12382054db6efc90300f48a2bcb0cefbf1",
+  "facings.png": "bc66c23b3b95b3152c78c6b73ff9c31ff2ed543a36cba6f1f77ce50a21d109d1"
+ },
+ "source_sha256": {
+  "south": "538c19052c9a26b8a2c7e28649f33c09f634cc204a3103530938ce01a55822a6",
+  "east": "085588e2e105c7e0405cbfdc383880cbb7316c285b8a373cc5978cc20e275fd3",
+  "north": "40d06555a64bf4bf81309ff947324a431f7df5fbba0d9dd041dd27a42472326b",
+  "scale": "fb224e317becaa0bec191de716878a0f7a0b4ff459e30084784eb24c16ea362f",
+  "siblings_Visceral_south": "e143508c9827af3e94e374c7404e95e7a40ed368bd0f7c0eb2c98cd2de6869b3",
+  "siblings_Visceral_east": "ec016009c266434b31f3ee1afe2ad73adce0cf242a833668e21aeeb9028dc449",
+  "siblings_Visceral_north": "9b3a23ee9584f23e01e31f3e0bd2a505175efefe3b49cb2982d7ef4177ad650d"
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46207719999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 29.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1644836
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Voorpak__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT', 'ALPHA_HALO']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "984dcd828b0774c31541ba807fe2c2d9697088ac3a1143ca80f8076465bd9611",
+  "east.png": "1be2e0839327387274134722dc0bdc330c0984fda907152f966d8bdf9d6b3986",
+  "north.png": "b003d372c406e773c6f72e8bbbdb51ca8b4a502321ebaf10aa0bc7faf0243262",
+  "scale.png": "007fe65544ee095b006995774ea97b739959eba0c247928b32b578247b9546a0",
+  "siblings.png": "9fe5a0c75272ed3325e96cba74487d3d96770eb85572c1545d07a6554f5f5f44",
+  "facings.png": "17de088d9cf72df99839cf7387bfd57e111fe04d2d4865f0a4231c57f9e4ba91"
+ },
+ "source_sha256": {
+  "south": "2511b325b9be83b0dbec5b368f75575bf03d8fa123a03249ace6194726cc9947",
+  "east": "2abb49fe9cec22b3b7bf77964b4318e76a8ac96c2fa9fc2f32934618659af76f",
+  "north": "b003d372c406e773c6f72e8bbbdb51ca8b4a502321ebaf10aa0bc7faf0243262",
+  "scale": "27c0979d5b9aaf62dabaec0f09e0bc7e95f73a3d640b0b1de117785e7eb55b19",
+  "siblings_Voorpak_south": "9cf846a48ce73f2fd7af1d4a59cafd542ed38eeab042090142bb27ebbc9b41a4",
+  "siblings_Voorpak_east": "d6e5954c4df2b2a6e15230ec706cbd97ca18f37c74561119d43e8ac3e34e5b8d",
+  "siblings_Voorpak_north": "9633eff89fa0195b3945e6e3a39470b9611c26782f26c2c656cd73587115a895"
+ }
+}

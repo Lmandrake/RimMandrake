@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 46.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4646768
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1541576
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_YobshrimpJuv__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "80adccce8b70ce2db15d90192b625e0faeb23c0adebf9f2da18421344773ad8c",
+  "east.png": "c0aa0c8833a05699446a3c0466fada712d1e9cb725a6be5210729a828d99e6c3",
+  "north.png": "01619173c75cbf3e019e855327a7d42531532637a27af6240d02cdb32d91083b",
+  "scale.png": "f5f3b56a7a971de1662608abb19ed637244893f6b9ade733d93c84c7849b7943",
+  "siblings.png": "fd71e775d7f7a7d42f7c991c2ecc827a1b569b049341c4f7d24354ba25765bee",
+  "facings.png": "68346e4abee19edda89c5f37f4f3bbda039a3114c1e1459d30ca5aa6c5cba993"
+ },
+ "source_sha256": {
+  "south": "80adccce8b70ce2db15d90192b625e0faeb23c0adebf9f2da18421344773ad8c",
+  "east": "afa8eff53351a748f9c1df0fcd36cab888fc02006f5c6bfd4b2cb2eccfff1f8f",
+  "north": "542ff2c913c08861115d09d14d556a5ebcffd03286c5c0dccdc0e1f68f2b0cd8",
+  "scale": "967a100290d22e5ef1b93d66a6250b38d02e7652d18535c3fadeea2fc2669c57",
+  "siblings_Yobshrimp_south": "0cdd416f218455bf2d405da3f2d2edd3c3469d2ef1d800968388cf40f079392c",
+  "siblings_Yobshrimp_east": "32f1e9cc4e29c035e70c358b0a8dbda94f9dc7d3c7db0ddd834c7470d71e91cb",
+  "siblings_Yobshrimp_north": "be358c13b708c91e1484efe1f968e2a190aed7120baff030b91af035962335c7"
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.464969
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 17.5
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Jamel__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "0b7f44a3942ad7292d941d17bd118e1e3fa68fca37a6ea8cf9a712cdaf9392f7",
+  "east.png": "e421ebd3754b03a420155c8fcf9ada28a74f210a364c09e1e27e7823a1219edc",
+  "north.png": "ebf5b0942ded008a7b62ec7f39e5b5cda1e6f33d7a0570834cf3b58e69fc1b57",
+  "scale.png": "9091d5c873d01724cd4e128af085c2ccbbe563647703bf6a05e0e37f1882b35b",
+  "siblings.png": "02ad0f25dd304e4833c771e6d42b47b20259026135749d375ef3523af4543713",
+  "facings.png": "7c351f34c22d19d4de8e435f90707e0b11f0fc9d4e1febe60908dd1324f57643"
+ },
+ "source_sha256": {
+  "south": "421ea68935edf1ca678fce109672f51348d4a9cccb84f41c97eb66e8c2c04070",
+  "east": "e421ebd3754b03a420155c8fcf9ada28a74f210a364c09e1e27e7823a1219edc",
+  "north": "ebf5b0942ded008a7b62ec7f39e5b5cda1e6f33d7a0570834cf3b58e69fc1b57",
+  "scale": "5ab79a0a7a9d37f1152ea08292c89289d242887f5a4d77351ec8bb5d0dc41174",
+  "siblings_Jamel_south": "2835f052dc203a3aba7adfc3c018bf959383a8d918d55d7e28a3a1ae07ef9b38",
+  "siblings_Jamel_east": "1b17ef32a1c6d1aac8dd628554242baee904b77ac63c4853ab24e826b617ccdf",
+  "siblings_Jamel_north": "32212b86d2b0e4026a781a32cefedc88f216203cde8eada66011d5b141940253"
+ }
+}

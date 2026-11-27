@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4532964
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 22.4
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Snoruuk__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['CANON_MISS', 'SIBLING_MISMATCH']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "824a9b5699c4a1be74f951ea02798b8416d43a1f053bffb3c143f65d73f1cf37",
+  "east.png": "76cf8ad11933548b80ddb8681625eff3b6532c81e52a23f569f6e29fe7d68e25",
+  "north.png": "f8e3c7782612fe08b33fda596acf76ddb827a62d6ab0082a233916359cae43d6",
+  "scale.png": "0d3988ad534c23d0335a36d70c574ae7372dfee5430f048b31f8d0787e9851d6",
+  "siblings.png": "cccd6050ac36ed228ac084a9312a58a972638ead5d5473d815987e1f38239f37",
+  "facings.png": "a1f892d7b5bc3a47ab6b6259cb765c581a72928787ed7e0e102110a5f074f452"
+ },
+ "source_sha256": {
+  "south": "824a9b5699c4a1be74f951ea02798b8416d43a1f053bffb3c143f65d73f1cf37",
+  "east": "133fef95873a75304f6c331086531b4d7437e98f84d171cb4aed61de6b46bd81",
+  "north": "fcee2d3beb6ceecd4afc0ae9dd7f73bd7d2f8cce33ff5a49d1e9deeba66da5f0",
+  "scale": "6dff929dc03a6fc476383b785fbf1f18262a15f19923f1edfad8dd4b2b3a51b9",
+  "siblings_Snoruuk_south": "71ed981ca7e4e8ab776ce82f1acb412480fa44c5220f184e69abbcc883e9be39",
+  "siblings_Snoruuk_east": "664c6652ed3d2ebbb735e5e5975f590e2736dccbfdb492b13ef791c0e2623914",
+  "siblings_Snoruuk_north": "26de43b29a8945a6601b0f823f46e9b9d79203a783f16edb64218c184dd19778"
+ }
+}

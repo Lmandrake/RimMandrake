@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45446220000000004
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15835359999999998
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Cleaver__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish ['MATERIAL_PAINT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b8d474e4281b52f02004b42f953a19bb55509c619f4e96458ca65d1752b578d8",
+  "east.png": "58c6a4dc118bbb4dda5cd5358440fc46122973fa41b69dd78bcae240204a322a",
+  "north.png": "00d0b6e68bdd2ae20b54cf853b60181cc6f54c3c3ab4c11d4ec83cae5715d23c",
+  "scale.png": "52309c35ca747d959407241333fa1feeade225a428d66af14e41619c606e79d8",
+  "siblings.png": "7039e7dbf7fc98d170e7e5ff684978a98e78b1ef0d0df4b9c1ecfeb559828757",
+  "facings.png": "58e7c758b672aed11ac395d0cdad3b16e15711f1af21bd5800d2071b8cbfd0d0"
+ },
+ "source_sha256": {
+  "south": "a8675094bba30bd91bc9b3a38ff897d65bd88dd894fbb21d8c000fc7502810cf",
+  "east": "58c6a4dc118bbb4dda5cd5358440fc46122973fa41b69dd78bcae240204a322a",
+  "north": "00d0b6e68bdd2ae20b54cf853b60181cc6f54c3c3ab4c11d4ec83cae5715d23c",
+  "scale": "719c02a4078347207509a7c7fdb7db69d9b05edf5318385f004c3d3618dc4b85",
+  "siblings_Cleaver_south": "09156b1ff3111d1b358ee04ef55c94ecdc8dec288352bc0c7cdf4f9323d81ce3",
+  "siblings_Cleaver_east": "6df2a9d900e765afe70d77365359137ffcf66d4ffda64d301a7aecb3e81ae0e3",
+  "siblings_Cleaver_north": "1d433b511f23cdae15262a78a39da00610d1f62d903ef05682d6e7e0efbf31a9"
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 51.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5065076
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1639936
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Tibidee__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "90e645025459f36a97f72032f2e97beca04ebb00544b13f76b4e98c719c8b997",
+  "east.png": "7e55ba6a1fb4f184e1cf1e19204ae21354fb732238f61d694b854d0900991fe7",
+  "north.png": "910c68fcca1092340f8beb66bde7b2334c0b239222d388274d0e60ba52570198",
+  "scale.png": "09a467b471b1dc433604a1235cb44ea24bac72b3b61742337c347f1e21cca153",
+  "siblings.png": "c4dfd828de28c275de234e7ee89dc612175ea8163bec86c509fbeef0984847a0",
+  "facings.png": "dadbe12bdb59387e13cca642757981d505c131d8d259095e7b412f247797d189"
+ },
+ "source_sha256": {
+  "south": "90e645025459f36a97f72032f2e97beca04ebb00544b13f76b4e98c719c8b997",
+  "east": "42a2c4d44cab60f7c2aa499e4eb88820b42b4554f06130d7358cff8b6f3d7ea9",
+  "north": "910c68fcca1092340f8beb66bde7b2334c0b239222d388274d0e60ba52570198",
+  "scale": "ed0792eff47c22ecf46ff29a6af1930d551bd03c15c88051b6c9c8ab9c139962",
+  "siblings_Tibidee_south": "730418ebd024915c1395b6b268afab18177c1ec88434dadcead8d915457d1789",
+  "siblings_Tibidee_east": "410de3cf01ba7cf7e85099779f690663efbccaa31b231e00a0a39224fb65a9f8",
+  "siblings_Tibidee_north": "a60f1129737783ee79f33d665d9a81bc23c2d1c0a041cf3dcffa5dde4e631115"
+ }
+}

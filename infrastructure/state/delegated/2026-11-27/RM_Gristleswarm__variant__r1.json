@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4687726
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1495076
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Gristleswarm__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "01b029ee92e52e47d96c25975d443518f4e1aa8faf4f5401d531b6c121e46198",
+  "east.png": "2e23596bf9917b3ffb14f0a78154c90fb26c4bebf3551c6fe58791e72c780619",
+  "north.png": "b20810a08ee49a051a7b2b9a5388b8bb9c3f1125a670595dcdd4aa1ad6c5e868",
+  "scale.png": "23dcff4ea5dcf103c8d5dae133b9d8ff79a1fb29e436601ef9f1f0e2084ec206",
+  "siblings.png": "957665a6e9922d4770b6a37df38d45b80d6caa34b3be26cb0990c671fa9d4f0e",
+  "facings.png": "8b87d130f3d7dce539fec92599b50fbe993fba559643e94e256665ec8beb8b8c"
+ },
+ "source_sha256": {
+  "south": "01b029ee92e52e47d96c25975d443518f4e1aa8faf4f5401d531b6c121e46198",
+  "east": "b1787c8bdecd8ff438c008b5a352485c76af8139586ec2c76ee9608ea498a419",
+  "north": "aac3e033581e6353b9fa8696b6573d7e7d6fe3e039a454a82337c64e11dac7c3",
+  "scale": "c4425ef05c5d46c45dcd41edcd3fe67765bead4bc9e958b3e17e13ecf6c1d022",
+  "siblings_RM_Gristleswarm_south": "06f3762cf5e647249c30f53d6d80bc0d6bd13834ee1a7111e18ca6510a4e9dc3",
+  "siblings_RM_Gristleswarm_east": "2b9be6100e45adb6c14d2cf6baad8be7b9e65ad741abf1a73ead648413c0368f",
+  "siblings_RM_Gristleswarm_north": "5ec9743c6ea0efc99f725e840a29feb572b1ca5db62a641db124b80a2d69ffe4"
+ }
+}

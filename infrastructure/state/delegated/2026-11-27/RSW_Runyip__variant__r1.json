@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4702622000000001
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 21.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1623773
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Runyip__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a202a5fdda2f8e98a4265488576996faac901d540e70f2f2427e987154e5e096",
+  "east.png": "ec0dca694bc520c38373a225bfb206df09a3f3c2b4f510a23eeb4abb59ca3dd4",
+  "north.png": "e5c9e4d8e55c007c541882e28c0a45cf5b7b4a6a8f6b65c8029514d81a3e3a20",
+  "scale.png": "4d7b42582c6b53cc40305f362e22aadfdd4a53ef4a60eedabd6a15f7c51504c9",
+  "siblings.png": "fb369f38ed66073bc6e05464be45a3011900b44f6bb1b9973b258f750015becb",
+  "facings.png": "fe0e6a1dff0225e19130ab5efd2fac9c2a9c22d877ab95d92f0238d768b932d3"
+ },
+ "source_sha256": {
+  "south": "a202a5fdda2f8e98a4265488576996faac901d540e70f2f2427e987154e5e096",
+  "east": "ec0dca694bc520c38373a225bfb206df09a3f3c2b4f510a23eeb4abb59ca3dd4",
+  "north": "e5c9e4d8e55c007c541882e28c0a45cf5b7b4a6a8f6b65c8029514d81a3e3a20",
+  "scale": "a5999d136f2013a9be6c14449b1a83bc40b9cf220609f96914c213550bfdfae0",
+  "siblings_Runyip_south": "f9f60baff0cfe91dee58f1fa9dc2d0d3a6b9a4bf465249577393fbd5e72dad2d",
+  "siblings_Runyip_east": "148d09005ca608b7d3fcf2b191ff33439ea66929a1dd816b2c3377da5f6510a3",
+  "siblings_Runyip_north": "8fcf70229b7824a48e0b5e906eb3cbb82062f86454b9e05788f0eda1bffa67d6"
+ }
+}

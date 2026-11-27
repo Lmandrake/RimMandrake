@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.459433
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 17.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.5,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1602896
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Vellak__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'DESC_MISS']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a90d2769647a10ac2727477919f3e3e88cc6ca332bea6203aa69f4a4024a0046",
+  "east.png": "73c09e7f68cc3c99c2948d9d617b9ffa6f78db09a7277c4ba803a97e3bf0c942",
+  "north.png": "970a74e07f6a470d12775c16cbf777cf46704a3b5fbb99aa370fcc10c8a2a87a",
+  "scale.png": "a11a62a053f915e12c3999d6033e940a1053d5b04e8f2b38d346c5c28ccc3f21",
+  "siblings.png": "ed74a3fe21e932696373fbff13140cba4d653110a1cdf4755a9f1da6fa1f15f4",
+  "facings.png": "4b7e8aa54ea4e7daf0f1ddd6da7126690866170930ae9569a7efceb31a683ca1"
+ },
+ "source_sha256": {
+  "south": "a90d2769647a10ac2727477919f3e3e88cc6ca332bea6203aa69f4a4024a0046",
+  "east": "73c09e7f68cc3c99c2948d9d617b9ffa6f78db09a7277c4ba803a97e3bf0c942",
+  "north": "83ab031a9574268603c36f84b069fa677373f773de977a1739ab5eda68ad87b0",
+  "scale": "488a095591a51425a582fa928ec5eacad28b739e2e79f2ad46a5ee87e86fe2a1",
+  "siblings_RM_Vellak_south": "7b8f75708adc19877cff4853494285ae66d0fdcf392c758d0a9ba3b43fe0c204",
+  "siblings_RM_Vellak_east": "8a2eed2f99925a69bdf77bd9c6d53f240225d74b6964c2150282811a90b6da97",
+  "siblings_RM_Vellak_north": "e3eb7013f22e23391d26ae46e46e51b393ba746dc602cf3c96cfd9daf0fa02bc"
+ }
+}

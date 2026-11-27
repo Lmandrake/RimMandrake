@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4502416
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 30.1
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Bladderboil__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a7d30d6eb1a465a2589f7256a624fa0eafeba1471e2b1d13cebb1132a091cc71",
+  "east.png": "ade50ba3c978bb492bb1249102577da7616306ec9f5b4775b6a0db2414eb5516",
+  "north.png": "68519a4130debf27bf662354a4a834e2db9b7a79188a93f3c15b01831a77b3c4",
+  "scale.png": "97653c8fbcf90dd765fdab99752ba15941f17b8a2ee6178dab337ce34f0e2709",
+  "siblings.png": "dc24ecf5b91f502c35a324c306600f2b5a0e067ff10bb9a7b959bccf95f02152",
+  "facings.png": "7563c9a6cb75b1ce31815939c0036505968427887f2cffd3a13487601e4f8f19"
+ },
+ "source_sha256": {
+  "south": "a7d30d6eb1a465a2589f7256a624fa0eafeba1471e2b1d13cebb1132a091cc71",
+  "east": "ade50ba3c978bb492bb1249102577da7616306ec9f5b4775b6a0db2414eb5516",
+  "north": "68519a4130debf27bf662354a4a834e2db9b7a79188a93f3c15b01831a77b3c4",
+  "scale": "64e2c87a9e19477755a7d8fcc3ce964eb4cdd34bb5de1613fb8e696f1ae8dbb6",
+  "siblings_RM_Bladderboil_south": "dfa43fa021ec50e46263f648778320494c3903f8b4418688eeef461439e58e98",
+  "siblings_RM_Bladderboil_east": "cf27e61b556be4fb096d88e80adbbc8d9771fdbfd44ad0fbf70586fa54d919c2",
+  "siblings_RM_Bladderboil_north": "a7388b42f019d585a6cbcb1e47b70373e8d4913a9931e6892be30f0804def561"
+ }
+}

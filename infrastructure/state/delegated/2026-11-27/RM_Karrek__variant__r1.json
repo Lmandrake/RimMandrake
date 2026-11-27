@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4535426
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.8
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Karrek__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'F_SIZE_JUMP']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f6bef6d0be2191d836515f39e8324e3af6ce4b2a43b6068e5937d93a497fa093",
+  "east.png": "599171888e1193fccb41ddd7b389b8f960667e40193aba18660dc3a205d848b5",
+  "north.png": "62778c9ca8a54a914acf6be5415e91af45bea4374587bb7d563ba5b2b1509871",
+  "scale.png": "92941d6f8aba8a6f8db23356573379d0c2f1fd733bdfed3b1682b1c0081df776",
+  "siblings.png": "a41a29e59971fa4731e609d84e48f3962cc7b26a5a5963f927bb2c7d4e290eea",
+  "facings.png": "a6447acd2385f64b97ae7ea33b7c6ae227cce6c3e5cbfca1dc254c78723d1a9b"
+ },
+ "source_sha256": {
+  "south": "f6bef6d0be2191d836515f39e8324e3af6ce4b2a43b6068e5937d93a497fa093",
+  "east": "74be7b8f1869a1e84eb157a531c72d5a23d3865b2767ac1cb27b221b7fdb818c",
+  "north": "62778c9ca8a54a914acf6be5415e91af45bea4374587bb7d563ba5b2b1509871",
+  "scale": "286e593ad9226ec353585130782cf6ec103d990098d262479d208d8afdc813de",
+  "siblings_RM_Karrek_south": "728ea863c80c52bc52228754cf7d1988ac30265bab9ce6cc857a71686dd9fb0a",
+  "siblings_RM_Karrek_east": "86cd964a9487c53faba73878a9c20f710c77841a61120d0a04f81de525964823",
+  "siblings_RM_Karrek_north": "9b9401dca04649f7f84e94764d82f7052fee7e7fadfc4ba2f8280863d0db230d"
+ }
+}

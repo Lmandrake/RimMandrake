@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4674628
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 15.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.15791159999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Sipper__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'DESC_MISS', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "fafda7a9a8c9ac41fe4435f66c554f73ab49e6049c57a7122f5d8ae9ea0a65cc",
+  "east.png": "130ab227d8992bf2f870262233bebac6b25c01942ca3ba3fa34d346eb86dd4a7",
+  "north.png": "33cd1d93ae67c7e5d66a1f074bcfaafafcede51ce9fe13bc5dbc43f2e34c1a00",
+  "scale.png": "163540ab19773f93358b06adc6ab436cb982e26b7665d9a96cddbc8249d7aa2b",
+  "siblings.png": "aa781d9a1cdc08bf9e078ed5535c54ea3b99bf14b4628b4ca7c8db6268f24b9e",
+  "facings.png": "deb817da7fce1cf5044ff60ebc6bb81894a74c74d717fd33e407d8d42ec854f3"
+ },
+ "source_sha256": {
+  "south": "62cc4ac6d25d895a91ddf92ef5c7786a845147dbb33bac43ed7cca401c5c698e",
+  "east": "8e7bde816b0105f03eb17ce1446995f6897c670142748efad2616b2ca0ee174d",
+  "north": "33cd1d93ae67c7e5d66a1f074bcfaafafcede51ce9fe13bc5dbc43f2e34c1a00",
+  "scale": "d34183a32e8286b5a0df303584fe4590eb7f5a5ab30baaaa7c7f60dcd8e63c02",
+  "siblings_Sipper_south": "f85c729bfc924138e2f2b8d67a667b3722fed8614382cbc671ba2570b3071345",
+  "siblings_Sipper_east": "092ee17d9c43de7b3ac756f0914673c9e471a68b6b7c28e2516077d9adac69e6",
+  "siblings_Sipper_north": "6322d000dd768693a77a334431a65b2681aee918a0f00026505ff3a0d25fcc7d"
+ }
+}

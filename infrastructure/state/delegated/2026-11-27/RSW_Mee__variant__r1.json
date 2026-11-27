@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.458527
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1579516
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Mee__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "76fc9a0fae4c6842a7261ad4efd11118a4749044ab31fb0c419834d96c1c272a",
+  "east.png": "2524447a5b48c4b02c79ceeb41fd38abeb87a7376beb92893cc27eaf8e9aa1a7",
+  "north.png": "fc654a7fccb3c444c8b76367d628b7c5c69717566431b7ab69bc7085c0bb9330",
+  "scale.png": "07cdaa59227957e09a8bbb8fd6e9e0817ff67b382bfcfd47ca1ff40fb824e6b3",
+  "siblings.png": "b50522d0c4d3282dd2aa1f64a439cc5331ac5b6f77714f9a6523f5e247420381",
+  "facings.png": "c22e2b3ad7293d38716c1ec26b1123b2f537885b7eafa3552f3fb33d522a19e6"
+ },
+ "source_sha256": {
+  "south": "76fc9a0fae4c6842a7261ad4efd11118a4749044ab31fb0c419834d96c1c272a",
+  "east": "7b5a71d46dad0eace8193baa056ae460e23e5dd6262eb420227313f8d72800b2",
+  "north": "fc654a7fccb3c444c8b76367d628b7c5c69717566431b7ab69bc7085c0bb9330",
+  "scale": "a3fa18735bbd3b8a5093332b32975500d90a534eca8fa21a4e745e30d34e60f6",
+  "siblings_Mee_south": "4ee25cb530d62e5f451198060bea813b570012701f01f5592a50cb0b4c5b101b",
+  "siblings_Mee_east": "18e7e0a381173360f4536cb3b14e0bb98c2b1536fd8f92667887bfd77827fa44",
+  "siblings_Mee_north": "14ac42b4fc712a24f84e10b2a798369253d30ba044627e9b343a904fbc1a054d"
+ }
+}

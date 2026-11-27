@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.469868
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 39.6
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_TeeMuss__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['CANON_MISS', 'F_SIZE_JUMP']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "35d617137b3d2109293910483e844305a480030dff0de267ff7b0c637c0dadc7",
+  "east.png": "7a6aeb8e90424912c6838f9fb12c7d05135c39d24a3d698b3517758efccc5567",
+  "north.png": "ecd664f3858e3f412170a4e33866b04b4846b42cb78db527b276f1d2ad918ff4",
+  "scale.png": "d1e1ec4a3b4d07db7f8e9b1428646d6d9b12290cd9aa03750b921b7d98bf082c",
+  "siblings.png": "30d57125bea983b46e6dec5a68ed1265ed7fa444edaf2fec23e4c826d862bee7",
+  "facings.png": "9a47287f9ee9247807ffdd3d161ee7b731fc502a64510f38f885edb4313f12ff"
+ },
+ "source_sha256": {
+  "south": "7f0e38b55123cf8aa11bf4e9967a63a8b3ec5f5c5791b940a065d7247b2350be",
+  "east": "7a6aeb8e90424912c6838f9fb12c7d05135c39d24a3d698b3517758efccc5567",
+  "north": "ae2e86ce43f09b6c217f2c8c99a44406995a8af50c876187ff41069eada11e53",
+  "scale": "4367087947d9b49aee790d39e159543534562a5808e9c63a43df315f0e5db9af",
+  "siblings_TeeMuss_south": "a010bb61914021c7d13fb462288b9d0db63222b93c11543eb2eb0c30be0fdfb6",
+  "siblings_TeeMuss_east": "ee979cb4e29f9aa956be49131a10fae33e37aeeb2d9ba5a3142420f7aeb8d96b",
+  "siblings_TeeMuss_north": "8a782ecb37390df6604ff0141df31fc20f906ace67b9f739c69d8b23e5fa7fbc"
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45023860000000004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.3
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Skennet__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "db6ef1ad71144ec3dbd600fe46a765d1afb521c18af234b92d077137f68b8438",
+  "east.png": "f2f468095035d1d2856c9f101ad3352a11fbe07c1687df04c0c0f2391d3b2e10",
+  "north.png": "d2ff6f8633677b107639547d025a4a6f2088b719fd57ad2917f393bc79f79bc4",
+  "scale.png": "05d701f07372cd29380e0b14d62db9d4445923ec9e5fe59bcf4bee9c4515bc1c",
+  "siblings.png": "9e7cf904dc45fecbafd012f1fc1ce8051328436639783cb0ce1ffd7b7e1b7f10",
+  "facings.png": "d087596327ec5f39db880de6378f6355084c3b81d18f5f756aaf4c1eab62522d"
+ },
+ "source_sha256": {
+  "south": "db6ef1ad71144ec3dbd600fe46a765d1afb521c18af234b92d077137f68b8438",
+  "east": "aaf919a08bcf3213bc2e965897aaf3e795e247b44fe16e8e64e84d9c0f5c9339",
+  "north": "e2b92acf6f751eb2ca8b23fb0d81cc7ba859ecc47b2c59846cc806e49cdb3395",
+  "scale": "ef3945bdd661f82ccf382afb0a4e6d68dcd0db934535a771788c48a504fb4124",
+  "siblings_RM_Skennet_south": "8d41cd4b69b4535ce1832125c0b362221235f6ec1880f3be9dadf962c675a68f",
+  "siblings_RM_Skennet_east": "70cc008831d222f0f78ed499c0486d867509138aacad54e3b0e35b28fcab93d0",
+  "siblings_RM_Skennet_north": "c908bc2a4f67757e0f033b6c5e0a17ee7c004a2e6a8ff1fb2f1e8601170451a4"
+ }
+}

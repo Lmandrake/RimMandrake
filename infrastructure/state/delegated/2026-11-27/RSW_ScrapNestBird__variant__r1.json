@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4591444
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 19.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 16.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1594376
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_ScrapNestBird__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'F_INCONSISTENT']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT', 'F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9f2056de6685569678bb993df6a3b5db5721e19db192771761925249dd9980e5",
+  "east.png": "fcd48fa76b9f6c3482e50cdd465db36da262a3f04343461fc476562b993d68e9",
+  "north.png": "8c058cbd4761c7b58b1db1d17a3a279943f5b28ea722c0f7f5ce3e503f344105",
+  "scale.png": "fd10056b89bbf2c9c2d24115dec648946af54ca6fb059281fc69051eab084b95",
+  "siblings.png": "a16a87b0dab515a6c2af05315b2b02e25c9da8506b0380273c639a14e99fe2f2",
+  "facings.png": "367561fe9e4d5995f1efd5551721d1cef5d6acecfeaf9dfd214942ea336ab899"
+ },
+ "source_sha256": {
+  "south": "9f2056de6685569678bb993df6a3b5db5721e19db192771761925249dd9980e5",
+  "east": "ebbbe4dec72271e175887606b6d820492f3c26a6d766a9f5f7e6ce9575263b70",
+  "north": "8c058cbd4761c7b58b1db1d17a3a279943f5b28ea722c0f7f5ce3e503f344105",
+  "scale": "821b82852711d80d2257bcab081d350a3afb492b0352772c5daabf41a7f69713",
+  "siblings_RSW_ScrapNestBird_south": "ec3c0116bc9208c09d37617455ca298be9c7c1f3c55f217c388c3ce2df8b7e58",
+  "siblings_RSW_ScrapNestBird_east": "5094751a68eee7f35a387c4e7fe796f04f74b2c3cbcf3b613bca3c90fb7a94de",
+  "siblings_RSW_ScrapNestBird_north": "fc9d63b392b6c14c422a11a1fe105ac0030392dc974a9beddc3b12997aff5698"
+ }
+}

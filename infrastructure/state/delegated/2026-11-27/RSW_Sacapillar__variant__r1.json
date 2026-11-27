@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4557688
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 17.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1578576
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Sacapillar__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2e13263f46d77c9057213b2b9921a61063db9222fc9021a1f9a81b13ca91d22c",
+  "east.png": "c4d3778d267a85b4fe5c53c1b088f99213a411f742871c057aff788975cf657a",
+  "north.png": "7605217b6f44273d6b96ea02b1ed78f94ee218039b2ebeefacfff54a894b1501",
+  "scale.png": "16a671fefe94526f76abc8911b87018ab6526ff42a0a473df709b7979aaf6d19",
+  "siblings.png": "dc4b3a8dee1f402aa3948167acbef1018fea190657ba180e4f4d16277acc0df4",
+  "facings.png": "58ad7c1772249200835d36471fc4d97f813deea54c8ca043e177fc8f2340e276"
+ },
+ "source_sha256": {
+  "south": "2e13263f46d77c9057213b2b9921a61063db9222fc9021a1f9a81b13ca91d22c",
+  "east": "c4d3778d267a85b4fe5c53c1b088f99213a411f742871c057aff788975cf657a",
+  "north": "7605217b6f44273d6b96ea02b1ed78f94ee218039b2ebeefacfff54a894b1501",
+  "scale": "cf8ebf27b45ea04029cd526555749de1405219e4a190ef51cb094d7e9205fad9",
+  "siblings_SacaPillar_south": "d25b14fdabcb7a47974099758016759fa600ac33918faf583a5a334d40c1ff97",
+  "siblings_SacaPillar_east": "b836282de6f845aecac2d128728de27173774974569cd2e743f3c2b6a689523b",
+  "siblings_SacaPillar_north": "818de67366b1ffc221b1bc407839f3d87bce50048969d0a9543e2038c4e3e2e5"
+ }
+}

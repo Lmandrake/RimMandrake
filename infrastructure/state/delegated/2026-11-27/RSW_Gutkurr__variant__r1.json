@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 38.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4583674
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Gutkurr__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "992d544de49b51c32172f2fa8b7b34242f5c7f21549e8561407c2b418dcaf5c5",
+  "east.png": "44d5d8bbc4f8c4a6b5cb883a3ebf7c56f4533780bdf960b0b7cd278f5d8f7890",
+  "north.png": "b076fd3cb6be8a62a86b4e6ccff095eecd26d0962daa557493626b23a4f6c0e7",
+  "scale.png": "1a5b7bdcd18d8dcdeae101e4d14fd2bb788444eae716b4693fc2cb6f7b66763d",
+  "siblings.png": "b3f676be7f9fda9ba4c1315f9edc67a95dfe5ad3805e114d6f1aa9469905ea98",
+  "facings.png": "d4b6543bbd0290f2302d463718f31463bda9cb0d9cc4f75513c618032296e0b6"
+ },
+ "source_sha256": {
+  "south": "992d544de49b51c32172f2fa8b7b34242f5c7f21549e8561407c2b418dcaf5c5",
+  "east": "44d5d8bbc4f8c4a6b5cb883a3ebf7c56f4533780bdf960b0b7cd278f5d8f7890",
+  "north": "6852038c45ef8dcefa3e43f6abfce6b152d90573e0006ea4cb35cba5932cc8ec",
+  "scale": "93bff5ca27f7cac1bdf6c1526d2682876a4f34d07738c92d3406799e5e619538",
+  "siblings_Gutkurr_south": "989e185f308b38880f302eb936a3af0dee2d0a9676ee4105badd8645f812c6e5",
+  "siblings_Gutkurr_east": "13cbcd6fe578e9cc617e53ba6fb8f3be9bb9e8ec5180b6dd205b1845ab3403fa",
+  "siblings_Gutkurr_north": "2f9970b742f507e215ef930d0a72a0cc1c0c58593acbc26e53bd9174f6b93de2"
+ }
+}

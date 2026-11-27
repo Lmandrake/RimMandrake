@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4497548
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 9.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.14932759999999998
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Niim__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "2a8b3f8e94a5dd5c84048900f9bcab37a9d5bd6cf428bb2b31ba3ff5458e70a5",
+  "east.png": "b6ad953ab97238c75044cdd7e7e3abcd5a59954890efc7a239e7566c85b620b6",
+  "north.png": "f4a9425b81e82029a31463ed84fc61891c215215c7f9932a12f11f05497a86e7",
+  "scale.png": "cc70b8779651a0b14597c1ce1c1cb003947c2e71e7e15f5741dec80838a56c9f",
+  "siblings.png": "b068b43a320542486f01e637b9abae8260672886da5929d38397da30ddcd1833",
+  "facings.png": "bb76188171716bc8ca4d3c2dfa6f293f9c90d01f2eb13c4e0b08c0a7cd0a9f2d"
+ },
+ "source_sha256": {
+  "south": "2a8b3f8e94a5dd5c84048900f9bcab37a9d5bd6cf428bb2b31ba3ff5458e70a5",
+  "east": "358b278d505d32e783397165a18e08d224fb9afbed3ee0f253b3ab1357e0b92b",
+  "north": "88bcaf58bcf76b86c0d0830472b96f8436a3dda47049688349c057c24444531e",
+  "scale": "a0517baf19da2ed4023e34fa29c9a4f54273257fd57d905cd5a0687bb3a8f118",
+  "siblings_RM_Niim_south": "5c7e2d068c37d90fc328182127c45a760b822c7fe88434654c0cd2b592567a38",
+  "siblings_RM_Niim_east": "972955e43566e41e47a9277df4fb0f32db36a2b1d0a0b1e70c7e20a819dcdb6c",
+  "siblings_RM_Niim_north": "5fd2ebd1615bada53d5bd693e6b8bc8a4e9b1cf77c501912d08b739b5ca81f4b"
+ }
+}

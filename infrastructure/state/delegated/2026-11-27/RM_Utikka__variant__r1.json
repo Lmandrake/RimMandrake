@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45220699999999997
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1621936
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Utikka__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9e2ab07bb8ab06c9ccd6416bbc6f0417b07828c91cf52a4be73590061133c995",
+  "east.png": "c95528189eb1bc170878455b62b63feeb556abfc2393a67363fbd73e093daab4",
+  "north.png": "5915fad237166d8d8d99606c9409f920558cb08325b29058075d224c8a5ef63b",
+  "scale.png": "80c2f0d5083123a9550080132c35030793227bfcb1a1b4b5e10e60c487b9a3fb",
+  "siblings.png": "1b5eb29cc3f0988951d5da5abec182ff41439979707f1a4b91a4b7ebe4e46a5b",
+  "facings.png": "83c56be050e62036283e7e582b4a320c04245bce1c87468c03bb819ee82755fc"
+ },
+ "source_sha256": {
+  "south": "9e2ab07bb8ab06c9ccd6416bbc6f0417b07828c91cf52a4be73590061133c995",
+  "east": "c95528189eb1bc170878455b62b63feeb556abfc2393a67363fbd73e093daab4",
+  "north": "5915fad237166d8d8d99606c9409f920558cb08325b29058075d224c8a5ef63b",
+  "scale": "07b88d5fe0a59a4f6e2b63d7648bbd0ef7a3b7b0cdc0352f97121b6f21f30638",
+  "siblings_RM_Utikka_south": "17832db4864f8f63efe201a3773a2aed3680d74be791d475b5b90ea232680702",
+  "siblings_RM_Utikka_east": "e4f4570b4a51414d43a8acc2ee44de01e6281097c1db70414f2f38e91851ad8f",
+  "siblings_RM_Utikka_north": "2325683466513f02d97eea3ca780f7d6858dd4cce59b6028d7e37cd2368211c3"
+ }
+}

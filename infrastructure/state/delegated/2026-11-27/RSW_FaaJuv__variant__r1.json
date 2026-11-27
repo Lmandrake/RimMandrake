@@ -1,0 +1,68 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 36.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4451252
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_FaaJuv__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band GOOD (model said good); blocking []; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "62dcc84ffe46d92858214fddd6a71f948429b8d5922e20ac635b679ba12e831c",
+  "east.png": "789a94d20305b657ab5ecdf50de44aeced45f2a06f0c7b4d138281662192a6f7",
+  "north.png": "8520f18abe59a95b424c4957229bf89968f607a130ebf6ce86dfaaaac3b9f69b",
+  "scale.png": "cdc08373c801033593f14bc291242415d73366927fb0ea4dafc5862f97706753",
+  "siblings.png": "fa3ce6e4dd8e050c1181d4959f4f0900b5b7ea011f46e7c6db64ecdd7f500ac5",
+  "facings.png": "6a4751e1e67a2b2ed9d7aaee92c31aacc069ad2c4183ae9c291ca7d27fc3a657"
+ },
+ "source_sha256": {
+  "south": "62dcc84ffe46d92858214fddd6a71f948429b8d5922e20ac635b679ba12e831c",
+  "east": "7cf3c5b5426ef5aee1da440df7efe84cca3a7a3e8d82e0631e6b825b279b95bd",
+  "north": "9089c405c4d2cfc999091a0df92d2990b75ff0aea043bc96ec78416418739492",
+  "scale": "da7d67bea230193f04a88076ed4c420fb84f8e04f97cfed80b8419c320f58be3",
+  "siblings_Faa_south": "4de5519281cd683929356465fb59700d4fde052903ecca3c6807b7273d3ac5d3",
+  "siblings_Faa_east": "de4e31756f6002e7bd7d28d8a7b1ab3a55c19aa74a4b654b5c64734cc1917588",
+  "siblings_Faa_north": "ecf26a553aa6a158ea24e95c6e20931a6f1b42d6c59bfe0ae1ecced6f71bfaae"
+ }
+}

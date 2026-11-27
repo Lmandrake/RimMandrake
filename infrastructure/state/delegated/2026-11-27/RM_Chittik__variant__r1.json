@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 46.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45191879999999995
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 16.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1505376
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Chittik__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "5b74a93debedda660d58f558cd2fe6bca5623370cd16a12ce3de75663a135bd0",
+  "east.png": "81effa22b55c227c9496110acfe3ab14db5d7b53ce9b723a2801a418ff7967d2",
+  "north.png": "3e796544c11df80bbb6c677a023b46613ac6d2289829f7d84d55e24738316e26",
+  "scale.png": "387b61f8c30c9d1dd6327ad7f7f70240ff6845e8a38e53a267b0e1deb3b10f2f",
+  "siblings.png": "7bca298411d55fe3e42be3fb2fb482741f43430262860e0e3370d0dd7f3f58f6",
+  "facings.png": "8804cc1c91a7c8b2e793274e12e22b3122a260464d5cd811c79d92f2e6ab0730"
+ },
+ "source_sha256": {
+  "south": "5177c534c7426f81381e7f6f60aef748f46e7a6092adab6e7537f9eae2b0d316",
+  "east": "81effa22b55c227c9496110acfe3ab14db5d7b53ce9b723a2801a418ff7967d2",
+  "north": "3e796544c11df80bbb6c677a023b46613ac6d2289829f7d84d55e24738316e26",
+  "scale": "da3c48efa5d35cd052d248fba141d7cae9414197fef287d6a033f16c7bc90611",
+  "siblings_RM_Chittik_south": "ebfd195560e44c30ee2fc39c2afc38c980d2f38d2c77ed11ba313b717a214bff",
+  "siblings_RM_Chittik_east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+  "siblings_RM_Chittik_north": "a2acc0df27bddf810ef13666443b9131291c279ffdfe27166a6a331d60e28294"
+ }
+}

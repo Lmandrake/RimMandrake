@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 40.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.44910819999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 14.2
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Shaak__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "82fb2f5a82df0d272c1f4760ea7da61ad1e8ba40a10cc9906c922424a2de203d",
+  "east.png": "89acec5976271cce88f9a4b501fa8eb030de6becd51fdeb7e56baef1102c22ff",
+  "north.png": "86172766e2270e982aea9c13453fa77f1bcb0ba98bcc2e9afe6b221ae9d57830",
+  "scale.png": "c8a4c641658cf4acb1dd6d156bc51229b62fd0b900f6a99a0411c6448b9140fb",
+  "siblings.png": "15cc57aff1996f858e0d260baed4d641630eca507144214de4562c27157e21b2",
+  "facings.png": "5df22297d6a81393f9a7e416f74cb04e5e4f858ca4d41c525a9ba05e35432856"
+ },
+ "source_sha256": {
+  "south": "91573b6dc7d2ccedbb1090e83b8217a73d4438810b958ec6ba45b141a6bdc925",
+  "east": "89acec5976271cce88f9a4b501fa8eb030de6becd51fdeb7e56baef1102c22ff",
+  "north": "86172766e2270e982aea9c13453fa77f1bcb0ba98bcc2e9afe6b221ae9d57830",
+  "scale": "7ebc3d0beedfaea0a9f91d5d5157abedf383ef0eb56339eb3d3c63ad727ed0af",
+  "siblings_Shaak_south": "a42478f4b9550014f019fc3d9baa8c3299eb3fe55201267bcc3c24521323668e",
+  "siblings_Shaak_east": "a8118aa8b47ef30b2670839de87305696a21bd5d7861e70f1250df62648e5e20",
+  "siblings_Shaak_north": "4f6b2c3de1ecece9299a320fee7790d432737b8be90bd82395902476c2bb5d5a"
+ }
+}

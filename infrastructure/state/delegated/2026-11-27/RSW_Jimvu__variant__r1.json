@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46689780000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 13.4
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Jimvu__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['STYLE_OFF']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3ca782ce335798c447b26340b169b358666d54de91b9334a45bf3b7674af4e05",
+  "east.png": "baa73b1c3d4c4fb63278b587233547e1aac914114346a66e908efd468fc46b6b",
+  "north.png": "969a0dd2d055200aca15b4a94354fdac0ff6c7fb072e87f64962fc4ace6bb724",
+  "scale.png": "67374b7d297ceaa9769615d336df85d69f545c073c858f18fbc115fa558c7e8c",
+  "siblings.png": "43003994f4d143f93fb47faf7d49baf6c5a6cb7ef62380c1f07c18bf5f3e8b17",
+  "facings.png": "97756b15ef08e926c8c48965204d1cb99bb72753dc89a4fa6e805381de8bb360"
+ },
+ "source_sha256": {
+  "south": "69f50595a0368ffff6969c4f26963dd5ba88e25af722318b7aa70f9ddd7ddf4d",
+  "east": "baa73b1c3d4c4fb63278b587233547e1aac914114346a66e908efd468fc46b6b",
+  "north": "969a0dd2d055200aca15b4a94354fdac0ff6c7fb072e87f64962fc4ace6bb724",
+  "scale": "f2b285700c953a6e76b331116bbc8f2b29d2d385202821290e4938677f127975",
+  "siblings_Jimvu_south": "15479bba6abfe982fa8574ceed99f638625c3e1f7265b7d7da7b088b7f9841f9",
+  "siblings_Jimvu_east": "c574ecd9e579327802ad4b044a1310c01d6a44f300935d95a6874eb19b4b7328",
+  "siblings_Jimvu_north": "cc9eff84b7ff1dce1485c683afe2a0d4c8a5f2e74ad7c2b15e4271e6eeb69f16"
+ }
+}

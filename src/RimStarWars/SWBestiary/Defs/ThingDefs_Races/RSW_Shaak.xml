@@ -205,5 +205,10 @@
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
-  </PawnKindDef>
+  <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned colour variant (commission.csv) -->
+  <alternateGraphicChance>0.35</alternateGraphicChance>
+  <alternateGraphics>
+    <li><texPath>swanimals/Shaak/ShaakVariant</texPath></li>
+  </alternateGraphics>
+</PawnKindDef>
 </Defs>

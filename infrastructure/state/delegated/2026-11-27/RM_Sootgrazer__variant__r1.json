@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.463592
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 13.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1524596
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Sootgrazer__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said weak); blocking ['F_INCONSISTENT', 'DEPARTURE_MISSING', 'OWNER_NOTE_IGNORED']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8415a7eefc673d7186de6ce0f1419c647cc81551a1c3a7cc9feeb90b5e17f49a",
+  "east.png": "501a01c7e943957632dd7b401765b3aa0ef9026df1118a32406a669f45d8cb02",
+  "north.png": "47cd52c2aa20d4bbb2c0bf5ea3955cad811b0e46099f3ab8ad9048e5ceccbcc0",
+  "scale.png": "ac1ee45d84d7bf65e2332b66882aa412baa462abac8beb1d590962b9579fbc54",
+  "siblings.png": "78ea93d98032ede92937fb14345dc10d081020715883c54322ba72a81e639228",
+  "facings.png": "f001895110fd048ab474cb43d395c8374b477c5398935b80d241ada93a516d32"
+ },
+ "source_sha256": {
+  "south": "8415a7eefc673d7186de6ce0f1419c647cc81551a1c3a7cc9feeb90b5e17f49a",
+  "east": "72af0020bc68bd6c9ac4a268fc7a69906a4f4e66d760d60adc8ca7636527c715",
+  "north": "6984ceee77de888c5b454b555e431374ebde6a8856fe3b7a76e6cdfa0323e286",
+  "scale": "af3e3e3fb989e100b9cff0f41b4abe4d72b05f4f0fb53a86522a88aff988ce00",
+  "siblings_RM_Sootgrazer_south": "1d667a95330cb90cba703b5bdd09826587045f4bc4c5e199634c781df9c896fc",
+  "siblings_RM_Sootgrazer_east": "5965334b78625879dd093f9afc4e402c41d61b2dea403911466f8cc084502fd3",
+  "siblings_RM_Sootgrazer_north": "8a458b7648dc090624dcd9cc5e4dacd65350d4bf34df1a56c91a823a7c685a28"
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4667508
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.6
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Neebray__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['CANON_MISS']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "dd8b38ca482f1541219bb39aaa88d40ac87297697664527942af15867f2a3546",
+  "east.png": "cb0e79c33d0e3751b526a9e335687d8d45665395f89b75cd9d7c0dc442e2a661",
+  "north.png": "7656d2cdf6e9bd282b37a993e17926b5266bd279d3c71ffa6bd89d55bdd7bff1",
+  "scale.png": "b2a845c6d85b6efb7a21c3e9ef28bbb22ec7e5226de3682e86f29efb0f86429a",
+  "siblings.png": "d5919b65655020128c3cb459d6f3f7cb6ce8d393a4f32b8e94ba944f97409e56",
+  "facings.png": "bb3fab31b4aaa94850432923387a7b3cfcc833cbbd982a2370dee03f2d273854"
+ },
+ "source_sha256": {
+  "south": "dd8b38ca482f1541219bb39aaa88d40ac87297697664527942af15867f2a3546",
+  "east": "63540ecfa0e86f97fd14590790316d84f2281bc24c82298b944340c1fb5bff58",
+  "north": "74d671672716a1a7a88e64f93534cc606e0725785c76280b1ed9f0e9f2bc0280",
+  "scale": "2e0a2cec3bdc0f2e300527eae513d327ddd2a2f6207f01e505d1fa2d25698d9e",
+  "siblings_Neebray_south": "938fdc08232023d73510ba80ea6461c21d9a3726bed26b88a40cd25f3c375921",
+  "siblings_Neebray_east": "06af74aed3585111103a6181813841e146aed955faa31eb52af097356149bbd7",
+  "siblings_Neebray_north": "a922a25502f6e9fe7674f894b6646751fb287d75d10f7f5337e225abc7b8f6b1"
+ }
+}

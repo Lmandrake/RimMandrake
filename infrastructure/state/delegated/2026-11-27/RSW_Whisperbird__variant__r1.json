@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4612948
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 34.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 12.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1514796
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Whisperbird__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'CANON_MISS']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K2'], own blocking ['CANON_MISS', 'DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ffaa09f5677ddcdec5a089e276fcf7d291d241abd605dc2fb55e81afba5fb78e",
+  "east.png": "e18c12550f96c65eb89978c64f4deeb027a3c8510284603e47c2636757baea34",
+  "north.png": "5d231880a7090e00b203d1d9bb578c4cc2fedf441836b1c6d016af1639cb7b2e",
+  "scale.png": "6f8c642ef1638e47e31d0acb20a6b41b8155cbf4678793eaad3ad8ce3a709283",
+  "siblings.png": "e442f4b3911b0e97c23378f86f6f699ee6ce75ba6226faba68141c755ce84609",
+  "facings.png": "37f6a238911dbfd799adfef580210b83d11c62de28e1c3307c266ca078d8fe2d"
+ },
+ "source_sha256": {
+  "south": "70862c7d159eb20478599913731a28d5c1a1c8668ba67a23e9f0e89dc7b8496f",
+  "east": "cd16236318ab2d47f94d500e214ff33e1185c2ad2366ec7bd6a60a438fe0be28",
+  "north": "5d231880a7090e00b203d1d9bb578c4cc2fedf441836b1c6d016af1639cb7b2e",
+  "scale": "dfcbda6f6626aa9dcaaedb1bf9b9988c330a0119bbe9a8d695cd53488435d1df",
+  "siblings_Whisperbird_south": "cd18267b37b5bb1654360858ac942b76d5303ac753381e8910092f70d4b878a8",
+  "siblings_Whisperbird_east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+  "siblings_Whisperbird_north": "85d60d54dd3be84827930f255893d0739e0e196d1921cb9580647dcb4c77c223"
+ }
+}

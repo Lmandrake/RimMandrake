@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47841880000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 23.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 29.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1532376
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Bulloo__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'DONOR']; polish ['LEGIB_32']",
+  "gpt unsure: unsettled ['K2'], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c4e0ff0516d7ee1f2026fcf28bbe59adecfcdb8301cc896daf84caab445796ca",
+  "east.png": "a650920e2ec88c48c3b3aa2f4b45b20e34baadf2ba95222743eaf2814835e60a",
+  "north.png": "c5601aeb217d2c6af2876ab4a7a700d7f3d89469dd662aa90a419879ba03f5a4",
+  "scale.png": "90124eb4e28b0bdb1d18bfca996cc72ff18f9ba317df75494f184d8e462c1403",
+  "siblings.png": "5aba9d9411815a3cd91a73af534273463be3abfa953132f55603cdd6b6cd8d44",
+  "facings.png": "38795bdfc6c4e3ecce75a9046292ae1298b2a8c6f52b614ffe8d0a5bfe1904cf"
+ },
+ "source_sha256": {
+  "south": "1117606a2afe53c1bbb4bbe61073cb59790b512f3f1719ba45841a3391b86e8b",
+  "east": "3f99ec51dd6fea0f90fee3d5fbd1cf411d34b11ca464b144ec3229a3f9b856e5",
+  "north": "c5601aeb217d2c6af2876ab4a7a700d7f3d89469dd662aa90a419879ba03f5a4",
+  "scale": "0082fe9d93a2473c97443aec1a731a0538cdfdccb0feaab525053b8b18cdef1d",
+  "siblings_AA_Aerofleet_TwilightSea_south": "d4d158995b7f391c5f2be312e715abe73646ed8ad3ddf5876ffd6f8da2de8686",
+  "siblings_AA_Aerofleet_TwilightSea_east": "db03bf81438e839446680305383f9fad3f0c3ca8c851d64e15e94b776e2d499a",
+  "siblings_AA_Aerofleet_TwilightSea_north": "8c6c4c6c1ac1caad9445a8c37fd0772e8ab04d42bcb321468f3f23f0edeb6726"
+ }
+}

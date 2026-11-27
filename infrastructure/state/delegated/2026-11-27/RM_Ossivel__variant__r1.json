@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 35.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4461044
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 20.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16416160000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Ossivel__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "65bf87c751035ab0e94bdeb904850fd4c713ea8a7dd7fc0b5dec32211f3f8ede",
+  "east.png": "b9253528e3876359db58fba1d860d8ad6e433135645a38a287ce4d67484f5609",
+  "north.png": "64f188705831c6ca21782525f00dc38d77ba987eb4025d4cdf58fcfafeafa9b6",
+  "scale.png": "e47998fae107dcf744fa68fc63073029b1c642bdd9ce69de058366280eea8356",
+  "siblings.png": "73df5bdc08a7f133442500147962e5628d81125f7b64a2995bc9d72615f98c76",
+  "facings.png": "1c3587f8e5347e3c65fbbd838b947e50412a27ac985f1ca1bce0cf6ccf8c5533"
+ },
+ "source_sha256": {
+  "south": "b0cdbef72408720734a80f27d1edde12f91b6c3ef97a3ac84038a6fa7dc9c6f0",
+  "east": "d64dd64fd7a933e09b89c7b721642359e4bc79a80f970028bc9f3725df4f6549",
+  "north": "64f188705831c6ca21782525f00dc38d77ba987eb4025d4cdf58fcfafeafa9b6",
+  "scale": "ea6369c1666b8acc5850b4cc754dab5e8c889c54bdc36bb3d56d64149d8f0e7d",
+  "siblings_RM_Ossivel_south": "2809e5e7d8af4d9be9f4060b4f7151f4d2804c4dd25564357e66519681c76c60",
+  "siblings_RM_Ossivel_east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
+  "siblings_RM_Ossivel_north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac"
+ }
+}

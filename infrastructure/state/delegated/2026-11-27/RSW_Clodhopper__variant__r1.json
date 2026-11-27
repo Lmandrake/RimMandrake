@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45938840000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 12.4
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Clodhopper__variant",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "61968fc506d4531e55d5661d0e3d899f8708122806c772ae2215e47aea707f37",
+  "east.png": "1a0f196b64a53b6dd0c78c2c60e3d093958488a46d238f2fd5cd052ed1381fd9",
+  "north.png": "e1e71c1ded6823e2499d152a5a89590f41594179053bb5888d2f66613d4dc4a2",
+  "scale.png": "0d0555b9994b3a7dd019f5a8fdb49aebf15960f8479fb05ad7e92ad787cf8df8",
+  "siblings.png": "66b9395b9ec6c4b4721f89bcd0348650714eb2f1899a801ae7ccb05359f39d3c",
+  "facings.png": "976f1f6920c039662e2221d14519a4a512cd311540f57cdf133fe8bb3a04737c"
+ },
+ "source_sha256": {
+  "south": "10d9076d3f65f6166c4fd73387602b9478b3dc28b1b7e2523e70c7a9664df8d9",
+  "east": "7fbe75868eda591102e52951db4410ccbc2b56c791a3832a8f749e675ec9029c",
+  "north": "e1e71c1ded6823e2499d152a5a89590f41594179053bb5888d2f66613d4dc4a2",
+  "scale": "c9548cfbd5c348861aa9f2d5aa3884f9b7e1bd264f6eeef900750e3055eb260a",
+  "siblings_Clodhopper_south": "b1ac24655a6e4b634e20e71a1a5e40426ad8498f55ceab7db63052eb8ecd46c5",
+  "siblings_Clodhopper_east": "1911f471f272a5c9d77c74624dd200b600e4d7c7effb674508ec3bc9c5eccb66",
+  "siblings_Clodhopper_north": "e506752c86f8111da14cacba655068d20e70ce5ba2dd8c09e3c7f3c1f6882e3d"
+ }
+}

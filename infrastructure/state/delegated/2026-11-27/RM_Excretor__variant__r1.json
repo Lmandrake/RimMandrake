@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 43.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4567586
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 16.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1601096
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Excretor__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "80eb332d968229451b2cd759903c5f85832b3fed4e47f045bcf58df026d97973",
+  "east.png": "89cd0d9cca65e8f236b3b4268475eaf4938c80342692ba1d5223f1230f090a53",
+  "north.png": "84f12cbd66ac8a7c7ca022b975620fab0646c07fb201969ea3648ba982a0ee2e",
+  "scale.png": "a2bcdc2de876d87dc1c1450b8d43433124e92b8360c5c1cf32b5b52bf28d2771",
+  "siblings.png": "ab0b232342675ec9daffcc85ae689006eb55b3195afa94579db5100a9860c8f3",
+  "facings.png": "f098910d24aaf3247a17c4cf3f1dcb59aa9939d64bfff8895c38f750e56ada8c"
+ },
+ "source_sha256": {
+  "south": "80eb332d968229451b2cd759903c5f85832b3fed4e47f045bcf58df026d97973",
+  "east": "89cd0d9cca65e8f236b3b4268475eaf4938c80342692ba1d5223f1230f090a53",
+  "north": "84f12cbd66ac8a7c7ca022b975620fab0646c07fb201969ea3648ba982a0ee2e",
+  "scale": "e146ea7235b4afa77922a4d1ef99851b0b0bb414e5087f2622b2d7043ec31ef1",
+  "siblings_RM_Excretor_south": "a255f80a9b30b25961284e63807932267156a69824d768d2bb7bc0570d370757",
+  "siblings_RM_Excretor_east": "5981c23205cd8ea36283527c273976e023f4d3a8ae212dd924f5fad1d8caedd9",
+  "siblings_RM_Excretor_north": "4954855ba40fcfb284a9c694592fd1b179e3849fc0b7fe97558c6aba902acd24"
+ }
+}

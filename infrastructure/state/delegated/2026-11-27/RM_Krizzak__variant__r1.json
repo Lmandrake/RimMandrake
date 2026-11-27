@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 47.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46649680000000004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 32.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1637096
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Krizzak__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said really_bad); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_INCONSISTENT']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "3956ace272aefadee2d41cda5aa199f0230ebbcd706ca8c664d922d66aaed03d",
+  "east.png": "8ae6d18fae84b3c8996384c940f8dbc3c7a99889603c00b8a541e435b433e0bd",
+  "north.png": "73fee6a9f1b0b8258c2359510a58e46db505ee15629755509aa571dbde4751fb",
+  "scale.png": "2a4ec09fc88cb162b1561e485676c51caa664ef8ea1edba79c4233c672b1b7ae",
+  "siblings.png": "c664fc045dd96b5088189c157ac68db2a346146b4b533461fd3abddd60e32bca",
+  "facings.png": "1d55e60690a72a79903b19fa3d190b8aaa19f2ced0f05ac84a075bb4cbb6e37e"
+ },
+ "source_sha256": {
+  "south": "3956ace272aefadee2d41cda5aa199f0230ebbcd706ca8c664d922d66aaed03d",
+  "east": "8ae6d18fae84b3c8996384c940f8dbc3c7a99889603c00b8a541e435b433e0bd",
+  "north": "73fee6a9f1b0b8258c2359510a58e46db505ee15629755509aa571dbde4751fb",
+  "scale": "00bb266a52005d191a1ca2a0e23380dffedd8fe0896ab883ea42818da196da39",
+  "siblings_RM_Krizzak_south": "4deb78a23dd84fc27cc21ed16fc8dc0555b4ddf371f68cafe558e10cdee6783a",
+  "siblings_RM_Krizzak_east": "c47c285a5187f9dc1f872c56a66a5064d34ea598ca2b81526d27ea3d30c4eab3",
+  "siblings_RM_Krizzak_north": "102de660f8a4bb8a1a8bb77f2eabe22b6da937ce7e4ef46a63cc50ab48ce9b90"
+ }
+}

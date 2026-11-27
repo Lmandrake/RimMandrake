@@ -1,0 +1,442 @@
+[
+ {
+  "id": "arteval_RM_Bulloo__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bulloo__variant",
+  "prompt": "Repaint of the mod's own bulloo adult as a colour variant, using the kept bulloo adult image as the reference. Subject: a small, floating, gas-filled creature that drifts on hydrogen, harmless, slowly weeping a thick gel. Keep the reference's anatomy, silhouette, proportions, pose and facing exactly as they are. Body: a small, round, inflated balloon-like body, taut and softly glossy, held aloft so clear air shows beneath it and nothing touches the ground. Thick, translucent gel visibly oozes and beads from the body and drips slowly. Colouring: a distinct teal-violet palette. The upper body is deep teal, shading through blue-teal into soft violet on the underside and lower flanks. The gel is a pale glassy teal-violet sheen. The shift from the adult's colours to teal-violet is the only change from the reference. Rendering: painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. Transparent background, a single creature centred in frame, lit softly from above.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DONOR",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.85,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSeaVariant"
+ },
+ {
+  "id": "arteval_RM_Chittik__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chittik__variant",
+  "prompt": "A single chittik, a finger-long vermin, half insect and half spore-case, drawn as a small RimWorld creature sprite. One half of the body is a segmented insect form in dark glossy chitin, with six thin jointed legs, short antennae, and a small head with tiny biting mandibles and small eyes. The other half is a swollen, bulging spore-case: a rounded sac with a translucent skin, olive green in base colour, marbled with ochre streaks and dotted with small pale cream spore spots, with faint ridged seams where it joins the insect thorax. The spore-case keeps the same olive green, ochre marbling and cream spore spots across its whole surface, and its shading deepens the same olive and ochre rather than shifting to brown or tan. The six legs splay out from the insect body. The creature is alone, one body, small and compact. Painterly vanilla RimWorld style, realistic, transparent background, soft painted edges; value and colour contrast carry the silhouette against the ground. No outlines.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Chittik/RM_ChittikVariant"
+ },
+ {
+  "id": "arteval_RM_Excretor__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Excretor__variant",
+  "prompt": "A heavy-set, three-horned grazer from a ruined wasteland, the variant form of the excretor. The body is a heavy rhinoceros-like barrel with thick pillar legs, a low-slung head and a broad back. The head carries three horns: one large horn on the nose and two smaller horns on the brow, all dark horn-grey with paler tips. The skin is a muted grey-green across the chest, legs, face, haunches and tail. The back and shoulders are covered in layered mineral plates in pale bone-cream lichen, with rust-brown crust in the seams between the plates, and the same lichen-crusted plates sit between the horns. The flanks carry rounded, layered nodules in pale green-cream, all the same size and in fixed positions along the flanks. Hooves are dark umber. The cool grey-green and pale cream colouring marks this as the variant form. Soft painted edges; value and colour contrast carry the silhouette. Transparent background, painterly vanilla RimWorld style, realistic, game-sprite lighting with soft shading from above.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Excretor/RM_ExcretorVariant"
+ },
+ {
+  "id": "arteval_RM_Krizzak__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Krizzak__variant",
+  "prompt": "A hand-sized dark moth-thing, one individual creature shown in three views: a front view with the eyes and the glassy mouth toward the viewer, a side view in profile facing right, and a rear view seen from behind showing the back, the wing backs and the rear of the body, mouth hidden. All three views show the same moth with one shared colouring. Wings: a deep plum ground, the dark purple of a bruise, carrying a row of large near-black oval eyespots, each ringed in pale lilac; the wing ground is plum and the pattern is the same eyespot row in the front, side and rear views. Body and shoulder fur: one dusky aubergine-brown tone, soft and dense, the same in all three views. Face: a pale, glassy mouth shaped like a lamp-glass, cream-white and translucent, holding a faint warm stolen glow inside it; small dark eyes above it. The body is soft and compact with feathery antennae, broad rounded wings held slightly open, and six slender legs. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. Consistent lighting from the upper left across all three views, the same wing size and body proportions in each view.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.7,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_KrizzakVariant"
+ },
+ {
+  "id": "arteval_RM_Niim__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Niim__variant",
+  "prompt": "A single niim, a small schooling shoal fish about a hand long, for a RimWorld creature sprite on a transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. The body is blue-white, a smooth slender fish form. Even soft lighting, one fish, centred, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.4,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Niim/RM_NiimVariant"
+ },
+ {
+  "id": "arteval_RM_RustNipperJuv__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_RustNipperJuv__variant",
+  "prompt": "A young rust nipper, a small juvenile of an alien armoured scavenger that crawls over wrecks, for a RimWorld creature sprite. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. The body plan is the adult rust nipper's, scaled down: a long, narrow carapace, a segmented abdomen narrowing to a raised tail ending in a pointed spike, two raised claws at the front end, and thin jointed legs along the sides. The shell is soft and not yet hardened, a slightly pale olive-khaki with ochre warmth in the joints and the underside of the segments. The eyes glow faintly, barely lit, in a dim amber. East view: side view of the whole body in profile, claws raised at the front and tail curving up at the back. South view: front view, eyes toward the viewer, the long segmented body running up the frame in a tall narrow silhouette, the two raised claws at the near end and the segmented tail with its spike curving up at the far end. North view: rear view, seen from behind, eyes hidden, the same tall narrow silhouette, the tail and spike at the near end and the raised claws at the far end. All three views are the same animal with the same proportions. The background is fully transparent everywhere outside the creature and between its legs and claws; the creature alone fills the canvas.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, ALPHA_HALO, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.8,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipperVariant"
+ },
+ {
+  "id": "arteval_RM_Sipper__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sipper__variant",
+  "prompt": "A tiny swarm vermin, the sipper, painted as a sprite set for a game, in painterly vanilla RimWorld style, realistic, on a transparent background. The sipper is a clear liquid bead with thin, glassy, translucent olive-green skin, and one small orange droplet inside the bead glows through the skin as a bright point of colour, strong and vivid at the bead's centre. The bead sits on exactly three hair-fine legs, thin and dark olive, evenly spaced under the body. The skin has a soft glassy highlight on its upper curve and is a slightly deeper olive towards the base. The palette is olive-green glass skin, orange droplet, and dark olive hair-fine legs. Soft painted edges; value and colour contrast against the ground carry the silhouette. The bead and its three legs are fully visible and centred.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DESC_MISS, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.6,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/SipperVariant"
+ },
+ {
+  "id": "arteval_RM_Sloghog__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sloghog__variant",
+  "prompt": "A realistic painterly sprite of a sloghog, a warty barrel-bodied hog, in vanilla RimWorld style on a transparent background. Heavy round barrel body, low-slung, short sturdy legs, small content half-shut eyes, and a blunt snout with a pale grey-white mineral crust on the snout plate. Thick olive-grey and brown hide, with dense fields of raised warts covering both flanks from shoulder to haunch. Two short curved tusks rise from the lower jaw. Each tusk tip, from the tip back to about half its length, is wrapped in a rough, speckled grey-white mineral cap, with a crusty, lumpy surface that reads clearly different from the smooth ivory at the tusk base. The tusk caps share the same grey-white speckled crust colour as the snout plate, so the crust reads as one material from snout to tusk tips. In the south view, eyes toward the viewer, two capped tusk tips flank the snout and read at sprite scale. In the east view, the near tusk's capped tip is visible in profile. The north view shows the rear: back, tail and haunches, eyes hidden, wart fields continuing over the flanks. Soft painted edges; value and colour contrast against the ground carry the silhouette. Ground-level grazing posture, calm and contented. Build the body from this description alone, with no reference image.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Sloghog/RM_SloghogVariant"
+ },
+ {
+  "id": "arteval_RM_Sootgrazer__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sootgrazer__variant",
+  "prompt": "A slab-shouldered grazer, a RimWorld creature sprite in painterly vanilla RimWorld style, realistic, on a transparent background with soft painted edges; value and colour contrast against the ground carry the silhouette. This is the mottled variant of the sootgrazer. The body is broad and heavy, with wide square slab-like shoulders, a thick low-slung neck, the head carried low as if grazing, sturdy short legs, and a blunt muzzle. The whole hide is one colour, the cool pale grey of settled ash. Over the back and shoulders lie broad, soft, smudged patches of smoky charcoal grease mottling, with darker grease-streak shadows running down the flanks, like soot that never met rain. The nostrils are fringed with fine comb-like filter bristles, pale and finely toothed, set against the grey muzzle. The haunches carry the same ash grey and charcoal mottling, and a short tail. Colour palette: ash grey base, charcoal and smoke-grey mottling, a dull grey-pink at the nostrils and eyes, no warm tan or brown on the hide.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.95,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Sootgrazer/RM_SootgrazerVariant"
+ },
+ {
+  "id": "arteval_RM_ThozzikColony__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ThozzikColony__variant",
+  "prompt": "A heavy, wide-set armoured hive insect, the thozzik, in a single alternate colour variant. It walks on sturdy legs and carries thick overlapping armour plates over its thorax and abdomen, far sturdier than a wasp's thin chitin. Its segmented abdomen ends in a neurotoxin sting. Several toxin sacs sit along its back and abdomen, and each is a fungal fruiting body topped with small mushroom caps. The armour plates are matte charcoal-brown with darker brown seams. The fungal sacs are grey-green, and the mushroom caps are tan. The legs and head are dark brown. The plate hue, sac colour and cap colour are the same everywhere on the body, and lighting changes only their value, never their hue. Soft painted edges let value and colour contrast against the ground carry the silhouette, with no outlines. Transparent background, painterly vanilla RimWorld style, realistic.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 1.25,
+  "module": "walker",
+  "target_texpath": "RM_TheRot/Fauna/Redrawn/Thozzik/ThozzikVariant"
+ },
+ {
+  "id": "arteval_RM_Utikka__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Utikka__variant",
+  "prompt": "A single fist-sized ice-plains grazer, the mauve-rose colour variant of the utikka, in painterly vanilla RimWorld style, realistic, on a transparent background. Soft painted edges; value and colour contrast carry the silhouette against pale ice. Use the south view of the previous render as the anatomy reference only. The colours in these words replace its colours. The body is the same plated, many-tendrilled body as the adult utikka: small overlapping plates, cream bands across them, and cream-mauve tendrils used for cropping palefloss close to the ice, in a walking stance. COLOUR, one scheme on every facing: dusty mauve-rose plates, cream bands across the plates, cream-mauve tendrils, with slightly deeper mauve in the shadowed plate edges. The mauve-rose is clearly distinct from the adult's ice-blue. MATERIAL, same as the adult: the plates are semi-translucent, like frosted glass tinted mauve-rose, and thin glowing yellow seam lines run between the plates. Only the hue differs from the adult. FACINGS, all three painted in this identical colouring and material: south, front view, eyes toward the viewer, showing the mauve-rose plates with cream bands and cream-mauve tendrils; east, side profile of the same body with the same mauve-rose plates, cream bands, cream-mauve tendrils and yellow seam glow; north, rear view seen from behind, showing the back plates, bands and trailing tendrils in the same mauve-rose and cream, eyes hidden. Warm cream and mauve against cool pale ice give strong value and hue contrast. One creature per facing, centred, full body, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.6,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Utikka/RM_UtikkaVariant"
+ },
+ {
+  "id": "arteval_RM_Vellak__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vellak__variant",
+  "prompt": "A vellak, a tall stilt-legged desert strider, for a RimWorld pawn sprite. Realistic painterly vanilla RimWorld style on a transparent background, with soft painted edges; value and colour contrast against the ground carry the silhouette. Long thin stilt legs carry a compact furred body with no shoulders to speak of. The body draws straight up into a long boneless furred neck, like a furred snake, curving and coiling in a loose S, ending in a small narrow head. A rust-red sail-comb runs lengthwise along the spine: one thin ribbed dorsal membrane, fanned open along the back, a single consistent structure in every view. Side view: the sail is a long ribbed crest spanning the length of the back, the neck curving up and forward to the head in profile. Rear view, seen from behind: the sail is foreshortened to a narrow ribbed ridge down the spine, the haunches and tail in front, the head hidden behind the neck. Front view, eyes toward the viewer: the sail is seen end-on as a narrow ribbed ridge rising behind the head and neck along the spine, slightly fanned at its crest and no wider than the neck and body behind it; the head and neck are in the foreground, the stilt legs apart below. Short dry-country fur, the sail the one saturated rust-red accent. The same body proportions, fur and palette in all views.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Vellak/RM_VellakVariant"
+ },
+ {
+  "id": "arteval_RM_Visceral__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Visceral__variant",
+  "prompt": "A lean, plated predator the size of a human, a single colour variant of the visceral. Body plan: long segmented tail, hooked raptorial forelimbs for seizing prey, a toothed maw, lean armoured torso. It tears through thick hide. Colouring, identical in every view: sandy tan body hide, dark umber-brown overlapping armour plates, rust-red speckles across the body and rust-red limb accents, pale bone-tan bands along the tail and a bone-tan face plate. This is one fixed palette of tan, umber and rust, clearly lighter and warmer than the adult's charcoal and maroon. The front view (eyes and toothed maw toward the viewer), the side view and the rear view (seen from behind: back plates, tail and haunches, eyes hidden) all carry this same palette, with the same body colour, plate colour and accent colour in each. Anatomy and silhouette match the previous render exactly. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "RimUtinni/UtinniPatches/Visceral/VisceralVariant"
+ },
+ {
+  "id": "arteval_RSW_Gornt__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gornt__variant",
+  "prompt": "A single domesticated gornt, an omnivorous farm creature of the world Hethar, drawn as a game sprite in painterly vanilla RimWorld style, realistic, on a transparent background, with soft painted edges; value and colour contrast against the ground carry the silhouette. The head carries a single horn, and the mouth is ringed with short tendrils used to eat almost anything.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 1.75,
+  "module": "walker",
+  "target_texpath": "swanimals/Gornt/GorntVariant"
+ },
+ {
+  "id": "arteval_RSW_Kwi__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Kwi__variant",
+  "prompt": "A large bipedal herbivore from Dathomir, a semi-sentient herd animal and the degenerate descendant of a saurian: a heavy, upright body carried on powerful hind legs, short forelimbs, a long thick tail for balance, and a broad head with a blunt, honking muzzle. Its whole hide is one single colour, indigo-periwinkle blue, a mid-value blue with a slight violet lean, and it covers the chest, belly, flanks, back, haunches and tail without a break from the neck to the tail tip. Bold near-black stripes of one consistent width cross the blue skin on the body, haunches, tail and legs. A soft lavender sheen sits on the top of the skull. Soft daylight falls from the upper left, and the shadowed parts of the body are a slightly deeper shade of the same indigo-periwinkle, so the hue stays fixed and only the value changes. The creature is a single animal drawn in a painterly, realistic style like vanilla RimWorld, with soft painted edges, and its value and colour contrast carry the silhouette against a transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Kwi/KwiVariant"
+ },
+ {
+  "id": "arteval_RSW_MutagenicNorphea__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_MutagenicNorphea__variant",
+  "prompt": "A qattora, a heavy, slow ground beetle of cracked clay flats. Its body is barrel-shaped and cask-like, low and wide on short thick legs. The head and thorax shield are dark, matte brown-black, with small dull eyes, short stout antennae and strong short mandibles. Behind the thorax sits a swollen, rubbery, glossy abdomen as large as a fist, taut like a full water-skin, ending in a small blunt gland tip. The abdomen has a deep oxblood base with mottled rust and ochre marbling over it. Rust and ochre patches cover about a third of the dome, in a consistent size range, and a few small warm ochre-tan flecks sit inside the rust patches. The marbling wraps continuously around the whole abdomen. The thorax and legs stay the same dark brown-black throughout, and the jointed legs carry a slight warm sheen. Edges are soft and painted, and strong value and colour contrast against the surroundings carries the silhouette. Painterly vanilla RimWorld style, realistic, transparent background, single creature isolated on its own.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 1.2,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorpheaVariant"
+ },
+ {
+  "id": "arteval_RSW_Pikobis__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Pikobis__variant",
+  "prompt": "A small, flightless reptavian creature for RimWorld, native to swamps, a wading and running hunter of small prey. Long, slender legs; a compact feathered-scaled body; a long, thin, whip-like tapering tail held low behind it, clearly a reptilian whip and not a bird's tail feathers. The head is narrow with a pointed, tan-orange beak, slightly parted, with a dark mouth interior. Along the cutting edge of both the upper and the lower mandible runs a fine row of small, pale ivory, sharply pointed teeth, each tooth a distinct tiny triangle, readable as a light serrated line against the tan-orange bill and the dark mouth interior, the whole row running from the beak base to the tip. The eyes are alert and set on the sides of the head, and the back, tail and haunches carry the same feathered-scaled texture as the body. The head shape, the narrow beak length, the body colours and the proportions stay exactly as in the previous render. Soft painted edges; value and colour contrast against the ground carry the silhouette. Transparent background, painterly vanilla RimWorld style, realistic, soft game-sprite lighting.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 1.25,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Pikobis/PikobisVariant"
+ },
+ {
+  "id": "arteval_RSW_Qormot__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Qormot__variant",
+  "prompt": "A stocky forest omnivore creature, walking pose, for a RimWorld sprite. Heavy, broad body on four sturdy legs, a thick neck and a blunt, rounded head. One single large eye sits in the middle of the forehead, with no second eye. Long, stiff quills rise along the spine and sweep down the flanks, pale at the base and dark at the tips. The whole coat is one even, unstriped warm brown, with the same flat colour on the shoulders, flanks, thighs and legs, and soft painted light-and-shadow modelling for form. The limbs match the body colour exactly. The quills are the only markings, and they sit in the same places on every facing. Front view: the viewer faces the head, the single forehead eye looks toward the viewer, and the quills fan up and back over the shoulders. Side view: the body is seen in profile, with the same even brown coat on the visible shoulder, flank and thigh, and the quills run in a row along the spine and down the flank. Rear view, seen from behind: back, haunches and short tail, quills spreading over the back, eye hidden. Transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 1.75,
+  "module": "walker",
+  "target_texpath": "swanimals/Qormot/QormotVariant"
+ },
+ {
+  "id": "arteval_RSW_Sacapillar__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Sacapillar__variant",
+  "prompt": "The sacapillar is a timid, larva-like bug. A very large thorax, swollen with putrescent gas, dominates the body and floats the animal so it barely touches the ground. The sac is round and taut, with a faint translucent sheen and soft vein-like curves. A broad, calm silhouette that reads as a gas-borne pack animal. The head, legs and abdomen segments are a muted warm brown-mauve. The whole animal uses only these four colours, rust-red, dusty mauve, cream and warm brown-mauve, so the rust-red and cream sac is the same animal when it turns. The palette is clearly different from the adult's yellow-olive. Painterly vanilla RimWorld style, realistic, soft painted edges, value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillarVariant"
+ },
+ {
+  "id": "arteval_RSW_Sketto__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Sketto__variant",
+  "prompt": "A single sketto, a lean flying reptile about a metre long, for a RimWorld creature sprite on a transparent background, in the painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. Body plan: a slim, lean reptile body with a narrow head, fanged jaws showing long pointed teeth, four narrow wings (two on each side, one pair set behind the other, membranes stretched over thin long finger bones), and a long prehensile tail that curls at the tip. One fixed colour scheme is used in every view: the body is warm olive green (a mid-value yellow-green olive); the belly and throat are a paler olive-cream; the four wing membranes are a darker olive with ochre-tinted veins; the long tail carries evenly spaced bands alternating ochre (yellow-brown) and dark olive. Shading in every view stays in the same hue family: shadow sides deepen the olive toward darker olive and highlights lift it toward lighter olive, so the animal reads as the same olive-green creature with the same ochre-and-dark-olive tail bands from every side. Front view (south): seen from the front, eyes toward the viewer, fanged jaws visible, four wings folded at the sides, olive body with the banded tail curling below. Side view (east): the profile, head to the right, the four wings folded along the body, the long banded tail trailing behind in the same ochre and dark olive. Rear view (north): seen from behind, showing the olive back, the folded wings, the haunches and the banded tail, with the eyes hidden. Each view is the same animal in the same palette, lit from the top left.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 1.25,
+  "module": "walker",
+  "target_texpath": "swanimals/Sketto/SkettoVariant"
+ },
+ {
+  "id": "arteval_RSW_Voorpak__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Voorpak__variant",
+  "prompt": "A small Naboo carnivore, the voorpak, drawn as one consistent creature in three views: a front view with the eyes toward the viewer, a side view showing the animal's left flank, and a rear view seen from behind with the back and haunches toward the viewer and the eyes hidden. The round body is covered in soft, pale grey-brown fur and is carried on six thin, bare, unfurred legs, three on each side, with no fur on the legs. The mouth shows small sharp teeth. Two short stalks rise from the top of the body, and each stalk ends in a warm cream bud. The buds are the same cream in all three views, with soft natural shading, including both buds in the rear view. One rust-brown fur patch sits on the animal's right shoulder, the same size and shade in every view. It shows at the viewer-left edge of the front view and at the viewer-right edge of the rear view. The side view shows the animal's left flank, which is plain pale grey-brown fur. The rest of the coat is the same pale grey-brown in every view. Painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. Each view sits on a perfectly clean, fully transparent background. The gaps between the legs, the space above the back and the space around the stalks are empty transparent ground in every view, the rear view included.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 0.85,
+  "module": "walker",
+  "target_texpath": "swanimals/Voorpak/VoorpakVariant"
+ },
+ {
+  "id": "arteval_RSW_Wraid__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Wraid__variant",
+  "prompt": "A large desert reptile, the wraid, painted in the painterly vanilla RimWorld style, realistic, on a transparent background, with soft painted edges; value and colour contrast against the ground carry the silhouette. Body plan: a broad skull covered in overlapping bony plates, a heavy maroon body, enormous forelimbs far larger than the hind legs, and two small, thin hind legs. The forelimbs are a darker olive-brown with tan claws and carry most of the animal's weight. The hind legs are small and are coloured in two zones: maroon on the thigh where the leg joins the body, and the same darker olive-brown as the forelimbs from the knee down to the foot, ending in tan claws. This two-zone colouring is identical in every view, and the maroon changes to olive-brown at the knee in the front view, the side view and the rear view. The rear view, seen from behind, shows the maroon haunches and thighs, then the thin olive-brown lower hind legs with tan claws, with the eyes hidden. The front view has the eyes toward the viewer and the plated skull wide above the huge forelimbs. The side view shows the plated skull, the large forelimbs, the small hind legs and the tail in profile. Warm desert palette, matte reptile hide, scale and plate detail kept subtle.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_r0",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Wraid/WraidVariant"
+ }
+]
