@@ -15,7 +15,7 @@ What this reads, all SHIPPED code in validation.py:
      cells take no plant at all ("dead"), firefoam left on cells, the planted gap on and off;
   4. taken_while_burning and harvested_while_burning over a generated grid of timelines (harvest tick x fire-out tick x
      at-fruit x yield seen x yield baseline), against an oracle written here from the bar's words;
-  5. the recorded visit-5 timelines as challenge cases (design/concepts/Pyrelands/version/in_game/visit_5/evidence).
+  5. the recorded visit-5 timelines as challenge cases (design/concepts/Pyrelands/version/previous/0.1.0/in_game/visit_5/evidence).
 Not covered: fire spread, burn odds and pathing (live only; Stage 6 runs the chain), and real planting rejections (the
 fake decides which cells take a plant; the live staging names the planting reply of every cell it could not light).
 Run: python3 <this file>
@@ -36,7 +36,8 @@ for p in (HERE, UTILS, os.path.join(UTILS, "modcheck")):
 import validation as V  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-EVID = os.path.join(ROOT, "design", "concepts", "Pyrelands", "version", "in_game", "visit_5", "evidence")
+# visit 5 was a 0.1.0 visit: next-version moved its evidence to version/previous/0.1.0 (commit 345d6d4a83)
+EVID = os.path.join(ROOT, "design", "concepts", "Pyrelands", "version", "previous", "0.1.0", "in_game", "visit_5", "evidence")
 X, Z = V.PAD_SPRAY
 
 

@@ -1047,6 +1047,20 @@
     ],
     "wildPlantRegrowDaysOverride": [
      "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "firePacePercent": [
+     "T_FIRE_PACE_MODEL_OFFLINE",
+     "T_SETTINGS_SWEEP_OFFLINE",
+     "T_SETTINGS_SCREENS"
+    ],
+    "smokeWeatherEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE",
+     "T_SETTINGS_SCREENS",
+     "sc_smoke_weather_chokes"
+    ],
+    "smokeWeatherFrequency": [
+     "T_SETTINGS_SWEEP_OFFLINE",
+     "T_SETTINGS_SCREENS"
     ]
    }
   },
