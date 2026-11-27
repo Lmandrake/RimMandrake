@@ -835,10 +835,17 @@
     "ref": "run rm-role-designer-1795755815",
     "stage": 5,
     "tokens": 3940000
+   },
+   {
+    "at": "2026-11-27T07:05:05Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795762588",
+    "stage": 5,
+    "tokens": 415224
    }
   ],
   "reserve": 60000,
-  "spent": 111888014
+  "spent": 112303238
  },
  "coverage_releases": [
   {
@@ -1942,6 +1949,24 @@
    "stage": 5,
    "what": "void_system",
    "why": "run rm-role-designer-1795755815: the unit ended with no claude result of its own; its rejection spends no retry"
+  },
+  {
+   "at": "2026-11-27T06:56:40Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "111888014 of 4000000 spent; run rm-role-designer-1795762588 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T06:56:40Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1795762588, stage 5, budget 3940000"
+  },
+  {
+   "at": "2026-11-27T07:05:08Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795762588: stage 5 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -2329,12 +2354,45 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-27T07:05:07Z",
+   "inputs": {
+    "exam": "f425b1ee2f4919572755b1bdfdef459d5f51ae8a11a69f00fbfd580eaa5a0cc6",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "2eada9ea2bae7c36607112104ab30b760143b8a4e0078f4e15c8041ecfd63035",
+    "sheet": "22a3215f5781450b7b0d8c4325cbe252d4acbc40e69b17f82360fbd000acd086",
+    "tree": "2f443fba60ab70c63c687ce3fc5265c4fe4729e8e526650d80e60672e5e9e810"
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_lock.md": "30f6cbb386c39181a89f77ad0b6b060cef558335448758c7c54c9dbaf2197876"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "5716ef8e1c83124ab5bb10d5ef835357279821fa",
+    "floor": "5716ef8e1c83124ab5bb10d5ef835357279821fa",
+    "root": "5716ef8e1c83124ab5bb10d5ef835357279821fa",
+    "scenes": "5716ef8e1c83124ab5bb10d5ef835357279821fa",
+    "sheet": "5716ef8e1c83124ab5bb10d5ef835357279821fa",
+    "tree": "5716ef8e1c83124ab5bb10d5ef835357279821fa"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "nothing here waits on him: 0.2.0 passed his live walk on 2026-11-26 (OWNER:1795714498917797906), and this run only records the lock and files the mod item"
+   },
+   "run": "rm-role-designer-1795762588",
+   "stage": 5,
+   "summary": "Lock. The artifacts are the frozen ones stage 4 examined (tree 2f443fba60ab, sheet 22a3215f5781; status lists no stale input). Coverage passed on the owner's word (OWNER:1794836946186553250, certificate carried by OWNER:1795575170763326637) past judge rm-coverage-judge-1794599960 not_covered, so no judge ran (the three void runs before f84a3bc6e2 died at that already-signed judge step). concept_tree.py gate: PASS. designer_stage.py showcases: set accepted (storeroom_bomb_pit 9 new, blast_show 9 new, overlap 0). All 16 scene entry_point_item ids are filed on the ledger. The 2026-11-13 lock filed no mod item; this run files it: RIMMANDRAKE_FINISH_KNOCKBACK_AGAINST_TREE_FIRST_LOCK_FILED_NONE (--kind mod, verify cites tree.json and hash 2f443fba..., preflight 4 PASS)."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "locked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
