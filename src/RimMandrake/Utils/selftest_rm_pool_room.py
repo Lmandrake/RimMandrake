@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Selftest of infrastructure/stevedesktop/rm_ssd/rm_pool_room.py (RIMMANDRAKE_SHRINK_STEVEDESKTOP_CLONES_FOUR_FILL_ITS_
 EIGHTY_GIG): the hourly count of helper runs SteveDesktop's ~/rm disk still holds. A fake pool in a temp dir; the floor
-is set relative to the real free space of that dir, so ROOM and SHORT are both reached. Exit 0 green, 1 a red."""
+is set relative to the real free space of that dir, so ROOM and SHORT are both reached. Exit 0 green, 1 a red.
+    python3 selftest_rm_pool_room.py --rev <sha>   the checks against rm_pool_room.py as commit <sha> holds it
+                                                   (the class guard's instance: --rev 87c697b3a3^ is red)"""
 import importlib.util
 import json
 import os
@@ -11,7 +13,8 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCRIPT = os.path.join(HERE, "..", "..", "..", "infrastructure", "stevedesktop", "rm_ssd", "rm_pool_room.py")
+REL = "infrastructure/stevedesktop/rm_ssd/rm_pool_room.py"
+SCRIPT = os.environ.get("RM_POOL_ROOM_UNDER_TEST") or os.path.join(HERE, "..", "..", "..", REL)
 FAILS = []
 
 
@@ -60,7 +63,25 @@ def make_store(base):
     shutil.rmtree(work)
 
 
+def at_rev(rev):
+    """Run the checks against rm_pool_room.py as commit `rev` holds it. -> the run's exit code."""
+    r = subprocess.run(["git", "-C", HERE, "show", "%s:%s" % (rev, REL)], capture_output=True, text=True)
+    if r.returncode:
+        print("HARNESS BROKEN: git show %s:%s: %s" % (rev, REL, r.stderr.strip()))
+        return 2
+    fd, path = tempfile.mkstemp(prefix="poolroom-rev-", suffix=".py", dir=os.path.expanduser("~/.cache"))
+    try:
+        with os.fdopen(fd, "w") as f:
+            f.write(r.stdout)
+        return subprocess.run([sys.executable, os.path.abspath(__file__)],
+                              env=dict(os.environ, RM_POOL_ROOM_UNDER_TEST=path)).returncode
+    finally:
+        os.remove(path)
+
+
 def main():
+    if "--rev" in sys.argv:
+        return at_rev(sys.argv[sys.argv.index("--rev") + 1])
     base = tempfile.mkdtemp(prefix="poolroom-", dir=os.path.expanduser("~/.cache"))
     try:
         mine = load(SCRIPT, "rm_pool_room")
@@ -118,7 +139,7 @@ def main():
         check(rc == 0 and rec.get("verdict") == "ROOM" and rec.get("clones_now") == 0 and rec.get("largest_clone_gb") == 0
               and rec.get("new_clone_from") == "store", "an empty pool: counted by the store's slim checkout, ROOM (%s)"
               % rec.get("why"))
-        new = mine.checkout_bytes(os.path.join(base, "store.git"), slim=True) / 1e9
+        new = (-(-12 * 10**6 // 4096) + 2) * 4096 / 1e9     # the slim checkout: code.txt and 2 folders, a 4 KiB block each
         free = shutil.disk_usage(base).free / 1e9
         rc, rec, okf = run(base, round(free - 0.03 - 9.5 * new, 4))
         # pool_admit subtracts the largest clone from each admission: an empty pool admits its first clone at margin >= 0,
