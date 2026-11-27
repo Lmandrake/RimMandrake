@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "4f2c97a945aedf5fb9c201a56c723169f8251e56339f92f9fc1e56ceefe2eeb4",
+  "body_sha256": "59d81a700d607a72ea08efb3be8532f2b6a797c7f58bf3e26ef03375a800d4a0",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -47,6 +47,7 @@
    "HOLDER.run-1795693138": 26757,
    "HOLDER.run-1795761255": 6260,
    "HOLDER.run-1795782541": 1037,
+   "HOLDER.run-1795783799": 859,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1296,11 +1297,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795782541",
-   "done": "red runs recorded for PY_FLOWWORKS_NORTHSTAR (new fault: site_spec key dropped), PY_FLOWWORKS_UNDERLIQUID_PARITY, PY_VALIDATION_V2_OFFLINE at bda4ca8c33; certificate --to blind_challenge OK; three red_seen items closed",
-   "next": "Launch a Test Pilot sitting on RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER to read the pawn node y and the cable submesh sort",
-   "ruled_out": "old NORTHSTAR patch reuse (site_spec.py moved, no longer applies)",
-   "ts": "2026-11-27T12:44:54Z"
+   "by": "HOLDER.run-1795783799",
+   "done": "FlowWorks 0.1.0 advanced offline_build -> blind_challenge at e38d3123e1 (8/8 exit tests, certificate OK, gate open)",
+   "next": "Let the Dispatch tick launch the blind challenge (Stages 4 and 5)",
+   "ruled_out": "fix reader owed: bda4ca8c33 only re-recorded red_seen evidence, no mod fix",
+   "ts": "2026-11-27T12:54:51Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1752,7 +1753,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1844,
+  "events": 1846,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7852,7 +7853,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-27T12:51:00Z",
+   "last": "2026-11-27T12:54:51Z",
    "lease": "run-1795783799",
    "released": false,
    "token": 64
@@ -7979,6 +7980,7 @@
    "HOLDER.run-1795693138",
    "HOLDER.run-1795761255",
    "HOLDER.run-1795782541",
+   "HOLDER.run-1795783799",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
