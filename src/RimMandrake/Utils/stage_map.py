@@ -129,7 +129,10 @@ def empty_map(c, sx, sz, say):
             must(call(c, "jawa/pawn_force_incapacitate", pawn=p["id"], action="vanish"), "vanish %s" % p["id"])
             gone += 1
     cl = must(call(c, "jawa/clear_area", rect="0,0,%d,%d" % (sx, sz), dryRun=False), "clear_area")
-    te = must(call(c, "jawa/set_terrain_batch", ops="%s:0,0,%d,%d" % (TERRAIN, sx, sz)), "set_terrain_batch")
+    # clearOverlays: floodwater/thin ice (tempGrid) and Substructure (foundation) read before the top grid, so a bare paint
+    # left them showing (ArchSmall 2026-11-25, tile 113515: 619 of 10000 cells did not read back; the same cause as
+    # HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK in validation_core._prepare_site)
+    te = must(call(c, "jawa/set_terrain_batch", ops="%s:0,0,%d,%d" % (TERRAIN, sx, sz), clearOverlays=True), "set_terrain_batch")
     fog = call(c, "jawa/set_fog", action="unfogAll")
     left = pawns_on(c)
     say("emptied: %d pawn(s) vanished, %s thing(s) cleared, terrain %s on %s cell(s) (read-back ok=%s), fog %s, %d pawn(s) left, %.1f s"

@@ -260,6 +260,7 @@
     {"test": "src/RimMandrake/Utils/selftest_switching_plan_drain.py", "seconds": 2, "inputs": ["src/RimMandrake/Utils/switching_plan.*", "design/specs/2026-11-20-account-drain/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_scene_stage_station.py", "seconds": 0.2, "inputs": ["src/RimMandrake/Utils/scene*", "design/specs/2026-11-23-scene-library/boundary.md"]},
     {"test": "src/RimMandrake/bridgetools/selftest_prove_stage_map_rows.py", "seconds": 0.3, "inputs": ["src/RimMandrake/bridgetools/prove_stage_map.py"]},
+    {"test": "src/RimMandrake/Utils/selftest_stage_map_terrain.py", "seconds": 0.3, "inputs": ["src/RimMandrake/Utils/stage_map.py"]},
     {"test": "src/RimMandrake/bridgetools/selftest_stage_stations.py", "seconds": 0.1, "inputs": ["src/RimMandrake/Utils/scene_stations.py", "design/specs/2026-11-23-bridge-v2/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_scene_mutants.py", "seconds": 0.3, "inputs": ["src/RimMandrake/Utils/scene_mutants.py", "src/RimMandrake/Utils/scene_compare.py", "src/RimMandrake/rimflow/scene_verdicts.py", "design/specs/2026-11-23-bridge-v2/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_scene_repeats.py", "seconds": 0.2, "inputs": ["src/RimMandrake/Utils/scene_repeats.py", "src/RimMandrake/Utils/scene_stations.py", "src/RimMandrake/rimflow/scene_verdicts.py", "design/specs/2026-11-23-bridge-v2/boundary.md"]},
