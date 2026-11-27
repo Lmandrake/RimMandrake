@@ -556,6 +556,11 @@ def tier_shapes_static(t):
 #   SignalLog()              "SIGNAL <thingId> | from <level> | to <level> | tick <t>"  every level-changed signal since load
 #   Placement()              "PLACE <def> | where <ruin|ordinary>"  what map generation may place, read from the switches now
 #   InRuinRoom(<x>,<z>)      "ROOM <true|false>"
+#   Speed(<thingId>)         "SPEED <factor>"   the applied work speed of a level (1 = the Original's)
+#   Onboarding(<line>)       "ROW <line> | kludged <processDef>,... | refurbished <processDef>,..."  the onboarding table's row
+#   LineLabels()             "LABEL <line> | label <the Mod Settings label text>"
+#   TextureIds()             "TEX <def> | hash <hash of the texture loaded>"   the art of the build under test
+#   PlantLighterWrecked(<line>)  stages the planted row of sc_three_looks_rows (Kludged drawn as Wrecked, lighter); "PLANTED <def>"
 # The repair order is read the way the player reads it: the machine is selected and its gizmos listed (rimworld/
 # list_selected_gizmos); REPAIR_GIZMO names the label words of the order.
 PROOF = "RimMandrake.WreckedMachines.RM_WreckedMachinesProof"
@@ -568,6 +573,11 @@ FACTORY_FLOOR = "VFEF_FactoryFloor"     # VFE Factory 1.6 Defs/TerrainDefs (read
 PLAIN_FLOOR = "WoodPlankFloor"
 FACTORY_RESEARCH = ("VFE_BasicFactories", "VFE_ComplexFactories")
 FACTORY_PARTS = ("VFEFactory_Conveyor", "VFEFactory_FactoryHopper", "VFEFactory_Booster", "VFEFactory_Heatsink")
+CONDUIT = "PowerConduit"
+LAMPS_PER_NET = 8                       # "more lamps than the Kludged cell can light" (sc_cell_and_emanator)
+TAKE_APART_REPEATS = 3                  # sc_no_handouts: take-aparts of each level, written before the first run
+RR_PACKAGE = "petetimessix.researchreinvented"
+VCE_PACKAGE = "vanillaexpanded.vcooke"   # Vanilla Cooking Expanded; the cannery tier adds it (read as the loaded list says)
 # The originals, measured: VFE Factory 1.6 ThingDefs_Buildings, and the base game's defs through RimSage (2026-11-27).
 ORIGINAL = {"smelter": "VFEFactory_AutomatedSmelter", "autoloom": "VFEFactory_Autoloom", "alloyforge": "VFEFactory_AutomatedAlloyForge",
             "drill": "VFEFactory_AutomatedDrillPlatform", "powercell": "VanometricPowerCell", "emanator": "PsychicEmanator"}
@@ -591,6 +601,9 @@ FORBIDDEN_AFTER_START = ("jawa/research_finish_project", "jawa/research_bulk", "
 FORBIDDEN_PROOF_METHODS = ("SetLevel", "FinishStudy", "CompleteRepair")
 ALLOWED_AFTER_START = {
     "sc_menu_and_research": ("jawa/research_bulk",),          # its action: "finish every research project"
+    "sc_cannery_tier": ("jawa/research_bulk",),               # its action: "finish every research project"
+    "sc_component_gate": ("jawa/research_bulk",),             # its action: "with every research project finished"
+    "sc_every_machine_onboarded": ("_finish_first(",),        # its action: "finish that machine's first project by command"
     "sc_levels_do_their_work": ("place",),                  # it places the machines it compares (its start)
 }
 
@@ -683,7 +696,23 @@ def _build(t, defname, x, z, rot="south", faction="player"):
     rows = (t.bridge_call("jawa/list_things", defName=defname, rect="%d,%d,7,7" % (x - 3, z - 3)) or {}).get("things") or []
     if not rows:
         raise ExpectationFailed("staging: %s did not stand at (%d,%d) after build_batch: %s" % (defname, x, z, str(r)[:160]))
+    t.__dict__.setdefault("_wm_pos", {})[rows[0]["id"]] = (x, z)
     return rows[0]["id"]
+
+
+def _many(t, ops):
+    """Staging of plain buildings (walls, conduits, lamps) in one call: [(def, x, z)]."""
+    if ops:
+        t.bridge_call("jawa/build_batch", ops=";".join("%s:%d,%d" % o for o in ops), faction="player")
+
+
+def _designate(t, desig, tid, at=None):
+    """A player's order on one thing (Uninstall, Deconstruct, Haul): jawa/designate_batch on the thing's cell. Returns the reply:
+    `added` 0 with the thing in skippedWrongType is the game refusing the order for that thing."""
+    x, z = at or t.__dict__.get("_wm_pos", {}).get(tid, (None, None))
+    if x is None:
+        raise ExpectationFailed("no known cell for %s to designate %s on" % (tid, desig))
+    return t.bridge_call("jawa/designate_batch", action="add", designation=desig, rect="%d,%d,1,1" % (int(x), int(z))) or {}
 
 
 def _items(t, defname, x, z, count):
@@ -900,8 +929,11 @@ def scene_no_handouts(t):
                 raise ExpectationFailed("start: generator list empty or missing %s (%d sets, %d traders)" % (lacking, len(sets), len(traders)))
             st["sets"], st["traders"] = sets, traders
             x, z = t.anchor
-            st["wrecks"] = [_build(t, m["wrecked"], x - 20 + (i % 5) * 8, z - 20 + (i // 5) * 8)
-                            for i, (key, m) in enumerate(sorted(st["ms"].items()))]
+            _floor(t, FACTORY_FLOOR, x - 40, z - 44, 80, 88)
+            st["parts"] = [[_build(t, m[lvl], x - 36 + (i % 6) * 12, z - 40 + r * 28 + (i // 6) * 7 + 2 * j)
+                            for i, (key, m) in enumerate(sorted(st["ms"].items())) for j, lvl in enumerate(("wrecked", "kludged", "refurbished"))]
+                           for r in range(TAKE_APART_REPEATS)]
+            st["crew"] = [_colonist(t, x + k, z) for k in range(4)]
             START_MARK(t, "sc_no_handouts")
     with t.component("generators_give_no_ancient_machine"):
         if _live(t):
@@ -919,16 +951,20 @@ def scene_no_handouts(t):
             makers = [d.get("defName") for d in r["defs"] if COMPONENT in str((d.get("fields") or {}).get("products"))]
             if makers:
                 raise ExpectationFailed("recipes make %s: %s" % (COMPONENT, makers))
-    with t.component("wreck_taken_apart_leaves_no_component"):
+    with t.component("machines_taken_apart_leave_no_component"):
         if _live(t):
-            x, z = t.anchor
-            for wid in st["wrecks"]:
-                t.bridge_call("jawa/designate_batch", action="add", designation="Deconstruct", onThings=wid)
-            _colonist(t, x, z)
-            _wait_days(t, 1)
-            left = _count(t, COMPONENT)
-            if left:
-                raise ExpectationFailed("%d Ancient Component(s) lie on the map after the wrecks were taken apart" % left)
+            found = []
+            for parts in st["parts"]:          # one staged set of every level per repeat, taken apart in turn
+                for tid in parts:
+                    _designate(t, "Deconstruct", tid)
+                for _ in range(20):
+                    _wait_days(t, 0.25)
+                    if not any(_level(t, tid) not in (None, "none") for tid in parts):
+                        break
+                found.append(_count(t, COMPONENT))
+            t._current.detail = "components after each take-apart: %s" % found
+            if any(found):
+                raise ExpectationFailed("Ancient Components lie on the map after machines were taken apart: %s" % found)
     with t.component("control_lines_off_give_base_machines"):
         if _live(t):
             try:
@@ -981,7 +1017,20 @@ def _gen_map(t, ruin):
     r = t.bridge_call("jawa/world_tile_map_generate", tile=tile)
     if t._guard() and not (r or {}).get("success"):
         raise ExpectationFailed("UNMEASURED: no map generated on tile %s: %s" % (tile, str(r)[:160]))
+    _go_to_tile(t, tile)
     return r
+
+
+def _go_to_tile(t, tile):
+    """Make the loaded map on `tile` the current map (jawa/set_current_map takes a Map.uniqueID; its refusal lists the maps)."""
+    listing = t.bridge_call("jawa/set_current_map", mapId=-1) or {}
+    mid = next((m.get("mapId") for m in listing.get("loadedMaps") or [] if m.get("tile") == tile), None)
+    if t._guard() and mid is None:
+        raise ExpectationFailed("UNMEASURED: no loaded map on tile %s: %s" % (tile, str(listing)[:160]))
+    t.bridge_call("jawa/set_current_map", mapId=mid)
+    now = (t.bridge_call("jawa/map_info") or {}).get("tile")
+    if t._guard() and now != tile:
+        raise ExpectationFailed("UNMEASURED: the current map is on tile %s, not %s" % (now, tile))
 
 
 def _mod_things(t, ms):
@@ -1070,6 +1119,12 @@ def scene_rare_wreck_ordinary_map(t):
                 for w in wrecks:
                     if w["level"] != "Wrecked" or not _count(t, RUBBLE, "%d,%d,9,9" % (int(w["x"]) - 4, int(w["z"]) - 4)):
                         raise ExpectationFailed("a wreck on an ordinary map is not a Wrecked machine among rubble: %r" % w)
+                    reach = ((t.bridge_call("jawa/reach_edge", cells="%s,%s" % (w["x"], w["z"]), mode="PassDoors") or {})
+                             .get("cells") or [{}])[0]
+                    if reach.get("canReachEdge") is not True:
+                        raise ExpectationFailed("a wreck a colonist cannot walk to from the edge without mining: %r %r" % (w, reach))
+                    if not any("uninstall" in g[0].lower() and not g[1] for g in _gizmos(t, w["id"])):
+                        raise ExpectationFailed("the wreck at (%s,%s) offers no Uninstall order" % (w["x"], w["z"]))
             with_one = counts.count(1)
             t._current.detail = "wrecks per map %s (maps with a ruin room left out: %d)" % (counts, ruined)
             if several or comps:
@@ -1115,7 +1170,7 @@ def scene_carry_wreck_home(t):
         if _live(t):
             seen = set()
             for i, wid in enumerate(st["w"]):
-                t.bridge_call("jawa/designate_batch", action="add", designation="Uninstall", onThings=wid)
+                _designate(t, "Uninstall", wid)
                 carried = None
                 for _ in range(40):
                     t.wait_ticks(250)
@@ -1148,10 +1203,10 @@ def scene_carry_wreck_home(t):
                 raise ExpectationFailed("wreck defs with no carried form: %s" % no_form)
     with t.component("control_wall_uninstall_refused"):
         if _live(t):
-            t.bridge_call("jawa/designate_batch", action="add", designation="Uninstall", onThings=st["wall"])
-            r = t.bridge_call("jawa/designate_batch", action="list", designation="Uninstall", onThings=st["wall"]) or {}
-            if st["wall"] in str(r.get("designated") or r.get("things") or ""):
-                raise ExpectationFailed("a wall took an Uninstall designation: %s" % str(r)[:200])
+            _designate(t, "Uninstall", st["wall"])
+            r = _designate(t, "Uninstall", st["wall"])
+            if r.get("added") or not r.get("skippedWrongType"):
+                raise ExpectationFailed("a wall took an Uninstall designation, or the refusal was not seen: %s" % str(r)[:200])
 
 
 def _staged_wreck(t, key, x, z, rot="south", terrain=None, faction="player"):
@@ -1168,36 +1223,31 @@ def _finish_first(t, key, step="1"):
             t.bridge_call("jawa/research_finish_project", project=p, doCompletionDialog=False, doCompletionLetter=False)
 
 
-@suite.chain("scene_study_opens_first_project")
-def scene_study_opens_first_project(t):
-    """sc_study_opens_first_project (study_opens_research): with study turned on once, a researcher studies the wrecked smelter by
-    himself over days, the colonist who cannot research never does, the study's progress rises on the wreck, the first project
-    opens and is finished at the bench, and a second wreck needs no study. Control: study never turned on, a researcher at the
-    bench for the same days: the project stays locked."""
-    st = {}
+def _study_stage(t, sid):
+    """The start of the two first-study scenes: a wrecked smelter at home, a wrecked autoloom whose study is never turned on (the
+    control), a second wrecked smelter, a bench, a researcher and a colonist who cannot research; nothing studied or finished."""
     x, z = t.anchor
-    with t.component("start_study_opens_first_project"):
-        if _live(t):
-            t._wm_ms = ms = _start(t, "sc_study_opens_first_project")
-            sm = _line(t, ms, "smelter")
-            st["w"] = _staged_wreck(t, "smelter", x - 8, z)
-            st["ctl"] = _staged_wreck(t, "autoloom", x + 8, z)   # control: a wreck whose study is never turned on
-            st["w2"] = _staged_wreck(t, "smelter", x - 8, z + 12)  # "a second wrecked smelter then needs no study"
-            _build(t, BENCH, x, z + 6)
-            st["r"], st["nr"] = _colonist(t, x, z - 4), _colonist(t, x + 2, z - 4, research=False)
-            p = [pp for s, pp in _projects(t, "smelter") if s == "1"]
-            pc = [pp for s, pp in _projects(t, "autoloom") if s == "1"]
-            if not p or not pc:
-                raise ExpectationFailed("start: no first project for the smelter or the autoloom")
-            st["p"], st["pc"] = p[0], pc[0]
-            rec = _study(t, sm["wrecked"])
-            if _researched(t, st["p"]) or rec.get("status") not in ("no_record", "partial") or (rec.get("timesDone") or 0):
-                raise ExpectationFailed("start: project finished or a study recorded: %s" % str(rec)[:200])
-            kits = [r for r in (t.bridge_call("jawa/list_things", rect=_site(t, 120), limit=3000) or {}).get("things") or []
-                    if re.search(r"FieldResearch|ResearchKit", str(r.get("def") or r.get("defName")))]
-            if kits:
-                raise ExpectationFailed("start: Research Reinvented's field kit lies on the map: %s" % kits[:3])
-            START_MARK(t, "sc_study_opens_first_project")
+    st = {}
+    t._wm_ms = ms = _start(t, sid)
+    sm = _line(t, ms, "smelter")
+    st["w"] = _staged_wreck(t, "smelter", x - 8, z)
+    st["ctl"] = _staged_wreck(t, "autoloom", x + 8, z)
+    st["w2"] = _staged_wreck(t, "smelter", x - 8, z + 12)
+    _build(t, BENCH, x, z + 6)
+    st["r"], st["nr"] = _colonist(t, x, z - 4), _colonist(t, x + 2, z - 4, research=False)
+    p = [pp for s_, pp in _projects(t, "smelter") if s_ == "1"]
+    pc = [pp for s_, pp in _projects(t, "autoloom") if s_ == "1"]
+    if not p or not pc:
+        raise ExpectationFailed("start: no first project for the smelter or the autoloom")
+    st["p"], st["pc"] = p[0], pc[0]
+    rec = _study(t, sm["wrecked"])
+    if _researched(t, st["p"]) or rec.get("status") not in ("no_record", "partial") or (rec.get("timesDone") or 0):
+        raise ExpectationFailed("start: project finished or a study recorded: %s" % str(rec)[:200])
+    return st
+
+
+def _study_flow(t, st, second_needs_no_study=True):
+    """The action, expect and control of the first-study scenes."""
     with t.component("project_locked_names_the_wreck"):
         if _live(t):
             r = _research_row(t, st["p"])
@@ -1209,7 +1259,7 @@ def scene_study_opens_first_project(t):
             if not study:
                 raise ExpectationFailed("the wreck shows no study toggle")
             t.bridge_call("rimworld/execute_gizmo", gizmoId=study[0][3])
-            jobs, steps, nr_jobs = [], [], []
+            jobs, steps, nr_jobs, rec = [], [], [], {}
             for _ in range(STUDY_DAYS * 4):
                 t.wait_ticks(15000)
                 jobs.append(_job(t, st["r"])[:60])
@@ -1223,7 +1273,7 @@ def scene_study_opens_first_project(t):
                 raise ExpectationFailed("the study did not complete in %d days: steps %s, jobs %s" % (STUDY_DAYS, steps, jobs[-6:]))
             if any("Study" in j or "Analy" in j for j in nr_jobs):
                 raise ExpectationFailed("the colonist who cannot research studied: %s" % nr_jobs)
-            if len([s for s in steps if s]) < 2 or sorted(s or 0 for s in steps) != [s or 0 for s in steps]:
+            if len([s_ for s_ in steps if s_]) < 2 or sorted(s_ or 0 for s_ in steps) != [s_ or 0 for s_ in steps]:
                 raise ExpectationFailed("the study did not rise over days: %s" % steps)
     with t.component("project_opens_and_is_finished_at_bench"):
         if _live(t):
@@ -1236,13 +1286,32 @@ def scene_study_opens_first_project(t):
                     break
             if not _researched(t, st["p"]):
                 raise ExpectationFailed("the researcher did not finish the first project at the bench in %d days" % STUDY_DAYS)
-            present, ok, reason, _ = _repair_order(t, st["w2"])
-            if any("study" in g[0].lower() and not g[1] for g in _gizmos(t, st["w2"])) and not ok:
-                raise ExpectationFailed("a second wrecked smelter still asks for study: %s" % reason)
+            if second_needs_no_study:
+                present, ok, reason, _ = _repair_order(t, st["w2"])
+                if any("study" in g[0].lower() and not g[1] for g in _gizmos(t, st["w2"])) and not ok:
+                    raise ExpectationFailed("a second wrecked smelter still asks for study: %s" % reason)
     with t.component("control_study_never_on"):
         if _live(t):
             if _researched(t, st["pc"]) or _research_row(t, st["pc"]).get("analyzedThingsRequirementsMet"):
                 raise ExpectationFailed("the autoloom's first project opened with study never turned on (time or bench work alone)")
+
+
+@suite.chain("scene_study_opens_first_project")
+def scene_study_opens_first_project(t):
+    """sc_study_opens_first_project (study_opens_research): with study turned on once, a researcher studies the wrecked smelter by
+    himself over days, the colonist who cannot research never does, the study's progress rises on the wreck, the first project
+    opens and is finished at the bench, and a second wreck needs no study. Control: study never turned on (the autoloom), a
+    researcher at the bench for the same days: that project stays locked."""
+    st = {}
+    with t.component("start_study_opens_first_project"):
+        if _live(t):
+            st.update(_study_stage(t, "sc_study_opens_first_project"))
+            kits = [r for r in (t.bridge_call("jawa/list_things", rect=_site(t, 120), limit=3000) or {}).get("things") or []
+                    if re.search(r"FieldResearch|ResearchKit", str(r.get("def") or r.get("defName")))]
+            if kits:
+                raise ExpectationFailed("start: Research Reinvented's field kit lies on the map: %s" % kits[:3])
+            START_MARK(t, "sc_study_opens_first_project")
+    _study_flow(t, st)
 
 
 @suite.chain("scene_second_study")
@@ -1650,9 +1719,10 @@ def scene_forge_plasteel(t):
 
 @suite.chain("scene_cell_and_emanator")
 def scene_cell_and_emanator(t):
-    """sc_cell_and_emanator (levels_of_function): the wrecked cell gives no power and its lamp is dark, Kludged < Refurbished <
-    the base game's cell; no thought beside the wrecked emanator, Kludged weaker than Refurbished, both weaker than the base
-    game's. Control: a room with no emanator and a net with no cell give no thought and no light."""
+    """sc_cell_and_emanator (levels_of_function): the wrecked cell gives no power and its lamps are dark; the Kludged cell gives
+    less than the Refurbished one and lights fewer of the same row of lamps; both give less than the base game's cell. No thought
+    beside the wrecked emanator; Kludged weaker than Refurbished, both weaker than the base game's. Control: a fifth room with no
+    emanator and a fifth net with lamps and no cell give no thought and no light."""
     st = {}
     x, z = t.anchor
     with t.component("start_cell_and_emanator"):
@@ -1663,40 +1733,41 @@ def scene_cell_and_emanator(t):
             ems = [em["wrecked"], em["kludged"], em["refurbished"], ORIGINAL["emanator"], None]
             st["cells"], st["lamps"], st["ems"], st["pawns"] = [], [], [], []
             for i, d in enumerate(cells):
-                cx = x - 24 + 12 * i
-                st["cells"].append(_build(t, d, cx, z - 10) if d else None)
-                st["lamps"].append(_build(t, LAMP, cx + 3, z - 10))
+                cx, cz = x - 30 + 13 * i, z - 12
+                st["cells"].append(_build(t, d, cx, cz) if d else None)
+                _many(t, [(CONDUIT, cx + 1 + k, cz) for k in range(LAMPS_PER_NET + 1)])
+                _many(t, [(LAMP, cx + 1 + k, cz + 1) for k in range(LAMPS_PER_NET)])
+                lamps = (t.bridge_call("jawa/list_things", defName=LAMP, rect="%d,%d,%d,1" % (cx + 1, cz + 1, LAMPS_PER_NET)) or {}).get("things") or []
+                st["lamps"].append([l["id"] for l in lamps])
             for i, d in enumerate(ems):
-                cx = x - 24 + 12 * i
-                for wx in range(cx - 4, cx + 5):
-                    for wz in (z + 2, z + 10):
-                        _build(t, WALL, wx, wz)
-                for wz in range(z + 3, z + 10):
-                    for wx in (cx - 4, cx + 4):
-                        _build(t, WALL, wx, wz)
+                cx = x - 30 + 13 * i
+                ring = [(WALL, wx, wz) for wx in range(cx - 4, cx + 5) for wz in (z + 2, z + 10)]
+                ring += [(WALL, wx, wz) for wz in range(z + 3, z + 10) for wx in (cx - 4, cx + 4)]
+                _many(t, ring)
                 st["ems"].append(_build(t, d, cx, z + 6) if d else None)
                 st["pawns"].append(_colonist(t, cx + 2, z + 4))
-            nets = [str((t.bridge_call("jawa/power_net", thing=l) or {}).get("netId")) for l in st["lamps"]]
-            if len(set(nets)) != len(nets):
-                raise ExpectationFailed("start: the lamps' nets are not apart: %s" % nets)
+            nets = [str((t.bridge_call("jawa/power_net", thing=l[0]) or {}).get("netId")) if l else None for l in st["lamps"]]
+            if None in nets or len(set(nets)) != len(nets) or any(len(l) != LAMPS_PER_NET for l in st["lamps"]):
+                raise ExpectationFailed("start: lamp rows %s, nets %s (want %d lamps on each of 5 nets apart)"
+                                        % ([len(l) for l in st["lamps"]], nets, LAMPS_PER_NET))
             START_MARK(t, "sc_cell_and_emanator")
     with t.component("cells_light_in_order"):
         if _live(t):
             t.wait_ticks(500)
             out = [abs((t.bridge_call("jawa/power_net", thing=c) or {}).get("energyOutputPerTick") or 0) if c else 0 for c in st["cells"]]
-            lit = [bool((t.bridge_call("jawa/power_net", thing=l) or {}).get("powerOn")) for l in st["lamps"]]
-            t._current.detail = "output %s lit %s" % (out, lit)
-            if out[0] or lit[0] or not out[1] < out[2] < out[3]:
-                raise ExpectationFailed("cells: output %s, lamps lit %s" % (out, lit))
+            lit = [sum(1 for l in ls if (t.bridge_call("jawa/power_net", thing=l) or {}).get("powerOn")) for ls in st["lamps"]]
             st["lit"] = lit
+            t._current.detail = "output %s lamps lit %s of %d" % (out, lit, LAMPS_PER_NET)
+            if out[0] or lit[0] or not out[1] < out[2] < out[3] or not lit[1] < lit[2] or lit[1] >= LAMPS_PER_NET:
+                raise ExpectationFailed("cells: output %s, lamps lit %s of %d" % (out, lit, LAMPS_PER_NET))
     with t.component("emanators_calm_in_order"):
         if _live(t):
             _wait_days(t, 0.25)
             mood = []
             for p in st["pawns"]:
                 th = t.bridge_call("jawa/pawn_thoughts", pawn=p) or {}
-                mood.append(sum(float(x.get("moodOffset") or 0) for x in th.get("thoughts") or []
-                                if "Emanator" in str(x.get("def")) or "Soothe" in str(x.get("def"))))
+                mood.append(sum(float(x_.get("moodOffset") or 0) for x_ in th.get("thoughts") or []
+                                if "Emanator" in str(x_.get("def")) or "Soothe" in str(x_.get("def"))))
             st["mood"] = mood
             t._current.detail = "emanator mood %s" % mood
             if mood[0] or not 0 < mood[1] < mood[2] < mood[3]:
@@ -1704,29 +1775,32 @@ def scene_cell_and_emanator(t):
     with t.component("control_empty_room_and_net"):
         if _live(t):
             if st["mood"][4] or st["lit"][4]:
-                raise ExpectationFailed("no emanator gave a thought %s, or no cell lit a lamp %s" % (st["mood"][4], st["lit"][4]))
+                raise ExpectationFailed("no emanator gave a thought %s, or no cell lit %d lamps" % (st["mood"][4], st["lit"][4]))
 
 
 @suite.chain("scene_component_gate")
 def scene_component_gate(t):
-    """sc_component_gate (last_repair_needs_component): with no Ancient Component the Kludged smelter's last repair order is
-    unavailable and names the component; with one it is accepted, the smelter ends Refurbished, and none is left. Control: a
-    Kludged power cell with a component in stock and its second project not finished: unavailable, naming the research."""
+    """sc_component_gate (last_repair_needs_component, repair_on_the_machine, only_by_repair): with no Ancient Component the
+    Kludged smelter's last order is unavailable and names it; a delivered component comes back when the order is cancelled; given
+    again, the smelter stays at its cell at every read with no frame or blueprint while a colonist works on it, ends Refurbished at
+    the same cell and facing, and no component is left; the Refurbished smelter offers no further repair, with every project
+    finished. Control: the power cell's order with a component in stock names the research, and the gizmo read that finds no
+    order on the Refurbished smelter found one on the Kludged smelter."""
     st = {}
     x, z = t.anchor
     with t.component("start_component_gate"):
         if _live(t):
             t._wm_ms = ms = _start(t, "sc_component_gate")
-            for s in ("1", "2"):
-                _finish_first(t, "smelter", s)
+            for s_ in ("1", "2"):
+                _finish_first(t, "smelter", s_)
             _finish_first(t, "powercell", "1")
             _floor(t, FACTORY_FLOOR, x - 10, z - 4, 9, 9)
-            st["k"] = _build(t, _line(t, ms, "smelter")["kludged"], x - 6, z)
+            st["k"] = _build(t, _line(t, ms, "smelter")["kludged"], x - 6, z, rot="east")
             st["cell"] = _build(t, _line(t, ms, "powercell")["kludged"], x + 8, z)
             _items(t, "Steel", x, z - 8, 600)
             _items(t, "ComponentIndustrial", x + 2, z - 8, 40)
             _items(t, "Plasteel", x + 4, z - 8, 200)
-            _colonist(t, x, z - 6)
+            st["pid"] = _colonist(t, x, z - 6)
             if _count(t, COMPONENT):
                 raise ExpectationFailed("start: an Ancient Component is on the map")
             if _level(t, st["k"]) != "Kludged":
@@ -1735,19 +1809,56 @@ def scene_component_gate(t):
     with t.component("no_component_order_names_it"):
         if _live(t):
             present, ok, reason, _ = _repair_order(t, st["k"])
+            st["kludged_order_seen"] = present
             if not present or ok or "component" not in reason.lower():
                 raise ExpectationFailed("with no component: present %s, available %s, reason %r" % (present, ok, reason))
-    with t.component("one_component_makes_refurbished"):
+    with t.component("delivered_component_comes_back_on_cancel"):
         if _live(t):
             _items(t, COMPONENT, x + 6, z - 8, 1)
             _give_repair(t, st["k"])
-            lvl = _wait_level(t, st["k"], "Refurbished", 4)
-            left = _count(t, COMPONENT)
-            if lvl != "Refurbished" or left:
-                raise ExpectationFailed("with one component: ended %r, %d components left" % (lvl, left))
-    with t.component("control_cell_order_names_research"):
+            for _ in range(60):
+                t.wait_ticks(500)
+                if COMPONENT in str((_proof(t, "Repair", st["k"]) or [{}])[0].get("delivered")):
+                    break
+            g = [g_ for g_ in _gizmos(t, st["k"]) if "cancel" in g_[0].lower()]
+            if not g:
+                raise ExpectationFailed("no cancel order on the smelter under repair")
+            t.bridge_call("rimworld/execute_gizmo", gizmoId=g[0][3])
+            t.wait_ticks(500)
+            if _level(t, st["k"]) != "Kludged" or _count(t, COMPONENT) != 1:
+                raise ExpectationFailed("after the cancel: level %r, components on the map %d (want Kludged, 1)"
+                                        % (_level(t, st["k"]), _count(t, COMPONENT)))
+    with t.component("repair_on_the_machine_to_refurbished"):
         if _live(t):
-            _items(t, COMPONENT, x + 6, z - 8, 1)
+            _give_repair(t, st["k"])
+            cell = "%d,%d,3,3" % (x - 7, z - 1)
+            reads = []
+            for i in range(40):
+                t.wait_ticks(2500)
+                here = (t.bridge_call("jawa/list_things", rect=cell, limit=20) or {}).get("things") or []
+                defs = [str(r_.get("def") or r_.get("defName") or "") for r_ in here]
+                if any(d.startswith(("Frame_", "Blueprint_")) for d in defs):
+                    raise ExpectationFailed("read %d: a frame or blueprint stands on the smelter's cell: %s" % (i, defs))
+                lvl = _level(t, st["k"])
+                reads.append((lvl, _job(t, st["pid"])[:30]))
+                if lvl not in ("Kludged", "Refurbished") or not here:
+                    raise ExpectationFailed("read %d: the smelter is not at its cell (level %r)" % (i, lvl))
+                if lvl == "Refurbished":
+                    break
+            row = (here or [{}])[0]
+            t._current.detail = "reads %s" % reads[-6:]
+            if reads[-1][0] != "Refurbished" or str(row.get("rot") or row.get("rotation")) not in ("1", "east", "East") or _count(t, COMPONENT):
+                raise ExpectationFailed("ended %r facing %r, %d components left" % (reads[-1][0], row.get("rot"), _count(t, COMPONENT)))
+    with t.component("refurbished_offers_no_further_repair"):
+        if _live(t):
+            t.bridge_call("jawa/research_bulk", mode="finish_all")
+            present, ok, reason, _ = _repair_order(t, st["k"])
+            if present:
+                raise ExpectationFailed("the Refurbished smelter still offers a repair order (%s, %r)" % (ok, reason))
+    with t.component("control_cell_names_research_and_read_can_see"):
+        if _live(t):
+            if not st.get("kludged_order_seen"):
+                raise ExpectationFailed("the gizmo read never saw the Kludged smelter's order: 'no further repair' proves nothing")
             present, ok, reason, _ = _repair_order(t, st["cell"])
             if not present or ok or "research" not in reason.lower():
                 raise ExpectationFailed("the cell's last order: present %s, available %s, reason %r (want research)" % (present, ok, reason))
@@ -1861,6 +1972,7 @@ def _reads(t, keys):
                   "projects": [p for _, p in _projects(t, k)]}
     out["_gen"] = sorted(d for d in _sample(t, "thingSetMaker", "MapGen_AncientComplexRoomLoot_Default", 50)
                          if d in (ORIGINAL["powercell"],))
+    out["_place"] = sorted(p["_word"] for p in _proof(t, "Placement") if p["_verb"] == "PLACE")
     return out
 
 
@@ -1889,10 +2001,15 @@ def scene_switch_machine_off(t):
                 st["r"].append(_reads(t, keys))
                 if not st["r"][-1]["autoloom"]["menu"] or st["r"][-1]["autoloom"]["projects"]:
                     bad.append("autoloom off: menu %s, projects %s" % (st["r"][-1]["autoloom"]["menu"], st["r"][-1]["autoloom"]["projects"]))
+                loom_w = _line(t, t._wm_ms, "autoloom")["wrecked"]
+                if loom_w in st["r"][-1]["_place"]:
+                    bad.append("autoloom off: its wreck is still in the placement list")
                 _set_line(t, "powercell", False)
                 st["r"].append(_reads(t, keys))
                 if not st["r"][-1]["_gen"]:
                     bad.append("power cell off: no generator produced the base game's cell")
+                if _line(t, t._wm_ms, "powercell")["wrecked"] in st["r"][-1]["_place"]:
+                    bad.append("power cell off: its wreck is still in the placement list")
             finally:
                 _set_line(t, "autoloom", True)
                 _set_line(t, "powercell", True)
@@ -2084,8 +2201,9 @@ def _journey(t, sid, first, second):
     ends = {}
     things = {r["def"]: r for r in _mod_things(t, ms)}
     for i, key in enumerate((first, second)):
-        wid = things[_line(t, ms, key)["wrecked"]]["id"]
-        t.bridge_call("jawa/designate_batch", action="add", designation="Uninstall", onThings=wid)
+        row = things.get(_line(t, ms, key)["wrecked"]) or {}
+        wid = row.get("id")
+        _designate(t, "Uninstall", wid, at=(row.get("x"), row.get("z")))
         t.bridge_call("jawa/safe_advance", ticks=30000)
         mini = ((t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=50) or {}).get("things") or [{}])[0].get("id")
         if key == "smelter":
@@ -2104,8 +2222,9 @@ def _journey(t, sid, first, second):
                 t.bridge_call("rimworld/execute_gizmo", gizmoId=study[0][3])
             t.bridge_call("jawa/safe_advance", ticks=STUDY_DAYS * 60000)
             if step == "2" and key == first:
-                t.bridge_call("jawa/designate_batch", action="add", designation="Haul", onThings=next(
-                    (r["id"] for r in _mod_things(t, ms) if r["def"] == COMPONENT), ""))
+                comp = next((r for r in _mod_things(t, ms) if r["def"] == COMPONENT), None)
+                if comp:
+                    _designate(t, "Haul", comp["id"], at=(comp["x"], comp["z"]))
             present, ok, reason, gid = _repair_order(t, mid) if mid else (False, False, "", None)
             if ok:
                 t.bridge_call("rimworld/execute_gizmo", gizmoId=gid)
@@ -2210,7 +2329,7 @@ def scene_uninstall_during_repair(t):
             START_MARK(t, "sc_uninstall_during_repair")
     with t.component("uninstall_cancels_and_gives_back"):
         if _live(t):
-            t.bridge_call("jawa/designate_batch", action="add", designation="Uninstall", onThings=st["c"])
+            _designate(t, "Uninstall", st["c"])
             t.wait_ticks(3000)
             near = {d: _count(t, d, "%d,%d,7,7" % (x - 9, z - 3)) for d in ("Steel", "ComponentIndustrial")}
             mini = ((t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or [{}])[0].get("id")
@@ -2231,7 +2350,7 @@ def scene_uninstall_during_repair(t):
             if _wait_level(t, st["c2"], "Kludged", 3) != "Kludged":
                 raise ExpectationFailed("the control cell's repair did not complete")
             before = _count(t, "Steel")
-            t.bridge_call("jawa/designate_batch", action="add", designation="Uninstall", onThings=st["c2"])
+            _designate(t, "Uninstall", st["c2"])
             t.wait_ticks(3000)
             rows = (t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or []
             if _count(t, "Steel") != before or not any("Kludged" in str(r) for r in rows):
@@ -2280,7 +2399,7 @@ def scene_repair_needs_ground(t):
                     _repair_order(t, st["a"])[:3], _level(t, st["a"]), str(r)[:100]))
     with t.component("carried_onto_factory_floor"):
         if _live(t):
-            t.bridge_call("jawa/designate_batch", action="add", designation="Uninstall", onThings=st["c"])
+            _designate(t, "Uninstall", st["c"])
             t.wait_ticks(4000)
             mini = ((t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or [{}])[0].get("id")
             r = t.bridge_call("jawa/install_blueprint", thing=mini, x=x, z=z + 14) or {}
@@ -2295,6 +2414,250 @@ def scene_repair_needs_ground(t):
             c = _repair_order(t, st["cell"])
             if not c[1]:
                 raise ExpectationFailed("the wrecked cell on a plain floor: order unavailable (%s): the ground rule refuses all" % c[2])
+
+
+def _loaded(t, package):
+    """True when `package` is in the loaded mod list, False when it is not, None when the list cannot be read."""
+    r = t.bridge_call("jawa/running_mods") or {}
+    mods = r.get("mods") or r.get("running") or []
+    if not mods:
+        return None
+    return any(package.lower() == str(m.get("packageId") if isinstance(m, dict) else m).lower() for m in mods)
+
+
+@suite.chain("scene_study_without_research_reinvented")
+def scene_study_without_research_reinvented(t):
+    """sc_study_without_research_reinvented (study_opens_research): on a tier of the small list without Research Reinvented, the
+    wreck still offers the base game's study, the first project is locked naming the wreck, the researcher studies it by himself,
+    and the project opens and is finished at the bench. Control: study never turned on, the bench alone opens nothing."""
+    st = {}
+    with t.component("start_study_without_research_reinvented"):
+        if _live(t):
+            _proof(t, "Loaded")                  # the row's start: the mod's proof type answers
+            rr = _loaded(t, RR_PACKAGE)
+            if rr is not False:
+                raise ExpectationFailed("start: Research Reinvented is %s in the loaded list (this scene runs on a tier without it)"
+                                        % ("loaded" if rr else "UNREAD"))
+            st.update(_study_stage(t, "sc_study_without_research_reinvented"))
+            START_MARK(t, "sc_study_without_research_reinvented")
+    _study_flow(t, st, second_needs_no_study=False)
+
+
+@suite.chain("scene_cannery_tier")
+def scene_cannery_tier(t):
+    """sc_cannery_tier (only_by_repair, levels_of_function, repair_on_the_machine): on the small list plus Vanilla Cooking
+    Expanded, no level of the cannery is in the build menu before or after every project; the placement list holds its wreck; the
+    Wrecked cannery offers nothing and has a carried form; Kludged offers a non-empty part of the donor's processes; Refurbished
+    offers all of them and is slower than the factory mod's own; the wreck and the Kludged cannery offer their repair order.
+    Control: the cannery's line off puts it in the build menu and takes its wreck off the placement list."""
+    st = {}
+    x, z = t.anchor
+    with t.component("start_cannery_tier"):
+        if _live(t):
+            ms = t._wm_ms = _start(t, "sc_cannery_tier")
+            can = _line(t, ms, "cannery")
+            v, raw = _def_field(t, "ThingDef/" + can["original"], "defName")
+            if not v:
+                raise ExpectationFailed("start: the cannery's def %s is not loaded (Vanilla Cooking Expanded?): %s" % (can["original"], str(raw)[:120]))
+            done = [p for p in FACTORY_RESEARCH if _researched(t, p)]
+            if done:
+                raise ExpectationFailed("start: research already finished: %s" % done)
+            START_MARK(t, "sc_cannery_tier")
+    with t.component("cannery_not_in_menu_before_or_after_research"):
+        if _live(t):
+            can = _line(t, t._wm_ms, "cannery")
+            before = [d for d in _levels_of(can) if _menu_visible(t, d)]
+            t.bridge_call("jawa/research_bulk", mode="finish_all")
+            after = [d for d in _levels_of(can) if _menu_visible(t, d)]
+            if before or after:
+                raise ExpectationFailed("cannery levels in the build menu: before %s, after %s" % (before, after))
+            if can["wrecked"] not in [p["_word"] for p in _proof(t, "Placement")]:
+                raise ExpectationFailed("the cannery's wreck is not in the placement list")
+    with t.component("cannery_levels_do_their_work"):
+        if _live(t):
+            can = _line(t, t._wm_ms, "cannery")
+            _floor(t, FACTORY_FLOOR, x - 22, z - 6, 44, 12)
+            ids = {lvl: _build(t, can[lvl] if lvl != "original" else can["original"], x - 18 + 10 * i, z)
+                   for i, lvl in enumerate(("wrecked", "kludged", "refurbished", "original"))}
+            w, _ = _proc_names(t, ids["wrecked"])
+            k, _ = _proc_names(t, ids["kludged"])
+            r, _ = _proc_names(t, ids["refurbished"])
+            o, _ = _proc_names(t, ids["original"])
+            form, _ = _def_field(t, "ThingDef/" + can["wrecked"], "minifiedDef")
+            sp_r, sp_o = _proof(t, "Speed", ids["refurbished"]), _proof(t, "Speed", ids["original"])
+            orders = [_repair_order(t, ids[l])[0] for l in ("wrecked", "kludged")]
+            bad = []
+            if w or not form or form == "(null)":
+                bad.append("Wrecked offers %s, carried form %r" % (w, form))
+            if not k or not set(k) < set(o) or set(r) != set(o):
+                bad.append("processes Kludged %s, Refurbished %s, Original %s" % (k, r, o))
+            if not (sp_r and sp_o and float(sp_r[0]["_word"]) < float(sp_o[0]["_word"])):
+                bad.append("Refurbished speed %s against the Original's %s" % (sp_r, sp_o))
+            if not all(orders):
+                bad.append("repair orders on the wreck and the Kludged cannery: %s" % orders)
+            if bad:
+                raise ExpectationFailed("; ".join(bad))
+    with t.component("control_cannery_line_off"):
+        if _live(t):
+            can = _line(t, t._wm_ms, "cannery")
+            try:
+                _set_line(t, "cannery", False)
+                if not _menu_visible(t, can["original"]):
+                    raise ExpectationFailed("cannery line off: the cannery is not in the build menu (did its patches apply?)")
+                if can["wrecked"] in [p["_word"] for p in _proof(t, "Placement")]:
+                    raise ExpectationFailed("cannery line off: its wreck is still in the placement list")
+            finally:
+                _set_line(t, "cannery", True)
+
+
+def _row_disagrees(row, kludged, refurbished):
+    """The onboarding row against what the loaded game offers: the differences, or [] when they agree."""
+    out = []
+    want_k = set(x for x in row.get("kludged", "").split(",") if x)
+    want_r = set(x for x in row.get("refurbished", "").split(",") if x)
+    if want_k != set(kludged):
+        out.append("kludged row %s, game %s" % (sorted(want_k), sorted(kludged)))
+    if want_r != set(refurbished):
+        out.append("refurbished row %s, game %s" % (sorted(want_r), sorted(refurbished)))
+    return out
+
+
+@suite.chain("scene_every_machine_onboarded")
+def scene_every_machine_onboarded(t):
+    """sc_every_machine_onboarded (levels_of_function, repair_on_the_machine, study_opens_research): a state read for every machine
+    on the list: the first project locked naming its wreck; the wreck offers study and a repair order unavailable for research
+    and available after it; Kludged offers its order to Refurbished; Wrecked offers nothing and gives no power; Kludged is a
+    non-empty strict part of the donor's processes, Refurbished equals them and is slower; the loaded game equals the onboarding
+    row. Control: the base game's electric smelter shows no study and no repair order; a planted copy of one row with a process
+    removed is reported as disagreeing."""
+    st = {}
+    x, z = t.anchor
+    with t.component("start_every_machine_onboarded"):
+        if _live(t):
+            t._wm_ms = ms = _start(t, "sc_every_machine_onboarded")
+            _floor(t, FACTORY_FLOOR, x - 50, z - 50, 100, 100)
+            _build(t, "VanometricPowerCell", x + 48, z + 48)
+            st["ids"] = {}
+            for i, (key, m) in enumerate(sorted(ms.items())):
+                for j, lvl in enumerate(("wrecked", "kludged", "refurbished", "original")):
+                    d = m.get(lvl) if lvl != "original" else m.get("original")
+                    st["ids"][(key, lvl)] = _build(t, d, x - 46 + (i % 5) * 18 + j * 4, z - 46 + (i // 5) * 12)
+            st["elec"] = _build(t, "ElectricSmelter", x + 40, z - 40)
+            started = [p for k in ms for _, p in _projects(t, k) if _researched(t, p)]
+            if started:
+                raise ExpectationFailed("start: restoration projects already finished: %s" % started)
+            START_MARK(t, "sc_every_machine_onboarded")
+    with t.component("every_machine_reads_as_its_row"):
+        if _live(t):
+            bad, st["rows"] = [], {}
+            for key, m in sorted(t._wm_ms.items()):
+                ids = {lvl: st["ids"][(key, lvl)] for lvl in ("wrecked", "kludged", "refurbished", "original")}
+                p1 = [p for s_, p in _projects(t, key) if s_ == "1"]
+                lock = _research_row(t, p1[0]) if p1 else {}
+                names = [pp.get("defName") for pp in _study(t, m["wrecked"]).get("projects") or []]
+                if not p1 or lock.get("analyzedThingsRequirementsMet") is not False or p1[0] not in names:
+                    bad.append("%s: first project not locked by its wreck (%s, %s)" % (key, p1, names))
+                study = any("study" in g[0].lower() for g in _gizmos(t, ids["wrecked"]))
+                pre = _repair_order(t, ids["wrecked"])
+                _finish_first(t, key)
+                post = _repair_order(t, ids["wrecked"])
+                kl = _repair_order(t, ids["kludged"])
+                if not study or not pre[0] or pre[1] or "research" not in pre[2].lower() or not post[1] or not kl[0]:
+                    bad.append("%s: study %s, order before %s, after %s, Kludged order %s" % (key, study, pre[:3], post[:3], kl[:2]))
+                w, _ = _proc_names(t, ids["wrecked"])
+                pn = t.bridge_call("jawa/power_net", thing=ids["wrecked"]) or {}
+                k, _ = _proc_names(t, ids["kludged"])
+                r, _ = _proc_names(t, ids["refurbished"])
+                o, _ = _proc_names(t, ids["original"])
+                if w or abs(pn.get("energyOutputPerTick") or 0) > 0:
+                    bad.append("%s: Wrecked offers %s or gives power" % (key, w))
+                if o and (not k or not set(k) < set(o) or set(r) != set(o)):
+                    bad.append("%s: processes Kludged %s, Refurbished %s, Original %s" % (key, k, r, o))
+                sr, so = _proof(t, "Speed", ids["refurbished"]), _proof(t, "Speed", ids["original"])
+                if not (sr and so and float(sr[0]["_word"]) < float(so[0]["_word"])):
+                    bad.append("%s: Refurbished speed %s, Original %s" % (key, sr, so))
+                row = (_proof(t, "Onboarding", key) or [{}])[0]
+                st["rows"][key] = (row, k, r)
+                bad += ["%s: %s" % (key, d) for d in _row_disagrees(row, k, r)]
+            if bad:
+                raise ExpectationFailed("%d machines off their rows: %s" % (len(bad), bad[:5]))
+    with t.component("control_electric_smelter_and_planted_row"):
+        if _live(t):
+            g = [g_[0] for g_ in _gizmos(t, st["elec"]) if "study" in g_[0].lower() or any(w_ in g_[0].lower() for w_ in REPAIR_GIZMO)]
+            if g:
+                raise ExpectationFailed("the base game's electric smelter offers %s: the read reports study or repair anywhere" % g)
+            key, (row, k, r) = next(iter(sorted(st["rows"].items())))
+            planted = dict(row)
+            planted["refurbished"] = ",".join(sorted(r)[1:])
+            if not _row_disagrees(planted, k, r):
+                raise ExpectationFailed("a planted row with %s removed was not reported as disagreeing" % (sorted(r)[:1],))
+
+
+@suite.chain("scene_caravan_wreck_home")
+def scene_caravan_wreck_home(t):
+    """sc_caravan_wreck_home (wreck_comes_home): on a map on another world tile, a wrecked autoloom is uninstalled, a caravan of two
+    colonists and a pack animal loads it by their own work, travels home and arrives with it, and colonists install the same Wrecked
+    autoloom at the home cell. Control: the same load with the pack animal and one colonist left out reads over capacity."""
+    st = {}
+    x, z = t.anchor
+    with t.component("start_caravan_wreck_home"):
+        if _live(t):
+            t._wm_ms = ms = _start(t, "sc_caravan_wreck_home")
+            home = (t.bridge_call("jawa/map_info") or {})
+            st["home_tile"] = home.get("tile")
+            _floor(t, PLAIN_FLOOR, x + 10, z - 3, 8, 7)
+            _gen_map(t, ruin=False)
+            away = t.bridge_call("jawa/map_info") or {}
+            if away.get("tile") == st["home_tile"] or st["home_tile"] is None:
+                raise ExpectationFailed("start: no second map on another tile (home %r, now %r)" % (st["home_tile"], away.get("tile")))
+            ax, az = int(away.get("sizeX") or 200) // 2, int(away.get("sizeZ") or 200) // 2
+            st["w"] = _build(t, _line(t, ms, "autoloom")["wrecked"], ax, az, faction="none")
+            st["crew"] = [_colonist(t, ax + 3, az + 3), _colonist(t, ax + 4, az + 3)]
+            r = t.bridge_call("jawa/spawn_pawn", kindDef="Muffalo", faction="player", x=ax + 5, z=az + 3)
+            st["pack"] = (((r or {}).get("pawns") or [{}])[0]).get("id")
+            if not st["pack"] or None in st["crew"] or _level(t, st["w"]) != "Wrecked":
+                raise ExpectationFailed("start: wreck %r, crew %s, pack animal %r" % (st["w"], st["crew"], st["pack"]))
+            START_MARK(t, "sc_caravan_wreck_home")
+    with t.component("caravan_brings_the_wreck_home"):
+        if _live(t):
+            _designate(t, "Uninstall", st["w"])
+            mini = None
+            for _ in range(40):
+                t.wait_ticks(500)
+                rows = (t.bridge_call("jawa/list_things", defName="MinifiedThing", limit=20) or {}).get("things") or []
+                if rows:
+                    mini = rows[0]
+                    break
+            if not mini:
+                raise ExpectationFailed("the wreck was not uninstalled into a carried form")
+            st["mini"] = mini["id"]
+            st["one_carrier"] = t.bridge_call("jawa/caravan_mass", pawns=st["crew"][0], things=mini["id"]) or {}
+            f = t.bridge_call("jawa/caravan_form_load", pawns=",".join(st["crew"] + [st["pack"]]), things=mini["id"], destTile=st["home_tile"]) or {}
+            if not f.get("success") or f.get("over"):
+                raise ExpectationFailed("the caravan did not start forming with the wreck: %s" % str(f)[:200])
+            arrived, placed = False, {}
+            for _ in range(40):
+                t.bridge_call("jawa/safe_advance", ticks=15000)
+                loaded = (t.bridge_call("jawa/set_current_map", mapId=-1) or {}).get("loadedMaps") or []
+                if not any(m_.get("tile") == st["home_tile"] for m_ in loaded):
+                    continue
+                _go_to_tile(t, st["home_tile"])
+                # the carried wreck is home once the engine accepts its install blueprint here (it is held on this map)
+                placed = t.bridge_call("jawa/install_blueprint", thing=st["mini"], x=x + 13, z=z) or {}
+                if placed.get("success"):
+                    arrived = True
+                    break
+            if not arrived:
+                raise ExpectationFailed("the caravan did not arrive home with the wreck: %s" % str(placed)[:160])
+            t.bridge_call("jawa/safe_advance", ticks=30000)
+            stood = (t.bridge_call("jawa/list_things", rect="%d,%d,6,6" % (x + 11, z - 2), limit=10) or {}).get("things") or []
+            if not any(_level(t, r_["id"]) == "Wrecked" for r_ in stood):
+                raise ExpectationFailed("no Wrecked autoloom stands at the home cell after the install")
+    with t.component("control_too_few_carriers_read_over"):
+        if _live(t):
+            m = st.get("one_carrier") or {}       # read before the caravan formed, on the same carried wreck
+            if not m.get("over"):
+                raise ExpectationFailed("one colonist and the wreck read %s of %s: a carried form with no weight" % (m.get("usage"), m.get("capacity")))
 
 
 if __name__ == "__main__":

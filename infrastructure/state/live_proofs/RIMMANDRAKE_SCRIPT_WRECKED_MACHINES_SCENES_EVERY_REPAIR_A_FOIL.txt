@@ -1,0 +1,5 @@
+live-mods: WreckedMachines
+# The seven generic bridge reads and acts that the Wrecked Machines scenes name (jawa/thing_set_sample, install_blueprint,
+# study_record, processor_fill, reach_edge, caravan_mass, caravan_form_load), each read against the game beside a row that
+# must refuse. The script makes its own quicktest map and prints one verdict line; exit 0 only when every row is PASS.
+live-proof A1: python.exe src/RimMandrake/bridgetools/prove_wreck_reads.py < /dev/null

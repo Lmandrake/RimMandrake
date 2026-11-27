@@ -26,7 +26,9 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 SCENES = os.path.join(REPO, "design", "concepts", "WreckedMachines", "scenes.json")
 
 # Rows whose words place a machine after the start (scenes.json "control" or "action"):
-PLACES_AFTER_START = {"sc_forge_plasteel": "control: the factory mod's own forge, placed with the forge's line switched off"}
+PLACES_AFTER_START = {"sc_forge_plasteel": "control: the factory mod's own forge, placed with the forge's line switched off",
+                      "sc_cannery_tier": "action: spawn the cannery's Wrecked, Kludged and Refurbished levels and the factory "
+                                         "mod's own cannery (after the research reads)"}
 FORBIDDEN = [
     (r"research_finish_project|_finish_first\(", "finishes research"),
     (r"research_progress", "moves research progress"),

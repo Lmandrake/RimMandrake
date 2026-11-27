@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Live proof of the four wreck reads (item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL):
-jawa/thing_set_sample, jawa/install_blueprint, jawa/study_record, jawa/processor_fill. Their rules are proven offline by
+jawa/thing_set_sample, jawa/install_blueprint, jawa/study_record, jawa/processor_fill, and the three of the stage-5 scenes:
+jawa/reach_edge, jawa/caravan_mass, jawa/caravan_form_load. Their rules are proven offline by
 selftest_wreck_reads.py; this reads each against the game, with a row that must refuse beside each row that must answer.
 Run under Windows python.exe on a test game on the Wrecked Machines small list (VFE Factory loaded), after
 build.py --gm --apply and a restart:
@@ -63,7 +64,7 @@ def quicktest():
 
 def centre():
     info = call("jawa/map_info")
-    sx, sz = (info.get("size") or {}).get("x") or 250, (info.get("size") or {}).get("z") or 250
+    sx, sz = int(info.get("sizeX") or 250), int(info.get("sizeZ") or 250)
     return sx // 2, sz // 2
 
 
@@ -164,13 +165,40 @@ def prove_fill(x, z):
     row("fill.refuses_a_non_processor", n.get("success") is False and "CompAdvancedResourceProcessor" in str(n), str(n)[:160])
 
 
+def prove_reach_and_caravan(x, z):
+    clear(x - 6, z - 6, 14, 14)
+    ring = ";".join("Wall:%d,%d" % (x + i, z + j) for i in range(-2, 3) for j in range(-2, 3) if abs(i) == 2 or abs(j) == 2)
+    call("jawa/build_batch", ops=ring, faction="Player")
+    r = call("jawa/reach_edge", cells="%d,%d;%d,%d" % (x, z, x + 5, z + 5))
+    rows = r.get("cells") or [{}, {}]
+    row("reach.walled_in_and_open", bool(r.get("success") and rows[0].get("canReachEdge") is False and rows[1].get("canReachEdge") is True),
+        str(rows)[:240])
+    dig = call("jawa/reach_edge", cells="%d,%d" % (x, z), mode="PassAllDestroyableThings")
+    row("reach.digging_mode_gets_out", ((dig.get("cells") or [{}])[0]).get("canReachEdge") is True, str(dig)[:200])
+    bad = call("jawa/reach_edge", cells="%d,%d" % (x, z), mode="Fly")
+    row("reach.refuses_unknown_mode", bad.get("success") is False, str(bad)[:160])
+    pawns = [((call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=x + 4 + k, z=z - 4).get("pawns") or [{}])[0]).get("id") for k in range(2)]
+    call("jawa/spawn_batch", ops="Steel:%d,%d,75" % (x + 6, z - 5))
+    steel = (call("jawa/list_things", defName="Steel", rect="%d,%d,3,3" % (x + 5, z - 6)).get("things") or [{}])[0].get("id")
+    light = call("jawa/caravan_mass", pawns=pawns[0], things=steel)
+    row("caravan.mass_reads_capacity", bool(light.get("success") and light.get("capacity", 0) > 0 and light.get("usage", -1) >= 0
+                                             and light.get("over") is (light.get("usage", 0) > light.get("capacity", 0))), str(light)[:200])
+    call("jawa/spawn_batch", ops="Steel:%d,%d,75;Steel:%d,%d,75;Steel:%d,%d,75" % (x + 6, z - 3, x + 7, z - 3, x + 8, z - 3))
+    heavy = [r_["id"] for r_ in call("jawa/list_things", defName="Steel", rect="%d,%d,6,6" % (x + 4, z - 6)).get("things") or []]
+    over = call("jawa/caravan_mass", pawns=pawns[0], things=",".join(heavy))
+    row("caravan.mass_over_when_heavy", over.get("over") is True, str(over)[:200])
+    nobody = call("jawa/caravan_form_load", pawns="", things=steel, destTile=0)
+    row("caravan.form_refuses_no_pawn", nobody.get("success") is False, str(nobody)[:160])
+
+
 def main():
     connect()
     if not quicktest():
         row("map", None, "no quicktest map reached Playing")
     else:
         x, z = centre()
-        for fn in (prove_sample, lambda: prove_install(x - 30, z - 20), prove_study, lambda: prove_fill(x + 10, z + 10)):
+        for fn in (prove_sample, lambda: prove_install(x - 30, z - 20), prove_study, lambda: prove_fill(x + 10, z + 10),
+                   lambda: prove_reach_and_caravan(x - 30, z + 20)):
             try:
                 fn()
             except Exception as e:  # noqa: BLE001 - a crash in one block is that block's UNMEASURED, the others still run
