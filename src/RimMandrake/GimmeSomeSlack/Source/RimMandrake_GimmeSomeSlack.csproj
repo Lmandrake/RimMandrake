@@ -108,6 +108,7 @@
     <Compile Include="Aerial\AerialStyles.cs" />
     <Compile Include="Aerial\RestringJob.cs" />
     <Compile Include="..\..\_Shared\StylePicker\StylePickerCore.cs" Link="Shared\StylePicker\StylePickerCore.cs" />
+    <Compile Include="..\..\_Shared\StylePicker\StylePickMemory.cs" Link="Shared\StylePicker\StylePickMemory.cs" />
     <Compile Include="Aerial\StylePicker.cs" />
     <Compile Include="Aerial\StyleProbeAerial.cs" />
     <Compile Include="Aerial\ConduitStyles.cs" />

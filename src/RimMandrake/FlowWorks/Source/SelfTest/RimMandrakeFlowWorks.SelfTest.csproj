@@ -203,6 +203,8 @@
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
+    <Compile Include="..\..\..\_Shared\StylePicker\StylePickMemory.cs" Link="Shared\StylePicker\StylePickMemory.cs" />
+    <Compile Include="StylePickMemoryChecks.cs" />
     <Compile Include="..\Hose\HoseMath.cs" />
     <Compile Include="..\Hose\HoseSpliceMath.cs" />
     <Compile Include="..\Hose\HoseMateCache.cs" />

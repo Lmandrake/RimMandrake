@@ -13,15 +13,15 @@ namespace RimMandrake.Shared.StylePicker
 {
     /// <summary>
     /// One mod's style registry: which ThingDefs are styled, their ThingStyleDef per look, the last menu pick per build button
-    /// (session only), and the five patch bodies (build-button menu, designator style getter, copy carries style, legacy
-    /// unstyled reads as default, frame keeps style). The look is stored on each building in the engine's own style field
+    /// (that button only, in the game it was made in: StylePickMemory), and the five patch bodies (build-button menu,
+    /// designator style getter, copy carries style, legacy unstyled reads as default, frame keeps style). The look is stored on each building in the engine's own style field
     /// (CompStyleable); a building with no stored style READS as the default look's style and is never written.
     /// </summary>
     internal sealed class StylePickerCore
     {
         private readonly Dictionary<ThingDef, ThingStyleDef[]> byDef = new Dictionary<ThingDef, ThingStyleDef[]>();
         private readonly Dictionary<ThingStyleDef, string> lookOf = new Dictionary<ThingStyleDef, string>();
-        private readonly Dictionary<ThingDef, string> lastPicked = new Dictionary<ThingDef, string>();
+        private readonly StylePickMemory lastPicked = new StylePickMemory();
         private readonly string[] looks;
         private readonly Func<string> defaultLook;
         private readonly Func<string, string, bool, string, string> resolve;
@@ -102,14 +102,17 @@ namespace RimMandrake.Shared.StylePicker
         /// <summary>The look the thing draws in: its stored style's look, else the default look.</summary>
         public string LookOfThing(Thing t) => LookOfStyle(RawStyle(t)) ?? DefaultLook;
 
-        public string LastPicked(ThingDef d) => d != null && lastPicked.TryGetValue(d, out string l) ? l : null;
+        /// <summary>State read (probes): the last pick of any button of this def in the current game; null when none.</summary>
+        public string LastPicked(ThingDef d) => lastPicked.LastForDef(d, Current.Game);
 
-        /// <summary>The style our getter hands the designator now.</summary>
+        /// <summary>The style our getter hands the designator now: this button's own pick in this game, else the default look
+        /// (RIMMANDRAKE_FIX_STEEL_BRIDGE_UNSET_STYLE_TAKES_LAST_CHOSEN: a pick on another button, or one made before the save
+        /// was loaded, never reaches this one).</summary>
         public ThingStyleDef Resolve(Designator_Build des)
         {
             ThingDef d = des?.PlacingDef as ThingDef;
             if (!IsStyled(d)) return null;
-            string look = resolve(LastPicked(d), DefaultLook, des.styleOverridden, LookOfStyle(des.styleDef));
+            string look = resolve(lastPicked.ForButton(des, Current.Game), DefaultLook, des.styleOverridden, LookOfStyle(des.styleDef));
             return StyleFor(d, look);
         }
 
@@ -118,7 +121,7 @@ namespace RimMandrake.Shared.StylePicker
         {
             ThingDef d = des?.PlacingDef as ThingDef;
             if (!IsStyled(d) || !IsLook(look)) return;
-            lastPicked[d] = look;
+            lastPicked.Remember(des, d, look, Current.Game);
             des.styleOverridden = false;
             des.styleDef = StyleFor(d, look);
             picks++;

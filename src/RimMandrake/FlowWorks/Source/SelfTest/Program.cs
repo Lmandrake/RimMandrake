@@ -2301,6 +2301,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             BlindCycle1Checks.Run(Case);       // FlowWorks 0.1.0 blind challenge cycle 1: cases where a decider stayed green over a broken behaviour (BlindCycle1Checks.cs)
             BlindCycle3Checks.Run(Case);       // FlowWorks 0.1.0 blind challenge cycle 3: cases where a decider stayed green over a planted fault (BlindCycle3Checks.cs)
             BlindCycle4Checks.Run(Case);       // FlowWorks 0.1.0 blind challenge cycle 4: the same, for the faults cycle 4 planted (BlindCycle4Checks.cs)
+            StylePickMemoryChecks.Run(Case);   // RIMMANDRAKE_FIX_STEEL_BRIDGE_UNSET_STYLE_TAKES_LAST_CHOSEN: an unset button takes the default look
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

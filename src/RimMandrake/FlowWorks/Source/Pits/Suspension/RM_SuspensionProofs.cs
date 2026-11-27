@@ -785,5 +785,57 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			return "LOOK look=" + a[0] + " parts=" + parts + " styled=" + styled + " pink=" + pink + " paths=" + string.Join("|", paths);
 		}
+
+		/// <summary>RIMMANDRAKE_FIX_STEEL_BRIDGE_UNSET_STYLE_TAKES_LAST_CHOSEN: "x1,z1;x2,z2;x3,z3;x4,z4": pick a look that is not
+		/// the default on one steel bridge button and build it over the first rectangle (god), then build a second steel bridge
+		/// over the second rectangle from a new button with nothing chosen, and read the look stored on each of its parts (none
+		/// stored = the default look). → "UNSETLOOK ok=b default=D picked=P parts=N looks=a|b reason=..." (ok: every part of the
+		/// second bridge is in the default look; the parent read the first bridge's pick there, walk map 2026-11-25).</summary>
+		public static string ProofUnsetLook(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 4 || !Cell(a[0], out IntVec3 c1) || !Cell(a[1], out IntVec3 c2) || !Cell(a[2], out IntVec3 c3)
+				|| !Cell(a[3], out IntVec3 c4))
+			{
+				return "REFUSED: arg must be x1,z1;x2,z2;x3,z3;x4,z4 on the current map";
+			}
+			string def = Machinery.PipeLook.Core.DefaultLook;
+			string picked = Machinery.PipeStyles.Looks.First(l => l != def);
+			Designator_SuspensionBridge first = new Designator_SuspensionBridge_Steel(), second = new Designator_SuspensionBridge_Steel();
+			Machinery.PipeLook.Core.Pick(first, picked);
+			bool was = DebugSettings.godMode;
+			string reason;
+			List<IntVec3> cells = CellRect.FromLimits(c3, c4).Cells.ToList();
+			try
+			{
+				DebugSettings.godMode = true;
+				reason = first.TryDesignate(CellRect.FromLimits(c1, c2).Cells.ToList()) ?? second.TryDesignate(cells);
+			}
+			finally
+			{
+				DebugSettings.godMode = was;
+			}
+			int parts = 0;
+			bool ok = reason == null;
+			HashSet<string> looks = new HashSet<string>();
+			foreach (IntVec3 c in cells)
+			{
+				foreach (Thing t in c.GetThingList(map))
+				{
+					if (!RM_SuspensionDefOf.IsPartDef(t.def) || t.def.IsBlueprint || t.def.IsFrame)
+					{
+						continue;
+					}
+					parts++;
+					string look = Machinery.PipeLook.Core.LookOfStyle(RimMandrake.Shared.StylePicker.StylePickerCore.RawStyle(t)) ?? def;
+					looks.Add(look);
+					ok &= look == def;
+				}
+			}
+			ok &= parts > 0;
+			return "UNSETLOOK ok=" + ok + " default=" + def + " picked=" + picked + " parts=" + parts + " looks=" + string.Join("|", looks)
+				+ " reason=" + (reason ?? "-").Replace(' ', '_');
+		}
 	}
 }
