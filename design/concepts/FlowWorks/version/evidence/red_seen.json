@@ -91,7 +91,7 @@
   "test_blob": "c98dcc50c1ed08d663f3e2df95a86047afe128ce"
  },
  "PY_VALIDATION_V2_OFFLINE": {
-  "at": "2026-11-27T12:38:12Z",
+  "at": "2026-11-27T22:28:40Z",
   "command": "python3 src/RimMandrake/FlowWorks/northstar/validation_v2.py --offline",
   "file": "src/RimMandrake/FlowWorks/northstar/validation_v2.py",
   "last": "O-LIVE-NEG PASS   clean mock run green (62 rows, 4830 ticks); all 60 faults turned their rows red",
@@ -101,7 +101,7 @@
   ],
   "patch_sha": "f146acb23446fed9",
   "rc": 1,
-  "test_blob": "341c089f6a7fdc1734c294df893126a63a89c156"
+  "test_blob": "37b99ece8064c1dbd6e8cb0fbe593721f6e57a5f"
  },
  "T_BRIDGES": {
   "at": "2026-11-27T15:03:22Z",
