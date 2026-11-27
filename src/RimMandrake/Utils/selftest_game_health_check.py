@@ -231,6 +231,18 @@ with tempfile.TemporaryDirectory() as tmp:
     check("attribution: growth on a fixed map set is read inside the last game, not across its reloads",
           "mem.managed_peak_mb" in {b["key"] for b in s6["breaches"]} and gm is not None and abs(float(gm.group(1))) < 100,
           m6)
+    # a bench session often ends on a short last game (load a save, run one scene, quit): under growth_min_span_min of
+    # that game the attribution states no rate, as the metric does (a rate over minutes of GC sawtooth is no leak rate)
+    sq += 1
+    rs = rl + [{"seq": sq, "v": 2, "utc": utc(tg6 + 140 * 60), "mono": round(tg6 + 140 * 60 - T0, 3),
+                "session": "6" * 32, "kind": "game", "game": 4, "save": "SAVE_A"}]
+    rs.sort(key=lambda r: r["seq"])
+    ss = G.summarize("6" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in rs], 0, RULES, now=NOW)
+    ms = " | ".join(ss["attribution"].get("mem.managed_peak_mb", []))
+    check("attribution: a last game under 30 min states no growth rate, UNMEASURED with its reason",
+          "mem.managed_peak_mb" in {b["key"] for b in ss["breaches"]}
+          and "managed growth after the last map change and game load: UNMEASURED (under 30 min" in ms
+          and not re.search(r"managed growth after the last map change[^|]*?: -?[\d.]+ MB/h", ms), ms)
     # the rate is the highest over the games: one game that grows beside two flat ones still rings
     for r in rl:
         t = G.T._epoch(r["utc"])
