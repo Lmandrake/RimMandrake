@@ -1166,6 +1166,23 @@
     "design/concepts/WreckedMachines/version/polish.md"
    ],
    "what": "The Cold Reader exam of stage 4, held by run rm-role-designer-1795777120 on tree 480772ae49ee and sheet 54d5b95f8740. A fresh Examiner (rm-judge, opus, a376b08cf0937d975) wrote 14 scenarios and a fresh Challenger (a41c422121589260d) wrote 6: 14 reject cases and 6 accept cases, every bar read at least once, frozen before any Reader started. Two fresh Readers (af1c55c41b4cf810e, ad5a05e2faea517d0) saw the sheet, the tree and the scenario text only, and both matched the expected verdict on 20 of 20. No Reader accepted what a core bar rejects, and no Challenger scenario was missed. The control Reader (a1683dffff9d32fa1) read the program's copy without the bar wrecks_join_lines, accepted the one scenario that the bar rejects (e13) and matched the other 19, so the scenarios discriminate. No bar and no word of the tree or the sheet changed in this run. Five wording notes of the Examiner, the Challenger and the Readers, on which no verdict turned, are polish lines in version/polish.md for the next run that changes the tree."
+  },
+  {
+   "date": "2026-11-27",
+   "id": "d_stage5_judge_fix_read",
+   "kind": "call",
+   "speaker": "agent",
+   "run": "rm-role-designer-1795780944",
+   "source": [
+    "design/concepts/WreckedMachines/coverage_verdict.json",
+    "design/concepts/WreckedMachines/scenes.json",
+    "design/concepts/WreckedMachines/tree.json",
+    "design/concepts/WreckedMachines/plan.md",
+    "design/concepts/WreckedMachines/version/polish.md",
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWreckTools.cs",
+    "ITEM:RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL"
+   ],
+   "what": "How stage 3 was closed again after the coverage judge's own fix. The stage-5 coverage judge rm-coverage-judge-1795778084 answered not_covered with seven gaps and repaired each one itself in scenes.json: four new acceptance scenes (sc_study_without_research_reinvented, sc_cannery_tier, sc_every_machine_onboarded, sc_caravan_wreck_home) and edits to sc_component_gate, sc_no_handouts, sc_switch_machine_off, sc_rare_wreck_ordinary_map and sc_cell_and_emanator. The changed scenes reopened stage 3. Run rm-role-designer-1795780944 read each repair against the tree and changed no scene, no bar, no rule and no sheet line: a judge's fix is checked by the next judge, a fresh one, and is not redone or claimed here (designer_lock.md item 3), so this run wrote no coverage_fixes.json. What the read found. (1) Each new expectation rests on words that the tree already holds: a game with this mod and the factory mod alone (the range of study_opens_research); a caravan from another tile (the range and an accept picture of wreck_comes_home); both repairs and a cancel (the range of repair_on_the_machine); every machine and level (the instrument of levels_of_function); a machine whose line is off is not placed (rule R_placement). (2) The second reader called one criterion flawed, a component that a Refurbished machine gives back when it is taken apart, and the judge still changed sc_no_handouts for it. The change stays: rule R_destroyable already says that a machine taken apart at any level never gives an Ancient Component, so the scene reads a rule of the tree and adds no bar. (3) The control of sc_caravan_wreck_home holds on measured values: the factory mod's autoloom has Mass 65 (Buildings_Factories.xml, workshop folder 3686924415, 1.6) and the base game gives one colonist 35 kg. (4) The instruments of the new scenes exist: jawa/caravan_mass, jawa/caravan_form_load and jawa/reach_edge (commit 626876a561), jawa/install_blueprint and jawa/study_record (commit 16d9d38315) and jawa/running_mods. (5) The build item's acceptance test reads scenes.json and prints 'missing 4' today, the four new scenes, so the item already owes their entry points; the item is being worked by another run and its file was not changed. (6) Two mod-list tiers are new and plan.md now names them: the small list without Research Reinvented, and the small list plus Vanilla Cooking Expanded. (7) The judge's one advisory gap that it did not repair (no scene moves the cost settings) is a line in version/polish.md for the next run that changes scenes.json. Gate A lint passes and the showcase set is accepted on the changed scenes."
   }
  ],
  "failure_modes": [

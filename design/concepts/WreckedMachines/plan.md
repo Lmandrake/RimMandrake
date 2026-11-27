@@ -87,6 +87,21 @@ Instruments and unknowns first, then one machine end to end, then the other 19.
 8. **The whole run** (`sc_whole_journey`, `sc_whole_second_order`) and the blind reader's rows
    (`sc_three_looks_rows`).
 
+The stage-5 coverage judge added four acceptance scenes on 2026-11-27 (record decision `d_stage5_judge_fix_read`). They
+join the order as follows, and the build item's acceptance test already counts their entry points.
+
+- `sc_study_without_research_reinvented` runs with step 4, on a tier of its own: the small list without Research
+  Reinvented. It reads the loaded mod list with `jawa/running_mods`.
+- `sc_caravan_wreck_home` runs with step 4. Its instruments are `jawa/caravan_mass`, `jawa/caravan_form_load`,
+  `jawa/world_tile_map_generate` and `jawa/install_blueprint`.
+- `sc_every_machine_onboarded` runs with step 7 and grows with it: a machine is read once its onboarding has landed.
+- `sc_cannery_tier` runs last in step 7, on a tier of its own: the small list plus Vanilla Cooking Expanded.
+- The reachability read that the judge added to `sc_rare_wreck_ordinary_map` (step 5) uses `jawa/reach_edge`.
+
+Each of the two tiers serves one scene. `version/small_list.json` allows the first ("Tests may run on a smaller tier
+of their own"), and `floor.json` (line `test_isolation`) names the second. His walk and every other scene stay on the
+mod's small list.
+
 The old walk file `design/validation_walks/RimMandrake/WreckedMachines.md` describes the mod before this design. Four
 of its north-star lines judge a reading that the root replaced. The builder rewrites the walk to the bars of 0.1.0
 when the smelter is end to end (step 4), and the Conductor re-validates its north star in that sitting (CLAUDE.md,
