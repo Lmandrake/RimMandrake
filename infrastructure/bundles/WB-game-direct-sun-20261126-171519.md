@@ -17,30 +17,19 @@ RIMMANDRAKE_GREY_TWO_LEGACY_MASTERS_THE_KIT_NAMES_EVERY_ROW (other-mod).
 Live load check: UNRUN (note on DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES, 12:22 PM PST, with its command; both Archmagi
 games were held by other BENCH runs). Run it when a game is free.
 
-## Next: group 2, the tree crowns (both members are step-A "keep"; no check written yet)
+## Group 2, the tree crowns (restart 1, closed)
 
-- `TREE_SHADE_BUILD_CROWNS_ON_STILTS` and `TREE_SHADE_SELFTEST_PROVE_FOREST_IS_SHADE`. Claim each first. Write their
-  `rimflow shape` checks, seen red: run the shape with `RM_LIST_EFFECT_ROOT` set to an ext4 export of the base
-  (`git archive <base> src | tar -x -C /tmp/...` plus the new test files copied in). An export on D: makes a cmd check
-  run past the 600 s gate deadline (measured: the code scan alone).
-- Design: `design/RimMandrake/tree_shade_model_2026-10-19.md` (§6 is the T1-T6 test). The owner closed
-  TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT: projected crowns, full shade, overlay + mouseover, one-tree ground-tint
-  experiment, anything drawn >= 1.5 cells.
-- Where the code goes (the Conductor, 9:04 AM PST 2026-11-26): in place in Creature Behaviors.
-  `RM_SunHeatMath.CrownFootprint` (pure, compiled by the SelfTest), `RM_TreeCrownExtension` (plant ThingDef only),
-  the raster in `RM_MapComponent_ShadeGrid.Recompute` (today trees cast a strip: `ShadeCastingPlantVisualSize` 1.5,
-  `PlantHeightPerVisualSize` 0.5, `CasterHeight`), shadow length `RM_SunHeatMath.ShadowLengthPerHeight(E)` (cot E, the
-  same vector and the 16-cell cap `MaxCastCells`). `src/RimMandrake/HugeThings/measure_huge_plant_masks.py` already
-  says "RM_TreeCrownExtension does not exist yet" and holds crown measurements (CROWNS_JSON) worth reading first.
-- The C# selftest: `python3 src/RimMandrake/Utils/selftest_sun_heat.py` stages only the folders it reads (READS) and
-  takes about 1m45s; `--require "<case>"` fails at once when a case is not written. Add new cases there; add their
-  mutants to `SUN`/a new list in `src/RimMandrake/Utils/mutate_creaturebehaviors_fuzz.py` (run with a name filter).
-- The census (spec 1 of the selftest item) needs a game; a free game is the live part. T3 is the owner's look
-  (DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME), a route.
-- Build: `python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviors.csproj`
-  (about 1.5 min). Upstream rebuilds CB often: rebase before publish, take either DLL in a conflict and rebuild.
-- Tests the Direct Sun group touched that fail in this slim clone for missing media (not a finding): selftest_stillsand.py,
-  selftest_longshade_lint.py, selftest_pyrelands_track_contrast.py, selftest_pyrelands_defs_offline.py.
-- Flaky at the publish door (not ours, not refused): src/RimMandrake/rimflow/selftest_detached_reap.py.
+| ticket | class | outcome | commit | evidence |
+|---|---|---|---|---|
+| TREE_SHADE_BUILD_CROWNS_ON_STILTS | keep | closed by its outcome check (list_effect tick) | 693dda633a92, 45f4a5e62727, 3819a1186915 | selftest_sun_heat.py 64/64; crown mutants 7/7; selftest_tree_crowns.py 5/5 + 5/5 planted; live_tree_crowns.py PASS on ArchSmall (veluthar 69/69, cleared after felling) |
+| TREE_SHADE_SELFTEST_PROVE_FOREST_IS_SHADE | keep | closed by its outcome check (list_dispatch tick) | 693dda633a92, census 0cc95e4ce07e | T1-T6 offline cases; live census Greentide 0.974, Miasma 0.274, Webwork 0.694 (design/specs/2026-11-26-tree-crowns/canopy_census_2026-11-26.md) |
 
-Step: A done (5 kept); B done for group 1; C done for group 1. Group 2: B and C owed.
+Filed: RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE (the owner's "(3)" experiment, his look),
+RIMMANDRAKE_COUNT_CANOPY_ON_HELD_FEVER_WOOD_AND_CONTAGION (held mods), RIMMANDRAKE_RULE_TREE_SHADE_T2_MIASMA_MUD_GROWS_NO_FOREST
+(for the Conductor: T2's Miasma 0.60 and +-10 clauses miss because the estimate ignored fertility; a looser bar).
+Group 1's live load check: part (1) ran clean on ArchSmall (note on DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES); part (2)
+needs a fixed-sun map, DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME L1.
+
+## Next
+
+Nothing owed by this bundle: all five members are closed. Steps A, B and C are done for both groups.
