@@ -67,7 +67,7 @@ def main():
 
 def priority(ok, off):
     """ACCOUNTPICK_CORRECT_OWNER_PRIORITY: the target is the owner's fixed priority, read from the same file the
-    switching plan reads (switching_plan.json `order`), never the soonest reset."""
+    account plan's pass reads (its order: account_plan.rules_now), never the soonest reset."""
     import json
     import shutil
     import tempfile
@@ -109,17 +109,16 @@ def _priority(ok, off, d, json):
     os.environ["RM_ACCOUNT_PLAN_DIR"] = world       # never the live plan file
     try:
         real = AP.load_priority({})
-        with open(os.path.join(utils, "switching_plan.json")) as f:
-            legacy = json.load(f)
-        check(real == legacy["order"] and real, "priority: with no account plan file the order is the old engine's %s" % real)
-        with open(os.path.join(utils, "account_plan.seed.json")) as f:
-            p = PLAN.convert_legacy(dict(legacy, exceptions=[], order=list(reversed(legacy["order"]))), json.load(f))
-        for s_ in p["steps"]:
+        first = PLAN.first_plan()
+        for s_ in first["steps"]:
             s_.pop("when", None)
-        p["driver"] = "new"
+        order = [s_["use"] for s_ in first["steps"] if first["accounts"][s_["use"]]["kind"] == "claude"]
+        check(bool(real) and [x for x in order if x in real] == real and {"system", "lukas"} <= set(real),
+              "priority: with no account plan file the order is the first plan's (steven only inside his window) %s" % real)
+        p = dict(first, steps=sorted(first["steps"], key=lambda s_: -order.index(s_["use"]) if s_["use"] in order else 9))
         PLAN.commit(lambda _old: p, {"why": "selftest", "create": True}, base=None)
         real = AP.load_priority({})
-        check(real == list(reversed(legacy["order"])), "priority: the default is the account plan's order %s" % real)
+        check(real == list(reversed(order)), "priority: the default is the account plan's order %s" % real)
     finally:
         if had is None:
             os.environ.pop("RM_ACCOUNT_PLAN_DIR")

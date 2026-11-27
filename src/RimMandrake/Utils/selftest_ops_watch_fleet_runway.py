@@ -5,7 +5,7 @@ account readings of 2026-11-17 (RIMMANDRAKE_READ_FLEET_MOVED_RUNWAY_IDLE_ACCOUNT
 runway() judges each account by its own burn, so an account not in use read 10 and nothing warned before the fleet
 stops of 2026-11-17 03:35 and 05:50 PST. Replays selftest_ops_watch_fleet_runway_20261117.json through the real
 ops_watch.fleet_readings, the real slot_allocator.slope (on a series file cut at each replay instant), the real
-switching_plan engine (the plan pinned in the fixture) and the real ops_watch_rules.json targets (andon):
+account plan's week ahead (the plan pinned in the fixture) and the real ops_watch_rules.json targets (andon):
   1. the FLEET_STOP_NEAR alarm stands at least an hour before the 03:35 stop;
   2. it stands before the 05:50 stop;
   3. at 00:10 the idle system account's plain runway reads 10 while its fleet-moved runway reads under 1;

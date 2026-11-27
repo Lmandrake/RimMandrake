@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The sweep of the account plan over burn regimes (page design/specs/2026-11-25-account-plan-sweep/boundary.md).
 
-It runs the real pass (account_plan.tick, which drives switching_plan's actuator and account_plan.decide) every 5
+It runs the real pass (account_plan.tick, which drives account_actuator.check with account_plan.decide) every 5
 minutes through a simulated week, over a grid of regimes. Stand-ins replace only what touches the world: the meter's
 raw poll, the switcher, the live runs and their orders, the ssh door to SteveDesktop, the phone and the ledger. It
 checks the wanted behaviour on every pass, computes the owner's measures and a foresight bound, and gives each region
@@ -28,7 +28,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = Path(tempfile.mkdtemp(prefix="account_plan_sweep_"))
-# the scratch world, set before the plan code is imported (switching_plan reads its folders at import)
+# the scratch world, set before the plan code is imported (account_actuator reads its folders at import)
 os.environ.update({"RM_ACCOUNT_PLAN_DIR": str(ROOT / "plan"), "RM_SWITCH_PLAN_DIR": str(ROOT / "out"),
                    "RM_ACCOUNTS_DIR": str(ROOT / "accounts"), "RM_UNDER_SELFTEST": "1",
                    "RM_CONTROL_DB": str(ROOT / "control.db"), "RM_DISPATCHER_STATE": str(ROOT / "state")})
@@ -38,7 +38,7 @@ sys.path.insert(0, str(HERE.parent / "rimflow"))
 import account_end as AE  # noqa: E402
 import account_plan as AP  # noqa: E402
 import account_usage as AU  # noqa: E402
-import switching_plan as SP  # noqa: E402
+import account_actuator as ACT  # noqa: E402
 import fulltext  # noqa: E402
 
 HOOK = HERE.parent.parent.parent / ".claude" / "hooks" / "switch_checkpoint_signal.py"
@@ -69,13 +69,10 @@ HK = _load_hook()
 
 # ------------------------------------------------------------------ the plan of a regime
 def today_plan():
-    """Today's plan as this machine can build it: the legacy file converted with the seed (steven 52% in his 48 h
-    window, system 1%, lukas 1%, codex 25%), driver new, SteveDesktop listed. The live plan file is on Archmagi."""
-    legacy = json.loads((HERE / "switching_plan.json").read_text())
-    legacy["exceptions"] = []
-    p = AP.convert_legacy(legacy, json.loads((HERE / "account_plan.seed.json").read_text()))
+    """Today's plan as this machine can build it: the first plan (steven 52% in his 48 h window, system 1%, lukas 1%,
+    codex 25%), SteveDesktop listed. The live plan file is on Archmagi."""
+    p = AP.first_plan()
     p.pop("ledger_item", None)
-    p["driver"] = "new"
     p["machines"] = {STEVE: {"ssh": "stevedesktop-wsl"}}
     return p
 
@@ -292,7 +289,7 @@ class World:
         return {"rate": pts / 45.0, "stale": False, "age_s": 0, "span_min": 45}
 
     # ---- the switcher of Archmagi
-    def switcher(self, argv, full=False, timeout=None):     # the signature of switching_plan.run
+    def switcher(self, argv, full=False, timeout=None):     # the signature of account_actuator.run
         verb = argv[1] if len(argv) > 1 else ""
         if verb == "use":
             to = argv[2]
@@ -318,7 +315,7 @@ class World:
         frm = self.arch.live
         rec = {"op": "use", "changed": True, "from": frm, "to": to, "ts": AP.iso(self.t)}
         self.log.append(rec)
-        with open(SP.SWITCH_LOG, "a") as f:
+        with open(ACT.SWITCH_LOG, "a") as f:
             f.write(json.dumps(rec) + "\n")
         n = len(self.arch.runs)
         self.arch.ended_by_switch += n
@@ -390,7 +387,7 @@ class World:
         f = {"now": self.t, "live": self.arch.live, "notice": AP.read_json(AP.notice_dir() / "notice.json"),
              "published": AP.read_json(AP.plan_dir() / "decision.json"), "rows": self.meter_rows(),
              "burn_h": None, "switches": list(self.log), "runs": [r["name"] for r in self.arch.runs],
-             "state": SP.load_state(), "markers": SP.read_markers(), "hand": False}
+             "state": ACT.load_state(), "markers": ACT.read_markers(), "hand": False}
         rc, why = AP.new_run_gate(plan, f, self.arch.live)
         return rc == AP.OK, why
 
@@ -467,10 +464,10 @@ class Seam:
 
     def __enter__(self):
         w = self.w
-        pairs = [(SP, "run", w.switcher), (SP, "switcher_status",
+        pairs = [(ACT, "run", w.switcher), (ACT, "switcher_status",
                                            lambda: {"live": w.arch.live, "machine": "archmagi", "armed": True}),
-                 (SP, "clock", lambda: w.t), (SP, "sleep", lambda s: w.advance(s, w.plan_now)),
-                 (SP, "notify_stop", lambda state: None), (AP, "flush_ledger", lambda plan: None),
+                 (ACT, "clock", lambda: w.t), (ACT, "sleep", lambda s: w.advance(s, w.plan_now)),
+                 (ACT, "notify_stop", lambda state: None), (AP, "flush_ledger", lambda plan: None),
                  (AP, "series_rows", lambda *a, **k: list(w.series)), (AP, "clock", lambda: w.t),
                  (os, "fsync", lambda fd: None)]      # a scratch folder: a write need not reach the disk
         for mod, name, fn in pairs:
@@ -552,9 +549,9 @@ def fresh_dirs():
         if p.exists():
             shutil.rmtree(p)
         p.mkdir(parents=True)
-    SP.OUT = ROOT / "out"
-    SP.SWITCH_LOG = ROOT / "accounts" / "log.jsonl"
-    assert SP.OUT != SP.LIVE_OUT and str(AP.plan_dir()).startswith(str(ROOT)), "the sweep reached a live folder"
+    ACT.OUT = ROOT / "out"
+    ACT.SWITCH_LOG = ROOT / "accounts" / "log.jsonl"
+    assert ACT.OUT != ACT.LIVE_OUT and str(AP.plan_dir()).startswith(str(ROOT)), "the sweep reached a live folder"
 
 
 def can_take_over(w, machine_acct):

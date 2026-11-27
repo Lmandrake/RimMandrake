@@ -442,21 +442,29 @@ def review_cases():
 
 
 def wiring():
-    """switching_plan.check() starts the sweep after a live pass: never dry, never under HOLD, never for a test's plan
-    dir, and a sweep that cannot load never fails the pass. Every switcher call is fake."""
+    """account_actuator.check() starts the sweep after a live pass: never dry, never under HOLD, never for a test's
+    plan dir, and a sweep that cannot load never fails the pass. Every switcher call is fake; the decision is a fixed
+    `normal` and the numbers are the first plan's (account_plan.first_plan)."""
     from pathlib import Path
     from unittest.mock import patch
     sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
-    import switching_plan as SP
+    import account_actuator as SP
+    import account_plan as AP
     from ops_core import phone_push as PP
     out = Path(TMP) / "plan_out"
     now = T_STOP
+    first = AP.first_plan()
+    names = AP.claude_accounts(first)
     meter = {n: {"source": "MEASURED", "week_pct_left": 90, "week_resets_at": SP.iso(now + 36000), "age_min": 1,
-                 "stale": False} for n in SP.load_plan()["order"]}
+                 "stale": False} for n in names}
+    numbers = AP.legacy_view(first, {"now": now, "rows": meter})
+
+    def decide(_meter, live, _now, _plan, _state, _markers, **_kw):
+        return {"do": "normal", "account": live, "why": "the fixture's decision"}
 
     def run(argv, **kw):
         if argv[1] == "--json":
-            return 0, json.dumps({"machine": "fixture", "live": SP.load_plan()["order"][0], "armed": True})
+            return 0, json.dumps({"machine": "fixture", "live": names[0], "armed": True})
         return 0, "{}"
     kicks = []
     with patch.object(SP, "OUT", out), patch.object(SP, "SWITCH_LOG", Path(TMP) / "no-acct-log"), \
@@ -464,7 +472,8 @@ def wiring():
             patch.object(PP, "STATE", Path(TMP) / "phone.json"), \
             patch.object(PP, "todoist_transport", side_effect=lambda title, body: None), \
             patch.object(SP, "resume_stopped_runs", side_effect=lambda: kicks.append(1)):
-        go = lambda dry=False: SP.check(dry=dry, now=now, meter_fn=lambda: meter, poll_fn=lambda: None)  # noqa: E731
+        go = lambda dry=False: SP.check(decide, lambda: numbers, dry=dry, now=now, meter_fn=lambda: meter,  # noqa: E731
+                                        poll_fn=lambda: None)
         go()
         check("wiring: a test's plan dir never starts the sweep", not kicks, str(len(kicks)))
         with patch.object(SP, "LIVE_OUT", out):

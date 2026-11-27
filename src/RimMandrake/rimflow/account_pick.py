@@ -30,7 +30,7 @@ allowance is at least `lent_min_draw_pct`; a lent account the machine is ON is s
 allowance falls under that line. The lent rules unreadable (or the allocator not importable) -> no account can be
 told lent from owned, so no switch is recommended at all (fail closed) and that is alarmed.
 
-Ranking among fit candidates: the order of the account plan (`./acct plan`; read through account_plan.old_shape, so
+Ranking among fit candidates: the order of the account plan (`./acct plan`; read through account_plan.rules_now, so
 the one plan file answers; the rule's `priority_plan` names a JSON file with an `order` in its place, a test's seam):
 one source of truth (item ACCOUNTPICK_CORRECT_OWNER_PRIORITY). A lent
 account in that order is ranked by it too: its lent allowance (his window after a reset, his cap, the floor) already decides whether it is fit
@@ -115,7 +115,7 @@ def load_priority(rule):
             if utils not in sys.path:
                 sys.path.insert(0, utils)
             import account_plan
-            order = account_plan.old_shape()[0].get("order")
+            order = (account_plan.rules_now()[0] or {}).get("order")
     except Exception:  # noqa: BLE001  an unreadable plan is no priority: the pick then recommends no switch
         return None
     if (not isinstance(order, list) or not order or not all(isinstance(x, str) and x for x in order)

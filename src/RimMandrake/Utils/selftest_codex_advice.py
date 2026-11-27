@@ -41,9 +41,7 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
-LEGACY = json.loads((HERE / "switching_plan.json").read_text())
-LEGACY["exceptions"] = []
-PLAN = AP.convert_legacy(LEGACY, json.loads((HERE / "account_plan.seed.json").read_text()))     # codex: leave 25
+PLAN = AP.first_plan()     # codex: leave 25
 LINE = next(s["leave"] for s in PLAN["steps"] if s["use"] == "codex")
 
 

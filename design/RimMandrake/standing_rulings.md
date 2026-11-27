@@ -3149,7 +3149,7 @@ three senders off until the new alerts are built. Cost: until then no alarm reac
 silent task."*).
 
 - No program, hook, unit or agent posts a Todoist task that is an alarm, an alert, a page or a "ring his phone" message.
-- The Todoist posts of `ops_core/phone_push.py` (deadman_check, login_watch, switching_plan) and
+- The Todoist posts of `ops_core/phone_push.py` (deadman_check, login_watch, account_actuator) and
   `windows/heartbeat.ps1` are off by default. The switch is `RM_TODOIST_ALARM_POSTS=1` / `-TodoistAlarmPosts`. Nothing
   sets the switch.
 - The route that replaces Todoist is decided (owner, 2026-11-19, item

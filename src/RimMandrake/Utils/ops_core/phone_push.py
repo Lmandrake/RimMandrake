@@ -1,5 +1,5 @@
 """Phone push: one fixed-template alarm per incident, with no AI in the path (deadman_check, login_watch,
-switching_plan call it). Its only route was a Todoist task due a minute out (token ~/.config/todoist/token, client
+account_actuator call it). Its only route was a Todoist task due a minute out (token ~/.config/todoist/token, client
 ~/dev/PersonalComms/bin/todoist_api.py), and that route is RETIRED: owner, 2026-11-19, "So Todoist is officially retired
 as any kind of alert: it just doesn't work in a timely manner. It's really only to maintain to do lists, as it says."
 Those tasks never rang (no reminder attached, free plan; RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING).

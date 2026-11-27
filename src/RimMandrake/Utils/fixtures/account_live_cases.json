@@ -311,7 +311,7 @@
   },
   {
    "name": "no-ok-key",
-   "source": "fixture: switching_plan's fake",
+   "source": "fixture: the actuator's fake",
    "rc": 0,
    "out": "{\"machine\": \"testbox\", \"live\": \"system\", \"armed\": false}\n",
    "raises": null,

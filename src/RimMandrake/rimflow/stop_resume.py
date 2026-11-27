@@ -9,7 +9,7 @@ a hand relaunched it at 05:57). Forensics: D:\\ClaudeWork\\rimmandrake\\conducto
   scan    read-only: each killed run on a stop and what the sweep would do with it
   sweep   resume each one (the same session when its transcript is there, else its saved brief plus a note), park it
           while no account has headroom (the plan's newest pass is soft, stop or stopped), mark one already relaunched
-  kick    scan, and start `sweep` as its own unit when there is work (switching_plan.check calls this every pass)
+  kick    scan, and start `sweep` as its own unit when there is work (account_actuator.check calls this every pass)
 
 A run is resumed when detached_helper.killed() says it was killed (a run that wrote its result never is), its end
 falls on a stop (or it has no end and a stop came after its launch), no later run of its item exists, its item is
@@ -37,7 +37,7 @@ import detached_helper as DH  # noqa: E402
 import failure_class as FC  # noqa: E402
 
 REPO = DH.REPO
-PLAN_DIR = os.environ.get("RM_SWITCH_PLAN_DIR", "/mnt/d/ClaudeWork/rimmandrake/switching_plan")   # switching_plan.OUT
+PLAN_DIR = os.environ.get("RM_SWITCH_PLAN_DIR", "/mnt/d/ClaudeWork/rimmandrake/switching_plan")   # account_actuator.OUT
 ACCT_LOG = os.path.join(os.environ.get("RM_ACCOUNTS_DIR", os.path.expanduser("~/.claude-accounts")), "log.jsonl")
 # a kill belongs to a stop logged up to 15 min after it: `use` logs after its stop AND the fleet relaunch, and the plan
 # gives `use` 600 s (rimflow-operations skill, traps); the plan's own stop line came 2 s after the 03:35:15.9 kill
@@ -49,7 +49,7 @@ STOP_LOOKBACK_S = 8 * 86400
 LAUNCH_LOOKBACK_S = 10 * 86400   # runs launched longer ago are read only if their record was written since STOP_LOOKBACK_S
 # stops before this landed were handled by hand (the 2026-11-17 morning kills were relaunched 05:57 and 06:04)
 CUTOFF = datetime.datetime(2026, 11, 17, 16, 30, tzinfo=datetime.timezone.utc).timestamp()
-FRESH_S = 20 * 60      # switching_plan.NOTICE_FRESH_S: an older reading means the plan's timer stopped
+FRESH_S = 20 * 60      # account_actuator.NOTICE_FRESH_S: an older reading means the plan's timer stopped
 CLAIM_S = 900          # a claim older than this is a sweep that died mid-launch (the later-record check still holds)
 MAX_TRIES = 3          # a resume refused this many times is said so, and then tried every REFUSED_WAIT_S
 # the danger: a launch sent again on every pass into the same refusal (the night of 2026-11-20, REPAIR_LAUNCH_MOST)

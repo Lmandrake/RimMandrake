@@ -1512,7 +1512,7 @@ def drain_refusal(now, extra=None, resume_session=None, path=None):
 
 def account_warning(now, path=None):
     """-> the account's warning that a run starting now gets in its start package, or None. The actuator's fresh
-    notice carries it while the live account is between its warning line and its line (switching_plan.notice_of):
+    notice carries it while the live account is between its warning line and its line (account_actuator.notice_of):
     the run saves a note, publishes what is done and keeps working. An unreadable or stale notice adds nothing."""
     try:
         AP = _account_plan()

@@ -100,20 +100,20 @@ def t_the_sweep_touches_no_live_folder():
     check(n + ": a regime starts no process (no switcher, ssh, systemd, meter or ledger call)", not calls, calls[:3])
     check(n + ": and it ran its passes", r["passes"] >= 70, r["passes"])
     check(n + ": its folders are the scratch world's", str(S.ROOT).startswith(tempfile.gettempdir())
-          and str(S.SP.OUT).startswith(str(S.ROOT)) and S.SP.OUT != S.SP.LIVE_OUT
+          and str(S.ACT.OUT).startswith(str(S.ROOT)) and S.ACT.OUT != S.ACT.LIVE_OUT
           and str(S.AP.plan_dir()).startswith(str(S.ROOT)) and str(S.AP.notice_dir()).startswith(str(S.ROOT)))
     check(n + ": a live folder set for the scratch world is refused", _refuses_live())
 
 
 def _refuses_live():
-    saved = S.SP.LIVE_OUT
+    saved = S.ACT.LIVE_OUT
     try:
-        S.SP.LIVE_OUT = S.ROOT / "out"
+        S.ACT.LIVE_OUT = S.ROOT / "out"
         S.fresh_dirs()
     except AssertionError:
         return True
     finally:
-        S.SP.LIVE_OUT = saved
+        S.ACT.LIVE_OUT = saved
     return False
 
 

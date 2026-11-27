@@ -1,15 +1,112 @@
 {
- "_doc": "The numbers of a FIRST plan file only (./acct import-legacy). After that the plan file is the one home: account_plan.py never reads this file while a plan stands. Each number's danger and evidence: design/specs/2026-11-24-account-plan-one-file/boundary.md LIMITS.",
- "ledger_item": "RIMMANDRAKE_DESIGN_ACCOUNT_PLAN_ONE_FILE_COMMANDED_IN_ONE_LINE",
- "meter_steps": {"codex": 25, "jpl-genai": null},
- "meter_why": "owner 2026-11-24: 'preserve 25% for personal use unless otherwise instructed'",
- "numbers": {
-  "floor_pct": 1, "last_account_floor_pct": 2, "blind_pct": 1, "entry_margin_pct": 2,
-  "switch_cost_pts": 3, "idle_weight": 1, "evening_share_pct": 0, "request_default_h": 24,
-  "rescue": {"drain_h": 2},
-  "forecast": {"burn_window_h": 24, "step_min": 30},
-  "reset_day": {"hours": 24, "accounts": ["codex", "system", "lukas"], "line": {"meter": 0, "claude": "floor"}},
-  "burn_mode": {"window_h": 24, "min_at_risk_pts": 5, "max_load_per_core": 1.5},
-  "account_end": {}
+ "_doc": "The FIRST plan file (./acct init writes it), and the rules of a timed pass that finds no valid plan file and no accepted revision in history.jsonl (account_plan.plan_in_force). After the first write the plan file is the one home: account_plan.py reads this file only for those two. Each number's danger and evidence: design/specs/2026-11-24-account-plan-one-file/boundary.md LIMITS.",
+ "plan": {
+  "schema": 1,
+  "rev": 0,
+  "accounts": {
+   "steven": {
+    "kind": "claude"
+   },
+   "system": {
+    "kind": "claude"
+   },
+   "lukas": {
+    "kind": "claude"
+   },
+   "codex": {
+    "kind": "meter"
+   },
+   "jpl-genai": {
+    "kind": "meter"
+   }
+  },
+  "steps": [
+   {
+    "name": "steven",
+    "use": "steven",
+    "leave": 52,
+    "when": "hours_since_reset <= 48",
+    "why": "the standing rule of the first plan (the owner's order of 2026-10-28)"
+   },
+   {
+    "name": "system",
+    "use": "system",
+    "leave": 1,
+    "why": "the standing rule of the first plan (the owner's order of 2026-10-28)"
+   },
+   {
+    "name": "lukas",
+    "use": "lukas",
+    "leave": 1,
+    "why": "the standing rule of the first plan (the owner's order of 2026-10-28)"
+   },
+   {
+    "name": "codex",
+    "use": "codex",
+    "leave": 25,
+    "why": "owner 2026-11-24: 'preserve 25% for personal use unless otherwise instructed'"
+   }
+  ],
+  "holds": [],
+  "pins": [],
+  "requests": [],
+  "numbers": {
+   "floor_pct": 1,
+   "last_account_floor_pct": 2,
+   "blind_pct": 1,
+   "entry_margin_pct": 2,
+   "switch_cost_pts": 3,
+   "idle_weight": 1,
+   "evening_share_pct": 0,
+   "request_default_h": 24,
+   "rescue": {
+    "drain_h": 2
+   },
+   "forecast": {
+    "burn_window_h": 24,
+    "step_min": 30
+   },
+   "reset_day": {
+    "hours": 24,
+    "accounts": [
+     "codex",
+     "system",
+     "lukas"
+    ],
+    "line": {
+     "meter": 0,
+     "claude": "floor"
+    }
+   },
+   "burn_mode": {
+    "window_h": 24,
+    "min_at_risk_pts": 5,
+    "max_load_per_core": 1.5
+   },
+   "account_end": {
+    "warn_pct": 2,
+    "warn_fast_pct": 3,
+    "emergency_pct": 1,
+    "emergency_max_line": 10,
+    "save_need_min": 10,
+    "burn_window_min": 45,
+    "burn_min_span_min": 10,
+    "stale_min": 20,
+    "_stale_min": "budget: danger=a burn rate or a level from before the load changed sizes the warning and the pause; evidence=design/specs/2026-11-24-account-end/boundary.md LIMITS; ends no work: an older reading is used with the safe values, and nothing is stopped",
+    "poll_min": 0.5,
+    "pause_share": 0.2,
+    "pause_from_pct": 0.5,
+    "pause_max_s": 180,
+    "_pause_max_s": "budget: danger=0% reached in the pause before an emergency switch; evidence=design/specs/2026-11-24-account-end/boundary.md LIMITS; ends no work: the pause ends and the switch goes",
+    "pause_min_s": 20,
+    "clear_pct": 5
+   },
+   "fresh": {
+    "near_pct": 3,
+    "max_age_min": 6,
+    "_max_age_min": "budget: danger=a decision on a level older than the meter's beat; evidence=design/specs/2026-11-24-account-plan-one-file/boundary.md LIMITS; ends no work: an older reading is read again (a poll) before the pass acts"
+   }
+  },
+  "ledger_item": "RIMMANDRAKE_DESIGN_ACCOUNT_PLAN_ONE_FILE_COMMANDED_IN_ONE_LINE"
  }
 }

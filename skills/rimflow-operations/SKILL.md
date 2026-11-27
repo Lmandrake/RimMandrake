@@ -80,7 +80,7 @@ How the plan decides (the page of promises: `design/specs/2026-11-24-account-pla
 What reads the plan:
 
 - **The timed pass** (`account-plan.timer`, each 5 min, `account_plan.py pass`). The timed pass makes the switch through the
-  account-end actuator (`switching_plan._check`, `account_end.py`): the warning, the save order, the pause, the switch.
+  account actuator (`account_actuator.py`, with `account_end.py`): the warning, the save order, the pause, the switch.
   Its log is `~/.local/state/rimmandrake/account_plan/log.jsonl`; `journalctl --user -u account-plan.service` has each pass.
 - **Every launcher** of a detached run (`detached_helper.drain_refusal`). A refusal starts `refused: ACCOUNT GATE`. The
   pipeline reads it as a wait, not a fault, and launches the same thing again after the switch.
@@ -103,9 +103,9 @@ spends no model tokens and uses no network. But the switch stops every Claude pr
 that is resumed on the next account loses its prompt cache. At 0%, every window and helper on that account errors, and
 the owner cannot talk to a seat. So no Claude account's line is under the plan's floor (`numbers.floor_pct`, which `./acct plan` prints).
 
-The old engine is the decision half of the `switching_plan` module, with its rule file `switching_plan.json`. The old
-engine decides only when `./acct driver` reads `old`, or while the plan file is refused; the timed pass then says so.
-The other half of the `switching_plan` module is the account-end actuator, which the timed pass drives.
+The timed pass always has rules. When the plan file is missing or refused, the pass runs on the last revision that
+`history.jsonl` accepted. With no history, the pass runs on the first plan in `account_plan.seed.json`. The pass log
+says which (`do: fallback`). `./acct undo` repairs the plan file.
 
 More traps for this section: [references/traps.md](references/traps.md) § 2. The account plan.
 

@@ -534,7 +534,7 @@
   "terms": ["tokens?", "burn(?:s|ed|ing)?", "budget(?:s|ed|ing)?", "quota", "runway", "throttl\\w*", "(?:token|daily|week(?:ly)?|session|usage) caps?", "spend(?:s|ing)?", "spent", "cheap(?:er|ly)?", "economi[sz]\\w*", "thrift\\w*"]
  },
  "accounts_fit": {"window_h": 6, "slope_min_points": 4, "slope_min_span_h": 2.0},
- "fleet_fit": {"short_window_h": 3, "slope_min_points": 4, "slope_min_span_h": 1.5, "horizon_h": 24, "step_min": 5, "_doc": "ops_watch.fleet_readings (RIMMANDRAKE_READ_FLEET_MOVED_RUNWAY_IDLE_ACCOUNT_READS_TEN): the fleet's burn is every account's meter slope summed, the faster of this short window and accounts_fit's; switching_plan.simulate runs the plan forward at it for horizon_h in step_min steps to read accounts.fleet_stop_h, and each account's moved_runway is its room above its plan line at that burn"},
+ "fleet_fit": {"short_window_h": 3, "slope_min_points": 4, "slope_min_span_h": 1.5, "horizon_h": 24, "step_min": 5, "_doc": "ops_watch.fleet_readings (RIMMANDRAKE_READ_FLEET_MOVED_RUNWAY_IDLE_ACCOUNT_READS_TEN): the fleet's burn is every account's meter slope summed, the faster of this short window and accounts_fit's; account_plan.week_ahead runs the plan forward at it for horizon_h in step_min steps to read accounts.fleet_stop_h (its idle_from), and each account's moved_runway is its room above its plan line at that burn"},
  "codex": {"lookback_days": 8, "slope_window_h": 24, "slope_min_span_h": 3.0, "stale_h": 6, "_stale_h_doc": "a last reading older than this is an ESTIMATE floor: Codex may be spent from another machine"},
  "testing": {"close_after_h": 24},
  "process_regex": "^(infrastructure/|design/|conversations/|src/RimMandrake/Utils/|src/RimMandrake/rimflow/|\\.claude/|skills/|CLAUDE\\.md|Transient/)",

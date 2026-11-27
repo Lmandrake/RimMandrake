@@ -1,10 +1,11 @@
 # BOUNDARY: the end of an account: warn, save, pause, switch, sized from the burn rate, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/account_end.py` (the numbers, the two orders, the records), `switching_plan.py` (`decide`,
-`_check`, `check`), `src/RimMandrake/Utils/account_plan.py` (`decide`, the same steps through `tick`),
+Code: `src/RimMandrake/Utils/account_end.py` (the numbers, the two orders, the records), `account_actuator.py` (`_check`,
+`check`, the steps), `src/RimMandrake/Utils/account_plan.py` (`decide`, and `tick`, which drives the steps),
 `src/RimMandrake/rimflow/control.py` (`order_runs`, `withdraw_orders`, `hook`),
 `src/RimMandrake/rimflow/detached_helper.py` (`drain_refusal`, `account_warning`), `src/RimMandrake/rimflow/left_open_continue.py`
-(`account_end_wait`, `kick_waiting`). Numbers: `switching_plan.json` `account_end`.
+(`account_end_wait`, `kick_waiting`). Numbers: the plan file's `numbers.account_end` (`./acct plan`; the first plan's in
+`account_plan.seed.json`).
 Items: `RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN`, written 2026-11-24;
 `RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE` (the account is used down to its line), 2026-11-24.
 Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_end.py`.

@@ -760,7 +760,7 @@ def pace(inp):
         return None
     rate = _pool_rate(inp)
     if rate is not None:
-        # the standard switching plan paces the whole pool (card 2026-10-28: "Pace the whole pool BECAUSE it spreads
+        # the account plan paces the whole pool (card 2026-10-28: "Pace the whole pool BECAUSE it spreads
         # out the human review time"): P is the rate the plan still needs, in the same units (1.0 = 100% per 7 d)
         return rate * 168 / 100
     days = max(h, 1.0) / 24
@@ -826,20 +826,21 @@ def burn_target(inp, now):
 
 
 def plan_inputs(meter, live, now):
-    """-> {pool, plan_notice} from the account plan (./acct; account_plan.old_shape gives its rules, the plan's pass
-    writes the notice), both None while a HOLD file is present (the engine is paused: the allocator paces as before)
-    or when the plan is unreadable. A notice older than PLAN_NOTICE_FRESH_S (the timer stopped) is ignored by
-    _plan_notice_live."""
+    """-> {pool, plan_notice} from the account plan (./acct; account_plan.pool_pace on the rules of its timed pass,
+    plan_in_force; the pass writes the notice), both None while a HOLD file is present (the actuator is paused: the
+    allocator paces as before) or when the plan is unreadable. A notice older than PLAN_NOTICE_FRESH_S (the timer
+    stopped) is ignored by _plan_notice_live. live: unused (the pool is the whole fleet's)."""
     out = {"pool": None, "plan_notice": None}
     try:
         import account_plan as AP
-        import switching_plan as SP
-        d = Path(os.environ.get("RM_SWITCH_PLAN_DIR") or SP.OUT)
+        d = AP.notice_dir()
         if (d / "HOLD").exists():
             return out
-        plan, out["plan_source"] = AP.old_shape(meter, now)
-        if plan.get("pool_pacing"):
-            out["pool"] = SP.pool(meter, now, plan, live)
+        plan, why = AP.plan_in_force()
+        if plan is None:
+            raise LookupError(why)
+        out["plan_source"] = "the account plan, rev %s" % plan.get("rev") + ("" if why is None else " (%s)" % why)
+        out["pool"] = AP.pool_pace(plan, {"now": now, "rows": meter, "switches": None})
         pn = read_json(d / "notice.json")
         out["plan_notice"] = pn if isinstance(pn, dict) else None
     except Exception as e:  # noqa: BLE001  a broken plan never stops the allocator: it paces as before
@@ -1079,35 +1080,26 @@ def _lent_view(sp):
 
 
 def _plan_exception(name, now, h, plan=None):
-    """(id, until, leave line) when a temporary rule of the account plan sets this account's line now, else None. One
-    source: the plan file (./acct plan), where a temporary rule is a step with a life in front of the account's standing
-    step. While the old engine drives (or with `plan`, a seam), the rule is a dated exception of that file's shape.
-    Unreadable plan -> None: the standing lent rule (the stricter one) applies."""
+    """(step name, until, leave line) when a temporary rule of the account plan sets this account's line now, else
+    None. One source: the plan (./acct plan; plan_in_force, or `plan`, a seam), where a temporary rule is a step with
+    a life in front of the account's standing step (account_plan.temporary_line). Unreadable plan -> None: the
+    standing lent rule (the stricter one) applies."""
     try:
         import account_plan as AP
-        import switching_plan as SP
         if plan is None:
-            ap, _why = AP.load_plan()
-            if ap is not None and ap.get("driver", "old") == "new":
-                return AP.temporary_line(ap, name, now, h)
-            plan = AP.old_shape({}, now)[0]
-        meter = {name: {"week_resets_at": SP.iso(now + h * HOUR)}} if h is not None else {}
-        eff = SP.at(plan, now, meter)
+            plan, _why = AP.plan_in_force()
+        return AP.temporary_line(plan, name, now, h) if plan is not None else None
     except Exception:  # noqa: BLE001
         return None
-    cfg = eff.get("accounts", {}).get(name) or {}
-    if not eff.get("_exception") or cfg.get("leave_pct_left") is None or cfg.get("window_h_after_reset") is not None:
-        return None
-    return eff["_exception"], eff["_exception_until"], cfg["leave_pct_left"]
 
 
 def lent_allowance(sp, rules, now, plan=None):
     """(max % of his week we may still draw now, why) for an account under lent_accounts, or (None, '') if none.
     The owner's rule for a lent account (2026-10-27): only in the first prefer_start_of_week_h after his weekly reset,
     at most max_used_by_us_pct of the week used (all of it counted as ours), never under the floor; 0 otherwise;
-    off-limits through off_limits_through. A dated exception of the switching plan that lifts his window and sets his
-    line (owner 2026-11-17, steven until his reset) replaces the window and the cap with that line; the floor and
-    off_limits_through still bind. plan: the switching plan to read (a seam; default the file)."""
+    off-limits through off_limits_through. A temporary step of the account plan that sets his line (owner 2026-11-17,
+    steven until his reset: `./acct line A N --until-reset`) replaces the window and the cap with that line; the floor
+    and off_limits_through still bind. plan: the account plan to read (a seam; default plan_in_force)."""
     pol = (rules.get("lent_accounts") or {}).get(sp.get("account"))
     if not pol:
         return None, ""
@@ -1122,7 +1114,7 @@ def lent_allowance(sp, rules, now, plan=None):
     ex = _plan_exception(name, now, h, plan)
     if ex is not None:
         eid, until, line = ex
-        return max(0.0, min(by_floor, left - line)), (f"{name}: by the switching plan's exception {eid} until {until}: "
+        return max(0.0, min(by_floor, left - line)), (f"{name}: by the account plan's temporary step {eid} until {until}: "
                                                       f"down to {line}% left, floor {pol['floor_pct_left']}%")
     if h < 168 - pol["prefer_start_of_week_h"]:
         return 0.0, (f"{name}: {h:.0f} h to his reset, outside the {pol['prefer_start_of_week_h']} h after it "
@@ -1338,7 +1330,7 @@ def _decide_core(inp, state, rules, now, advisory=False):
     if pn and not (ov and (epoch(ov.get("set_at")) or 0) > (epoch(pn.get("since")) or now)):
         # his word given after the notice stands over it; given before, the switch the plan is about to make wins
         per = {s: 0 for s in per}
-        why.insert(0, f"{pn.get('message') or 'switch pending: publish and finish'} (switching plan, "
+        why.insert(0, f"{pn.get('message') or 'switch pending: publish and finish'} (account plan, "
                       f"{pn.get('account')}: {pn.get('why') or pn.get('state')})")
     sess = inp.get("session_pct_used")
     if sess is not None and inp.get("source") != "MEASURED":

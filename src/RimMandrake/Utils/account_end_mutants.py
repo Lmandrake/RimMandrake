@@ -14,8 +14,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SRC = HERE.parent
-A, S, D, L, C, J = ("Utils/account_end.py", "Utils/switching_plan.py", "rimflow/detached_helper.py",
-                    "rimflow/left_open_continue.py", "rimflow/control.py", "Utils/switching_plan.json")
+A, S, D, L, C, J, P = ("Utils/account_end.py", "Utils/account_actuator.py", "rimflow/detached_helper.py",
+                       "rimflow/left_open_continue.py", "rimflow/control.py", "Utils/account_plan.seed.json",
+                       "Utils/account_plan.py")
 # (promise its FAIL line must name, file, old, new)
 PLANTS = [
     ("the-warning-fires-at-two-at-an-ordinary-burn", J, '"warn_pct": 2', '"warn_pct": 1'),
@@ -24,20 +25,19 @@ PLANTS = [
     ("the-order-tells-the-numbers", A, '"%s%% of its week is left and the machine burns %.3f%% a minute" % (num(pct), b["rate"])',
      '"its week is nearly used"'),
     ("the-order-tells-the-numbers", A, '- ((burn or {}).get("age_s") or 0) / 60)', ')'),
-    ("no-new-work-at-the-line", D, 'if carried and not n.get("account_end"):', 'if carried:'),
+    ("no-new-work-at-the-line", P, 'and not (carried and not n.get("account_end")):', 'and not carried:'),
     ("no-new-work-at-the-line", S, '"account_end": bool(d.get("account_end")) and state == "soft",', '"account_end": False,'),
     # the fault of 2026-11-24 4:56 PM PST (RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE): the live account was
     # no target at its warning line, so the switch went with no run live
-    ("the-account-burns-to-its-line", S, '    cfg = plan["account_end"]\n    for n in elig:  # no switch lands',
-     '    cfg = plan["account_end"]\n    if warn is not None and pl is not None and pl <= warn:\n        elig[live] = False\n'
-     '    for n in elig:  # no switch lands'),
+    ("the-account-burns-to-its-line", P, 'under = rl is None or (pl is not None and pl <= line)       # finished at its line',
+     'under = rl is None or (pl is not None and pl <= warn)       # finished at its line'),
     ("the-account-burns-to-its-line", S, '"warn", "warn", d["warning_text"]', '"warn", "at_easy_spot", d["warning_text"]'),
     ("the-account-burns-to-its-line", S, '    elif d.get("warning"):      # the warning zone', '    elif False:      # the warning zone'),
     ("the-account-burns-to-its-line", D, '    w = n.get("warning")\n', '    w = None\n'),
     ("the-account-burns-to-its-line", A, 'then keep working: new work still starts', 'then end your turn: no new work starts'),
     ("the-account-burns-to-its-line", S, 'for _ in range(passes - 1):', 'for _ in ():'),
     ("the-account-burns-to-its-line", C, "state=CASE WHEN mode='warn' THEN 'delivered' ELSE 'seen' END", "state='seen'"),
-    ("the-warning-is-latched", S, 'return max(w, ep["warn_line"]) if (ep.get', 'return w if (ep.get'),
+    ("the-warning-is-latched", P, 'warn = max(warn, ep["warn_line"])       # a warning that fired', 'warn = warn       # a warning that fired'),
     ("the-warning-is-latched", S, "        end_episode(state, d, orders, f\"{live} reads {d['pct_left']}%: it has reset\")", '        pass'),
     ("the-emergency-orders-pauses-then-switches", S, '        sleep(min(5, left_s))', '        break'),
     ("the-emergency-orders-pauses-then-switches", S, '"emergency", "write_now", text', '"emergency", "at_easy_spot", text'),
@@ -54,8 +54,8 @@ PLANTS = [
      '        return {"rate": 0.0, "stale": False, "age_s": 0, "why": ""}'),
     ("a-kept-account-has-no-emergency", A, 'return line is not None and line <= cfg["emergency_max_line"]', 'return True'),
     ("a-kept-account-has-no-emergency", S, '    if w is None or p > w:  ', '    if False:  '),
-    ("the-last-account-goes-dark-and-comes-back", S, 'base.update(warning=True, last_account=not any(',
-     'base.update(warning=True, last_account=False and any('),
+    ("the-last-account-goes-dark-and-comes-back", P, 'base.update(warning=True, last_account=not can)',
+     'base.update(warning=True, last_account=False)'),
     ("the-last-account-goes-dark-and-comes-back", S, "last = d.get(\"drain_of\") != \"switch\"", 'last = False'),
     ("a-one-percent-line-is-not-killed-unwarned", S, '        return {**d, "emergency": True} if AE.has_emergency(ln, cfg) else d', '        return d'),
     ("unreadable-runs-count-as-live", S, '    if live_runs is not None and not live_runs:\n        return d', '    if not live_runs:\n        return d'),
@@ -69,17 +69,22 @@ PLANTS = [
 ''', '''                      (u, r["id"] if r else None, mode, act["id"], why.strip(), now, deadline))
             c.execute("INSERT OR IGNORE INTO voids VALUES (?,?,?,?,?,?)", (u, None, act["id"], why, None, now))
 '''),
-    ("a-wrapped-run-is-carried-on-after-the-switch", L, '    waits_for = account_end_wait(now)', '    waits_for = None'),
-    ("a-wrapped-run-is-carried-on-after-the-switch", L, '    if not ok or account_end_wait(now):', '    if False:'),
+    ("a-wrapped-run-is-carried-on-after-the-switch", L, '    waits_for = account_end_wait(now, plan_dir, carried=not p.get("stopped"))',
+     '    waits_for = None'),
+    ("a-wrapped-run-is-carried-on-after-the-switch", L, '    if not ok or account_end_wait(now, plan_dir):', '    if False:'),
     ("a-wrapped-run-is-carried-on-after-the-switch", L, '            r["continue_waits"] = kept', '            pass'),
-    ("a-switch-never-lands-on-an-ending-account", S, '> AE.target_line(line[n], cfg)', '> 0'),
-    ("no-new-work-at-the-line", D, 'if n.get("state") == "stop":', 'if False:'),
+    ("a-switch-never-lands-on-an-ending-account", P, 'return max(AE.warning_line(rl["line"], None, N["account_end"]), rl["line"] + (rl["warn"] or 0)) + N["entry_margin_pct"]',
+     'return rl["line"]'),
+    ("no-new-work-at-the-line", P, '    if n.get("state") == "stop":\n        return ("the account %s is out', '    if False:\n        return ("the account %s is out'),
     ("no-new-work-at-the-line", S, '"drain": True, "account_end": True}, now)  # nothing starts', '}, now)  # nothing starts'),
-    ("the-warning-is-latched", S, 'and not lowered(ep, line[live])) else w', ') else w'),
+    ("the-warning-is-latched", P, '                ep.get("line") is not None and line < ep["line"]):', '                False):'),
     ("a-stale-reading-uses-the-safe-values", S, '    if not usable(r) or (r.get("age_min")', '    if False or (r.get("age_min")'),
     ("a-stale-reading-uses-the-safe-values", S, '(r.get("age_min") is not None and r["age_min"] > cfg["stale_min"])', 'False'),
     ("the-pause-keeps-the-chance-of-zero-under-ten-percent", A, '(since is None or t >= since) and', ''),
     ("the-hold-file-stops-it", S, '    return not (OUT / "HOLD").exists()', '    return True'),
+    # an unread live level inside the warning zone refused starts but warned no run (found by the port of this
+    # selftest onto the account plan, 2026-11-27)
+    ("a-stale-reading-uses-the-safe-values", P, '**({"warning": True, "last_account": not can} if zone else {}),', ''),
 ]
 
 
@@ -88,7 +93,7 @@ def run(plant=None):
     tmp = Path(tempfile.mkdtemp(prefix="account_end_mutant_"))
     try:
         root = tmp / "src" / "RimMandrake"
-        for d in ("Utils", "rimflow"):
+        for d in ("Utils", "rimflow", "contracts"):     # contracts: role_launch (maturation_autonomy) reads it
             shutil.copytree(SRC / d, root / d, ignore=shutil.ignore_patterns("__pycache__", "*.png", "*.dll"))
         if plant:
             p = root / plant[1]

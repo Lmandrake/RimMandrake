@@ -1,10 +1,12 @@
 # BOUNDARY: a switch or a stop that falls due waits for live runs, Design Version 0.2.0
 
-Code: `src/RimMandrake/Utils/switching_plan.py` (`decide`, `drained`, `live_detached_runs`, `check`) and
-`src/RimMandrake/rimflow/detached_helper.py` (`drain_refusal`, read by `_launch`).
+Code: `src/RimMandrake/Utils/account_actuator.py` (`drained`, `live_detached_runs`, `check`), driven by
+`src/RimMandrake/Utils/account_plan.py` (`decide`, `tick`), and `src/RimMandrake/rimflow/detached_helper.py`
+(`drain_refusal`, read by `_launch`).
 Item: `RIMMANDRAKE_LAUNCH_SIX_CONTEXT_KEEPING_CHANGES_FROM_THE_SCAN`, report change 3
 (`design/specs/2026-11-20-context-kept-not-reloaded/report.md` §1 row 3), written 2026-11-20.
-Each promise has a check of its name in `src/RimMandrake/Utils/selftest_switching_plan_drain.py`.
+Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_actuator_drain.py` (on the first plan
+of `account_plan.seed.json`).
 
 The owner, 2026-11-20 about 5:30 AM PST: "And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept.
 We just don't want to crash to zero and get stuck. Please make that true everywhere." About 6 AM PST: "Agreed for 1% at
@@ -36,8 +38,9 @@ endpoint) hold no fraction. A 0.1% line cannot be seen until a meter reads tenth
 
 ## PROMISES (each one is owed a check of the same name)
 
-- **a-spent-account-drains-while-runs-live.** At or under its warning line, with a live run, the plan neither switches
-  nor stops: it reads `soft` with `drain` true, and names the runs and the warning line. How the account then ends (the
+- **a-spent-account-drains-while-runs-live.** At or under its line, with a live run, the plan neither switches nor
+  stops: it reads `soft` with `drain` true, and names the runs and the line. In the warning zone above the line the
+  runs are warned and keep working (the account-end page). How the account then ends (the
   orders, the emergency at 1%) is the page `design/specs/2026-11-24-account-end/boundary.md`.
 - **no-live-run-means-no-wait.** At or under its line with no live run, the switch or the stop goes ahead at once.
 - **unreadable-runs-count-as-live.** When the live runs cannot be read, the plan drains and the why says UNMEASURED; a
@@ -50,11 +53,12 @@ endpoint) hold no fraction. A 0.1% line cannot be seen until a meter reads tenth
   `detached_helper.launch` refuses a new run with a reason that names the drain. A continuation of a live run
   (`continued_from`) or a resume of its session is the run finishing, and is let through, unless the notice reads
   `account_end` true.
-- **a-new-launch-goes-at-the-soft-line.** Between the soft line and the warning line, with no drain, a new run starts.
+- **a-new-launch-goes-at-the-soft-line.** Above the line, the warning zone included, with no drain, a new run starts
+  (the account plan has no soft line).
 
 ## LIMITS
 
-- `pull_drain_max_s` = 7200. Danger: a run that does not end keeps every new start waiting and the machine off the
+- `pull_drain_max_s` = 7200 (the plan's `numbers.rescue.drain_h` = 2, through `account_plan.legacy_view`). Danger: a run that does not end keeps every new start waiting and the machine off the
   account the order wants (steven's window is 48 h). Evidence: 724 detached runs measured 2026-11-20 ran p50 24 min,
   p90 82, p95 122, p99 216, max 804; 2 h lets 95 of 100 runs finish.
 - A notice older than 20 min (`NOTICE_FRESH_S`) refuses nothing: the plan's timer writes every 5 min, so an older one

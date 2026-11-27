@@ -19,19 +19,27 @@ os.environ["RM_SWITCH_PLAN_DIR"] = str(TMP / "out")
 os.environ["RM_ACCOUNTS_DIR"] = str(TMP / "accounts")
 os.environ["RM_CONTROL_DB"] = str(TMP / "control.db")
 os.environ["RM_DISPATCHER_STATE"] = str(TMP / "state")
+os.environ["RM_ACCOUNT_PLAN_DIR"] = str(TMP / "plan")
+os.environ["RM_ACCOUNT_PLAN_SERIES"] = str(TMP / "no-series.jsonl")     # the fleet's burn: unread, so no week ahead
 os.environ.setdefault("RM_UNDER_SELFTEST", "1")
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "rimflow"))
+import account_actuator as ACT  # noqa: E402
 import account_end as AE  # noqa: E402
-import switching_plan as SP  # noqa: E402
+import account_plan as AP  # noqa: E402
 
 FAILS = []
 NOW = 1_800_000_000.0
-PLAN = json.loads((HERE / "switching_plan.json").read_text())
-PLAN["exceptions"] = []
-CFG = PLAN["account_end"]
-(TMP / "plan.json").write_text(json.dumps(PLAN))
-SP.PLAN_PATH = TMP / "plan.json"
+PLAN = AP.first_plan()      # steven 52 in the first 48 h after his reset, system 1, lukas 1
+CFG = PLAN["numbers"]["account_end"]
+
+
+def set_plan(p):
+    """The plan file of the passes (account_plan.tick reads it at each decision)."""
+    AP.commit(lambda _old: json.loads(json.dumps(p)), {"why": "selftest", "create": True}, base=None)
+
+
+set_plan(PLAN)
 RUN = ["rm-detached-bench-rimmandrake-some-builder-1795180000"]
 ORD = {"rate": 0.067, "stale": False, "age_s": 0, "span_min": 45, "why": ""}
 FAST = {"rate": 0.25, "stale": False, "age_s": 0, "span_min": 45, "why": ""}
@@ -46,7 +54,7 @@ def check(name, ok, detail=""):
 
 def R(left, h, src="MEASURED", age=1.0, stale=False):
     return {"source": src, "week_pct_left": left, "week_pct_used": None if left is None else 100 - left,
-            "hours_to_week_reset": h, "week_resets_at": SP.iso(NOW + h * 3600), "stale": stale, "age_min": age}
+            "hours_to_week_reset": h, "week_resets_at": ACT.iso(NOW + h * 3600), "stale": stale, "age_min": age}
 
 
 OFF = {"steven": R(90, 100)}     # outside his 48 h window
@@ -57,7 +65,18 @@ def m(left, lukas=98):
 
 
 def D(meter, live, runs=(), burn=ORD, state=None):
-    return SP.decide(meter, live, NOW, PLAN, dict(state or {}), markers={}, polled=True, live_runs=runs, burn=burn)
+    return decide_on(PLAN, meter, live, runs, burn, state)
+
+
+def decide_on(plan, meter, live, runs=(), burn=ORD, state=None):
+    """The account plan's decision on these readings, framed as the timed pass frames it (account_plan.frame_for_pass)."""
+    f = AP.frame_for_pass(ACT, meter, live, NOW, dict(state or {}), {}, None, runs, burn, plan)
+    return AP.decide(plan, f, polled=True)
+
+
+def tick(**seams):
+    """One timed pass (account_plan.tick, which drives account_actuator.check), with these seams."""
+    return AP.tick(seams={"poll_fn": lambda: None, **seams})
 
 
 class Fake:
@@ -66,10 +85,10 @@ class Fake:
     def __init__(self, live="system", runs=RUN, burn=ORD, send_err=None):
         self.live, self.runs, self.burn, self.sent, self.slept, self.err = live, list(runs), burn, [], [], send_err
         self.t, self.withdrawn, self.on_sleep = NOW, [], None
-        for k in list(SP.read_markers()):
-            (SP.OUT / "markers" / f"{k}.json").unlink()
+        for k in list(ACT.read_markers()):
+            (ACT.OUT / "markers" / f"{k}.json").unlink()
         for f in ("notice.json", "state.json", "log.jsonl", "HOLD"):
-            (SP.OUT / f).unlink(missing_ok=True)
+            (ACT.OUT / f).unlink(missing_ok=True)
         self.calls = TMP / "calls.txt"
         self.calls.write_text("")
         sw = TMP / "claude-account"
@@ -78,9 +97,9 @@ class Fake:
                       % (self.calls, TMP / "live.txt", TMP / "live.txt"))
         sw.chmod(sw.stat().st_mode | stat.S_IEXEC)
         (TMP / "live.txt").write_text(live)
-        SP.CA = str(sw)
-        SP.clock = lambda: self.t
-        SP.sleep = self.sleep
+        ACT.CA = str(sw)
+        ACT.clock = lambda: self.t
+        ACT.sleep = self.sleep
 
     # the order channel
     def store_runs(self):
@@ -107,7 +126,7 @@ class Fake:
             self.on_sleep()
 
     def go(self, meter, runs="own", passes=1):
-        SP.check(dry=False, now=self.t if passes == 1 else None, meter_fn=meter if callable(meter) else lambda: meter,
+        tick(now=self.t if passes == 1 else None, meter_fn=meter if callable(meter) else lambda: meter,
                  poll_fn=lambda: None, runs_fn=(lambda: list(self.runs)) if runs == "own" else runs,
                  burn_fn=lambda *a: self.burn, orders=self, passes=passes)
 
@@ -115,13 +134,13 @@ class Fake:
         return [ln.split()[0] for ln in self.calls.read_text().splitlines() if ln.split() and ln.split()[0] != "--json"]
 
     def notice(self):
-        return json.loads((SP.OUT / "notice.json").read_text())
+        return json.loads((ACT.OUT / "notice.json").read_text())
 
     def state(self):
-        return SP.load_state()
+        return ACT.load_state()
 
     def steps(self):
-        return [r for r in (json.loads(x) for x in (SP.OUT / "log.jsonl").read_text().splitlines())
+        return [r for r in (json.loads(x) for x in (ACT.OUT / "log.jsonl").read_text().splitlines())
                 if r.get("do") == "account_end"]
 
 
@@ -160,15 +179,15 @@ def t_the_warning_fires_at_three_at_a_fast_burn():
 
 def t_the_burn_is_the_slope_of_this_week():
     n = "the-warning-fires-at-three-at-a-fast-burn"
-    rs = SP.iso(NOW + 3 * 86400)
+    rs = ACT.iso(NOW + 3 * 86400)
 
     def rows(pts, acct="lukas", reset=rs, src="MEASURED"):
-        return [{"account": acct, "source": src, "measured_at": SP.iso(NOW - a * 60), "week_pct_used": u,
+        return [{"account": acct, "source": src, "measured_at": ACT.iso(NOW - a * 60), "week_pct_used": u,
                  "week_resets_at": reset} for a, u in pts]
     today = rows([(142, 55), (127, 57), (112, 59), (97, 60), (82, 61), (67, 62), (52, 63), (37, 66), (22, 67), (7, 69)])
     b = AE.burn_of(today, "lukas", NOW, CFG)
     check("%s: the burn of 45 min" % n, not b["stale"] and abs(b["rate"] - 6 / 45) < 1e-6 and abs(b["age_s"] - 420) < 2, b)
-    b = AE.burn_of(rows([(60, 95)], reset=SP.iso(NOW - 1800)) + rows([(25, 0), (10, 2)]), "lukas", NOW, CFG)
+    b = AE.burn_of(rows([(60, 95)], reset=ACT.iso(NOW - 1800)) + rows([(25, 0), (10, 2)]), "lukas", NOW, CFG)
     check("%s: a reset inside the window is no burn" % n, not b["stale"] and abs(b["rate"] - 2 / 15) < 1e-6, b)
     b = AE.burn_of(rows([(40, 95), (25, 0), (10, 1)]), "lukas", NOW, CFG)
     check("%s: a refill with the reset time unchanged is no burn (steven, 2026-11-22)" % n,
@@ -218,7 +237,7 @@ def t_no_new_work_at_the_line():
     nt = f.notice()
     check("%s: the notice" % n, nt["state"] == "soft" and nt["drain"] is True and nt["account_end"] is True
           and not nt.get("warning"), nt)
-    p = str(SP.OUT / "notice.json")
+    p = str(ACT.OUT / "notice.json")
     for what, a in (("a new run", ({}, None)), ("a continuation", ({"continued_from": "rm-x"}, None)),
                     ("a resume", ({}, "sess-1"))):
         check("%s: %s is refused" % (n, what), bool(DH.drain_refusal(f.t + 30, *a, path=p)))
@@ -233,7 +252,7 @@ def t_the_account_burns_to_its_line():
     """RIMMANDRAKE_BURN_TO_LINE_WARNING_SWITCHED_AT_THREE (2026-11-24 4:56 PM PST: lukas switched away at 3%, line 1%)."""
     import detached_helper as DH
     n = "the-account-burns-to-its-line"
-    p = str(SP.OUT / "notice.json")
+    p = str(ACT.OUT / "notice.json")
     for name, burn in (("ordinary", ORD), ("fast", FAST), ("stale", STALE)):
         for left in (3, 2):
             d = D(m(left), "system", [], burn)
@@ -301,7 +320,7 @@ def t_the_emergency_orders_pauses_then_switches():
     check("%s: the switch comes sooner when the last run ends" % n, f.acts() == ["use"] and sum(f.slept) <= 5, f.slept)
     # a pass that died in the pause
     f = Fake()
-    SP.save_state({"account_end": {"account": "system", "warn_line": 2, "ordered": {RUN[0]: {"emergency": NOW - 60}},
+    ACT.save_state({"account_end": {"account": "system", "warn_line": 2, "ordered": {RUN[0]: {"emergency": NOW - 60}},
                                    "emergency": {"at": NOW - 60, "pause_s": 89}}})
     f.go(m(1))
     check("%s: a dead pass's pause is not started again" % n, sum(f.slept) == 29 and f.acts() == ["use"], f.slept)
@@ -339,7 +358,7 @@ def t_a_stale_reading_uses_the_safe_values():
     check("%s: the emergency says stale, the pause is 20 s" % n, "STALE" in f.sent[-1]["text"]
           and "20 seconds" in f.sent[-1]["text"] and sum(f.slept) == 20, (f.sent, f.slept))
     f = Fake()
-    SP.check(dry=False, now=f.t, meter_fn=lambda: m(3), poll_fn=lambda: None, runs_fn=lambda: RUN,
+    tick(now=f.t, meter_fn=lambda: m(3), poll_fn=lambda: None, runs_fn=lambda: RUN,
              burn_fn=lambda *a: 1 / 0, orders=f)
     check("%s: a burn reader that raises is stale, not slow" % n, len(f.sent) == 1 and "STALE" in f.sent[0]["text"], f.sent)
     d = D({**OFF, "system": R(3, 100, src="ESTIMATE", age=40, stale=True), "lukas": R(98, 120)}, "system", RUN, STALE)
@@ -446,17 +465,17 @@ def t_each_step_is_recorded_once():
     f.go(m(2))
     check("%s: a later run is ordered alone" % n, [s["units"] for s in f.sent] == [RUN, ["rm-role-designer-1795180009"]]
           and len(f.steps()) == 1, f.sent)
-    (SP.OUT / "state.json").write_text(json.dumps({"account_end_events": ["a", "b"]}))
+    (ACT.OUT / "state.json").write_text(json.dumps({"account_end_events": ["a", "b"]}))
     old = AE.ledger_events
     try:
         AE.ledger_events = lambda t: ["b"]
-        SP.flush_events()
+        ACT.flush_events()
         check("%s: an event that was not written stays owed" % n, f.state() == {"account_end_events": ["b"]}, f.state())
         AE.ledger_events = lambda t: 1 / 0
-        SP.flush_events()
+        ACT.flush_events()
         check("%s: a writer that raises keeps it owed" % n, f.state() == {"account_end_events": ["b"]}, f.state())
         AE.ledger_events = lambda t: []
-        SP.flush_events()
+        ACT.flush_events()
         check("%s: written, it is owed no more" % n, f.state() == {}, f.state())
     finally:
         AE.ledger_events = old
@@ -532,8 +551,8 @@ def t_a_wrapped_run_is_carried_on_after_the_switch():
         return 0, "DETACHED rm-detached-bench-wrapped-2"
     ok = {k: (lambda _a: None) for k in LOC.GATES}
     kw = {"launch_fn": launch, "gates": ok, "reader": lambda t: {"state": "doing", "notes": []}, "log_path": str(TMP / "log.md")}
-    SP.OUT.mkdir(parents=True, exist_ok=True)
-    (SP.OUT / "notice.json").write_text(json.dumps({"state": "soft", "drain": True, "account_end": True, "at": SP.iso(NOW)}))
+    ACT.OUT.mkdir(parents=True, exist_ok=True)
+    (ACT.OUT / "notice.json").write_text(json.dumps({"state": "soft", "drain": True, "account_end": True, "at": ACT.iso(NOW)}))
     x = LOC.run(unit, now=NOW, **kw)
     got = DH.read_record(unit)
     check("%s: not while the account ends" % n, not launched and "account switch" in x["why"] and got.get("continue_waits"), x)
@@ -544,19 +563,19 @@ def t_a_wrapped_run_is_carried_on_after_the_switch():
     import control as C
     real, C.launch_unit = C.launch_unit, lambda argv, spec, **k: kicks.append(spec) or Ran()
     try:
-        said = LOC.kick_waiting(NOW + 60, plan_dir=str(SP.OUT))
+        said = LOC.kick_waiting(NOW + 60, plan_dir=str(ACT.OUT))
         check("%s: nor kicked then" % n, not kicks and DH.read_record(unit).get("continue_waits"), said)
-        (SP.OUT / "notice.json").write_text(json.dumps({"state": "none", "at": SP.iso(NOW + 300)}))
-        (SP.OUT / "log.jsonl").write_text(json.dumps({"do": "normal", "at": SP.iso(NOW + 300)}) + "\n")
+        (ACT.OUT / "notice.json").write_text(json.dumps({"state": "none", "at": ACT.iso(NOW + 300)}))
+        (ACT.OUT / "log.jsonl").write_text(json.dumps({"do": "normal", "at": ACT.iso(NOW + 300)}) + "\n")
         Ran.returncode = 1
-        LOC.kick_waiting(NOW + 330, plan_dir=str(SP.OUT))
+        LOC.kick_waiting(NOW + 330, plan_dir=str(ACT.OUT))
         check("%s: a kick that fails is owed still" % n, bool(DH.read_record(unit).get("continue_waits")))
         Ran.returncode = 0
         kicks.clear()
-        LOC.kick_waiting(NOW + 360, plan_dir=str(SP.OUT))
+        LOC.kick_waiting(NOW + 360, plan_dir=str(ACT.OUT))
         check("%s: the first pass with headroom starts it" % n, len(kicks) == 1 and kicks[0]["unit"] == unit + "-continue"
               and kicks[0].get("reuse_name") is True and not DH.read_record(unit).get("continue_waits"), kicks)
-        LOC.kick_waiting(NOW + 400, plan_dir=str(SP.OUT))
+        LOC.kick_waiting(NOW + 400, plan_dir=str(ACT.OUT))
         check("%s: once" % n, len(kicks) == 1, kicks)
     finally:
         C.launch_unit = real
@@ -566,22 +585,24 @@ def t_a_wrapped_run_is_carried_on_after_the_switch():
 
 def t_a_switch_never_lands_on_an_ending_account():
     n = "a-switch-never-lands-on-an-ending-account"
-    for left in (2, 3):
-        d = D({**OFF, "system": R(left, 100), "lukas": R(40, 120)}, "lukas")
-        check("%s: system at %s%% is no target" % (n, left), d["do"] == "normal", d)
-    d = D({**OFF, "system": R(4, 100), "lukas": R(40, 120)}, "lukas")
-    check("%s: system at 4%% is" % n, d["do"] == "switch" and d["to"] == "system", d)
+    # lukas is at its own line: it is finished, and the next account is looked for. The plan's entry line is the
+    # warning line at an unknown burn (3) + numbers.entry_margin_pct (2): 5
+    for left in (2, 3, 5):
+        d = D({**OFF, "system": R(left, 100), "lukas": R(1, 120)}, "lukas")
+        check("%s: system at %s%% is no target" % (n, left), not (d["do"] == "switch" and d.get("to") == "system"), d)
+    d = D({**OFF, "system": R(6, 100), "lukas": R(1, 120)}, "lukas")
+    check("%s: system at 6%% is" % n, d["do"] == "switch" and d["to"] == "system", d)
 
 
 def t_the_hold_file_stops_it():
     n = "the-hold-file-stops-it"
     f = Fake()
-    f.on_sleep = lambda: (SP.OUT / "HOLD").write_text("x")
+    f.on_sleep = lambda: (ACT.OUT / "HOLD").write_text("x")
     f.go(m(1))
     check("%s: no switch" % n, f.acts() == [] and f.sent, f.acts())
-    last = json.loads((SP.OUT / "log.jsonl").read_text().splitlines()[-1])
+    last = json.loads((ACT.OUT / "log.jsonl").read_text().splitlines()[-1])
     check("%s: the pass ends in the pause, it does not try the switch" % n, last["do"] == "passive" and "pause" in last["why"], last)
-    (SP.OUT / "HOLD").unlink()
+    (ACT.OUT / "HOLD").unlink()
 
 
 def t_the_pass_repeats_while_an_account_ends():
@@ -614,15 +635,15 @@ def t_the_reading_is_fresh_at_the_end():
     f = Fake()
     for left, age, want in ((2, 1.0, 1), (2, 0.2, 0), (20, 4.0, 0)):
         polled.clear()
-        (SP.OUT / "state.json").unlink(missing_ok=True)
+        (ACT.OUT / "state.json").unlink(missing_ok=True)
         meter = {**OFF, "system": R(left, 100, age=age), "lukas": R(98, 120, age=0.1)}
-        SP.check(dry=False, now=f.t, meter_fn=lambda: meter, poll_fn=lambda: polled.append(1), runs_fn=lambda: RUN,
+        tick(now=f.t, meter_fn=lambda: meter, poll_fn=lambda: polled.append(1), runs_fn=lambda: RUN,
                  burn_fn=lambda *a: ORD, orders=f)
         check("%s: at %s%%, a reading %s min old: %d poll(s)" % (n, left, age, want), len(polled) == want, polled)
     polled.clear()
     meter = {**OFF, "system": R(2, 100, age=1.0), "lukas": R(98, 120, age=0.1)}
-    SP.save_state({"last_poll": SP.iso(f.t)})
-    SP.check(dry=False, now=f.t + 60, meter_fn=lambda: meter, poll_fn=lambda: polled.append(1), runs_fn=lambda: RUN,
+    ACT.save_state({"last_poll": ACT.iso(f.t)})
+    tick(now=f.t + 60, meter_fn=lambda: meter, poll_fn=lambda: polled.append(1), runs_fn=lambda: RUN,
              burn_fn=lambda *a: ORD, orders=f)
     check("%s: each 60 s repeat reads the meter again" % n, polled == [1], polled)
 
@@ -632,7 +653,7 @@ def t_the_dark_notice_starts_nothing():
     n = "no-new-work-at-the-line"
     f = Fake(live="lukas", runs=[])
     f.go({**OFF, "system": R(0.5, 100), "lukas": R(1, 120)})
-    p = str(SP.OUT / "notice.json")
+    p = str(ACT.OUT / "notice.json")
     for what, a in (("a new run", ({}, None)), ("a continuation", ({"continued_from": "rm-x"}, None)), ("a resume", ({}, "s"))):
         check("%s: %s is refused while the fleet is stopped" % (n, what), f.notice()["state"] == "stop"
               and bool(DH.drain_refusal(f.t + 30, *a, path=p)), f.notice())
@@ -644,16 +665,16 @@ def t_the_dark_notice_starts_nothing():
     check("%s: after the reset all start again" % n, DH.drain_refusal(f.t + 30, {}, None, path=p) is None)
     # while the switcher runs (about 13 s) the notice refuses a continuation too
     f = Fake(runs=[])
-    seen, real = [], SP.armed_call
+    seen, real = [], ACT.armed_call
 
     def call(*a, **k):
         seen.append(DH.drain_refusal(f.t + 1, {"continued_from": "rm-x"}, None, path=p))
         return real(*a, **k)
-    SP.armed_call = call
+    ACT.armed_call = call
     try:
         f.go(m(1))
     finally:
-        SP.armed_call = real
+        ACT.armed_call = real
     check("%s: nor does a continuation start inside the switch" % n, f.acts() == ["use"] and seen and bool(seen[0]), seen)
 
 
@@ -663,16 +684,18 @@ def t_the_latch_ends_with_a_lowered_line():
     meter = {"steven": R(51, 150), "system": R(40, 100), "lukas": R(98, 120)}
     f.go(meter)
     check("%s: warned at 52" % n, len(f.sent) == 1, f.sent)
-    low = dict(PLAN, accounts=dict(PLAN["accounts"], steven={"leave_pct_left": 5, "window_h_after_reset": None}))
-    (TMP / "low.json").write_text(json.dumps(low))
-    SP.PLAN_PATH = TMP / "low.json"
+    low = json.loads(json.dumps(PLAN))
+    st_ = low["steps"][AP.find_step(low, "steven")]
+    st_["leave"] = 5
+    st_.pop("when", None)
+    set_plan(low)
     try:
         f.runs = []
         f.go(meter)
     finally:
-        SP.PLAN_PATH = TMP / "plan.json"
+        set_plan(PLAN)
     st = {"account_end": {"account": "steven", "warn_line": 52, "line": 52}}
-    d = SP.decide(meter, "steven", NOW, low, st, markers={}, polled=True, live_runs=[], burn=ORD)
+    d = decide_on(low, meter, "steven", [], ORD, st)
     check("%s: the decision itself does not read the old latch" % n, d["do"] == "normal" and d["warn_line"] == 5, d)
     check("%s: his line lowered to 5: no switch at 51%%, the orders are withdrawn" % n, not f.acts()
           and f.withdrawn == ["ct_1"] and "account_end" not in f.state(), (f.acts(), f.withdrawn, f.state()))
@@ -696,24 +719,24 @@ def t_a_level_that_cannot_be_read_is_stale():
 
 def t_the_burn_is_only_of_the_time_it_was_live():
     n = "the-pause-keeps-the-chance-of-zero-under-ten-percent"
-    rs = SP.iso(NOW + 3 * 86400)
-    rows = [{"account": "lukas", "source": "MEASURED", "measured_at": SP.iso(NOW - a * 60), "week_pct_used": u,
+    rs = ACT.iso(NOW + 3 * 86400)
+    rows = [{"account": "lukas", "source": "MEASURED", "measured_at": ACT.iso(NOW - a * 60), "week_pct_used": u,
              "week_resets_at": rs} for a, u in ((45, 95), (30, 95), (15, 95), (8, 96), (0, 97))]
     b = AE.burn_of(rows, "lukas", NOW, CFG, since=NOW - 15 * 60)
     check("%s: idle readings from before the switch to it are no burn" % n, not b["stale"] and abs(b["rate"] - 2 / 15) < 1e-6, b)
     b = AE.burn_of(rows, "lukas", NOW, CFG, since=NOW - 5 * 60)
     check("%s: 5 min after a switch the burn is stale" % n, b["stale"], b)
-    log = SP.SWITCH_LOG
+    log = ACT.SWITCH_LOG
     log.parent.mkdir(parents=True, exist_ok=True)
-    log.write_text("".join(json.dumps({"op": "use", "from": f, "to": t, "changed": True, "ts": SP.iso(NOW - a)}) + "\n"
+    log.write_text("".join(json.dumps({"op": "use", "from": f, "to": t, "changed": True, "ts": ACT.iso(NOW - a)}) + "\n"
                            for f, t, a in (("system", "lukas", 9000), ("lukas", "system", 5000), ("system", "lukas", 900))))
-    check("%s: since is the last switch to it" % n, SP.live_since("lukas") == NOW - 900 and SP.live_since("system") is None,
-          (SP.live_since("lukas"), SP.live_since("system")))
+    check("%s: since is the last switch to it" % n, ACT.live_since("lukas") == NOW - 900 and ACT.live_since("system") is None,
+          (ACT.live_since("lukas"), ACT.live_since("system")))
     log.unlink()
 
 
 def main():
-    real_clock, real_sleep = SP.clock, SP.sleep
+    real_clock, real_sleep = ACT.clock, ACT.sleep
     for t in (t_the_warning_fires_at_two_at_an_ordinary_burn, t_the_warning_fires_at_three_at_a_fast_burn,
               t_the_burn_is_the_slope_of_this_week, t_the_order_tells_the_numbers, t_no_new_work_at_the_line,
               t_the_account_burns_to_its_line, t_the_warning_is_latched,
@@ -732,7 +755,7 @@ def main():
             import traceback
             traceback.print_exc()
             check(t.__name__ + " raised", False, "%s: %s" % (type(e).__name__, e))
-    SP.clock, SP.sleep = real_clock, real_sleep
+    ACT.clock, ACT.sleep = real_clock, real_sleep
     print("selftest_account_end: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

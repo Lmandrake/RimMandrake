@@ -8,7 +8,7 @@ Proof that the one home equals or beats each old reader: `equivalence.md` beside
 
 The fact: the account that a machine's Claude sessions use now, as `claude-account --json status` names it in its
 `live` field. Every reader of that fact calls `account_live.read`: `slot_allocator.live_login_name`,
-`switching_plan.switcher_status`, `running_now.collect_inuse`, `account_handover` (`check`) and
+`account_actuator.switcher_status`, `running_now.collect_inuse`, `account_handover` (`check`) and
 `account_usage.remote_live` and `run_host.read_facts` (another machine, over ssh). For the usage poller,
 `account_usage.live_email` reads this machine's session config file. The poller matches that email against its own
 registry.
@@ -21,7 +21,7 @@ registry.
 - **a-run-seam.** An optional `run(argv, timeout) -> (rc, stdout)` from a caller that already has a world seam
   (`running_now.Env.run`). It may raise `subprocess.TimeoutExpired` or `OSError`.
 - **the-exe-seam.** `RM_CLAUDE_ACCOUNT` (read at call time), else `claude-account` on PATH, else
-  `~/.local/bin/claude-account`. A caller may pass `exe=` (switching_plan passes its `CA`). This is the only seam.
+  `~/.local/bin/claude-account`. A caller may pass `exe=` (account_actuator passes its `CA`). This is the only seam.
 
 ## DOES NOT SURVIVE (not promised)
 

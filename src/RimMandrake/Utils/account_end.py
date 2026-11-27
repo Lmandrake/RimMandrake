@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """The end of an account (RIMMANDRAKE_BUILD_ACCOUNT_END_WARN_SAVE_PAUSE_SWITCH_SIZED_BY_BURN; page
 design/specs/2026-11-24-account-end/boundary.md): the numbers (burn rate, warning line, pause), the text of the three
-orders (the warning, the save order at the line, the emergency), their delivery into the live runs, and the records. switching_plan.py decides and acts; this module holds no
-decision of its own and never touches the meter or the switcher. The numbers are switching_plan.json `account_end`.
+orders (the warning, the save order at the line, the emergency), their delivery into the live runs, and the records.
+account_plan.py decides and account_actuator.py acts; this module holds no decision of its own and never touches the
+meter or the switcher. The numbers are the account plan's `numbers.account_end` (./acct plan).
 
     account_end.py burn [ACCOUNT]    the burn rate of an account (default: the live one), and what it would size
 """
@@ -305,7 +306,7 @@ def ledger_events(texts):
             return left     # held: the next pass writes them
         n = 0
         for t in texts:
-            rc, out = ing.rimflow("note", ITEM, "--text", t, "--why", "account end (switching_plan.py, no AI)")
+            rc, out = ing.rimflow("note", ITEM, "--text", t, "--why", "account end (account_actuator.py, no AI)")
             if rc:
                 print("account_end: ledger note refused: %s" % out[-300:], file=sys.stderr)  # cut-ok: terminal display
                 continue
@@ -317,16 +318,21 @@ def ledger_events(texts):
 
 
 def main(argv=None):
-    import switching_plan as SP
+    import account_actuator as ACT
+    import account_plan as AP
     av = list(sys.argv[1:] if argv is None else argv)
     if av[:1] != ["burn"]:
         print(__doc__)
         return 2
-    plan, now = SP.load_plan(), time.time()
-    cfg, meter = plan["account_end"], SP.meter_now()
-    acct = av[1] if len(av) > 1 else SP.switcher_status().get("live")
-    b = SP.burn_now(acct, meter, now, cfg, SP.default_burn)
-    line = SP.lines(meter, SP.at(plan, now, meter), now)[0].get(acct)
+    plan, why = AP.plan_in_force()
+    if plan is None:
+        print("COULD NOT LOOK: " + why)
+        return 2
+    now, meter = time.time(), ACT.meter_now()
+    cfg = plan["numbers"]["account_end"]
+    acct = av[1] if len(av) > 1 else ACT.switcher_status().get("live")
+    b = ACT.burn_now(acct, meter, now, cfg, ACT.default_burn)
+    line = AP.legacy_view(plan, {"now": now, "rows": meter})["accounts"].get(acct, {}).get("leave_pct_left")
     out = {"account": acct, "line": line, "burn": b, "has_emergency": has_emergency(line, cfg), "pause_s": pause_s(b, cfg)}
     if line is not None:
         out["warning_line"] = warning_line(line, b, cfg)

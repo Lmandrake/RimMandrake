@@ -20,7 +20,7 @@ on a following machine `follows.json` (the mark that its notice comes from the d
 hand there is still obeyed and shown by `./acct status`; `./acct hold` is the door.
 
 One pass: read the plan file, read the meter (poll when a reading is old near a line), decide, hand the decision to
-the actuator (`switching_plan._check`: warn, save order, pause, arm, use, disarm, or a fleet stop), publish the state,
+the actuator (`account_actuator.check`: warn, save order, pause, arm, use, disarm, or a fleet stop), publish the state,
 write each listed machine its notice, start again the runs that waited for the switch. Unit timeout 2700 s.
 
 Test a change without the live plan: `./acct whatif -- <a write>`; or a copy of the plan folder named by

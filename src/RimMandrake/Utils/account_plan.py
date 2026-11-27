@@ -10,12 +10,13 @@ run and never refuses a start. Each decision says its reason in one line.
 
     ./acct status | next | plan | readings | forecast | measures | burn-mode | can-use A
     ./acct order A B C · line A N · step add|set|rm|move · switch A · pin · unpin · hold --for 2h · release
-    ./acct set numbers.K=V · undo [REV] · whatif -- <a write> · import-legacy · tick [--shadow]
-    ./acct driver [old|new] · pass        which engine the timer's pass runs; the pass itself
+    ./acct set numbers.K=V · undo [REV] · whatif -- <a write> · init · tick [--dry-run] · pass
 
 The plan file: $RM_ACCOUNT_PLAN_DIR/plan.json (default ~/.local/state/rimmandrake/account_plan), outside every clone:
 a write binds at the next read. Levels are read only through account_usage.py; the switch, the save orders and the
-pause stay in switching_plan._check and account_end.py, which `tick` drives with this file's decision.
+pause are account_actuator.py's and account_end.py's, which `tick` drives with this file's decision. The pass always
+has rules: the plan file; when that is missing or refused, the last revision that history.jsonl accepted; with no
+history, the first plan of account_plan.seed.json. Each such pass says which in its log.
 Exit: 0 done or a value · 1 no · 2 could not look · 3 refused, nothing written · 4 failed · 5 none.
 Test seams: RM_ACCOUNT_PLAN_DIR, RM_ACCOUNT_PLAN_FRAME (a JSON frame in place of every live reading).
 """
@@ -295,15 +296,13 @@ def problems(plan) -> list:
     """Every fault of the plan, each with its repair. [] is a valid plan."""
     out = []
     if not isinstance(plan, dict) or plan.get("schema") != 1:
-        return ["the plan is not a schema 1 object; repair: ./acct undo, or ./acct import-legacy"]
+        return ["the plan is not a schema 1 object; repair: ./acct undo, or ./acct init"]
     accts = plan.get("accounts")
     if not isinstance(accts, dict) or not accts:
         return ["`accounts` is missing; repair: ./acct undo"]
     for a, c in accts.items():
         if not isinstance(c, dict) or c.get("kind") not in ("claude", "meter"):
             out.append(f"account {a}: `kind` must be claude or meter")
-    if plan.get("driver", "old") not in ("old", "new"):
-        out.append("`driver` must be old or new; repair: ./acct driver old")
     N = plan.get("numbers")
     if not isinstance(N, dict):
         return out + ["`numbers` is missing; repair: ./acct undo"]
@@ -408,7 +407,7 @@ def load_plan():
     try:
         text = p.read_text()
     except FileNotFoundError:
-        return None, f"NONE: no plan file at {p}; repair: ./acct import-legacy"
+        return None, f"NONE: no plan file at {p}; repair: ./acct init"
     except OSError as e:
         return None, f"COULD NOT LOOK: {p}: {e}"
     try:
@@ -419,6 +418,33 @@ def load_plan():
     if bad:
         return None, "the plan file is refused: " + "; ".join(bad[:3]) + "; repair: ./acct undo"
     return plan, None
+
+
+def first_plan() -> dict:
+    """The first plan file (account_plan.seed.json `plan`): what `./acct init` writes, and the rules of a pass that has
+    no plan file and no history."""
+    return copy.deepcopy(json.loads(SEED.read_text())["plan"])
+
+
+def plan_in_force():
+    """-> (plan, None) from the plan file; when it is missing or refused, (the last revision that history.jsonl
+    accepted, or else the first plan, the cause and which one): the pass and the readers always have rules, and say
+    which. (None, why) only when the file could not be read (COULD NOT LOOK) or nothing at all is valid."""
+    plan, why = load_plan()
+    if plan is not None or why.startswith("COULD NOT LOOK"):
+        return plan, why if plan is None else None
+    for h in reversed(history()):
+        cand = h.get("after")
+        if isinstance(cand, dict) and not problems(cand):
+            return cand, "%s; the pass runs on rev %s, the last revision that history.jsonl accepted" % (why, cand.get("rev"))
+    try:
+        cand = first_plan()
+    except (OSError, ValueError, KeyError) as e:
+        return None, "%s; and the first plan in %s cannot be read: %s" % (why, SEED, e)
+    bad = problems(cand)
+    if bad:
+        return None, "%s; and the first plan in %s is refused: %s" % (why, SEED, "; ".join(bad[:3]))
+    return cand, "%s; the pass runs on the first plan of %s (no history)" % (why, SEED.name)
 
 
 def write_atomic(path: Path, obj) -> None:
@@ -457,6 +483,8 @@ def commit(change, meta: dict, base=None):
         else:
             old = base
         new = change(copy.deepcopy(old) if old is not None else None)
+        if isinstance(new, dict):
+            new.pop("driver", None)     # the key of the retired engine switch (until 2026-11-27): it means nothing now
         bad = problems(new)
         if bad:
             raise Refused("; ".join(bad))
@@ -563,20 +591,20 @@ def gather(now=None, slow=False) -> dict:
         return f
     import account_live as AL
     import account_usage as AU
-    import switching_plan as SP
+    import account_actuator as ACT
     now = now or time.time()
-    ans = AL.read(exe_path=SP.CA)
+    ans = AL.read(exe_path=ACT.CA)
     live = AL.status_of(ans).get("live")
     rows = AU.read_now(now).get("accounts")
     if rows is None:        # the reader has no latest.json: every level then reads UNMEASURED, by name, never 0
         rows = {}
     try:
-        runs = SP.live_detached_runs()
+        runs = ACT.live_detached_runs()
     except Exception:  # noqa: BLE001  unreadable runs count as live
         runs = None
-    markers, sws = SP.read_markers(), SP.switches()
+    markers, sws = ACT.read_markers(), ACT.switches()
     plan, _why = load_plan()
-    cfg = dig(plan or {}, "numbers.account_end") or SP.load_plan()["account_end"]
+    cfg = dig(plan or {}, "numbers.account_end") or first_plan()["numbers"]["account_end"]
     series = series_rows()
     cache = read_json(plan_dir() / "frame.json", {})
     if not isinstance(cache, dict):
@@ -601,13 +629,13 @@ def gather(now=None, slow=False) -> dict:
     except OSError:
         load = None
     return {"now": now, "live": live, "live_why": AL.why_of(ans) if not live else "", "runs": runs,
-            "rows": rows, "burn_live": SP.burn_now(live, rows, now, cfg, SP.default_burn) if live else None,
+            "rows": rows, "burn_live": ACT.burn_now(live, rows, now, cfg, ACT.default_burn) if live else None,
             "burn_h": fleet_burn(series, now, dig(plan or {}, "numbers.forecast.burn_window_h") or 24,
                                  accounts=set(rows)),
-            "switches": sws, "hand": bool(SP.manual_switch((sws or [None])[-1], markers, live)) if sws else False,
-            "draining": draining(SP),
+            "switches": sws, "hand": bool(ACT.manual_switch((sws or [None])[-1], markers, live)) if sws else False,
+            "draining": draining(ACT),
             "notice": read_json(notice_dir() / "notice.json"), "published": read_json(plan_dir() / "decision.json"),
-            "markers": markers, "state": SP.load_state(), "hold_file": (SP.OUT / "HOLD").exists(),
+            "markers": markers, "state": ACT.load_state(), "hold_file": (ACT.OUT / "HOLD").exists(),
             "codex": codex, "genai": cache.get("genai"), "slow_at": cache.get("at"), "entry": entry,
             "load": load, "ncpu": os.cpu_count() or 1}
 
@@ -711,11 +739,12 @@ def targets(can, rules, env, under):
 
 
 # ------------------------------------------------------------------ the week ahead (pure; the pick and the forecast)
-def week_ahead(plan, f, first=None, rate=None, hours=None):
+def week_ahead(plan, f, first=None, rate=None, hours=None, step_min=None):
     """One run of the week ahead under the plan: stay on the live account until its step is finished, then the best
     next account; each account refills at its reset. first: an account to switch to now (None: stay). -> {first,
     events, erased: {account: points}, erased_total, switches, idle_pts, cost, rate, hours}, or None when it cannot
-    be run (no burn rate, the live account unknown, no reset time)."""
+    be run (no burn rate, the live account unknown, no reset time). step_min: the step of the run (default
+    numbers.forecast.step_min)."""
     rate = f.get("burn_h") if rate is None else rate
     live = f.get("live")
     if rate is None or not live:
@@ -731,7 +760,7 @@ def week_ahead(plan, f, first=None, rate=None, hours=None):
     known = [reset[a] for a in accts if reset[a] is not None]
     if not known or (live in accts and left.get(live) is None):
         return None
-    dt = N["forecast"]["step_min"] * 60
+    dt = (step_min or N["forecast"]["step_min"]) * 60
     # to just past the last next reset: the allowance that each account has now is counted at its own reset, once
     horizon = now + hours * 3600 if hours else min(max(known), now + WEEK) + dt
     st = {"t": now, "live": live, "left": left, "reset": reset, "entry": dict(f.get("entry") or {}),
@@ -799,13 +828,93 @@ def _run(plan, st, rate, horizon, dt):
                 return best
         elif done and under:
             st["idle"] += rate * dt / 3600      # nowhere to go: this burn finds no account
+            st.setdefault("idle_from", t)       # the first moment of it: the fleet stops (ops_watch fleet_stop_h)
             st["t"] += dt
             continue
         st["left"][st["live"]] = max(0.0, st["left"][st["live"]] - rate * dt / 3600)
         st["t"] += dt
     return {"events": st["events"], "erased": {a: round(v, 1) for a, v in st["erased"].items()},
             "erased_total": round(sum(st["erased"].values()), 1), "switches": st["switches"],
-            "idle_pts": round(st["idle"], 1), "cost": round(_cost(plan, st), 3)}
+            "idle_pts": round(st["idle"], 1), "idle_from": st.get("idle_from"), "cost": round(_cost(plan, st), 3)}
+
+
+def pool_pace(plan, f) -> dict:
+    """The pace of the whole pool (the allocator's pool pacing; card 2026-10-28: "Pace the whole pool BECAUSE it
+    spreads out the human review time"), on the rules in force now (legacy_view: the alive steps' order and lines).
+    Each account in that order holds its budget down to its line (the last to reset: at least the last account's
+    floor), due at its next reset, and each refill (100 - its line) at the reset after, up to one week past the last
+    reset. An account's present budget is left out when the
+    accounts before it in the order that outlive it hold more than the pace without it burns before its reset. The
+    rate is the max over the deadlines of the cumulative spend / hours. -> {pct, rate_pct_h, deadline_h, total_pct,
+    parts}; rate None when no account has a reset time."""
+    now, N = f["now"], plan["numbers"]
+    v = legacy_view(plan, f)
+    order, rd = v["order"], readings_of(f)
+    line = {a: v["accounts"][a].get("leave_pct_left", N["floor_pct"]) for a in order}
+    exp, elig, present, refills = {}, {}, {}, []
+    for a in order:
+        r = rd.get(a) or reading(None, now)
+        exp[a] = r["reset"]
+        elig[a] = r["ok"] and r["left"] > line[a]
+    horizon = max((e for e in exp.values() if e is not None), default=None)
+    last = max((a for a in order if exp[a] is not None), key=lambda a: exp[a], default=None)
+    if last is not None:    # the last account to expire has no other to hand over to: the pass waits at this floor
+        line[last] = max(line[last], N["last_account_floor_pct"])
+    horizon = None if horizon is None else horizon + WEEK
+    for a in order:
+        r, e = rd.get(a) or reading(None, now), exp[a]
+        if e is None:
+            continue
+        p = r["last_left"]              # an ESTIMATE or a stale figure is its upper bound
+        if p is not None and not r["ok"] and p <= N["blind_pct"]:
+            p = 0.0                     # a blind near-empty account counts as empty
+        if p is None and r["reset_passed"]:
+            p = 100.0
+        present[a] = (max(0.0, (p or 0.0) - line[a]), e)
+        k = 0
+        while k == 0 or e + (k + 1) * WEEK <= horizon:   # each refill up to one week past the last reset
+            refills.append((a, max(0.0, 100.0 - line[a]), e + (k + 1) * WEEK))
+            k += 1
+
+    def pace(parts):
+        parts = sorted(parts, key=lambda t: t[2])
+        cum, rate, bind, dl = 0.0, 0.0, 0.0, None
+        for _a, sp, d in parts:
+            cum += sp
+            h = (d - now) / 3600
+            if h > 0 and (dl is None or cum / h > rate):
+                rate, bind, dl = cum / h, cum, h
+        return parts, cum, rate, bind, dl
+
+    def blockers(a):
+        return [b for b in present if b != a and elig.get(b) and order.index(b) < order.index(a)
+                and present[b][1] > present[a][1]]
+
+    def placed(keep):
+        """A kept budget's account that comes before another kept one and outlives it is burned first: its budget is
+        due by the other's reset."""
+        due = {a: present[a][1] for a in keep}
+        for a in keep:
+            for b in blockers(a):
+                if b in keep:
+                    due[b] = min(due[b], present[a][1])
+        return [(a, present[a][0], min(present[a][1], due[a])) for a in keep if present[a][0] > 0] + refills
+
+    keep = set(present)
+    for _ in range(4):      # the pace depends on what is kept: settle it in a few rounds
+        new = {a for a, (_sp, e) in present.items()
+               if not blockers(a) or sum(present[b][0] for b in blockers(a)) < pace(placed(keep - {a}))[2] * (e - now) / 3600}
+        if new == keep:
+            break
+        keep = new
+    parts = placed(keep)
+    if not parts:
+        return {"pct": None, "rate_pct_h": None, "deadline_h": None, "total_pct": None, "parts": [],
+                "why": "no account has a reset time"}
+    parts, cum, rate, bind, dl = pace(parts)
+    return {"pct": round(bind, 2), "rate_pct_h": round(rate, 4), "deadline_h": round(dl, 2) if dl else None,
+            "total_pct": round(cum, 2),
+            "parts": [{"account": a, "spend_pct": round(sp, 2), "by_h": round((d - now) / 3600, 2)} for a, sp, d in parts]}
 
 
 def choices(plan, f, can, stay=True):
@@ -863,9 +972,9 @@ def commanded(plan, f) -> bool:
 
 
 def decide(plan, f, polled=True) -> dict:
-    """-> the decision, in the words of the old actuator (do: passive|skip|poll|normal|soft|switch|hold|stop|stopped|
+    """-> the decision, in the words of the actuator (do: passive|skip|poll|normal|soft|switch|hold|stop|stopped|
     start; to, account, line, pct_left, warn_line, under, key, why) plus next, pending, week (the counts)."""
-    import switching_plan as SP
+    import account_actuator as ACT
     now, N = f["now"], plan["numbers"]
     cfg, fr = N["account_end"], N["fresh"]
     hold = active(plan["holds"], now)
@@ -931,7 +1040,7 @@ def decide(plan, f, polled=True) -> dict:
 
     def out(d, **more):
         d = {**base, **d, **more}
-        dd = SP.drained(d, {"account_end": cfg}, runs)
+        dd = ACT.drained(d, {"account_end": cfg}, runs)
         # an_account_end_drain_ends_at_its_bound: on an account with no emergency step (a high line), a run that did not
         # end in rescue.drain_h hours after its save order no longer holds the fleet: the act goes, and it stops it
         ep, bound, nt = state.get("account_end") or {}, dig(N, "rescue.drain_h"), f.get("notice") or {}
@@ -971,7 +1080,11 @@ def decide(plan, f, polled=True) -> dict:
         if need and not polled:
             return {**base, "do": "poll", "poll": True, "why": "; ".join(need)}
         if lr["last_left"] is None or warn is None or lr["last_left"] <= warn + fr["near_pct"]:
+            # a last level inside the warning zone warns the runs as a read one does (account end, a stale reading
+            # uses the safe values: the burn is stale too, so the order says so)
+            zone = warn is not None and lr["last_left"] is not None and line < lr["last_left"] <= warn
             return {**base, "do": "soft", "unread": True,   # no switch is pending: the level is only unread
+                    **({"warning": True, "last_account": not can} if zone else {}),
                     "why": "%s reads %s and its last level (%s) cannot prove that it is above its "
                            "warning line: no new start until it is read" % (live, lr["state"], lr["last_left"])}
         return {**base, "do": "normal", "why": "%s reads %s; its last level was %s%%, above its %s%% warning line: "
@@ -986,25 +1099,25 @@ def decide(plan, f, polled=True) -> dict:
             if is_under and stopped_here:
                 return {**base, "do": "stopped", "why": "stopped on %s; %s cannot be confirmed after a poll" % (live, a)}
             if is_under and not (rl is None and pl is not None and pl > line):
-                return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
+                return out({"do": "stop", "key": ACT.stop_key(live, f["rows"].get(live) or {}, now),
                             "why": "%s is finished and %s cannot be confirmed after a poll" % (live, a)})
             return {**base, "do": "normal", "to": None, "why": "the switch to %s waits: its reading is %s min old "
                                                                "after a poll; %s stays" % (a, rd[a]["age_min"], live)}
-        key = SP.switch_key(live, a, f["rows"].get(a))
+        key = ACT.switch_key(live, a, f["rows"].get(a))
         m = markers.get(key) or {}
         age = now - stamp_or(m.get("at"), 0)       # a marker with no time is old: it guards nothing
         # a_failed_switch_off_an_account_above_its_line_stops_nothing: left only because no step uses it, above its
         # line, the account is not spent: a failed switch is tried again and the fleet goes on
         above = rl is None and pl is not None and pl > line
         if m.get("phase") == "failed" and is_under and not stopped_here and not above:
-            return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
+            return out({"do": "stop", "key": ACT.stop_key(live, f["rows"].get(live) or {}, now),
                         "why": "the switch %s failed and %s is finished: stop; the switch is tried again from the "
                                "stopped fleet" % (key, live)})
-        if m.get("phase") == "pending" and age < SP.STALE_PENDING_S:
+        if m.get("phase") == "pending" and age < ACT.STALE_PENDING_S:
             if is_under and stopped_here:
                 return {**base, "do": "stopped", "why": "stopped on %s; the switch %s is in flight" % (live, key)}
             if is_under:
-                return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
+                return out({"do": "stop", "key": ACT.stop_key(live, f["rows"].get(live) or {}, now),
                             "why": "the switch %s is in flight yet %s is still live at its line: stop" % (key, live)})
             return {**base, "do": "hold", "to": a, "key": key, "why": "the switch %s is in flight" % key}
         return out({"do": "switch", "to": a, "key": key, "under": is_under, "why": why}, week=week,
@@ -1048,7 +1161,7 @@ def decide(plan, f, polled=True) -> dict:
         unread = [a for a in accts if a != live and rules.get(a) and not (rd.get(a) or {}).get("ok")]
         if unread and not polled:
             return {**base, "do": "poll", "poll": True, "why": "read %s before any stop" % ", ".join(unread)}
-        return out({"do": "stop", "key": SP.stop_key(live, f["rows"].get(live) or {}, now),
+        return out({"do": "stop", "key": ACT.stop_key(live, f["rows"].get(live) or {}, now),
                     "why": "no account can take over (%s); %s at %s%% is finished%s" % (
                         blockers, live, "?" if pl is None else g(pl), " (blind meter)" if blind else "")})
 
@@ -1241,8 +1354,8 @@ REFUSES = ("soft", "stop", "stopped", "switch", "hold")       # the decisions un
 
 def notice_dir() -> Path:
     """The folder of the actuator's notice, which each machine's launch gate and hooks read."""
-    import switching_plan as SP
-    return Path(os.environ.get("RM_SWITCH_PLAN_DIR") or SP.LIVE_OUT)
+    import account_actuator as ACT
+    return Path(os.environ.get("RM_SWITCH_PLAN_DIR") or ACT.LIVE_OUT)
 
 
 def fresh_record(n, now) -> bool:
@@ -1290,14 +1403,12 @@ def new_run_gate(plan, f, a, carried=False):
     pd = f.get("published")
     if fresh_record(pd, now) and not pd.get("shadow") and pd.get("account") == a and pd.get("rev") == plan.get("rev"):
         d, how = pd, "the pass of %s" % pacific(stamp(pd["at"]))
-    elif plan.get("driver", "old") != "new":
-        return OK, "yes: the old engine drives this machine, and its notice refuses nothing"
     else:
         d, how = decide(plan, f), "decided now (no pass has published this plan for %s in the last %d min)" % (
             a, NOTICE_FRESH_S // 60)
     if d["do"] == "skip":
         return COULD_NOT_LOOK, d["why"]
-    # at the line: the save order, or a switch due under the line with no run live (SP.drained leaves it a switch)
+    # at the line: the save order, or a switch due under the line with no run live (ACT.drained leaves it a switch)
     at_line = d.get("account_end") or d.get("under") or (
         is_num(d.get("pct_left")) and is_num(d.get("line")) and d["pct_left"] <= d["line"])
     if d["do"] in REFUSES and not (carried and not at_line and d["do"] != "stop" and d["do"] != "stopped"):
@@ -1318,8 +1429,8 @@ def launch_gate(now=None, carried=False):
     own = (plan_dir() / "plan.json").exists() and not (
         os.environ.get("RM_SWITCH_PLAN_DIR") and not os.environ.get("RM_ACCOUNT_PLAN_DIR"))
     if own:
-        plan, why = load_plan()
-        if plan is None:        # a plan file that is refused: the pass runs the old engine, and its notice is the answer
+        plan, why = plan_in_force()     # the rules of the pass, a fallback included
+        if plan is None:        # no rules could be read: the actuator's notice is the answer
             r = notice_refusal(n, now, carried)
             return (NO, "NO: " + r, "decider") if r else (
                 OK, "yes: by the actuator's notice alone (%s)" % why, "decider")
@@ -1352,7 +1463,7 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
     readings (pure). A decision under which no new run starts is a drain there (at the line: `account_end`, save and
     publish); the warning zone carries the warning text; an account that could not be read refuses new runs and says
     could not look. Its switch at the line is machine_switch's, after the notice."""
-    import switching_plan as SP
+    import account_actuator as ACT
     prev = prev if isinstance(prev, dict) else {}
     tag = {"machine": name, "follows": os.uname().nodename}
     if not account:
@@ -1371,10 +1482,10 @@ def machine_notice(plan, f, account, now, name, prev=None, why_unread=None) -> d
         if d.get("warning"):
             dm["warning_text"] = AE.warn_text(account, d.get("pct_left"), fm["burn_live"], d.get("line"),
                                               plan["numbers"]["account_end"], bool(d.get("last_account")))
-    n = SP.notice_of(dm, now, prev)
+    n = ACT.notice_of(dm, now, prev)
     # its runs are not read here (machine_facts): the deciding pass counts them over ssh (machine_switch), and a reader
     # there must not take this for a systemd read that failed on its own machine
-    blind, said = SP.runs_why(None), "the runs there are counted by the pass of %s, not read in this decision" % tag["follows"]
+    blind, said = ACT.runs_why(None), "the runs there are counted by the pass of %s, not read in this decision" % tag["follows"]
     return {**{k: v.replace(blind, said) if isinstance(v, str) else v for k, v in n.items()}, **tag}
 
 
@@ -1557,21 +1668,20 @@ def machine_lines(plan, now) -> list:
     return out
 
 
-def old_shape(rows=None, now=None):
-    """The rules in force, in the shape that the old engine's functions read (order, lines, floors): for a program
-    that still calls one of them (the allocator's pool, the fleet runway of ops_watch, the Dispatcher's priority).
-    -> (plan, where it came from). The plan file while it drives; else switching_plan.json, which then drives. A
-    step's `when` has no place in this shape: an account is in the order while its step is alive now."""
-    import switching_plan as SP
-    plan, why = load_plan()
-    if plan is None or plan.get("driver", "old") != "new":
-        return SP.load_plan(), "switching_plan.json (%s)" % (why or "the plan file names the old engine as the driver")
+def rules_now(rows=None, now=None):
+    """The rules in force now, flat (order, lines, floors: the shape of legacy_view), for a program that reads only
+    those (the Dispatcher's priority). -> (rules, where they came from), or (None, why) when there are none
+    (plan_in_force). A step's `when` has no place in this shape: an account is in the order while its step is alive
+    now."""
+    plan, why = plan_in_force()
+    if plan is None:
+        return None, why
     now = time.time() if now is None else now
     if rows is None:
         import account_usage as AU
         rows = AU.read_now(now).get("accounts") or {}
-    return ({**legacy_view(plan, {"now": now, "rows": rows, "switches": None}), "pool_pacing": True},
-            "the account plan, rev %s" % plan.get("rev"))
+    return (legacy_view(plan, {"now": now, "rows": rows, "switches": None}),
+            "the account plan, rev %s" % plan.get("rev") + ("" if why is None else " (%s)" % why))
 
 
 def temporary_line(plan, a, now, hours_to_reset=None):
@@ -1661,53 +1771,6 @@ def own_log() -> list:
 
 
 # ------------------------------------------------------------------ the old plan file, read once
-def convert_legacy(legacy: dict, seed: dict, now=None) -> dict:
-    """switching_plan.json as a plan of this schema: each standing account a step, each dated exception a temporary
-    step in front. now: exceptions that ended before it are left out."""
-    N = copy.deepcopy(seed["numbers"])
-    N["account_end"] = {k: v for k, v in legacy["account_end"].items() if not k.startswith("_")}
-    N["fresh"] = {k: v for k, v in legacy["fresh"].items() if not k.startswith("_")}
-    N["floor_pct"] = legacy["floors"]["switch_away_pct_left"]
-    N["last_account_floor_pct"] = legacy["floors"]["wait_pct_left"]
-    N["blind_pct"] = legacy["floors"].get("blind_zero_pct", N["blind_pct"])
-    N["entry_margin_pct"] = legacy.get("soft_margin_pct", N["entry_margin_pct"])
-    order = list(legacy["order"])
-    accounts = {a: {"kind": "claude"} for a in order}
-    accounts.update({a: {"kind": "meter"} for a in seed.get("meter_steps", {})})
-
-    def standing(a):
-        c = legacy["accounts"].get(a) or {}
-        s = {"name": a, "use": a, "leave": c.get("leave_pct_left", N["floor_pct"])}
-        if c.get("window_h_after_reset") is not None:
-            s["when"] = "hours_since_reset <= %g" % c["window_h_after_reset"]
-        return s
-    steps = []
-    for e in legacy.get("exceptions") or []:
-        if not isinstance(e, dict) or stamp(e.get("until")) is None or (now is not None and stamp(e["until"]) <= now):
-            continue
-        for a in e.get("order") or order:
-            c = (e.get("accounts") or {}).get(a) or {}
-            s = standing(a)
-            s.update(name="%s.%s" % (e["id"], a), **{"from": e["from"], "ends": e["until"]})
-            if "leave_pct_left" in c:
-                s["leave"] = c["leave_pct_left"]
-            if "window_h_after_reset" in c:
-                s.pop("when", None)
-                if c["window_h_after_reset"] is not None:
-                    s["when"] = "hours_since_reset <= %g" % c["window_h_after_reset"]
-            if e.get("ends_at_reset_of"):
-                s["ends_at_reset_of"] = e["ends_at_reset_of"]
-            s["why"] = "from switching_plan.json exception %s" % e["id"]
-            steps.append(s)
-    for a in order:
-        steps.append({**standing(a), "why": "from switching_plan.json (standing)"})
-    for a, lv in (seed.get("meter_steps") or {}).items():
-        if lv is not None:
-            steps.append({"name": a, "use": a, "leave": lv, "why": seed.get("meter_why", "")})
-    return {"schema": 1, "rev": 0, "accounts": accounts, "steps": steps, "holds": [], "pins": [], "requests": [],
-            "numbers": N, "ledger_item": seed.get("ledger_item")}
-
-
 # ------------------------------------------------------------------ printing
 def account_lines(plan, f) -> list:
     """One line for each account of the plan, as what is LEFT; never what is used; an absent one says so."""
@@ -1819,7 +1882,7 @@ def status_text(plan, f):
                                                pacific(stamp(h["ends"])), h.get("why") or "no reason given"))
     out += machine_lines(plan, f["now"])
     if f.get("hold_file"):
-        out.append("HOLD  a HOLD file made by hand stands in the old engine's folder: no pass acts until it is removed")
+        out.append("HOLD  a HOLD file made by hand stands in the actuator's folder: no pass acts until it is removed")
     return "\n".join(out), rc
 
 
@@ -1868,7 +1931,8 @@ def forecast_text(plan, f, rate=None) -> tuple:
             out.append("  %s  reset of %s: %s points above its %s line erased" % (
                 pacific(e["at"]), e["account"], g(e["erased"]), "?" if e["line"] is None else g(e["line"]) + "%"))
     if res["idle_pts"]:
-        out.append("  %s points of burn find no account (every account at its line)" % g(res["idle_pts"]))
+        out.append("  %s points of burn find no account (every account at its line), the first at %s" % (
+            g(res["idle_pts"]), pacific(res["idle_from"])))
     return "\n".join(out), OK
 
 
@@ -2051,12 +2115,6 @@ def change_of(a, now):
                 del ms[a.name]
             return p
         return fn, "machine %s %s" % (a.act, a.name)
-    if c == "driver":
-        def fn(p):
-            p["driver"] = a.which
-            return p
-        return fn, "driver %s (the timer's pass runs %s)" % (a.which, "this plan" if a.which == "new" else
-                                                             "the old engine, with this plan's pick logged beside it")
     if c in ("release", "unpin"):
         kind = "holds" if c == "release" else "pins"
 
@@ -2092,7 +2150,7 @@ def meta_of(a, argv) -> dict:
 
 # ------------------------------------------------------------------ the timed pass
 def legacy_view(plan, f) -> dict:
-    """The numbers of the plan file in the shape that switching_plan._check reads (it reads no rule from this)."""
+    """The numbers of the plan file in the shape that account_actuator._check reads (it reads no rule from this)."""
     rd = readings_of(f)
     env = Env(f["now"], lambda a: (rd.get(a) or {}).get("left"), lambda a: (rd.get(a) or {}).get("reset"),
               entry=lambda a: (f.get("entry") or {}).get(a))
@@ -2105,7 +2163,7 @@ def legacy_view(plan, f) -> dict:
             "floors": {"switch_away_pct_left": N["floor_pct"], "wait_pct_left": N["last_account_floor_pct"],
                        "blind_zero_pct": N["blind_pct"]},
             "account_end": N["account_end"], "fresh": N["fresh"], "soft_margin_pct": 0,
-            # the old actuator's drain before a switch above the line: a rescue's, never a `switch --now`'s
+            # the actuator's drain before a switch above the line: a rescue's, never a `switch --now`'s
             "pull_drain_max_s": 0 if any(q.get("now") for q in open_requests(plan, f))
             else (0 if dig(N, "rescue.drain_h") is None else N["rescue"]["drain_h"]) * 3600,
             "switch_lead_min": 0, "window_margin_min": 0, "exceptions": [], "level_model": None}
@@ -2118,57 +2176,28 @@ def log(rec: dict) -> None:
         fh.write(json.dumps({"at": iso(time.time()), **rec}, sort_keys=True) + "\n")
 
 
-def publish_state(plan, f, d, shadow) -> None:
+def publish_state(plan, f, d) -> None:
     out = plan_dir()
     write_atomic(out / "burn_mode.json", burn_mode(plan, f))
-    write_atomic(out / "decision.json", {"at": iso(f["now"]), "shadow": shadow, "rev": plan.get("rev"),
+    write_atomic(out / "decision.json", {"at": iso(f["now"]), "rev": plan.get("rev"),
                                          **{k: v for k, v in d.items() if k != "week"}})
 
 
-def old_pick(SP, f):
-    """What the old engine decides on the same frame (it acts on nothing here)."""
-    rows = SP.levelled(f["rows"], None)
-    mk = f.get("markers") or {}
-    return SP.decide(rows, f["live"], f["now"], SP.load_plan(), f.get("state") or {}, mk, polled=True,
-                     manual=SP.manual_switch((f.get("switches") or [None])[-1], mk, f["live"]) if f.get("switches") else None,
-                     live_runs=f.get("runs"), burn=f.get("burn_live"))
-
-
-def same_pick(old, new) -> bool:
-    """Both keep the live account, or both leave it for the same account, and both refuse or allow new starts."""
-    def k(d):
-        return (d.get("to") if d["do"] in ("switch", "hold") or d.get("drain_of") == "switch" else None,
-                d["do"] in ("soft", "stop", "stopped"))
-    return k(old) == k(new)
-
-
-def tick(shadow=False, dry=False, seams=None) -> int:
-    """The timed pass. seams (tests): the keyword arguments of switching_plan.check (meter_fn, poll_fn, runs_fn,
-    burn_fn, orders, now, passes); with them no live source is read."""
-    import switching_plan as SP
+def tick(dry=False, seams=None) -> int:
+    """The timed pass: account_actuator.check, driven with this file's decision and numbers. seams (tests): the keyword
+    arguments of account_actuator.check (meter_fn, poll_fn, runs_fn, burn_fn, orders, now, passes), and `machines`
+    (push_machines' seams); with them no live source is read. The rules are plan_in_force's: a pass on a fallback says
+    so in its log."""
+    import account_actuator as ACT
     seams = dict(seams or {})
-    plan, why = load_plan()
+    plan, why = plan_in_force()
     if plan is None:
-        log({"do": "passive", "why": why, "shadow": shadow})
+        log({"do": "passive", "why": why})
         print("PASSIVE: " + why)
-        return NONE if why.startswith("NONE") else COULD_NOT_LOOK
-    if shadow:
-        f = seams["frame"] if "frame" in seams else gather(slow=True)
-        new = decide(plan, f)
-        rec = {"shadow": True, "live": f.get("live"), "new": {k: new.get(k) for k in ("do", "to", "why", "pct_left", "line")},
-               "levels": {a: r["last_left"] for a, r in readings_of(f).items()}, "runs": None if f["runs"] is None else len(f["runs"])}
-        rc = OK
-        if f.get("live") and not f.get("hold_file") and new["do"] != "passive":
-            old = old_pick(SP, f)
-            rec["old"] = {k: old.get(k) for k in ("do", "to", "why", "pct_left", "line")}
-            rec["agree"] = same_pick(old, new)
-            rc = OK if rec["agree"] else NO
-        if plan.get("machines"):
-            rec["machines"] = push_machines(plan, f, pass_now(seams), carry=False, **(seams.get("machines") or {}))
-        log(rec)
-        publish_state(plan, f, new, True)
-        print(json.dumps(rec, sort_keys=True))
-        return rc
+        return COULD_NOT_LOOK
+    if why:
+        log({"do": "fallback", "why": why, "rev": plan.get("rev")})
+        print("FALLBACK: " + why)
     if active(plan["holds"], clock()):
         h = active(plan["holds"], clock())[0]
         rec = {"do": "passive", "why": "hold %s: %s" % (h["id"], h.get("why"))}
@@ -2180,12 +2209,12 @@ def tick(shadow=False, dry=False, seams=None) -> int:
         return OK
     last = {}
 
-    def new_decide(meter, live, now, _plan, state, markers, polled=False, manual=None, live_runs=(), burn=None):
-        """switching_plan.decide's place: the plan file is read again at each call, so a write binds inside a pass."""
-        p, w = load_plan()
+    def decide_now(meter, live, now, _plan, state, markers, polled=False, manual=None, live_runs=(), burn=None):
+        """The actuator's decision: the rules are read again at each call, so a write binds inside a pass."""
+        p, w = plan_in_force()
         if p is None:
             return {"do": "passive", "why": w}
-        f = frame_for_pass(SP, meter, live, now, state, markers, manual, live_runs, burn, p)
+        f = frame_for_pass(ACT, meter, live, now, state, markers, manual, live_runs, burn, p)
         # the pass rewrites its own notice before it polls and before it calls the switcher: a drain that this pass
         # found in flight stays in flight for each later decision of the pass
         f["draining"] = last["draining"] = f["draining"] or bool(last.get("draining"))
@@ -2193,18 +2222,13 @@ def tick(shadow=False, dry=False, seams=None) -> int:
         last.update(plan=p, frame=f, decision=d)
         return d
 
-    def new_load_plan(path=None):
-        p, _w = load_plan()
+    def numbers_now():
+        p, _w = plan_in_force()
         rows = seams["meter_fn"]() if callable(seams.get("meter_fn")) else None
-        return legacy_view(p or plan, {"now": seams.get("now") or time.time(), "rows": rows, "switches": SP.switches()}
-                           if rows is not None else gather_light(SP))
-    saved = SP.decide, SP.load_plan
-    SP.decide, SP.load_plan = new_decide, new_load_plan
-    try:
-        rc = SP.check(dry=dry, **({"passes": 5} if not seams else {k: v for k, v in seams.items()
-                                                                   if k not in ("frame", "machines")}))
-    finally:
-        SP.decide, SP.load_plan = saved
+        return legacy_view(p or plan, {"now": seams.get("now") or time.time(), "rows": rows, "switches": ACT.switches()}
+                           if rows is not None else gather_light(ACT))
+    rc = ACT.check(decide_now, numbers_now, dry=dry,
+                   **({"passes": 5} if not seams else {k: v for k, v in seams.items() if k != "machines"}))
     if "decision" in last:
         f, d = last["frame"], last["decision"]
         if not seams:
@@ -2217,57 +2241,43 @@ def tick(shadow=False, dry=False, seams=None) -> int:
             rec["machines"] = push_machines(last["plan"], f, pass_now(seams), **(seams.get("machines") or {}))
         log(rec)
         if not dry:
-            publish_state(last["plan"], f, d, False)
+            publish_state(last["plan"], f, d)
             flush_ledger(last["plan"])
     return rc
 
 
 def timer_pass(seams=None) -> int:
-    """What the timer runs. The plan file names the driver: `new` runs tick(); `old` (and a plan file that is missing or
-    refused) runs the old engine as it is, and then logs this tool's pick beside it (shadow). The shadow never breaks
-    the pass."""
-    import switching_plan as SP
-    plan, why = load_plan()
-    if plan is not None and plan.get("driver", "old") == "new":
-        return tick(seams=seams)
-    if plan is None:
-        print("account_plan: %s; the old engine runs" % why)
-    rc = SP.check(**({"passes": 5} if not seams else {k: v for k, v in seams.items() if k not in ("frame", "machines")}))
-    if plan is not None:
-        try:
-            tick(shadow=True, seams=seams)
-        except Exception as e:  # noqa: BLE001  a shadow that broke is said, and the old pass stands
-            print("account_plan: the shadow pass broke: %s: %s" % (type(e).__name__, e), file=sys.stderr)
-    return rc
+    """What the timer runs (`./acct pass`): one pass of tick, repeating while an account ends."""
+    return tick(seams=seams)
 
 
 def pass_now(seams) -> float:
     """The time of an act of the pass: a test's clock, else now (a pass can last minutes)."""
-    import switching_plan as SP
-    return SP.clock() if seams else time.time()
+    import account_actuator as ACT
+    return ACT.clock() if seams else time.time()
 
 
-def gather_light(SP) -> dict:
+def gather_light(ACT) -> dict:
     import account_usage as AU
     now = time.time()
-    sws = SP.switches()
+    sws = ACT.switches()
     return {"now": now, "rows": AU.read_now(now).get("accounts") or {}, "switches": sws,
             "live": (sws or [{}])[-1].get("to")}
 
 
-def frame_for_pass(SP, meter, live, now, state, markers, manual, live_runs, burn, plan) -> dict:
-    series, sws = series_rows(), SP.switches()
+def frame_for_pass(ACT, meter, live, now, state, markers, manual, live_runs, burn, plan) -> dict:
+    series, sws = series_rows(), ACT.switches()
     entry = {s["use"]: entry_level(series, sws, s["use"]) for s in plan["steps"] if isinstance(s.get("leave"), str)}
     return {"now": now, "live": live, "runs": None if live_runs is None else list(live_runs), "rows": meter,
-            "notice": SP.read_json(SP.OUT / "notice.json", {}), "burn_live": burn, "burn_h": fleet_burn(series, now, plan["numbers"]["forecast"]["burn_window_h"],
+            "notice": ACT.read_json(ACT.OUT / "notice.json", {}), "burn_live": burn, "burn_h": fleet_burn(series, now, plan["numbers"]["forecast"]["burn_window_h"],
                                                     accounts=set(meter)),
             "switches": sws, "hand": bool(manual), "markers": markers, "state": state, "entry": entry,
-            "draining": draining(SP)}
+            "draining": draining(ACT)}
 
 
-def draining(SP) -> bool:
-    """The old actuator's notice says that a drain before a switch above the line is in flight (not an account end)."""
-    nt = SP.read_json(SP.OUT / "notice.json", {})
+def draining(ACT) -> bool:
+    """The actuator's notice says that a drain before a switch above the line is in flight (not an account end)."""
+    nt = ACT.read_json(ACT.OUT / "notice.json", {})
     return isinstance(nt, dict) and nt.get("state") == "soft" and bool(nt.get("drain")) and not nt.get("account_end")
 
 
@@ -2367,8 +2377,7 @@ ANOTHER MACHINE on the same account (./acct status has a line for each)
 WHEN IT LOOKS WRONG
   COULD NOT LOOK in status   the meter or the switcher is unread: python3 src/RimMandrake/Utils/account_usage.py poll
   a switch failed            status says so; `claude-account status` shows the logins; the pass tries again from a stopped fleet
-  the plan file is refused   ./acct undo   (the old engine runs meanwhile, and the pass says so)
-  the new engine is wrong    ./acct driver old   (the old engine decides from the next pass; ./acct driver new takes it back)
+  the plan file is refused   ./acct undo   (meanwhile the pass runs on the last revision that history accepted, and says so)
   a launch is refused        ./acct can-use says why; a refusal with ACCOUNT GATE ends by itself after the switch
 
 EXIT  0 done, or yes · 1 no · 2 could not look · 3 refused, nothing written · 4 failed · 5 none
@@ -2385,10 +2394,9 @@ def parser():
     ends = argparse.ArgumentParser(add_help=False)
     ends.add_argument("--for", dest="for_", default=None, help="a life: 90m, 2h, 3d")
     ends.add_argument("--until", default=None, help="a life: an ISO time (Pacific when it has no offset)")
-    for name in ("status", "next", "plan", "readings", "burn-mode", "import-legacy"):
-        p = sub.add_parser(name, parents=[who] if name == "import-legacy" else [])
-        if name == "import-legacy":
-            p.add_argument("--from", dest="src", default=str(HERE / "switching_plan.json"))
+    for name in ("status", "next", "plan", "readings", "burn-mode", "init"):
+        p = sub.add_parser(name, parents=[who] if name == "init" else [])
+        if name == "init":
             p.add_argument("--replace", action="store_true")
     p = sub.add_parser("forecast")
     p.add_argument("--rate", type=float, default=None, help="points an hour (default: the last 24 h)")
@@ -2402,7 +2410,6 @@ def parser():
     p.add_argument("name")
     p.add_argument("--ssh", default=None)
     p = sub.add_parser("tick")
-    p.add_argument("--shadow", action="store_true")
     p.add_argument("--dry-run", action="store_true")
     p = sub.add_parser("whatif")
     p.add_argument("rest", nargs=argparse.REMAINDER)
@@ -2439,12 +2446,10 @@ def parser():
     sub.add_parser("hold", parents=[who, ends])
     sub.add_parser("release", parents=[who])
     sub.add_parser("pass")
-    p = sub.add_parser("driver", parents=[who])
-    p.add_argument("which", nargs="?", choices=("old", "new"))
     return ap
 
 
-WRITES = ("order", "line", "step", "set", "switch", "pin", "unpin", "hold", "release", "driver", "machine")
+WRITES = ("order", "line", "step", "set", "switch", "pin", "unpin", "hold", "release", "machine")
 
 
 def main(argv=None) -> int:
@@ -2466,19 +2471,18 @@ def run(argv) -> int:
     a = parser().parse_args(argv)
     now = clock()
     if a.cmd == "tick":
-        return tick(shadow=a.shadow, dry=a.dry_run)
+        return tick(dry=a.dry_run)
     if a.cmd == "pass":
         return timer_pass()
-    if a.cmd == "import-legacy":
-        legacy, seed = json.loads(Path(a.src).read_text()), json.loads(SEED.read_text())
+    if a.cmd == "init":
         old, _w = load_plan()
         if old is not None and not a.replace:
             raise Refused("a plan file stands (rev %s); repair: --replace to write over it (./acct undo brings it back)"
                           % old.get("rev"))
-        new = convert_legacy(legacy, seed, now)
+        new = first_plan()
         rev, _p = commit(lambda _old: new, {**meta_of(a, argv), "create": True}, base=old)
-        print("DONE rev %s: the plan file is written from %s (%d steps)\n%s\nundo: ./acct undo %s" % (
-            rev, a.src, len(new["steps"]), plan_dir() / "plan.json", rev))
+        print("DONE rev %s: the plan file is the first plan of %s (%d steps)\n%s\nundo: ./acct undo %s" % (
+            rev, SEED.name, len(new["steps"]), plan_dir() / "plan.json", rev))
         return OK
     if a.cmd == "undo":
         hist = history()
@@ -2502,10 +2506,6 @@ def run(argv) -> int:
     if plan is None:
         print(why if why.startswith(("NONE", "COULD NOT LOOK")) else "REFUSED: " + why)
         return NONE if why.startswith("NONE") else COULD_NOT_LOOK if why.startswith("COULD") else REFUSED
-    if a.cmd == "driver" and a.which is None:
-        print("%s: the timer's pass (./acct pass) runs %s" % (plan.get("driver", "old"), "this plan" if plan.get(
-            "driver") == "new" else "the old engine, with this plan's pick logged beside it"))
-        return OK
     if a.cmd in WRITES:
         if a.cmd == "pin" and not a.account:
             a.account = gather(now).get("live")
@@ -2572,9 +2572,9 @@ def run(argv) -> int:
 
 
 def measures_cmd(plan, f, weeks) -> int:
-    import switching_plan as SP
+    import account_actuator as ACT
     rows = f.get("series") if "series" in f else series_rows(tail_bytes=10**9)
-    sws = f.get("switches") if "switches" in f else SP.switches()
+    sws = f.get("switches") if "switches" in f else ACT.switches()
     if rows is None:
         print("COULD NOT LOOK: the reader's series cannot be read (%s)" % AE.SERIES)
         return COULD_NOT_LOOK

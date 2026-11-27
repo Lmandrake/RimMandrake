@@ -7,7 +7,7 @@ Item: `RIMMANDRAKE_SWEEP_ACCOUNT_BURN_REGIMES_TWO_FAULTS_ONE_DAY`. The plan that
 
 ## What it is
 
-The sweep runs the real timed pass (`account_plan.tick`, which drives `switching_plan.check` and its actuator, and
+The sweep runs the real timed pass (`account_plan.tick`, which drives `account_actuator.check`, and
 calls `account_plan.decide`, `machine_notice`, `machine_switch` and `push_machines`) every 5 minutes through a simulated
 stretch of a week, over a grid of regimes. It reads the files that the pass wrote (the notice, the published decision,
 the state) the way the launchers and the checkpoint hook read them, and it asks the real launcher gate
@@ -38,7 +38,7 @@ the demand times the share of its `n` runs that are live. A stopped fleet burns 
 - **a-regime.** A JSON object: start levels, resets, the live account, burn, runs, SteveDesktop, laptop, meter, plan
   variant, switcher (`./acct sweep one '<json>'`). `numbers` (a dotted path to a value) changes a number of the
   sweep's copy of the plan, for a what-if; the live plan file is never read or written.
-- **the-plan-code-of-this-checkout.** The sweep imports `account_plan.py` and `switching_plan.py` from beside it. A copy
+- **the-plan-code-of-this-checkout.** The sweep imports `account_plan.py` and `account_actuator.py` from beside it. A copy
   of the code with a planted fault is swept the same way (the selftest does this).
 
 ## DOES NOT SURVIVE (not shown by the sweep)
@@ -50,8 +50,7 @@ the demand times the share of its `n` runs that are live. A stopped fleet burns 
 - **the-real-meter.** The stand-in reads whole points with no error and no jitter in the reset time. The sweep does not
   show the Anthropic meter's own lags or wrong readings.
 - **two-plan-files.** One machine decides. A second deciding machine is not modelled.
-- **the-old-driver.** The sweep runs `driver new`. The old engine alone is not swept.
-- **the-live-plan-file.** The live plan file is on Archmagi. This run built today's plan from the legacy file and the
+- **the-live-plan-file.** The live plan file is on Archmagi. This run built today's plan from the first plan of the
   seed (`today_plan`); `ssh archmagi` from SteveDesktop failed (host key) on 2026-11-25.
 - **a-model-not-yet-compared.** No real switch had happened when this page was written: the stand-in's model of a
   switch is not yet compared with a real one. After the first real switch, compare the sweep's switch with

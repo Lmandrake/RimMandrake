@@ -57,22 +57,19 @@ eff = OC.effective(dropin)
 check(eff["ExecStart"] == ["/usr/bin/python3 %s/src/RimMandrake/a.py" % DEP], "ExecStart= clears earlier entries")
 check(OC.judge(dropin, DEP) == [], "a drop-in that repoints the unit counts, the base file does not")
 
-# --- the account plan reads the standard plan file: his rulings land in switching_plan.json, and on 2026-11-20 a
-# week.conf drop-in left from 2026-11-05 still pointed account-plan at a week file that had none of them (order
-# system>steven, steven line 25, no hard_pct_left: a dry pass at system 1% picked steven, and with a live run raised
-# KeyError). Any RM_SWITCH_PLAN in a clock's unit is a problem; one in a single quoted Environment line too.
+# --- the account plan's pass reads the one plan file: on 2026-11-20 a week.conf drop-in left from 2026-11-05 still
+# pointed account-plan at a week file that had none of his rulings (order system>steven, steven line 25: a dry pass at
+# system 1% picked steven, and with a live run raised KeyError). Any RM_ACCOUNT_PLAN_DIR in a clock's unit is a
+# problem; one in a single quoted Environment line too.
 plan_unit = ("# /x/account-plan.service\n[Service]\nType=oneshot\n"
-             "ExecStart=/usr/bin/python3 %s/src/RimMandrake/Utils/switching_plan.py check\n" % DEP)
-check(OC.judge(plan_unit, DEP) == [], "the account plan with no RM_SWITCH_PLAN is clean")
+             "ExecStart=/usr/bin/python3 %s/src/RimMandrake/Utils/account_plan.py pass\n" % DEP)
+check(OC.judge(plan_unit, DEP) == [], "the account plan with no RM_ACCOUNT_PLAN_DIR is clean")
 week = plan_unit + ("# /x/account-plan.service.d/week.conf\n[Service]\n"
-                    "Environment=RM_SWITCH_PLAN=%s/src/RimMandrake/Utils/switching_plan_week_2026-11-05.json\n" % DEP)
-check(any("RM_SWITCH_PLAN" in p and "switching_plan_week_2026-11-05.json" in p for p in OC.judge(week, DEP)),
-      "a drop-in pointing the account plan at another plan file is caught (got %r)" % OC.judge(week, DEP))
-other = plan_unit + "[Service]\nEnvironment=RM_ACCOUNT_PLAN_DIR=/tmp/another_plan\n"
-check(any("RM_ACCOUNT_PLAN_DIR" in p and "/tmp/another_plan" in p for p in OC.judge(other, DEP)),
-      "a unit that names another account plan folder is caught (got %r)" % OC.judge(other, DEP))
-quoted = plan_unit + '[Service]\nEnvironment="A=1" "RM_SWITCH_PLAN=/tmp/p.json"\n'
-check(any("RM_SWITCH_PLAN" in p for p in OC.judge(quoted, DEP)), "a quoted RM_SWITCH_PLAN among others is caught")
+                    "Environment=RM_ACCOUNT_PLAN_DIR=/tmp/plan_week_2026-11-05\n")
+check(any("RM_ACCOUNT_PLAN_DIR" in p and "plan_week_2026-11-05" in p for p in OC.judge(week, DEP)),
+      "a drop-in pointing the account plan at another plan folder is caught (got %r)" % OC.judge(week, DEP))
+quoted = plan_unit + '[Service]\nEnvironment="A=1" "RM_ACCOUNT_PLAN_DIR=/tmp/p"\n'
+check(any("RM_ACCOUNT_PLAN_DIR" in p for p in OC.judge(quoted, DEP)), "a quoted RM_ACCOUNT_PLAN_DIR among others is caught")
 cleared = week + "[Service]\nEnvironment=\n"
 check(OC.judge(cleared, DEP) == [], "Environment= after the drop-in clears it, as systemd does")
 check(OC.judge(plan_unit + "[Service]\nEnvironment=RM_SWITCH_PLAN_DIR=/tmp/out\n", DEP) == [],

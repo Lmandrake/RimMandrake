@@ -31,17 +31,13 @@ os.environ["RM_DISPATCHER_STATE"] = str(TMP / "state")
 os.environ.setdefault("RM_UNDER_SELFTEST", "1")
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "rimflow"))
+import account_actuator as ACT  # noqa: E402
 import account_plan as AP  # noqa: E402
-import account_plan_replay as RP  # noqa: E402
-import switching_plan as SP  # noqa: E402
 
 FAILS = []
 NOW = AP.stamp("2026-11-24T14:00:00-08:00")
 os.environ["RM_ACCOUNT_PLAN_NOW"] = repr(NOW)      # the clock of every command here
-LEGACY = json.loads((HERE / "switching_plan.json").read_text())
-LEGACY["exceptions"] = []
-SEED = json.loads((HERE / "account_plan.seed.json").read_text())
-BASE = AP.convert_legacy(LEGACY, SEED)      # steven (52, 48 h window), system, lukas, codex 25
+BASE = AP.first_plan()      # steven (52, 48 h window), system, lukas, codex 25
 SRC = (HERE / "account_plan.py").read_text()
 RUN = ["rm-detached-bench-some-builder-1"]
 (TMP / "series.jsonl").write_text("")
@@ -405,7 +401,7 @@ def t_a_level_not_read_is_no_pending_switch():
     cases = (("reset passed", AP.decide(OPEN, F("steven", reset, runs=RUN), polled=True), "steven"),
              ("stale near the line", AP.decide(BASE, F("lukas", near, runs=RUN), polled=True), "lukas"))
     for tag, d, acc in cases:
-        nt = SP.notice_of(d, NOW, {})
+        nt = ACT.notice_of(d, NOW, {})
         check(n + ": %s: the decision is soft, as before (no new start until the level is read)" % tag,
               d["do"] == "soft" and d.get("unread"), d)
         check(n + ": %s: its notice does not say that a switch is pending" % tag,
@@ -429,16 +425,16 @@ def t_a_level_not_read_is_no_pending_switch():
     check(n + ": another machine on an account whose last reading is at its line and that is not read now: no new run "
               "there, no save order and no switch said", dm.get("unread") and nt["drain"] and not nt["account_end"]
           and nt["switch_pending"] is False and "not read" in nt["message"], (dm.get("do"), nt))
-    real = SP.notice_of({"do": "soft", "drain": True, "account": "steven", "pct_left": 52, "line": 52,
+    real = ACT.notice_of({"do": "soft", "drain": True, "account": "steven", "pct_left": 52, "line": 52,
                          "why": "the switch to system waits while live runs finish"}, NOW, {})
     check(n + ": a real drain before a switch still says that a switch is pending",
           real["switch_pending"] is True and real["drain"] and "switches" in real["message"], real)
-    pre = SP.notice_of({"do": "soft", "to": "system", "account": "steven", "pct_left": 60, "line": 52,
+    pre = ACT.notice_of({"do": "soft", "to": "system", "account": "steven", "pct_left": 60, "line": 52,
                         "why": "planted switch before its poll"}, NOW, {})
     check(n + ": a switch due before its poll (soft, no drain) still says that a switch is pending",
           pre["switch_pending"] is True and "switch pending" in pre["message"], pre)
     check(n + ": a notice that is not soft has no switch pending",
-          SP.notice_of({"do": "normal", "account": "steven"}, NOW, {})["switch_pending"] is False)
+          ACT.notice_of({"do": "normal", "account": "steven"}, NOW, {})["switch_pending"] is False)
 
 
 def t_a_rescue_drain_in_flight_goes_on():
@@ -464,12 +460,12 @@ def t_a_rescue_drain_in_flight_goes_on():
     m, real = fake("lukas", RUN), AP.fleet_burn
     AP.fleet_burn = lambda *a, **k: rate
     try:
-        SP.write_atomic(SP.OUT / "notice.json", {"state": "soft", "drain": True, "account_end": False, "account": "lukas",
+        ACT.write_atomic(ACT.OUT / "notice.json", {"state": "soft", "drain": True, "account_end": False, "account": "lukas",
                                                  "since": AP.iso(NOW - 1001 * 3600), "at": AP.iso(NOW - 300)})
         m.go(rows)
         check(n + ": at the drain's bound with a run still live the switch goes; the recheck under way (its own notice says "
               "that nothing starts inside the switch) does not end it (worth %s points)" % AP.g(gain), m.acts() == ["use"],
-              (m.acts(), list(SP.read_markers().values())))
+              (m.acts(), list(ACT.read_markers().values())))
     finally:
         AP.fleet_burn = real
         m.close()
@@ -512,17 +508,17 @@ def t_a_failed_switch_off_an_account_above_its_line_stops_nothing():
     points above its line and system could take over (the stop is the brake for a spent account)."""
     n = "a_failed_switch_off_an_account_above_its_line_stops_nothing"
     rows = {"steven": R(59, 100), "system": R(80, 110), "lukas": R(20, 140)}
-    key = SP.switch_key("steven", "system", rows["system"])
+    key = ACT.switch_key("steven", "system", rows["system"])
     mk = {key: {"phase": "failed", "at": AP.iso(NOW - 300), "from": "steven", "to": "system", "under": True}}
     d = AP.decide(BASE, F("steven", rows, runs=RUN, markers=mk, burn_h=None))
     check(n + ": the switch is tried again, and the fleet is not stopped", d["do"] != "stop" and d.get("above_line"), d)
     spent = {**rows, "system": R(1, 110), "steven": R(90, 100)}
-    k2 = SP.switch_key("system", "lukas", spent["lukas"])
+    k2 = ACT.switch_key("system", "lukas", spent["lukas"])
     d = AP.decide(BASE, F("system", spent, runs=RUN, markers={k2: {"phase": "failed", "at": AP.iso(NOW - 300),
                                                                    "from": "system", "to": "lukas", "under": True}}))
     check(n + ": a failed switch off a spent account still stops the fleet (the brake), and the switch is tried "
               "again from the stop", d["do"] == "stop" or (d["do"] == "soft" and d.get("drain_of") == "stop"), d)
-    src = (HERE / "switching_plan.py").read_text()
+    src = (HERE / "account_actuator.py").read_text()
     check(n + ": the actuator's brake after a failed switch skips an account above its line",
           'd.get("under") and not d.get("above_line")' in src, "the brake reads no above_line")
 
@@ -595,12 +591,6 @@ def t_one_file_binds_at_the_next_read():
     rc2, b = acct("next", cwd="/tmp")
     check(n + ": a write changes the next decision of another process", "Next: steven" in a and "Next: system" in b
           and rc == rc2 == 0, (a, b))
-    os.environ["RM_SWITCH_PLAN"] = str(TMP / "no-such-plan.json")
-    try:
-        rc3, c = acct("next", cwd="/tmp")
-    finally:
-        del os.environ["RM_SWITCH_PLAN"]
-    check(n + ": the decision needs no switching_plan.json", rc3 == 0 and "Next: system" in c, c)
     f = rescue_frame()
     p = copy.deepcopy(OPEN)
     fresh(p, f)
@@ -811,7 +801,7 @@ def t_the_four_answers_stay_apart():
     for x in (TMP / "plan").iterdir():
         x.unlink()
     rc, text = acct("next")
-    check(n + ": no plan file is NONE with the repair", rc == AP.NONE and "import-legacy" in text, (rc, text))
+    check(n + ": no plan file is NONE with the repair", rc == AP.NONE and "./acct init" in text, (rc, text))
 
 
 def t_every_account_is_listed_as_left():
@@ -839,7 +829,7 @@ def t_status_reads_no_slow_source():
     import account_usage
     called = []
     saved = (account_usage.read_codex_points, account_usage.read_genai_status, account_usage.read_now, account_usage.poll,
-             account_live.read, SP.live_detached_runs, SP.switches, SP.read_markers, SP.load_state)
+             account_live.read, ACT.live_detached_runs, ACT.switches, ACT.read_markers, ACT.load_state)
     account_usage.read_codex_points = lambda: called.append("codex") or {}
     account_usage.read_genai_status = lambda: called.append("genai") or ("absent", None)
     account_usage.poll = lambda *a, **k: called.append("poll")
@@ -848,8 +838,8 @@ def t_status_reads_no_slow_source():
     class Ans:
         kind, value = "value", {"live": "lukas"}
     account_live.read = lambda **k: Ans()
-    SP.live_detached_runs = lambda: []
-    SP.switches, SP.read_markers, SP.load_state = (lambda path=None: []), (lambda: {}), (lambda: {})
+    ACT.live_detached_runs = lambda: []
+    ACT.switches, ACT.read_markers, ACT.load_state = (lambda path=None: []), (lambda: {}), (lambda: {})
     fresh()
     del os.environ["RM_ACCOUNT_PLAN_FRAME"]
     try:
@@ -863,7 +853,7 @@ def t_status_reads_no_slow_source():
     finally:
         os.environ["RM_ACCOUNT_PLAN_FRAME"] = str(TMP / "frame.json")
         (account_usage.read_codex_points, account_usage.read_genai_status, account_usage.read_now, account_usage.poll,
-         account_live.read, SP.live_detached_runs, SP.switches, SP.read_markers, SP.load_state) = saved
+         account_live.read, ACT.live_detached_runs, ACT.switches, ACT.read_markers, ACT.load_state) = saved
     big = copy.deepcopy(OPEN)
     for i in range(12):
         big["steps"].insert(0, {"name": "t%d" % i, "use": ("steven", "system", "lukas")[i % 3], "leave": 3 + i,
@@ -885,7 +875,7 @@ def t_the_tool_never_touches_a_credential():
         body = "\n".join(ln for ln in low.splitlines() if "never" not in ln and "t_the_tool" not in ln)
         check("%s: the code has no `%s`" % (n, word), word not in body)
     check(n + ": it calls no switcher verb itself", "fleet-stop" not in SRC and "armed_call" not in SRC
-          and "--confirm" not in SRC and "SP.run(" not in SRC)
+          and "--confirm" not in SRC and "ACT.run(" not in SRC)
 
 
 # ------------------------------------------------------------------ Burn Mode and the measures
@@ -1007,17 +997,17 @@ def t_measures_count_erased_points_and_switches():
           and "1 of them with the runs unread" in text, text)
 
 
-# ------------------------------------------------------------------ the old actuator, shadow and replay
+# ------------------------------------------------------------------ the actuator, driven by tick
 class Fake:
     """The machine: a switcher that records its calls, live runs, the order channel, and a clock that only sleep moves."""
 
     def __init__(self, live="system", runs=RUN):
         self.live, self.runs, self.sent, self.t = live, list(runs), [], NOW
-        for k in list(SP.read_markers()):
-            (SP.OUT / "markers" / f"{k}.json").unlink()
-        SP.OUT.mkdir(parents=True, exist_ok=True)
+        for k in list(ACT.read_markers()):
+            (ACT.OUT / "markers" / f"{k}.json").unlink()
+        ACT.OUT.mkdir(parents=True, exist_ok=True)
         for f in ("notice.json", "state.json", "log.jsonl", "HOLD"):
-            (SP.OUT / f).unlink(missing_ok=True)
+            (ACT.OUT / f).unlink(missing_ok=True)
         self.calls = TMP / "calls.txt"
         self.calls.write_text("")
         sw = TMP / "claude-account"
@@ -1026,11 +1016,11 @@ class Fake:
                       % (self.calls, TMP / "live.txt", TMP / "live.txt"))
         sw.chmod(sw.stat().st_mode | stat.S_IEXEC)
         (TMP / "live.txt").write_text(live)
-        self.restore = SP.CA, SP.clock, SP.sleep
-        SP.CA, SP.clock, SP.sleep = str(sw), (lambda: self.t), self.sleep
+        self.restore = ACT.CA, ACT.clock, ACT.sleep
+        ACT.CA, ACT.clock, ACT.sleep = str(sw), (lambda: self.t), self.sleep
 
     def close(self):
-        SP.CA, SP.clock, SP.sleep = self.restore
+        ACT.CA, ACT.clock, ACT.sleep = self.restore
 
     def store_runs(self):
         return list(self.runs)
@@ -1048,37 +1038,37 @@ class Fake:
     def sleep(self, s):
         self.t += s
 
-    def go(self, meter, shadow=False, **kw):
+    def go(self, meter, **kw):
         seams = {"now": self.t, "meter_fn": meter if callable(meter) else (lambda: meter), "poll_fn": lambda: None,
                  "runs_fn": lambda: list(self.runs), "burn_fn": lambda *a: {"rate": 0.05, "stale": False, "age_s": 0},
                  "orders": self, "passes": 1, **kw}
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            rc = AP.tick(shadow=shadow, seams=seams)
+            rc = AP.tick(seams=seams)
         return rc, buf.getvalue()
 
     def acts(self):
         return [ln.split()[0] for ln in self.calls.read_text().splitlines() if ln.split() and ln.split()[0] != "--json"]
 
     def notice(self):
-        return json.loads((SP.OUT / "notice.json").read_text())
+        return json.loads((ACT.OUT / "notice.json").read_text())
 
 
 def fake(live, runs=RUN):
     return Fake(live, runs)
 
 
-def t_tick_drives_the_old_actuator():
-    n = "tick_drives_the_old_actuator"
+def t_tick_drives_the_actuator():
+    n = "tick_drives_the_actuator"
     rows = {"steven": R(90, 100), "system": R(1, 110), "lukas": R(60, 120)}
     fresh()
     m = fake("system", runs=[])
     try:
         m.go(rows)
-        check(n + ": finished, no run live -> arm-free `use lukas` through the old pass", m.acts() == ["use"]
+        check(n + ": finished, no run live -> arm-free `use lukas` through the actuator", m.acts() == ["use"]
               and (TMP / "live.txt").read_text().strip() == "lukas", m.acts())
-        mk = SP.read_markers()
-        check(n + ": the old pass wrote its act record", any(v.get("phase") == "done" and v.get("to") == "lukas"
+        mk = ACT.read_markers()
+        check(n + ": the actuator wrote its act record", any(v.get("phase") == "done" and v.get("to") == "lukas"
                                                              for v in mk.values()), mk)
     finally:
         m.close()
@@ -1087,7 +1077,7 @@ def t_tick_drives_the_old_actuator():
     try:
         m.go(warned)
         nt = m.notice()
-        check(n + ": at the warning line with a run live: the old pass's warning, a notice that refuses nothing, no switch",
+        check(n + ": at the warning line with a run live: the actuator's warning, a notice that refuses nothing, no switch",
               m.acts() == [] and nt["state"] in ("none", "soft") and not nt["drain"] and nt["warning"] and m.sent
               and m.sent[0]["mode"] == "warn", (m.acts(), nt))
         m.runs = []
@@ -1150,7 +1140,7 @@ def t_the_account_burns_to_its_line():
     m = fake("system", runs=[])
     try:
         m.go(rows(3))
-        p = str(SP.OUT / "notice.json")
+        p = str(ACT.OUT / "notice.json")
         check(n + ": at 3% with no run live the pass switches nothing", m.acts() == [], m.acts())
         check(n + ": and refuses no new start", DH.drain_refusal(m.t + 30, {}, None, path=p) is None, m.notice())
         m.runs = list(RUN)
@@ -1166,28 +1156,23 @@ def t_the_account_burns_to_its_line():
         m.close()
 
 
-def t_shadow_acts_on_nothing():
-    n = "shadow_acts_on_nothing"
+def t_a_dry_pass_acts_on_nothing():
+    n = "a_dry_pass_acts_on_nothing"
     fresh()
     m = fake("system", runs=[])
     try:
         rows = {"steven": R(90, 100), "system": R(1, 110), "lukas": R(60, 120)}
-        f = F("system", rows, runs=[])
-        rc, text = m.go(rows, shadow=True, frame=f)
-        rec = json.loads(text.strip().splitlines()[-1])
-        check(n + ": a switch is due, and shadow calls no switcher verb", m.acts() == [] and rec["new"]["do"] == "switch", (m.acts(), rec))
-        check(n + ": no notice and no marker", not (SP.OUT / "notice.json").exists() and not SP.read_markers())
-        check(n + ": both picks are logged with whether they agree", "old" in rec and "agree" in rec
-              and rec["old"]["to"] == rec["new"]["to"] == "lukas" and rec["agree"] is True and rc == 0, rec)
-        bm = json.loads((TMP / "plan" / "burn_mode.json").read_text())
-        dj = json.loads((TMP / "plan" / "decision.json").read_text())
-        check(n + ": it publishes Burn Mode and its decision, marked shadow", "accounts" in bm and dj["shadow"] is True)
-        f2 = F("lukas", {"steven": R(90, 20), "system": R(80, 110), "lukas": R(40, 120)}, runs=RUN)
-        (TMP / "live.txt").write_text("lukas")
-        rc, text = m.go(f2["rows"], shadow=True, frame=f2)
-        rec = json.loads(text.strip().splitlines()[-1])
-        check(n + ": where the old engine would leave lukas for the order, shadow says disagree, exit 1",
-              rec["agree"] is False and rc == AP.NO and rec["old"]["to"] == "system" and rec["new"]["do"] == "normal", rec)
+        seams = {"now": m.t, "meter_fn": lambda: rows, "poll_fn": lambda: None, "runs_fn": lambda: [],
+                 "burn_fn": lambda *a: {"rate": 0.05, "stale": False, "age_s": 0}, "orders": m, "passes": 1}
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            AP.tick(dry=True, seams=seams)
+        log = [json.loads(x) for x in (TMP / "plan" / "log.jsonl").read_text().splitlines()]
+        check(n + ": a switch is due, and a dry pass calls no switcher verb", m.acts() == [] and log
+              and log[-1]["do"] == "switch" and log[-1]["to"] == "lukas", (m.acts(), log[-1:]))
+        check(n + ": no notice and no marker", not (ACT.OUT / "notice.json").exists() and not ACT.read_markers())
+        check(n + ": nor Burn Mode nor a published decision", not (TMP / "plan" / "decision.json").exists()
+              and not (TMP / "plan" / "burn_mode.json").exists())
     finally:
         m.close()
 
@@ -1202,93 +1187,67 @@ def t_a_hold_makes_the_pass_passive():
         rc, text = m.go(rows)
         check(n + ": a plan hold: no switcher call at all", m.calls.read_text() == "" and "PASSIVE" in text, (m.calls.read_text(), text))
         acct("release")
-        (SP.OUT / "HOLD").write_text("by hand")
+        (ACT.OUT / "HOLD").write_text("by hand")
         m.go(rows)
         check(n + ": a hand-made HOLD file is still obeyed", m.acts() == [], m.acts())
-        (SP.OUT / "HOLD").unlink()
+        (ACT.OUT / "HOLD").unlink()
         m.go(rows)
         check(n + ": with neither, the pass acts", m.acts() == ["use"], m.acts())
     finally:
         m.close()
 
 
-def t_the_timer_runs_the_driver_that_the_plan_names():
-    n = "the_timer_runs_the_driver_that_the_plan_names"
-    rows = {"steven": R(90, 100), "system": R(80, 110), "lukas": R(40, 120)}     # the order would pull lukas -> system
-    fresh()
-    check(n + ": a new plan file names the old engine", on_disk().get("driver", "old") == "old" and acct("driver")[1].strip().startswith("old"))
+def t_the_pass_always_has_rules():
+    n = "the_pass_always_has_rules"
+    rows = {"steven": R(90, 100), "system": R(80, 110), "lukas": R(40, 120)}
 
     def go(m):
         seams = {"now": m.t, "meter_fn": lambda: rows, "poll_fn": lambda: None, "runs_fn": lambda: [],
-                 "burn_fn": lambda *a: {"rate": 0.05, "stale": False, "age_s": 0}, "orders": m, "passes": 1,
-                 "frame": F("lukas", rows)}
+                 "burn_fn": lambda *a: {"rate": 0.05, "stale": False, "age_s": 0}, "orders": m, "passes": 1}
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = AP.timer_pass(seams=seams)
         return rc, buf.getvalue()
-    m = fake("lukas", runs=[])
-    try:
-        rc, text = go(m)
-        log = [json.loads(x) for x in (TMP / "plan" / "log.jsonl").read_text().splitlines()]
-        check(n + ": driver old: the old engine acts (it switches for the order), and the plan's pick is logged beside it",
-              m.acts() == ["use"] and (TMP / "live.txt").read_text().strip() == "system" and log and log[-1].get("shadow")
-              and log[-1]["new"]["do"] == "normal", (m.acts(), log[-1:]))
-    finally:
-        m.close()
-    rc, text = acct("driver", "new", "--why", "cut-over")
-    check(n + ": one command names the new driver, with its undo", rc == 0 and on_disk()["driver"] == "new"
-          and text.strip().splitlines()[-1].startswith("undo: ./acct undo"), text)
+    fresh(NEW(plan(["lukas", "system", "steven"])))
+    acct("line", "lukas", "30", "--why", "a revision that history accepts")
     m = fake("lukas", runs=[])
     try:
         go(m)
-        check(n + ": driver new: the plan decides, and lukas stays", m.acts() == [], m.acts())
+        check(n + ": the plan file decides: lukas above its line stays", m.acts() == [], m.acts())
         (TMP / "plan" / "plan.json").write_text("{broken")
         rc, text = go(m)
-        check(n + ": a plan file that cannot be read: the old engine runs, and the pass says why",
-              m.acts() == ["use"] and "the old engine runs" in text, (m.acts(), text[-300:]))
+        log = [json.loads(x) for x in (TMP / "plan" / "log.jsonl").read_text().splitlines()]
+        fb = [r for r in log if r.get("do") == "fallback"]
+        check(n + ": a plan file that is refused: the pass runs on the last revision that history accepted, and says so",
+              m.acts() == [] and "FALLBACK" in text and fb and "not JSON" in fb[-1]["why"]
+              and "last revision that history.jsonl accepted" in fb[-1]["why"] and log[-1].get("line") == 30,
+              (m.acts(), text[-300:], log[-1:]))
+        (TMP / "plan" / "plan.json").unlink()
+        (TMP / "plan" / "history.jsonl").unlink()
+        rc, text = go(m)
+        log = [json.loads(x) for x in (TMP / "plan" / "log.jsonl").read_text().splitlines()]
+        check(n + ": no plan file and no history: the pass runs on the first plan, and says so",
+              "first plan of account_plan.seed.json" in text and log[-1].get("rev") == 0 and log[-1]["do"] == "normal"
+              and log[-1].get("line") == 1, (m.acts(), text[-300:], log[-1:]))
     finally:
         m.close()
-    fresh()
-    rc, text = acct("driver", "sideways")
-    check(n + ": another word is refused", rc == AP.REFUSED, text)
+    fresh(dict(BASE, driver="old"))
+    rc, text = acct("line", "lukas", "9", "--why", "t")
+    check(n + ": the key of the retired engine switch is dropped at the next write", rc == 0 and "driver" not in on_disk(),
+          on_disk().get("driver"))
+    rc, text = acct("driver", "old")
+    check(n + ": there is no engine switch", rc != 0, (rc, text))
 
 
-def t_shadow_drain_is_not_the_plan_tools():
-    n = "shadow_drain_is_not_the_plan_tools"
+def t_the_act_is_the_actuators():
+    n = "the_act_is_the_actuators"
     for word in ("def drained", "def warn_step", "def emergency_step", "def send_orders", "def armed_call", "systemctl",
                  "os.kill", "SIGTERM", "def pause_s", "def write_notice"):
         check("%s: account_plan.py has no `%s`" % (n, word), word not in SRC)
-    check(n + ": it calls the old drain", "SP.drained(" in SRC and "SP.check(" in SRC)
-
-
-def t_replay_names_each_difference():
-    n = "replay_names_each_difference"
-    same = [({"do": "normal"}, {"do": "normal"}), ({"do": "switch", "to": "lukas"}, {"do": "switch", "to": "lukas"}),
-            ({"do": "stop"}, {"do": "stop"}), ({"do": "soft"}, {"do": "soft"})]
-    check(n + ": the same decision has no cause", all(RP.classify(o, x) == "" for o, x in same))
-    cases = [({"do": "drain", "to": "steven", "pct_left": 18, "line": 1}, {"do": "normal", "line": 1}, "STAY"),
-             ({"do": "soft", "why": "lukas at 4% is within 2 of its 2% line"}, {"do": "normal"}, "NO_REFUSAL_ABOVE_THE_WARNING"),
-             ({"do": "normal"}, {"do": "switch", "to": "steven", "under": False}, "RESCUE"),
-             ({"do": "switch", "to": "system"}, {"do": "switch", "to": "steven", "under": True}, "NEXT_BY_WEEK_AHEAD"),
-             ({"do": "normal", "line": 30}, {"do": "normal", "line": 52}, "PLAN_DATA"),
-             ({"do": "hold", "why": "transition x already done: never repeated"}, {"do": "switch", "to": "steven", "under": True}, "MARKER"),
-             ({"do": "normal"}, {"do": "soft", "pct_left": 2.0, "why": "at its warning line"}, "WARNING_LINE")]
-    for o, x, want in cases:
-        got = RP.classify(o, x)
-        check("%s: %s" % (n, want), got == want and got in RP.CAUSES, got)
-    got = RP.classify({"do": "switch", "to": "system", "pct_left": 1, "line": 1}, {"do": "weird"})
-    check(n + ": a difference that fits no cause is UNEXPLAINED, by that word", got == "UNEXPLAINED", got)
-    ser = RP.Series([{"account": "lukas", "ts": AP.iso(NOW - 600), "measured_at": AP.iso(NOW - 600), "source": "MEASURED",
-                      "week_pct_used": 80.0, "week_resets_at": AP.iso(NOW + 9 * 86400 / 9 * 5)},
-                     {"account": "steven", "ts": AP.iso(NOW - 600), "measured_at": AP.iso(NOW - 600), "source": "MEASURED",
-                      "week_pct_used": 3.0, "week_resets_at": AP.iso(NOW + 86400)}])
-    legacy = {**LEGACY, "order": ["steven", "lukas"], "accounts": {"steven": {"leave_pct_left": 5}, "lukas": {}}}
-    old_log = [{"at": AP.iso(NOW), "do": "drain", "live": "lukas", "to": "steven", "pct_left": 20.0, "line": 1},
-               {"at": AP.iso(NOW + 300), "do": "normal", "live": "lukas", "pct_left": 20.0, "line": 1},
-               {"at": AP.iso(NOW + 400), "do": "passive", "why": "HOLD"}]
-    cnt, counts, _shown, bad, eps = RP.passes(ser, old_log, [], [(0, legacy)], legacy, SEED, NOW - 60, NOW + 900)
-    check(n + ": two passes compared (a passive one is skipped), one STAY, none unexplained",
-          cnt == 2 and counts == {"STAY": 1} and bad == [] and len(eps) == 1, (cnt, counts, bad))
+    check(n + ": it calls the actuator's drain and pass", "ACT.drained(" in SRC and "ACT.check(" in SRC)
+    check(n + ": no old engine is left", not (HERE / "switching_plan.py").exists()
+          and not (HERE / "switching_plan.json").exists() and "switching_plan" not in SRC
+          and "switching_plan" not in (HERE / "account_actuator.py").read_text().replace("rimmandrake/switching_plan", ""))
 
 
 # ------------------------------------------------------------------ the census: each row is one command
@@ -1505,7 +1464,7 @@ def t_fault_preference_switch_drained_at_eighteen_percent():
     m = fake("lukas", runs=RUN * 5)
     try:
         m.go(rows)
-        log = [json.loads(x) for x in (SP.OUT / "log.jsonl").read_text().splitlines()]
+        log = [json.loads(x) for x in (ACT.OUT / "log.jsonl").read_text().splitlines()]
         check(n + ": the pass writes a notice that refuses no start, drains nothing and calls no switcher verb",
               m.acts() == [] and m.notice()["state"] == "none" and not any(r.get("do") == "drain" for r in log), (m.acts(), m.notice()))
     finally:
@@ -1584,9 +1543,7 @@ def NT(state="soft", age_s=60, **kw):
 
 
 def NEW(p=None):
-    p = copy.deepcopy(p or OPEN)
-    p["driver"] = "new"
-    return p
+    return copy.deepcopy(p or OPEN)
 
 
 LVL = {"steven": R(90, 100), "system": R(80, 110), "lukas": R(18, 120)}
@@ -1634,11 +1591,8 @@ def t_can_use_is_the_one_answer_for_a_new_run():
     check(n + ": nor a shadow pass's", rc == AP.NO, text)
     rc, text = AP.can_use(p, F("lukas", near, runs=RUN, published={**pub, "rev": 999}), "lukas")
     check(n + ": nor one of another plan revision (a write binds at the next read)", rc == AP.NO, text)
-    old = copy.deepcopy(OPEN)
-    rc, text = AP.can_use(old, F("lukas", line, runs=RUN), "lukas")
-    check(n + ": with the old engine as the driver only its notice refuses", rc == AP.OK and "old engine" in text, text)
-    rc, text = AP.can_use(old, F("lukas", line, runs=RUN, notice=NT("soft", drain=True)), "lukas")
-    check(n + ": and it does", rc == AP.NO, text)
+    rc, text = AP.can_use(copy.deepcopy(OPEN), F("lukas", line, runs=RUN, notice=NT("soft", drain=True)), "lukas")
+    check(n + ": the actuator's fresh notice of a drain refuses", rc == AP.NO and "draining" in text, text)
     fresh(NEW(), F("lukas", line, runs=RUN))
     rc, text = acct("can-use")
     check(n + ": `./acct can-use` with no account asks for the live account of this machine: exit 1 at its line",
@@ -1740,14 +1694,10 @@ def t_each_machine_on_the_account_gets_its_decision():
         rc, text = acct("status", frame=F("lukas", LVL, now=m.t + 60))
         check(n + ": status has a line for the machine", "MACHINE box2: on steven" in text, text)
         sent.clear()
-        m.t += 60
-        m.go({"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}, shadow=True, machines=ms)
-        check(n + ": a shadow pass sends it too (the other machine has no engine of its own)", len(sent) == 1, sent)
-        sent.clear()
         acct("hold", "--for", "1h", "--why", "t")
         m.go({"steven": R(5, 20), "system": R(80, 110), "lukas": R(18, 120)}, machines=ms)
         check(n + ": under a hold the machine is told that nothing is refused", len(sent) == 1 and sent[0][1]["state"] == "none", sent)
-        check(n + ": neither a shadow pass nor a hold starts a waiting continuation there (no kick)", kicked == [], kicked)
+        check(n + ": a hold starts no waiting continuation there (no kick)", kicked == [], kicked)
     finally:
         m.close()
 
@@ -1790,7 +1740,7 @@ def t_a_machine_at_its_end_is_switched_when_its_runs_end():
     # decision is to leave him when the runs end; the machine was told "then it switches", refused every new run, and
     # was never switched (it waited for a reset days away).
     pw = copy.deepcopy(BASE)
-    pw.update(driver="new", machines={"box2": {"ssh": "box2-wsl"}})
+    pw.update(machines={"box2": {"ssh": "box2-wsl"}})
     past = {"steven": R(70, 100), "system": R(80, 110), "lukas": R(60, 120)}
     calls.clear()
     fresh(pw)
@@ -2037,45 +1987,43 @@ def t_readers_take_the_rules_through_one_door():
     saved = account_usage.read_now
     account_usage.read_now = lambda now=None: {"accounts": {"steven": R(90, 150), "system": R(80, 110), "lukas": R(18, 120)}}
     try:
-        fresh(BASE)                                     # driver old
-        v, src = AP.old_shape(now=NOW)
-        check(n + ": while the old engine drives, the readers get switching_plan.json", "switching_plan.json" in src
-              and v["order"] == LEGACY["order"], (src, v.get("order")))
         p = NEW(plan(["lukas", "system", "steven"], steven={"leave": 40}))
         fresh(p)
-        v, src = AP.old_shape(now=NOW)
-        check(n + ": while the plan drives, the order and the lines are the plan file's", "rev" in src
+        v, src = AP.rules_now(now=NOW)
+        check(n + ": the order and the lines are the plan file's", "rev" in src
               and v["order"] == ["lukas", "system", "steven"] and v["accounts"]["steven"]["leave_pct_left"] == 40
               and v["exceptions"] == [], (src, v))
         acct("line", "lukas", "9")
-        check(n + ": a write binds at the readers' next read", AP.old_shape(now=NOW)[0]["accounts"]["lukas"]["leave_pct_left"] == 9)
+        check(n + ": a write binds at the readers' next read", AP.rules_now(now=NOW)[0]["accounts"]["lukas"]["leave_pct_left"] == 9)
         import slot_allocator as SA
         pi = SA.plan_inputs({"steven": R(90, 150), "system": R(80, 110), "lukas": R(18, 120)}, "lukas", NOW)
         check(n + ": the allocator's pool is computed from the plan file's lines (lukas down to 9, not to 1)",
-              pi.get("pool") and not pi.get("plan_error") and any(abs(x - 9.0) < 0.01 for x in [
-                  (pt.get("pct") if isinstance(pt, dict) else None) or -1 for pt in (pi["pool"].get("parts") or [])])
-              or "9" in json.dumps(pi.get("pool")), pi)
+              pi.get("pool") and not pi.get("plan_error") and any(abs(pt["spend_pct"] - 9.0) < 0.01 for pt in
+                                                                   pi["pool"]["parts"] if pt["account"] == "lukas"), pi)
         sys.path.insert(0, str(HERE.parent / "rimflow"))
         import account_pick as PK
-        # load_priority reads old_shape() at the real clock; the fixture's steps live at NOW. Pinned to NOW, the check
+        # load_priority reads rules_now() at the real clock; the fixture's steps live at NOW. Pinned to NOW, the check
         # no longer turns red when the real date passes a step's end (it did on 2026-11-25:
         # RIMMANDRAKE_MEND_ACCOUNT_PLAN_SELFTEST_RED_ON_MAIN_AT_PUBLISH)
-        real_shape = AP.old_shape
-        AP.old_shape = lambda rows=None, now=None: real_shape(rows, NOW if now is None else now)
+        real_rules = AP.rules_now
+        AP.rules_now = lambda rows=None, now=None: real_rules(rows, NOW if now is None else now)
         try:
             prio = PK.load_priority({})
         finally:
-            AP.old_shape = real_shape
+            AP.rules_now = real_rules
         check(n + ": the Dispatcher's priority is the plan's order", prio == ["lukas", "system", "steven"], prio)
         (TMP / "plan" / "plan.json").write_text("{broken")
-        v, src = AP.old_shape(now=NOW)
-        check(n + ": a plan file that is refused: the old engine runs, and the readers get its file, said by name",
-              v["order"] == LEGACY["order"] and "not JSON" in src, src)
-        for name in ("slot_allocator.py", "ops_watch.py"):
+        v, src = AP.rules_now(now=NOW)
+        check(n + ": a plan file that is refused: the readers get the last revision that history accepted, said by name",
+              v["accounts"]["lukas"]["leave_pct_left"] == 9 and "not JSON" in src and "history.jsonl accepted" in src, src)
+        pi = SA.plan_inputs({"steven": R(90, 150), "system": R(80, 110), "lukas": R(18, 120)}, "lukas", NOW)
+        check(n + ": and so does the allocator's pool", pi.get("pool") and "history.jsonl accepted" in pi.get("plan_source", ""),
+              pi.get("plan_source"))
+        for name in ("slot_allocator.py", "ops_watch.py", "account_end.py"):
             code = (HERE / name).read_text()
-            check("%s: %s reads no rule from switching_plan.json itself" % (n, name), "SP.load_plan()" not in code, name)
-        check(n + ": account_pick.py names no switching_plan.json",
-              "switching_plan.json" not in (HERE.parent / "rimflow" / "account_pick.py").read_text())
+            check("%s: %s reads no rule of its own (no old engine)" % (n, name), "switching_plan" not in code, name)
+        check(n + ": account_pick.py names no old engine",
+              "switching_plan" not in (HERE.parent / "rimflow" / "account_pick.py").read_text())
     finally:
         account_usage.read_now = saved
 
@@ -2086,7 +2034,7 @@ def t_the_allocator_raises_its_pace_to_the_target_burn():
     p = NEW()
     f = F("steven", {"steven": R(90, 20), "system": R(3, 100), "lukas": R(3, 150)}, burn_h=2.0)
     fresh(p, f)
-    AP.publish_state(p, f, AP.decide(p, f), False)
+    AP.publish_state(p, f, AP.decide(p, f))
     bm = SA.burn_mode_input()
     row = (bm or {}).get("accounts", {}).get("steven") or {}
     check(n + ": the pass publishes Burn Mode on with its target, and the allocator reads that file",
@@ -2096,7 +2044,7 @@ def t_the_allocator_raises_its_pace_to_the_target_burn():
     t, why = SA.burn_target({"account": "steven", "burn_mode": bm}, NOW + 21 * 60)
     check(n + ": a record older than 20 min raises nothing", t is None and "old" in why, (t, why))
     f2 = {**f, "load": 99.0}
-    AP.publish_state(p, f2, AP.decide(p, f2), False)
+    AP.publish_state(p, f2, AP.decide(p, f2))
     t, why = SA.burn_target({"account": "steven", "burn_mode": SA.burn_mode_input()}, NOW + 60)
     check(n + ": on a loaded machine the plan says raise_ok false, and the allocator raises nothing and says why",
           t is None and "load" in why, (t, why))
@@ -2170,10 +2118,10 @@ def t_status_and_help_are_the_operators_page():
         AP.parser().parse_args(["--help"])
     help_text = buf.getvalue()
     cmds = [c for c in AP.parser()._subparsers._group_actions[0].choices]
-    missing = [c for c in cmds if c not in ("tick", "pass", "import-legacy") and ("./acct %s" % c) not in help_text]
+    missing = [c for c in cmds if c not in ("tick", "pass", "init") and ("./acct %s" % c) not in help_text]
     check(n + ": --help shows each command an operator types as a line `./acct <command>`", not missing, missing)
     for words in ("WHAT THE TIMED PASS DOES BY ITSELF", "at the line", "ANOTHER MACHINE", "WHEN IT LOOKS WRONG", "EXIT",
-                  "claude-account-switch", "./acct undo", "./acct driver old"):
+                  "claude-account-switch", "./acct undo"):
         check("%s: --help has `%s`" % (n, words), words in help_text, help_text[:200])
     check(n + ": --help states no percent and no account name (the numbers are the plan's: status prints them)",
           not any(w in help_text for w in ("steven", "lukas", " 5%", " 1%", "25%", "52%")), help_text)
@@ -2181,8 +2129,8 @@ def t_status_and_help_are_the_operators_page():
     if skill.exists():      # a copy of the two code folders has no skill: the page is checked in the repo
         st = skill.read_text()
         check(n + ": the skill sends the operator to ./acct and names no command of the old engine",
-              "./acct status" in st and "./acct --help" in st and "switching_plan.py" not in st, [x for x in st.splitlines()
-                                                                                                  if "switching_plan.py" in x][:3])
+              "./acct status" in st and "./acct --help" in st and "switching_plan" not in st and "acct driver" not in st,
+              [x for x in st.splitlines() if "switching_plan" in x or "acct driver" in x][:3])
         check(n + ": the skill states no line, floor or order of its own (the plan file holds them)",
               not any(w in st for w in ("52%", "steven > system > lukas", "leave line of 25")), "a number of the plan is in the skill")
 
@@ -2206,9 +2154,9 @@ def main():
               t_the_tool_never_touches_a_credential, t_burn_mode_enters_on_measured_allowance_at_risk,
               t_burn_mode_never_counts_under_a_leave_line, t_burn_mode_does_not_raise_on_a_loaded_machine,
               t_burn_mode_ends_at_the_reset, t_the_reset_day_rule_is_plan_data, t_measures_count_erased_points_and_switches,
-              t_tick_drives_the_old_actuator, t_the_account_burns_to_its_line, t_shadow_acts_on_nothing, t_a_hold_makes_the_pass_passive,
-              t_the_timer_runs_the_driver_that_the_plan_names, t_shadow_drain_is_not_the_plan_tools,
-              t_replay_names_each_difference,
+              t_tick_drives_the_actuator, t_the_account_burns_to_its_line, t_a_dry_pass_acts_on_nothing, t_a_hold_makes_the_pass_passive,
+              t_the_pass_always_has_rules, t_the_act_is_the_actuators,
+             
               t_census_lent_account_window_and_leave_line, t_census_fixed_priority_order, t_census_set_floor_and_leave_line,
               t_census_hold_with_why_and_end, t_census_one_week_allowance_ends_at_reset,
               t_census_leave_line_relative_to_entry_level, t_census_pin_account_now_plan_does_not_fight,

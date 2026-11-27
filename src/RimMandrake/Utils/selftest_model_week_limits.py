@@ -142,12 +142,12 @@ check("allocator for a Fable run: the level is 40% of its Fable limit",
 check("allocator carries every per-model limit as LEFT", gf.get("model_weeks_left") == {"Fable": 40.0}, gf.get("model_weeks_left"))
 ga = SA.gather(NOW)
 check("allocator with no model: all-models 61%, unchanged", ga.get("week_pct_left") == 61.0 and ga.get("week_limit") == "all models")
-import switching_plan as SP  # noqa: E402
-lv = SP.levelled(st["accounts"], "fable")
-check("switching plan, a Fable run: steven's level is 40", lv["steven"]["week_pct_left"] == 40.0 and lv["steven"]["week_limit"] == "Fable")
-check("switching plan, a Fable run: lukas stays 100 (its Fable limit is not lower)", lv["lukas"]["week_pct_left"] == 100.0)
-l0 = SP.levelled(st["accounts"], None)
-check("switching plan, no level_model: every figure unchanged", l0["steven"]["week_pct_left"] == 61.0)
+import account_actuator as ACT  # noqa: E402
+lv = ACT.levelled(st["accounts"], "fable")
+check("account actuator, a Fable run: steven's level is 40", lv["steven"]["week_pct_left"] == 40.0 and lv["steven"]["week_limit"] == "Fable")
+check("account actuator, a Fable run: lukas stays 100 (its Fable limit is not lower)", lv["lukas"]["week_pct_left"] == 100.0)
+l0 = ACT.levelled(st["accounts"], None)
+check("account actuator, no level_model: every figure unchanged", l0["steven"]["week_pct_left"] == 61.0)
 check("switching plan: levelled never mutates the meter it was given", st["accounts"]["steven"]["week_pct_left"] == 61.0)
 
 print(f"\n{'ALL PASS' if not FAILS else 'FAILED: ' + ', '.join(FAILS)}")

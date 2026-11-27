@@ -18,7 +18,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow"))
 import fulltext  # noqa: E402
 
-REMOTE_DIR = "/mnt/d/ClaudeWork/rimmandrake/switching_plan"     # switching_plan.LIVE_OUT on each machine
+REMOTE_DIR = "/mnt/d/ClaudeWork/rimmandrake/switching_plan"     # account_actuator.LIVE_OUT on each machine
 SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10"]
 # budget: danger=an ssh that hangs holds the timed pass, and the next pass waits on its lock; evidence=a push that is
 # budget: cut is could not look (that machine's notice ages and its own gate refuses new runs); longest=0.6s (three

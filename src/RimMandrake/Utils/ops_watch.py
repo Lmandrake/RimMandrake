@@ -9,7 +9,7 @@ rimflow/dispatcher_schedule.json "measure":
 
   GATHER   one record per metric family, reusing the instruments that already exist:
              accounts    account_usage.read_now() + slot_allocator.slope(): week % left, hours to reset, runway;
-                         and the fleet's (fleet_readings): its summed burn, the hours until the switching plan has no
+                         and the fleet's (fleet_readings): its summed burn, the hours until the account plan has no
                          account for it (fleet_stop_h), each account's runway were the fleet moved there (moved_runway)
              codex       sim/csuite_codex_limits.readings(): the weekly window's used %, reset, runway
              steve       testq steward.json / steward_watch.json / done/*.json: state, fault, heartbeat, INVALID streak;
@@ -605,76 +605,99 @@ def fleet_rate(meter, now, rules, slope_of):
 
 
 def fleet_readings(meter, live, now, rules, slope_of, plan=None):
-    """-> points: accounts.fleet_burn_pct_h, accounts.fleet_stop_h and accounts.<name>.moved_runway for every account
-    of the switching plan. meter: account_usage.read_now()'s accounts; live: this machine's account label (None when
-    unreadable); slope_of: slot_allocator.slope; plan: the rules in force in the old engine's shape (read through
-    account_plan.old_shape when None: the account plan file while it drives, else switching_plan.json).
-      fleet_stop_h   hours until the plan has no account to run the fleet on, the plan's own lines() + pick() run
-                     forward at the fleet's burn (switching_plan.simulate, resets refill), capped at fleet_fit.horizon_h.
+    """-> points: accounts.fleet_burn_pct_h, accounts.fleet_stop_h and accounts.<name>.moved_runway for every Claude
+    account of the account plan. meter: account_usage.read_now()'s accounts; live: this machine's account label (None
+    when unreadable); slope_of: slot_allocator.slope; plan: the account plan (default account_plan.plan_in_force(),
+    the rules of the timed pass).
+      fleet_stop_h   hours until the plan has no account to run the fleet on: the plan's own week ahead
+                     (account_plan.week_ahead, its `idle_from`) run at the fleet's burn, capped at fleet_fit.horizon_h.
                      0 = the plan has no account now: the fleet is stopped.
-      moved_runway   that account's room above its plan line / (the fleet's burn x the hours to its expiry: its reset,
-                     or steven's window end), capped at 10 like runway(); 0 when the plan cannot move there now.
+      moved_runway   that account's room above its line now / (the fleet's burn x the hours to its reset), capped at 10
+                     like runway(); 0 when the plan cannot move there now (no step of it is alive, or it is at its line).
     An account with no week figure counts as no room in the forecast (a stop may come later than it says: ESTIMATE),
-    an ESTIMATE figure as its upper bound (ESTIMATE). No burn rate: every point UNMEASURED."""
-    import switching_plan as SP
+    an ESTIMATE or stale figure as its upper bound (ESTIMATE). No burn rate: every point UNMEASURED."""
+    import account_plan as AP
+    why_plan = None
     if plan is None:
-        import account_plan
-        plan = account_plan.old_shape(meter, now)[0]
+        plan, why_plan = AP.plan_in_force()
+    if plan is None:
+        return {**{k: U("no account plan: " + why_plan) for k in FLEET_KEYS},
+                **{"accounts.%s.moved_runway" % n: U("no account plan: " + why_plan) for n in sorted(meter)}}
     ff = rules["fleet_fit"]
     unit_h = "h until the plan has no account for the fleet (capped at %g)" % ff["horizon_h"]
     unit_rw = "x the time to reset, at the fleet's burn"
-    names = list(plan["order"]) + sorted(n for n in meter if n not in plan["order"])
+    accts = AP.claude_accounts(plan)
+    names = accts + sorted(n for n in meter if n not in accts)
     rate, how = fleet_rate(meter, now, rules, slope_of)
     if rate is None:
         return {**{k: U("no fleet burn rate: " + how) for k in FLEET_KEYS},
                 **{"accounts.%s.moved_runway" % n: U("no fleet burn rate: " + how) for n in names}}
     out = {"accounts.fleet_burn_pct_h": M(round(rate, 3), "% of the weekly quota per h", live=live, rate_from=how)}
-    # every reading as the engine believes it (blind near-empty = 0), handed to the engine as MEASURED
-    sm, guessed = {}, []
-    for n in plan["order"]:
+    # every reading as the plan's pass would believe it (blind near-empty = 0), handed to the forecast as MEASURED
+    sm, guessed, blind = {}, [], plan["numbers"]["blind_pct"]
+    for n in accts:
         r = meter.get(n) or {}
-        p = SP.left(plan, r, now)
-        if p is None and not SP.reset_passed(r, now):
+        rd = AP.reading(r, now)
+        p = rd["last_left"]
+        if p is None and not rd["reset_passed"]:
             guessed.append("%s has no week figure (counted as no room)" % n)
-        elif not SP.usable(r) and not SP.blind_zero(plan, r, now):
-            guessed.append("%s is an ESTIMATE (its figure is an upper bound)" % n)
+        elif p is not None and not rd["ok"]:
+            if p <= blind:
+                p = 0.0
+            else:
+                guessed.append("%s is an ESTIMATE (its figure is an upper bound)" % n)
         sm[n] = {**r, "source": "MEASURED" if p is not None else "UNMEASURED", "stale": False, "week_pct_left": p}
+    if why_plan:
+        guessed.append("the plan file is not in force: " + why_plan)
+
     def mark(v, unit, why, **x):
         return E(v, why + "; " + "; ".join(guessed), unit, **x) if guessed else M(v, unit, why=why, **x)
-    ev = SP.simulate(sm, now, plan, live, rate, hours=ff["horizon_h"], step_min=ff["step_min"])
-    stop = next((e for e in ev if e["kind"] == "target" and e["target"] is None), None)
-    if stop is None:
+    f = {"now": now, "rows": sm, "burn_h": rate, "entry": {}}
+    rdg = AP.readings_of(f)
+    env = AP.Env(now, lambda a: (rdg.get(a) or {}).get("left"), lambda a: (rdg.get(a) or {}).get("reset"), burn=rate)
+    rules_now = {a: AP.rule_of(plan, a, env) for a in accts}
+    room = {a: (rdg[a]["left"] - rules_now[a]["line"]) for a in accts
+            if rules_now.get(a) and a in rdg and rdg[a]["left"] is not None}
+    start = live if live in room else next((a for a in AP.order_now(plan, rules_now) if room.get(a, 0) > 0), None)
+    res = AP.week_ahead(plan, {**f, "live": start}, rate=rate, hours=ff["horizon_h"], step_min=ff["step_min"]) \
+        if start else None
+    if start is None:
+        out["accounts.fleet_stop_h"] = mark(0.0, unit_h, "the plan has no account now", rate_pct_h=round(rate, 3))
+    elif res is None:
+        out["accounts.fleet_stop_h"] = U("the week ahead cannot be run: no reset time for an account of the plan")
+    elif res.get("idle_from") is None:
         out["accounts.fleet_stop_h"] = mark(float(ff["horizon_h"]), unit_h, "no stop inside %g h at %.2f%%/h" % (
             ff["horizon_h"], rate), rate_pct_h=round(rate, 3))
     else:
-        on = [e["target"] for e in ev if e["kind"] == "target" and e["at"] <= stop["at"] and e["target"]]
-        out["accounts.fleet_stop_h"] = mark(round(max(0.0, (stop["at"] - now) / HOUR), 2), unit_h,
-                                            "the plan stops at %s at %.2f%%/h%s" % (
-                                                iso(stop["at"]), rate, ", after " + " -> ".join(on) if on else
-                                                ": it has no account now"),
-                                            rate_pct_h=round(rate, 3), stop_at=iso(stop["at"]), pct=stop["pct"])
-    ep = SP.at(plan, now, meter)
-    line, elig = SP.lines(sm, ep, now)
+        stop = res["idle_from"]
+        on = [start] + [e["to"] for e in res["events"] if e["kind"] == "switch" and e["at"] <= stop]
+        out["accounts.fleet_stop_h"] = mark(round(max(0.0, (stop - now) / HOUR), 2), unit_h,
+                                            "the plan stops at %s at %.2f%%/h, after %s" % (
+                                                iso(stop), rate, " -> ".join(on)),
+                                            rate_pct_h=round(rate, 3), stop_at=iso(stop))
     for n in names:
         k = "accounts.%s.moved_runway" % n
-        r = sm.get(n) or {}
-        if n not in ep["order"]:
-            out[k] = M(0.0, unit_rw, why="not in the switching plan: the fleet is never moved here")
-        elif r.get("week_pct_left") is None:
+        rd = rdg.get(n)
+        if n not in accts:
+            out[k] = M(0.0, unit_rw, why="not in the account plan: the fleet is never moved here")
+        elif (meter.get(n) or {}).get("week_pct_left") is None and not (rd or {}).get("reset_passed"):
             out[k] = U("no week figure for %s" % n)
-        elif not elig.get(n):
-            why = ("outside its window" if not SP.in_window(ep, n, r, now) else "at or under its line %g%%" % line[n]
-                   if r["week_pct_left"] <= line[n] else "its reading is from before a passed reset")
-            out[k] = mark(0.0, unit_rw, "the plan cannot move the fleet here now: " + why, eligible=False)
+        elif rd["reset_passed"]:
+            out[k] = mark(0.0, unit_rw, "the plan cannot move the fleet here now: its reading is from before a passed "
+                                        "reset", eligible=False)
+        elif rules_now.get(n) is None:
+            out[k] = mark(0.0, unit_rw, "the plan cannot move the fleet here now: no step of it is alive now",
+                          eligible=False)
+        elif room.get(n, 0) <= 0:
+            out[k] = mark(0.0, unit_rw, "the plan cannot move the fleet here now: at or under its line %g%%" %
+                          rules_now[n]["line"], eligible=False)
         else:
-            room = r["week_pct_left"] - line[n]
-            exp = SP.expiry(ep, n, r, now)
-            h = None if exp is None else (exp - now) / HOUR
-            rw = runway(room, rate, h)
+            h = None if rd["reset"] is None else (rd["reset"] - now) / HOUR
+            rw = runway(room[n], rate, h)
             out[k] = (U("no reset time for %s" % n) if rw is None else
-                      mark(rw, unit_rw, "%.1f%% above its line %g%% at the fleet's %.2f%%/h, %.1f h to its expiry" % (
-                          room, line[n], rate, h), room_pct=round(room, 1), hours=round(room / rate, 2) if rate > 0
-                           else None, live=(n == live)))
+                      mark(rw, unit_rw, "%.1f%% above its line %g%% at the fleet's %.2f%%/h, %.1f h to its reset" % (
+                          room[n], rules_now[n]["line"], rate, h), room_pct=round(room[n], 1),
+                           hours=round(room[n] / rate, 2) if rate > 0 else None, live=(n == live)))
     return out
 
 

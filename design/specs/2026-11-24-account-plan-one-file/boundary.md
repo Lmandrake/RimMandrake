@@ -2,8 +2,10 @@
 
 Code: `src/RimMandrake/Utils/account_plan.py` (the plan file, the decision, the forecast, Burn Mode, the measures, the
 gate, the notice of each machine, the commands, the timed pass), `src/RimMandrake/Utils/account_plan_machines.py` (the
-ssh transport to another machine), `src/RimMandrake/Utils/account_plan_replay.py` (both engines over the recorded
-readings), `acct` (the one-line door), `src/RimMandrake/Utils/account_plan.seed.json` (the numbers of a first plan only).
+ssh transport to another machine), `acct` (the one-line door), `src/RimMandrake/Utils/account_plan.seed.json` (the
+first plan: what `./acct init` writes, and the rules of a pass with no valid plan file and no history). The act of the
+pass is `src/RimMandrake/Utils/account_actuator.py` (pages: `design/specs/2026-11-20-account-drain/boundary.md` and
+`design/specs/2026-11-24-account-end/boundary.md`).
 Readers: `src/RimMandrake/rimflow/detached_helper.py` (`drain_refusal`, the launcher's gate),
 `src/RimMandrake/Utils/codex_advice.py` (Codex's door), `src/RimMandrake/Utils/slot_allocator.py` (Burn Mode, the pool,
 the Codex advice line), `src/RimMandrake/Utils/ops_watch.py` (the fleet runway), `src/RimMandrake/rimflow/account_pick.py`
@@ -20,8 +22,8 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   `read_genai_status()`. No other reader of a level.
 - **the-live-account.** `account_live` (the switcher's status), and the switcher's own `log.jsonl` for past switches.
 - **the-live-runs.** The live `rm-detached-*` units, or None when systemd cannot be read.
-- **the-old-actuator.** `switching_plan._check` and `account_end.py`. Its notice (`notice.json`, built by
-  `switching_plan.notice_of`) is what each machine's launch gate and hooks read.
+- **the-actuator.** `account_actuator.check` and `account_end.py`. Its notice (`notice.json`, built by
+  `account_actuator.notice_of`) is what each machine's launch gate and hooks read.
 - **another-machine.** A machine that the plan lists (`./acct machine add <name> --ssh <ssh name>`): reachable by ssh
   with no password, with the switcher (`claude-account --json status`) and the folder
   `/mnt/d/ClaudeWork/rimmandrake/switching_plan`.
@@ -29,8 +31,8 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 
 ## DOES NOT SURVIVE (not promised)
 
-- **a-hand-edit-of-the-plan-file.** A plan that a hand edit broke is refused at the next read, and every pass then
-  acts on nothing and says so. The repair is `./acct undo` (the last good plan is in the history).
+- **a-hand-edit-of-the-plan-file.** A plan that a hand edit broke is refused at the next read. Each pass then runs on
+  the last revision that the history accepted, and says so; a command refuses. The repair is `./acct undo`.
 - **accounts-of-unequal-size.** The week ahead counts one point of each Claude account as the same work.
 - **a-burn-that-changes.** The week ahead uses one burn rate (the last 24 h). A forecast is not a promise of the week.
 - **a-small-rescue-on-a-fleet-that-is-never-idle.** A rescue worth less than a switch plus `rescue.drain_h` hours of
@@ -38,16 +40,13 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   line said so each pass. Measured 2026-11-18 to 11-24: 11.5% of passes had no live run; the longest stretch with one
   was 50.8 h.
 - **a-run-that-outlives-the-rescue-drain.** After `rescue.drain_h` hours of drain the switch goes, and it stops the
-  runs that are still live (the old actuator's rule of 2026-11-20). 95 of 100 runs end inside 2 h. The same bound ends
+  runs that are still live (the actuator's rule of 2026-11-20). 95 of 100 runs end inside 2 h. The same bound ends
   a drain at the line of an account with no emergency step (an_account_end_drain_ends_at_its_bound): such a run is
   stopped, and the account goes under its line by the burn of those hours.
 - **many-accounts.** The week ahead tries each account that can take over at each finish. It is built for the three
   Claude accounts of today; with more than about five it gets slow.
 - **a-switch-that-neither-log-names.** A switch made by copying credentials by hand, outside `claude-account`.
 - **a-lost-history-file.** Undo then has nothing to read, and answers NONE.
-- **the-old-engine-file.** `switching_plan.py` stays: its actuator half (`_check`, the notice, the markers, the fleet
-  stop) is what the timed pass drives, and its decision half is the fallback when `./acct driver` reads `old` or the
-  plan file is refused. `switching_plan.json` carries a tombstone that says so.
 - **a-run-on-another-machine-deaf-past-its-stop-deadline.** A run on a listed machine that is still live
   `machine_bound_s` after its save order gets `pipe stop --write-now` there. A run that makes no tool call inside the
   stop's deadline (`control.WRITE_NOW_DEADLINE_S`) is killed by the stop's escalation, or closed by the switch. A
@@ -73,7 +72,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   account is finished at its line, not at its warning line.
 - **the_account_burns_to_its_line.** Between the warning line and the line, with or without a live run and with
   another account that can take over, the decision is no switch and no stop and refuses no start; it carries
-  `warning`, and the old actuator warns each live run (save a note, publish, keep working). At the line it switches.
+  `warning`, and the actuator warns each live run (save a note, publish, keep working). At the line it switches.
 - **order_only_answers_which_account_is_next.** When the live account is finished and the burn is unknown, the next
   account is the first in step order that can take over. A change of order with the live account unfinished changes
   no act.
@@ -84,7 +83,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   of that switch costs less than the week ahead of staying by at least `switch_cost_pts`, each switch counted.
 - **a_rescue_switch_waits_for_no_live_run.** With a run live (unreadable runs count as live), a rescue is a switch
   only when it betters the week ahead by `switch_cost_pts` plus the work that a wait of `rescue.drain_h` hours delays
-  (the burn rate times those hours). The old actuator then refuses new starts while the live runs finish, for at most
+  (the burn rate times those hours). The actuator then refuses new starts while the live runs finish, for at most
   `rescue.drain_h` hours, and the reason line says so. A smaller rescue reads `normal`, refuses no start, and names the
   points and the command that goes at once. With `rescue.drain_h` null, a rescue goes only with no run live.
 - **an_account_end_drain_ends_at_its_bound.** On an account with no emergency step (a line over
@@ -93,7 +92,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   and stops those runs. The drain began at its save order (at the line), or, for a drain with no save order (an account
   past its window), at the `since` of its drain notice. With `rescue.drain_h` null the drain waits for its runs. An account with an emergency step keeps
   its own end (the emergency order at `emergency_pct`). Found by the sweep (`design/specs/2026-11-25-account-plan-sweep/`).
-- **a_rescue_drain_in_flight_goes_on.** A drain that the old actuator has started for a rescue goes on while the rescue
+- **a_rescue_drain_in_flight_goes_on.** A drain that the actuator has started for a rescue goes on while the rescue
   still betters the week ahead by `switch_cost_pts`. It ends when the rescue is worth less than a switch.
 - **an_unknown_burn_never_causes_a_switch.** With no measured burn rate there is no rescue switch, and the next
   account is by step order.
@@ -137,12 +136,12 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   `normal`: no switch, no stop, no refusal. The reason names the repair. An account of the plan that no step uses now
   (Steve's account past its window) is left when its live runs end.
 - **the_last_account_waits_at_its_wait_floor.** With no account that can take over, the live account's line is the
-  wait floor, and the decision at that line is the old actuator's stop.
+  wait floor, and the decision at that line is the actuator's stop.
 
 ### The plan file and the commands
 
 - **one_file_binds_at_the_next_read.** A write changes the next decision of another process with no commit, publish
-  or pull, and the decision reads no number from `switching_plan.json`, a skill or a constant in the code.
+  or pull, and the decision reads no number from a skill or a constant in the code.
 - **a_step_that_is_not_alive_says_so.** A write that adds a step which gives no rule now (its reset is not measured,
   its `when` is false or unknown, now is outside its life) is done, and its first line says NOT ALIVE NOW with the
   cause.
@@ -166,7 +165,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **status_reads_no_slow_source.** `status`, `next`, `plan`, `readings`, `forecast` and `whatif` run no poll, no model
   and no Codex reader, and answer in under a second on a full plan.
 - **the_tool_never_touches_a_credential.** The code opens no credential file and calls the switcher only for `status`
-  (and, in `tick`, through the old actuator).
+  (and, in `tick`, through the actuator).
 
 ### The gate, the machines and the readers
 
@@ -178,7 +177,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   mark `ACCOUNT GATE`, which the pipeline reads as a wait and no fault.
 - **a_carried_run_goes_until_the_line.** A continuation of a live run, or a resume of its session, passes a drain that
   is no account end, by the notice and by the published decision. At the line and under a stop it is refused.
-- **each_machine_on_the_account_gets_its_decision.** Each timed pass (new driver, shadow, hold) asks each listed machine
+- **each_machine_on_the_account_gets_its_decision.** Each timed pass (a hold too) asks each listed machine
   which account it is on, decides for that account with the same readings and rules, and writes the result there as
   its notice: nothing refused, the warning text, or no new run (at the line: save and publish). An account that could
   not be read is could not look and no new run. `status` has one line for each machine.
@@ -210,9 +209,10 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 - **a_following_machine_that_cannot_look_refuses.** A machine that got a notice from the deciding machine starts no
   new run when that notice is missing, unreadable or older than 20 min, and says COULD NOT LOOK with the name of the
   deciding machine. A machine that follows nothing and holds no plan refuses nothing.
-- **readers_take_the_rules_through_one_door.** `old_shape` gives a program that calls an old-engine function (the
-  allocator's pool, the fleet runway, the Dispatcher's priority) the order and the lines of the plan file while it
-  drives, and `switching_plan.json` while the old engine drives or the plan file is refused; it says which.
+- **readers_take_the_rules_through_one_door.** The allocator's pool (`pool_pace`), the fleet runway (`ops_watch`, on
+  `week_ahead`) and the Dispatcher's priority (`rules_now`) read the rules of the timed pass (`plan_in_force`): the plan
+  file, or while it is refused the last revision that the history accepted; each says which. None reads a rule file
+  of its own.
 - **the_allocator_raises_its_pace_to_the_target_burn.** `slot_allocator.py` reads `burn_mode.json` and raises its pace to
   `target_burn_pct_h` while Burn Mode is on for its burn account and `raise_ok` is true; never past it, never from a
   record older than 20 min, and it says why when it does not raise.
@@ -242,23 +242,22 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   switch that this plan decided, from its own log (a pass whose runs could not be read is counted apart). A week with
   no reading before its reset reads UNMEASURED, not 0.
 
-### The old actuator, shadow and replay
+### The actuator, driven by tick
 
-- **tick_drives_the_old_actuator.** `tick` makes the switch that the decision names through `switching_plan._check`
-  (arm, use, disarm), and the account-end sequence is the old actuator's: the warning at the warning line, the steps
+- **tick_drives_the_actuator.** `tick` makes the switch that the decision names through `account_actuator.check`
+  (arm, use, disarm), and the account-end sequence is the actuator's: the warning at the warning line, the steps
   at the line, the live level read again each `poll_min`, and an account confirmed by a fresh reading beats a stop. An account left only because no step uses
   it now, above its line, waits for a fresh reading of the next account; the fleet is not stopped for that.
-- **the_timer_runs_the_driver_that_the_plan_names.** `./acct pass` is what the timer runs. With `driver` old (the
-  value of a new plan file) the old engine runs as it is, and this tool's pick is logged beside it. With `driver` new
-  this plan decides. `./acct driver new` and its undo are each one command. With a plan file that is missing or
-  refused, the old engine runs and the pass says why: the fleet is never left with no engine.
-- **shadow_acts_on_nothing.** `tick --shadow` calls no switcher verb but `status`, writes no notice and no marker, and
-  logs both picks.
+- **the_pass_always_has_rules.** `./acct pass` is what the timer runs; this plan decides. With a plan file that is
+  missing or refused, the pass runs on the last revision that `history.jsonl` accepted; with no history, on the first
+  plan of `account_plan.seed.json`. Each such pass logs `do: fallback` with the cause: the fleet is never left with no
+  rules. There is no engine switch, and the key of the retired one (`driver`) is dropped at the next write.
+- **a_dry_pass_acts_on_nothing.** `tick --dry-run` calls no switcher verb but `status`, writes no notice, no marker,
+  no Burn Mode and no published decision, and logs its pick.
 - **a_hold_makes_the_pass_passive.** While a hold stands (or a hand-made HOLD file), `tick` calls no switcher verb.
-- **shadow_drain_is_not_the_plan_tools.** The drain, the orders and the pause are `switching_plan` and `account_end`
-  code; `account_plan.py` defines none of them.
-- **replay_names_each_difference.** The replay gives each pass where the two engines differ a cause from a fixed
-  list, or the word UNEXPLAINED; a count of zero unexplained is printed with the count of passes compared.
+- **the_act_is_the_actuators.** The drain, the orders and the pause are `account_actuator` and `account_end` code;
+  `account_plan.py` defines none of them. No old engine is left (`switching_plan.py` and its rule file were deleted
+  2026-11-27, after the plan's second switch, the first clean on both machines).
 
 ### The census (each row is one command)
 
@@ -297,7 +296,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 ## LIMITS (each number is in the plan file; `./acct set numbers.<key>=<value>` changes it)
 
 - `floor_pct` = 1, `last_account_floor_pct` = 2, and the fourteen `account_end` numbers, `fresh`, `stale_min`:
-  machine-safety brakes, carried from `switching_plan.json`. Danger and evidence:
+  machine-safety brakes, carried from the old engine's rule file into the first plan. Danger and evidence:
   `design/specs/2026-11-24-account-end/boundary.md` LIMITS.
 - `entry_margin_pct` = 2. Danger: a switch that lands on an account inside its own warning zone, and is warned at
   once. Evidence: the old plan's `soft_margin_pct`, his card of 2026-10-28 ("Soft line, then hard stop").
@@ -322,7 +321,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   to 64 on 14 cores (2.9 to 4.6 a core) with flaky tests; 1.5 is half the lowest such reading, a delegated choice.
 - `request_default_h` = 24, `hold` (no default: an end is asked). Danger: a request or a brake that outlives its
   reason (census rows 4, 5, 8).
-- The pass deadlines (600 s a switcher call, 420 s a poll, the 40-min `pending` marker) are the old actuator's hang
+- The pass deadlines (600 s a switcher call, 420 s a poll, the 40-min `pending` marker) are the actuator's hang
   guards and stay in its code.
 
 - `NOTICE_FRESH_S` = 20 min (`account_plan.py`), `BURN_MODE_FRESH_S` = 20 min (`slot_allocator.py`): how old a record of

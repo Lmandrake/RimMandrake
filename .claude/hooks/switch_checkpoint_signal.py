@@ -5,7 +5,7 @@
 A switch (`claude-account use`) or the plan's stop SIGTERMs every Claude process. Since 2026-11-20 the plan waits for
 live detached runs to end before it switches (owner: "And yes for live runs finish past, absolutely."), and stops them
 only at the account's hard line, after a failed switch, or at the end of pull_drain_max_s
-(design/specs/2026-11-20-account-drain/boundary.md). When the switching plan's notice (switching_plan.py write_notice ->
+(design/specs/2026-11-20-account-drain/boundary.md). When the switching plan's notice (account_actuator.py write_notice ->
 notice.json) reads `soft` and a switch is pending (`switch_pending`; a soft notice of a level that is only not read
 says none), the run's next tool call gets one line of context: the run finishes on this account; publish
 what is green as you go, so a hard-line stop loses nothing. Once per notice (its `since`) per run. The signal never
@@ -44,7 +44,7 @@ def notice_path():
 def switch_pending(n):
     """A switch is pending: a soft notice that is not only a level not read (2026-11-25 2:00 PM PST: one second after a
     reset the level was unread, the notice read soft, and every run and window was told a switch was pending). The
-    notice's `switch_pending` decides (switching_plan.notice_of); a notice of an older writer, which has no such field,
+    notice's `switch_pending` decides (account_actuator.notice_of); a notice of an older writer, which has no such field,
     is pending unless it is the shape of an unread level: no drain and no level."""
     if n.get("state") != "soft":
         return False
