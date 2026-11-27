@@ -2357,17 +2357,31 @@ def fill_rank_declared(mod, n, now, today=None):
     (RIMMANDRAKE_FIX_STEWARD_FORECAST_KEEPS_CHAIN_FILLER_DROPS: the steward read the undropped pick and raised a false
     IDLE_EMPTY on 2026-11-26). A chain the history still holds but modcheck no longer declares (renamed, removed), or
     declares offline-only, would be re-submitted every tick and refused every time, and Steve would idle for good: drop
-    it and rank again (3 rounds at most). -> fill_rank's plan plus "gone": the dropped chains, sorted ([] for none)."""
+    it and rank again (FILL_DROP_ROUNDS at most). The last ranking is checked too: a chain modcheck refuses never
+    leaves as a pick, and a pick it empties reads `exhausted`. -> fill_rank's plan plus "gone": the dropped chains,
+    sorted ([] for none)."""
     plan = fill_rank(mod, n, now, today)
     gone_all = set()
-    for _ in range(3):
+    for i in range(FILL_DROP_ROUNDS + 1):
         why = bad_selection(mod, {"chains": plan["pick"]}) if plan["pick"] else None
         gone = unknown_chains(why) if why else set()
         if not gone & set(plan["pick"]):
             break
         gone_all |= gone
+        if i == FILL_DROP_ROUNDS:   # the bound ran out: what is left of the last pick, or no pick at all
+            pick = [c for c in plan["pick"] if c not in gone_all]
+            plan = dict(plan, pick=pick) if pick else dict(
+                plan, verdict="exhausted", pick=[], text="%s: %d rankings left only chains modcheck no longer declares "
+                                                         "(%s); no fill" % (mod, FILL_DROP_ROUNDS + 1, ", ".join(sorted(gone_all))))
+            break
         plan = dict(plan, **fill_rank(mod, n, now, today, exclude=gone_all))
     return dict(plan, gone=sorted(gone_all))
+
+
+# budget: danger=the testq tick killed at its TimeoutStartSec (900 s) with nothing queued: each drop round is one more
+# budget: fill_rank, 167-244 s measured on the live queue (2026-11-26), so 1 + 2 rankings stay under 732 s; longest=1 drop
+# budget: round (FlowWorks, 1 undeclared chain of 38, 2026-11-26); a third ranking could reach 976 s
+FILL_DROP_ROUNDS = 2
 
 
 def fill_rank(mod, n, now, today=None, exclude=()):

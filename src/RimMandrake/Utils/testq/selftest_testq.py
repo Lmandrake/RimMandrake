@@ -392,16 +392,22 @@ def t_fill_plan_drops_undeclared_chain_like_the_filler():
          True, ["thirst"], ["renamed_away_zz"]),
         ("all-declared", [], {"X_OWES_B": ["thirst"]}, (), True, ["thirst"], []),
         ("offline-only", ["off_zz"], {"X_OWES": ["off_zz"]}, ("off_zz",), False, [], ["off_zz"]),
+        # the brake canary's n=1 drops one chain a ranking: past the bound the last ranking was returned unchecked, a
+        # pick modcheck refuses (fresh reader, 2026-11-26); now the last pick is checked and reads exhausted
+        ("four-undeclared-n1", ["gone_a", "gone_b", "gone_c", "gone_d"],
+         {"X_OWES_%s" % c: [c] for c in ("gone_a", "gone_b", "gone_c", "gone_d")}, (), False, [],
+         ["gone_a", "gone_b", "gone_c"], 1),
     )
     n = 0
     try:
-        for name, hist, items, offline, want_pick, want, want_gone in cases:
+        for name, hist, items, offline, want_pick, want, want_gone, *rest in cases:
+            nchains = rest[0] if rest else 4
             tmp = tempfile.mkdtemp(prefix="rf_testq_undecl_")
             try:
                 logs = []
                 T.log = lambda msg, *a, **k: logs.append(msg)
                 _undeclared_fixture(T, gaps, tmp, hist, items, offline)
-                p = T.fill_plan("FlowWorks", 4, T.FILL_CAP_DEFAULT, now=time.time())
+                p = T.fill_plan("FlowWorks", nchains, T.FILL_CAP_DEFAULT, now=time.time())
                 n += 1
                 check((p["verdict"] == "pick") == want_pick and sorted(p.get("pick") or []) == want
                       and p.get("gone") == want_gone,
@@ -412,7 +418,7 @@ def t_fill_plan_drops_undeclared_chain_like_the_filler():
                 logs[:] = []
                 sent = []
                 T.cmd_submit = lambda sub: sent.append(sub.chains) or 0
-                T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=4, cap=T.FILL_CAP_DEFAULT))
+                T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=nchains, cap=T.FILL_CAP_DEFAULT))
                 said = [m for m in logs if "no longer declares" in m]
                 check(len(said) == (1 if want_gone else 0) and
                       (sorted(sent[0].split(",")) if sent else []) == want,
