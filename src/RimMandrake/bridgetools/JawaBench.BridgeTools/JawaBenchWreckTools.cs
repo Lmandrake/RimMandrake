@@ -309,7 +309,7 @@ namespace JawaBench.BridgeTools
                 "it to the list (ProcessStack.AddProcess, repeat count 1). Every row is read back after the fill.",
             ResultDescription =
                 "success, thing, process, rows[] (def, category, net, haveBefore, required, wanted, used, haveAfter, skip), " +
-                "processes[] (the processor's list), allFull.")]
+                "processes[] (the processor's list), available[] (every ProcessDef its tab offers; also on a refusal), allFull.")]
         public static async Task<object> ProcessorFill(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -337,6 +337,9 @@ namespace JawaBench.BridgeTools
                     return pi != null ? pi.GetValue(o, null) : o.GetType().GetField(name, F)?.GetValue(o);
                 };
                 object stack = get(comp, "ProcessStack");
+                // what the player can add in the processor's tab: the comp's props' process list
+                var available = ((get(get(comp, "Props"), "processes") as IEnumerable)?.Cast<object>() ?? Enumerable.Empty<object>())
+                    .Select(pd => (pd as Def)?.defName).Where(n => n != null).ToList();
                 var list = (get(stack, "Processes") as IEnumerable)?.Cast<object>().ToList() ?? new List<object>();
                 Func<object, string> defOf = pr => (get(pr, "Def") as Def)?.defName;
                 object chosen;
@@ -359,7 +362,7 @@ namespace JawaBench.BridgeTools
                 var names = list.Select(defOf).ToList();
                 if (chosen == null)
                     return Fail(string.IsNullOrWhiteSpace(process) ? "The processor has no process." : "Process '" + process + "' is not in the processor's list (add=true adds it).",
-                        new { processes = names });
+                        new { processes = names, available });
                 var owners = (get(chosen, "IngredientsOwners") as IEnumerable)?.Cast<object>().ToList();
                 if (owners == null) return Fail("Process.IngredientsOwners not readable: the PipeSystem API changed.");
                 var rows = new List<object>();
@@ -402,7 +405,7 @@ namespace JawaBench.BridgeTools
                 }
                 return (object)new
                 {
-                    success = true, thing = t.ThingID, process = defOf(chosen), dryRun, rows, processes = names, allFull,
+                    success = true, thing = t.ThingID, process = defOf(chosen), dryRun, rows, processes = names, available, allFull,
                     ticksGame = TicksGameSafe()
                 };
             }, cancellationToken);
@@ -528,16 +531,16 @@ namespace JawaBench.BridgeTools
             "jawa/reach_edge",
             Description =
                 "For each named cell: can a pawn get from it to the map's edge, by the game's own Reachability.CanReachMapEdge with " +
-                "TraverseParms.For(mode). mode PassDoors (default) walks and opens doors and never digs or breaks; NoPassClosedDoors, " +
-                "NoPassClosedDoorsOrWater and PassAllDestroyableThings (which digs and breaks) are the other names; an unknown mode is " +
-                "REFUSED, never defaulted. A cell inside a building is read from the building's interaction cell when it has one, else " +
+                "TraverseParms.For(mode). mode PassDoors (default) walks and opens doors; NoPassClosedDoors and NoPassClosedDoorsOrWater " +
+                "are the other names. The engine walks regions, so no mode digs or breaks through a wall: the destroyable-things modes " +
+                "and any unknown mode are REFUSED, never defaulted. A cell inside a building is read from the building's interaction cell when it has one, else " +
                 "from the first standable cell beside the building. Reads only.",
             ResultDescription = "success, mode, cells[] (x, z, from (x, z), canReachEdge, why).")]
         public static async Task<object> ReachEdge(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Cells 'x,z;x,z;...'.")] string cells = null,
-            [ToolParameter(Description = "PassDoors (default), NoPassClosedDoors, NoPassClosedDoorsOrWater or PassAllDestroyableThings.")]
+            [ToolParameter(Description = "PassDoors (default), NoPassClosedDoors or NoPassClosedDoorsOrWater.")]
             string mode = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>

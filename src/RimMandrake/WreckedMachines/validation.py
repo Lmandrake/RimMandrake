@@ -1512,8 +1512,10 @@ def scene_repair_cancelled(t):
 
 
 def _proc_names(t, tid):
+    """The processes a machine offers in its tab (jawa/processor_fill `available`, on a reply or on a refusal), not the bills
+    already added; [] for a machine with no PipeSystem processor (a wreck), with the reply beside it."""
     r = t.bridge_call("jawa/processor_fill", thing=tid, dryRun=True) or {}
-    return r.get("processes") or [], r
+    return r.get("available") or (r.get("details") or {}).get("available") or [], r
 
 
 @suite.chain("scene_levels_do_their_work")

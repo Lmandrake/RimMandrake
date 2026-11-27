@@ -141,15 +141,9 @@ def prove_fill(x, z):
     if not sm:
         return row("fill.smelter_placed", None, "no %s stood after build_batch: %s" % (SMELTER, str(b)[:200]))
     d = call("jawa/processor_fill", thing=sm, dryRun=True)
-    procs = d.get("processes") or []
-    if not procs:
-        d2 = call("jawa/get_defs", defs="ThingDef/" + SMELTER, fields="comps", deep=True)
-        import re
-        found = re.findall(r"VFEFactory_\w+", str(d2))
-        procs_def = [p for p in found if "Smelt" in p or "Steel" in p or "Slag" in p]
-        pick = procs_def[0] if procs_def else None
-    else:
-        pick = procs[0]
+    avail = d.get("available") or (d.get("details") or {}).get("available") or []
+    row("fill.reads_the_tab_list", bool(avail), "available %s, list %s" % (avail[:6], d.get("processes") or (d.get("details") or {}).get("processes")))
+    pick = avail[0] if avail else None
     f = call("jawa/processor_fill", thing=sm, process=pick, add=True) if pick else {"success": None}
     rows = f.get("rows") or []
     row("fill.inputs_placed", bool(f.get("success") and rows and f.get("allFull")
@@ -174,7 +168,8 @@ def prove_reach_and_caravan(x, z):
     row("reach.walled_in_and_open", bool(r.get("success") and rows[0].get("canReachEdge") is False and rows[1].get("canReachEdge") is True),
         str(rows)[:240])
     dig = call("jawa/reach_edge", cells="%d,%d" % (x, z), mode="PassAllDestroyableThings")
-    row("reach.digging_mode_gets_out", ((dig.get("cells") or [{}])[0]).get("canReachEdge") is True, str(dig)[:200])
+    # the engine walks regions and a wall has none: a digging mode would read "cannot get out" from any walled cell, so it is refused
+    row("reach.refuses_digging_mode", dig.get("success") is False, str(dig)[:200])
     bad = call("jawa/reach_edge", cells="%d,%d" % (x, z), mode="Fly")
     row("reach.refuses_unknown_mode", bad.get("success") is False, str(bad)[:160])
     pawns = [((call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=x + 4 + k, z=z - 4).get("pawns") or [{}])[0]).get("id") for k in range(2)]

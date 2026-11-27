@@ -147,7 +147,7 @@ namespace JawaBench.BridgeTools
                 && C.FormRefusal(2, 0, 0, 0) != null && C.FormRefusal(2, 0, 0, 1) == null ? null : "a bad formation was accepted, or a good one refused");
             U("traverse_mode_named_or_refused", () =>
                 C.TraverseModeName(null) == "PassDoors" && C.TraverseModeName("nopassclosedDOORS") == "NoPassClosedDoors"
-                && C.TraverseModeName("Dig") == null && C.TraverseModeName("PassAllDestroyableThings") == "PassAllDestroyableThings"
+                && C.TraverseModeName("Dig") == null && C.TraverseModeName("PassAllDestroyableThings") == null
                 ? null : "default " + C.TraverseModeName(null) + ", unknown " + C.TraverseModeName("Dig"));
             Console.WriteLine("U-count " + n);
             return 0;

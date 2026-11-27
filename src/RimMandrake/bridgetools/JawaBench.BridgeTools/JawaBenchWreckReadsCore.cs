@@ -143,9 +143,11 @@ namespace JawaBench.BridgeTools
         }
 
         // ------------------------------------------------------------ reach_edge
-        // The traverse modes a caller may name, matched without case; default PassDoors (walks, opens doors, never digs or
-        // breaks). null for a name the tool must refuse, so an unknown mode never falls back to a default silently.
-        public static readonly string[] TraverseModes = { "PassDoors", "NoPassClosedDoors", "NoPassClosedDoorsOrWater", "PassAllDestroyableThings" };
+        // The traverse modes a caller may name, matched without case; default PassDoors (walks, opens doors). null for a name
+        // the tool must refuse, so an unknown mode never falls back to a default silently. The destroyable-things modes are
+        // refused: Reachability.CanReachMapEdge walks regions, and a wall has no region, so those modes would read "cannot dig
+        // out" from inside any wall (measured live on Steve1, J20261127T122224Z-2e3f85, 2026-11-27).
+        public static readonly string[] TraverseModes = { "PassDoors", "NoPassClosedDoors", "NoPassClosedDoorsOrWater" };
 
         public static string TraverseModeName(string asked)
         {

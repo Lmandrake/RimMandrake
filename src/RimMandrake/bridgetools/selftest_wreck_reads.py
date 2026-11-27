@@ -51,6 +51,7 @@ PLANTS = [
     ("if (thingsElsewhere > 0) return", "if (thingsElsewhere > 1) return", "form_refuses_no_pawn_or_elsewhere"),
     ("            return null;\n        }\n\n        // ------------------------------------------------------------ processor_fill",
      "            return \"PassDoors\";\n        }\n\n        // ------------------------------------------------------------ processor_fill", "traverse_mode_named_or_refused"),
+    ('"NoPassClosedDoorsOrWater" };', '"NoPassClosedDoorsOrWater", "PassAllDestroyableThings" };', "traverse_mode_named_or_refused"),
 ]
 
 # (tool, the core call that must sit inside its main-thread hop)
@@ -61,7 +62,7 @@ WIRING = [
                                 r"GenConstruct\.PlaceBlueprintForReinstall\(", r"GenConstruct\.CanPlaceBlueprintAt\("]),
     ("jawa/study_record", [r"JawaBenchWreckReadsCore\.StudyStatus\(", r"JawaBenchWreckReadsCore\.CompletedCount\(",
                            r"Find\.AnalysisManager\.TryGetAnalysisProgress\(", r"requiredAnalyzed"]),
-    ("jawa/processor_fill", [r"JawaBenchWreckReadsCore\.Plan\(", r"\"AddFromThing\"", r"\"IngredientsOwners\""]),
+    ("jawa/processor_fill", [r"JawaBenchWreckReadsCore\.Plan\(", r"\"AddFromThing\"", r"\"IngredientsOwners\"", r"\"processes\"\) as IEnumerable"]),
     ("jawa/caravan_mass", [r"JawaBenchWreckReadsCore\.OverCapacity\(", r"CollectionsMassCalculator\.Capacity\(",
                            r"CollectionsMassCalculator\.MassUsage\("]),
     ("jawa/reach_edge", [r"JawaBenchWreckReadsCore\.TraverseModeName\(", r"reachability\.CanReachMapEdge\("]),
