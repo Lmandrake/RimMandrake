@@ -312,6 +312,8 @@ PAGES = {
     "design/specs/2026-11-25-blind-readers-fix/boundary.md": "src/RimMandrake/rimflow/selftest_blind_readers_fix.py",
     "design/specs/2026-11-26-look-notes-moved-pins/boundary.md": "src/RimMandrake/Utils/selftest_look_notes.py",
     "design/specs/2026-11-26-tick-clone-sync/boundary.md": "src/RimMandrake/rimflow/selftest_dispatch_clone_sync.py",
+    "design/specs/2026-11-27-maturation-convergence-asks/boundary.md":
+        "src/RimMandrake/Utils/selftest_maturation_convergence_asks.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

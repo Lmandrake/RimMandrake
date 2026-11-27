@@ -282,6 +282,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_game_names.py", "seconds": 0.2},
     {"test": "src/RimMandrake/Utils/selftest_judge_start_keeps_pass.py", "seconds": 27, "inputs": ["src/RimMandrake/rimflow/model.py", "src/RimMandrake/rimflow/cli.py", "design/specs/2026-11-27-judge-start-keeps-pass/boundary.md"]},
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
+    {"test": "src/RimMandrake/Utils/selftest_maturation_convergence_asks.py", "seconds": 0.2, "inputs": ["src/RimMandrake/Utils/maturation_convergence.py", "design/specs/2026-11-27-maturation-convergence-asks/boundary.md"]},
     {"test": "src/RimMandrake/rimflow/selftest_mod_owner_hold.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_conductor_acts.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_never_refuse_conductor.py", "seconds": 7.0, "inputs": ["src/RimMandrake/rimflow/principal.py", "src/RimMandrake/rimflow/cli.py", "src/RimMandrake/rimflow/model.py", "src/RimMandrake/rimflow/control.py", "src/RimMandrake/rimflow/maturation_hands.py", "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/mod_owner_hold.py", "src/RimMandrake/rimflow/ruling_fast.py", "src/RimMandrake/rimflow/selftest_ruling_fast.py", "design/specs/2026-11-21-never-refuse-the-conductor/boundary.md"]},
