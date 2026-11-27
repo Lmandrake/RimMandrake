@@ -1,0 +1,2 @@
+A ./publish refusal that reads 'green on origin/main <sha>: this change turned it red' compares your HEAD with your clone's own base, not with today's origin/main. When the base is old, a fix that landed on origin since (here ca4c2668a2, a selftest that wrote a real mod ledger) is missing from both trees, and the red is not yours. Rebase onto origin/main and run the named test before you debug your change.
+item: OPS_TIMER_REPAIR_PRXC_XKGA
