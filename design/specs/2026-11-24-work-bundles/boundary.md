@@ -142,6 +142,13 @@ bundle began). A member with none of these is **open**.
   reason and one Conductor line: the way out for a run whose finish never ran.
 - **a-bundle-with-every-outcome-ends.** When every member has an outcome, the bundle reads `ended`. Each `refused`
   member's reason goes to the Conductor log, once.
+- **a-code-bundle-gets-one-fresh-read.** When a bundle ends (finish, in its run's clone; or `end` by hand), its
+  commits are read: those on origin/main since it began whose message names a member or the bundle. When they change
+  code (not the ledger, the bundle state files, design prose or media), and a file of it still owes a read
+  (`fresh_reader.owed_paths`: READ-CLEAN or FLAGGED owes none; a file that an open reader ticket names owes none), the end files ONE `fresh_reader` ticket over those files,
+  and the ticket lane launches the reader. The bundle records `reader`; a second end files none. A bundle with no code
+  change, or one already read, files none. Commits that cannot be read file nothing, record nothing, and reach the
+  Conductor log. Measured 2026-11-26: three bundle fixes ended unread (c7dd53c26a, 062867f85d, e283fe2c2d62).
 - **a-refused-member-is-stopped-with-its-reason.** In the lane, an open member refused in an ended bundle reads
   `stopped`, and its Needs Conductor line quotes the refusal.
 - **live-pass-takes-a-free-game-or-says-unrun.** `work_bundle.py live <id> --for "..." -- CMD` asks `game_lock.py

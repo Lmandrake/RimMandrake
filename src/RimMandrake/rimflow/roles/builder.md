@@ -90,6 +90,7 @@ names. Other kinds of work: `skills/BY_WORK.md`.
    cost, the polish rule. That rule also says how to take an old line, how to commit polish, and where test cover
    limits polish. Then one fresh run that did not make the fixes reads the changed files once, by
    `src/RimMandrake/rimflow/roles/code_review.md`. A significant finding is fixed test first. There is no second read.
+   In a work bundle, the bundle's end files that reader (`work_bundle.reader_step`); do not file it yourself.
 5. **One live pass.** When a change has an in-game check, or the unit runs live (a timer, a tick, a publish), run the
    live pass ("The live pass", below). For a part of the pipeline, the live pass is that part running for real, with
    its reading.

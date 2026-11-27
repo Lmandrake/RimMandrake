@@ -933,6 +933,8 @@ def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, state
         import work_bundle as WB
         q = p["bundle_plan"]
         WB.note_end(p["bundle"], q, rec["unit"], now)
+        if q.get("act") == "end":   # the bundle's one fresh reader, filed from the run's clone (work_bundle.reader_step)
+            p["reader"] = WB.reader_step(p["bundle"], clone, now)
     if p["act"] == "alarm":
         alarm(fresh, p, now)
         return p, "continue: ALARM %s (%s)" % (ALARM_ID, p["why"])
@@ -940,7 +942,7 @@ def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, state
         r = raise_first(fresh, p, now)
         return p, "continue: RAISE FIRST, the effort ladder's end (%s; %s)" % (p["why"], r.get("act"))
     if p["act"] != "continue":
-        return p, "continue: none (%s)" % p["why"]
+        return p, "continue: none (%s)%s" % (p["why"], "; " + p["reader"] if p.get("reader") else "")
     line = (continuer or (lambda r, q: kick(r, q, runner)))(fresh, p)
     if p.get("bundle") and ("kicked" not in line or "NOT kicked" in line):    # no step will start the restart
         bundle_unstarted(p["bundle"], line, now)

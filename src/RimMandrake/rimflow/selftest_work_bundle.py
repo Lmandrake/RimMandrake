@@ -1563,6 +1563,74 @@ def t_a_mod_bundle_takes_an_old_ticket_past_a_block_with_no_end():
         "holder_note: a blocked member is told to drop a stale ticket, or type or lift its block, first (%s)" % note[-500:])
 
 
+def t_a_code_bundle_gets_one_fresh_read():
+    """a-code-bundle-gets-one-fresh-read (item RIMMANDRAKE_LAUNCH_BUNDLE_FRESH_READER_THREE_FIXES_UNREAD): an ended bundle
+    whose commits change code plans exactly one reader run over those files; a bundle with no code change, or one already
+    read, plans none. The end (at_finish, end_bundle) files that reader once, by fresh_reader.file_argv."""
+    W = WB()
+    rec = dict(bundle_rec(W, ["R1", "R2"]), state="ended")
+    code = {"sha": "aaaaaaa111", "ts": NOW + 30, "msg": "R1: the fix\n", "files": [
+        "src/RimMandrake/rimflow/foo.py", "design/specs/x/boundary.md", "infrastructure/state/ledger/events/BENCH.jsonl",
+        "infrastructure/bundles/%s.md" % rec["id"]]}
+    later = {"sha": "bbbbbbb222", "ts": NOW + 60, "msg": "polish: foo; R2 bar\n", "files": [
+        "src/RimMandrake/rimflow/foo.py", "src/RimMandrake/Utils/bar.py"]}
+    ledger = {"sha": "ccccccc333", "ts": NOW + 70, "msg": "ledger: R1 close\n",
+              "files": ["infrastructure/state/ledger/events/BENCH.jsonl"]}
+    other = {"sha": "ddddddd444", "ts": NOW + 80, "msg": "OTHER_ITEM: not ours\n", "files": ["src/RimMandrake/rimflow/zed.py"]}
+    before = {"sha": "eeeeeee555", "ts": NOW - 80, "msg": "R1: before the bundle\n", "files": ["src/RimMandrake/rimflow/old.py"]}
+    commits = [other, ledger, later, code, before]      # git log order: newest first
+    q = W.plan_reader(rec, commits)
+    chk(lambda: q and q["sha"] == "bbbbbbb222" and q["paths"] == ["src/RimMandrake/rimflow/foo.py",
+                                                                   "src/RimMandrake/Utils/bar.py"],
+        "reader: an ended bundle with a code commit plans one reader over its code files, newest sha (%s)" % q)
+    chk(lambda: W.plan_reader(rec, [ledger, other, before]) is None,
+        "reader: a bundle whose commits change no code (ledger only; others' commits; before it began) plans none")
+    chk(lambda: W.plan_reader(dict(rec, reader={"at": NOW, "ticket": "X", "rc": 0}), commits) is None,
+        "reader: a bundle already read (a reader record) plans none")
+    chk(lambda: W.plan_reader(dict(rec, state="live"), commits) is None, "reader: a live bundle plans none")
+    chk(lambda: W.plan_reader(rec, commits, owed=lambda sha, ps: []) is None,
+        "reader: files that each carry a review record (READ-CLEAN or FLAGGED) owe none, so none is planned")
+    chk(lambda: W.reader_owed(["a.py", "b.py"], open_paths={"a.py"}, owed_fn=lambda sha, ps: ps) == ["b.py"],
+        "reader: a file that an open reader ticket names already (the worker filed it) owes no second read")
+    # the step: files exactly one reader, records it, and a second end files none
+    rec2 = W.store_write(dict(bundle_rec(W, ["R3"], at=NOW + 1), state="ended"))
+    c3 = dict(code, msg="R3: fix\n")
+    filed, lines = [], []
+    out = W.reader_step(rec2["id"], TMP, NOW + 100, say=lines.append, commits=lambda r, root: [c3],
+                        owed=lambda sha, ps: ps, filer=lambda argv, root: filed.append(argv) or 0)
+    on = W.store_read(rec2["id"])
+    chk(lambda: len(filed) == 1 and "file" in filed[0] and "--effect" in filed[0]
+        and any("fresh_reader.py holds aaaaaaa111 src/RimMandrake/rimflow/foo.py" in a for a in filed[0])
+        and (on.get("reader") or {}).get("rc") == 0 and on["reader"]["paths"] == ["src/RimMandrake/rimflow/foo.py"],
+        "reader: the end files ONE reader ticket over the code files and records it (%s / %s)" % (out, on.get("reader")))
+    W.reader_step(rec2["id"], TMP, NOW + 200, say=lines.append, commits=lambda r, root: [c3],
+                  owed=lambda sha, ps: ps, filer=lambda argv, root: filed.append(argv) or 0)
+    chk(lambda: len(filed) == 1, "reader: a second end of the same bundle files no second reader (never a third read)")
+    rec3 = W.store_write(dict(bundle_rec(W, ["R4"], at=NOW + 2), state="ended"))
+    W.reader_step(rec3["id"], TMP, NOW + 100, say=lines.append, commits=lambda r, root: 1 / 0,
+                  owed=lambda sha, ps: ps, filer=lambda argv, root: filed.append(argv) or 0)
+    chk(lambda: len(filed) == 1 and not W.store_read(rec3["id"]).get("reader") and any("could not look" in x for x in lines),
+        "reader: commits that cannot be read file nothing, record nothing and say so (%s)" % lines[-1:])
+    # the wiring: at_finish's end and the Conductor's end both call the step
+    import left_open_continue as LOC
+    import detached_helper as DH
+    rec4 = bundle_rec(W, ["R5"], at=NOW + 3)
+    r = run_rec(W, rec4, unit="u-r5")
+    DH.write_record(dict(r, status="finished"))
+    seen = []
+    orig = W.reader_step
+    W.reader_step = lambda bid, root, now, **k: seen.append((bid, root)) or "reader: stub"
+    try:
+        LOC.at_finish(r, {"state": "done", "notes": []}, TMP, NOW + 100, continuer=lambda rr, q: "x",
+                      states_reader=lambda clone, ids: facts_of(R5={"state": "done"}))
+        rec5 = bundle_rec(W, ["R6"], at=NOW + 4)
+        W.end_bundle(rec5["id"], "by hand", NOW + 10, say=lines.append, unit_live=lambda u: False)
+    finally:
+        W.reader_step = orig
+    chk(lambda: (rec4["id"], TMP) in seen and any(b == rec5["id"] for b, _ in seen),
+        "reader: a bundle's end at finish (its run's clone) and the Conductor's end both run the reader step (%s)" % seen)
+
+
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
@@ -1587,7 +1655,8 @@ def main():
               t_a_home_lead_takes_its_old_tickets, t_the_onboarding_brief_sorts_before_it_checks,
               t_a_routed_member_has_an_outcome, t_an_onboarding_on_a_host_keeps_its_old_tickets,
               t_the_page_shows_each_onboarding_run, t_the_mods_own_bundle_onboards_its_old_tickets,
-              t_a_mod_bundle_takes_an_old_ticket_past_a_block_with_no_end]:
+              t_a_mod_bundle_takes_an_old_ticket_past_a_block_with_no_end,
+              t_a_code_bundle_gets_one_fresh_read]:
         print("-- %s" % t.__name__)
         try:
             t()

@@ -1537,6 +1537,7 @@ def end_bundle(bid, why, now, say=None, unit_live=None):
     say("work bundle %s (%s) ENDED by hand: %s%s" % (bid, rec["system"], _one(why, 400),
                                                     ("; its unit %s is still live and runs on, outside any bundle "
                                                      "(`./pipe stop %s`)" % (on, on)) if on else ""))
+    reader_step(bid, REPO, now, say=say)     # its commits still owe their one fresh read (design step 4)
     return 0
 
 
@@ -1545,6 +1546,197 @@ def cmd_end(o):
     print(("ENDED %s" % o.bundle) if rc == 0 else ("NO BUNDLE %s in %s" % (o.bundle, store_dir())))
     return rc
 
+
+
+# ---- the one fresh reader at a bundle's end (design step 4) ---------------------------------------------------------
+# Item RIMMANDRAKE_LAUNCH_BUNDLE_FRESH_READER_THREE_FIXES_UNREAD. The design and the role promise one fresh run that reads
+# the changed files once, at the bundle's end; the worker may not start it (its brief bars helpers). On 2026-11-26 three
+# bundle fixes ended unread (c7dd53c26a, 062867f85d, e283fe2c2d62). So the bundle's end files that reader as ONE
+# fresh_reader ticket, and the ticket lane launches it. A bundle's commits are those on origin/main since it began whose
+# message names a member or the bundle; a polish commit touches only files that such a commit changed.
+
+READER_SKIP_PREFIXES = ("infrastructure/state/", STATE_FILES + "/", "design/", "Transient/")
+READER_SKIP_SUFFIXES = (".md", ".txt", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp", ".tga", ".dds", ".psd",
+                        ".wav", ".ogg", ".mp3", ".mp4")
+
+
+def is_code(path):
+    """-> True for a file that a code reader reads: not the ledger, the bundle state files, design prose or media."""
+    p = str(path or "").strip()
+    return bool(p) and not p.startswith(READER_SKIP_PREFIXES) and not p.lower().endswith(READER_SKIP_SUFFIXES)
+
+
+def names_bundle(rec, msg):
+    ids = list(rec.get("members") or []) + [rec.get("id")]
+    return any(i and re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(i), msg or "") for i in ids)
+
+
+def plan_reader(rec, commits, owed=None):
+    """-> None, or {"sha", "paths", "commits"}: the ONE reader run that an ended bundle owes. Pure over its inputs.
+    commits: [{"sha", "ts", "msg", "files"}], newest first (git log order). None when the bundle is not ended, has a
+    reader record already, or its commits change no code; owed(sha, paths) -> the paths that still owe a read (a file
+    READ-CLEAN on its bytes, or FLAGGED, owes none: never a third read)."""
+    if (rec or {}).get("state") != "ended" or rec.get("reader"):
+        return None
+    since = float(rec.get("at") or 0)
+    ours = [c for c in commits or [] if float(c.get("ts") or 0) >= since and names_bundle(rec, c.get("msg"))]
+    paths, shas = [], []
+    for c in reversed(ours):                        # oldest first: the paths in the order the bundle changed them
+        code = [f for f in c.get("files") or [] if is_code(f)]
+        if code:
+            shas.append(c["sha"])
+        paths += [f for f in code if f not in paths]
+    if not paths:
+        return None
+    if owed is not None:
+        paths = list(owed(shas[-1], paths))
+        if not paths:
+            return None
+    return {"sha": shas[-1], "paths": paths, "commits": list(reversed(shas))}
+
+
+OPEN_READERS = r"""
+import json, os, sys
+sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
+import model, fresh_reader as FR
+out = set()
+for x in model.replay(model.read()).items.values():
+    if x.state not in ("done", "dropped", "superseded") and FR.is_reader(x):
+        out.update(FR.parse_title(x.title)[0])
+print(json.dumps(sorted(out)))
+"""
+
+
+def open_reader_paths(root):
+    """-> {path} that an open fresh_reader ticket names, as the ledger of `root` folds it (the worker's own filing sits
+    there first). Raises when that ledger cannot be read."""
+    import time_budget as TB
+    r = subprocess.run([sys.executable, "-c", OPEN_READERS], cwd=root, capture_output=True, text=True,
+                       timeout=TB.RIMFLOW_S, stdin=subprocess.DEVNULL)
+    if r.returncode:
+        raise RuntimeError("the reader read in %s exited %d: %s" % (root, r.returncode, _one(r.stderr, 300)))
+    return set(json.loads(r.stdout))
+
+
+def reader_owed(paths, sha=None, open_paths=(), owed_fn=None):
+    """-> the paths that still owe their one read: not named by an open reader ticket (the worker filed it), and
+    without a review record (fresh_reader.owed_paths: READ-CLEAN or FLAGGED owes none)."""
+    rest = [p for p in paths if p not in set(open_paths or ())]
+    if not rest:
+        return []
+    if owed_fn is None:
+        import fresh_reader as FR
+        owed_fn = FR.owed_paths
+    return list(owed_fn(sha, rest))
+
+
+def _git(argv, root):
+    import time_budget as TB
+    return subprocess.run(["git", "-C", root] + argv, capture_output=True, text=True, timeout=TB.CALL_S,
+                          stdin=subprocess.DEVNULL)
+
+
+def bundle_commits(rec, root, run=None):
+    """-> the commits on origin/main since the bundle began, newest first, as plan_reader takes them (after a fetch:
+    a stale origin/main would read no commit, and the read would be lost). Raises when git cannot be read."""
+    run = run or _git
+    f = run(["fetch", "-q", "origin", "main"], root)
+    if f.returncode:
+        raise RuntimeError("git fetch in %s exited %d: %s" % (root, f.returncode, _one(f.stderr, 200)))
+    r = run(["log", "origin/main", "--since=@%d" % int(float(rec.get("at") or 0)), "--no-renames", "--name-only",
+             "--format=%x1e%H%x1f%ct%x1f%B%x1f"], root)
+    if r.returncode:
+        raise RuntimeError("git log in %s exited %d: %s" % (root, r.returncode, _one(r.stderr, 200)))
+    out = []
+    for chunk in (r.stdout or "").split("\x1e")[1:]:
+        sha, ct, msg, rest = chunk.split("\x1f", 3)
+        out.append({"sha": sha.strip(), "ts": float(ct), "msg": msg,
+                    "files": [x.strip() for x in rest.splitlines() if x.strip()]})
+    return out
+
+
+def file_reader(argv, root):
+    """Run the `rimflow file` line of fresh_reader.file_argv in `root` (its own cli.py and ledger). -> exit code."""
+    argv = [argv[0], os.path.join(root, "src", "RimMandrake", "rimflow", "cli.py")] + list(argv[2:])
+    return subprocess.run(argv, cwd=root, capture_output=True, text=True, stdin=subprocess.DEVNULL,
+                          timeout=6 * 3600).returncode    # budget: danger=a publish that never returns; longest=1800s (a publish in the door's line, 2026-11-26)
+
+
+def reader_step(bid, root, now, say=None, commits=None, owed=None, filer=None):
+    """At a bundle's end: file its ONE fresh reader (fresh_reader.file_argv) when plan_reader plans one, and record it
+    on the bundle (`reader`), so a second end files none. -> one line. Never raises: the end is written already.
+    Under a selftest with no injected reads it looks at nothing (a test never fetches or files from the real clone)."""
+    say = say or (lambda line: conductor_say(line, now))
+    if os.environ.get("RM_UNDER_SELFTEST") and commits is None and filer is None:
+        return "reader: not looked (a selftest with no injected reads)"
+    import fresh_reader as FR
+    try:
+        lk = _lock()
+        try:
+            rec = store_read(bid)
+            if not rec or rec.get("state") != "ended" or rec.get("reader") or rec.get("host"):
+                return "reader: none (%s)" % ("no bundle" if not rec else "already filed" if rec.get("reader") else
+                                               "a host bundle: its host's end files it" if rec.get("host") else
+                                               "not ended")
+            rec["reader"] = {"at": now, "state": "planning"}    # held under the lock: a second end files nothing
+            store_write(rec)
+        finally:
+            lk.close()
+        q = plan_reader(dict(rec, reader=None), (commits or bundle_commits)(rec, root),
+                        owed=owed or (lambda sha, ps: reader_owed(ps, sha, open_reader_paths(root))))
+    except Exception as e:  # noqa: BLE001 - nothing filed, nothing recorded: the Conductor is told
+        _reader_unmark(bid)
+        line = "work bundle %s: its fresh reader could not look (%s: %s); nothing filed. File it by hand: " \
+               "`fresh_reader.py file --fix <sha> <paths>`" % (bid, type(e).__name__, _one(str(e), 300))
+        _say(say, line)
+        return "reader: could not look (%s)" % _one(str(e), 160)
+    if not q:
+        _reader_record(bid, {"at": now, "none": "its commits change no code that still owes a read"})
+        return "reader: none (no code that still owes a read)"
+    units = rec.get("units") or []
+    maker = "work bundle %s (%s)" % (bid, units[-1].get("unit") if units else rec.get("launched_by") or "unknown")
+    argv = FR.file_argv(q["sha"], q["paths"], maker)
+    try:
+        rc = (filer or file_reader)(argv, root)
+    except Exception as e:  # noqa: BLE001
+        rc = "%s: %s" % (type(e).__name__, _one(str(e), 200))
+    ticket = FR.ticket_id(q["sha"])
+    _reader_record(bid, {"at": now, "ticket": ticket, "sha": q["sha"], "paths": q["paths"], "commits": q["commits"],
+                         "rc": rc})
+    if rc != 0:
+        _say(say, "work bundle %s: its fresh reader %s was NOT filed (%s); file it by hand: `fresh_reader.py file "
+                  "--fix %s %s`" % (bid, ticket, rc, q["sha"], " ".join(q["paths"])))
+        return "reader: NOT filed (%s)" % rc
+    return "reader: filed %s over %d file(s)" % (ticket, len(q["paths"]))
+
+
+def _say(say, line):
+    try:
+        say(line)
+    except Exception as e:  # noqa: BLE001 - the record keeps the state; the line is said on stderr
+        print("work_bundle: conductor line not written (%s): %s" % (e, line), file=sys.stderr)
+
+
+def _reader_record(bid, val):
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if rec:
+            rec["reader"] = val
+            store_write(rec)
+    finally:
+        lk.close()
+
+
+def _reader_unmark(bid):
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if rec and (rec.get("reader") or {}).get("state") == "planning":
+            rec.pop("reader")
+            store_write(rec)
+    finally:
+        lk.close()
 
 # ---- part 8: onboarding old tickets by home --------------------------------------------------------------------------
 # Item RIMMANDRAKE_ONBOARD_OLD_TICKETS_BY_HOME_SHAPED_SINGLY_TODAY; boundary §Onboarding old tickets by home. On
