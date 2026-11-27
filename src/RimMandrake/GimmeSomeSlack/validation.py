@@ -995,8 +995,10 @@ def live_battery(B, fresh_map=False, rows=None):
     # SHARED (proof_all) session D2 carries it (consolidation doc section 2 "Determinism"); standalone it stays here.
     if not SHARED:
         fr = B.probe("fresh")
+        # IDENTITY IS THE PROMISE (CHARTER §A test is as strict as the harm it guards): the cached lay and a fresh builder must agree
         row(rows, "D1_determinism_fresh_build", "PASS" if fr.get("edges", 0) > 0 and fr.get("different") == 0 and fr.get("missing") == 0 else "FAIL",
             "MOD", fr)
+    # M5: IDENTITY IS THE PROMISE for the far cords: a conduit built here must not re-lay (move on screen) a cord the player did not touch
     # ---------------------------------------------------------------- M5: local invalidation
     hashes0 = c0.get("edgeHashes") or {}
     m5_build = B.call("jawa/build_batch", ops=ops("PowerConduit", [(FAR[-1][0] + 1, FAR[-1][1])]), faction="player", wipeExisting=False)

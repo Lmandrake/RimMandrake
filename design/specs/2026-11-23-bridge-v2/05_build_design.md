@@ -333,7 +333,11 @@ The kernel has three time modes. Each receipt names the one used.
   ticks between two frames, so anything that a mod does once per frame (a cache refresh, a draw-time update) meets the
   ticks differently. Kind A means a decisive opportunity under a named configuration, not a promise that every
   configuration agrees. So the **reference configuration** is PLAY at speed 1 with the camera on the station. A faster
-  speed, and STEP, count for a bar only for a scene whose traces were compared with the reference and agreed. A
+  speed, and STEP, count for a bar only for a scene whose traces were compared with the reference and agreed. Agreed means
+  at the level of play (`infrastructure/agents/CHARTER.md` §A test is as strict as the harm it guards): the scene's
+  outcome and the state that its claim reads match. Identical random draws, and identical steps of a pawn that the claim
+  does not name, are not asked: three STEP runs from one save and one written-back random state already part on a
+  colonist's wander step (`../2026-11-27-comparison-strictness/one_page.md`, the tick-53 reading). A
   comparison is valid for one key: the plan's hash, the loaded hashes of the mods that the scene touches, the
   companion's hash, the mod list and the arm. When any part of the key changes, the comparison is owed again. The
   measurement ticket compares speed 1, speed 3, Ultrafast and STEP, in that order of trust.

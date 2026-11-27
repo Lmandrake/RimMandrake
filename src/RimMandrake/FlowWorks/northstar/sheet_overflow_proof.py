@@ -1014,7 +1014,10 @@ def save_load(ctx):
     EXPECT h0' == h0 (the save holds the whole state) and hB == hA (continue-uninterrupted == save/load-then-continue: the
     future trajectory, not just the hash); closes after the load. LIES: a hash of the dl grid alone misses loss remainders and
     hysteresis (the owed hash is of RM_SheetMath.Save: the whole continuation state); a save or load the bridge refused is
-    UNMEASURED. Runs LAST: the load replaces the map every later row would use."""
+    UNMEASURED. Runs LAST: the load replaces the map every later row would use.
+    IDENTITY IS THE PROMISE (CHARTER §A test is as strict as the harm it guards): the hash is of the water model's own saved state
+    (RM_SheetMath.Save), integer dL math with no draws and no pictures; a load that does not continue it exactly floods or dries
+    other cells later, which the player sees."""
     B, row, ledger, P, sp, a = _c(ctx, "B", "row", "ledger", "P", "sp", "a")
 
     def clock():

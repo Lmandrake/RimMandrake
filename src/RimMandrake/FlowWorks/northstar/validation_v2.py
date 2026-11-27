@@ -1786,6 +1786,8 @@ def phase_A(L, args):
         # at every pulse": G_every_cell_vs_oracle fails whenever any of them would, naming the scene (cut 2026-10-05)
         L.gmerge("A", mism)
         # both twins must have been READ: per_scene drops a scene with any cell missing, and None == None is no reading
+        # IDENTITY IS THE PROMISE (CHARTER §A test is as strict as the harm it guards): the flow kernel is deterministic integer math,
+        # so twin channels and a re-run must fill alike, and the kernel must equal its oracle (two implementations) cell for cell
         L.row("E2_twins_identical", vec.get("E2_east_A") is not None and vec.get("E2_east_A") == vec.get("E2_east_B"), "MOD",
               "A %s / B %s" % (vec.get("E2_east_A", [])[:4], vec.get("E2_east_B", [])[:4]))
         full = {k: next((p + 1 for p, v in enumerate(vec.get(k, [])) if v == [1] * 4), None)

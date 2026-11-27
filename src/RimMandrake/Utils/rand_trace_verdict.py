@@ -16,6 +16,9 @@ THE INSTRUMENT MUST SEE BEFORE IT NAMES (the four answers): a run is refused whe
   - its trace is not whole: no ticks, rows cut, faults, or a window that never opened.
 So a pass cannot rest on a trace that could not see.
 
+IDENTITY IS THE PROMISE here (CHARTER §A test is as strict as the harm it guards): this is an instrument whose question is
+which draws part the stream; it decides no bar and no resave. A test of a mod compares the state of play, never this stream.
+
 Runs part only on depth-0 draws: a draw at a pushed state (`+pushed`, for example inside a method the tracer isolates) leaves
 the global stream still, so it is reported nowhere as a parting. Runs that isolated different methods are not compared.
 """

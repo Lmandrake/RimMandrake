@@ -758,12 +758,14 @@ class Proof(object):
             return
         import run_live as RL                 # on sys.path since the matrix block ran (matrix_run is set)
         det = [s.get("determinism", {}).get("same") for s in R.scenes.values() if s.get("determinism")]
+        # IDENTITY IS THE PROMISE (CHARTER §A test is as strict as the harm it guards): no tick passed, so a read that changes the lay is the fault
         self.row("session", "D1_zero_tick_rereads_same", "PASS" if det and all(det) else "FAIL", "MOD",
                  "%d/%d scenes: geometry hash + census identical on 2 re-reads after all view toggles" % (sum(1 for d in det if d), len(det)))
         # GPT deep review 2026-10-22 #7: an `extra` edge (cached, absent from a fresh build) is as stale as a missing one
         # review 8.4: a refused/timed-out fresh reply is a truthy dict with no counters -- RL.fresh_bad requires the counters
         bad = RL.fresh_bad(R.boards_out)
         rings = [b["id"] for b in R.boards_out if any("_T3_" in s for s in b["scenes"])]
+        # IDENTITY IS THE PROMISE: the cached lay and a fresh CordBuilder are two paths that must give the same output on one map
         self.row("session", "D2_fresh_builder_same", "PASS" if R.boards_out and not bad else "FAIL", "MOD",
                  bad or "%d boards (ring boards %s): a fresh CordBuilder on the same map reproduces every laid edge" % (len(R.boards_out), rings))
 
