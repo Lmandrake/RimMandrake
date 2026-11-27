@@ -78,8 +78,10 @@ WRITING_WAIT_S = 1.0                    # danger: a lock read mid-write is empty
 
 # --- his flight rule: one home (cli.py imports it from here) -----------------------------------------------------
 # Self-declared and fail-safe: any form of fly/flies/flew/flown/flight/flyer (also inside "butterfly", which only
-# costs a refusal), take off/takeoff, airborne, glide, soar, aloft, wingspan. Not "flow" (FlowWorks).
-_FLIGHT_RE = re.compile(r"fl(?:y|ie|ew|own|ight)|take[-\s]*offs?|airborne|glid|soar|aloft|wingspan", re.I)
+# costs a refusal), take off/takes off/took off/taking off/takeoff, airborne, glide, soar, aloft, wingspan. Not "flow"
+# (FlowWorks), and not "preflight" (a check before work: `rimflow bridge take --for "... preflight..."`).
+_FLIGHT_RE = re.compile(r"(?<!pre)fl(?:y|ie|ew|own|ight)|(?:take[sn]?|took|taking)[-\s]*offs?|airborne|glid|soar|"
+                        r"aloft|wingspan", re.I)
 # The one flight wording a delegated take admits: a read of a flyer's state with the game paused, by the tool that
 # refuses unless paused and still (his card 2026-11-13, RIMMANDRAKE_ADMIT_PAUSED_FLYER_READS_AT_BRIDGE_TAKE: "paused
 # reads allowed (no ticks, no pictures; anything moving still waits for him)"). Both the words and the tool's name must
@@ -94,7 +96,9 @@ _PAUSED_FLYER_TOOL = re.compile(r"\bflyer_tier_three_state_read\.py\b", re.I)
 #     a creature (FLYER, PAWN, CREATURE, ...); (2) a purpose that names a gravship or a world-map icon is admitted when
 #     it names no creature word anywhere.
 _ITEM_ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
-_CREATURE_WORD = re.compile(r"flyer|pawn|creature|animal|bird|hawk|mynock|wing|beast|insect|bat\b|drake|dragon", re.I)
+# substrings, fail-safe, except "drake" inside Mandrake: every new item ID starts RIMMANDRAKE_ (CLAUDE.md, queue names)
+_CREATURE_WORD = re.compile(r"flyer|pawn|creature|animal|bird|hawk|mynock|wing|beast|insect|bat\b|(?<!man)drake|dragon",
+                            re.I)
 _GRAVSHIP_OR_MAP_ICON = re.compile(r"\bgrav[-\s]*ship|\bworld[-\s]*map\b[^.;]*\bicon|\bicon\b[^.;]*\bworld[-\s]*map\b", re.I)
 
 

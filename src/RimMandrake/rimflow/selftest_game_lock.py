@@ -361,10 +361,16 @@ def t_the_flight_guard_refuses_creature_flyers_only():
     refused (rc=3) for every seat but OWNER. The paused-flyer state read stays admitted."""
     bx = Box()
     admitted = ("judge captures for UTINNI_WORLDMAP_FLIGHT_ICON_1", "capture the gravship in flight on the world map",
-                "world-map icon capture of the gravship", "paused flyer state read (flyer_tier_three_state_read.py)")
+                "world-map icon capture of the gravship", "paused flyer state read (flyer_tier_three_state_read.py)",
+                # every new item ID starts RIMMANDRAKE_, whose "drake" is no creature; a preflight is no flight
+                # (a documented take: design/RimMandrake/northstar_live_queue_2026-10-01.md)
+                "judge captures for RIMMANDRAKE_ROUTE_GRAVSHIP_ICON_JUDGE_PAST_FLIGHT_WORD_GUARD",
+                "rerun RIMMANDRAKE_KEEP_IN_FLIGHT_DEBRIS_OPEN_SWEEP_BURIED_IT", "gravship flight icon for RimMandrake",
+                "northstar live queue preflight..motion_frames")
     refused = ("fly the hawk over the dunes", "flyer flight test", "flight capture of a pawn",
                "gravship icon next to a flying hawk", "RIMMANDRAKE_FLYER_FLIGHT_TEST", "glide test",
-               "butterfly airborne check", "paused flyer state read", "judge captures for UTINNI_WORLDMAP_FLIGHT_ICON_1 "
+               "butterfly airborne check", "paused flyer state read", "a drake takes off", "preflight of the hawk's flight",
+               "RIMMANDRAKE_FLY_THE_DRAKE", "gravship escort of drakes in flight", "judge captures for UTINNI_WORLDMAP_FLIGHT_ICON_1 "
                "and a hawk takeoff")
     for purpose in admitted:
         s = sleeper()
