@@ -1,0 +1,195 @@
+{
+ "when_ticks": 377662,
+ "biomes": {
+  "RM_LongShade": {
+   "E": 32.02271,
+   "offsetC": 29.1640434,
+   "exposure": {
+    "open": 1.0,
+    "roof": 0.0,
+    "tent": 0.149999976
+   },
+   "cause": {
+    "open": null,
+    "roof": "roof",
+    "tent": "shade tent"
+   },
+   "pawnOffsetC": {
+    "open": 29.16404,
+    "roof": 0.0,
+    "tent": 4.374606,
+    "parasol": 7.291011
+   },
+   "leeCells": 2,
+   "shadowLengthPerHeight": 1.598924,
+   "cells": {
+    "wall": [
+     45,
+     62
+    ],
+    "open": [
+     48,
+     63
+    ],
+    "roof": [
+     47,
+     59
+    ],
+    "tent": [
+     33,
+     72
+    ],
+    "parasol": [
+     48,
+     65
+    ]
+   },
+   "tile": 55173,
+   "conditions": [
+    "WeatherController"
+   ]
+  },
+  "RM_Pyrelands": {
+   "E": 32.02271,
+   "offsetC": 29.1640434,
+   "exposure": {
+    "open": 1.0,
+    "roof": 0.0,
+    "tent": 0.149999976
+   },
+   "cause": {
+    "open": null,
+    "roof": "roof",
+    "tent": "shade tent"
+   },
+   "pawnOffsetC": {
+    "open": 29.16404,
+    "roof": 0.0,
+    "tent": 4.374606,
+    "parasol": 7.291011
+   },
+   "leeCells": 2,
+   "shadowLengthPerHeight": 1.598924,
+   "cells": {
+    "wall": [
+     45,
+     37
+    ],
+    "open": [
+     48,
+     38
+    ],
+    "roof": [
+     47,
+     34
+    ],
+    "tent": [
+     33,
+     47
+    ],
+    "parasol": [
+     48,
+     40
+    ]
+   },
+   "tile": 55173,
+   "conditions": [
+    "WeatherController"
+   ]
+  },
+  "RM_TheForge": {
+   "E": 32.02271,
+   "offsetC": 29.1640434,
+   "exposure": {
+    "open": 1.0,
+    "roof": 0.0,
+    "tent": 0.149999976
+   },
+   "cause": {
+    "open": null,
+    "roof": "roof",
+    "tent": "shade tent"
+   },
+   "pawnOffsetC": {
+    "open": 29.16404,
+    "roof": 0.0,
+    "tent": 4.374606,
+    "parasol": 7.291011
+   },
+   "leeCells": 2,
+   "shadowLengthPerHeight": 1.598924,
+   "cells": {
+    "wall": [
+     45,
+     37
+    ],
+    "open": [
+     48,
+     38
+    ],
+    "roof": [
+     47,
+     34
+    ],
+    "tent": [
+     33,
+     47
+    ],
+    "parasol": [
+     48,
+     40
+    ]
+   },
+   "tile": 55173,
+   "conditions": [
+    "RM_ForgeAirHeat",
+    "RM_ForgePulse",
+    "WeatherController"
+   ]
+  }
+ },
+ "rows": {
+  "L1b": {
+   "verdict": "PASS",
+   "fails": [],
+   "on": 35.64284,
+   "off": 20.7152977,
+   "offsetC": 15.0,
+   "exposureOn": 1.0,
+   "exposureOff": 1.0
+  },
+  "L1a": {
+   "verdict": "PASS",
+   "fails": [],
+   "biomes": [
+    "RM_LongShade",
+    "RM_Pyrelands",
+    "RM_TheForge"
+   ]
+  },
+  "L1c": {
+   "verdict": "PASS",
+   "elevations": [
+    32.02271,
+    32.02271,
+    32.02271,
+    32.02271
+   ],
+   "ticks": [
+    317662,
+    337662,
+    357662,
+    377662
+   ],
+   "fails": []
+  }
+ },
+ "notes": [],
+ "planet": {
+  "Loaded": "True",
+  "FixedSun": "True",
+  "DefName": "RUT_WS_AshkarrGeometry"
+ },
+ "forbidden": [],
+ "verdict": "PASS"
+}
