@@ -63,13 +63,13 @@ def du_bytes(path):
 def checkout_bytes(store, slim):
     """-> the bytes a checkout of `store`'s HEAD allocates: each file (a slim one keeps no SLIM_MEDIA) and each folder,
     rounded up to a block. Raises on a git failure."""
-    r = subprocess.run(["git", "--git-dir", store, "ls-tree", "-r", "-t", "-l", "--full-tree", "HEAD"],
+    r = subprocess.run(["git", "--git-dir", store, "ls-tree", "-r", "-t", "-l", "-z", "--full-tree", "HEAD"],
                        capture_output=True, text=True, timeout=LS_TREE_TIMEOUT_S)
     if r.returncode != 0:
         raise RuntimeError("git ls-tree in %s rc=%d: %s" % (store, r.returncode, r.stderr.strip()[-200:]))
     media = tuple("." + e for e in SLIM_MEDIA)
     total = 0
-    for line in r.stdout.splitlines():
+    for line in filter(None, r.stdout.split("\0")):     # -z: a path is never quoted, so its extension reads true
         meta, _, path = line.partition("\t")
         kind, size = meta.split()[1], meta.split()[3]
         if kind == "tree":
