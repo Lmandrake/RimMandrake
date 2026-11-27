@@ -132,7 +132,8 @@ leaves those out):
 
 No `pipeline:` or `machine:` home has 5 ready old tickets after these acts. The reason is in the rows above. Of the 29
 tickets that stay parked, 15 wait for the full mod list or the integration phase. 6 wait for one of his acts or a
-physical act at the desk. 6 wait for a real date ahead or for his ruling. 2 stage a raid while raid tests are paused.
+physical act at the desk. 6 wait for a real date ahead, his ruling or a Conductor call (one of them an L4 level). 2 stage a
+raid while raid tests are paused.
 pipeline:bridge, the largest home, has 7 offered tickets, and a bundle refused every one of them for full-list work,
-the raid pause or an L4 level. The Conductor calls above would free at most three bridge tickets. So no home reaches 5
+the raid pause or an L4 level. The Conductor calls above would free at most two bridge tickets. So no home reaches 5
 until he opens the integration phase.
