@@ -2,9 +2,38 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-27T03:20:05Z",
+    "kind": "helper",
+    "ref": "Explore/sonnet: neighbours census (who references WreckedMachines, placement services, salvage owners, solo tier)",
+    "stage": 0,
+    "tokens": 126464
+   },
+   {
+    "at": "2026-11-27T03:20:05Z",
+    "kind": "helper",
+    "ref": "Explore/sonnet: items census (built, proven, owed per ledger item)",
+    "stage": 0,
+    "tokens": 101518
+   },
+   {
+    "at": "2026-11-27T03:20:05Z",
+    "kind": "helper",
+    "ref": "Explore/sonnet: proof script audit against the scene contract",
+    "stage": 0,
+    "tokens": 94678
+   },
+   {
+    "at": "2026-11-27T03:48:41Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795748853",
+    "stage": 0,
+    "tokens": 3396273
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 3718933
  },
  "history": [
   {
@@ -12,14 +41,60 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000)"
+  },
+  {
+   "at": "2026-11-27T03:08:10Z",
+   "parent": "rm-detached-bench-rimmandrake-ready-pipeline-for-wrecked-m-1795732708",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designer-1795748853, stage 0, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T03:48:44Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1795748853: stage 0 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
  "mod": "WreckedMachines",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-27T03:48:43Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_grounding.md": "216397a15bd3fa23ac2ec7ed560dbc8c208583abd735d8d37339d6b87a2c63b2",
+    "designer_scene_contract.md": "09226da911e86bf1a7e5930a39dd7b7afb416df68b4ff54fffd2e5b090b629b8"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "parent": "rm-detached-bench-rimmandrake-ready-pipeline-for-wrecked-m-1795732708",
+   "pinned_at": {
+    "exam": "af9f75f9ba627fea6464f94ef3ac5f0be1339c58",
+    "floor": "af9f75f9ba627fea6464f94ef3ac5f0be1339c58",
+    "root": "af9f75f9ba627fea6464f94ef3ac5f0be1339c58",
+    "scenes": "af9f75f9ba627fea6464f94ef3ac5f0be1339c58",
+    "sheet": "af9f75f9ba627fea6464f94ef3ac5f0be1339c58",
+    "tree": "af9f75f9ba627fea6464f94ef3ac5f0be1339c58"
+   },
+   "run": "rm-role-designer-1795748853",
+   "stage": 0,
+   "summary": "Grounding done. Inventory of 18 capabilities: 12 built (the grade ladder, the smelter, power cell and emanator lines, study-the-wreck, the Ancient Component, the hidden donor smelter, Mod Settings, wrecks drawing pipes, and three riders: alloy forge gates, the one salvage rule, the distillation module) and 6 not built (a wreck found in the world, a source of Ancient Components, wealth exclusion, the grade-changed signal, turrets, more factory machines). Nothing was ever played live beyond one build-over on 2026-09-01 and def loads. Feasibility settled from the game source and the neighbours: the base game has a study-in-place mechanism that needs no other mod, and three placement routes for wrecks already work in this repo. His design-session words of 2026-08-12 to 2026-09-20 had no ledger event; 12 are now recorded on the item and cited. Five draft asks wait for stages 1-2 (a look at what is built, the root, how a wreck is found, how study feels, the three riders). Ten contradictions recorded, four core. Three helpers (Explore, sonnet) charged."
+  }
+ ],
+ "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 0,
+ "stage": 1,
  "status": "ready"
 }
