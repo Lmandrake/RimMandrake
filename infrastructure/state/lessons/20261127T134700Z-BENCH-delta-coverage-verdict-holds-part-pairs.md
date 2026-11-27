@@ -1,0 +1,2 @@
+A coverage verdict signed after a second round is a delta: its checklist holds only the parts that the judge read again. A test table that takes a bar's deciding scenes from the signed verdict alone drops the first round's scenes (WreckedMachines 0.1.0: inv_grade_ladder read 1 deciding scene of 3). Read the full round too (coverage_verdict.json at the commit of the verdict that the signed one names in 'against'), and take each part with ok true.
+item: RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE
