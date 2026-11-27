@@ -100,12 +100,25 @@ or tickets that led to it: judge each file against its page and its tests. Read 
 """.format(maker=maker or "unknown", sha=sha or "?", rows="\n".join(rows) or "   (the title names no file)")
 
 
-def holds(sha, paths, runner=None):
+def flagged_on_bytes(rel):
+    """-> True when `rel` is FLAGGED now and the flag was made on its present bytes. Raises when the flags cannot be read.
+    `check --record` reads DIRTY on a FLAGGED file (selftest_code_review_page_state.py pins it), so the flag is read here."""
+    import code_review_status as CRS
+    path = rel if os.path.isabs(rel) else os.path.join(REPO, rel)    # as `check --record` reads it: cwd=REPO
+    try:
+        rec = CRS.flags().get(CRS.canonical_rel(CRS.repo_rel(path)))
+    except CRS.FlagsUnreadable as e:
+        raise OSError(str(e))
+    return bool(rec) and rec.get("sha256") is not None and rec.get("sha256") == CRS.file_hash(rec["path"])
+
+
+def holds(sha, paths, runner=None, flagged=None):
     """-> 0 when each path has a review record on its present bytes (READ-CLEAN or FLAGGED), 1 when one lacks it,
     2 when the record could not be read."""
     import time_budget
     run = runner or (lambda argv: subprocess.run(argv, cwd=REPO, capture_output=True, text=True,
                                                  timeout=time_budget.CALL_S))
+    is_flagged = flagged or flagged_on_bytes
     worst = 0
     for p in paths:
         try:
@@ -115,9 +128,20 @@ def holds(sha, paths, runner=None):
             worst = 2
             continue
         out = (r.stdout or "").strip()
-        print(out or "could not look: %s printed nothing (rc %s)" % (p, r.returncode))
-        if r.returncode == 0 or out.startswith("FLAGGED"):
+        if r.returncode == 0:
+            print(out or "could not look: %s printed nothing (rc 0)" % p)
+            worst = max(worst, 0 if out else 2)
             continue
+        try:
+            if is_flagged(p):
+                print("FLAGGED  %s  (a flag on its present bytes: the reader found and fixed)" % p)
+                continue
+        except Exception as e:  # noqa: BLE001 - flags that cannot be read leave the answer unknown, never DIRTY
+            print(out or "could not look: %s printed nothing (rc %s)" % (p, r.returncode))
+            print("could not look: the flags of %s: %s" % (p, e))
+            worst = 2
+            continue
+        print(out or "could not look: %s printed nothing (rc %s)" % (p, r.returncode))
         worst = max(worst, 1 if out.startswith(("DIRTY", "STALE", "OPEN")) or r.returncode == 1 else 2)
     return worst
 

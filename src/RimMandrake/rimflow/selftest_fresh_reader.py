@@ -5,6 +5,7 @@ Red on the base: fresh_reader.py absent, no reader rule in fixer_rule.py or the 
 
     python3 src/RimMandrake/rimflow/selftest_fresh_reader.py
 """
+import json
 import os
 import subprocess
 import sys
@@ -71,13 +72,42 @@ def t_the_check_holds_on_a_review_record():
     f = FR()
     ok = lambda argv: types.SimpleNamespace(returncode=0, stdout="READ-CLEAN %s" % argv[-1])
     dirty = lambda argv: types.SimpleNamespace(returncode=1, stdout="DIRTY %s (never marked clean)" % argv[-1])
-    flagged = lambda argv: types.SimpleNamespace(returncode=1, stdout="FLAGGED %s" % argv[-1])
+    none = lambda rel: False
 
     def boom(argv):
         raise subprocess.TimeoutExpired(argv, 1)
-    assert f.holds(SHA, [PATH], ok) == 0 and f.holds(SHA, [PATH], flagged) == 0
-    assert f.holds(SHA, [PATH], dirty) == 1
-    assert f.holds(SHA, [PATH], boom) == 2, "a record that cannot be read is could not look, never holds"
+
+    def unreadable(rel):
+        raise OSError("flags shard unreadable")
+    assert f.holds(SHA, [PATH], ok, none) == 0
+    assert f.holds(SHA, [PATH], dirty, none) == 1
+    assert f.holds(SHA, [PATH], boom, none) == 2, "a record that cannot be read is could not look, never holds"
+    # `check --record` reads DIRTY on a FLAGGED file (selftest_code_review_page_state.py pins it): the flag is read apart
+    # (seen 2026-11-27: the reader of c7021894fe flagged RM_SuspensionProofs.cs and the check stayed red)
+    assert f.holds(SHA, [PATH], dirty, lambda rel: rel == PATH) == 0, "a FLAGGED file holds though check --record reads DIRTY"
+    assert f.holds(SHA, [PATH], dirty, unreadable) == 2, "flags that cannot be read on a DIRTY file: could not look"
+    assert f.holds(SHA, [PATH], ok, unreadable) == 0, "a READ-CLEAN record holds without the flags"
+    # the real flag reader, on a moved root: a flag counts only on the bytes it was made on
+    import code_review_status as CRS
+    old_root = CRS.ROOT
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            CRS.ROOT = tmp
+            os.makedirs(os.path.join(tmp, "src"))
+            fp = os.path.join(tmp, "src", "a.cs")
+            with open(fp, "w") as fh:
+                fh.write("one")
+            assert f.flagged_on_bytes(fp) is False, "no flag shard: not flagged"
+            os.makedirs(CRS.flag_dir())
+            with open(os.path.join(CRS.flag_dir(), "BENCH.jsonl"), "w") as fh:
+                fh.write(json.dumps({"event": "flag", "path": "src/a.cs", "why": "w", "ts": "t", "seat": "BENCH",
+                                     "sha256": CRS.file_hash("src/a.cs")}) + "\n")
+            assert f.flagged_on_bytes(fp) is True, "a flag on the present bytes"
+            with open(fp, "w") as fh:
+                fh.write("two")
+            assert f.flagged_on_bytes(fp) is False, "a flag on older bytes is no record of the present bytes"
+        finally:
+            CRS.ROOT = old_root
 
 
 def t_the_rule_is_in_every_brief():
