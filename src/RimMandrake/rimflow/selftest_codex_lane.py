@@ -113,6 +113,27 @@ def t_room_short_sends_a_proven_ticket_to_codex():
         assert CL.NO_TAKEOVER in f.read(), "account_plan.py no longer says %r: codex_lane.room reads it" % CL.NO_TAKEOVER
 
 
+def t_a_member_of_a_live_bundle_or_run_is_never_sent():
+    """RIMMANDRAKE_KEEP_CODEX_LANE_OFF_LIVE_BUNDLE_MEMBERS: on 2026-11-27 the lane sent four members of the live bundle
+    WB-cause-RIMMANDRAKE-ORDER-TEN-SLOW-ACTION-FIXES-PAGE-FILED-NONE-20261127-185008 to Codex while the bundle's run
+    worked them; two implementations of each landed on the same files."""
+    for why, runs in (("a live bundle's member", {"A": {"bundle": "WB-x", "live": []}}),
+                      ("a live run's item", {"A": {"live": ["rm-detached-a"]}}),
+                      ("the runs could not be read", None)):
+        fxo = Fx()
+        items = {"A": item()}
+
+        def fx_facts(st, items=items, runs=runs):
+            f = facts(items)
+            f["runs"] = runs
+            return f
+        tf = fxo.tick_fx(items)
+        tf["facts"] = fx_facts
+        fresh_state()
+        LD.tick(cfg(), True, fx=tf, now=NOW)
+        assert fxo.codex == [], (why, "sent to Codex", fxo.codex)
+
+
 def t_room_ample_sends_none():
     for room in (AMPLE, notice(age_s=3600), {}, None, notice(could_not_look=True)):
         fxo = Fx(room=room if room is not None else {})
@@ -362,7 +383,8 @@ def main():
     bad = 0
     saved = {k: os.environ.get(k) for k in CL.SANDBOX_KEYS}
     try:
-        for t in (t_room_short_sends_a_proven_ticket_to_codex, t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
+        for t in (t_room_short_sends_a_proven_ticket_to_codex, t_a_member_of_a_live_bundle_or_run_is_never_sent,
+                  t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
                   t_a_result_that_fails_its_check_is_not_landed, t_his_codex_share_is_left,
                   t_a_passing_result_gets_one_sonnet_lander, t_one_try_per_ticket,
                   t_the_codex_child_reads_no_real_state, t_review_goes_by_code_review_brief,

@@ -46,6 +46,9 @@ fake Codex meter, a fake Codex runner, a fake check and a fake launcher.
 - **room short sends a proven ticket to codex**: when the notice is fresh and reads the room short (no account can
   take over, the fleet is stopped, or the live account is at its line), a ticket that the lane offers, whose check
   fails now and runs a selftest or an `_accept.py`, is sent to Codex, and the Claude lane does not launch it.
+- **a member of a live bundle or run is never sent**: a ticket that is a member of a live work bundle, or that a live
+  run works, is not sent to Codex; nor is any ticket while the run records could not be read. The Claude lane's own row
+  for it says which (`in_bundle`, `live`, `blind`).
 - **room ample sends none**: when the room is not short, or the notice is missing or stale (could not look), no
   ticket goes to Codex, and every ticket stays with the Claude lane.
 - **a mod ticket is never sent**: a ticket that is one mod's work (`mod_work`, a `mod:` home or a mod folder in its

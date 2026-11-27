@@ -219,8 +219,15 @@ def plan(cfg, cst, facts, now, room_r, share_r, account, alive):
         return out
     cst["last"] = {"at": now, "sends": True, "why": "%s; %s" % (room_r[1], share_r[1])}
     rx = check_rx(cfg)
+    runs = facts.get("runs")
     for iid, it in items.items():
         if iid in out["take"]:
+            continue
+        # a live bundle's member or a live run's item is that run's work, and runs that could not be read may hold it:
+        # the Claude lane says which (in_bundle, live, blind). RIMMANDRAKE_KEEP_CODEX_LANE_OFF_LIVE_BUNDLE_MEMBERS: four
+        # members of a live bundle went to Codex on 2026-11-27 and two builds of each met on the same files.
+        run = (runs or {}).get(iid) or {}
+        if runs is None or run.get("bundle") or run.get("live"):
             continue
         r = recs.get(iid) or {}
         if r.get("state") not in (None, "void_seen"):
