@@ -15,6 +15,9 @@ THE INSTRUMENT MUST SEE BEFORE IT NAMES (the four answers): a run is refused whe
     depth-0 draws the hook saw there, or
   - its trace is not whole: no ticks, rows cut, faults, or a window that never opened.
 So a pass cannot rest on a trace that could not see.
+
+Runs part only on depth-0 draws: a draw at a pushed state (`+pushed`, for example inside a method the tracer isolates) leaves
+the global stream still, so it is reported nowhere as a parting. Runs that isolated different methods are not compared.
 """
 import json
 import sys
@@ -66,11 +69,17 @@ def _tick_why(ticks, t):
 
 
 def counts(run):
-    """(tick, phase, caller) -> draws, the depth-0 and the pushed rows apart."""
+    """(tick, phase, caller) -> draws, the depth-0 rows only (a pushed draw moves no global stream)."""
     out = defaultdict(int)
     for r in (run.get("trace") or {}).get("rows") or []:
-        out[(r["t"], r["ph"], r["c"])] += r["n"]
+        if _depth0(r["ph"]):
+            out[(r["t"], r["ph"], r["c"])] += r["n"]
     return out
+
+
+def iterations(run):
+    """tick -> Rand.iterations at the end of that tick (the item's track)."""
+    return {t["t"]: t["i1"] for t in (run.get("trace") or {}).get("ticks") or []}
 
 
 def part(a, b):
@@ -99,6 +108,10 @@ def verdict(data):
     anchors = {str(r["trace"].get("anchorState")) for _i, r in step}
     if len(anchors) != 1:
         return False, ["NOT DECIDED: the STEP runs started from different random states %s" % sorted(anchors)], []
+    isos = {tuple(r["trace"].get("isolate") or ()) for _i, r in step}
+    if len(isos) != 1:
+        return False, ["NOT DECIDED: the STEP runs isolated different methods %s" % sorted(isos)], []
+    iso = next(iter(isos))
     windows = {(r["trace"]["ticks"][0]["t"], r["trace"]["ticks"][-1]["t"]) for _i, r in step}
     if len(windows) != 1:
         return False, ["NOT DECIDED: the STEP runs traced different ticks %s" % sorted(windows)], []
@@ -113,11 +126,16 @@ def verdict(data):
     if unnamed:
         return False, ["NOT DECIDED: runs %s part from run %d with no caller named" % (unnamed, ref_i)], pairs
     parted = [x for x in pairs if x[2] is not None]
+    held = (", isolating %s" % ", ".join(iso)) if iso else ""
     if not parted:
-        lines.append("DECIDED: the %d STEP runs drew the same count from the same callers on every traced tick" % len(step))
+        same_iter = all(iterations(r) == iterations(ref) for _i, r in step[1:])
+        lines.append("DECIDED: the %d STEP runs drew the same count from the same callers on every traced tick%s; %s" % (
+            len(step), held, "Rand.iterations equal on every traced tick" if same_iter else "Rand.iterations NOT equal (a draw the rows miss)"))
+        if not same_iter:
+            return False, ["NOT DECIDED: the rows agree and Rand.iterations does not: the instrument missed a draw"], pairs
     else:
-        lines.append("DECIDED: %d of %d STEP runs part from run %d; the parting draws are named by caller and phase" % (
-            len(parted), len(step) - 1, ref_i))
+        lines.append("DECIDED: %d of %d STEP runs part from run %d%s; the parting draws are named by caller and phase" % (
+            len(parted), len(step) - 1, ref_i, held))
     return True, lines, pairs
 
 

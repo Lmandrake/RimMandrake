@@ -3,7 +3,8 @@
 
 Item RIMMANDRAKE_FIND_RAND_DRAWS_PARTING_RUNS_EVEN_STEP. Each case is one shape the verdict must tell apart: runs that repeat,
 runs that part on a named draw, and each way the instrument can be blind (an unseen tick, an unseen gap, a cut read, a window
-that never opened, too few runs, a parting with no caller). Exit 0 when every case gives its expected answer."""
+that never opened, too few runs, a parting with no caller), and the fix experiment (isolated draws at a pushed state, runs
+that isolated different methods). Exit 0 when every case gives its expected answer."""
 import copy
 import os
 import sys
@@ -90,6 +91,19 @@ def main():
                 r["c"] = "?"
     res.append(case("parting_with_no_caller", {"runs": [run(), run(unnamed), run()]}, False, "no caller named"))
     res.append(case("empty_file_shape", {}, False, "0 STEP runs"))
+    res.append(case("repeat_names_iterations", {"runs": [run(), run(), run()]}, True, "iterations equal on every traced tick"))
+
+    def pushed_fish(n):
+        def f(tr):
+            tr["rows"].append({"t": 4, "ph": "tick+pushed", "c": "Verse.FishShadowComponent.SpawnFishFleck", "n": n})
+        return f
+    # isolated draws (at a pushed state) differ between runs and leave the global stream still: the runs repeat
+    res.append(case("pushed_rows_do_not_part", {"runs": [run(pushed_fish(4)), run(), run(pushed_fish(6))]}, True, "same count"))
+
+    def iso(names):
+        return lambda tr: tr.update(isolate=names)
+    res.append(case("mixed_isolate_not_compared", {"runs": [run(iso(["A:B"])), run(), run(iso(["A:B"]))]}, False, "isolated different methods"))
+    res.append(case("same_isolate_compared", {"runs": [run(iso(["A:B"])), run(iso(["A:B"])), run(iso(["A:B"]))]}, True, "isolating A:B"))
     n_ok = sum(1 for x in res if x)
     print("RESULT %s (%d/%d)" % ("PASS" if n_ok == len(res) else "FAIL", n_ok, len(res)))
     return 0 if n_ok == len(res) else 1
