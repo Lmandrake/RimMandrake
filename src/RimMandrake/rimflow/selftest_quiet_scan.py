@@ -528,7 +528,9 @@ def t_a_scan_run_does_not_wake_the_conductor():
         DH.run_wakes({"next_act_owner": "list_dispatch"}), DH.run_wakes({})], [False, True, True, True], "wakes")
     src = open(os.path.join(HERE, "detached_helper.py"), encoding="utf-8").read()
     import re as _re   # the argument's name moved (owed -> said); the guard on the wake must not
-    assert _re.search(r"wake_conductor\([^\n]*\) if run_wakes\(rec, \w+\)", src), "finish asks run_wakes"
+    assert _re.search(r"= wake_skip\(rec, \w+\)\n\s*steps\.append\(\w+ or wake_conductor\(", src), "finish asks wake_skip"
+    eq([DH.wake_skip({"next_act_owner": "quiet_scan"}) is None, DH.wake_skip({"next_act_owner": "quiet_scan"}, "owed")],
+       [False, None], "wake_skip asks run_wakes")
     argv = QS.launch_argv(CFG, "/b.md")
     eq(argv[argv.index("--next-act-owner") + 1], "quiet_scan", "the launch says whose run it is")
 

@@ -64,6 +64,46 @@ def log_lines():
     return open(p).read().count("DETACHED RUN ENDED") if os.path.exists(p) else 0
 
 
+OK_ENV = {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"}
+PARENT = "rm-detached-bench-parent-1"
+
+
+def _probe_ends(unit, parent_status):
+    """A probe of PARENT ends with a live armed window. -> (rc, text, pending lines)."""
+    RW.doorbell._write_json_atomic(RW.armed_path(STATE), {"pid": 1, "window_pid": 4242, "session_id": "S"})
+    d = os.path.join(RW.wake_dir(STATE), "pending")
+    for n in (os.listdir(d) if os.path.isdir(d) else []):
+        os.remove(os.path.join(d, n))
+    DH.write_record({"unit": PARENT, "item": "SOME_ITEM_TO_BUILD", "seat": "BENCH", "model": "opus", "clone": CLONE,
+                     "out": "/x.out.json", "err": "/x.err", "at": T0, "status": parent_status})
+    ended_run(unit)
+    rec = DH.read_record(unit)
+    rec["parent_unit"] = PARENT
+    DH.write_record(rec)
+    live = functools.partial(RW.post, root=STATE, alive=lambda pid: pid == 4242)
+    rc, text = DH.finish(unit, now=T0 + 900, env=OK_ENV, runner=runner,
+                         item_reader=lambda clone, iid: {"state": "done", "notes": []}, waker=live)
+    return rc, text, pending()
+
+
+def t_a_launch_names_its_parent():
+    src = open(os.path.join(HERE, "detached_helper.py"), encoding="utf-8").read()
+    check(DH.parent_of({"RM_DETACHED_UNIT": PARENT}) == PARENT and DH.parent_of({}) is None
+          and 'rec["parent_unit"] = parent_of(os.environ)' in src,
+          "a-launch-names-its-parent: a launch inside a detached run records that run")
+
+
+def t_a_probe_of_a_running_run_is_quiet():
+    rc, text, p = _probe_ends("rm-detached-bench-probe-g-1800000006", "running")
+    check(rc == 0 and p == [] and PARENT in text and "conductor log" in text,
+          "a-probe-of-a-running-run-is-quiet: no wake; the step names that run (%s)" % text[-160:])
+
+
+def t_a_probe_of_an_ended_run_wakes():
+    rc, text, p = _probe_ends("rm-detached-bench-probe-h-1800000007", "finished")
+    check(rc == 0 and len(p) == 1, "a-probe-of-an-ended-run-wakes: it wakes the window as any run")
+
+
 def main():
     ok_env = {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"}
     item = lambda clone, iid: {"state": "done", "notes": []}  # noqa: E731
@@ -150,6 +190,11 @@ def main():
         check(RW.hook_main(stdin=io.StringIO("{}"), env={"AGENT_SEAT": "FOUNDRY"}) == 0, "another seat exits 0 at once")
     finally:
         RW.doorbell.claude_ancestor, SR.session_file, RW.MAX_WAIT_S, RW.POLL_S, RW.default_readers = real
+    # 8. a run launched from inside another detached run reports to that run, not to the Conductor window
+    #    (RIMMANDRAKE_SPARE_CONDUCTOR_PROBE_WAKES_FIVE_IN_ELEVEN_MINUTES; page design/specs/2026-11-27-probe-wake-to-parent)
+    t_a_launch_names_its_parent()
+    t_a_probe_of_a_running_run_is_quiet()
+    t_a_probe_of_an_ended_run_wakes()
     passed = sum(ok for ok, _ in RESULTS)
     for ok, what in RESULTS:
         print("%s  %s" % ("ok  " if ok else "FAIL", what))

@@ -374,7 +374,7 @@ def t_the_run_end_names_each_unresolved_refusal():
     fin = _body(src, "\ndef finish(unit,")
     check("finish takes the lines into its steps and its wake", "filing_refusal_lines(unit)" in fin and
           "steps.extend(refused)" in fin and "wake_conductor(unit, st, rec[\"out\"], item, seat, waker, said)" in fin
-          and "run_wakes(rec, said)" in fin, None)
+          and "wake_skip(rec, said)" in fin, None)
 
 
 def t_the_stop_hook_keeps_the_run_until_each_refusal_is_resolved():

@@ -1831,6 +1831,8 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     rec = {"seat": seat, "item": item, "clone": clone, "model": model, "max_s": max_s,
            "budget_usd": float(budget), "at": now, "state": root, "status": "launching", "clone_how": how}
     rec.update({k: v for k, v in (extra or {}).items() if k not in rec})
+    if parent_of(os.environ):        # launched from inside another detached run: it reports to that run (run_wakes)
+        rec["parent_unit"] = parent_of(os.environ)
     rec["effort"] = effort_of(rec)      # the record keeps the effort its command states
     if skip_launch_checks:
         rec["launch_checks_skipped"] = skip_launch_checks
@@ -2530,8 +2532,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
     said = "\n".join(x for x in [owed] + refused if x)      # the wake shows each on its own line
-    steps.append(wake_conductor(unit, st, rec["out"], item, seat, waker, said) if run_wakes(rec, said)
-                 else "wake: none for a scan run (the log line stands)")
+    quiet = wake_skip(rec, said)
+    steps.append(quiet or wake_conductor(unit, st, rec["out"], item, seat, waker, said))
     import role_launch as RL
     rec.pop("finish_owed", None)
     rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
@@ -2565,6 +2567,26 @@ def run_wakes(rec, owed=""):
     """-> whether this run's end wakes the Conductor window. The standing scan's runs do not: each is routine, and a wake
     costs the window tokens (quiet_scan.py says its own stop). One that owes something does."""
     return bool(owed) or rec.get("next_act_owner") != "quiet_scan"
+
+
+def parent_of(env):
+    """-> the detached run that this launch runs inside (its RM_DETACHED_UNIT), or None from a window or a timer."""
+    return (env or {}).get("RM_DETACHED_UNIT") or None
+
+
+def wake_skip(rec, owed=""):
+    """-> the step line when this run's end wakes no window, else None. A run launched by a detached run that still runs
+    reports to that run, which reads its record and its item note: 5 probe wakes in 11 minutes, 2026-11-26, each one a
+    whole-context read in the Conductor window for nothing (RIMMANDRAKE_SPARE_CONDUCTOR_PROBE_WAKES_FIVE_IN_ELEVEN_MINUTES).
+    When that run has ended, nobody reads it there, so it wakes the window as any run."""
+    parent = rec.get("parent_unit")
+    if parent and parent != rec.get("unit"):
+        prec = read_record(parent)      # no record: read as ended, so the probe wakes (the page's DOES NOT SURVIVE)
+        if isinstance(prec, dict) and prec.get("status") in ("launching", "running"):
+            return "wake: none, its launching run %s still runs and reads it (the log line stands)" % parent
+    if not run_wakes(rec, owed):
+        return "wake: none for a scan run (the log line stands)"
+    return None
 
 
 def wake_conductor(unit, st, out, item, seat, waker=None, owed=""):
