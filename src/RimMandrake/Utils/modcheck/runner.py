@@ -1517,9 +1517,15 @@ def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False,
                 and c["verdict"] != "UNMEASURED" and c.get("execution") != "not_run")
     n_total = sum(1 for chain in result_summary["chains"] for c in chain["components"]
                   if c.get("execution") != "not_run")
-    result = "pass" if result_summary["all_green"] else "fail"
+    # a run with no FAIL row that is not all green could not look (UNMEASURED rows): never a failure of the work
+    # (LAUNCH_HELD_COLONIST_WARNING_1, live 2026-11-26: 3 UNMEASURED rows went on the ledger as `fail`)
+    failed = any(c["verdict"] == "FAIL" for chain in result_summary["chains"] for c in chain["components"]
+                 if c.get("execution") != "not_run")
+    result = "pass" if result_summary["all_green"] else "fail" if failed else "partial"
     args = ["verify", item_id, "--result", result, "--config", config,
             "--evidence", _wsl_path(sheet_path) if os.name == "nt" else sheet_path]
+    if result == "partial":
+        args += ["--outcome", "COULD NOT LOOK"]
     cmd = py_cmd(RIMFLOW_CLI, *args)
     who = verify_seat(seat)
     if not who:

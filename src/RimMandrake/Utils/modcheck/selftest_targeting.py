@@ -179,6 +179,28 @@ def t_emit_verify_seat():
         os.environ.update(env)
 
 
+def t_emit_verify_could_not_look_is_not_a_fail():
+    # LAUNCH_HELD_COLONIST_WARNING_1 (live 2026-11-26): a run whose 3 rows were all UNMEASURED (a site fault: 0 FAIL)
+    # went on the ledger as `verify --result fail` with no outcome, a failure of the work in the pilot streak. A run with
+    # no FAIL row that is not all green is `partial`, outcome COULD NOT LOOK; a FAIL row still makes it `fail`.
+    def summ(*verdicts):
+        return {"chains": [{"components": [{"verdict": v, "execution": "ran"} for v in verdicts]}],
+                "all_green": all(v == "PASS" for v in verdicts)}
+
+    def args(v):
+        c = v["cmd"]
+        return c[c.index("--result") + 1], (c[c.index("--outcome") + 1] if "--outcome" in c else None)
+    v = runner.emit_verify("X", "ToyMod", "c", summ("UNMEASURED", "UNMEASURED"), "/tmp/s", dry_run=True, seat="BENCH")
+    ok(args(v) == ("partial", "COULD NOT LOOK"), "verify: all rows UNMEASURED -> partial, COULD NOT LOOK", v["cmd"])
+    v = runner.emit_verify("X", "ToyMod", "c", summ("PASS", "UNMEASURED"), "/tmp/s", dry_run=True, seat="BENCH")
+    ok(args(v) == ("partial", "COULD NOT LOOK"), "verify: a PASS beside an UNMEASURED -> partial, COULD NOT LOOK",
+       v["cmd"])
+    v = runner.emit_verify("X", "ToyMod", "c", summ("PASS", "FAIL", "UNMEASURED"), "/tmp/s", dry_run=True, seat="BENCH")
+    ok(args(v) == ("fail", None), "verify: a FAIL row -> fail, no outcome word", v["cmd"])
+    v = runner.emit_verify("X", "ToyMod", "c", summ("PASS", "PASS"), "/tmp/s", dry_run=True, seat="BENCH")
+    ok(args(v) == ("pass", None), "verify: all green -> pass", v["cmd"])
+
+
 @contextlib.contextmanager
 def stubbed_run():
     """runner.run() with every side effect stubbed: returns the record_run/emit_verify calls it made."""
@@ -794,7 +816,7 @@ def main(argv=None):
         i = argv.index("--unstub")
         UNSTUB.add(argv[i + 1])
         del argv[i:i + 2]
-    for t in (t_resolve, t_targeted_suite_keeps_site_hold, t_emit_verify_seat, t_run_records_without_seat,
+    for t in (t_resolve, t_targeted_suite_keeps_site_hold, t_emit_verify_seat, t_emit_verify_could_not_look_is_not_a_fail, t_run_records_without_seat,
               t_run_targeted, t_cli_refusals, t_scope_and_preview, t_incomplete_catalogue_refused,
               t_offline_chains_out_of_live, t_stop_after_runtime, t_hold_contract_every_run, t_cli_preview,
               t_nested_evidence_stays_on_outer, t_item_text_utf8_under_cp1252, t_item_text_retries_wsl_hiccup,
