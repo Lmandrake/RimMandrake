@@ -253,7 +253,7 @@ def default_readers():
         import game_names
         return short_pipe(_tool("src/RimMandrake/rimflow/control.py", "show"),
                           [game_names.show(k) for k in ("archmagi", "archmagi.b")])
-    return {"locks": lambda: _tool("src/RimMandrake/rimflow/game_lock.py", "query", "all", ok=(0, 3, 75)), "pipe": pipe,
+    return {"locks": lambda: _tool("src/RimMandrake/rimflow/game_lock.py", "query", "all"), "pipe": pipe,
             "accounts": lambda: _tool("src/RimMandrake/Utils/account_usage.py", "now")}
 
 
