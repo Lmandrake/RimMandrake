@@ -2992,7 +2992,14 @@ def cmd_switch(o, off):
     scope = scope_of(o.target, unseeded=True)
     import game_names
     shown = game_names.show_scope(scope)     # game:a is the store's key; people read game:ArchBig
-    r = switch(scope, off, o.why, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem)
+    extra = None
+    if off and getattr(o, "end", None):     # its end condition: the Maturation tick lifts the off when it reads true
+        import pipe_off_end as POE
+        try:
+            extra = {"end": POE.parse(o.end)}
+        except POE.Refused as e:
+            raise Refused(str(e))
+    r = switch(scope, off, o.why, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem, extra=extra)
     if r["replayed"]:
         return ["%s: already applied as %s (idempotency key %s): nothing changed" % (shown, r["act"]["id"], o.idem)]
     if not off and not r["had"]:
@@ -3228,6 +3235,9 @@ def main(argv=None):
     for v in ("on", "off"):
         p = w(sub.add_parser(v))
         p.add_argument("target")
+        if v == "off":
+            p.add_argument("--end", help="the end condition the Maturation tick reads (pipe_off_end.py): "
+                                         "closed:<ITEM> | ready:<Mod> | cmd:<command>")
     p = w(sub.add_parser("stop"))
     p.add_argument("target")
     p.add_argument("--write-now", action="store_true", help="stop now, write where you are, end")

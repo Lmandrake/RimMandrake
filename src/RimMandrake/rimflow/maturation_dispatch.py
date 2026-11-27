@@ -4536,6 +4536,18 @@ def _tick(root, cfg, apply, fx=None, now=None, page=False):
     game_deploy_sync(root, st, now, fx)
     account = fx["account"]() if "account" in fx else account_gate()
     releases = fx["releases"]() if "releases" in fx else read_releases()
+    # a `pipe off` whose end condition reads true is lifted first, as a program act (pipe_off_end.py, his card of
+    # 2026-11-26 "Program lifts it"); a condition it cannot read lifts nothing. A caller with fixtures sweeps only when
+    # it stands one in.
+    if apply and (not fx or "pipe_off_end" in fx):
+        import pipe_off_end as POE
+        swept, swept_cause = (fx["pipe_off_end"](now) if "pipe_off_end" in fx else POE.safe_sweep(True, now))
+        for r in swept or []:
+            if r.get("lifted"):
+                print("pipe off %s lifted by its end condition %s: %s; %s" % (r["scope"], r["end_text"], r["reading"],
+                                                                             r["undo"]), flush=True)   # the act is in the store
+        if swept_cause:
+            print("pipe_off_end: %s; no off was lifted" % swept_cause, flush=True)
     # The owner's hold (mod_owner_hold.py): a held mod is read (its live run finishes, its spend and ledger rows are still
     # recorded below) but never decided, so nothing launches on it and it joins no idle, paused or stalled list.
     try:

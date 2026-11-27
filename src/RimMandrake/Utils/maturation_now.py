@@ -1091,6 +1091,7 @@ def gather(root, live=True):
     nonmod = MNM.safe_section(nm_stores, now, spend=read_spend, stage=lambda item, t: LP.stage_of(item, t))
     return {"mods": mods, "others": other, "held": held, "needs": needs, "now": now, "nonmod": nonmod,
             "bundles": bundle_page(now), "monitor": monitor_page(),
+            "offs": offs_page(lf.get("_items")) if live else None,
             "trend": trend(lf, versioned, now, live),
             "view": lf.get("view"),
             "intake": {"count": lf["intake"], "questions_total": UNM if lf["questions"] is None else len(lf["questions"])},
@@ -1743,6 +1744,24 @@ def needs_md(d):
     return out
 
 
+def offs_page(items):
+    """Each `pipe off` and hold with its reason, age and end condition (pipe_off_end.rows); None: could not look."""
+    try:
+        import pipe_off_end as POE
+        return POE.rows(items=items)
+    except Exception as e:  # noqa: BLE001 - could not look: offs_md says so, with the cause
+        return {"could_not_look": "%s: %s" % (type(e).__name__, e)}
+
+
+def offs_md(d):
+    """The "Switched off" block on MATURATION_NOW (stuck-items study part 5): reason, age, end condition."""
+    if "offs" not in d:
+        return []
+    import pipe_off_end as POE
+    rs = d["offs"]
+    return ["## Switched off (%s)" % ("could not look" if rs is None or isinstance(rs, dict) else len(rs)), ""] + POE.page_lines(rs) + [""]
+
+
 def bundle_page(now):
     """The work bundles block (work_bundle.page_rows): one row per bundle that is not ended; unreadable reads UNMEASURED."""
     try:
@@ -2008,6 +2027,7 @@ def build(d, now):
     if nm:
         parts_md += ["## " + MNM.PANEL_TITLE, "", MNM.panel(nm), ""]
     parts_md += bundles_md(d)
+    parts_md += offs_md(d)
     parts_md += monitor_md(d)
     parts_md += ["## The mod pipeline", "", pipeline_line(d), "", concepts_line(d), "", "<div>" + picture(d) + "</div>", ""]
     parts_md += ["## Every mod, one line", ""] + one_line_md(d)
@@ -2019,6 +2039,8 @@ def build(d, now):
     if nm:
         body += ["<h2>%s</h2>" % esc(MNM.PANEL_TITLE), MNM.panel(nm)]
     body.append(bundles_html(d))
+    if offs_md(d):      # the "Switched off" block, as plain lines
+        body.append("<h2>%s</h2>%s" % (esc(offs_md(d)[0][3:]), "".join("<div>%s</div>" % esc(x[2:]) for x in offs_md(d)[2:] if x)))
     body.append(monitor_html(d))
     body += ["<h2>The mod pipeline</h2><p class='m'>%s</p>" % esc(pipeline_line(d)),
              "<p class='m'>%s</p>" % esc(concepts_line(d).replace("`", "")), picture(d)]
