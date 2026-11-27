@@ -183,3 +183,47 @@ was made to match the answer's words.
   chassis, the lift list of 2026-11-01 with its pass not built, the built smelter wreck with no carried form).
 - `d_wreck_is_carried` is reopened in one part: who lifts a wreck. It had missed the lift list and the hauler design.
 - `c_who_lifts_a_wreck`: new, core, open, waiting for a_who_moves_a_wreck.
+
+## 2026-11-26 his three card answers (10:38, 10:39 and 10:57 PM PST), and turn 4 (run rm-role-designer-1795763300), sent 11:25 PM PST
+
+His answers, word for word, from the ledger:
+
+- a_which_factory_machines (OWNER:1795761534460592124, by card): "How many of the factory's machines are ancient in
+  0.1.0 → All 18 machines". The option's description on the card (our text): "Why: the mod at full strength; every
+  factory machine is out in the world to be found. Cost: 136 new pictures and 17 more onboardings by hand, and a
+  stranger who already has a factory loses the most." The options he did not take: "A proven handful (Recommended)",
+  "Only the smelter".
+- a_component_source (OWNER:1795761550785045693, typed on the card, no option picked): "Only found in ruins or via
+  plot".
+- a_who_moves_a_wreck (OWNER:1795762605668672773, by card): "How does that wreck get home in a game without Droidworks
+  → Colonists carry it (Recommended)". The options he did not take: "The mod brings a hauler", "No hauler: repair in
+  place".
+
+Text of turn 4: `design/concepts/WreckedMachines/turn_04.md`.
+
+### Ask sent (one)
+
+4. **a_plasteel_on_the_forge:** A colony has found a wrecked alloy forge, studied it and made it Kludged. It makes its first alloys. Which picture gives it plasteel? (a) Research: a late research project opens the plasteel recipe on any working forge, the Kludged one included. This is your sentence of 2026-10-09, and no Ancient Component is spent. (b) The Refurbished forge: plasteel is the recipe that the last repair brings. It takes the second study, the second research project and one Ancient Component, from a ruin or "via plot" (your words). (c) Both locks: the Refurbished forge, and the late research project too. I recommend (b), judged on one test: is there a reason to spend a rare Ancient Component on the forge?
+
+### Review
+
+Reviewed by rm-judge a5105ca4acff55348 (fresh Opus, not the author), three reads. The first read struck the page: it
+had decided where plasteel sits as a reading, and the judge found that his words of 2026-10-09 put that unlock on
+research; the reading became this ask. It also found a false cost line (durasteel is re-melted from slag on the
+smelter), his "machine availability" words put on the forge (he said them of "smelter first"), and a rule on Kludged
+machines made from one def. The second read struck the ask for saying that plasteel comes only from the forge. The
+third read passed the ask and the page.
+
+### Changed in the record by this run
+
+- `s_all_eighteen`, `s_component_ruins_or_plot`, `s_colonists_carry`: his three answers. The three asks are answered.
+- `d_all_eighteen_shape`: the 18 machines measured, and what "all 18" means (the build menu, an old factory, a switch
+  for each machine, two research projects each, the build order, the onboarding rule).
+- `d_forge_is_onboarded`: the alloy forge is one of the 18, so its research step that opens it for building ends with
+  its onboarding. `d_riders_fate` and `d_riders_move_no_interim` are corrected for the forge.
+- `d_component_from_ruins`: components lie in ruins; "via plot" is read as the campaign's story (a reading).
+- `d_lift_is_data`: colonists carry; who may lift is data that a layer above narrows.
+- Resolved: `c_no_way_in`, `c_half_ancient_factory`, `c_who_lifts_a_wreck`.
+- `c_plasteel_behind_a_component`: new, core, open, waiting for a_plasteel_on_the_forge.
+- `inv_more_factory_machines` and `inv_ancient_component_source` are in scope by his answers.
+

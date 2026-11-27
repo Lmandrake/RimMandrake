@@ -180,7 +180,7 @@
     "ITEM:RAKATAN_ARCHOTECH_MACHINES_1",
     "design/concepts/WreckedMachines/turn_02.md"
    ],
-   "status": "sent",
+   "status": "answered",
    "text": "The last repair, to Refurbished, costs an Ancient Component, and nothing gives one today. Where does a colony get one? (a) Out of another wreck: colonists take a wrecked machine apart, the wreck is gone for good, and one Ancient Component is left. Each wreck found is a choice between a machine and a part. (b) Only as a rare find in the rooms of ancient ruins. (c) Both: (a), and now and then one lies in a ruin. I recommend (c), judged on one test: does the component make the player choose?",
    "turn": "design/concepts/WreckedMachines/turn_02.md",
    "sent": {
@@ -192,6 +192,11 @@
     "by": "rm-judge a15c1525ac03b2c3f (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "Nothing gives an Ancient Component today: every reference in src/ is a cost. His card note about relics at ancient ruin sites is about found machines, not this part. The evidence against the obvious answer is real ('truly scarce and valuable'; nothing is given up for loot). The options are distinct. No rewording."
+   },
+   "answer": {
+    "at": "2026-11-27T06:39:10Z",
+    "source": "OWNER:1795761550785045693",
+    "what": "He picked no option and typed: 'Only found in ruins or via plot' (s_component_ruins_or_plot). The reading is d_component_from_ruins."
    }
   },
   {
@@ -214,7 +219,7 @@
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
     "design/concepts/WreckedMachines/turn_02.md"
    ],
-   "status": "sent",
+   "status": "answered",
    "text": "A stranger installs Wrecked Machines beside the factory mod and opens the build menu. The factory mod has 18 production machines. Which picture is 0.1.0? (a) One ancient machine: the automated smelter must be found and repaired; the other 17 are researched and built as before. (b) An ancient factory: all 18 must be found and repaired. (c) A proven handful: the smelter and two more, taken in the order in which the campaign repairs them; the other 15 are built as before until a later version onboards them. I recommend (c), judged on one test: can a second machine go through onboarding by the written steps alone?",
    "measured": "2026-11-26, parsed from the factory mod's Defs: 24 buildable ThingDefs, of which 18 are production machines (autofarmer, drill platform, smelter, biofuel refinery, masonry saw, mincer, conveyor oven, assembler, neutroamine synthesizer, ammunition press, autoloom, alloy forge, distillery, medicine granulator, machining bay, crematorium, fish farm, cannery); all 18 carry minifiedDef MinifiedThing. The cannery's def is in a file that loads only with Vanilla Cooking Expanded. MACHINES.md says 'about 17' and its candidate queue omits the autofarmer.",
    "turn": "design/concepts/WreckedMachines/turn_02.md",
@@ -227,6 +232,11 @@
     "by": "rm-judge a15c1525ac03b2c3f (fresh Opus, not the author)",
     "verdict": "pass",
     "why": "His words do not settle how many machines ('specified' machines and 'will only support Vanilla Factory Enhanced' leave it open); the answer changes the build by 0, 16 or 136 new pictures; the evidence against the obvious answer is real; every option leaves the built smelter line as it is; nothing asks him to predict a look. No rewording. The count of 18 was measured again by the reviewer (17 without Vanilla Cooking Expanded)."
+   },
+   "answer": {
+    "at": "2026-11-27T06:38:54Z",
+    "source": "OWNER:1795761534460592124",
+    "what": "Option (b), by card: all 18 machines (s_all_eighteen). Not the recommended handful."
    }
   },
   {
@@ -250,7 +260,7 @@
     "src/RimMandrake/RimProperty/Source/TheftHauler/FloatMenuOptionProvider_TheftHaulUninstall.cs",
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
    ],
-   "status": "sent",
+   "status": "answered",
    "text": "A stranger's game has Wrecked Machines and the factory mod, and no Droidworks. Three colonists stand in an ancient ruin in front of a wrecked smelter of 3 by 4 cells. How does it get home? (a) By hand: colonists uninstall it and carry it, as they carry any machine of the factory mod. Who may lift a wreck is data that a layer above can narrow, so the campaign gives the lift to hauler droids and ride-in machines only. (b) Only by a heavy hauler, in every game, and this mod brings a plain hauler of its own for a game without Droidworks. (c) Only by a heavy hauler, in every game, and this mod brings none: without one, a colony repairs a wreck only where it lies. I recommend (a), judged on one test: can a stranger with this mod and the factory mod alone do what your statement says, 'found and retrieved to a safe location'?",
    "turn": "design/concepts/WreckedMachines/turn_03.md",
    "review": {
@@ -262,6 +272,50 @@
     "at": "2026-11-27T06:45:37Z",
     "run": "rm-role-designer-1795761299",
     "turn": "design/concepts/WreckedMachines/turn_03.md"
+   },
+   "answer": {
+    "at": "2026-11-27T06:56:45Z",
+    "source": "OWNER:1795762605668672773",
+    "what": "Option (a), by card: colonists carry it (s_colonists_carry)."
+   }
+  },
+  {
+   "about": [
+    "inv_alloy_forge_gates",
+    "inv_more_factory_machines",
+    "inv_ancient_component"
+   ],
+   "author": "rm-role-designer-1795763300",
+   "decision": "what gives plasteel on the alloy forge once the forge is an ancient machine: the late research project of today, the Refurbished level, or both",
+   "evidence_against": "The obvious answer is (b): your statement gives recipes to repair levels ('specific recipies blessed per repair tier'; Kludged is 'minimal', Refurbished is 'full functionality'), plasteel is the forge's hardest alloy, and with every recipe on the Kludged forge a colony has little reason to spend an Ancient Component on it. Against it: your words of 2026-10-09 put the unlock on research ('the recipies will unlock later in the game for more difficult alloys. Durasteel earlier, plasteel later'), and the built mod does that with a late research project. The forge is the campaign's one recipe that makes plasteel from raw materials (design/RimMandrake/canon_materials_design_2026-10-09.md section 3.3; salvage, re-melted slag and trade are the other sources). The last repair costs an Ancient Component, which you ruled is 'Only found in ruins or via plot', so (b) puts the campaign's fabricated plasteel behind a find. Your card for all 18 named no consequence for the forge.",
+   "id": "a_plasteel_on_the_forge",
+   "offers_removal": false,
+   "owner_cites": [
+    "OWNER:1791563988919655563",
+    "OWNER:1795755673273656447",
+    "OWNER:1795761534460592124",
+    "OWNER:1795761550785045693",
+    "OWNER:1795755622961436106"
+   ],
+   "source": [
+    "design/concepts/WreckedMachines/turn_04.md",
+    "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
+    "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml",
+    "design/RimMandrake/canon_materials_design_2026-10-09.md",
+    "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml"
+   ],
+   "status": "sent",
+   "text": "A colony has found a wrecked alloy forge, studied it and made it Kludged. It makes its first alloys. Which picture gives it plasteel? (a) Research: a late research project opens the plasteel recipe on any working forge, the Kludged one included. This is your sentence of 2026-10-09, and no Ancient Component is spent. (b) The Refurbished forge: plasteel is the recipe that the last repair brings. It takes the second study, the second research project and one Ancient Component, from a ruin or \"via plot\" (your words). (c) Both locks: the Refurbished forge, and the late research project too. I recommend (b), judged on one test: is there a reason to spend a rare Ancient Component on the forge?",
+   "turn": "design/concepts/WreckedMachines/turn_04.md",
+   "review": {
+    "by": "rm-judge a5105ca4acff55348 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "Nothing in the ask is built (the forge has no Wrecked or Kludged level), his words do not decide it (his sentence of 2026-10-09 puts the unlock on research; 'recipies blessed per repair tier' bears on it and does not decide it), and each option gives a different set of gates. The reviewer itself raised the question: the first draft of the page had decided it as a reading. Its second read struck the ask for three sentences that said plasteel comes only from the forge (the smelter re-melts plasteel slag, and section 3.3 names salvage and trade) and for 'from the campaign's story' stated as fact; the wordings were corrected and its third read passed the ask and the page."
+   },
+   "sent": {
+    "at": "2026-11-27T07:25:12Z",
+    "run": "rm-role-designer-1795763300",
+    "turn": "design/concepts/WreckedMachines/turn_04.md"
    }
   }
  ],
@@ -327,16 +381,19 @@
   {
    "core": true,
    "id": "c_no_way_in",
-   "position": "Half answered: wrecks are found in ruins and, rarely, on an ordinary map (OWNER:1795755647483442186). Still open: nothing gives an Ancient Component; a_component_source is sent in turn 2.",
    "routed": "stage 2: a_component_source",
    "source": [
     "OWNER:1795755647483442186",
     "src/RimMandrake/WreckedMachines/DESIGN.md",
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
-    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml"
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml",
+    "OWNER:1795761550785045693"
    ],
-   "status": "open",
-   "text": "The mod is about a machine that is found, and nothing lets a player find one. No wreck is placed anywhere and no Ancient Component can be had, so by play alone the ladder starts only where the player builds a 'wreck' from the menu for 30 steel, and it ends at Kludged. Routed to stage 1 and 2 (asks a_root, a_how_found); feasibility is settled in d_feasible_wreck_placement."
+   "status": "resolved",
+   "text": "The mod is about a machine that is found, and nothing lets a player find one. No wreck is placed anywhere and no Ancient Component can be had, so by play alone the ladder starts only where the player builds a 'wreck' from the menu for 30 steel, and it ends at Kludged. Routed to stage 1 and 2 (asks a_root, a_how_found); feasibility is settled in d_feasible_wreck_placement.",
+   "resolved": true,
+   "resolution": "Wrecks lie in ancient ruins, and now and then one lies on an ordinary map (s_found_ruins_plus_rare). An Ancient Component lies in ancient ruins, and a layer above can hand one out in its story (s_component_ruins_or_plot, d_component_from_ruins). The menu wreck for 30 steel goes at the build (its own def calls it a testing affordance).",
+   "resolved_by": "rm-role-designer-1795763300"
   },
   {
    "core": true,
@@ -528,11 +585,14 @@
    "routed": "stage 2: a_which_factory_machines",
    "source": [
     "OWNER:1795755622961436106",
-    "src/RimMandrake/WreckedMachines/MACHINES.md"
+    "src/RimMandrake/WreckedMachines/MACHINES.md",
+    "OWNER:1795761534460592124"
    ],
-   "status": "open",
+   "status": "resolved",
    "text": "The root says the first version supports the factory mod. One of its machines, the automated smelter, is onboarded. In a stranger's game the smelter must be found in a ruin while every other machine of the same factory comes from the build menu. How many machines 0.1.0 onboards is his (a_which_factory_machines); it is also the size of the art work.",
-   "position": "a_which_factory_machines is sent in turn 2, with the measured count: 18 production machines, one onboarded."
+   "resolved": true,
+   "resolution": "His card: all 18 production machines are ancient in 0.1.0 (s_all_eighteen, d_all_eighteen_shape).",
+   "resolved_by": "rm-role-designer-1795763300"
   },
   {
    "core": false,
@@ -548,7 +608,7 @@
   {
    "core": true,
    "id": "c_who_lifts_a_wreck",
-   "status": "open",
+   "status": "resolved",
    "routed": "stage 2: a_who_moves_a_wreck",
    "source": [
     "OWNER:1795760440829904733",
@@ -556,10 +616,30 @@
     "OWNER:1795749349214480499",
     "design/RimMandrake/salvage_lift_policy_2026-11-01.md",
     "src/RimStarWars/Droidworks/About/About.xml",
-    "design/concepts/WreckedMachines/turn_03.md"
+    "design/concepts/WreckedMachines/turn_03.md",
+    "OWNER:1795762605668672773"
    ],
    "text": "The root says a colony must find a machine and bring it to a safe place. His reply of 2026-11-26 says a wreck can be moved 'with special hauler droids or machines you can ride in through droidworks'. Droidworks is a RimStarWars campaign mod, and this mod stands alone at the RimMandrake tier. So in a stranger's game, with this mod and the factory mod only, either a colonist lifts a wreck by hand, or this mod brings a hauler of its own, or the wreck stays where it is found and the root's sentence holds only where another mod brings a hauler.",
-   "position": "Colonists lift by hand in a game with no hauler; who may lift a wreck is data that a layer above narrows (the campaign's lift list gives it to haulers). Held until he answers a_who_moves_a_wreck."
+   "resolved": true,
+   "resolution": "His card: colonists carry it; who may lift a wreck is data that a layer above narrows (s_colonists_carry, d_lift_is_data).",
+   "resolved_by": "rm-role-designer-1795763300"
+  },
+  {
+   "core": true,
+   "id": "c_plasteel_behind_a_component",
+   "status": "open",
+   "routed": "stage 2: a_plasteel_on_the_forge",
+   "source": [
+    "OWNER:1791563988919655563",
+    "OWNER:1795761534460592124",
+    "OWNER:1795761550785045693",
+    "OWNER:1795755673273656447",
+    "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
+    "design/RimMandrake/canon_materials_design_2026-10-09.md",
+    "design/concepts/WreckedMachines/turn_04.md"
+   ],
+   "text": "Two of his sentences pull apart on the forge's plasteel now that the forge is one of the 18. His words of 2026-10-09 put the unlock on research ('the recipies will unlock later in the game for more difficult alloys. Durasteel earlier, plasteel later'), and the built mod does that with a late research project. His words of 2026-11-26 give recipes to repair levels ('specific recipies blessed per repair tier'; Kludged 'minimal', Refurbished 'full functionality'), and the last repair costs an Ancient Component that comes 'Only found in ruins or via plot'. If plasteel is the Refurbished forge's recipe, the campaign's fabricated plasteel waits for a component; if research opens it on the Kludged forge, a colony has little reason to spend a component on the forge.",
+   "position": "Plasteel is the recipe that the forge's last repair brings (option b of a_plasteel_on_the_forge). Held until he answers."
   }
  ],
  "decisions": [
@@ -641,10 +721,12 @@
    "kind": "call",
    "source": [
     "OWNER:1795755673273656447",
-    "OWNER:1795755622961436106"
+    "OWNER:1795755622961436106",
+    "OWNER:1795761534460592124"
    ],
    "speaker": "agent",
-   "what": "The Designer's call on what his answer to a_riders means for 0.1.0: no bar of 0.1.0 judges any of the three rules. He spoke of two of them. (1) Of the forge he said: 'Giving the \"smelter first\" is an Utinni-tier decision independent of this mod about machine availability.' The Designer's reading: the alloy forge's steps move to that tier (stage 3 writes the move with its acceptance test). (2) Of the distillation machine he said it 'is definitely a FlowWorks machine that would then be onboarded into this mod to become Wrecked if we so desired'. The Designer's reading: 0.1.0 supports only the factory mod and the vanilla items he named, so its wrecked form is a later onboarding and its working form belongs in FlowWorks. (3) He did not speak of the salvage rule. The Designer's call, which he can undo: it is not the onboarding of a machine, so it is outside the promise; it works as today, and stage 3 names its home (it is shared code already, linked only by this mod). Left for stage 2: whether a rule that waits for its move goes on working as today or is switched off until then; his first-version card says switched off, and the Armoury's durasteel is made on that forge."
+   "what": "The Designer's call on what his answer to a_riders means for 0.1.0: no bar of 0.1.0 judges any of the three rules. He spoke of two of them. (1) Of the forge he said: 'Giving the \"smelter first\" is an Utinni-tier decision independent of this mod about machine availability.' The Designer's reading at that time was that the alloy forge's steps move to that tier. His card for all 18 (OWNER:1795761534460592124) changes the forge: it is one of the 18 and is onboarded in 0.1.0 (d_forge_is_onboarded). (2) Of the distillation machine he said it 'is definitely a FlowWorks machine that would then be onboarded into this mod to become Wrecked if we so desired'. The Designer's reading: 0.1.0 supports only the factory mod and the vanilla items he named, so its wrecked form is a later onboarding and its working form belongs in FlowWorks. (3) He did not speak of the salvage rule. The Designer's call, which he can undo: it is not the onboarding of a machine, so it is outside the promise; it works as today, and stage 3 names its home (it is shared code already, linked only by this mod). Left for stage 2: whether a rule that waits for its move goes on working as today or is switched off until then; his first-version card says switched off, and the Armoury's durasteel is made on that forge.",
+   "amended_by": "rm-role-designer-1795763300"
   },
   {
    "date": "2026-11-26",
@@ -668,10 +750,11 @@
     "OWNER:1795755622961436106",
     "OWNER:1795749529567808948",
     "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
-    "design/concepts/WreckedMachines/turn_02.md"
+    "design/concepts/WreckedMachines/turn_02.md",
+    "OWNER:1795762605668672773"
    ],
    "speaker": "agent",
-   "what": "A Wrecked machine of any size can be taken up and carried, like the furniture-installable machine it was, and each repair is made on the machine where it stands, with no workbench. His statement says 'found and retrieved to a safe location'; his sentence of 2026-09-15, 'The existing mod is about repairing big machines in place, and that's excellent', was said of a mod whose smelter wreck cannot be picked up, so the two sentences conflict on where a wreck is repaired, and the newer statement decides. 'Where the machine stands, with no workbench' is the Designer's gloss of what stays of the older sentence, not his words (review a15c1525ac03b2c3f). Measured from the factory mod's defs: all 18 of its production machines have a minified form, the 3 by 4 smelter included. The built smelter wreck cannot be picked up; the build changes that. Whether a Kludged machine can be moved is onboarding data of each machine and stays as built: the kludged smelter cannot (its def: 'a bodge does not survive being uninstalled and moved'), the kludged cell and emanator can. No ask: his newest statement is explicit, and nothing found argues against the reading. Shown to him as reading 1 of turn_02.md.",
+   "what": "A Wrecked machine of any size can be taken up and carried, like the furniture-installable machine it was, and each repair is made on the machine where it stands, with no workbench. His statement says 'found and retrieved to a safe location'; his sentence of 2026-09-15, 'The existing mod is about repairing big machines in place, and that's excellent', was said of a mod whose smelter wreck cannot be picked up, so the two sentences conflict on where a wreck is repaired, and the newer statement decides. 'Where the machine stands, with no workbench' is the Designer's gloss of what stays of the older sentence, not his words (review a15c1525ac03b2c3f). Measured from the factory mod's defs: all 18 of its production machines have a minified form, the 3 by 4 smelter included. The built smelter wreck cannot be picked up; the build changes that. Whether a Kludged machine can be moved is onboarding data of each machine and stays as built: the kludged smelter cannot (its def: 'a bodge does not survive being uninstalled and moved'), the kludged cell and emanator can. Who lifts a wreck was asked (a_who_moves_a_wreck) and he answered: colonists carry it (d_lift_is_data). Shown to him as reading 1 of turn_02.md.",
    "run": "rm-role-designer-1795757288",
    "reopened": {
     "by": "rm-role-designer-1795761299",
@@ -753,11 +836,14 @@
     "OWNER:1794896960342841440",
     "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
     "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml",
-    "design/concepts/WreckedMachines/turn_02.md"
+    "design/concepts/WreckedMachines/turn_02.md",
+    "OWNER:1795761534460592124",
+    "design/concepts/WreckedMachines/turn_04.md"
    ],
    "speaker": "agent",
-   "what": "What each of the three rules outside the promise does until its move lands: it works as today, and nothing is switched off first. The distillation machine's working form is FlowWorks' (his words); that the forge's steps move to the Utinni tier is the Designer's reading of his 'smelter first' sentence (d_riders_fate); the salvage rule is shared code already (the Designer's call, d_riders_fate). Each move is a ticket with its acceptance test, written at stage 3; after a move, this mod alone no longer carries the rule, which is what his first-version card's 'switched off' asks of an extra. The evidence against a switch-off before the move: the Armoury's durasteel is made on that forge, and the salvage rule acts on every smelter and crematorium of the campaign. No bar of 0.1.0 judges any of the three. Shown to him as reading 6 of turn_02.md.",
-   "run": "rm-role-designer-1795757288"
+   "what": "What each of the rules outside the promise does until its move lands: it works as today, and nothing is switched off first. The distillation machine's working form is FlowWorks' (his words); the salvage rule is shared code already (the Designer's call, d_riders_fate). Each move is a ticket with its acceptance test, written at stage 3; after a move, this mod alone no longer carries the rule, which is what his first-version card's 'switched off' asks of an extra. The evidence against a switch-off before the move: the salvage rule acts on every smelter and crematorium of the campaign. No bar of 0.1.0 judges the salvage rule or the distillation machine. The alloy forge is no longer one of these rules: his card for all 18 makes the forge an onboarded machine of 0.1.0 (d_forge_is_onboarded), and its research step that opens the forge for building works as today only until that onboarding lands, because the Armoury's durasteel is made on that forge. Shown to him as reading 6 of turn_02.md, and the change for the forge as section 2 of turn_04.md.",
+   "run": "rm-role-designer-1795757288",
+   "amended_by": "rm-role-designer-1795763300"
   },
   {
    "date": "2026-11-26",
@@ -803,6 +889,77 @@
     "src/RimStarWars/Droidworks/About/About.xml"
    ],
    "what": "Measured after his reply of 2026-11-26. (1) A hauler is built, in the Property mod (src/RimMandrake/RimProperty, the RimMandrake tier): a pawn whose race carries the marker TheftHaulerExtension may uninstall a building of any faction and carry it off; FindMod-guarded patches put the marker on five Droidworks chassis (the Muckraker and four labour and mining droids). (2) That job refuses a building whose def is not Minifiable, and the built smelter wreck has no minified form ('No minifiedDef: a wreck is not haulable and cannot be uninstalled'), so today no pawn, a hauler droid included, lifts the built smelter wreck; the cell and emanator wrecks have a minified form and a colonist lifts them. (3) The lift list of 2026-11-01 classes a wrecked machine WRECKED_TIER, 'minify | droid only', 'a colonist still may not move it'; the pass that applies the list is not built: the tag prefix RM_Lift_ is in no def and no mod source under src/, only in src/RimMandrake/Utils/selftest_salvage_lift_policy.py. (4) No machine that a colonist rides in and that moves a building was found; search scope: src/RimStarWars/Droidworks Defs, Source and Patches for ride, piloted, lifter, loader. Missing evidence is not evidence of absence. (5) Droidworks is mandrake.rsw.droidworks, a RimStarWars mod that needs Humanoid Alien Races and calls itself a 'Private campaign mod'; this mod stands alone at the RimMandrake tier (s_standalone_no_setting), so it cannot require Droidworks. (6) The factory mod's smelter is 3 by 4 cells with Mass 60, and the base game gives a pawn a caravan capacity of 35 kg times body size (MassUtility.Capacity, read through RimSage). Feasible in every option of a_who_moves_a_wreck: the wreck needs a minified form in each, and who may order the uninstall is a rule on top (the lift list's own method: give the def a minifiedDef and refuse the colonist's Uninstall)."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "d_all_eighteen_shape",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795763300",
+   "source": [
+    "OWNER:1795761534460592124",
+    "OWNER:1795755622961436106",
+    "OWNER:1795749543738184808",
+    "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_HideDonorSmelter.xml",
+    "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs",
+    "design/concepts/WreckedMachines/turn_04.md"
+   ],
+   "what": "What 'All 18 machines' means in 0.1.0. Measured 2026-11-26 from the factory mod's defs (workshop folder 3686924415, 1.6): the 18 are the autofarmer, drill platform, smelter, biofuel refinery, masonry saw, mincer, conveyor oven, assembler, neutroamine synthesizer, ammunition press, autoloom, alloy forge, distillery, medicine granulator, machining bay, conveyor crematorium, fish farm (its def loads with Odyssey) and cannery (its def loads only with Vanilla Cooking Expanded; without it the count is 17). Masses run from 35 to 115 kg; every one has a minified form; none carries a trade tag or a reward tag (thingSetMakerTags); all carry the thing category VFEFactory_FactoryCategory, and whether any trader's stock reads that category is UNMEASURED. The Designer's calls, each the obvious consequence and each shown to him in turn_04.md section 1: (1) each of the 18 leaves the build menu the way the built patch takes the smelter out (the def and its recipes stay); (2) the parts that are not production machines stay buildable: the conveyor, the two underground conveyor ends and the hopper (opened by VFE_BasicFactories), the booster and the heatsink (opened by VFE_ComplexFactories); (3) a machine that already stands in an old save is not changed; (4) Mod Settings carry one on/off line per machine, on as shipped, the built donor-smelter switch made general; (5) no trader, quest or map gives a working factory machine, with a check at stage 3; (6) each machine has two research projects (d_study_before_each_repair), so the 18 bring 36; (7) the build takes the smelter first and then the machines in the order the campaign needs (s_utinni_service_first); (8) what each machine does at Kludged and at Refurbished is its onboarding table, build work under one rule that the design writes: Kludged is a part of the machine's work, Refurbished is all of it and slower than the Original. The size he accepted on the card: 136 new pictures of big machines and 17 onboardings by hand. The cannery's checks need Vanilla Cooking Expanded on the mod's small list; stage 3 names that."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "d_forge_is_onboarded",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795763300",
+   "source": [
+    "OWNER:1795761534460592124",
+    "OWNER:1795755673273656447",
+    "OWNER:1791563988919655563",
+    "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
+    "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml",
+    "src/RimStarWars/Armoury/Patches/RSW_AlloyForge_Durasteel.xml",
+    "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml",
+    "design/concepts/WreckedMachines/turn_04.md"
+   ],
+   "what": "The alloy forge (VFEFactory_AutomatedAlloyForge) is one of the 18, so in 0.1.0 it is an ancient machine: found, carried home, studied and repaired through the levels. Forced by his card for all 18 and his statement ('can no longer simply be researched and built'); no ask. What changes: the built research project RM_WM_AlloyForgeRestoration, which opens the forge for building from the menu, leaves this mod when the forge is onboarded, and the forge's own restoration projects take its place. Which colony gets a forge wreck early is the campaign's: he said of 'smelter first' that it is 'an Utinni-tier decision independent of this mod about machine availability'; extending that sentence to the forge is the Designer's reading, not his words (review a5105ca4acff55348). The durasteel recipe stays the Armoury's; today the Armoury adds it to the factory mod's forge only, so the Armoury must add it to the forge's Kludged and Refurbished levels as it does for the smelter's levels (a neighbour's work that stage 3 names). The cost: the campaign makes no durasteel from steel and zersium until a forge wreck is made Kludged; until then durasteel comes only from re-melted slag on the smelter and from loot. Not settled here: what gives plasteel, the late research project of today or the Refurbished level (a_plasteel_on_the_forge). Shown to him as section 2 of turn_04.md; it changes reading 6 of turn_02.md for the forge."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "d_component_from_ruins",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795763300",
+   "source": [
+    "OWNER:1795761550785045693",
+    "OWNER:1795749349214480499",
+    "OWNER:1795749476635482102",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml",
+    "src/RimMandrake/ColdStorage/Defs/ColdStorage_StasisLockers.xml",
+    "src/RimStarWars/Cuisine/Defs/RSW_RakatanStasis.xml",
+    "design/concepts/WreckedMachines/turn_04.md"
+   ],
+   "what": "In this mod an Ancient Component lies only in ancient ruins. A wreck that is taken apart gives none (the card offered that source and his words leave it out); no trader sells one and no bench makes one. 'Via plot' is read as the campaign's story: this mod has no plot and knows no setting (s_standalone_no_setting), and the component is a plain item, so a layer above can hand one out in its story without this mod knowing. That is the Designer's reading, not his words; turn_04.md section 3 says so and says that a quest inside this mod would be a different build. What follows: a colony with no ruin on its map and no journey reaches Kludged and stops; and 20 machines each cost one component for the last repair (the 18, the power cell, the emanator) while Cold Storage's stasis lockers and the campaign's stasis casket and vaults charge components too, so each component is a choice and a machine that stays Kludged for good is normal play. How rare a component is, is a tuning number for Mod Settings, never a bar."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "d_lift_is_data",
+   "kind": "call",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "run": "rm-role-designer-1795763300",
+   "source": [
+    "OWNER:1795762605668672773",
+    "OWNER:1795760440829904733",
+    "OWNER:1795755622961436106",
+    "design/RimMandrake/salvage_lift_policy_2026-11-01.md",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
+    "design/concepts/WreckedMachines/turn_04.md"
+   ],
+   "what": "Colonists carry a wreck (his card). Every wreck gets a carried form; the build changes the smelter wreck, which has none today. Who may lift a wreck is data on the machine that a layer above can narrow: the campaign gives the lift to hauler droids and ride-in machines (his reply of 2026-11-26), and this mod does not know that Droidworks exists. A wreck weighs what the factory mod's machine weighs (35 to 115 kg, measured), so a wreck from another tile takes the load of one to four colonists at the base game's 35 kg each, or pack animals. Whether a Kludged machine can be moved stays data of each machine (d_wreck_is_carried); the built kludged smelter cannot be moved and the built Refurbished smelter can. The four words 'but notified or built' are still not read."
   }
  ],
  "failure_modes": [
@@ -982,9 +1139,11 @@
     "ITEM:SHIP_ALLOY_FORGE_1",
     "ITEM:WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS",
     "OWNER:1791563988919655563",
-    "OWNER:1795755673273656447"
+    "OWNER:1795755673273656447",
+    "OWNER:1795761534460592124"
    ],
-   "what": "The donor mod's alloy forge is reachable early, right after the smelter's restoration, at a cost without advanced components, and its plasteel recipe waits for a late project; two settings turn the steps off and take plasteel off the forge. It is not a wreck and has no grades. The durasteel recipe itself is the Armoury's."
+   "what": "The donor mod's alloy forge is reachable early, right after the smelter's restoration, at a cost without advanced components, and its plasteel recipe waits for a late project; two settings turn the steps off and take plasteel off the forge. It is not a wreck and has no grades. The durasteel recipe itself is the Armoury's.",
+   "scope_note": "His card for all 18 (OWNER:1795761534460592124) makes the forge an onboarded machine of 0.1.0 (d_forge_is_onboarded): the step that opens the forge for building ends with that onboarding. What gives plasteel is a_plasteel_on_the_forge."
   },
   {
    "id": "inv_one_salvage_rule",
@@ -1031,7 +1190,8 @@
     "ITEM:RAKATAN_ARCHOTECH_MACHINES_1",
     "OWNER:1795755622961436106",
     "OWNER:1795755647483442186",
-    "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md"
+    "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md",
+    "OWNER:1795762605668672773"
    ],
    "what": "A wrecked machine that the player finds in the world and can carry to a safe place: in the rooms of ancient ruins, and now and then one half-buried wreck on an ordinary map on arrival. Nothing places one today: no map step, site, quest, trader or incident. The power cell and emanator wrecks can only be dev-spawned; the smelter wreck can only be dev-spawned or built from the menu, and cannot be picked up."
   },
@@ -1039,13 +1199,15 @@
    "id": "inv_ancient_component_source",
    "impl": "absent",
    "proof": "missing",
-   "scope": "open_question",
+   "scope": "approved",
    "search_scope": "src/ (*.xml, *.cs) for RM_WM_AncientComponent and AncientComponent: it appears only as a cost (this mod's Refurbished grades, Cold Storage's lockers, Cuisine's Rakatan stasis)",
    "source": [
     "OWNER:1795749476635482102",
-    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml"
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml",
+    "OWNER:1795761550785045693"
    ],
-   "what": "A way to come by an Ancient Component in play. None exists: no loot table, trader stock, recipe or drop, as the item's own def says."
+   "what": "A way to come by an Ancient Component in play: it lies in ancient ruins (and a layer above may hand one out in its story). None exists today: no loot table, trader stock, recipe or drop, as the item's own def says.",
+   "scope_source": "OWNER:1795761550785045693"
   },
   {
    "id": "inv_wealth_exclusion",
@@ -1090,15 +1252,16 @@
    "id": "inv_more_factory_machines",
    "impl": "absent",
    "proof": "missing",
-   "scope": "open_question",
-   "scope_note": "His statement says the first version supports the factory mod; how many of its machines is a_which_factory_machines.",
+   "scope": "approved",
    "search_scope": "src/RimMandrake/WreckedMachines/MACHINES.md (the treated register) and Defs/ThingDefs_Buildings: one machine, the automated smelter",
    "source": [
     "OWNER:1795106694655684530",
     "OWNER:1795755622961436106",
-    "src/RimMandrake/WreckedMachines/MACHINES.md"
+    "src/RimMandrake/WreckedMachines/MACHINES.md",
+    "OWNER:1795761534460592124"
    ],
-   "what": "Wrecked and kludged states for the donor mod's other factory machines (about 17 machines, three pictures in four facings each). Only the smelter is treated; the art tooling for the rest exists in the mod's Source folder."
+   "what": "Wrecked and Kludged states, and the onboarding by hand, for the factory mod's other 17 production machines (16 without Vanilla Cooking Expanded): 8 new pictures for each (Wrecked and Kludged in four facings), its recipes and rates at each level, and its two research projects. Only the smelter is treated today; the art tooling for the rest exists in the mod's Source folder.",
+   "scope_source": "OWNER:1795761534460592124"
   }
  ],
  "mod": "WreckedMachines",
@@ -1404,6 +1567,33 @@
    ],
    "speaker": "owner",
    "text": "His reply to turn 2, typed on his phone: 'Yes I will look at the existing wrecked machines. By the way they CAN be moved with special hauler droids or machines you can ride in through droidworks but notified or built.' Two things are taken as said: he accepts the look at the running mod; and a wreck can be moved, by a special hauler droid or by a machine that a colonist rides in, through Droidworks. The last four words, 'but notified or built', are kept as typed: their meaning is not known, the Conductor asked him, and nothing in this record is read from them."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "s_all_eighteen",
+   "source": [
+    "OWNER:1795761534460592124"
+   ],
+   "speaker": "owner",
+   "text": "His card answer to a_which_factory_machines: 'All 18 machines'. The option's description on the card, which is our text and not his words: 'Why: the mod at full strength; every factory machine is out in the world to be found. Cost: 136 new pictures and 17 more onboardings by hand, and a stranger who already has a factory loses the most.' The card's question said '18 production machines, or 17 without Vanilla Cooking Expanded'. He did not take the recommended option (a proven handful)."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "s_component_ruins_or_plot",
+   "source": [
+    "OWNER:1795761550785045693"
+   ],
+   "speaker": "owner",
+   "text": "His typed answer to a_component_source: 'Only found in ruins or via plot'. He picked none of the three options (both sources; out of another wreck; only found in ruins). His words name a source that the card did not offer, the plot, and they leave out a component from a wreck that is taken apart."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "s_colonists_carry",
+   "source": [
+    "OWNER:1795762605668672773"
+   ],
+   "speaker": "owner",
+   "text": "His card answer to a_who_moves_a_wreck: 'Colonists carry it (Recommended)'. The option's description on the card, which is our text and not his words: 'Why: a stranger can then do what your statement says, found and retrieved to a safe location, with this mod alone. Who may lift a wreck is data, so the campaign narrows it to hauler droids and ride-in machines. Cost: in a stranger's game an ancient machine lifts as easily as a loom.'"
   }
  ],
  "script_audit": [
