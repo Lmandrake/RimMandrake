@@ -288,9 +288,12 @@ def switch_refuses(host, it):
 
 def host_room(cfg, hosts, new=0):
     """-> (host, why not). A host of cfg["hosts"] that has fewer live lane runs (its own, plus `new` placed there this
-    tick) than its max_live, whose live account has more than its min_left_pct of the week left, and whose disk holds
-    another helper clone (pool_more, rm-pool-room.timer's count, when it is a number; else the host's own pool_admit
-    decides at launch). A reading that is missing (None) is no room. Pure."""
+    tick) than its max_live, whose live account has more than its min_left_pct of the week left, whose own account gate
+    lets a new run start (`gate`, run_host.host_gate: the gate the host's launcher asks; a drain there refused 27 launches
+    on 2026-11-26 while the account read 50% left), and whose disk holds another helper clone (pool_more,
+    rm-pool-room.timer's count, when it is a number; else the host's own pool_admit decides at launch). A reading that is
+    missing (None) is no room; a facts dict with no `gate` key at all was made by no reader of it (host_facts always
+    sets it). Pure."""
     whys = []
     for name, hc in sorted((cfg.get("hosts") or {}).items()):
         f = (hosts or {}).get(name) or {}
@@ -304,6 +307,9 @@ def host_room(cfg, hosts, new=0):
             whys.append("%s: what is left on its account could not be read (%s)" % (name, f.get("left_why") or "no reading"))
         elif float(f["left"]) <= floor:
             whys.append("%s: its account has %g%% of the week left, the line is %g%%" % (name, f["left"], floor))
+        elif "gate" in f and f["gate"] is not True:
+            whys.append("%s: its own account gate %s (%s)" % (
+                name, "refuses a new run" if f["gate"] is False else "could not be read", f.get("gate_why") or "no line"))
         elif isinstance(f.get("pool_more"), int) and placed >= f["pool_more"]:
             whys.append("%s: its disk holds %d more helper clone(s) and %d were placed this tick (rm-pool-room.timer)"
                         % (name, f["pool_more"], placed))
@@ -358,9 +364,10 @@ def pool_room(host, runner=subprocess.run):
 
 
 def host_facts(cfg, live, runner=None):
-    """{host: {"live", "left", "left_why", "pool_more", "pool_why"}}: live lane runs per host (from _runs), the week left on the host's
-    live account, read from account_usage's latest readings by the name the host itself reports, and the helper clones its
-    disk still holds (pool_room)."""
+    """{host: {"live", "left", "left_why", "pool_more", "pool_why", "gate", "gate_why"}}: live lane runs per host (from
+    _runs), the week left on the host's live account, read from account_usage's latest readings by the name the host
+    itself reports, the helper clones its disk still holds (pool_room), and the host's own account gate
+    (run_host.host_gate)."""
     out = {}
     for name in (cfg.get("hosts") or {}):
         d = {"live": live.get(name, 0), "left": None, "left_why": None, "pool_more": None}
@@ -383,6 +390,11 @@ def host_facts(cfg, live, runner=None):
                 d["left"] = AU.week_left_for(row)[0]
         except Exception as e:  # noqa: BLE001 - could not look: no room
             d["left_why"] = "%s: %s" % (type(e).__name__, e)
+        try:
+            import run_host
+            d["gate"], d["gate_why"] = run_host.host_gate(name, **({"runner": runner} if runner else {}))
+        except Exception as e:  # noqa: BLE001 - could not look: no room
+            d["gate"], d["gate_why"] = None, "%s: %s" % (type(e).__name__, e)
         out[name] = d
     return out
 

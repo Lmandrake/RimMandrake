@@ -219,6 +219,32 @@ def t_host_live_counts_every_claude_run_there():
     assert f["live"] is None, f
 
 
+def t_host_room_reads_the_hosts_own_account_gate():
+    """The lane gives a host room only while the host's own `./acct can-use` lets a new run start there. Measured
+    2026-11-26 3:38 AM to 7:11 AM PST: 27 bundle launches on SteveDesktop read launch_failed, each refused by the host's
+    own gate ("the account steven is draining"), while the lane read 50% left over its 5% line and sent one again each
+    tick. A gate that cannot be read is no room."""
+    import list_dispatch as LD
+    drain = ("NO: the account steven is draining (notice since 2026-11-26T03:13:24-08:00): live runs finish on it and "
+             "no new run starts until the switch")
+    assert R.host_gate("SteveDesktop", runner=Fake([(r"acct can-use", "yes: the notice refuses nothing")])) == (
+        True, "yes: the notice refuses nothing")
+    no = R.host_gate("SteveDesktop", runner=Fake([(r"acct can-use", (1, drain))]))
+    assert no[0] is False and "draining" in no[1], no
+    cnl = R.host_gate("SteveDesktop", runner=Fake([(r"acct can-use", (2, "COULD NOT LOOK: no notice"))]))
+    assert cnl[0] is None and "COULD NOT LOOK" in cnl[1], cnl
+    assert R.host_gate("SteveDesktop", runner=Fake([]))[0] is None, "unreachable is could not look"
+    cfg = {"hosts": {"SteveDesktop": {"max_live": 6, "min_left_pct": 5}}}
+    host = Fake([(r"list-units", ""), (r"claude-account", json.dumps({"live": "steven"})), (r"acct can-use", (1, drain))])
+    f = LD.host_facts(cfg, {}, runner=host)["SteveDesktop"]
+    assert f.get("gate") is False and "draining" in (f.get("gate_why") or ""), f
+    got = LD.host_room(cfg, {"SteveDesktop": dict(f, live=0, left=50.0)}, 0)
+    assert got[0] is None and "draining" in got[1], got
+    got = LD.host_room(cfg, {"SteveDesktop": {"live": 0, "left": 50.0, "gate": None, "gate_why": "COULD NOT LOOK: x"}}, 0)
+    assert got[0] is None and "could not be read" in got[1], got
+    assert LD.host_room(cfg, {"SteveDesktop": {"live": 0, "left": 50.0, "gate": True}}, 0)[0] == "SteveDesktop"
+
+
 def _host_home(sync_rc):
     """A fake host home: ~/rm/bench with a `sync` that exits sync_rc and a launcher that leaves a marker file."""
     import tempfile
@@ -337,7 +363,7 @@ def t_host_ends_reach_the_conductor_log():
 def main():
     tests = (t_refused_by_name, t_could_not_look_named, t_no_spend_stated, t_wsl_door, t_login_path, t_every_fact_reads,
              t_account_from_the_machine, t_launch_argv, t_record_names_host_unit_item, t_live_until_the_host_says_ended,
-             t_stop_runs_the_hosts_pipe, t_pipe_stop_routes_a_remote_unit, t_host_room_for_the_lane,
+             t_stop_runs_the_hosts_pipe, t_pipe_stop_routes_a_remote_unit, t_host_room_for_the_lane, t_host_room_reads_the_hosts_own_account_gate,
              t_status_reads_a_remote_run_from_its_host, t_host_live_counts_every_claude_run_there,
              t_remote_launch_runs_origin_main, t_a_failed_sync_is_could_not_launch,
              t_both_remote_launchers_share_the_sync, t_host_ends_reach_the_conductor_log)

@@ -163,6 +163,28 @@ def live_units(host, runner=subprocess.run):
                if ln.split() and ln.split()[0].startswith("rm-detached-") and not ln.split()[0].endswith("-return.service"))
 
 
+def host_gate(host, runner=subprocess.run):
+    """-> (True | False | None, its line): the host's own account gate (`./acct can-use` in its seat clone), the gate its
+    launcher asks before it starts a run. True: a new run may start (exit 0 yes, or 5 NONE: it follows no plan, and its
+    launcher refuses nothing). False: the gate says NO (exit 1: a drain, a stop, a refusing decision). None: could not
+    look (exit 2, any other exit, no door, no answer), which the lane reads as no room. One ssh, about 0.5 s (measured
+    2026-11-26 6:50 PM PST)."""
+    target = door(host)
+    if not target:
+        return None, "no ssh door to %s" % host
+    try:     # timeout: a hang guard (a hung ssh holds the tick with no end); longest 0.52 s, measured 2026-11-26
+        r = runner(_ssh(target, "cd %s && ./acct can-use" % BENCH), capture_output=True, text=True, timeout=60,
+                   stdin=subprocess.DEVNULL)
+    except Exception as e:  # noqa: BLE001
+        return None, "%s: %s" % (type(e).__name__, e)
+    line = (((r.stdout or "").strip() or (r.stderr or "").strip()).splitlines() or ["no output"])[-1].strip()
+    if r.returncode in (0, 5):
+        return True, line
+    if r.returncode == 1:
+        return False, line
+    return None, "`./acct can-use` on %s exited %s: %s" % (host, r.returncode, line)
+
+
 # budget: danger=a Conductor log that is trimmed or rotated would have every old host run announced again as new, since
 # budget: the host's record folder only grows (35 records in 2 days on SteveDesktop, 2026-11-25); ends no work: a run
 # budget: older than this is still in the host's record and `rimflow show`

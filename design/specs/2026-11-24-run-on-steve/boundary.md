@@ -47,9 +47,15 @@ Code: `src/RimMandrake/rimflow/run_host.py`
   record. A unit with a line gets no second one. A host that cannot be read writes nothing and reads COULD NOT LOOK
   (rc 5). Test: `t_host_ends_reach_the_conductor_log`. Live check:
   `src/RimMandrake/rimflow/acceptance/steve_ends_in_conductor_log_accept.py`.
-- **host-room-for-the-lane.** `list_dispatch.py` places a lane run on a host only when its own slots are full, under the
+- **host-room-for-the-lane.** `list_dispatch.py` places an offline lane run on a host first (`host_first`), under the
   host's `max_live`, and while the host's live account has more than `min_left_pct` of the week left. An unread reading is
-  no room.
+  no room. Test: `t_host_room_for_the_lane`.
+- **host-room-reads-the-hosts-own-account-gate.** The lane gives a host room only while the host's own `./acct can-use`
+  (`run_host.host_gate`, the gate that the host's launcher asks) lets a new run start there. A NO (a drain, a stop) is no
+  room, and the reading names the host's line. A gate that cannot be read is no room. Measured 2026-11-26 3:38 AM to
+  7:11 AM PST: 27 bundle launches on SteveDesktop read `launch_failed`, each refused by the host's own gate ("the account
+  steven is draining"), while the lane read 50% left over its 5% line. Test:
+  `t_host_room_reads_the_hosts_own_account_gate`.
 
 Tests: `src/RimMandrake/rimflow/selftest_run_host.py` (one test per promise, by name);
 `src/RimMandrake/rimflow/selftest_list_dispatch.py` `t_a_full_lane_places_on_a_host_with_room`;
