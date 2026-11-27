@@ -152,8 +152,10 @@ def t_restart_stops_deploys_launches_in_that_order():
           and idx["game_lock.py mine"] < idx["stop --instance b"] < idx["DEPLOY"] < idx["launch b --wait"],
           "mine, stop, deploy (game down), launch --wait: in that order", (r, order))
     check(not any("--force" in s for s in order), "a game that exits on the soft stop is not force-stopped", order)
-    check(r.get("game") == "ArchSmall" and r.get("why") == ["not loaded: a.mod"] and r.get("steps"),
-          "the record names the game, why, and each step", r)
+    sys.path.insert(0, os.path.join(runner.ROOT, "src", "RimMandrake", "rimflow"))
+    import game_names        # game "b" is ArchSmall on Archmagi and Steve2 on SteveDesktop: the name is this machine's
+    check(r.get("game") == game_names.show("b") and r.get("game") != "b" and r.get("why") == ["not loaded: a.mod"]
+          and r.get("steps"), "the record names the game, why, and each step", r)
 
 
 def t_a_game_that_ignores_the_soft_stop_is_forced_once():
