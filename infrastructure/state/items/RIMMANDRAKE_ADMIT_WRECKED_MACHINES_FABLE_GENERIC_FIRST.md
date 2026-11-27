@@ -88,3 +88,12 @@ run's unit records model `claude-fable-5-2`.
 **Picked:** All 18 machines
 **Its description:** Why: the mod at full strength; every factory machine is out in the world to be found. Cost: 136 new pictures and 17 more onboardings by hand, and a stranger who already has a factory loses the most.
 **Other options:** A proven handful (Recommended) · Only the smelter
+
+## What the card said
+
+<!-- answered 2026-11-27T06:56:22Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Wrecked Machines, one new question from the Designer after your words tonight that wrecks "CAN be moved with special hauler droids or machines you can ride in through droidworks". That settles the campaign. But Wrecked Machines must also work alone, with no Droidworks (your ruling). Measured today: a hauler job exists in the Property mod and five Droidworks droids may use it; no ride-in machine that moves a building was found; no pawn can lift the built smelter wreck. Picture a stranger's game with Wrecked Machines and the factory mod only: three colonists stand in an ancient ruin before a wrecked smelter of 3 by 4 cells, 60 kg. (Hard to read? Type STE, Binding or Both for a rewrite.) How does that wreck get home in a game without Droidworks?
+**Picked:** Colonists carry it (Recommended)
+**Its description:** Why: a stranger can then do what your statement says, 'found and retrieved to a safe location', with this mod alone. Who may lift a wreck is data, so the campaign narrows it to hauler droids and ride-in machines. Cost: in a stranger's game an ancient machine lifts as easily as a loom. The Designer recommends it.
+**Other options:** The mod brings a hauler · No hauler: repair in place
