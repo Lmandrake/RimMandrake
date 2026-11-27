@@ -51,6 +51,19 @@
   "rc": 1,
   "test_blob": "e7d05f8855bd2158827487ba0fa2d6525ae62efa"
  },
+ "T_ONBOARDING_TABLE_OFFLINE": {
+  "at": "2026-11-27T17:50:52Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
+  "last": "T_ONBOARDING_TABLE_OFFLINE: FAIL (15 lines read)",
+  "patch": "diff --git a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml\nindex fade2908ec..a0f4fcd5aa 100644\n--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml\n@@ -169,7 +169,7 @@\n         <!-- Part of the donor's list: the row's kludgedProcesses. -->\n         <processes>\n           <li MayRequire=\"Ludeon.RimWorld.Odyssey\">VFEFactory_CreateObsidian</li>\n-          <li MayRequire=\"OskarPotocki.VFE.Classical\">VFEFactory_AlloyBronze</li>\n+          <li>VFEFactory_AlloyBronze</li>\n         </processes>\n         <hideSettings>true</hideSettings>\n       </li>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedAlloyForge.xml"
+  ],
+  "patch_sha": "d5fe9db7248291fa",
+  "rc": 1,
+  "test_blob": "a26a1fa9dcb2a3527a9244b5971eeaa83506fcab"
+ },
  "T_REPAIR_STATE_WALK": {
   "at": "2026-11-27T14:16:10Z",
   "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
@@ -65,7 +78,7 @@
   "test_blob": "a20d682aedc61973a29cb90221983125b4b5911e"
  },
  "T_STATIC": {
-  "at": "2026-11-27T16:28:47Z",
+  "at": "2026-11-27T17:50:53Z",
   "command": "python3 src/RimMandrake/WreckedMachines/validation.py",
   "file": "src/RimMandrake/WreckedMachines/validation.py",
   "last": "- autoloom: project 'RM_WM_AutoloomKludging' is not opened by the study of its wrecked def",
@@ -75,7 +88,7 @@
   ],
   "patch_sha": "9ea3880ef26674b1",
   "rc": 1,
-  "test_blob": "89bcd3d09dde0a9ec3df905df5e9270cbf3e51f8"
+  "test_blob": "db9764c3508762c9d4fb81ad70ca7e04e14eec5b"
  },
  "sc_text_names_no_setting": {
   "at": "2026-11-27T15:23:02Z",

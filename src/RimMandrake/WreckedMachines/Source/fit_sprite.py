@@ -28,7 +28,12 @@ WHAT IT DOES, IN ORDER
      single stray pixel of halo ruins every bounding-box measurement.
   4. **Trim** to the true silhouette.
   5. **Coarse fit** — scale so the silhouette matches the reference's measured
-     silhouette, preserving aspect. Never stretches.
+     silhouette, preserving aspect. One exception (choose_stretch): when the
+     silhouette's aspect is 5% to 12% off the donor's AND the two-factor fit
+     raises the registration overlap by at least 0.03 IoU, x and y are scaled
+     by different factors so width and height both match. That case is the
+     model drawing the whole machine in the wrong proportions; outside it the
+     fit is one factor, as before, and the output says why.
   6. **Register** — searches scale and offset to maximise mask overlap (IoU)
      with the reference. This is the part a naive centre-and-scale gets wrong:
      damaged art is *missing chunks*, so its bounding box is not its centre of
@@ -79,6 +84,18 @@ REG_SCALES = [0.88 + 0.02 * i for i in range(13)]   # 0.88 .. 1.12
 REG_SHIFT = 10              # +/- this many low-res pixels
 MAX_ASPECT_SKEW = 1.35      # refuse beyond this ratio; the shape is simply wrong
 CLOSE_RADIUS = 6            # seal background channels narrower than this after keying
+# Stretch (choose_stretch). Measured 2026-11-27 over 135 raws in the work folder (bbox skew as this file sees it,
+# coarse IoU at one factor and at the full stretch):
+#  - the two pictures that failed for proportions: refinery kludged south +7.35%, oven kludged south -9.52% (their
+#    other tries +7.88/+8.62% and -8.60%); IoU gain from the stretch +0.043 .. +0.087.
+#  - judged pictures in place: largest |skew| AmmoPress wrecked N -6.28% (gain +0.038), Cannery wrecked N -5.31%
+#    (+0.040), refinery kludged E +5.46% (+0.018, top pipe torn off), refinery wrecked E +4.64% (+0.013, same);
+#    below 4% the gain is at noise level (128 vs 256 px registration differ by up to 0.015).
+STRETCH_MIN_SKEW = 1.05     # under 5% the box differences are damage and noise, not proportion
+STRETCH_MAX_SKEW = 1.12     # the worst failure reads 10.53% in this file's own --inside line (9.52% above, measured
+                            # without --inside); a larger stretch deforms round tanks visibly
+STRETCH_MIN_GAIN = 0.03     # part differences gained <= 0.018, proportion errors >= 0.036
+STRETCH_ON = True           # --no-stretch: one factor always, to reproduce a picture fitted before 2026-11-27
 TIERS = ("wrecked", "kludged")   # default when a MANIFEST names no tiers
 
 
@@ -450,10 +467,21 @@ def mask_to_bits(mask, w, h, pad_w, ox, oy):
     return v
 
 
-def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box, scales=None):
+def axis_fits(tgt_w, tgt_h, cw, ch, aspect):
+    """The (x, y) scale factors that fit a cw x ch silhouette into the donor's
+    tgt_w x tgt_h box, the x factor being `aspect` times the y factor. Aspect
+    1.0 is the one-factor fit (the long axis fits, the other comes out short);
+    aspect (tgt_w/tgt_h)/(cw/ch) makes both axes fit (see choose_stretch). At
+    aspect 1.0 both values are exactly the old min(tgt_w/cw, tgt_h/ch)."""
+    fy = min(tgt_w / (cw * aspect), tgt_h / float(ch))
+    return fy * aspect, fy
+
+
+def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box, scales=None, aspect=1.0):
     """Find the (scale, dx, dy) placing the candidate best over the reference.
 
     Returns a rectangle in reference-canvas coordinates plus the achieved IoU.
+    `aspect` is the x-to-y factor ratio (1.0: one factor for both axes).
     """
     # Work small. Registration accuracy beyond a pixel at this size is noise.
     k = REG_LONG_EDGE / float(max(sw, sh))
@@ -473,10 +501,11 @@ def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box, scales=None):
     tgt_w, tgt_h = sx1 - sx0 + 1, sy1 - sy0 + 1
 
     best = None
+    fx0, fy0 = axis_fits(tgt_w, tgt_h, cw, ch, aspect)
     for s in (scales or REG_SCALES):
         # candidate silhouette scaled to `s` of the reference silhouette box
-        fit = min(tgt_w / float(cw), tgt_h / float(ch)) * s
-        nw, nh = max(1, int(round(cw * fit * k))), max(1, int(round(ch * fit * k)))
+        fit = (fx0 * s, fy0 * s)
+        nw, nh = max(1, int(round(cw * fit[0] * k))), max(1, int(round(ch * fit[1] * k)))
         if nw > lw + 2 * pad or nh > lh + 2 * pad:
             continue
         low_c = bytearray(nw * nh)
@@ -509,8 +538,8 @@ def register(cand_rgba, cw, ch, src_mask, sw, sh, src_box, scales=None):
                        "scale or offset — the shapes are unrelated")
     iou, s, fit, dx, dy, nw, nh, bx, by = best
     # translate the low-res solution back to full reference-canvas pixels
-    out_w = max(1, int(round(cw * fit)))
-    out_h = max(1, int(round(ch * fit)))
+    out_w = max(1, int(round(cw * fit[0])))
+    out_h = max(1, int(round(ch * fit[1])))
     out_x = int(round((bx - pad + dx) / k))
     out_y = int(round((by - pad + dy) / k))
     return {"iou": iou, "scale_of_fit": s, "rect": (out_x, out_y, out_w, out_h)}
@@ -546,7 +575,7 @@ def placed_outside_pct(crop, tw, th, rect, grown, sw, sh):
     return 100.0 * out / drawn if drawn else 0.0
 
 
-def register_inside(crop, tw, th, smask, sw, sh, box, donor_mask):
+def register_inside(crop, tw, th, smask, sw, sh, box, donor_mask, aspect=1.0):
     """--inside: the best-overlap placement that keeps the picture inside the
     donor's outline (check_sprite's bar). Used when the model drew a part (a
     belt end, an intake) jutting a few per cent further than the donor: the
@@ -558,7 +587,7 @@ def register_inside(crop, tw, th, smask, sw, sh, box, donor_mask):
     grown = bar._grow(list(donor_mask), sw, sh, bar.OUTLINE_GROW_PX)
     rows = []
     for s in REG_SCALES:
-        r = register(crop, tw, th, smask, sw, sh, box, scales=[s])
+        r = register(crop, tw, th, smask, sw, sh, box, scales=[s], aspect=aspect)
         rows.append((r["iou"], s, placed_outside_pct(crop, tw, th, r["rect"], grown, sw, sh), r))
     free = max(rows, key=lambda t: t[0])
     ok = [t for t in rows if t[2] <= bar.OUTSIDE_LIMIT_PCT]
@@ -575,7 +604,7 @@ def register_inside(crop, tw, th, smask, sw, sh, box, donor_mask):
     # it by a hair (the Autoloom south refined to 0.22% against 0.25%).
     return refine_inside(crop, tw, th, smask, grown, sw, sh, box, best[1], best[3]["rect"],
                          min(bar.OUTSIDE_APPROVED_PCT, bar.OUTSIDE_LIMIT_PCT),
-                         bar.OUTSIDE_LIMIT_PCT)
+                         bar.OUTSIDE_LIMIT_PCT, aspect)
 
 
 # The coarse search steps 2% in scale and REG_LONG_EDGE-sized pixels in offset
@@ -588,7 +617,7 @@ REFINE_SCALE_STEP = 0.0025     # an eighth of the coarse step
 REFINE_SHIFT = 8               # full-res px each way: more than one coarse step
 
 
-def refine_inside(crop, tw, th, smask, grown, sw, sh, box, s0, rect0, target, limit):
+def refine_inside(crop, tw, th, smask, grown, sw, sh, box, s0, rect0, target, limit, aspect=1.0):
     """Full-res search around the coarse inside placement: scales s0-0.02 ..
     s0+0.02 in REFINE_SCALE_STEP, offsets +/-REFINE_SHIFT px. Keeps the best IoU
     against the registration mask among placements whose share outside `grown`
@@ -603,7 +632,7 @@ def refine_inside(crop, tw, th, smask, grown, sw, sh, box, s0, rect0, target, li
     src_pop = src_bits.bit_count()
     ok_bits = mask_to_bits(bytearray(1 if g else 0 for g in grown), sw, sh, pw, P, P)
     sx0, sy0, sx1, sy1 = box
-    base_fit = min((sx1 - sx0 + 1) / float(tw), (sy1 - sy0 + 1) / float(th))
+    base_fx, base_fy = axis_fits(sx1 - sx0 + 1, sy1 - sy0 + 1, tw, th, aspect)
     cx = rect0[0] + rect0[2] / 2.0
     cy = rect0[1] + rect0[3] / 2.0
     best = None          # best IoU with outside <= target
@@ -612,8 +641,8 @@ def refine_inside(crop, tw, th, smask, grown, sw, sh, box, s0, rect0, target, li
     steps = int(round(0.02 / REFINE_SCALE_STEP))
     for i in range(-steps, steps + 1):
         s = s0 + i * REFINE_SCALE_STEP
-        ow = max(1, int(round(tw * base_fit * s)))
-        oh = max(1, int(round(th * base_fit * s)))
+        ow = max(1, int(round(tw * base_fx * s)))
+        oh = max(1, int(round(th * base_fy * s)))
         m = bytearray(ow * oh)
         for y in range(oh):
             row = (y * th // oh) * tw
@@ -653,6 +682,53 @@ def refine_inside(crop, tw, th, smask, grown, sw, sh, box, s0, rect0, target, li
     print("     inside   refined: scale %.4f IoU %.3f, %.2f%% outside (aim %.2f%%, "
           "limit %.2f%%); read %d placements" % (best[1], best[0], best[2], target, limit, n))
     return {"iou": best[0], "scale_of_fit": best[1], "rect": best[3]}
+
+
+def choose_stretch(crop, tw, th, smask, sw, sh, box, skew):
+    """The x-to-y factor ratio to fit with: 1.0 (one factor, as before) or the
+    ratio that makes the silhouette's width AND height match the donor's.
+
+    The image model sometimes draws the whole machine a few per cent too wide
+    or too tall (the Kludged refinery south's tanks drawn fatter, the Kludged
+    oven south drawn too tall; 2026-11-27). One factor then fits the long axis
+    and leaves the other short, and the body reads small. A prompt sentence did
+    not change the model's proportions in three calls either time.
+
+    The skew alone cannot tell a proportion error from a shape change: a
+    Wrecked picture with a part torn off (the refinery east's top pipe) has a
+    shorter box for the right reason, and stretching it would draw the body
+    taller than the donor's. So the stretch is used only when it also improves
+    the registration overlap by at least STRETCH_MIN_GAIN; a torn-off part does
+    not, a picture drawn in the wrong proportions does."""
+    sx0, sy0, sx1, sy1 = box
+    full = ((sx1 - sx0 + 1) / float(sy1 - sy0 + 1)) / (tw / float(th))
+    pct = (skew - 1) * 100
+    if not STRETCH_ON:
+        print("     stretch  off (--no-stretch): skew %.2f%%, one factor" % pct)
+        return 1.0
+    if skew < STRETCH_MIN_SKEW:
+        print("     stretch  none: skew %.2f%% is under the minimum %.1f%% (one factor, as before)"
+              % (pct, (STRETCH_MIN_SKEW - 1) * 100))
+        return 1.0
+    if skew > STRETCH_MAX_SKEW:
+        print("     stretch  NOT DONE: skew %.2f%% is over the limit %.1f%% (a larger stretch "
+              "deforms round parts visibly); fitted with one factor, as before"
+              % (pct, (STRETCH_MAX_SKEW - 1) * 100))
+        return 1.0
+    one = register(crop, tw, th, smask, sw, sh, box)
+    two = register(crop, tw, th, smask, sw, sh, box, aspect=full)
+    fx, fy = axis_fits(sx1 - sx0 + 1, sy1 - sy0 + 1, tw, th, full)
+    if two["iou"] - one["iou"] < STRETCH_MIN_GAIN:
+        print("     stretch  NOT DONE: the stretch x %.4f y %.4f would correct skew %.2f%% but "
+              "moves the overlap only from IoU %.3f to %.3f (needs +%.3f): the box differs "
+              "by a part, not by proportion; one factor, as before"
+              % (fx, fy, pct, one["iou"], two["iou"], STRETCH_MIN_GAIN))
+        return 1.0
+    print("     stretch  corrects skew %.2f%% (minimum %.1f%%, limit %.1f%%): x %.4f y %.4f "
+          "(ratio %.4f), overlap IoU %.3f -> %.3f"
+          % (pct, (STRETCH_MIN_SKEW - 1) * 100, (STRETCH_MAX_SKEW - 1) * 100,
+             fx, fy, full, one["iou"], two["iou"]))
+    return full
 
 
 # ------------------------------------------------------------------------ main
@@ -767,14 +843,19 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
         src_off = ((cy0 + y) * cw + cx0) * 4
         crop[y * tw * 4:(y + 1) * tw * 4] = c_rgba[src_off:src_off + tw * 4]
 
-    # 4/5. register
+    # 4/5. stretch, register
+    aspect = choose_stretch(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1), skew)
+    if aspect != 1.0:
+        notes.append("stretched x/y %.4f to correct skew %.1f%%" % (aspect, (skew - 1) * 100))
     if inside:
-        reg = register_inside(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1), donor_mask)
+        reg = register_inside(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1), donor_mask,
+                              aspect)
     else:
-        reg = register(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1))
+        reg = register(crop, tw, th, smask, sw, sh, (sx0, sy0, sx1, sy1), aspect=aspect)
     ox, oy, nw, nh = reg["rect"]
-    print("     register IoU %.3f at scale %.2f, placed %dx%d at (%d,%d)"
-          % (reg["iou"], reg["scale_of_fit"], nw, nh, ox, oy))
+    print("     register IoU %.3f at scale %.2f, placed %dx%d at (%d,%d)%s"
+          % (reg["iou"], reg["scale_of_fit"], nw, nh, ox, oy,
+             "" if aspect == 1.0 else "; scale x %.4f y %.4f" % (nw / float(tw), nh / float(th))))
     if reg["iou"] < 0.55:
         notes.append("LOW overlap %.2f — check the result by eye" % reg["iou"])
         print("     ! low overlap; the damaged shape differs a lot from the original")
@@ -806,7 +887,7 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
     if not apply_changes:
         print("     (dry run — pass --apply to write)")
         return {"file": filename, "tier": tier, "iou": reg["iou"], "notes": notes,
-                "applied": False}
+                "applied": False, "aspect": aspect}
 
     raw_dir = os.path.join(machine_dir, tier, "_raw")
     os.makedirs(raw_dir, exist_ok=True)
@@ -823,7 +904,7 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS, ins
     write_rgba(cand_path, sw, sh, out)
     print("     WROTE    %s   (original preserved in %s/_raw/)" % (filename, tier))
     return {"file": filename, "tier": tier, "iou": reg["iou"], "notes": notes,
-            "applied": True}
+            "applied": True, "aspect": aspect}
 
 
 def main():
@@ -840,8 +921,12 @@ def main():
     ap.add_argument("--inside", action="store_true",
                     help="place at the best overlap that keeps the picture inside the "
                          "donor's outline (see register_inside)")
+    ap.add_argument("--no-stretch", action="store_true",
+                    help="one scale factor always (reproduces a fit made before the stretch)")
     args = ap.parse_args()
-    global ART_SOURCE
+    global ART_SOURCE, STRETCH_ON
+    if args.no_stretch:
+        STRETCH_ON = False
     if args.root:
         ART_SOURCE = os.path.abspath(args.root)
 

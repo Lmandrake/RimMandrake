@@ -157,17 +157,19 @@ Change one only together with the neighbour's file, in one landing. `T_NEIGHBOUR
   their own lockers and caskets, and Cold Storage calls the static `WreckedMachineGrade.RatioFor(MachineGrade)` by reflection.
   Both find this mod by its name, `Wrecked Machines`. Both cost `RM_WM_AncientComponent`. The Cuisine mod's casket research
   follows `RM_WM_PowerCellRestoration`.
-- The Armoury adds alloy processes to `RM_WM_AutomatedSmelter_Kludged` and `_Refurbished` (and to the old `_Repaired`, by a
-  conditional that may match nothing).
-- ResearchRetag sets a tab on `RM_WM_AutomatedSmelterRestoration`, and on the two alloy forge projects that leave when the
-  forge is onboarded (`T_FORGE_GATES_GONE`).
+- The Armoury adds alloy processes to `RM_WM_AutomatedSmelter_Kludged` and `_Refurbished`, and its durasteel process to
+  `RM_WM_AutomatedAlloyForge_Kludged` and `_Refurbished`.
+- ResearchRetag sets a tab on `RM_WM_AutomatedSmelterRestoration`. The forge's two old projects are gone
+  (`T_FORGE_GATES_GONE`).
 
 ## The pictures
 
 Each large machine needs a Wrecked and a Kludged picture in four facings (8 files), on the donor's own canvas. One image
 call for each facing, edited from the donor's facing with an approved sibling as the style anchor (`MACHINES.md`); the model
-is reached only through the Codex door. Then `Source/fit_sprite.py` and `Source/check_sprite.py`, then a judge that did not
-make the picture (`design/RimMandrake/art_judge_brief.md`), then `art.py install`. The judge's record for each file, with
+is reached only through the Codex door. `Source/facing.py` runs one facing (the call, `fit_sprite.py`, `check_sprite.py`, a
+look sheet); `Source/judge_packet.py` makes what a judge that did not make the picture is given
+(`design/RimMandrake/art_judge_brief.md`); `Source/install_pictures.py` writes the record and installs each kept picture
+through `art.py install`; `Source/onboard.py land <key>` then moves the line into `Defs/`. The judge's record for each file, with
 the file's hash, goes in `design/concepts/WreckedMachines/version/evidence/art/`; `T_ONBOARDING_COMPLETE` refuses a picture
 without one.
 
@@ -179,8 +181,19 @@ scenes are the chains `scene_*` of `validation.py`, read through the proof type.
 
 ## Not built yet
 
-Everything in "The C#" except the two kernel files; the onboarding table; `Source/onboard.py`; the level defs in the shape
-above (the smelter's, the power cell's and the emanator's are still the ladder by `replaceTags`); the research tab and the
-40 projects; placement in ruin rooms and on ordinary maps; the stop of the base game's hand-outs; the pictures of 17
-machines, of the two carried machines' own levels and of the component; `T_ONBOARDING_TABLE_OFFLINE`, `T_LEVEL_NUMBERS`,
-`T_NEIGHBOUR_NAMES`, `T_FORGE_GATES_GONE`, the scene `sc_old_save`; who may lift a wreck as data (rule `R_lift`).
+As of 2026-11-27 10:00 AM PST (the run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT, stopped by an order):
+
+- **Lines.** 17 of 20 are on the table. Staged, waiting for pictures: `granulator` (8 pictures made, not judged), `fishfarm`
+  (Wrecked made, Kludged not), `autofarmer` (5 of 6 made). The fish farm's and the autofarmer's Kludged level is filled by
+  the C# at startup (no process list in the donor's XML): not yet seen in the game.
+- **Pictures of the two carried machines.** The power cell's and the emanator's Wrecked and Kludged defs still tint the base
+  game's picture (`Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml`). When their pictures land, each def names
+  its own `texPath` and `graphicClass` and loses its `color`. The component still tints the base game's icon.
+- **In the game.** Loaded clean on tier `wreckedmachines_solo`; the repair on the machine, its cancel, the component gate and
+  the uninstall during a repair pass their scenes. Not run yet: every other scene (study, levels, menu, placement, settings).
+- **Known fault, not fixed.** `RM_ProcessLists.cs` keeps on a Kludged level only the row's processes plus a neighbour's
+  processes that are not on the donor. The Armoury adds durasteel to the donor forge and to our Kludged forge, so the Kludged
+  forge loses it at startup; the same holds for the Armoury's alloys on the Kludged smelter.
+- **Not started.** Placement in ruin rooms and on ordinary maps (the three placement proof methods answer "not built yet"),
+  the stop of the base game's hand-outs, the autofarmer's Kludged speed, who may lift a wreck as data (rule `R_lift`), the
+  scene `sc_old_save`.

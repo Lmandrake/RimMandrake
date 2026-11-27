@@ -1,6 +1,6 @@
 # WreckedMachines 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T07:24:11-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T09:52:12-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
 
 ## How a pair is made
 
@@ -19,7 +19,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T07:24:11-0800. A bar pa
 
 - bars: 30 (locked: 30)
 - tests: 48 (16 built offline, 26 live scenes with their entry written, 1 specified for Stage 3, 4 explorations, 1 look)
-- built offline tests green today: 13, red: 3 (T_ONBOARDED_SET, T_ONBOARDING_COMPLETE, T_FORGE_GATES_GONE)
+- built offline tests green today: 14, red: 2 (T_ONBOARDED_SET, T_ONBOARDING_COMPLETE)
 - live scenes whose tier is not defined: none
 - bars with every decider runnable today: 23 of 30
 - bars with no deciding test: 0
@@ -71,7 +71,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T07:24:11-0800. A bar pa
 | T_LEVEL_NUMBERS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py | PASS |
 | T_REPAIR_STATE_WALK | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py | PASS |
 | T_NEIGHBOUR_NAMES | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py | PASS |
-| T_FORGE_GATES_GONE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py | FAIL |
+| T_FORGE_GATES_GONE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py | PASS |
 | T_DISTILLATION_LOADS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py | PASS |
 | sc_old_save | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_old_save | specified, Stage 3 builds it |
 | T_LINT_DEFS | offline | 4-5 | src/RimMandrake/Utils/lint_wreckedmachines_defs.py | PASS |
@@ -133,7 +133,6 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T07:24:11-0800. A bar pa
 
 - `src/RimMandrake/WreckedMachines/selftest_wm_scenes.py`: proof-harness completeness: each scene of validation.py has its asserted start, its control and no forbidden act after the start, on a fake game; not a mod behaviour
 - `src/RimMandrake/bridgetools/selftest_wreck_reads.py`: the generic bridge reads that the scenes use (thing_set_sample, install_blueprint, study record, processor_fill, reach_edge, caravan reads), with planted faults; a test of the bridge, not of the mod
-- `src/RimMandrake/WreckedMachines/prove_alloy_forge_offline.py`: the offline proof of the alloy forge's gates (--vfef <VFE Factory mod dir>): the gates leave the mod when the forge is onboarded (plan.md); its patch interpreter is what T_ONBOARDING_TABLE_OFFLINE is to reuse (tree check C_onboarding_table_offline)
 
 ## Held look statements
 

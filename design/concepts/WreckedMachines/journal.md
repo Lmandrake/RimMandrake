@@ -143,3 +143,25 @@ beautifully. Of course it should intelligently subagent fanout as needed."
 - **Not tested, with the reason.** No in-game check ran: ArchBig was taken and the mod deployed at 7:35 AM PST, and the account
   line came before the first load. The offline model: the repair state machine has its generator (the walk); the mod's other
   decisions (study, placement, pictures) are the game's own machinery and are read live.
+
+### 2026-11-27 10:00 AM PST, Offline build (Stage 3), second run: 17 of 20 lines on the table, first live load clean, stopped by an order (by BENCH)
+
+- Run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT, stopped at an easy spot by the order of 9:48 AM PST (one advancing
+  mod; Wrecked Machines off). Its `LEFT OPEN:` note holds the exact state. Last code sha is in that note.
+- **Lines.** 14 more machines landed, each with 8 pictures of its own that an art judge that did not make them kept (records in
+  `version/evidence/art/`): autoloom, masonry saw, drill, cannery, mincer, alloy forge, crematorium, distillery, assembler,
+  neutroamine synthesizer, biofuel refinery, conveyor oven, machining bay, ammunition press. The smelter's kept pictures got
+  their record. The forge's old gates left with its line (`T_FORGE_GATES_GONE` green). Bars not runnable: 7 before, 7 now: both
+  onboarding tests stay red until the granulator, the fish farm and the autofarmer land and the two carried machines draw
+  pictures of their own.
+- **In the game.** First load on ArchBig, tier `wreckedmachines_solo`: one config error (a Kludged process named bare where the
+  donor needs another mod), fixed in the stamp with a new row in `T_ONBOARDING_TABLE_OFFLINE`; clean after. The scenes
+  `sc_repair_cancelled`, `sc_component_gate` and `sc_uninstall_during_repair` pass (rows in `version/in_game/early_rows.jsonl`)
+  after repairs to the scenes, none to the mod: a build on a fresh map wiped the floor under a staged machine; a scene inherited
+  the research another scene finished; a control was read too late; three fixed waits.
+- **Tools.** `Source/facing.py`, `judge_packet.py`, `install_pictures.py`; the fitter corrects a picture drawn 5 to 12% out of
+  proportion. `onboard.py check` finds the judge's records through its temporary copy. The test lane counts a mod the Dispatch
+  tick advances by discovery as live.
+- **Known and open.** A mod fault in `RM_ProcessLists.cs` (a neighbour's process that is also on the donor is dropped from the
+  Kludged level); the scenes not yet run; the picture check counts stray pixels of a donor (the granulator's east facing).
+

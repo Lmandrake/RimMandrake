@@ -130,6 +130,23 @@ mask overlap, composes onto the donor's exact canvas, and gives back the
 donor's dark rim inside the donor's outline. `--apply` moves the raw picture to
 `<tier>/_raw/` and writes the fitted one in its place.
 
+It scales with one factor, except in one case. Sometimes the image model draws
+the whole machine in the wrong proportions. For example, the Kludged refinery
+south had its tanks always 7% too wide, and the Kludged oven south was 10% too
+tall. One factor then fits the long side and leaves the body short on the other
+side (fill 91 to 94%). In that case the fitter scales x and y by different
+factors, so that the width and the height both match the donor's. It does this
+only when two things are true:
+- the silhouette's aspect is 5% to 12% off the donor's;
+- the two-factor fit raises the mask overlap by at least 0.03 IoU.
+
+A part that is torn off shortens the box but gains almost no overlap (the
+refinery east, +0.018), so it keeps one factor. Over 12%, round tanks would
+deform visibly: the fitter uses one factor and says so. The output gives both
+factors and the skew that it corrected. The limits come from 135 raw pictures
+measured on 2026-11-27 (see the constants in the file). `--no-stretch`
+reproduces a fit made before the stretch, byte for byte.
+
 ### What check_sprite.py checks
 
 A FAIL blocks; a warn asks for a look.
