@@ -8,7 +8,20 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
-## From Wed 2026-11-25, about 1:20 AM PST: get the machine in order; mod work is second until this is done (block 11, on top)
+## From Fri 2026-11-27, about 9:47 AM PST: one advancing mod; pipeline ticket cleanup first (block 12, on top)
+
+His words (ledger, owner-said on `RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY`): *"Please gracefully
+throttle down game development to a single advancing mod. Refocus on pipeline ticket cleanup."* The blocks below stay
+in force after this block.
+
+1. **Pipeline tickets are cleaned up**, week of 2026-11-23: `RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY`
+   sweeps the open pipeline and machine tickets; pipeline and machine tickets go first for each run slot.
+2. **One mod advances: FlowWorks**, week of 2026-11-23. The Conductor chose FlowWorks as a delegated call: his recorded
+   order puts FlowWorks first, and FlowWorks 0.1.0 has not passed. Pyrelands and Wrecked Machines are switched off at an
+   easy spot (`./pipe on <Mod>` lifts each switch). The game art items that were due start no new run
+   (`./pipe show` lists each switch).
+
+## From Wed 2026-11-25, about 1:20 AM PST: get the machine in order; mod work is second until this is done (block 11)
 
 His words (ledger, owner-said note on `RIMMANDRAKE_MOVE_STEVEDESKTOP_CLONES_TO_SSD_LINUX_DRIVE_SITS_ON_HARD_DISK`):
 *"Keep on that pipeline fixing work. We need our new workbundles, instant pipeline commands, a functional Steve Desktop
