@@ -210,7 +210,7 @@ def repaired_by(res, name):
     or its _N generation)? -> (ok, why). It passes only when the run measured (DONE, at least one row with a verdict) and
     no cause it carries is NAME's cause. So the sighting that filed NAME must FAIL this (the negative control): a fix
     that makes it pass silenced the detector instead of repairing the fault."""
-    base = re.sub(r"_\d+$", "", name)
+    base = re.sub(r"^(HARNESS_REPAIR_CAUSE_[0-9A-F]{8})_\d+$", r"\1", name)    # a generation suffix, never an all-digit hash
     res = res or {}
     hit = [c for c in causes_of(res) if repair_base(c) == base]
     if hit:

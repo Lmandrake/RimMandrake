@@ -288,6 +288,18 @@ def main():
     other = R.split_rows([row("sb", "<site hold, before any component>", "UNMEASURED", hold), absent("x_r1", "x")])[2]
     check(other.get(R.ORPHAN, "").startswith("absent_from_sheet:"),
           "a row planned in a chain with no stop of its own is still its own fault: %s" % other)
+    # a repair item whose 8-hex name is all digits (HARNESS_REPAIR_CAUSE_44117724 is one): the generation strip must not eat
+    # the hash, or the sighting that filed the item would pass its own negative control
+    import itertools
+    import string
+    digit_row = next(row("dg", "r1", "UNMEASURED", "canary red " + "".join(w)) for w in itertools.product(string.ascii_lowercase, repeat=4)
+                     if R.repair_base(R.row_cause(row("dg", "r1", "UNMEASURED", "canary red " + "".join(w)))).rsplit("_", 1)[1].isdigit())
+    digit_item = R.repair_base(R.row_cause(digit_row))
+    still_there = {"outcome": "DONE", "rows": [digit_row, row("ok", "r2", "PASS")]}
+    check(R.repaired_by(still_there, digit_item)[0] is False and R.repaired_by(still_there, digit_item + "_2")[0] is False,
+          "an all-digit repair name still fails its negative control: %s" % digit_item)
+    check(R.repaired_by({"outcome": "DONE", "rows": [row("ok", "r2", "PASS")]}, digit_item)[0] is True,
+          "foil: a run without the cause passes an all-digit repair name")
     # passed-since: the item's re-run pass, found by mod, chain and time (the check is written before the re-run exists)
     sit_item = R.repair_base(R.row_cause(row(None, "r", "NOT_RUN", DIED)))
     old = dict(rec(1, [row(None, "sb_r1", "NOT_RUN", DIED), row("sb", "<site hold, before any component>", "UNMEASURED", hold)],
