@@ -64,6 +64,26 @@ Up to six door checks ran at once on one disk: the disk read 100% busy, load rea
   throughput is the same from 2 up (about 22 s of wall per run), and each run past 2 only adds wait and load (load 34 at
   4, 68 at 8). SteveDesktop was not measured: its disk was saturated by live runs, and a measurement there would have
   slowed them.
+- **Measured again on Archmagi, 2026-11-26** (`RIMMANDRAKE_UNJAM_PUBLISH_DOOR_LEDGER_WAITED_THIRTY_MINUTES`). A slot
+  holder's run is no longer the 50 s above. The tree checks are now 28 and take 21 to 40 s. A publish that changes a
+  pipeline file then runs the pipeline tests in the same slot. Eleven green door runs are in the `waitalive` logs of
+  the day, at load 15 to 30. In nine of them, the pipeline checks ran 220 to 229 tests and took 396 to 608 s. In two,
+  they ran 2 tests and took 163 and 176 s. So one slot is held about 7 to 11 min for a typical pipeline publish.
+  - **With two at once.** Each run above was with two at once: from 1:52 PM to 4:23 PM PST, both slots were held
+    without a break, and 5 to 12 publishes waited in the line. One publish waited 2785 s (46 min) for a slot.
+  - **Alone: UNMEASURED.** Neither slot was free during this run. A third run beside the two holders would be the load
+    that this limit guards against. The nearest reading: all 243 pipeline tests run outside the door, 6 at once, took
+    728 s at load 29.
+  - **A red test made a slot hold 22 min or more.** Each red was run again on HEAD's commit and on the base. With both
+    kept trees held, each re-run tree was a fresh 5044 MB checkout (34.8 s and 28.0 s). On 2026-11-26 four pipeline
+    tests were red on origin/main, so many publishes paid for those re-runs. Those four tests are repaired, and
+    `RIMMANDRAKE_FIT_PUBLISH_PROOF_TREES_STEVEDESKTOP_POOL_DISK` now re-runs HEAD's commit in the checks' own tree. The
+    base re-run still makes a fresh tree while both kept trees are held.
+  - The time is mostly the number of pipeline tests that a change selects, and the slowest ones. The door now leaves
+    out a test whose last green run read no changed path (`design/specs/2026-11-26-door-reads/boundary.md`: a
+    `publish.py` change drops from 228 to 102 tests). `selftest_conductor_authority.py`, the slowest test, drops from
+    196 s to 64 s.
+  - SLOTS stays 2. This measurement shows a long line, not a disk that two runs at once saturate.
 - **`SAY_S = 30`**. Not a limit: the interval of the waiting line. The wait goes on.
 - **The wait itself has no limit.** It is a guard on progress: the line moves while the holders live, and each holder's
   work is bounded by the limits named above.
