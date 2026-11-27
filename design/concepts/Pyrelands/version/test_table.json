@@ -901,13 +901,13 @@
    "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
-   "entry": "herd_follows_drive",
+   "entry": "ullai_and_giant",
    "observes": "the herd drifts to the two-day-old pad",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
    ],
-   "command": "python.exe src\\RimMandrake\\Pyrelands\\validation.py --live herd_follows_drive   (minimal list + mandrake.rm.biomes)",
+   "command": "python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains ullai_and_giant",
    "why_game": "a running Pyrelands map with the biome's clocks (tier_reason of the leaf): a dev quicktest colony on the minimal list plus mandrake.rm.biomes, ~90 s",
    "why_full_list": null,
    "entry_exists": true,
