@@ -173,6 +173,10 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   its why. An item that nobody cleared, and a state with no `cleared` key, keep the chain rule unchanged. Measured
   2026-11-27: three Conductor clears at 5:54 AM PST printed `CLEARED` and no run started in 50 minutes, because the gate
   read only `depth`.
+- **a-clear-is-never-lost-to-a-tick.** `clear` takes the tick's lock (`tick.lock`) before it reads and writes
+  `state.json`: it waits for an applied tick that is running and writes its record on top of that tick's state, and the
+  tick's own write is kept. Measured 2026-11-27 10:10 AM PST: a clear printed CLEARED while a tick ran; the tick had read
+  the state before the clear and wrote its copy after, so the next tick still read the item `stopped`.
 - **a-clear-keeps-the-runs-in-the-chain.** A clear moves an item's attempts under `cleared`, and those runs still count
   in its children's chains (`chain_depth`): a clear of a parent gives the parent one run, never its children.
 - **the-tick-counts-recent-lane-launches-before-taking-spare-room.** For the load gate, the tick counts live detached

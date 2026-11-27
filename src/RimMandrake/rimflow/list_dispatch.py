@@ -2169,13 +2169,17 @@ def main(argv=None):
             return 2
         _print(rd)
         return 0
-    p = os.path.join(sdir(), "state.json")
-    st = _read(p, {})
-    s = st.setdefault("items", {}).setdefault(o.item, {})
-    s["cleared"] = s.get("cleared", []) + [{"at": time.time(), "why": o.why, "attempts": s.get("attempts") or []}]
-    s.pop("told", None)
-    s["attempts"] = []
-    _write(p, st)
+    # The tick's lock: an applied tick reads state.json, decides for minutes and writes its copy back, so a clear written
+    # in between was lost (2026-11-27 10:10 AM PST). The clear waits for a running tick and writes on top of its state.
+    with open(os.path.join(sdir(), "tick.lock"), "w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        p = os.path.join(sdir(), "state.json")
+        st = _read(p, {})
+        s = st.setdefault("items", {}).setdefault(o.item, {})
+        s["cleared"] = s.get("cleared", []) + [{"at": time.time(), "why": o.why, "attempts": s.get("attempts") or []}]
+        s.pop("told", None)
+        s["attempts"] = []
+        _write(p, st)
     print("CLEARED %s: the next tick may launch one more run (earlier attempts kept under `cleared`)" % o.item)
     return 0
 

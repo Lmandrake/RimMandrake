@@ -469,6 +469,46 @@ def t_a_clear_grants_one_run_past_the_chain_stop():
     os.remove(p)
 
 
+def t_a_clear_is_never_lost_to_a_tick():
+    """2026-11-27 10:10 AM PST: `clear` of the split-actuator ticket printed CLEARED while a tick ran; the tick had read
+    state.json before the clear and wrote its own copy after, so the 11:00 AM tick still read the item `stopped` and
+    the clear was gone. The clear takes the tick's lock: it waits for a running tick and writes on top of its state."""
+    import fcntl
+    import threading
+    d = os.environ["RM_LIST_DISPATCH_DIR"]
+    p = os.path.join(d, "state.json")
+    with open(p, "w") as f:
+        json.dump({"items": {"C": {"attempts": [{"at": NOW - 900, "unit": "u7", "failed": None}]}}}, f)
+    held, done = threading.Event(), threading.Event()
+
+    def a_tick():       # what tick() does under apply: lock, read, decide (slow), write its copy, unlock
+        with open(os.path.join(d, "tick.lock"), "w") as lk:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            with open(p) as f:
+                st = json.load(f)
+            held.set()
+            done.wait(1.5)          # the tick is still deciding when the clear comes
+            st["ticked"] = True
+            with open(p, "w") as f:
+                json.dump(st, f)
+    th = threading.Thread(target=a_tick)
+    th.start()
+    held.wait(5)
+    out = []
+    cl = threading.Thread(target=lambda: out.append(LD().main(["clear", "C", "--why", "Conductor: one more run"])))
+    cl.start()
+    cl.join(0.5)
+    done.set()
+    th.join(10)
+    cl.join(10)
+    with open(p) as f:
+        disk = json.load(f)
+    c = (disk.get("items") or {}).get("C") or {}
+    chk(lambda: out == [0] and c.get("cleared") and c["cleared"][-1]["why"] == "Conductor: one more run"
+        and c.get("attempts") == [], "a clear made while a tick holds the lock survives the tick's write (%s)" % c)
+    chk(lambda: disk.get("ticked") is True, "and the tick's own write is kept (%s)" % sorted(disk))
+
+
 def t_a_clear_keeps_the_runs_in_the_chain():
     """A clear moves an item's attempts under `cleared`. Those runs still filed its children: a clear of the parent
     must not shorten a child's chain, or one clear lets the lane feed itself again through every child."""
@@ -1482,6 +1522,7 @@ def main():
               t_a_ready_ticket_goes_to_a_host_with_room_first, t_a_ticket_of_an_archmagi_only_home_runs_on_archmagi,
               t_a_chain_counts_only_links_that_a_lane_run_filed,
               t_a_clear_grants_one_run_past_the_chain_stop, t_a_clear_keeps_the_runs_in_the_chain,
+              t_a_clear_is_never_lost_to_a_tick,
               t_the_reading_says_each_machines_room,
               t_the_tick_counts_recent_lane_launches_before_taking_spare_room,
               t_an_unreadable_record_blinds_only_what_it_can_change,
