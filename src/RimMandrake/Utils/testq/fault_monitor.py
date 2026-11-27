@@ -42,6 +42,7 @@ import argparse
 import base64
 import calendar
 import contextlib
+import errno
 import fcntl
 import json
 import os
@@ -74,6 +75,12 @@ BLIND_S = 20 * 60                   # reachable, up this long, and no cycle this
 HOLD_S = 2 * 3600                   # a result waits this long for a clean cycle, then counts as unguarded
 # budget: danger=an old reading read as a current one; ends no work: the reading says nothing
 STALE_S = 30 * 60                   # a reading older than this says nothing (hold goes on, check fails)
+TICK_S = 120                        # the timer's cadence (rm-steve-fault.timer, OnUnitActiveSec=2min)
+# budget: danger=a mirror, or a state file, that is never written again while the unit shows green: the mirror is the one
+# budget: copy of Steve's probe log beyond the last REGPROBE_TAIL lines, and `check` reads fault_state.json; evidence=the death of
+# budget: 2026-11-27 14:21:39 PST (ENOMEM on the mirror's write) recovered at the next tick, 2 min later: 1 tick; the limit is
+# budget: 10 times that, 20 min, inside STALE_S (30 min), so the unit fails before `check` calls the reading stale
+WRITE_DEAD_TICKS = 10               # ticks in a row on which one file was not written (or the mirror not read) = the unit fails
 RERUN_WITHIN_S = 48 * 3600          # older quarantined jobs are not re-queued; the fill's gap scan owns those
 
 _TS = r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)Z"
@@ -244,6 +251,25 @@ def write_json(name, obj):
     S.dump(obj, T.q(name))
 
 
+def errno_name(e):
+    return errno.errorcode.get(e.errno, "errno?") if isinstance(e, OSError) else type(e).__name__
+
+
+def write_try(label, write):
+    """Call write(); an OSError is what happened, not a death -> None when it wrote, else {"label", "why"}. One write to the
+    Windows drive fails for a moment (ENOMEM, EIO, EAGAIN) and the next try passes: the tick keeps its reading, says so, and
+    counts the ticks in a row (WRITE_DEAD_TICKS). Any other exception is a fault in the code and still raises."""
+    try:
+        write()
+    except OSError as e:
+        return {"label": label, "why": "errno %s %s (%s)" % (e.errno, errno_name(e), e.strerror or e)}
+    return None
+
+
+def write_json_try(name, obj):
+    return write_try(name, lambda: write_json(name, obj))
+
+
 def _qdir():
     os.makedirs(T.q("quarantined"), exist_ok=True)
 
@@ -382,10 +408,16 @@ def snapshot(window):
     rc, out = ps(SNAPSHOT_PS.replace("@SINCE@", window["start"]).replace("@LOG@", REGPROBE_LOG), timeout=180)
     if rc is None:
         return None
-    os.makedirs(T.q("fault_snapshots"), exist_ok=True)
     path = T.q("fault_snapshots", window["id"] + ".txt")
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(out)
+
+    def put():
+        os.makedirs(T.q("fault_snapshots"), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(out)
+    bad = write_try("fault_snapshots/%s.txt" % window["id"], put)
+    if bad:     # the evidence stays in this run's memory only: say so, and let the window open without it
+        print("%s: NOT WRITTEN this tick: %s" % (bad["label"], bad["why"]))
+        return None
     return path
 
 
@@ -570,25 +602,47 @@ def periodic_reboot(st, a, now):
         st["pr"] = {"state": "DRAIN", "quiet": 0, "n": pr.get("n", 0)}
 
 
-def merge_mirror(lines, name="regprobe.log"):
-    """Union of the mirror and what Steve just gave, by timestamp, so Steve's log can rotate and we still hold history."""
+def mirror_merge(lines, name="regprobe.log"):
+    """Union of the mirror and what Steve just gave, by timestamp, so Steve's log can rotate and we still hold history.
+    -> (the union, what happened to the mirror). The four answers, kept apart: "written" (new lines went to the mirror),
+    "nothing new" (the mirror already held them all), "not written" (the write failed this tick: the union is still
+    returned, the next tick tries again), "could not look" (the mirror cannot be read: the union is Steve's lines alone,
+    and the mirror is NOT written, or a bad read would throw its history away)."""
     path = T.q(name)
-    old = []
+    old, answer = [], None
     if os.path.exists(path):
-        with open(path, encoding="utf-8") as f:
-            old = f.read().splitlines()
+        try:
+            with open(path, encoding="utf-8") as f:
+                old = f.read().splitlines()
+        except (OSError, ValueError) as e:       # ValueError: UnicodeDecodeError, a damaged file
+            answer = {"state": "could not look", "why": "%s %s: %s" % (path, errno_name(e), e)}
     seen, out = set(), []
     for line in old + [li.rstrip() for li in lines]:
         if line.strip() and line not in seen:
             seen.add(line)
             out.append(line)
     out.sort(key=lambda li: li[:19])        # stable: a start line and a cycle of one second keep their log order
-    if len(out) != len(old):
-        tmp = path + ".tmp"
+    if answer:
+        return out, answer
+    if len(out) == len(old):
+        return out, {"state": "nothing new"}
+    tmp = path + ".tmp"
+
+    def put():
         with open(tmp, "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")
         os.replace(tmp, path)
-    return out
+    bad = write_try("mirror", put)
+    if bad:
+        with contextlib.suppress(OSError):
+            os.remove(tmp)
+        return out, dict(bad, state="not written")
+    return out, {"state": "written", "added": len(out) - len(old)}
+
+
+def merge_mirror(lines, name="regprobe.log"):
+    """mirror_merge's union alone, for a caller that wants no word on the mirror. A failed write is not raised."""
+    return mirror_merge(lines, name)[0]
 
 
 def cycle_lines(probe):
@@ -601,18 +655,51 @@ def cycle_lines(probe):
     return hist + from_probe(probe, after=last)
 
 
+def state_streak(prev_at, now):
+    """The ticks in a row on which fault_state.json was not written, read from the age of the state the last good tick left:
+    the file cannot carry its own count when it is the file that fails. 30 s of slack: the timer's accuracy and the run time."""
+    return max(1, int((now - epoch(prev_at) + 30) // TICK_S)) if prev_at else 1
+
+
+def io_lines(fails, streak, mirror):
+    """The tick's words on its writes -> (lines, dead). One line for each failed write, then the four answers for the
+    mirror. A label is dead at WRITE_DEAD_TICKS ticks in a row."""
+    lines, dead = [], []
+    for f in fails:
+        n = streak[f["label"]]
+        lines.append("%s: NOT WRITTEN this tick: %s%s" % (f["label"], f["why"], "; %d ticks in a row" % n if n > 1 else ""))
+        if n >= WRITE_DEAD_TICKS:
+            dead.append("FAIL %s not written for %d ticks in a row (limit %d): %s" % (f["label"], n, WRITE_DEAD_TICKS, f["why"]))
+    if mirror is not None:
+        lines.append({"written": "mirror: written (%d lines now)" % mirror.get("lines", 0), "nothing new": "mirror: nothing new",
+                      "not written": "mirror: not written this tick (the line above has the cause)",
+                      "could not look": "mirror: could not look (%s)" % mirror.get("why")}[mirror["state"]])
+    return lines, dead
+
+
 def tick(now=None):
     now = time.time() if now is None else now
-    T.ensure_dirs()
-    _qdir()
-    with open(T.q("fault_monitor.lock"), "w") as lk:
+    try:
+        T.ensure_dirs()
+        _qdir()
+        lk = open(T.q("fault_monitor.lock"), "w")
+    except OSError as e:        # a tick that cannot take its lock does nothing: it says so, and the age of the state counts
+        bad = write_try("fault_monitor.lock", lambda: (_ for _ in ()).throw(e))
+        prev = (T.read_json(T.q("fault_state.json")) or {}).get("at")
+        lines, dead = io_lines([bad], {"fault_monitor.lock": state_streak(prev, now)}, None)
+        print("\n".join(lines + dead))
+        return 1 if dead else 0
+    with lk:
         try:
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             return 0
         st = T.read_json(T.q("fault_state.json")) or {"phase": "CLEAN"}
+        prev_at, prev_fail = st.get("at"), dict(st.get("write_fail") or {})
         fx = steve_read()
-        lines = cycle_lines(merge_mirror((fx or {}).get("rp_lines") or []))
+        merged, mirror = mirror_merge((fx or {}).get("rp_lines") or [])
+        mirror["lines"] = len(merged)
+        lines = cycle_lines(merged)
         # the highest boot ever seen, or a window a reboot closed would reopen when ssh fails before the next watch line
         a = analyse(lines, live_boot=max(fx["boot"] if fx else 0, st.get("boot") or 0) or None)
         anno = {w["id"]: w for w in T.read_json(T.q("fault_windows.json")) or []}
@@ -632,11 +719,24 @@ def tick(now=None):
                   clean_through=stamp(a["clean_through"]) if a["clean_through"] else None,
                   clean_through_s=a["clean_through"], open_window=a["open"]["id"] if a["open"] else None,
                   windows=len(a["windows"]), unparsed=a["unparsed"], control=a["control"])
-        write_json("steve_audio_driver.json", audio_reading(fx, now))
-        write_json("fault_windows.json", a["windows"])      # before the state: gate never reads a state ahead of its windows
-        write_json("fault_state.json", st)
+        # a write that fails is an answer, not a death: the reading stays, and fault_state.json (written last) carries the count
+        fails = [f for f in (dict(mirror, label="mirror") if mirror["state"] in ("not written", "could not look") else None,
+                             write_json_try("steve_audio_driver.json", audio_reading(fx, now)),
+                             # before the state: gate never reads a state ahead of its windows
+                             write_json_try("fault_windows.json", a["windows"])) if f]
+        streak = {f["label"]: prev_fail.get(f["label"], 0) + 1 for f in fails}
+        if streak:
+            st["write_fail"] = streak
+        else:
+            st.pop("write_fail", None)
+        state_bad = write_json_try("fault_state.json", st)
+        if state_bad:
+            fails.append(state_bad)
+            streak["fault_state.json"] = state_streak(prev_at, now)
+        out_lines, dead = io_lines(fails, streak, mirror)
         print(json.dumps({k: st.get(k) for k in ("phase", "open_window", "last_cycle", "clean_through", "alarm", "blind")}))
-    return 0
+        print("\n".join(out_lines + dead))
+    return 1 if dead else 0
 
 
 # ---------------------------------------------------------------- reading it
@@ -682,8 +782,12 @@ def regprobe_section(now=None):
     if not os.path.exists(path):
         return "UNMEASURED", ["register probe (regprobe.log): UNMEASURED(no mirror %s: the probe is not installed, or the "
                               "monitor has not ticked since)" % path]
-    with open(path, encoding="utf-8") as f:
-        return regprobe_log.report_lines(f.read().splitlines(), now)
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except (OSError, ValueError) as e:      # a damaged mirror is "could not look", never a traceback and never a clean reading
+        return "UNMEASURED", ["register probe (regprobe.log): UNMEASURED(could not look: %s %s)" % (errno_name(e), e)]
+    return regprobe_log.report_lines(lines, now)
 
 
 def regprobe(_a=None):
