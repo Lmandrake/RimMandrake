@@ -99,7 +99,8 @@ every other RimWorld facing set) — confirmed by extracting all 24
 `Chicken_Flying_*` textures and diffing frame 1 (wings tucked) against frame 5
 (wings spread) at `_east`: genuinely different poses, not a static image
 jiggled. `flyingAnimationDrawSizeIsMultiplier` scales the whole flying sprite
-relative to the grounded one (birds read bigger mid-flight); gendered species
+relative to a grounded life stage's drawSize, but not always the pawn's own stage (see Engine facts: the
+life-stage trap); gendered species
 (Quail, Peafowl) add `flyingAnimationFramePathPrefixFemale` alongside the
 default (male) prefix. Sparrow is the cleanest from-scratch template and
 Chicken/Duck/Goose the retrofit references. Verify: loop correctness,
@@ -111,5 +112,6 @@ ripping away, level eyes, the double-held last frame) and the checks for them ar
 `rimworld-sprite-facings`, "Cut-out flip-books" and "Checking a flip-book".
 
 ## Engine facts for flyers (computed from the 1.6 decompile)
+- **The life-stage trap (`AnimationDefGenerator_Flying.InitializeNeededDefs`):** with the size as a multiplier and `flyingAnimationInheritColors` false, every life stage's flight frames take `lifeStages.First()` (the baby) drawSize; with InheritColors true the animation is cached by `bodyGraphicData.color`, so a stage with an earlier stage's colour takes that stage's size. Adults then fly smaller than they walk (RM_Skinflap 2026-11-27: 0.8 cell walking, 0.5 flying; the owner saw it). Fix: InheritColors true and one colour per stage (1/255 apart), or an absolute size. Check: `src/RimMandrake/Utils/art/flyer_size_census.py`. Live read: `jawa/get_defs` on the PawnKindDef's `lifeStages` with deep=true names each stage's generated AnimationDef; `GraphicStateDef/<anim>_0` `defaultGraphicData.drawSize` is the engine's flight size.
 - **`AlternateGraphic` (Verse/AlternateGraphic.cs) has no flying field**: it carries graphicData plus dessicated/swimming/rotting/stationary variants, and the flip-book prefix exists only on `PawnKindDef` (`flyingAnimationFramePathPrefix` / `...Female`, read by `AnimationDefGenerator_Flying`). A kind with alternateGraphics (RM_Murrelith: 6 coats, chance 0.857) gets ONE flight look for every coat unless C# swaps it.
 - **Computed from the decompile, not seen running: `Pawn_FlightTracker.ForceLand` starts Landing at lerpTick 25, where LandingCurve is 0.4, from Flying factor 1; with `Pawn_DrawTracker`'s 0.6-cell offset that is a 0.36-cell drop in one tick on any forced landing, for every flyer.** `AnimationDefGenerator_Flying` sets `durationTicks` to (frames+1)*ticksPerFrame, so the last pose appears to hold double. A 'no jump at landing' bar or an offline playback must baseline vanilla Chicken rather than assume smoothness.
