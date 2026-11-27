@@ -1,6 +1,8 @@
 live-mods: FlowWorks
-# The Scrapper heavy bridge (east-west 2 and 4, north-south 4) with a colonist mid-span on each, captured close; then the
-# draw-order readings: how each colonist is drawn (jawa/pawn_render_nodes) and every section draw on its square and the
-# square north of it (jawa/cell_draw_census); on ew4 the cable material's queue set below, then above, the colonist's, a
-# capture each, then given back (jawa/material_queue). Readings and captures in Transient/deck_rope_order; it decides nothing.
-live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/live_deck_art_picks.py --heavy-scrapper --origin 100,135 --draw-order --queue-experiment --out Transient/deck_rope_order < /dev/null
+# The Scrapper heavy bridge (east-west 2 and 4, north-south 4) with a colonist mid-span on each, captured close (bare, then in
+# a hat); then, per bridge, how the colonist is drawn (jawa/pawn_render_nodes) and the rope heights on the squares beside him
+# (jawa/cell_draw_census). ROPESIDES decides by state: east-west, the rope north of the deck lies below his lowest drawn node
+# and the near rope above his highest; north-south, both side ropes lie above him, as before. What covers him is the depth
+# test of each rope vertex (every section sub-mesh is drawn before him), measured 2026-11-27 (job J20261127T132644Z-f03cad).
+# Captures and readings in Transient/deck_rope_order; exit 0 only when every bridge reads PASS.
+live-proof A1: python.exe src/RimMandrake/FlowWorks/northstar/live_deck_art_picks.py --heavy-scrapper --origin 100,135 --draw-order --rope-sides --out Transient/deck_rope_order < /dev/null

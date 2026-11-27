@@ -13,7 +13,11 @@ Run from the repo root with the bridge on a game holding FlowWorks (tier `flowwo
     ... --heavy-scrapper --draw-order   also read how each colonist is drawn (jawa/pawn_render_nodes, close and default
                       zoom) and every section draw on its square and the square north (jawa/cell_draw_census, probeY = its
                       highest drawn node); --queue-experiment adds, on ew4, the cable material's queue set below then above
-                      the colonist's, a close capture each, then given back (jawa/material_queue)
+                      the colonist's, a close capture each, then given back (jawa/material_queue); --rope-sides decides
+                      by state: on an east-west span the rope north of the deck lies below the colonist's lowest drawn
+                      node and the near rope above his highest; on a north-south span both side ropes lie above him (as
+                      before). Each vertex's height decides what covers him (the depth test; every section sub-mesh is
+                      drawn before him, its bounds at y 0). Exit 1 unless every bridge reads PASS.
 Writes DIR/<station>.png, DIR/yard_default.png, DIR/walk_*.png and DIR/readings.json (default Transient/deck_art_picks).
 """
 import argparse
@@ -209,6 +213,88 @@ def _census_lines(name, tag, c):
     return out or ["DRAWORDER %s census %s: [] (no section draw on the square)" % (name, tag)]
 
 
+CABLE_MATS = ("cable", "rail_timber", "rope")     # the material names a bridge's ropes print with (RM_DeckArtExtension.cable)
+
+
+def is_cable(material):
+    """Is a census draw's material a bridge rope's -- pure."""
+    m = str(material or "").lower()
+    return any(k in m for k in CABLE_MATS)
+
+
+def census_cells(p, q, cell):
+    """The squares a bridge's side ropes cross beside a colonist mid-span, as {tag: (x, z)} -- pure. East-west: his own square
+    (the near rope, south of the deck, crosses his body there) and the square north (the far rope and its hangers). North-south:
+    the squares east and west of him and the two north of those."""
+    x, z = cell
+    if p[1] == q[1]:
+        return {"0,0": (x, z), "0,1": (x, z + 1)}
+    return {"-1,0": (x - 1, z), "1,0": (x + 1, z), "-1,1": (x - 1, z + 1), "1,1": (x + 1, z + 1)}
+
+
+def node_span(reading):
+    """(lowest, highest) drawn height of a colonist from a jawa/pawn_render_nodes reading: the requests with a material when
+    he is drawn node by node, the one quad when he is drawn as his cached atlas frame (the requests then hold the atlas
+    render's spots near y 0, never drawn on the map: SteveDesktop 2026-11-27); None when nothing drawn was read -- pure."""
+    if not (reading or {}).get("success"):
+        return None
+    path = reading.get("drawPath")
+    if path == "cachedAtlas":
+        ys = [(reading.get("cachedQuad") or {}).get("y")]
+    elif path == "nodes":
+        ys = [(r.get("drawn") or [0, None])[1] for r in reading.get("requests") or []
+              if isinstance(r.get("renderQueue"), int) and r.get("renderQueue") >= 0]
+    else:
+        return None
+    ys = [y for y in ys if isinstance(y, (int, float))]
+    return (min(ys), max(ys)) if ys else None
+
+
+def cable_ys(census):
+    """[(min, max)] of the rope draws on a census square (squareY), drawn ones only -- pure. None when the census failed."""
+    if not (census or {}).get("success"):
+        return None
+    out = []
+    for d in census.get("draws") or []:
+        sq = d.get("squareY") or {}
+        if d.get("drawn") and is_cable(d.get("material")) and sq.get("n"):
+            out.append((sq["min"], sq["max"]))
+    return out
+
+
+def rope_sides(ew, by_tag, spans):
+    """("PASS"|"FAIL"|"UNMEASURED", why) -- pure. by_tag: {census tag: cable_ys}; spans: [node_span] of the colonist (each
+    read zoom). East-west: every rope vertex on the square north of him ("0,1") lies below his lowest drawn node, and every
+    one on his own square ("0,0") above his highest. North-south: every rope vertex beside him lies above his highest."""
+    spans = [s for s in spans if s]
+    if not spans:
+        return "UNMEASURED", "no drawn node of the colonist was read"
+    lo, hi = min(s[0] for s in spans), max(s[1] for s in spans)
+    if any(v is None for v in by_tag.values()):
+        return "UNMEASURED", "a census square could not be read: %s" % sorted(k for k, v in by_tag.items() if v is None)
+    if ew:
+        far, near = by_tag.get("0,1") or [], by_tag.get("0,0") or []
+        if not far or not near:
+            return "UNMEASURED", "no rope read on the %s square" % ("north" if not far else "colonist's")
+        bad = []
+        top = max(b for _, b in far)
+        if top >= lo:
+            bad.append("the rope north of the deck reaches y %.4f, not below his lowest node %.4f" % (top, lo))
+        bottom = min(a for a, _ in near)
+        if bottom <= hi:
+            bad.append("the near rope reaches down to y %.4f, not above his highest node %.4f" % (bottom, hi))
+        if bad:
+            return "FAIL", "; ".join(bad)
+        return "PASS", "north rope at most y %.4f < his nodes %.4f..%.4f < near rope from y %.4f" % (top, lo, hi, bottom)
+    side = [s for v in by_tag.values() for s in v]
+    if not side:
+        return "UNMEASURED", "no rope read beside him"
+    bottom = min(a for a, _ in side)
+    if bottom <= hi:
+        return "FAIL", "a side rope reaches down to y %.4f, not above his highest node %.4f" % (bottom, hi)
+    return "PASS", "both side ropes from y %.4f, above his nodes %.4f..%.4f" % (bottom, lo, hi)
+
+
 def draw_order(w, out, stations, readings, experiment):
     """RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: the readings that say what decides whether a cable
     covers the colonist. Per bridge: how the colonist is drawn at the close and the default zoom, and every section draw on
@@ -233,16 +319,22 @@ def draw_order(w, out, stations, readings, experiment):
         ys = [(r.get("drawn") or [0, None])[1] for r in close.get("requests") or []]
         ys = [y for y in ys if isinstance(y, (int, float))]
         probe = max(ys) if ys else -1.0
-        for dz in (0, 1):
-            c = w.call("jawa/cell_draw_census", x=cell[0], z=cell[1] + dz, probeY=probe) or {}
-            rec["census_z%d" % dz] = c
-            for ln in _census_lines(name, "z+%d" % dz, c):
+        rec["census"] = {}
+        for tag, (cx, cz) in sorted(census_cells(p, q, cell).items()):
+            c = w.call("jawa/cell_draw_census", x=cx, z=cz, probeY=probe) or {}
+            rec["census"][tag] = c
+            for ln in _census_lines(name, tag, c):
                 w.say(ln)
+        verdict, why = rope_sides(p[1] == q[1], {k: cable_ys(v) for k, v in rec["census"].items()},
+                                  [node_span(rec.get("pawn_close")), node_span(rec.get("pawn_default"))])
+        rec["rope_sides"] = dict(verdict=verdict, why=why)
+        w.say("ROPESIDES %s: %s (%s)" % (name, verdict, why))
         if not experiment or not name.startswith("ew4"):
             continue
-        qs = [r.get("renderQueue") for r in close.get("requests") or [] if isinstance(r.get("renderQueue"), int)]
-        cables = sorted({d.get("materialId") for k in ("census_z0", "census_z1") for d in (rec.get(k) or {}).get("draws") or []
-                         if "cable" in str(d.get("material")).lower() or "rail" in str(d.get("material")).lower()})
+        # a null-material node (a status overlay) reads queue -1: only drawn nodes' queues count
+        qs = [r.get("renderQueue") for r in close.get("requests") or [] if isinstance(r.get("renderQueue"), int) and r.get("renderQueue") >= 0]
+        cables = sorted({d.get("materialId") for c in rec["census"].values() for d in (c or {}).get("draws") or []
+                         if is_cable(d.get("material"))})
         if not qs or not cables:
             w.say("DRAWORDER %s experiment: UNMEASURED: pawn queues %s, cable materials %s" % (name, qs, cables))
             continue
@@ -266,6 +358,7 @@ def main(argv=None):
                     help="build only the Scrapper heavy bridge (EW 2 and 4, NS 4) with a colonist mid-span on each")
     ap.add_argument("--draw-order", action="store_true", help="with --heavy-scrapper: the draw-order readings of each colonist")
     ap.add_argument("--queue-experiment", action="store_true", help="with --draw-order: the cable queue experiment on ew4")
+    ap.add_argument("--rope-sides", action="store_true", help="with --draw-order: exit 1 unless every bridge's ROPESIDES is PASS")
     a = ap.parse_args(argv)
     a.mock = False
     a.no_shots = False
@@ -306,6 +399,12 @@ def main(argv=None):
         with open(os.path.join(a.out, "readings.json"), "w") as f:
             json.dump(readings, f, indent=1)
         w.say("WROTE %s" % os.path.join(a.out, "readings.json"))
+        if a.draw_order and a.rope_sides:
+            got = [(n, (readings.get(n, {}).get("rope_sides") or {}).get("verdict", "UNMEASURED")) for n in [s_[0] for s_ in stations]]
+            bad = [g for g in got if g[1] != "PASS"]
+            w.say("ROPESIDES: %d of %d PASS%s" % (len(got) - len(bad), len(got), "" if not bad else "; not PASS: %s" % bad))
+            if bad:
+                sys.exit(1)
         return
     # the whole yard at the default zoom
     x, z, wd, ht = yard

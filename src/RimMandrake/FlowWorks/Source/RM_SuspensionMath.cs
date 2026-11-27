@@ -55,6 +55,15 @@ namespace RimMandrake.FlowWorks
 		/// 2026-10-25 "Should drawbridges stay at most 3 wide? → Allow 4 wide"; was 1 to 3).</summary>
 		public const int DrawbridgeMaxWidth = 4;
 
+		/// <summary>RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER: whether a bridge's rope, hanger, backstay or
+		/// rail on side sg (-1 or +1 along SuspensionBridgeRecord.Side, whose north-south sign is sideZ) prints above pawns. The
+		/// map is seen from the south, so a rope north of the deck is behind a pawn standing on it (it prints at PawnRope, under
+		/// Pawn); the south side, and both sides of a north-south run, stand beside or in front of him and print over him.</summary>
+		public static bool RopeOverPawns(int sideZ, float sg)
+		{
+			return sideZ * sg <= 0f;
+		}
+
 		/// <summary>Widest drag by kind: rope 1, timber 2, steel and heavy 4.</summary>
 		public static int MaxWidthOf(SuspensionTier t)
 		{

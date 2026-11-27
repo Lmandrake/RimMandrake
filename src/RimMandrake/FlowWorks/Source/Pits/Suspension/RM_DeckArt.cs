@@ -368,12 +368,14 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				Run(layer, Shade, p, 0f, p, H, x.postWidth, shadowY, true);
 			}
-			var runs = new List<(Vector3 p, float h, Vector3 q, float g, float w)>();
+			var runs = new List<(Vector3 p, float h, Vector3 q, float g, float w, bool over)>();
+			int sideZ = r.Side.z;
 			Vector3 back = c - f * x.backstayBack;
 			for (int s = 0; s < 2; s++)
 			{
 				float sg = s == 0 ? -1f : 1f;
-				runs.Add((feet[s], H, back + side * (off * x.backstayOut * sg), x.backstayFootH, x.cableThick * 0.8f));   // backstay
+				runs.Add((feet[s], H, back + side * (off * x.backstayOut * sg), x.backstayFootH, x.cableThick * 0.8f,
+					RM_SuspensionMath.RopeOverPawns(sideZ, sg)));   // backstay
 			}
 			if (cables)
 			{
@@ -392,12 +394,12 @@ namespace RimMandrake.FlowWorks.Pits
 								foreach (float o in new[] { -0.35f, 0.35f })
 								{
 									Vector3 d = a * (o * x.cableThick);
-									runs.Add((feet[s] - d, H, q - d, LandH, x.cableThick * 0.75f));
+									runs.Add((feet[s] - d, H, q - d, LandH, x.cableThick * 0.75f, RM_SuspensionMath.RopeOverPawns(sideZ, sg)));
 								}
 							}
 							else
 							{
-								runs.Add((feet[s], H, q, LandH, x.cableThick));
+								runs.Add((feet[s], H, q, LandH, x.cableThick, RM_SuspensionMath.RopeOverPawns(sideZ, sg)));
 							}
 						}
 					}
@@ -420,7 +422,8 @@ namespace RimMandrake.FlowWorks.Pits
 								continue;   // each end prints its own half
 							}
 							runs.Add((pa + a * (float)(span * t0), (float)RM_DeckArtMath.CableHeight(t0, H, x.sagLow),
-								pa + a * (float)(span * t1), (float)RM_DeckArtMath.CableHeight(t1, H, x.sagLow), x.cableThick));
+								pa + a * (float)(span * t1), (float)RM_DeckArtMath.CableHeight(t1, H, x.sagLow), x.cableThick,
+								RM_SuspensionMath.RopeOverPawns(sideZ, sg)));
 						}
 						foreach (double t in RM_DeckArtMath.HangerTs(n, x.hangerPitch, x.postInset))
 						{
@@ -430,7 +433,7 @@ namespace RimMandrake.FlowWorks.Pits
 							}
 							Vector3 p = pa + a * (float)(span * t);
 							runs.Add((p, (float)RM_DeckArtMath.CableHeight(t, H, x.sagLow), p - side * (x.postOut * sg), HangerFootH,
-								x.cableThick * x.hangerFactor));
+								x.cableThick * x.hangerFactor, RM_SuspensionMath.RopeOverPawns(sideZ, sg)));
 						}
 					}
 				}
@@ -453,13 +456,12 @@ namespace RimMandrake.FlowWorks.Pits
 					Printer_Plane.PrintPlane(layer, at, new Vector2(pw, H * 1.06f), post);
 				}
 			}
-			// cables over pawns (design.md §3: PawnUnused, directly above Pawn)
+			// a rope north of an east-west deck behind pawns, every other over them (RopeY; design.md "Over pawns")
 			if (cable != null)
 			{
-				float cableY = AltitudeLayer.PawnUnused.AltitudeFor();
 				foreach (var run in runs)
 				{
-					Run(layer, cable, run.p, run.h, run.q, run.g, run.w, cableY, false);
+					Run(layer, cable, run.p, run.h, run.q, run.g, run.w, RopeY(run.over), false);
 				}
 			}
 		}
@@ -523,7 +525,8 @@ namespace RimMandrake.FlowWorks.Pits
 			int k = i - FirstDeck(r);
 			bool last = i == r.LastDeck;
 			float H = x.railHeight;
-			var runs = new List<(Vector3 p, float h, Vector3 q, float g, float w)>();
+			var runs = new List<(Vector3 p, float h, Vector3 q, float g, float w, bool over)>();
+			int sideZ = r.Side.z;
 			for (int sd = 0; sd < 2; sd++)
 			{
 				float sg = sd == 0 ? -1f : 1f;
@@ -532,26 +535,26 @@ namespace RimMandrake.FlowWorks.Pits
 					continue;   // an inner lane edge has no rail
 				}
 				Vector3 line = edge + side * (sw * sg);
-				runs.Add((line + a * k, H, line + a * (k + 1), H, x.railThick));           // the top rail
+				bool over = RM_SuspensionMath.RopeOverPawns(sideZ, sg);
+				runs.Add((line + a * k, H, line + a * (k + 1), H, x.railThick, over));           // the top rail
 				foreach (double s in RM_DeckArtMath.RailPosts(k, x.railPitch, last))
 				{
 					Vector3 p = line + a * (float)s;
-					runs.Add((p, 0f, p, H + x.railThick * 0.5f, x.railThick));            // a post
+					runs.Add((p, 0f, p, H + x.railThick * 0.5f, x.railThick, over));            // a post
 					if (x.braceOut > 0f)
 					{
-						runs.Add((p + side * (x.braceOut * sg), 0f, p, H * 0.5f, x.railThick * 0.7f));   // a knee brace
+						runs.Add((p + side * (x.braceOut * sg), 0f, p, H * 0.5f, x.railThick * 0.7f, over));   // a knee brace
 					}
 				}
 			}
 			float shadowY = AltitudeLayer.Building.AltitudeFor() - Altitudes.AltInc;
-			float beamY = AltitudeLayer.PawnUnused.AltitudeFor();
 			foreach (var run in runs)
 			{
 				Run(layer, Shade, run.p, run.h, run.q, run.g, run.w, shadowY, true);
 			}
 			foreach (var run in runs)
 			{
-				Run(layer, beam, run.p, run.h, run.q, run.g, run.w, beamY, false);
+				Run(layer, beam, run.p, run.h, run.q, run.g, run.w, RopeY(run.over), false);
 			}
 		}
 
@@ -598,8 +601,8 @@ namespace RimMandrake.FlowWorks.Pits
 			edge.y = 0f;
 			float w = x.cableThick * x.netFactor;
 			float shadowY = AltitudeLayer.Building.AltitudeFor() - Altitudes.AltInc;
-			float cableY = AltitudeLayer.PawnUnused.AltitudeFor();
-			var runs = new List<(Vector3 p, float h, Vector3 q, float g)>();
+			var runs = new List<(Vector3 p, float h, Vector3 q, float g, bool over)>();
+			int sideZ = r.Side.z;
 			for (int sd = 0; sd < 2; sd++)
 			{
 				float sg = sd == 0 ? -1f : 1f;
@@ -615,8 +618,9 @@ namespace RimMandrake.FlowWorks.Pits
 					Vector3 p1 = edge + a * (float)s1 + side * (sw * sg);
 					Vector3 t0 = edge + a * (float)s0 + side * (off * sg);
 					Vector3 t1 = edge + a * (float)s1 + side * (off * sg);
-					runs.Add((p0, HangerFootH, t1, h1));   // rising diagonal
-					runs.Add((t0, h0, p1, HangerFootH));   // falling diagonal
+					bool over = RM_SuspensionMath.RopeOverPawns(sideZ, sg);
+					runs.Add((p0, HangerFootH, t1, h1, over));   // rising diagonal
+					runs.Add((t0, h0, p1, HangerFootH, over));   // falling diagonal
 				}
 			}
 			foreach (var run in runs)
@@ -625,9 +629,20 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 			foreach (var run in runs)
 			{
-				Run(layer, cable, run.p, run.h, run.q, run.g, w, cableY, false);
+				Run(layer, cable, run.p, run.h, run.q, run.g, w, RopeY(run.over), false);
 			}
 			return true;
+		}
+
+		/// <summary>The altitude a rope, hanger, backstay or rail prints at: over pawns (PawnUnused, directly above Pawn), or
+		/// behind them (PawnRope, vanilla's rope layer under Pawn) when RM_SuspensionMath.RopeOverPawns puts it north of an
+		/// east-west deck. The altitude of each vertex is what decides: the section sub-mesh is drawn as one draw before the
+		/// pawn (its bounds sit at y 0, MapDrawLayer.RefreshSubMeshBounds), and a pawn's node is hidden only where a nearer
+		/// vertex wrote the depth (measured on SteveDesktop 2026-11-27 with jawa/material_queue). So a far rope needs no material
+		/// or section layer of its own.</summary>
+		private static float RopeY(bool over)
+		{
+			return (over ? AltitudeLayer.PawnUnused : AltitudeLayer.PawnRope).AltitudeFor();
 		}
 
 		/// <summary>The post sprite's drawn width: its own aspect at the drawn height, held between 1.1 and 1.9 post widths.</summary>

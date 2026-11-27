@@ -616,6 +616,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: an item lying in the hole slides out (or is marked under), never the deck's load");
                 Assert(body.Contains(".ToList()"), "can-fail: the square's thing list is snapshotted before SlideOut edits it");
             });
+            Case("Suspension_far_rope_of_an_east_west_run_draws_behind_pawns", () =>
+            {
+                // RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER (in-game judge, ArchSmall 2026-11-27): on an
+                // east-west span the far (north) hanger drew over a colonist's head, because every rope printed above pawns. The
+                // map is seen from the south: a rope north of the deck is behind a pawn on it. Side = dir turned clockwise
+                // (SuspensionBridgeRecord.Side): N -> E, E -> S, S -> W, W -> N; its z is the side's north-south sign.
+                int[] sideZ = { 0, -1, 0, 1 };
+                for (int dir = 0; dir < 4; dir++)
+                {
+                    foreach (float sg in new[] { -1f, 1f })
+                    {
+                        bool north = sideZ[dir] * sg > 0;
+                        Assert(RM_SuspensionMath.RopeOverPawns(sideZ[dir], sg) == !north,
+                            "dir " + dir + " side " + sg + ": a rope north of the deck draws behind pawns, every other over them");
+                    }
+                }
+                Assert(!RM_SuspensionMath.RopeOverPawns(-1, -1f) && RM_SuspensionMath.RopeOverPawns(-1, 1f),
+                    "can-fail: an east run's north rope is behind, its south rope in front");
+                Assert(RM_SuspensionMath.RopeOverPawns(0, -1f) && RM_SuspensionMath.RopeOverPawns(0, 1f),
+                    "can-fail: a north-south run's side ropes stay over pawns");
+                string art = Src("Pits", "Suspension", "RM_DeckArt.cs");
+                int calls = 0;
+                for (int at = art.IndexOf("RopeY(", StringComparison.Ordinal); at >= 0; at = art.IndexOf("RopeY(", at + 1, StringComparison.Ordinal))
+                    calls++;
+                Assert(art.Contains("RM_SuspensionMath.RopeOverPawns(") && art.Contains("AltitudeLayer.PawnRope"),
+                    "can-fail: RM_DeckArt prints a behind rope at PawnRope through RopeOverPawns");
+                Assert(calls >= 4, "can-fail: the cables, the timber rails and the netting each choose their altitude by RopeY (" + calls + ")");
+                Assert(!art.Contains("cableY = AltitudeLayer.PawnUnused") && !art.Contains("beamY = AltitudeLayer.PawnUnused"),
+                    "can-fail: no rope prints above pawns whatever its side");
+            });
             // textures: selftest_flowworks_suspension_art.py (the SelfTest staging copies no Textures folder)
             UnderpassReachChecks.Run(Case);   // UNDERPASS_REACH_FIX_DECK_VIEW_SAYS_NO: reach agrees with A* under decks (UnderpassReachChecks.cs)
             SpanLiquidContact.SpanLiquidContactChecks.Run(Case);
