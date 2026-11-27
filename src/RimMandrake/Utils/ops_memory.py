@@ -585,9 +585,9 @@ def out_dir():
 
 
 def retired_key(k, rules):
-    """A key whose family ops_watch retired on purpose: a removed collector family, or a token-talk group no longer
-    measured. A rules file that did not load retires only the removed families."""
-    if k.split(".", 1)[0] in ow.REMOVED_FAMILIES:
+    """A key that ops_watch retired on purpose: a removed collector family, a removed key, or a token-talk group no
+    longer measured. A rules file that did not load retires only the removed families."""
+    if k.split(".", 1)[0] in ow.REMOVED_FAMILIES or k in ow.REMOVED_KEYS:
         return True
     return "_error" not in rules and ow.tt_retired(k, rules)
 

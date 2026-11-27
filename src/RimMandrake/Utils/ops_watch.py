@@ -90,6 +90,9 @@ DAY = 24 * HOUR
 # families whose collector was removed: their old keys never read as silent and their alarms leave (relentless: the retired
 # tick's belt, 2026-11-18; plan: the retired Producer's daily list, 2026-11-23)
 REMOVED_FAMILIES = ("relentless", "plan", "health")
+# one key taken out of a collector that still runs: last_measured.json keeps it for good, so without this it reads
+# silent on every pass (companion.grant_hours_left: f933849106; selftest_ops_watch_removed_key.py)
+REMOVED_KEYS = ("companion.grant_hours_left",)
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
             "evidence", "companion", "seats", "roles", "queues", "wrapup", "maturation", "pager")
 
@@ -3772,7 +3775,7 @@ def andon(points, hist, last_measured, rules, now):
                "detail": "rule section %s missing or not an object: that rule is off, the others run" % x} for x in sorted(off)]
     gone = {k: U("no longer reported by its collector") for k in last_measured if k not in points}
     # a removed collector's keys still in the history are its removal, not a blind instrument
-    gone = {k: p for k, p in gone.items() if k.split(".", 1)[0] not in REMOVED_FAMILIES}
+    gone = {k: p for k, p in gone.items() if k.split(".", 1)[0] not in REMOVED_FAMILIES and k not in REMOVED_KEYS}
     # a nightly red group's key exists only while the group is red: gone while its collector still reports the night is
     # the group cleared (fixed, deleted or parked), not a blind instrument (40 such silent flags, 2026-11-14)
     if any(counts_as_measured(points.get(k) or {}) for k in ("testing.nightly_news", "testing.nightly_known_reds")):
