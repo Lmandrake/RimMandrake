@@ -2093,7 +2093,7 @@ His card answers, 2026-11-13, and his later rulings:
   - Polish goes to the mod's Polish list. Polish is not part of passing.
   - The Judge makes the call as best it can. The threshold is tuned with him. (In this repo the Conductor decides each
     move to a Polish list; see "The Conductor decides both".)
-  - Outside this repo, each move to a Polish list is confirmed with him.
+  - Outside this repo, a Problem is an experience its user (not a player) would reject, and each move to a Polish list is confirmed with him.
 - **Asked at filing:** the question "current version or next version" is decided when the ticket is filed as active. The
   question is not decided when someone picks the ticket up. A ticket once filed as current moves to the next version only
   by Judge deferral. A judge may defer it only when it cannot be satisfied by its currently written acceptance tests, or
