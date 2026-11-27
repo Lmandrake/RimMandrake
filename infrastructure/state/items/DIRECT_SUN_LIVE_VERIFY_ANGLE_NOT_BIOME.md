@@ -17,3 +17,6 @@ move here). Nothing here is built or verified.
 - **L2 (owner-watched sitting).** He tunes the zenith value, weather sun factors, the four air-heat
   offsets, and the rest-dash strictness carried over from `SOLAR_HEAT_EXPOSURE_1` (*"a tad boring
   unless we get really strict about the dashing animal behavior"*).
+
+## refs
+file: src/RimMandrake/CreatureBehaviors/live_direct_sun_angle.py
