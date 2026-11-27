@@ -182,7 +182,10 @@ namespace RimMandrake.Pyrelands
             return PlantGrowthStageGraphics.StageTall;
         }
 
-        public override Graphic Graphic
+        // Under a roof the staged art wilts, then withers, like ember grass (RM_RoofWitherLook, CompWithersUnderRoof.cs).
+        public override Graphic Graphic => RM_RoofWitherLook.Apply(this, StagedGraphic);
+
+        private Graphic StagedGraphic
         {
             get
             {

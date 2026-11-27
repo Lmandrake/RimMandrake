@@ -1,0 +1,17 @@
+--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_RoofWitherKernel.cs
++++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_RoofWitherKernel.cs
+@@ -121,10 +121,10 @@
+                 return s;
+             }
+             roofedTicks += LongTickTicks;
+-            int due = DamageDue(maxHp, roofedTicks, d);
+-            int owed = Math.Max(0, due - damageDealt);
+-            damageDealt = Math.Max(damageDealt, due);
+-            if (due >= maxHp || (owed > 0 && owed >= hitPoints))
++            int owed = Math.Max(1, (int)Math.Round((double)maxHp * LongTickTicks / witherTicks));
++            int due = damageDealt + owed;
++            damageDealt = due;
++            if (owed >= hitPoints)
+             {
+                 s.Lethal = true;
+                 s.Damage = Math.Max(0, hitPoints);

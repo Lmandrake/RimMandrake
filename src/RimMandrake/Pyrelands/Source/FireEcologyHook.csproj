@@ -114,6 +114,7 @@
     <Compile Include="Kernel\RM_FireHawkKernel.cs" />
     <Compile Include="Kernel\RM_FireHawkRewardsKernel.cs" />
     <Compile Include="Kernel\RM_FoamPathKernel.cs" />
+    <Compile Include="Kernel\RM_RoofWitherKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

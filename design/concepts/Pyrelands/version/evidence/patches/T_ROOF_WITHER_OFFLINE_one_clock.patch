@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_RoofWitherKernel.cs
++++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_RoofWitherKernel.cs
+@@ -44,7 +44,7 @@
+                 h ^= h >> 15;
+                 h *= 0x846CA68Bu;
+                 h ^= h >> 16;
+-                return h / 4294967296.0;
++                return 0.5 + 0.0 * (h / 4294967296.0);
+             }
+         }
+ 

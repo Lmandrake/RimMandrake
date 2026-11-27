@@ -97,9 +97,13 @@
       half therefore need SEPARATE folders — four PNGs in one folder would
       be a single four-way random mixing both stages.
     -->
-    <!-- Open-sky grass: under a roof it withers in about a day (CompWithersUnderRoof), so a room built on the grass carpet clears. -->
+    <!-- Open-sky grass: under a roof it wilts, then withers, and each plant dies at its own time about a day in (0.6..1.4 of
+         witherTicks 60000, RM_RoofWitherKernel), leaving dead grass that crumbles (DeadGrass.xml). A room built on the grass
+         carpet clears over most of a day, not on one tick. -->
     <comps>
-      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof" />
+      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof">
+        <remainsDef>RM_FE_DeadQuickgrass</remainsDef>
+      </li>
     </comps>
     <modExtensions>
       <li Class="RimMandrake.Pyrelands.PlantGrowthStages">

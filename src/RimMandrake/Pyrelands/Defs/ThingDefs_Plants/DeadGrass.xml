@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Dead grass: what ember grass and quickgrass leave when a roof kills them (CompWithersUnderRoof's remainsDef). Bar
+    roofed_grass_declines_visibly, owner 2026-11-26: "it doesn't turn into dead grass, just... barren nothing".
+
+    A dead plant (thingClass RM_DeadGrass : vanilla DeadPlant): it does not grow and does not die of age, colonists can cut
+    it (harvestMinGrowth 0, as vanilla StumpBase), and it crumbles on its own clock wherever it lies (RM_DeadGrassExtension
+    crumbleTicks; each blade's end is spread over 0.6..1.4 of it, RM_RoofWitherKernel). Vanilla deterioration would not do:
+    it is zero under a roof in a closed room (StatPart_EnvironmentalEffects), which is exactly where this lies.
+
+    No new art: the living grass's own sprites, tinted by graphicData color to a dead straw brown (an invented colour, our
+    own rule, to be judged live by sc_roofed_grass_declines). Never in any biome's wild plants and never sowable: it only
+    comes from a roofed death.
+  -->
+
+  <ThingDef Name="RM_FE_DeadGrassBase" ParentName="PlantBaseNonEdible" Abstract="True">
+    <thingClass>RimMandrake.Pyrelands.RM_DeadGrass</thingClass>
+    <statBases>
+      <!-- Our own rule: below the living grass (28 and 32), a spent blade. -->
+      <MaxHitPoints>20</MaxHitPoints>
+      <!-- Dry dead grass: as flammable as the ember grass it was (EmberGrass.xml). -->
+      <Flammability>1.6</Flammability>
+      <BeautyOutdoors>0</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- As vanilla StumpBase (Plants_Special.xml): always cuttable, never fussy about soil. -->
+      <harvestMinGrowth>0</harvestMinGrowth>
+      <fertilityMin>0.01</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <neverBlightable>true</neverBlightable>
+      <topWindExposure>0.3</topWindExposure>
+    </plant>
+    <modExtensions>
+      <!-- Our own rule: dead grass lasts about two days (120000 ticks) after the grass died, roofed or not. -->
+      <li Class="RimMandrake.Pyrelands.RM_DeadGrassExtension">
+        <crumbleTicks>120000</crumbleTicks>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_FE_DeadGrassBase">
+    <defName>RM_FE_DeadGrass</defName>
+    <label>dead ember grass</label>
+    <description>Ember grass that died under a roof: brittle brown stalks that crumble away in a day or two. It can be cut.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_FE_EmberGrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(0.62, 0.53, 0.42)</color>
+    </graphicData>
+    <plant>
+      <!-- The living ember grass's sizes (EmberGrass.xml), so the dead patch keeps its shape. -->
+      <visualSizeRange>0.5~0.85</visualSizeRange>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_FE_DeadGrassBase">
+    <defName>RM_FE_DeadQuickgrass</defName>
+    <label>dead quickgrass</label>
+    <description>Quickgrass that died under a roof: a flattened brown mat that crumbles away in a day or two. It can be cut.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_FE_Quickgrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(0.66, 0.56, 0.40)</color>
+    </graphicData>
+    <plant>
+      <!-- The living quickgrass's sizes (Quickgrass.xml). -->
+      <visualSizeRange>0.8~1.4</visualSizeRange>
+    </plant>
+  </ThingDef>
+
+</Defs>

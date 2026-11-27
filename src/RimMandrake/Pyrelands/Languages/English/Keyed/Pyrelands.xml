@@ -41,7 +41,9 @@
   <RM_YesterdayFireMessage>Smoke to the {0}: yesterday's grass fire is still burning along the edge of its scar.</RM_YesterdayFireMessage>
 
   <!-- The burn nearing home (MapComponent_BurnLine.WatchApproach). {0} cells, {1} a compass word. -->
+  <!-- Grass under a roof (CompWithersUnderRoof): wilting, then withered past half its time; it dies to dead grass. -->
   <RM_WithersUnderRoof>Withering: it needs open sky.</RM_WithersUnderRoof>
+  <RM_WitheredUnderRoof>Withered: it will die without open sky.</RM_WitheredUnderRoof>
   <RM_DryLandLabel>No water here</RM_DryLandLabel>
   <RM_DryLandLetter>There is no open water anywhere on this map.\n\nWithout water your colonists will be down with thirst in about a day. Form a caravan and go looking for water while they can still walk.</RM_DryLandLetter>
   <RM_BurnApproachLabel>The burn is coming</RM_BurnApproachLabel>

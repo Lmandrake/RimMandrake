@@ -1,0 +1,10 @@
+--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml
++++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml
+@@ -50,7 +50,6 @@
+          carpet clears over most of a day, not on one tick. -->
+     <comps>
+       <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof">
+-        <remainsDef>RM_FE_DeadGrass</remainsDef>
+       </li>
+     </comps>
+     <!-- Ash fall greys the grass where it drifts (Source/PyrelandsAshDust.cs, overlays from ash_dust_gen.py). The charred

@@ -23,6 +23,8 @@
   -->
 
   <ThingDef ParentName="PlantBase">
+    <!-- Vanilla Plant with its graphic through the roof-wither look (CompWithersUnderRoof.cs RM_Plant_WithersUnderRoof). -->
+    <thingClass>RimMandrake.Pyrelands.RM_Plant_WithersUnderRoof</thingClass>
     <defName>RM_FE_Plant_EmberGrass</defName>
     <label>ember grass</label>
     <!-- EMBERGRASS_FIX_DESC_CLAIMS_SUBDAY_REGROWTH: growDays 0.8 accrues only while the plant is not resting
@@ -43,9 +45,13 @@
          at 0.5 vanilla stopped drawing the grass under deep ash (SectionLayer_Things.cs:66) and stopped grazing it (Plant.cs:193
          IngestibleNow). Bar grass_still_seen_under_ash: standing grass is drawn under the ash, so it stays drawn and grazeable
          at every ash and snow depth. -->
-    <!-- Open-sky grass: under a roof it withers in about a day (CompWithersUnderRoof), so a room built on the grass carpet clears. -->
+    <!-- Open-sky grass: under a roof it wilts, then withers, and each plant dies at its own time about a day in (0.6..1.4 of
+         witherTicks 60000, RM_RoofWitherKernel), leaving dead grass that crumbles (DeadGrass.xml). A room built on the grass
+         carpet clears over most of a day, not on one tick. -->
     <comps>
-      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof" />
+      <li Class="RimMandrake.Pyrelands.CompProperties_WithersUnderRoof">
+        <remainsDef>RM_FE_DeadGrass</remainsDef>
+      </li>
     </comps>
     <!-- Ash fall greys the grass where it drifts (Source/PyrelandsAshDust.cs, overlays from ash_dust_gen.py). The charred
          leafless sprites take none. -->

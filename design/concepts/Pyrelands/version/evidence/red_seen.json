@@ -131,6 +131,19 @@
   "rc": 1,
   "test_blob": "9f77d082fb433d4e86a3b19b744edbbaa340d383"
  },
+ "T_ROOF_WITHER_OFFLINE": {
+  "at": "2026-11-27T09:15:13Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_roof_wither.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_roof_wither.py",
+  "last": "FAIL",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml\n@@ -50,7 +50,6 @@\n          carpet clears over most of a day, not on one tick. -->\n     <comps>\n       <li Class=\"RimMandrake.Pyrelands.CompProperties_WithersUnderRoof\">\n-        <remainsDef>RM_FE_DeadGrass</remainsDef>\n       </li>\n     </comps>\n     <!-- Ash fall greys the grass where it drifts (Source/PyrelandsAshDust.cs, overlays from ash_dust_gen.py). The charred\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml"
+  ],
+  "patch_sha": "4f7917ad44579a93",
+  "rc": 1,
+  "test_blob": "8494f3f454c23408a7747904f0d5549f77f12d4d"
+ },
  "T_ROUND6_GAPS": {
   "at": "2026-11-27T04:25:28Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py",
