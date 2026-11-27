@@ -1024,13 +1024,17 @@
     <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1.6</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <!-- RIMMANDRAKE_RESIZE_FLYERS_ADULTS_FLY_AT_BABY_SIZE_TWENTY_OF_THEM: InheritColors true and one bodyGraphicData colour per life stage
+         (1/255 apart, not visible) are load-bearing: the engine (AnimationDefGenerator_Flying) sizes every stage's flight
+         frames from the first stage when InheritColors is false, and caches them by colour when it is true. Checked by
+         src/RimMandrake/Utils/art/flyer_size_census.py. -->
     <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Kirruk/RM_Kirruk</texPath>
           <drawSize>0.7</drawSize>
-          <color>(120, 115, 110)</color>
+          <color>(120,115,110)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
@@ -1041,7 +1045,7 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Kirruk/RM_Kirruk</texPath>
           <drawSize>0.775</drawSize>
-          <color>(120, 115, 110)</color>
+          <color>(120,115,109)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
@@ -1052,7 +1056,7 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Kirruk/RM_Kirruk</texPath>
           <drawSize>0.85</drawSize>
-          <color>(120, 115, 110)</color>
+          <color>(120,115,108)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>

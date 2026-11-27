@@ -75,23 +75,36 @@ def parse_size(text: str | None) -> float:
 
 def flight_sizes(pk: ET.Element) -> list[float]:
     """Per life stage, the drawSize the engine gives the flight frames (AnimationDefGenerator_Flying, 1.6)."""
+    return [m for m, _f in flight_sizes_by_sex(pk)]
+
+
+def flight_sizes_by_sex(pk: ET.Element) -> list[tuple[float, float | None]]:
+    """Per life stage, (male, female) flight drawSize as the engine gives it (AnimationDefGenerator_Flying, 1.6).
+
+    female is None for a stage with no femaleGraphicData. With InheritColors (or a female frame prefix) the engine
+    walks the stages in order, the male graphic then the female one, and caches each animation by graphic colour: one
+    cache for both sexes unless a female prefix is set. A female with no animation of her own flies the male one
+    (Pawn_FlightTracker)."""
     stages = pk.findall("lifeStages/li")
     base = float(pk.findtext("flyingAnimationDrawSize") or "1")
     mult = (pk.findtext("flyingAnimationDrawSizeIsMultiplier") or "false").strip().lower() == "true"
     inherit = (pk.findtext("flyingAnimationInheritColors") or "false").strip().lower() == "true"
     female = bool((pk.findtext("flyingAnimationFramePathPrefixFemale") or "").strip())
+    out: list[tuple[float, float | None]] = []
     if inherit or female:
         cache: dict = {}
-        out = []
+        cache_f: dict = {} if female else cache
         for st in stages:
             num = parse_size(st.findtext("bodyGraphicData/drawSize")) * base if mult else base
-            col = parse_color(st.findtext("bodyGraphicData/color"))
-            if col not in cache:
-                cache[col] = num
-            out.append(cache[col])
+            male = cache.setdefault(parse_color(st.findtext("bodyGraphicData/color")), num)
+            fem = None
+            if st.find("femaleGraphicData") is not None:
+                num = parse_size(st.findtext("femaleGraphicData/drawSize")) * base if mult else base
+                fem = cache_f.setdefault(parse_color(st.findtext("femaleGraphicData/color")), num)
+            out.append((male, fem))
         return out
     num = parse_size(stages[0].findtext("bodyGraphicData/drawSize")) * base if mult else base
-    return [num] * len(stages)
+    return [(num, num if st.find("femaleGraphicData") is not None else None) for st in stages]
 
 
 def kind(root: ET.Element) -> ET.Element:

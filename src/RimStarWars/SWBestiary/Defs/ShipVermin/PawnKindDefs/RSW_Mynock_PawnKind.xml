@@ -22,7 +22,11 @@
     <flyingAnimationTicksPerFrame>3</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
-    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <!-- RIMMANDRAKE_RESIZE_FLYERS_ADULTS_FLY_AT_BABY_SIZE_TWENTY_OF_THEM: InheritColors true and one bodyGraphicData colour per life stage
+         (1/255 apart, not visible) are load-bearing: the engine (AnimationDefGenerator_Flying) sizes every stage's flight
+         frames from the first stage when InheritColors is false, and caches them by colour when it is true. Checked by
+         src/RimMandrake/Utils/art/flyer_size_census.py. -->
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <label>mynock pup</label>
@@ -31,6 +35,7 @@
           <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
+          <color>(255,255,255)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -38,6 +43,7 @@
           <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
+          <color>(254,254,254)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -45,6 +51,7 @@
           <texPath>RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
+          <color>(253,253,253)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
