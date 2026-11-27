@@ -118,9 +118,29 @@ def _kw(call, name):
     return None
 
 
-def parser_gaps(src):
+def segmenter(src):
+    """-> seg(node): ast.get_source_segment(src, node), with src split into lines once. get_source_segment splits the
+    whole file on every call: 147 of this test's 344 s (cProfile, 2026-11-26). The same slicing as CPython's."""
+    lines = ast._splitlines_no_ff(src) if hasattr(ast, "_splitlines_no_ff") else None
+    if lines is None:
+        return lambda node: ast.get_source_segment(src, node)
+
+    def seg(node):
+        try:
+            if node.end_lineno is None or node.end_col_offset is None:
+                return None
+            a, b, ca, cb = node.lineno - 1, node.end_lineno - 1, node.col_offset, node.end_col_offset
+        except AttributeError:
+            return None
+        if a == b:
+            return lines[a].encode()[ca:cb].decode()
+        return "".join([lines[a].encode()[ca:].decode()] + lines[a + 1:b] + [lines[b].encode()[:cb].decode()])
+    return seg
+
+
+def parser_gaps(src, tree=None):
     """Parsers in `src` taking his words with no --per-ruling. A name rebound to a new parser is a new parser."""
-    tree = ast.parse(src)
+    tree = tree or ast.parse(src)
     gen, groups = {}, {}
     nodes = sorted((n for n in ast.walk(tree) if hasattr(n, "lineno")), key=lambda n: (n.lineno, n.col_offset))
     for n in nodes:
@@ -136,19 +156,23 @@ def parser_gaps(src):
     return ["line %d (%s)" % (g["line"], k[0]) for k, g in groups.items() if g["takes"] and not g["route"]]
 
 
-def refusal_gaps(src):
+def refusal_gaps(src, tree=None, seg=None):
     """Statements that demand his words without naming any other route."""
-    tree = ast.parse(src)
+    tree, seg = tree or ast.parse(src), seg or segmenter(src)
     out = []
     for n in ast.walk(tree):
         if not isinstance(n, (ast.Raise, ast.Return, ast.Expr)) or (isinstance(n, ast.Expr) and not isinstance(n.value, ast.Call)):
             continue
-        seg = ast.get_source_segment(src, n) or ""
-        if DEMAND.search(" ".join(seg.split())) and not ROUTE.search(seg):
+        text = seg(n) or ""
+        if DEMAND.search(" ".join(text.split())) and not ROUTE.search(text):
             out.append("line %d" % n.lineno)
     return out
 
 
+_me = open(__file__, encoding="utf-8").read()
+_seg = segmenter(_me)
+check(all(_seg(n) == ast.get_source_segment(_me, n) for n in ast.walk(ast.parse(_me)) if hasattr(n, "lineno")),
+      "the segmenter slices every node of this file as ast.get_source_segment does")
 check(parser_gaps('p = s.add_parser("a")\np.add_argument("--owner-said")\np = s.add_parser("b")\np.add_argument("--per-ruling")\n')
       == ["line 2 (p)"], "the census catches a parser with his words and no route")
 check(not parser_gaps('p.add_argument("--owner-said")\np.add_argument("--per-ruling")\n'), "the census passes a parser with the route")
@@ -164,13 +188,13 @@ for rel in tracked:
         continue
     try:
         src = (ROOT / rel).read_text(encoding="utf-8")
-        ast.parse(src)
+        tree = ast.parse(src)
     except (SyntaxError, UnicodeDecodeError, ValueError):
         continue
     seen += 1
     if "--owner-said" in src:
         takers.add(rel)
-    bad = parser_gaps(src) + refusal_gaps(src)
+    bad = parser_gaps(src, tree) + refusal_gaps(src, tree)
     if bad and rel not in EXEMPT:
         gaps += 1
         check(False, "%s: his words with no route: %s" % (rel, ", ".join(bad)))
@@ -316,12 +340,12 @@ def _is_owner_str(n):
 def function_gaps(src):
     """-> (said_gaps, owner_lines): said_gaps are function names that test his words with no route in their text;
     owner_lines are line numbers of OWNER comparisons (a file-level finding, resolved by the caller)."""
-    tree = ast.parse(src)
+    tree, segment = ast.parse(src), segmenter(src)
     said, owner = [], []
     for f in ast.walk(tree):
         if not isinstance(f, (ast.FunctionDef, ast.AsyncFunctionDef)):
             continue
-        seg = ast.get_source_segment(src, f) or ""
+        seg = segment(f) or ""
         tests = []
         for n in ast.walk(f):
             if isinstance(n, (ast.If, ast.IfExp, ast.Assert, ast.While)):
