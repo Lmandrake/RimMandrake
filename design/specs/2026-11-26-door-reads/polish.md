@@ -1,0 +1,3 @@
+# Polish: the door's read records (page: boundary.md beside this file)
+
+- `src/RimMandrake/Utils/door_reads.py` `parse`/`_git_reads`: a git child's `<rev>:./path` and its `-- <path>` are relative to the child's own folder (the `cwd` of its `C` line, and `-C`), but `parse` roots them at the tree. risk: a pipeline test that runs `git -C <sub> show <rev>:./f` (three non-pipeline selftests do it today, for example `selftest_scratch_reap_checktree.py --at`) records `./f`, which no change names, so the door leaves the test out when `<sub>/f` changes. None of the 233 records in `/home/mandrake/rm/door-reads` holds such a path (looked 2026-11-26).
