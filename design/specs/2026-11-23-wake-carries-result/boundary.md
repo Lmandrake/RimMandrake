@@ -72,6 +72,8 @@ wake writes no side file and cuts nothing.
   and the owner of the wait are read again after it. A run whose result or record breaks the renderer is still named, with its path and the
   cause.
 
+The changes-only view of the state block has its own page: `design/specs/2026-11-26-wake-state-changes-only/boundary.md`.
+
 ## LIMITS
 
 - `STATE_DEADLINE_S` 20 s: guards against a hung reader that holds the wake (the item's contract). `./pipe show` took

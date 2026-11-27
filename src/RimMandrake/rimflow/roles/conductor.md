@@ -521,12 +521,16 @@ python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMAN
 
 ```
 python3 src/RimMandrake/Utils/handoff.py --wake        # FIRST turn of a fresh window only; opens with the dead window's last reply
-python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR --owed   # what you OWE, first: at most 40 lines, LATE past 2 h
 python3 src/RimMandrake/rimflow/cli.py seat ready
-tail -n 40 /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
 python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR
 python3 src/RimMandrake/rimflow/run_peek.py show        # what each live mod run spends its time on
 ```
+
+On the first turn, the wake prints the old window's last reply, his words, what you OWE (`cli.py queue CONDUCTOR
+--owed`: at most 40 lines, LATE past 2 h) and the last 40 lines of the Conductor log, once. A restart wake
+(`seat_restart.py wake`) prints them, and `handoff.py --wake` after it in the same window then prints one line in their
+place. Do not run the owed list or the log tail again on that turn. On a later turn, run `cli.py queue CONDUCTOR --owed`
+and read the newest lines of `/mnt/d/ClaudeWork/rimmandrake/conductor/log.md` when you need them.
 
 **Ask about a run that is long on one or two checks** (owner, 2026-11-24: "If they're spending a lot of time on one or
 two tests, PLEASE let's ask if it's even sensible to try that, if it needs to be deferred, re-examined, replaced with a

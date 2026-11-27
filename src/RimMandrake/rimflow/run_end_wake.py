@@ -289,6 +289,112 @@ def state_block(readers=None, now=None, deadline_s=STATE_DEADLINE_S):
     return "\n".join(lines)
 
 
+# The parts of a row that move at every reading although nothing changed: an age or a time left ("(24 min)",
+# "resets in 163.3 h", "0.7 h old") and an ISO stamp of a reading. A row whose rest is the same reads unchanged.
+_MOVES = re.compile(r"\d+(?:\.\d+)?\s?(?:h|min)\b|\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d)?(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)?")
+_ROW = re.compile(r"^\[([^\]]*)\] ([^:]+): (.*)$")
+# The readers' own commands, so the counted line says where each unchanged row is read whole.
+_WHOLE = {"locks": "python3 src/RimMandrake/rimflow/game_lock.py query all", "pipe": "./pipe show",
+          "accounts": "python3 src/RimMandrake/Utils/account_usage.py now"}
+
+
+def memo_path(root=None):
+    return os.path.join(wake_dir(root), "last_state.json")
+
+
+def context_tokens(tx_path, tail_bytes=1 << 20):
+    """-> the context tokens of the transcript's last assistant turn (input + cache read + cache write), or None
+    (no path, unreadable, or no turn with usage in the tail)."""
+    if not tx_path:
+        return None
+    try:
+        with open(tx_path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - tail_bytes))
+            lines = f.read().decode("utf-8", "replace").splitlines()
+    except OSError:
+        return None
+    for ln in reversed(lines):
+        if '"usage"' not in ln:
+            continue
+        try:
+            r = json.loads(ln)
+        except ValueError:
+            continue
+        u = (r.get("message") or {}).get("usage") if r.get("type") == "assistant" else None
+        if isinstance(u, dict):
+            return sum(int(u.get(k) or 0) for k in ("input_tokens", "cache_read_input_tokens",
+                                                     "cache_creation_input_tokens"))
+    return None
+
+
+def _rows(block):
+    """-> [(reader, steady key, row text without its time)] for each row of a state block; None when it has none."""
+    out = []
+    for ln in block.splitlines()[1:]:
+        m = _ROW.match(ln)
+        if not m:
+            return None
+        name, rest = m.group(2), m.group(3)
+        out.append((name, name + ": " + _MOVES.sub("#", rest), name + ": " + rest))
+    return out or None
+
+
+def _who(key):
+    """What a row is about: its reader and the first word of its answer (a mod, a game, an account, `runs`, `tick`).
+    A row of the last wake whose subject still has a row now changed; it is not gone."""
+    name, _, rest = key.partition(": ")
+    return name, (rest.split() or [""])[0].rstrip(":")
+
+
+def slim_state(block, session_id, tx_path=None, root=None, now=None):
+    """-> (text, memo). The state block as this window needs it: whole at the window's first wake, after its context
+    fell (a compaction) or when the context cannot be read; else only the rows that changed since its last wake, the
+    rows gone since then, and one counted line for the rest. A COULD NOT LOOK row is always printed. memo is what
+    remember() writes once the wake is delivered (None: nothing to remember)."""
+    rows = _rows(block or "")
+    ctx = context_tokens(tx_path)
+    if not rows or not session_id:
+        return block, None
+    memo = {"session": session_id, "at": now or time.time(), "ctx": ctx, "rows": [[k, t] for _, k, t in rows]}
+    prev = doorbell._read_json(memo_path(root)) or {}
+    whole = (prev.get("session") != session_id or ctx is None or not isinstance(prev.get("ctx"), int)
+             or ctx < prev["ctx"] or not isinstance(prev.get("rows"), list))
+    if whole:
+        return block, memo
+    before = {k: t for k, t in (r for r in prev["rows"] if isinstance(r, list) and len(r) == 2)}
+    lines, kept, here = block.splitlines(), {}, set()
+    since = _pacific(prev["at"]) if isinstance(prev.get("at"), (int, float)) else "UNMEASURED"
+    out = ["== STATE, CHANGES since this window's wake at %s (each line: the local time it was read; accounts say "
+           "what is LEFT)" % since]
+    for ln, (name, key, _text) in zip(lines[1:], rows):
+        here.add(key)
+        if key in before and "COULD NOT LOOK" not in key:
+            kept[name] = kept.get(name, 0) + 1
+        else:
+            out.append(ln)
+    stamp = (_ROW.match(lines[1]).group(1) if len(lines) > 1 else _pacific(now or time.time()))
+    blind = {n for n, k, _ in rows if "COULD NOT LOOK" in k}        # a reader that did not answer lost no row
+    still = {_who(k) for k in here}                                    # a row that changed is printed once, new
+    out += ["[%s] GONE since the wake at %s: %s" % (stamp, since, t) for k, t in before.items()
+            if k not in here and k.split(":", 1)[0] not in blind and _who(k) not in still]
+    if kept:
+        out.append("[%s] unchanged since the wake at %s: %d rows (%s); read them whole with %s" % (
+            stamp, since, sum(kept.values()), ", ".join("%s %d" % kv for kv in kept.items()),
+            ", ".join("`%s`" % _WHOLE.get(n, n) for n in kept)))
+    return "\n".join(out), memo
+
+
+def remember(memo, root=None):
+    """Write the state rows a window was shown, so its next wake prints only what changed. Never costs the wake."""
+    if not memo:
+        return
+    try:
+        doorbell._write_json_atomic(memo_path(root), memo)
+    except Exception:  # noqa: BLE001 - the next wake reads whole
+        pass
+
+
 def _state_text(state):
     """The block for the wake, or a line that says it could not be made: it never costs the wake."""
     try:
@@ -362,9 +468,10 @@ def deliver(me, root=None):
 
 
 def wait(session_id, window_pid, root=None, me=None, clock=time.time, sleep=time.sleep, max_wait=None,
-         alive=None, hold=None, state=None):
+         alive=None, hold=None, state=None, tx_path=None):
     """Arm, then wait for pending run ends. -> (2, text) to wake the window, or (0, why) when it leaves quietly.
-    state() -> the state block: read BEFORE the run ends are consumed, so a waiter that dies in it loses none."""
+    state() -> the state block: read BEFORE the run ends are consumed, so a waiter that dies in it loses none. tx_path,
+    the window's transcript, tells a compaction since the last wake (slim_state)."""
     me = me or os.getpid()
     alive = alive or doorbell._alive
     hold = hold or (lambda: False)
@@ -377,14 +484,19 @@ def wait(session_id, window_pid, root=None, me=None, clock=time.time, sleep=time
         if not alive(window_pid):
             _disarm_if_mine(me, root)
             return 0, "the window is gone"
-        ready, block = has_pending(root) and not hold(), None
+        ready, block, memo = has_pending(root) and not hold(), None, None
         if ready and state:
             block = _state_text(state)
+            try:
+                block, memo = slim_state(block, session_id, tx_path, root)
+            except Exception as e:  # noqa: BLE001 - the whole block stands; the wake is never lost to the cut
+                block = "%s\n(the changes-only view failed: %s: %s)" % (block, type(e).__name__, e)
         if ready and not hold() and alive(window_pid):  # read again: the block took up to STATE_DEADLINE_S
             got = deliver(me, root)
             if got is None:
                 return 0, "superseded by a newer Stop"
             if got:
+                remember(memo, root)
                 return 2, render(got, block)
         elif (doorbell._read_json(armed_path(root)) or {}).get("pid") != me:
             return 0, "superseded by a newer Stop"
@@ -405,7 +517,8 @@ def hook_main(stdin=None, env=None):
     anc = doorbell.claude_ancestor()
     if anc is None or not is_conductor_window(anc):
         return 0
-    code, text = wait(hook.get("session_id"), anc, hold=hold_for(hook), state=state_block)
+    code, text = wait(hook.get("session_id"), anc, hold=hold_for(hook), state=state_block,
+                      tx_path=hook.get("transcript_path"))
     if code == 2:
         sys.stderr.write(text + "\n")
     return code

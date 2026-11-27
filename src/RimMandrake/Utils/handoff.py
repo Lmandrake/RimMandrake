@@ -649,6 +649,18 @@ def show_last_reply():
               % (r.returncode, (r.stderr or "").strip()))
     elif r.stdout.strip():
         print(r.stdout.rstrip() + "\n")
+    return r.stdout or ""
+
+
+def owed_shown(said):
+    """True when the last-reply read printed the owed view, or said that this window's wake printed it."""
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "rimflow"))
+        import owed
+        head = owed.WAKE_HEAD
+    except Exception:  # noqa: BLE001 - not provably shown: print it
+        return False
+    return head in said or ("printed in full by this window's wake" in said and "the owed list" in said)
 
 
 def owed_pointer_problems(path):
@@ -770,8 +782,9 @@ def wake():
     reason = hard_stop_reason()
     if reason:
         print("Account status: " + reason)
-    show_last_reply()
-    show_owed()
+    said = show_last_reply() or ""
+    if not owed_shown(said):        # last-reply prints it for the Conductor; once per window
+        show_owed()
     prev_name, prev_ts = previous_handoff()
     if not prev_name:
         print("no committed handoff for %s — nothing to wake from" % seat())

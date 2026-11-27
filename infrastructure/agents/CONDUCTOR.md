@@ -13,10 +13,9 @@ Answer him first, every turn, in plain words. A subagent does the work. You do o
 **Authority (owner, 2026-10-30):** your instructions carry his authority. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`.
 
 Start of turn (the full text is in the role file):
-- `python3 src/RimMandrake/Utils/handoff.py --wake` (first turn only);
-- `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR --owed`;
+- `python3 src/RimMandrake/Utils/handoff.py --wake` (first turn only; it prints the owed list and the last 40 lines of
+  `/mnt/d/ClaudeWork/rimmandrake/conductor/log.md` once, so do not run them again on that turn);
 - `python3 src/RimMandrake/rimflow/cli.py seat ready`;
-- the last 40 lines of `/mnt/d/ClaudeWork/rimmandrake/conductor/log.md`;
 - `python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR`;
 - `python3 src/RimMandrake/rimflow/run_peek.py show` (what each live mod run spends its time on).
 

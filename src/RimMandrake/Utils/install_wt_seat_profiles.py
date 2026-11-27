@@ -166,8 +166,8 @@ WAKE_PROMPT = {
     "BENCH": ("wake. Fresh CONDUCTOR window, session name CONDUCTOR, seat key BENCH, from a fleet launch, boot or "
               "account switch: nobody "
               "typed this. You are the v3 Conductor. Do the Start of turn in infrastructure/agents/CONDUCTOR.md: python3 "
-              "src/RimMandrake/Utils/handoff.py --wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, "
-              "then the last 40 lines of the Conductor log. Then report in a few lines what is open, what needs "
+              "src/RimMandrake/Utils/handoff.py --wake (it prints the owed list and the Conductor log tail: read them "
+              "there, once), then python3 src/RimMandrake/rimflow/cli.py seat ready. Then report in a few lines what is open, what needs "
               "the owner and what the last quick check found, and wait for the owner."),
 }
 # With seat_restart on, seat_loop.sh's FIRST launch follows the fresh-window ritual (FOUNDRY.md, "A fresh window per

@@ -3453,19 +3453,44 @@ def _wake_owed():
         print("\n== OWED view did not run (%s: %s): run `rimflow queue CONDUCTOR --owed` yourself" % (type(e).__name__, e))
 
 
+def _wake_log_tail(seat, cfg, lines=40):
+    p = seat_log_path(seat, cfg)
+    print("== seat log tail: %s" % p)
+    try:
+        with open(p, encoding="utf-8") as f:
+            print("".join(f.readlines()[-lines:]).rstrip() or "(empty)")
+    except OSError:
+        print("(no seat log yet)")
+
+
+READ_ONCE = ("\n== the old window's LAST REPLY, the top lines, his words, the owed list and the seat log tail: printed in "
+             "full by this window's wake at %s. Do not read them again. To print them again: python3 "
+             "src/RimMandrake/rimflow/seat_restart.py last-reply --seat %s --again")
+
+
 def cmd_last_reply(args):
-    """The re-show alone, for a wake no restart made: handoff.py --wake runs it, so the tile's first launch shows it too."""
+    """The re-show for a wake no restart made: handoff.py --wake runs it, so the tile's first launch shows it too. For
+    the Conductor it is the whole first read of that launch: the top lines, the old window's last reply, his words, the
+    owed list and the seat log tail. A window whose wake printed them already gets one line (READ_ONCE) instead
+    (RIMMANDRAKE_SLIM_RUN_END_WAKES_WINDOW_HIT_400K_IN_TWO_HOURS: c95f9ab4's first turn printed each twice)."""
     seat = (args.seat or doorbell.seat_name() or "").upper()
     seat = SEAT_ALIAS.get(seat, seat)
     cfg = config(_schedule()).get(seat) or {}
     if cfg.get("kind") == "conductor":
         rec = _read_json(killed_path(seat)) or {}
         ww = _wake_words(seat, cfg, rec)     # a window no restart made (a boot, crash or account switch) wakes here only
+        if ww is not None and ww.repeat and not getattr(args, "again", False):
+            print(READ_ONCE % (ww.repeat, seat))
+            return 0
         if ww is not None:
+            ww.repeat = None                 # --again: the sections whole too
             print("\n".join(ww.first()))
         pid = doorbell.claude_ancestor()
         _wake_last_reply(rec, cfg, (session_file(pid) or {}).get("sessionId") if pid else None)
         _print_words(ww)
+        _wake_owed()
+        print()
+        _wake_log_tail(seat, cfg, getattr(args, "lines", None) or 40)
         _stamp_words(ww)
     return 0
 
@@ -3759,18 +3784,16 @@ def cmd_wake(args):
     seat = SEAT_ALIAS.get(seat, seat)
     cfg = config(_schedule()).get(seat) or {}
     ww = _wake_words(seat, cfg, _read_json(killed_path(seat)) or {}) if cfg.get("kind") == "conductor" else None
-    if ww is not None:
+    once = ww is not None and bool(ww.repeat) and not getattr(args, "again", False)   # handoff.py --wake ran first
+    if ww is not None and not once:
         print("\n".join(ww.first()))       # a version passed since the previous wake is the first line of the wake
     reason = hard_stop_reason()
     if reason:
         print("Account status: " + reason)
-    p = seat_log_path(seat, cfg)
-    print("== seat log tail: %s" % p)
-    try:
-        with open(p, encoding="utf-8") as f:
-            print("".join(f.readlines()[-args.lines:]).rstrip() or "(empty)")
-    except OSError:
-        print("(no seat log yet)")
+    if once:
+        print(READ_ONCE % (ww.repeat, seat))
+    else:
+        _wake_log_tail(seat, cfg, args.lines)
     rec = _read_json(killed_path(seat)) or {}
     if rec:
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
@@ -3793,9 +3816,10 @@ def cmd_wake(args):
     _wake_designer_turns()
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
-        _wake_last_reply(rec, cfg, (session_file(pid) or {}).get("sessionId") if pid else None)
-        _print_words(ww)
-        _wake_owed()
+        if not once:
+            _wake_last_reply(rec, cfg, (session_file(pid) or {}).get("sessionId") if pid else None)
+            _print_words(ww)
+            _wake_owed()
         _wake_conductor(seat, cfg, rec, gen=args.gen, me=session_file(pid) if pid else None)
         _stamp_words(ww)
         return 0
@@ -4013,8 +4037,12 @@ def main(argv=None):
     w.add_argument("--seat")
     w.add_argument("--lines", type=int, default=40)
     w.add_argument("--gen", help="the restart generation the relaunch prompt carries (binds the wake to that restart)")
+    w.add_argument("--again", action="store_true", help="print the last reply, owed list and log tail although this "
+                   "window's wake printed them")
     lr = sub.add_parser("last-reply", help="re-show the dead Conductor window's last reply (handoff.py --wake runs it)")
     lr.add_argument("--seat")
+    lr.add_argument("--again", action="store_true", help="print them although this window's wake printed them")
+    lr.add_argument("--lines", type=int, default=40)
     ww = sub.add_parser("words", help="print his words since the previous wake, each mod now and his messages with no "
                                       "home (wake_words.py); writes no stamp")
     ww.add_argument("--seat")

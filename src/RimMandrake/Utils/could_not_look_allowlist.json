@@ -14,6 +14,8 @@
   "src/RimMandrake/rimflow/run_end_wake.py::is_conductor_window::except-returns-empty": 1,
   "src/RimMandrake/rimflow/run_end_wake.py::deliver::or-empty": 1,
   "src/RimMandrake/rimflow/run_end_wake.py::wait::or-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::context_tokens::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/run_end_wake.py::slim_state::or-empty": 1,
   "src/RimMandrake/rimflow/list_pipeline.py::epoch::except-returns-empty": 1,
   "src/RimMandrake/Utils/no_home.py::last::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::drain_refusal::except-returns-empty": 1,
@@ -335,6 +337,12 @@
   ],
   "src/RimMandrake/Utils/waitalive.py::size_of::except-returns-empty": [
    "NOT A COLLAPSE: None is 'no such file yet' (only ENOENT), a HUNG line names a progress file that is not there; every other error raises CouldNotLook, exit 5"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::context_tokens::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'no context reading', and slim_state then prints the whole state block (design/specs/2026-11-26-wake-state-changes-only/boundary.md a-compacted-window-reads-it-whole)"
+  ],
+  "src/RimMandrake/rimflow/run_end_wake.py::slim_state::or-empty": [
+   "NOT A COLLAPSE: an absent or unreadable memo names no session, so the wake prints the whole state block (design/specs/2026-11-26-wake-state-changes-only/boundary.md a-fresh-window-reads-it-whole)"
   ],
   "src/RimMandrake/rimflow/run_end_wake.py::_disarm_if_mine::or-empty": [
    "RARE (design/specs/2026-11-23-wake-carries-result/boundary.md an-armed-file-that-does-not-parse): an armed file that cannot be read is not this waiter's, so it consumes nothing and the run end stays pending; the file is written whole (os.replace)"
