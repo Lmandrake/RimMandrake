@@ -300,19 +300,24 @@ def t_a_folder_that_holds_no_defs_is_not_walked_for_another_mod():
                     "Languages/English/DefInjected/y.xml", "Sounds/z.xml", "LoadFolders.xml", "About/About.xml"):
             write(os.path.join(mod, rel), "<Defs/>\n")
         os.makedirs(os.path.join(mod, "Assemblies", "Sub"))
-        walked = []
-        real = os.scandir
+        walked, folders = [], {}
+        real_scan, real_open = os.scandir, os.open
+
+        def open_folder(p, *a, **k):
+            fd = real_open(p, *a, **k)
+            folders[fd] = os.fspath(p)
+            return fd
 
         def spy(p=".", *a, **k):
-            walked.append(os.fspath(p))
-            return real(p, *a, **k)
-        os.scandir = spy
+            walked.append(folders[p] if isinstance(p, int) else os.fspath(p))
+            return real_scan(p, *a, **k)
+        os.scandir, os.open = spy, open_folder
         try:
             full = G.xml_files(mod)
             walked.clear()
             cut = G.xml_files(mod, prune=G.NON_DEF_DIRS)
         finally:
-            os.scandir = real
+            os.scandir, os.open = real_scan, real_open
         want = {"Defs/a.xml", "1.6/Defs/b.xml", "Compat/Foo/Defs/c.xml", "LoadFolders.xml", "About/About.xml"}
         bad_walk = [w for w in walked if any(x in w for x in ("Textures", "Languages", "Sounds", "Assemblies"))]
         return set(cut) == want and "Textures/Deep/Er/x.xml" in full and not bad_walk

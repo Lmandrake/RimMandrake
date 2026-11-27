@@ -1,8 +1,8 @@
 # Deploy index: boundary page
 
 Code: `src/RimMandrake/Utils/deploy_index.py`, used by `deploy_custom_mods.py` (compare) and `deploy_def_guard.py`
-(`parse_defs`). Tests: `src/RimMandrake/Utils/selftest_deploy_index.py` (offline). Item:
-`RIMMANDRAKE_TIME_SLOW_ACTIONS_DEPLOY_CHECK_TOOK_TWO_MINUTES`.
+(`parse_defs`). Both walkers use `deploy_listing.py`; its page is `design/specs/2026-11-27-deploy-listing/boundary.md`. Tests:
+`src/RimMandrake/Utils/selftest_deploy_index.py` (offline). Item: `RIMMANDRAKE_TIME_SLOW_ACTIONS_DEPLOY_CHECK_TOOK_TWO_MINUTES`.
 
 Why: a plan of one mod (`--mod GimmeSomeSlack --instance ArchSmall`) took 147 s on 2026-11-26, load average 21.
 `cProfile` of that run: the def guard 133 s (open and parse of 4,645 XML files of the 103 other mods on the Windows
@@ -29,8 +29,6 @@ every file and writes it again.
   tool that restores a time do not.
 - **a-bit-rot.** A byte that changes on disk with no write. Only `--full-read` finds it.
 - **a-source-side.** The index never covers the repo side: the repo file is always read (Linux drive, fast).
-- **a-listing-that-hits-ENOMEM.** A folder whose listing fails (ENOMEM under load) is skipped by `xml_files` and
-  `inventory`, as before this page: its files are then unseen. Not changed here (row on the slow-actions page).
 - **a-listing.** The index does not replace the folder listing: a new or deleted file is found by the listing, as
   before, and costs the listing time (scandir and stat on the Windows drive).
 

@@ -59,7 +59,8 @@ class Counter:
         self.scans = []
 
     def __enter__(self):
-        self.st, self.ls, self.sd = os.stat, os.lstat, os.scandir
+        self.st, self.ls, self.sd, self.op = os.stat, os.lstat, os.scandir, os.open
+        folders = {}
         me = self
 
         def st(*a, **k):
@@ -97,14 +98,19 @@ class Counter:
             def close(s):
                 s.it.close()
 
+        def op(path, *a, **k):
+            fd = me.op(path, *a, **k)
+            folders[fd] = os.fspath(path)
+            return fd
+
         def sd(path=".", *a, **k):
-            me.scans.append(os.fspath(path))
+            me.scans.append(folders[path] if isinstance(path, int) else os.fspath(path))
             return It(me.sd(path, *a, **k))
-        os.stat, os.lstat, os.scandir = st, ls, sd
+        os.stat, os.lstat, os.scandir, os.open = st, ls, sd, op
         return self
 
     def __exit__(self, *a):
-        os.stat, os.lstat, os.scandir = self.st, self.ls, self.sd
+        os.stat, os.lstat, os.scandir, os.open = self.st, self.ls, self.sd, self.op
 
 
 def same_bytes_survives_enomem():

@@ -46,10 +46,13 @@ Def type: the element tag minus namespace; any *ThingDef* subclass
 (AlienRace.ThingDef_AlienRace) shares the ThingDef database and keys as ThingDef.
 """
 
+import errno
 import fnmatch
 import os
 import re
 import xml.etree.ElementTree as ET
+
+from deploy_listing import entry_stat, listed_folder
 
 GAME_VERSION = (1, 6)
 _VER = re.compile(r"^v?(\d+)\.(\d+)$")
@@ -79,32 +82,31 @@ DEPLOY_EXCLUDE_DIRS = frozenset({"Source", "__pycache__", ".git", "art_candidate
 NON_DEF_DIRS = frozenset({"Textures", "Sounds", "Assemblies", "Languages"})
 
 
-def xml_files(root, prune=()):
+def xml_files(root, prune=(), *, def_stats=None):
     """{rel: abspath} for every .xml under root (dangling links skipped). `prune`: folder names not entered
-    (NON_DEF_DIRS, for the game copy of a mod that is not a target: they hold 75% of its folders)."""
+    (NON_DEF_DIRS, for the game copy of a mod that is not a target: they hold 75% of its folders).
+    When given, def_stats records metadata by path for XML under any Defs folder."""
     out = {}
-    if not os.path.isdir(root):
-        return out
-    # scandir: DirEntry.is_file() comes free from d_type and follows links, so a
-    # dangling link is skipped with no per-file stat (the old os.path.exists was one
-    # 1.7 ms /mnt/c stat per XML).
     skip = DEPLOY_EXCLUDE_DIRS | frozenset(prune)
-    stack = [root]
+    stack = [""]
     while stack:
-        dp = stack.pop()
-        try:
-            it = list(os.scandir(dp))
-        except OSError:
-            continue
-        for e in it:
-            try:
-                if e.is_dir():
-                    if e.name not in skip and not e.is_symlink():
-                        stack.append(e.path)
-                elif e.name.lower().endswith(".xml") and e.is_file():
-                    out[os.path.relpath(e.path, root).replace(os.sep, "/")] = e.path
-            except OSError:
-                continue
+        rel_dir = stack.pop()
+        folder = os.path.join(root, rel_dir) if rel_dir else root
+        in_defs = def_stats is not None and "Defs" in rel_dir.split(os.sep)
+        with listed_folder(folder, missing_ok=not rel_dir) as (fd, entries):
+            for e in entries:
+                try:
+                    if e.is_dir():
+                        if e.name not in skip and not e.is_symlink():
+                            stack.append(os.path.join(rel_dir, e.name))
+                    elif e.name.lower().endswith(".xml") and e.is_file():
+                        path = os.path.join(folder, e.name)
+                        if in_defs:
+                            def_stats[path] = entry_stat(e, fd)
+                        out[os.path.join(rel_dir, e.name).replace(os.sep, "/")] = path
+                except OSError as exc:
+                    if exc.errno not in (errno.ENOENT, errno.ENOTDIR, errno.ELOOP):
+                        raise
     return out
 
 
@@ -147,13 +149,15 @@ _CACHE = {}
 STORE = None        # a deploy_index.Index while a deploy plan runs: game-side parses are kept on the Linux drive
 
 
-def parse_defs(path):
+def parse_defs(path, *, st=None):
     """-> ([(type, defName)], [(fromKey, toKey)]) for one def file; cached by path+mtime, and for a game-side
-    file (STORE.covers) kept across runs with its size and time (deploy_index.py)."""
-    try:
-        st = os.stat(path)
-    except OSError:
-        return [], []
+    file (STORE.covers) kept across runs with its size and time (deploy_index.py).
+    Game files can use the stat from the listing. A new parse is recorded with the open file's stat."""
+    if st is None:
+        try:
+            st = os.stat(path)
+        except OSError:
+            return [], []
     key = (path, st.st_mtime_ns, st.st_size)
     if key in _CACHE:
         return _CACHE[key]
@@ -167,7 +171,12 @@ def parse_defs(path):
     defs, aliases = [], []
     unreadable = False
     try:
-        root = ET.parse(path).getroot()
+        if store is None:
+            root = ET.parse(path).getroot()
+        else:
+            with open(path, "rb") as f:
+                st = os.fstat(f.fileno())
+                root = ET.parse(f).getroot()
     except OSError:
         root, unreadable = None, True
     except ET.ParseError:
@@ -186,22 +195,24 @@ def parse_defs(path):
                 ty = def_type((li.findtext("defType") or "ThingDef").strip())
                 if f and t:
                     aliases.append(((ty, f), (ty, t)))
-    _CACHE[key] = (defs, aliases)
+    _CACHE[(path, st.st_mtime_ns, st.st_size)] = (defs, aliases)
     if store is not None and not unreadable:
         store.parsed_put(path, st.st_size, st.st_mtime_ns, [defs, aliases])
     return defs, aliases
 
 
-def index(mods, prefiltered=False, every=None):
+def index(mods, prefiltered=False, every=None, *, stats=None):
     """mods: {mod: {rel: path}} -> (defs {key: {mod: rel}}, aliases [(mod, rel, from, to)]).
     defs keeps each mod's FIRST file only; pass every={} to also collect
     {key: {mod: [rel, ...]}}, one entry per definition, so a def defined twice
     inside ONE mod (two files, or twice in one file) is visible.
-    prefiltered: the maps already hold def files only (repo index)."""
+    prefiltered: the maps already hold def files only (repo index).
+    stats: game metadata collected by xml_files in this plan."""
     defs, aliases = {}, []
+    stats = {} if stats is None else stats
     for mod, files in mods.items():
         for rel, p in sorted(files.items() if prefiltered else def_files(files)):
-            ds, als = parse_defs(p)
+            ds, als = parse_defs(p, st=stats.get(p))
             for k in ds:
                 defs.setdefault(k, {}).setdefault(mod, rel)
                 if every is not None:
@@ -231,15 +242,16 @@ def _k(key):
     return "%s %s" % key
 
 
-def check(post, pre, targets, repo, cmd):
+def check(post, pre, targets, repo, cmd, *, game_stats=None):
     """post: {mod: {rel: path}} every mod after the plan; pre: {target: {rel: path}}
     game copy of each target NOW; targets: set of mod names; repo: {mod: {rel: path}}
     what each mod's REPO would ship; cmd(mods, prune) -> fix command string.
+    game_stats: metadata from the game-side folder listings, keyed by file path.
 
     -> (blocking, preexisting): lists of message strings."""
     pall, rall = {}, {}
-    pdefs, paliases = index(post, every=pall)
-    predefs, _ = index(pre)
+    pdefs, paliases = index(post, every=pall, stats=game_stats)
+    predefs, _ = index(pre, stats=game_stats)
     rdefs, raliases = index(repo, prefiltered=True, every=rall)
     block, old = [], []
 

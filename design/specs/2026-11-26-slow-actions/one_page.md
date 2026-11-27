@@ -70,6 +70,19 @@ holds about 2.0 M entries, mostly 286 `publish_check_*` and `wrong_check_*` fold
 from 2026-11-19. The `find` must keep walking `.seat-tmp`, which holds real borrowers; the fix is to stop leaving that
 residue (item `RIMMANDRAKE_SPEED_SCRATCH_REAP_SEAT_TMP_PUBLISH_CHECK_RESIDUE_2M`).
 
+### Folder-relative deploy listing, 2026-11-27
+
+The warm-index plan for Gimme Some Slack on ArchSmall took **69.65 s** at a one-minute load average of **46.67**
+and **76.26 s** at load **49.81** on the final revision. The previous listing took **103.40 s** at load **39.77**.
+All three runs used
+`deploy_custom_mods.py --mod GimmeSomeSlack --instance ArchSmall` in plan mode, with separate copies of the
+same warmed index inside the scratch clone. The plan text matched byte for byte, and every run exited 1
+for the same deploy drift.
+
+The inventory and def guard list open folders with `scandir(fd)` and stat game files with `dir_fd`. The def guard
+uses the sizes and times gathered during listing for index lookups. `selftest_deploy_listing.py` checks recovery
+after ENOMEM during a listing, a named error if the folder still fails, and agreement with absolute-path metadata.
+
 ## The ranking (wall hours in 7 days = runs × usual duration)
 
 | # | action | runs | usual (median / p90) | total | cause (named, with its evidence in `evidence.md`) |
@@ -84,7 +97,7 @@ residue (item `RIMMANDRAKE_SPEED_SCRATCH_REAP_SEAT_TMP_PUBLISH_CHECK_RESIDUE_2M`
 | 8 | ticket outcome checks (`rm-list-effect`) | 368 | 125 s / 341 s | 17 h | The same cause as row 7: the same checks run again by a second timer. |
 | 9 | codebase page (`rm-codebase-now`) | 670 | 14 s / 273 s | 17 h | Reads of many files and real work. One run 110 s: 19.6 k `stat`, 34 k opens, 91 k AST relation calls. |
 | 10 | stream collect (`rm-streams-collect`) | 672 | 47 s / 120 s | 12 h | Repeated work. One run 127 s, 82 s user CPU: `subject_aliases` called 3.1 M times, 3.1 M `stat` calls. |
-| - | deploy plan of one mod | by walk, stage and cert runs | 147 to 191 s before, 64 to 106 s now | UNMEASURED count | Reads of many files on the Windows drive (fixed in part, above). |
+| - | deploy plan of one mod | by walk, stage and cert runs | 147 to 191 s before, 64 to 106 s after the index | UNMEASURED count | Game-copy metadata reads on the Windows drive. The folder-relative follow-up is timed above. |
 
 Actions with one figure each, from records: C# build `Time Elapsed 00:03:26` (32 lines in transcripts; the same mod
 repeated); game start 39 s and save load 4 s on a game that is up (walk stage record, 2026-11-26); a walk READY in 151 s
@@ -96,7 +109,7 @@ window run median 167 s over 64 runs, 6.4 h; wake of the Conductor window UNMEAS
 
 | row | fix | size | proves |
 |---|---|---|---|
-| 1 | Deploy plan: list and `stat` the game copy with folder-relative calls (a `stat` by absolute path cost 8 to 10 ms, 1.5 ms relative to the folder, 3.7 ms by `dir_fd`; `scandir(fd)` listing 2× faster), or list it once from the Windows side. Add a retry for ENOMEM to the listing (today a folder that fails is skipped without a word). | M (a day) | plan time of Gimme Some Slack; planted ENOMEM |
+| 1 | Done. Deploy plans use folder-relative listings and stats, retry ENOMEM, and name a folder that still fails. | M | ArchSmall timing above and planted ENOMEM in `selftest_deploy_listing.py` |
 | 2 | Ticket lane: run the 48 outcome checks once per tick for both timers, and in parallel; keep a result until a file that the check reads has changed. | M | a tick of 218 s → under 30 s |
 | 3 | Pipeline tick: done. Index ending notes once, fill last words once per mod, and reuse unchanged file reads. | | recorded-state tick profile below |
 | 4 | Status page: done. Share file reads with the tick and encode only phone images whose rendered content changed. | | recorded-state page profile below |

@@ -164,6 +164,7 @@ if __name__ == "__main__" and _instance_arg(sys.argv[1:]):
 from game_paths import LOCAL_MODS, MODS_CONFIG            # noqa: E402
 import biomes_compose                                      # noqa: E402
 import deploy_index as DI                                  # noqa: E402
+from deploy_listing import ListingError, entry_stat, listed_folder  # noqa: E402
 
 _MODS = [LOCAL_MODS]
 _CONFIG = [MODS_CONFIG]
@@ -202,9 +203,9 @@ def shippable(rel):
 # One inventory per root per run (DEPLOY_PLAN_FIX_REDUNDANT_TREE_PASSES). On the
 # /mnt/c game copy a stat costs ~1.7 ms and a full plan used to make ~116k of them:
 # tree() did an os.path.exists() per file, filecmp.cmp() stat'ed both sides again,
-# and the stale-hold scan walked every root a third time. Now each file is stat'ed
-# once (DirEntry.is_file() is free from d_type and follows links, so a dangling
-# symlink is still dropped; the one DirEntry.stat() gives the size compare() needs).
+# and the stale-hold scan walked every root a third time. Now the inventory takes
+# sizes and times relative to the open folder. DirEntry.is_file() uses d_type for
+# regular files and follows links, so a dangling symlink is still dropped.
 _INV = {}
 _MT = {}      # root -> {rel: mtime_ns}, from the same one stat as the size (the deploy index compares it)
 
@@ -215,15 +216,12 @@ def inventory(root):
     if hit is not None:
         return hit
     out, mts = {}, {}
-    if os.path.isdir(root):
-        stack = [""]
-        while stack:
-            rel_dir = stack.pop()
-            try:
-                it = list(os.scandir(os.path.join(root, rel_dir) if rel_dir else root))
-            except OSError:
-                continue
-            for e in it:
+    stack = [""]
+    while stack:
+        rel_dir = stack.pop()
+        folder = os.path.join(root, rel_dir) if rel_dir else root
+        with listed_folder(folder, missing_ok=not rel_dir) as (fd, entries):
+            for e in entries:
                 rel = os.path.join(rel_dir, e.name) if rel_dir else e.name
                 try:
                     if e.is_dir():           # follows links, as os.walk(followlinks=False)
@@ -236,11 +234,12 @@ def inventory(root):
                     # filecmp raised FileNotFoundError and killed the whole plan
                     # (DEPLOY_PLANNER_FIX_CRASH_ON_DELETED, SWBestiary Karrask.png).
                     if shippable(rel) and e.is_file():
-                        st = e.stat()
+                        st = entry_stat(e, fd)
                         out[rel] = st.st_size
                         mts[rel] = st.st_mtime_ns
-                except OSError:
-                    continue                 # vanished mid-walk: not a file now
+                except OSError as exc:
+                    if exc.errno not in (errno.ENOENT, errno.ENOTDIR, errno.ELOOP):
+                        raise
     _INV[root] = out
     _MT[root] = mts
     return out
@@ -1085,24 +1084,25 @@ def _def_guard(args, targets, holds, mods_dir):
     except Exception:                                    # noqa: BLE001
         man = None
     ctarget = man["target"] if man else None
-    post, pre, repo = {}, {}, {}
+    post, pre, repo, game_stats = {}, {}, {}, {}
     known = set(mod_dirs()) | ({ctarget} if ctarget else set())
     full = (active_ids(FULL_LIST) or None) if os.path.isfile(FULL_LIST) else None
     dead = []
-    if os.path.isdir(mods_dir):
-        for n in sorted(os.listdir(mods_dir)):
-            p = os.path.join(mods_dir, n)
-            if n in tnames or not os.path.isdir(p):
+    with listed_folder(mods_dir) as (_, entries):
+        # package_id checks whether a symlink points to a mod, including links to directories.
+        other_dirs = sorted(e.name for e in entries
+                            if e.name not in tnames and (e.is_dir(follow_symlinks=False) or e.is_symlink()))
+    for n in other_dirs:
+        p = os.path.join(mods_dir, n)
+        pid = (package_id(p) or "").lower()
+        if pid.startswith("mandrake."):
+            if full is not None and n not in known and pid not in full:
+                dead.append(n)              # orphan, never loads: out of scope
                 continue
-            pid = (package_id(p) or "").lower()
-            if pid.startswith("mandrake."):
-                if full is not None and n not in known and pid not in full:
-                    dead.append(n)              # orphan, never loads: out of scope
-                    continue
-                post[n] = G.xml_files(p, prune=G.NON_DEF_DIRS)   # not a target: only its Defs/ matter
+            post[n] = G.xml_files(p, prune=G.NON_DEF_DIRS, def_stats=game_stats)
     for n, src in targets:
         dst = os.path.join(mods_dir, n)
-        s, d = G.xml_files(src), G.xml_files(dst)
+        s, d = G.xml_files(src), G.xml_files(dst, def_stats=game_stats)
         pre[n] = d
         held = G.held_fn(holds, n)
         gone = [r for r in d if r not in s and not held(r)]
@@ -1125,7 +1125,7 @@ def _def_guard(args, targets, holds, mods_dir):
             for rel, p in G.def_files(G.xml_files(sdir)):
                 bucket[pre_rel + rel] = p
     block, old = G.check(post, pre, tnames, repo,
-                         lambda mods, prune: _fix_cmd(mods, prune, ctarget))
+                         lambda mods, prune: _fix_cmd(mods, prune, ctarget), game_stats=game_stats)
     print("def guard: %d mod(s) in the resulting game copy (mandrake.*), %d target(s): "
           "%s" % (len(post), len(tnames), "%d BLOCKING" % len(block) if block else "clean"))
     if dead:
@@ -1165,4 +1165,7 @@ def _emit_deploy(deployed, leftover):
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except ListingError as exc:
+        sys.exit(f"deploy_custom_mods.py: {exc}")
