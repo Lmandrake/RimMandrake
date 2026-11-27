@@ -136,6 +136,49 @@ def t_steward_does_not_cry_idle_empty_on_a_chain_the_filler_drops(W, T, reset, n
         reset()
 
 
+def t_pick_the_filler_has_not_seen(W, T, reset, now):
+    """2026-11-26 12:52, 2026-11-27 11:56 and 18:03 (STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_YVBFTB): the filler's pass
+    said `FlowWorks: no owed work ... no fill`; the steward's forecast, minutes later in the same tick, saw the pick
+    toggle_river_steam and raised IDLE_EMPTY `fill would queue ... (the fill failed?)` at once. The next tick's filler
+    queued it. A pick that the filler has had no pass to see is not a failed fill; one that the filler chose and did not
+    queue is. The filler's own record (fill_seen.json) tells the two apart."""
+    import argparse
+    real = T.fill_plan
+    pick = {"verdict": "pick", "pick": ["toggle_river_steam"], "text": "would queue toggle_river_steam"}
+    try:
+        reset()
+        T.fill_plan = lambda *a, **k: {"verdict": "exhausted", "text": "Mock: no owed work; no fill"}
+        rc = T.fill_once(argparse.Namespace(mod="Mock", n=4, cap=200))
+        seen = (T.read_json(T.q("fill_seen.json")) or {}).get("Mock") or {}
+        check(rc == 0 and seen.get("verdict") == "exhausted" and seen.get("epoch"),
+              "the filler records its verdict and the start of its pass: %s" % seen)
+        T.fill_plan = lambda *a, **k: dict(pick)
+        S = W.S
+        S.dump({"Mock": {"verdict": "exhausted", "epoch": now - 60, "at": W.iso(now - 60)}}, T.q("fill_seen.json"))
+        ls = W.lane_state(now, ["Mock"])
+        check(ls["state"] == "IDLE_EMPTY" and ls["fault_at"] is not None and ls["fault_at"] > now
+              and ls["reason"].startswith("fill would queue"),
+              "a pick the filler has not yet had a pass to see is not a fault yet: fault_at=%s now=%s: %s"
+              % (ls["fault_at"], now, ls["reason"][:160]))
+        S.dump({"Mock": {"verdict": "exhausted", "epoch": now - W.FILL_PASS_GRACE_S - 1,
+                         "at": W.iso(now - W.FILL_PASS_GRACE_S - 1)}}, T.q("fill_seen.json"))
+        ls = W.lane_state(now, ["Mock"])
+        check(ls["fault_at"] is not None and ls["fault_at"] <= now,
+              "a filler that has run no pass for the grace is a fault: fault_at=%s now=%s" % (ls["fault_at"], now))
+        S.dump({"Mock": {"verdict": "pick", "epoch": now - 60, "at": W.iso(now - 60)}}, T.q("fill_seen.json"))
+        ls = W.lane_state(now, ["Mock"])
+        check(ls["state"] == "IDLE_EMPTY" and ls["fault_at"] == 0,
+              "a pick the filler chose and did not queue is `the fill failed?` at once: %s" % ls["fault_at"])
+        os.remove(T.q("fill_seen.json"))
+        ls = W.lane_state(now, ["Mock"])
+        check(ls["fault_at"] == 0, "with no filler record the pick is a fault at once, as before: %s" % ls["fault_at"])
+    finally:
+        T.fill_plan = real
+        if os.path.exists(T.q("fill_seen.json")):
+            os.remove(T.q("fill_seen.json"))
+        reset()
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="rf_steward_")
     try:
@@ -664,6 +707,7 @@ def main():
         check(ls["state"] == "IDLE_EMPTY" and ls["fault_at"] == 0, "an empty queue with nothing selectable: "
               "IDLE_EMPTY, a fault (an evidence gap): %s" % ls["reason"])
         t_steward_does_not_cry_idle_empty_on_a_chain_the_filler_drops(W, T, reset, base)
+        t_pick_the_filler_has_not_seen(W, T, reset, base)
         real = T.fill_plan
         try:
             T.fill_plan = lambda *a, **k: {"verdict": "exhausted", "text": "nothing to fill"}

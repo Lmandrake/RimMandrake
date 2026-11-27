@@ -27,7 +27,9 @@ What it knows (section 6.1), first match wins:
                    the day's lane-time budget or job cap is a brake too but NOT a fault: it expires at local midnight,
                    and it ends an incident (the lane stands idle on purpose, every check above it passed)
   IDLE_EMPTY       nothing queued and the fill found nothing selectable (no history, every chain DRY), or it would
-                   queue chains yet nothing is pending (the fill itself failed): an evidence gap, a fault
+                   queue chains yet nothing is pending (the fill itself failed): an evidence gap, a fault; a pick
+                   that the filler has had no pass to see yet (its fill_seen.json record says another verdict) is a
+                   fault only after FILL_PASS_GRACE_S with no newer filler pass (unseen_pick_due)
   SWITCHED         SteveDesktop's Claude work is pipeline only (rimflow/host_work_switch.py) and EVERY mod of the filler's
                    list is refused by it (fill_plan verdict "switched": no mod is live): the owner's order, never a fault
                    and never aged; a fill.stop beside it is not read. A live mod keeps its own state
@@ -152,6 +154,39 @@ UNIT_PAUSE_S = 24 * 3600     # a pause that waits for a unit is told of after a 
 COMPANION_GRACE_S = 900     # a hold outlasting a build and a push, and more than one retry of a blip, is a fault
 
 
+# budget: danger=a filler that stops passing (it dies before its record, or leaves the tick's loop) hides a pick that
+# budget: nobody queues; ends no work: the steward's clock starts. One tick (fill, then steward) is 4-10 min, longest
+# budget: 1386 s (testq-tick.service, 14 days to 2026-11-24) plus the 60 s timer beat: two ticks fit
+FILL_PASS_GRACE_S = 3000
+
+
+def unseen_pick_due(mods):
+    """-> (fault_at, what the filler saw) when NO mod of MODS has been seen by the filler as a pick, else None.
+
+    The filler (testq.fill_once) runs before the steward in each tick, and each fill_rank takes minutes, so a pick that
+    becomes owed between the two is seen by the steward first; the next tick's filler queues it. That race raised
+    IDLE_EMPTY `the fill failed?` at once three times (2026-11-26 12:52, 2026-11-27 11:56 and 18:03;
+    STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_YVBFTB). The filler's record (testq.FILL_SEEN) tells the race from a
+    failure: a mod with no record, an unreadable one or a `pick` record (the filler chose it and nothing is pending) is
+    a failure, a fault at once. A mod whose last filler verdict was another one is not seen yet: a fault only when
+    FILL_PASS_GRACE_S passes with no newer filler pass. When the next pass sees the steward's pick, the job is pending;
+    when it disagrees, its verdict is the one acted on, and the forecast waits for its next pass."""
+    seen = T.read_json(path(T.FILL_SEEN)) or {}
+    rows = []
+    for m in mods:
+        r = seen.get(m) if isinstance(seen.get(m), dict) else None
+        try:
+            ep = float(r["epoch"]) if r else None
+        except (KeyError, TypeError, ValueError):
+            ep = None
+        if ep is None or r.get("verdict") in (None, "pick"):
+            return None
+        rows.append((ep + FILL_PASS_GRACE_S, "%s %s at %s" % (m, r["verdict"], iso(ep))))
+    if not rows:
+        return None
+    return min(rows)[0], "; ".join(w for _, w in rows)
+
+
 def fill_stop_until(p):
     """-> the epoch of a `until: <ISO time>` line in a hand-written fill.stop, or None. A deliberate filler stop (an
     owner's order for the day) named no end, so it always aged into a fault 60 min after its mtime and paged a seat
@@ -266,8 +301,13 @@ def lane_state(now, mods=None):
                    % (",".join(by["brake"]), ",".join(str(j) for j in jobs), ", ".join(causes),
                       "; HARNESS-class, escalated at once" if harness else ""), 0, at_once=harness, jobs=jobs)
     if "pick" in by:
-        return _st("IDLE_EMPTY", "fill would queue %s but nothing is pending (the fill failed?)"
-                   % "; ".join("%s: %s" % (m, ",".join(plans[m]["pick"])) for m in by["pick"]), 0)
+        what = "fill would queue %s but nothing is pending" % "; ".join(
+            "%s: %s" % (m, ",".join(plans[m]["pick"])) for m in by["pick"])
+        due = unseen_pick_due(by["pick"])
+        if due:
+            return _st("IDLE_EMPTY", "%s; the filler's last pass saw %s: its next pass sees the pick" % (what, due[1]),
+                       due[0])
+        return _st("IDLE_EMPTY", what + " (the fill failed?)", 0)
     if "companion" in by:   # the stager is failing or behind: the filler holds rather than die at deploy
         m = by["companion"][0]
         return _st("IDLE_EMPTY", "filler held: " + plans[m]["text"][:200], plans[m]["since"] + COMPANION_GRACE_S)

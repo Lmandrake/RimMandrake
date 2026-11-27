@@ -22,10 +22,12 @@ Code: `src/RimMandrake/Utils/testq/lane_ticket.py`, `src/RimMandrake/Utils/testq
 
 - Three distinct jobs in the 24 hours through the current finish. The ticket counted 31 repair items in 21 days, including one-off faults the lane now heals.
 - The steward's existing 10, 30 and 120 minute ladder and Operations' 30 minute target guard an unowned stall like the recorded 166-minute brake.
+- `FILL_PASS_GRACE_S` (3000 s) is two ticks: the filler's next pass must come in that time. It guards a filler that stops passing; the longest tick is 1386 s.
 
 ## PROMISES
 
 - **cause-identity.** A changed state or cause gets a different ticket, even during a continuous outage.
 - **incident-lifecycle.** Recovery ends the incident and leaves its cause ticket on a named wait. A return lifts the wait and notes the same ticket at the first rung.
+- **pick-the-filler-has-not-seen.** A pick that the filler's last pass did not see (its `fill_seen.json` record names another verdict) is not a fault until `FILL_PASS_GRACE_S` passes with no newer filler pass. A pick that the filler chose and did not queue, or one with no filler record, is a fault at once.
 
 The acceptance script exercises pure key identity and incident timing. The Operations clock and ingest threshold are exercised in `selftest_ops_watch.py` and `selftest_ingest.py`.

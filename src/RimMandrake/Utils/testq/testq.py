@@ -2446,9 +2446,24 @@ def cmd_fill(a):
         return fill_once(a)
 
 
+FILL_SEEN = "fill_seen.json"
+
+
+def note_fill_seen(mod, now, verdict):
+    """QHOME/fill_seen.json {mod: {"verdict", "epoch", "at"}}: the filler's last verdict per mod and the start of the pass
+    that reached it. The steward reads it: a pick that the filler has had no pass to see is not `the fill failed?`
+    (STEVE_LANE_UNSTICK_IDLE_UNOWNED_IDLEEMPTY_YVBFTB). Written before the submit, so a pick that the submit then
+    refuses reads as a pick the filler chose and did not queue."""
+    p = q(FILL_SEEN)
+    seen = read_json(p) or {}
+    seen[mod] = {"verdict": verdict, "epoch": now, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}
+    S.dump(seen, p)
+
+
 def fill_once(a):
     now = time.time()
     plan = fill_plan(a.mod, a.n, a.cap, now=now)
+    note_fill_seen(a.mod, now, plan["verdict"])
     if plan.get("gone"):    # fill_plan dropped them (fill_rank_declared); only the filler says so, the steward reads quietly
         log("filler: %s no longer declares %s; not ranked" % (a.mod, ",".join(plan["gone"])))
     if plan["verdict"] != "pick":    # also the plan the drop left with nothing to pick
