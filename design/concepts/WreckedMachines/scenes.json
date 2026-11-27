@@ -39,8 +39,8 @@
     "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
     "the list of generators read from the loaded game: every reward, loot and trader-stock generator that can produce a building or an item (asserted: the list is not empty and names generators of Core, Ideology, Odyssey and Anomaly)"
    ],
-   "action": "run each generator many times (the number is written in the test table before the first run) and list the defs produced; read every recipe's products; have a colonist take apart one wreck of each group and list what is left",
-   "expect": "no working ancient machine and no Ancient Component is in any generator's output; no recipe makes a component; a wreck taken apart leaves ordinary scrap and no component",
+   "action": "run each generator many times (the number is written in the test table before the first run) and list the defs produced; read every recipe's products; have a colonist take apart one machine of each group at each level, the Refurbished level included (its last repair used a component), the take-apart repeated a number of times written in the test table before the first run or the game's refund list for the def read once, and list what is left",
+   "expect": "no working ancient machine and no Ancient Component is in any generator's output; no recipe makes a component; a machine taken apart at any level, the Refurbished level included, leaves ordinary scrap and no component",
    "control": {
     "case": "the same generator runs with the power cell's line and the emanator's line switched off",
     "expect": "a working vanometric power cell and a working psychic emanator each appear at least once in the output",
@@ -92,7 +92,7 @@
     "a map kind with no ancient ruin (asserted after generation: no ruin room on the map)"
    ],
    "action": "generate ordinary new maps (Y maps; X of Y with a wreck is written in the test table before the first run) and count this mod's wrecks on each",
-   "expect": "some maps hold exactly one wreck, standing among rubble, at the Wrecked level; many maps hold none; no map holds several; no Ancient Component lies on an ordinary map",
+   "expect": "some maps hold exactly one wreck, standing among rubble, at the Wrecked level; many maps hold none; no map holds several; no Ancient Component lies on an ordinary map; each wreck found stands on a cell that a colonist can reach on foot from the map's edge with no mining, and its Uninstall order is available",
    "control": {
     "case": "the same maps generated with the ordinary-map placement switched off",
     "expect": "no map holds a wreck of this mod",
@@ -328,11 +328,11 @@
    "start": [
     "the mod's small list with all five expansions, a quicktest map (asserted: the mod's proof type answers)",
     "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
-    "a Wrecked, a Kludged and a Refurbished power cell, each on its own small net with one lamp, and the base game's vanometric power cell on a fourth net for comparison (asserted nets apart)",
+    "a Wrecked, a Kludged and a Refurbished power cell, each on its own small net with the same row of lamps, more lamps than the Kludged cell can light, and the base game's vanometric power cell on a fourth net for comparison (asserted nets apart)",
     "a Wrecked, a Kludged and a Refurbished emanator, powered, each in its own closed room with one colonist of the same traits (asserted), and the base game's emanator in a fourth room"
    ],
    "action": "read the power that each cell gives and whether its lamp is lit; advance the clock; read each colonist's thoughts",
-   "expect": "the wrecked cell gives no power and its lamp is dark; the Kludged cell gives less than the Refurbished one, and both give less than the base game's cell; the colonist beside the wrecked emanator has no thought from it; the Kludged emanator's thought is weaker than the Refurbished one's, and both are weaker than the base game's",
+   "expect": "the wrecked cell gives no power and its lamp is dark; the Kludged cell gives less than the Refurbished one and lights fewer of its lamps, and both give less than the base game's cell; the colonist beside the wrecked emanator has no thought from it; the Kludged emanator's thought is weaker than the Refurbished one's, and both are weaker than the base game's",
    "control": {
     "case": "a fifth room with a colonist and no emanator, and a fifth net with a lamp and no cell",
     "expect": "no thought and no light",
@@ -345,7 +345,9 @@
    "id": "sc_component_gate",
    "kind": "acceptance",
    "requirement": [
-    "last_repair_needs_component"
+    "last_repair_needs_component",
+    "repair_on_the_machine",
+    "only_by_repair"
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/WreckedMachines/validation.py::scene_component_gate",
@@ -358,12 +360,12 @@
     "no Ancient Component on the map (asserted)",
     "one free colonist"
    ],
-   "action": "select the Kludged smelter and read its last repair order; then place one Ancient Component in the stockpile and give the order; advance the clock to the end of the work; count the components",
-   "expect": "with no component the order is unavailable and its reason names the Ancient Component; with one component the order is accepted, the smelter becomes Refurbished, and no component is left",
+   "action": "select the Kludged smelter and read its last repair order; then place one Ancient Component in the stockpile and give the order on the machine; let the component be delivered and cancel the order; read the machine and count the components; give the order again; advance the clock to the end of the work, listing the machine at its cell and reading the colonist's job at every step; count the components; read the Refurbished smelter's orders with every research project finished",
+   "expect": "with no component the order is unavailable and its reason names the Ancient Component; after the cancel the Kludged smelter stands at its cell and the component lies beside it or in the stockpile (count one); with the order given again, the Kludged smelter is listed at its cell at every read until the work is complete, the colonist hauls to it and works on it, and no frame or build-menu blueprint appears; the smelter then becomes Refurbished at the same cell and facing, and no component is left; the Refurbished smelter offers no further repair order and no order that reaches the Original",
    "control": {
-    "case": "the same Kludged smelter with a component in stock and its second project not finished (a second machine kind, the power cell, stands in for it)",
-    "expect": "the order is unavailable and its reason names the research, not the component",
-    "rules_out": "an order that is refused for a reason other than the component"
+    "case": "the same Kludged smelter with a component in stock and its second project not finished (a second machine kind, the power cell, stands in for it); and the gizmo read of the Kludged smelter before its last repair",
+    "expect": "the power cell's order is unavailable and its reason names the research, not the component; the Kludged smelter's gizmo list shows its repair order, so the read that finds no order on the Refurbished smelter can see one",
+    "rules_out": "an order that is refused for a reason other than the component, and a gizmo read that would report 'no further repair' on any machine"
    },
    "restore": "destroy the spawned things; close the quicktest map",
    "hold": "immediate"
@@ -438,8 +440,8 @@
     "a wrecked and a Kludged autoloom on the map; a wrecked and a Kludged power cell on the map",
     "a first read of the build menu, the research list and the generators for the autoloom and the power cell"
    ],
-   "action": "switch the autoloom's line off and apply, with the restart of the game where the line's label names one; read again; switch the power cell's line off and apply in the same way; read again; switch both on again and apply in the same way; read a last time",
-   "expect": "with its line off the autoloom is in the build menu behind the factory mod's research and its restoration projects are gone; with its line off the generators produce a working vanometric power cell; the wrecks and Kludged machines on the map stand unchanged through every switch; the last read equals the first read field by field; each line's label says when its change takes effect",
+   "action": "switch the autoloom's line off and apply, with the restart of the game where the line's label names one; read again; switch the power cell's line off and apply in the same way; read again; switch both on again and apply in the same way; read a last time; at each read also read the mod's placement list back",
+   "expect": "with its line off the autoloom is in the build menu behind the factory mod's research and its restoration projects are gone; with its line off the generators produce a working vanometric power cell; the wrecks and Kludged machines on the map stand unchanged through every switch; the last read equals the first read field by field; each line's label says when its change takes effect; with a line off the placement list holds no wreck of that machine, and with the line on again it holds it as it shipped",
    "control": {
     "case": "the smelter, whose line is never touched, read in the same passes",
     "expect": "it reads the same in all four reads",
@@ -622,6 +624,111 @@
    },
    "restore": "destroy the spawned things; close the quicktest map",
    "hold": "immediate"
+  },
+  {
+   "id": "sc_study_without_research_reinvented",
+   "kind": "acceptance",
+   "requirement": [
+    "study_opens_research"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/WreckedMachines/validation.py::scene_study_without_research_reinvented",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "start": [
+    "a tier of the mod's small list with Research Reinvented removed, all five expansions, a quicktest map (asserted: Research Reinvented is not in the loaded mod list; the mod's proof type answers)",
+    "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
+    "a wrecked smelter installed at home; no restoration project started or finished and no study recorded for the smelter (asserted)",
+    "one colonist who can research, with no job; a powered research bench of the kind that the first project needs"
+   ],
+   "action": "read the first project; turn study on once on the wreck; advance the clock by days; read the researcher's job, the wreck's inspect text and the project at intervals; when the study is complete, let the researcher finish the project at the bench",
+   "expect": "the wreck offers the study gizmo; the first project is locked and names the wreck as not studied; the researcher studies the wreck and comes back to it with no new order; the wreck's text shows the study rising; when the study is complete the project opens and is finished at the bench",
+   "control": {
+    "case": "the same tier and starting state with study never turned on, the same span of days, a researcher working at the bench",
+    "expect": "the first project is still locked at the end",
+    "rules_out": "a study that exists only through Research Reinvented, and a project that the bench alone opens when that mod is absent"
+   },
+   "restore": "reload the starting state; close the quicktest map; put the small list back",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_cannery_tier",
+   "kind": "acceptance",
+   "requirement": [
+    "only_by_repair",
+    "levels_of_function",
+    "repair_on_the_machine"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/WreckedMachines/validation.py::scene_cannery_tier",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "start": [
+    "the mod's small list plus Vanilla Cooking Expanded, all five expansions, a quicktest map (asserted: the cannery's def is loaded)",
+    "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
+    "no research project finished (asserted)"
+   ],
+   "action": "read the build menu for every level of the cannery; finish every research project; read it again; read the placement list; spawn the cannery's Wrecked, Kludged and Refurbished levels and the factory mod's own cannery; read each level's processes, its applied work speed and its orders, and the wreck's carried form",
+   "expect": "no level of the cannery is in the build menu before or after the research; the placement list holds the cannery's wreck; the Wrecked cannery offers nothing and has a carried form; the Kludged cannery offers a part of the donor's processes that is not empty; the Refurbished cannery offers all of them and works slower than the factory mod's own; the wreck and the Kludged cannery each offer their repair order",
+   "control": {
+    "case": "the same reads with the cannery's line switched off",
+    "expect": "the cannery is in the build menu behind the factory mod's own research, and its wreck is not in the placement list",
+    "rules_out": "a tier on which the cannery's patches never applied, so that it reads absent for a reason other than this mod"
+   },
+   "restore": "put the setting back and reload the starting state; close the quicktest map; put the small list back",
+   "hold": "immediate"
+  },
+  {
+   "id": "sc_every_machine_onboarded",
+   "kind": "acceptance",
+   "requirement": [
+    "levels_of_function",
+    "repair_on_the_machine",
+    "study_opens_research"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/WreckedMachines/validation.py::scene_every_machine_onboarded",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "start": [
+    "the mod's small list with all five expansions, a quicktest map (asserted: the mod's proof type answers)",
+    "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
+    "for each ancient machine on the list, its Wrecked, Kludged and Refurbished levels and its Original spawned on factory floor where the donor needs it, powered where a level takes power (asserted)",
+    "no restoration project started (asserted)"
+   ],
+   "action": "for each machine: read the first project's lock and its studied-thing requirement; read the wreck's orders (study gizmo, repair order and its reason); finish that machine's first project by command and read the repair order again; read each level's processes, power or effect, and applied work speed against the Original's in the loaded game",
+   "expect": "for every machine: the first project is locked and names that machine's wreck; the wreck offers study and a repair order that is unavailable for the research and available after it; the Kludged level offers its repair order to Refurbished; the Wrecked level offers no process and gives no power; the Kludged processes are a non-empty strict part of the donor's (or its one product); the Refurbished processes equal the donor's; the Refurbished level works slower or weaker than the Original; what the loaded game offers equals the machine's onboarding row",
+   "control": {
+    "case": "the base game's electric smelter and a planted copy of one onboarding row with a process removed",
+    "expect": "the electric smelter shows no study gizmo and no repair order; the planted row is reported as disagreeing with the loaded game",
+    "rules_out": "a read that reports a repair order or study on any building, and a comparison that cannot see a missing process"
+   },
+   "restore": "destroy the spawned things; reload the starting state; close the quicktest map",
+   "hold": "immediate",
+   "kind_note": "a state read for every machine; a machine counts once its onboarding has landed. The live result is read, not the offline table: the levels are applied by C# at startup."
+  },
+  {
+   "id": "sc_caravan_wreck_home",
+   "kind": "acceptance",
+   "requirement": [
+    "wreck_comes_home"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/WreckedMachines/validation.py::scene_caravan_wreck_home",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
+   "start": [
+    "the mod's small list with all five expansions, a quicktest map (asserted: the mod's proof type answers)",
+    "every machine's Mod Settings line on and every setting at its shipped value (asserted by a settings read)",
+    "a map on another world tile with a wrecked autoloom with no faction on it (asserted def and cell); two colonists and one pack animal of the colony on that map (asserted)",
+    "the colony's home map with a clear install cell on plain floor (asserted)"
+   ],
+   "action": "order Uninstall on the wreck; form a caravan that loads the carried wreck; let the caravan travel home; order its install at the home cell; read the caravan's load and mass, and the colonists' jobs",
+   "expect": "the caravan loads the carried wreck with the colonists and the pack animal, travels and arrives home with it; colonists install it there and the same Wrecked autoloom stands at the home cell",
+   "control": {
+    "case": "the same caravan dialog with the pack animal and one colonist left behind",
+    "expect": "the dialog reads the load as over the caravan's capacity",
+    "rules_out": "a carried form with no weight, so that any caravan packs it whatever it weighs"
+   },
+   "restore": "destroy the spawned things; discard the other map; close the quicktest map",
+   "hold": "immediate",
+   "kind_note": "the caravan's travel is real; time is compressed."
   },
   {
    "id": "sc_study_spike",

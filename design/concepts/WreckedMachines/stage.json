@@ -212,11 +212,85 @@
     "ref": "run rm-role-designer-1795777120",
     "stage": 4,
     "tokens": 2037030
+   },
+   {
+    "at": "2026-11-27T11:23:16Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1795778084",
+    "stage": 5,
+    "tokens": 826598
+   },
+   {
+    "at": "2026-11-27T11:25:10Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1795778084",
+    "stage": 5,
+    "tokens": 164155
+   },
+   {
+    "at": "2026-11-27T11:25:42Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1795778084-reader",
+    "stage": 5,
+    "tokens": 185565
+   },
+   {
+    "at": "2026-11-27T11:27:50Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1795777997",
+    "stage": 5,
+    "tokens": 7940000
    }
   ],
   "reserve": 60000,
-  "spent": 46677934
+  "spent": 55794252
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-27T11:14:44Z",
+   "error": null,
+   "error_kind": null,
+   "fix_chain_ended": null,
+   "gaps": 7,
+   "ids": [
+    "inv_grade_ladder",
+    "inv_mod_settings",
+    "inv_more_factory_machines",
+    "inv_study_the_wreck",
+    "inv_wreck_found_in_world",
+    "last_repair_needs_component",
+    "levels_of_function",
+    "only_by_repair",
+    "repair_on_the_machine",
+    "study_opens_research",
+    "switch_gives_machine_back",
+    "wreck_comes_home"
+   ],
+   "judge": "rm-coverage-judge-1795778084",
+   "judge_fixed": true,
+   "late": [],
+   "new_on_unchanged": 0,
+   "new_unsettled": 0,
+   "not_owner_said": 5,
+   "overturned": 1,
+   "owner_said_unmeasured": 0,
+   "parent": null,
+   "reader_void_system": null,
+   "repair_blocks": [],
+   "stale_inputs": [
+    "scenes.json"
+   ],
+   "tags": {
+    "first": 7
+   },
+   "tokens": 990753,
+   "tree": "480772ae49ee7c1732a1e0a84121496380997c0723160d5658fb86a415afcffc",
+   "unmeasured_calls": 0,
+   "unplaced": 0,
+   "verdict": "not_covered",
+   "void_system": null
+  }
+ ],
  "history": [
   {
    "at": "2026-11-27T00:58:49Z",
@@ -462,6 +536,31 @@
    "stage": 5,
    "what": "exam_map",
    "why": "read map recorded for 20 scenarios"
+  },
+  {
+   "at": "2026-11-27T11:14:37Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "46677934 of 8000000 spent; run rm-role-designer-1795777997 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T11:14:37Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1795777997, stage 5, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T11:27:50Z",
+   "stage": 5,
+   "void_system": "the unit ended with no claude result of its own",
+   "what": "retry",
+   "why": "run rm-role-designer-1795777997 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-27T11:27:50Z",
+   "stage": 5,
+   "what": "void_system",
+   "why": "run rm-role-designer-1795777997: the unit ended with no claude result of its own; its rejection spends no retry"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -781,6 +880,16 @@
    "run": "rm-role-designer-1795777120",
    "stage": 4,
    "summary": "Stage 4, the Cold Reader exam, passed on tree 480772ae49ee and sheet 54d5b95f8740. A fresh Examiner wrote 14 scenarios and a fresh Challenger wrote 6 (14 reject, 6 accept; every one of the 12 bars read at least once), frozen before any Reader started. Two fresh Readers, who saw only the sheet, the tree and the scenario text, both matched the expected verdict on 20 of 20 (measured from their answer files). No Reader accepted what a core bar rejects, and no Challenger scenario was missed. The control Reader read the program's copy without the bar wrecks_join_lines, accepted the one scenario that the bar rejects (e13) and matched the other 19. On disk: exam.json, exam_control/, exam_reads.json (the read map, 20 scenarios over 12 bars) and exam_evidence/ (the helpers' scenario and answer files). No bar, rule or sheet line changed. Five wording notes on which no verdict turned are lines in version/polish.md for the next run that changes the tree. Not done by this run: nothing was asked of him, and his reaction to the 9 captures of the first look is still not on the ledger; a word from him reopens stage 2."
+  },
+  {
+   "at": "2026-11-27T11:27:50Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1795777997",
+   "stage": 5,
+   "void_system": "the unit ended with no claude result of its own",
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
