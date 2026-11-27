@@ -190,7 +190,9 @@ def _prep_plot(t, key, terrain="Soil"):
         raise ExpectationFailed("UNMEASURED: plot %s unroof did not read back on %s cells: overhead mountain would "
                                 "collapse on the fixtures" % (key, rr.get("cellsFailedVerify")))
     t.bridge_call("jawa/destroy_batch", rects=r, categories="All")
-    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, r))
+    # clearOverlays: an earlier chain's floodwater, ice (tempGrid) or Substructure (foundation) reads before the top
+    # grid, so the repaint did not read back and _stage refused the chain at setup (testq J20261127T102417Z-b7c73d)
+    _stage(t, "jawa/set_terrain_batch", ops="%s:%s" % (terrain, r), clearOverlays=True)
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
     t.bridge_call("jawa/clear_ui")
     return x0, z0

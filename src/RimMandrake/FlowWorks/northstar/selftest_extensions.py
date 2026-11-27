@@ -1250,6 +1250,19 @@ def _new_probes(EXT, RIV, base):
     got = run(EXT, "toggle_river_steam", base)
     if set(got.values()) != {"UNMEASURED"}:
         out.append("river steam on a map that never answers ProofSteam: %s" % got)
+    # RIMMANDRAKE_STAGE_RIVER_STEAM_PLOT_CELLS_WONT_READ_BACK (testq J20261127T102417Z-b7c73d): an earlier chain's
+    # floodwater, ice or Substructure on the plot reads before the top grid, so a Soil repaint without clearOverlays
+    # does not read back (the engine's TerrainAt; JawaBenchTerrainTools.cs) and _stage refuses the whole chain at setup.
+    def overlaid(tl, p):
+        if tl == "jawa/set_terrain_batch" and str(p.get("ops", "")).startswith("Soil:"):
+            clear = bool(p.get("clearOverlays"))
+            return {"success": clear, "cellsFailedVerify": 0 if clear else 29,
+                    "message": "Applied 1/1 op(s)" + ("" if clear else ", WARNING 29 did not read back")}
+        return steam_game(True, 5)(tl, p)
+    got = _ext_run(EXT, "toggle_river_steam", overlaid)
+    if "<setup>" in got:
+        out.append("plot prep repaints Soil without clearOverlays, so an earlier chain's overlay refuses the chain: %s"
+                   % got)
     # LIQUID_FIRE_QUEUE_ORIGIN_1 (2026-10-15): a torch that advances nothing, a round trip that loses the front and a
     # pond lit past the reach each read red; the healthy game reads green.
     def fire_game(torch_lights=True, same=True, far=0):
