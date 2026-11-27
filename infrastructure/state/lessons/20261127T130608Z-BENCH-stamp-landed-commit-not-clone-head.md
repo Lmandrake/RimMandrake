@@ -1,0 +1,3 @@
+A sha from 'git rev-parse HEAD' in a working clone is not a durable reference: when HEAD holds an unlanded commit (a ledger commit that the next landing replays under another sha), no other clone can ever read that sha. A record that must be read from another clone stamps 'git merge-base HEAD origin/main', and only after it checks that the files it cares about are the same at both. Seen 2026-11-27: the tick's version lock wrote the dispatch clone's HEAD b53e34d705 into WreckedMachines VERSION.json and lock-bars refused in the steward's clone.
+item: RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT
+home: design/specs/2026-11-27-lock-commit-is-landed/boundary.md
