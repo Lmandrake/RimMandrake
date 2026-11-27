@@ -79,3 +79,13 @@ Item RIMMANDRAKE_SORT_KNOCKBACK_LANE_FAILS_ARCHBIG_PASSES_SAME_CHECKS. The cause
   `selftest_explosiveknockback_resume_after_stack_lands.py`, red 5 of 5 on the parent, green with 6 of 6 planted faults
   caught. Live: the lane job on the fix's proof build (outcome check
   `road_back_2026-11-25/scripts/lane_decides_pawn_arc_pit_fetch.py`).
+- Live, 2026-11-27: lane job J20261127T141444Z-2eb3a7 (Steve2, proof build of 11fffbf13b,
+  `batch6_fix_11fffbf13b_lane_job.json`) reads both rows PASS. sc_pawn_arc: `resumed=True (waited for the stack=True
+  skips=none) rehaul=True`, at origin 12,12. sc_pit_fetch: `main 1 control 0`. [measured]
+- Red of the repaired sc_pawn_arc verdict, by hand (`red-seen` refuses a C# fault for an in-game check): on the parent
+  build, the 5 runs of record (lane runs 010440, 013412, 014356 and 021553, and ArchBig visit 2's run) journal
+  `resume_skip stack_gone` and no `resume` line for the colonist. So the new `resumed` term reads false, and the row FAILs
+  on all 5, the 2 free-will PASS runs included. On the fix it reads true (above). The site of the old failures, 27,12,
+  did not come up again in this job: the fix gives the haul back before free will acts, wherever the site is.
+- This fix lands after the 0.2.0 pass (tag `mod/ExplosiveKnockback/v0.2.0` stays on its pass commit). The helper
+  recommends a 0.2.1 Convergent correction; the Conductor decides.

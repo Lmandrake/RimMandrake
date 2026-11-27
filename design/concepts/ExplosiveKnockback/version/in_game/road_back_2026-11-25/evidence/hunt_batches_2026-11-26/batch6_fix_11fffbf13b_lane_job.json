@@ -1,0 +1,348 @@
+{
+ "attempts": [
+  "J20261127T141444Z-2eb3a7.a1"
+ ],
+ "cancelled": false,
+ "finished": "2026-11-27T14:31:44Z",
+ "host": "stevedesktop.b",
+ "job": {
+  "canary": true,
+  "deploy": [
+   "GimmeSomeSlack",
+   "FlowWorks",
+   "HugeThings",
+   "LuminousPigment",
+   "RimMandrake.Biomes",
+   "MandrakePatches",
+   "Armoury",
+   "SWBestiary"
+  ],
+  "gate": null,
+  "id": "J20261127T141444Z-2eb3a7",
+  "item": "RIMMANDRAKE_SORT_KNOCKBACK_LANE_FAILS_ARCHBIG_PASSES_SAME_CHECKS",
+  "lane": "stevedesktop",
+  "mod": "ExplosiveKnockback",
+  "not_before": null,
+  "owner_gate": null,
+  "priority": 60,
+  "profile": "tier:explosiveknockback_visit",
+  "proof_build": [
+   "ExplosiveKnockback"
+  ],
+  "purpose": "fix",
+  "requested_by": "BENCH",
+  "row_items": {},
+  "schema": "testq.job/1",
+  "selector": {
+   "checks": [
+    "sc_pawn_arc",
+    "sc_pit_fetch"
+   ]
+  },
+  "situational": false,
+  "source_sha": "11fffbf13b626ee7af05e830a1fec578cf6734fc",
+  "submitted": "2026-11-27T14:14:44Z",
+  "supersedes": null,
+  "timeout_s": 21600,
+  "validity": true,
+  "visit": null
+ },
+ "result": {
+  "artifacts": [
+   {
+    "bytes": 2597,
+    "name": "checks.json",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261127T141444Z-2eb3a7.a1/checks/checks.json",
+    "sha256": "ef6055aacf52cd1513fe041780f712ccaf222d48bb1e583d9eb26fefb5d13527"
+   },
+   {
+    "bytes": 2258,
+    "name": "run_00.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261127T141444Z-2eb3a7.a1/checks/run_00.log",
+    "sha256": "2bc964319e05a91d712b2a6513e7460f8d8c442fa3104ad0d82be18abfa2aafc"
+   },
+   {
+    "bytes": 467,
+    "name": "run_00.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261127T141444Z-2eb3a7.a1/checks/run_00.log.err",
+    "sha256": "66734a7cea76b7a188033b28118cb53baade44fec898ba91e1593f42bab20cd5"
+   },
+   {
+    "bytes": 2277,
+    "name": "run_01.log",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261127T141444Z-2eb3a7.a1/checks/run_01.log",
+    "sha256": "97645498d6f11d62ef2ae9ef888ec30a39a75d93c4c0f32b61faa56df1022aab"
+   },
+   {
+    "bytes": 462,
+    "name": "run_01.log.err",
+    "path": "/mnt/d/RimTest/testq.b/attempts/J20261127T141444Z-2eb3a7.a1/checks/run_01.log.err",
+    "sha256": "6dbb123e884b73e03205823d4206e833080a1cef1f22d47cc8ca3e87fd2926df"
+   }
+  ],
+  "attempt": "J20261127T141444Z-2eb3a7.a1",
+  "cause": null,
+  "checks": {
+   "identity": {
+    "active_mods": [
+     "brrainz.harmony",
+     "ludeon.rimworld",
+     "ludeon.rimworld.royalty",
+     "ludeon.rimworld.ideology",
+     "ludeon.rimworld.biotech",
+     "ludeon.rimworld.anomaly",
+     "ludeon.rimworld.odyssey",
+     "adaptive.storage.framework",
+     "brrainz.rimbridgeserver",
+     "lwm.deepstorage",
+     "neronix17.toolbox",
+     "owlchemist.cherrypicker",
+     "oskarpotocki.vanillafactionsexpanded.core",
+     "ebsg.framework",
+     "neronix17.outerrim.core",
+     "ray1203.simplecamerasetting",
+     "void.charactereditor",
+     "mandrake.rm.gimmesomeslack",
+     "mandrake.rm.flowworks",
+     "mandrake.rm.explosiveknockback",
+     "mandrake.rm.hugethings",
+     "mandrake.rm.luminouspigment",
+     "mandrake.rm.biomes",
+     "mandrake.rm.patches",
+     "mandrake.rsw.armoury",
+     "mandrake.rsw.swbestiary"
+    ],
+    "deployed_folder": "/mnt/d/ClaudeWork/rimmandrake/instances/b/game/Mods/ExplosiveKnockback",
+    "game": "stevedesktop",
+    "game_build": "1.6.4871 rev590",
+    "mod_hash": "sha256:fb65c8812bb547f05eef559cb7e4b0a3755cee26451413bd228b0a53feb46f54",
+    "mod_sha": "11fffbf13b",
+    "tier": "explosiveknockback_visit"
+   },
+   "rows": {
+    "sc_pawn_arc": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes pawn_arc --ticks 900",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_00.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 3,
+      "hostile": [],
+      "swept": 23,
+      "ticksGame": 1
+     }
+    },
+    "sc_pit_fetch": {
+     "command": "python.exe -u src/RimMandrake/ExplosiveKnockback/knockback_runner.py --scenes pit_goods_fetch --ticks 5000",
+     "held": [
+      "non-colonist pawns swept before the check",
+      "incident queue emptied before the check"
+     ],
+     "log": "run_01.log",
+     "site": {
+      "biome": "AridShrubland",
+      "colonists": 6,
+      "hostile": [],
+      "swept": 0,
+      "ticksGame": 901
+     }
+    }
+   }
+  },
+  "counts": {
+   "PASS": 2
+  },
+  "deployed": {
+   "companion": {
+    "build_commit": "b8270539c78cdc4af489f1b306b740f3ad8e2be7",
+    "dll": "/mnt/d/ClaudeWork/rimmandrake/instances/b/game/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+    "dll_sha256": "5cf1e516ff201a0223e86eaa9bdcc53a8ed9dfd77e6eb7cc43315ce08de86864",
+    "embedded": "e762e434164765952c292d6c5eb36f65a5df4a62766a37bbd97f301f89065c10",
+    "installed_from": "/mnt/d/RimTest/testq/companion/JawaBench.BridgeTools.dll",
+    "replaced": {
+     "build_commit": "999c73b995339a7c8d7aeac4512a98c6be24e9b2",
+     "dll": "/mnt/d/ClaudeWork/rimmandrake/instances/b/game/BridgeTools/JawaBench/JawaBench.BridgeTools.dll",
+     "dll_sha256": "e03adce11d1f95395d5fc46895756c9eb0584dc55b694491a8d8bdaa7af01780",
+     "embedded": "327c55251e628ece09653c6fa59ff901fe8cda324b27ee73ea106c58069e3096",
+     "state": "STALE",
+     "want": "e762e434164765952c292d6c5eb36f65a5df4a62766a37bbd97f301f89065c10"
+    },
+    "state": "FRESH",
+    "want": "e762e434164765952c292d6c5eb36f65a5df4a62766a37bbd97f301f89065c10"
+   },
+   "mods": {
+    "Armoury": {
+     "defs_sha256": "d158dca2e72d57f8dcc109b6b2ee92cd3c4d95b26d3dcbf6b42a9344ec6a941c",
+     "dll_sha256": "0d4cdb0f3c1934531e2ad393f8a7473768a9748eda7be8aad7616fa8f564fb9a",
+     "files": 3426
+    },
+    "ExplosiveKnockback": {
+     "defs_sha256": "a80a930d5c7fcdae9317163cd7b99c457c86333155806f3161df42b3ca5124a1",
+     "dll_sha256": "13f0552b5b71c9ce5d6ca04ae5f617fd7aff64a0bc5c5fb9c9cfa9de022a0919",
+     "files": 44
+    },
+    "FlowWorks": {
+     "defs_sha256": "73593dae3b3f6e9570092ea9f240b6f5222c608fa6705e45ac8328414e88d381",
+     "dll_sha256": "4269c117358f5e6b7d0140594a193d170c9d7b94f6a42c26b60d19480762265c",
+     "files": 1460
+    },
+    "GimmeSomeSlack": {
+     "defs_sha256": "ffdd85c2d3d7fb6b26b285fb800f241cef0c86fab70ff8d96ac55990c84e7c86",
+     "dll_sha256": "f5440ce3f635ca078f97ea30d093c66df6ed9dc67bc682b253220b8a99499cba",
+     "files": 400
+    },
+    "HugeThings": {
+     "defs_sha256": "152818cd333e69823ba94545c087ff8e6881c98710153b4c20135d728c499241",
+     "dll_sha256": "4f5c7c17b8b5919ab4c71dfec6c6b15a83ca03639a95bad897d267e40dd44f51",
+     "files": 15
+    },
+    "LuminousPigment": {
+     "defs_sha256": "d03d6f9d1cc463dd04963214bb02090f1df3d56465b5441ebcf2bd5801497fb1",
+     "dll_sha256": "3fcb0c3c16bb7e44fc45215b524cf9a13525317c6b0397a3ba1ac835fe631533",
+     "files": 36
+    },
+    "MandrakePatches": {
+     "defs_sha256": "9504491b87338d79aeada5b2ca12e3d9b98f735f084d47e17b2bae3a7f447113",
+     "dll_sha256": "0f5da9b7a8e1cf5e806900ee6448307fa7be40c8d9a969556c5b8c599b6131ca",
+     "files": 25
+    },
+    "RimMandrake.Biomes": {
+     "defs_sha256": "d43947b64e03181272e1f3f1544bc89069b92de84d559b1f4e3618d5569579db",
+     "dll_sha256": "1ddb0cbbb4f5bc8e1c8c5a930fac9ff319ef9fc88b429c5bb58c059feea37f2d",
+     "files": 4798
+    },
+    "SWBestiary": {
+     "defs_sha256": "94066d14d4d5b46b296e074d575470ec1ca4a735115918e902cc76f8e522e6e6",
+     "dll_sha256": "ad0b84e25a2788a7bd3a0ff95bd8c7d8d4f366f877427b1cffa0daf30b59d202",
+     "files": 3281
+    }
+   },
+   "modsconfig_sha256_prerun": "3ca135314f420e153d24395ed90470759bdb8060fecdbf94408cbfbe69fb6893"
+  },
+  "finished": "2026-11-27T14:31:15Z",
+  "host": "stevedesktop.b",
+  "job": "J20261127T141444Z-2eb3a7",
+  "modcheck_exit": null,
+  "note": "tier explosiveknockback_visit, 26 running mods; {'PASS': 2}",
+  "outcome": "DONE",
+  "phase_s": {
+   "attest": 145,
+   "deploy": 486,
+   "load": 149,
+   "run": 139
+  },
+  "retries": 0,
+  "rows": [
+   {
+    "chain": "checks",
+    "detail": "pawn_arc PASS arcTicks=17 planned=16,12 onPlanned=True hitWalker=True stun=True resumed=True (waited for the stack=True skips=none) rehaul=True teleportControlClean=True (step 900 ticks)",
+    "row": "sc_pawn_arc",
+    "verdict": "PASS"
+   },
+   {
+    "chain": "checks",
+    "detail": "pit_goods_fetch PASS free-will haul: main 1 control 0 (want 1, 0; read 5 ticks after staging; in the staging tick main 1 control 1); stack out=True corpse out=True hauler in pit=True path into pit=True path via ladder cell=True raised-ladder control stack still in its pit=True (2 hauls ordered, needs held, step 5000 ticks)",
+    "row": "sc_pit_fetch",
+    "verdict": "PASS"
+   }
+  ],
+  "runner_sha": "11fffbf13b626ee7af05e830a1fec578cf6734fc",
+  "running": [
+   "adaptive.storage.framework",
+   "brrainz.harmony",
+   "brrainz.rimbridgeserver",
+   "ebsg.framework",
+   "ludeon.rimworld",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.odyssey",
+   "ludeon.rimworld.royalty",
+   "lwm.deepstorage",
+   "mandrake.rm.biomes",
+   "mandrake.rm.explosiveknockback",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.patches",
+   "mandrake.rsw.armoury",
+   "mandrake.rsw.swbestiary",
+   "neronix17.outerrim.core",
+   "neronix17.toolbox",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "owlchemist.cherrypicker",
+   "ray1203.simplecamerasetting",
+   "void.charactereditor"
+  ],
+  "schema": "testq.result/1",
+  "started": "2026-11-27T14:15:53Z",
+  "tier": {
+   "exact": true,
+   "extra": [],
+   "missing": [],
+   "running": [
+    "adaptive.storage.framework",
+    "brrainz.harmony",
+    "brrainz.rimbridgeserver",
+    "ebsg.framework",
+    "ludeon.rimworld",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.odyssey",
+    "ludeon.rimworld.royalty",
+    "lwm.deepstorage",
+    "mandrake.rm.biomes",
+    "mandrake.rm.explosiveknockback",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.luminouspigment",
+    "mandrake.rm.patches",
+    "mandrake.rsw.armoury",
+    "mandrake.rsw.swbestiary",
+    "neronix17.outerrim.core",
+    "neronix17.toolbox",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "owlchemist.cherrypicker",
+    "ray1203.simplecamerasetting",
+    "void.charactereditor"
+   ],
+   "tier": "explosiveknockback_visit",
+   "want": [
+    "brrainz.harmony",
+    "ludeon.rimworld",
+    "ludeon.rimworld.royalty",
+    "ludeon.rimworld.ideology",
+    "ludeon.rimworld.biotech",
+    "ludeon.rimworld.anomaly",
+    "ludeon.rimworld.odyssey",
+    "adaptive.storage.framework",
+    "brrainz.rimbridgeserver",
+    "lwm.deepstorage",
+    "neronix17.toolbox",
+    "owlchemist.cherrypicker",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "ebsg.framework",
+    "neronix17.outerrim.core",
+    "ray1203.simplecamerasetting",
+    "void.charactereditor",
+    "mandrake.rm.gimmesomeslack",
+    "mandrake.rm.flowworks",
+    "mandrake.rm.explosiveknockback",
+    "mandrake.rm.hugethings",
+    "mandrake.rm.luminouspigment",
+    "mandrake.rm.biomes",
+    "mandrake.rm.patches",
+    "mandrake.rsw.armoury",
+    "mandrake.rsw.swbestiary"
+   ],
+   "why": null
+  }
+ },
+ "sent": "2026-11-27T14:15:49Z"
+}
