@@ -857,7 +857,7 @@ def kick_waiting(now=None, root=None, runner=subprocess.run, plan_dir=None, gate
         kept = r.pop("continue_waits")
         DH.write_record(r, root)
         line = kick(r, r.get("continue_plan") or {}, runner)
-        if "kicked" not in line or "NOT kicked" in line:    # tried again at the next pass
+        if not kick_started(line):    # tried again at the next pass
             r["continue_waits"] = kept
             DH.write_record(r, root)
         said.append(line)
@@ -904,6 +904,13 @@ def kick(rec, p, runner=subprocess.run):
         "continue NOT kicked: %s" % ((r.stderr or r.stdout or "").strip())
 
 
+def kick_started(line):
+    """-> True when kick's line says the continuation started; a control refusal or a failure is not a start, even
+    when its reason holds the word "kicked"."""
+    t = str(line or "")
+    return "kicked" in t and not t.startswith(("continue NOT kicked", "continue refused"))
+
+
 def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, states_reader=None):
     """finish's whole step: plan, then alarm or kick. -> (plan, step line)."""
     bundle = (rec.get("env") or {}).get("RM_WORK_BUNDLE")
@@ -944,7 +951,7 @@ def at_finish(rec, got, clone, now, runner=subprocess.run, continuer=None, state
     if p["act"] != "continue":
         return p, "continue: none (%s)%s" % (p["why"], "; " + p["reader"] if p.get("reader") else "")
     line = (continuer or (lambda r, q: kick(r, q, runner)))(fresh, p)
-    if p.get("bundle") and ("kicked" not in line or "NOT kicked" in line):    # no step will start the restart
+    if p.get("bundle") and not kick_started(line):    # no step will start the restart
         bundle_unstarted(p["bundle"], line, now)
     return p, line
 

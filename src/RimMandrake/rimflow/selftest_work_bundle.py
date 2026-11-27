@@ -1590,6 +1590,12 @@ def t_a_code_bundle_gets_one_fresh_read():
     chk(lambda: W.plan_reader(dict(rec, state="live"), commits) is None, "reader: a live bundle plans none")
     chk(lambda: W.plan_reader(rec, commits, owed=lambda sha, ps: []) is None,
         "reader: files that each carry a review record (READ-CLEAN or FLAGGED) owe none, so none is planned")
+    chk(lambda: W.resolve([], {}, [], None)[0] is None and "no ticket" in W.resolve([], {}, [], None)[2],
+        "polish: an empty id list is refused by name, never a StopIteration")
+    import left_open_continue as LOC0
+    chk(lambda: LOC0.kick_started("continue kicked u-x-continue (why)") and not LOC0.kick_started(
+        "continue refused by control: the run was kicked already") and not LOC0.kick_started("continue NOT kicked: x"),
+        "polish: only kick's success line reads as a started restart")
     chk(lambda: W.reader_owed(["a.py", "b.py"], open_paths={"a.py"}, owed_fn=lambda sha, ps: ps) == ["b.py"],
         "reader: a file that an open reader ticket names already (the worker filed it) owes no second read")
     # the step: files exactly one reader, records it, and a second end files none

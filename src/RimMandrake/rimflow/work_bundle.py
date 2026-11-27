@@ -109,6 +109,8 @@ def resolve(target, items, mods, reading, road_back=None):
     systems are refused (system None), and why names each id's system. road_back(mod) -> the open road-back item ids of
     a mod target (road_back_ids): they join its homed tickets whatever their home; a raise keeps the homed tickets and
     the why says could not look."""
+    if isinstance(target, (list, tuple)) and not target:
+        return None, [], "no ticket was named"
     if isinstance(target, (list, tuple)) and len(target) == 1 and not re.match(r"^[A-Z][A-Z0-9_]{7,}$", target[0]):
         target = target[0]
     if isinstance(target, str) and target in items:     # one ticket id, as `./pipe bundle <ID>` passes it
@@ -618,8 +620,8 @@ def launch_bundle(system, members, items, why, pipeline, now=None, launcher=None
         store_write(rec)
     finally:
         lk.close()
-    text = (onboard_brief if onboard else brief)(rec, items, tests or {i: _g(items.get(i), "effect") for i in members})
-    try:
+    try:        # the brief is made inside: a raise there leaves no `launching` record either
+        text = (onboard_brief if onboard else brief)(rec, items, tests or {i: _g(items.get(i), "effect") for i in members})
         rc, out, unit = (launcher or (lambda r, b: launch_run(r, b)))(rec, text)
     except BaseException as e:      # a raise leaves no `launching` record: that state is live and blocks the system
         holder_launched(rec["id"], None, now, "the launch raised %s: %s" % (type(e).__name__, e))
@@ -1423,6 +1425,7 @@ def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refu
         cfg = _lane_cfg()
         onboard = (cfg.get("onboard_classes") or {}).get("mod") == "on"
     if onboard:
+        # 24: list_dispatch's own default for shape_grace_h (load_cfg reads the same key); its danger is named there
         grace = float(_lane_cfg().get("shape_grace_h", 24)) * 3600
     if items is None:
         import model as LM
