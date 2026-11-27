@@ -36,6 +36,7 @@ sys.path.insert(0, HERE)
 import owner_queue  # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "rimflow"))
 from item_identity import item_mod  # noqa: E402  the one rule for the mod an item names
+import maturation_read_cache  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 DETACHED = "/mnt/d/ClaudeWork/rimmandrake/dispatcher/detached"
@@ -306,8 +307,7 @@ def relentless_states(strict=False):
     for name in os.listdir(root) if strict else (os.path.basename(os.path.dirname(p)) for p in glob.glob(os.path.join(root, "*", "state.json"))):
         p = os.path.join(root, name, "state.json")
         try:
-            with open(p) as f:
-                s = json.load(f)
+            s = maturation_read_cache.read_json(p)
         except FileNotFoundError:
             if strict and os.path.isdir(os.path.join(root, name)):
                 raise

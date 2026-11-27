@@ -156,6 +156,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation as M          # noqa: E402
 import judge_certificate as JC  # noqa: E402  the pre-judgement certificate, read before a judge or visit launch
 import maturation_now as MN     # noqa: E402
+import maturation_read_cache     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
 import own_cgroup               # noqa: E402  landings outside the tick's memory limit
 import detached_helper as DH    # noqa: E402
@@ -4514,6 +4515,7 @@ def paused_rows(pz, mods, facts):
     return out
 
 
+@maturation_read_cache.reading()
 def tick(root, cfg, apply, fx=None, now=None, page=False):
     """One tick; with apply, under the state lock from its read of state.json to its write."""
     if not apply:

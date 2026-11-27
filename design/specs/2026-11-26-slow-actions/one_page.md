@@ -38,20 +38,40 @@ with the game up, 534 s with a map rebuild; a full-list cold load many minutes (
 `rimflow show` 4.1 s; the five status commands 0.1 to 3.7 s (brief); a selftest of 13 checks 0.2 s; the Conductor's
 window run median 167 s over 64 runs, 6.4 h; wake of the Conductor window UNMEASURED (no start record apart from the run).
 
-## Fixes left (rows; no ticket is filed for a row)
+## Fixes by row
 
 | row | fix | size | proves |
 |---|---|---|---|
 | 1 | Deploy plan: list and `stat` the game copy with folder-relative calls (a `stat` by absolute path cost 8 to 10 ms, 1.5 ms relative to the folder, 3.7 ms by `dir_fd`; `scandir(fd)` listing 2× faster), or list it once from the Windows side. Add a retry for ENOMEM to the listing (today a folder that fails is skipped without a word). | M (a day) | plan time of Gimme Some Slack; planted ENOMEM |
 | 2 | Ticket lane: run the 48 outcome checks once per tick for both timers, and in parallel; keep a result until a file that the check reads has changed. | M | a tick of 218 s → under 30 s |
-| 3 | Pipeline tick: compute `last_words` once per tick, not 716 times; stop reading 8.7 k files per tick. | S to M | profile of one tick |
-| 4 | Status page: encode only the images that changed; share the read with the tick. | S | profile of one page |
+| 3 | Pipeline tick: done. Index ending notes once, fill last words once per mod, and reuse unchanged file reads. | | recorded-state tick profile below |
+| 4 | Status page: done. Share file reads with the tick and encode only phone images whose rendered content changed. | | recorded-state page profile below |
 | 5 | Stream collect: memoize `subject_aliases` (3.1 M calls). | S | profile of one run |
 | 6 | Scratch reap: stop at a folder's own time, not at each file (2.44 M `lstat`); find the child commands that it waits for. | M | dry run of 639 s |
 | 7 | Publish line: slot wait median 7 min and p90 39 min with 2 slots on 14 cores at load 22+. The slot count guards a named danger (`2026-11-24-treecheck-slots`); measure the danger before a change. Pipeline checks re-run 145 of 231 tests per publish. | L | needs the page's own measurement |
 | 8 | Metronome: done (`metronome_profile.md`); its five fixes are on that page. | | |
 | 9 | Helper runs: record model seconds and tool seconds per run (today UNMEASURED); then the 833 h can be split. | S | any run's record |
 | 10 | Load: `vmstat` read 60 to 70% CPU busy, 2.5 GB swap in use, 0.5 to 1.4 GB/s disk reads while the rm timers used about 10% of the core-hours. Find the other users before adding any slot. | M | measured 2026-11-27: `load_users.md` |
+
+## Tick and page replay for rows 3 and 4
+
+The tick and the page share a file cache under `RM_DISPATCHER_STATE`. They check file identity, size, modification
+time and change time before reusing a value. Live unit status still comes from the unit. The page's phone overview
+shows the current measurement time. Each mod image changes with its own contents.
+
+`python3 src/RimMandrake/Utils/selftest_tick_repeat_work.py --profile` runs one profiled dry tick and one profiled
+page build over recorded ledger ending notes and checked-in mod records. The replay expands these inputs to 716
+detached runs and 285 phone PNGs, with temporary stores and a fixed clock. Both profiles follow an initial tick and
+page build. The measured page advances the clock by one minute. The replay's filesystem and state differ from those
+in the seven-day study.
+
+| profiled action | wall time before → after | Python file opens before → after | `last_words` calls before → after | PNG encodes before → after |
+|---|---|---|---|---|
+| dry tick | 6.306 s → 1.129 s | 3,485 → 1,484 | 716 → 284 | — |
+| status page | 145.725 s → 22.632 s | 3,719 → 1,438 | 716 → 284 | 285 → 1 (120.139 s → 16.782 s in the encoder) |
+
+The one encoded image was the overview, whose measurement time advanced. The three acceptance checks also compare
+the cold and warm tick readings, Markdown, HTML and phone pixels, and exercise changed and missing source files.
 
 ## What this page cannot say
 

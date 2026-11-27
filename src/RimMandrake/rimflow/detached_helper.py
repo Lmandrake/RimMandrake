@@ -65,6 +65,7 @@ import contextlib
 import fcntl
 import glob
 import json
+import maturation_read_cache
 import os
 import re
 import shlex
@@ -207,8 +208,7 @@ def record_path(unit, root=None):
 
 def read_record(unit, root=None):
     try:
-        with open(record_path(unit, root), encoding="utf-8") as f:
-            return json.load(f)
+        return maturation_read_cache.read_json(record_path(unit, root))
     except (OSError, ValueError):
         return None
 
@@ -2440,12 +2440,18 @@ def killed(rec, runner=subprocess.run, now=None):
     never run). Either its unit died with finish never run (live_status "dead") or finish recorded a signal stop ("killed:"
     from outcome). A run that wrote its result, hit its budget, or was stopped at its own time limit was not killed: it
     ended (RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT)."""
-    import role_launch as RL
-    if not isinstance(rec, dict) or isinstance(RL.read_result({"out": rec.get("out") or "", "err": rec.get("err")}), dict):
+    if not isinstance(rec, dict):
         return ""
-    if str(rec.get("result") or "").startswith("killed"):
+    signalled = str(rec.get("result") or "").startswith("killed")
+    unfinished = rec.get("status") in ("launching", "running")
+    if not (signalled or unfinished):
+        return ""
+    import role_launch as RL
+    if isinstance(RL.read_result({"out": rec.get("out") or "", "err": rec.get("err")}), dict):
+        return ""
+    if signalled:
         return "killed with no result JSON (%s)" % rec["result"]
-    if rec.get("status") in ("launching", "running") and live_status(rec, runner, now) == "dead":
+    if live_status(rec, runner, now) == "dead":
         return "its unit died with no result JSON and its finish never ran"
     return ""
 

@@ -308,7 +308,9 @@
   "src/RimMandrake/Utils/account_plan_sweep.py::check_pass::or-empty": 3,
   "src/RimMandrake/Utils/account_plan_sweep.py::_edf::or-empty": 1,
   "src/RimMandrake/rimflow/list_effect.py::_check_tmp::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/designer_stage.py::fanout_line::except-returns-empty": 1
+  "src/RimMandrake/rimflow/designer_stage.py::fanout_line::except-returns-empty": 1,
+  "src/RimMandrake/Utils/maturation_now.py::image_stamp::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/maturation_read_cache.py::load::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/check_once.py::kept::except-returns-empty": [
@@ -342,7 +344,7 @@
    "NOT A COLLAPSE: the holder's name is only the label of the waiting line on stderr; an unreadable name reads 'a publisher', and the wait itself is decided by the flock, never by this text"
   ],
   "src/RimMandrake/Utils/waitalive.py::stop_order::except-returns-empty": [
-    "NOT A COLLAPSE: None means no write-now order was read, and the wait goes on exactly as before this check existed; the run's PostToolUse hook and the order's deadline kill still deliver and end it (design/specs/2026-11-23-long-waits/boundary.md a-stop-order-ends-the-wait)"
+   "NOT A COLLAPSE: None means no write-now order was read, and the wait goes on exactly as before this check existed; the run's PostToolUse hook and the order's deadline kill still deliver and end it (design/specs/2026-11-23-long-waits/boundary.md a-stop-order-ends-the-wait)"
   ],
   "src/RimMandrake/Utils/waitalive.py::stat_of::except-returns-empty": [
    "NOT A COLLAPSE: None is 'the process is gone' (only ENOENT and ESRCH, which are that reading); every other error raises CouldNotLook, exit 5"
@@ -1294,6 +1296,12 @@
   ],
   "src/RimMandrake/rimflow/designer_stage.py::fanout_line::except-returns-empty": [
    "NOT A COLLAPSE: a store that cannot be read refuses the Designer launch itself (control; design/specs/2026-11-19-mod-model-pin/boundary.md an-unreadable-pin-launches-nothing), so no run reads a packet that lost its fan-out line"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::image_stamp::except-returns-empty": [
+   "NOT A COLLAPSE: None is \"no stamp for this image\": the image is then drawn and written again; a stamp that cannot be read never says an image is current"
+  ],
+  "src/RimMandrake/rimflow/maturation_read_cache.py::load::except-returns-empty": [
+   "NOT A COLLAPSE: {} is a cold cache: every file is read again from its source and every image drawn again; a cache that cannot be read never supplies a value"
   ]
  }
 }

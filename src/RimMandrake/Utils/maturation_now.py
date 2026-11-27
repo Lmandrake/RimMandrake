@@ -65,6 +65,7 @@ import argparse
 import datetime as dt
 import errno
 import glob
+import hashlib
 import html
 import io
 import json
@@ -79,6 +80,7 @@ from zoneinfo import ZoneInfo
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))
 import failure_class as FC  # noqa: E402  which run counts against the mod
 from item_identity import item_mod  # noqa: E402  the one rule for the mod an item names
+import maturation_read_cache  # noqa: E402
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import maturation_nonmod as MNM  # noqa: E402  the section for work that is not mod work
 import maturation_trend as MT  # noqa: E402  the graph of tickets by hour
@@ -123,8 +125,7 @@ FONT = "'Segoe UI',Helvetica,Arial,sans-serif"
 def read_json(path):
     """-> (data, None) or (None, reason)."""
     try:
-        with open(path, encoding="utf-8") as f:
-            return json.load(f), None
+        return maturation_read_cache.read_json(path), None
     except FileNotFoundError:
         return None, "no file"
     except (OSError, ValueError) as e:
@@ -269,7 +270,8 @@ def read_mod(root, folder, names, live=True):
     s, serr = read_json(os.path.join(c, "stage.json"))
     tt, tterr = read_json(os.path.join(c, "version", "test_table.json"))
     try:
-        jtext = open(os.path.join(c, "journal.md"), encoding="utf-8").read()
+        with open(os.path.join(c, "journal.md"), encoding="utf-8") as f:
+            jtext = f.read()
     except OSError:
         jtext = None
     j = parse_journal(jtext) if jtext is not None else {"history": []}
@@ -574,29 +576,33 @@ def stages_named(s):
     return out
 
 
-def read_spend(rec):
-    """-> (usd measured|UNM, the run's own dollar word|None, over its cap: True|False|UNM). The run record's cost_usd
-    (detached_helper finish measures it from claude's result, RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER;
-    "UNMEASURED" there stays unmeasured), else claude's total_cost_usd when the out file still holds it; a max-budget
-    stop and the run's own "spent about $N" come from the out file."""
-    try:
-        with open(rec.get("out") or "", encoding="utf-8", errors="replace") as f:
-            t = f.read()
-    except OSError:
-        t = ""
-    rc = rec.get("cost_usd")
-    if isinstance(rc, (int, float)) and not isinstance(rc, bool):
-        usd = float(rc)
-    elif rc is not None:
-        usd = UNM
-    else:
-        m = re.search(r'"total_cost_usd"\s*:\s*([0-9.]+)', t)
-        usd = float(m.group(1)) if m else UNM
+def spend_log(path):
+    with open(path, encoding="utf-8", errors="replace") as f:
+        t = f.read()
+    reported = re.search(r'"total_cost_usd"\s*:\s*([0-9.]+)', t)
     w = [x for x in (re.search(r"(?i)(?:spent|spend|cost)\s+(?:was\s+|about\s+|roughly\s+|~)*\$\s?(\d+(?:\.\d+)?)", t),
                      re.search(r"(?i)\$\s?(\d+(?:\.\d+)?)\s+(?:of model spend|of spend|spent|in spend)", t)) if x]
     said = float(min(w, key=lambda x: x.start()).group(1)) if w else None
+    stopped = bool(re.search(r"error_max_budget|max_budget_usd exceeded|exceeded.{0,20}budget", t, re.I))
+    return [reported.group(1) if reported else None, said, stopped]
+
+
+def read_spend(rec):
+    """-> (usd measured|UNM, the run's own dollar word|None, over its cap: True|False|UNM).
+    Prefer the record's measured cost, falling back to the transcript only for older records with no cost field."""
+    try:
+        reported, said, stopped = maturation_read_cache.read(rec.get("out") or "", "spend-v1", spend_log)
+    except OSError:
+        reported, said, stopped = None, None, False
+    rc = rec.get("cost_usd")
+    if isinstance(rc, (int, float)) and not isinstance(rc, bool):
+        usd = float(rc)
+    elif rc is None and reported:
+        usd = float(reported)
+    else:
+        usd = UNM
     cap = rec.get("budget_usd")
-    if re.search(r"error_max_budget|max_budget_usd exceeded|exceeded.{0,20}budget", t, re.I):
+    if stopped:
         over = True
     elif isinstance(cap, (int, float)) and (usd != UNM or said is not None):
         over = (usd if usd != UNM else said) > cap
@@ -711,16 +717,30 @@ def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titl
     return out
 
 
-def last_words(run, notes):
-    """The run's last result in a few words: its "ended ... Result:" note, else its newest own note."""
-    for e in reversed(notes or []):
+def ending_notes(notes):
+    """The latest ending note for each unit, including older notes without role_unit."""
+    endings = {}
+    for e in notes or []:
         t = str(e.get("text") or "")
-        if t.startswith("DETACHED run %s ended" % run["unit"]):
+        if t.startswith("DETACHED run "):
+            unit, ended, _ = t[len("DETACHED run "):].partition(" ended")
+            if ended:
+                endings[unit] = t
+    return endings
+
+
+def last_words(runs, endings):
+    """Fill the last words of a mod's runs from an ending note or its newest own note."""
+    for run in runs:
+        t = endings.get(run["unit"])
+        if t is not None:
             m = re.search(r"Result:\s*(.+)", t)
-            return clip(strip_md(re.sub(r"\s*\[\+\d+ chars.*$", "", (m.group(1) if m else t).split("\n")[0])), 150)
-    if run.get("notes"):
-        return clip(strip_md(run["notes"][-1].split("\n")[0]), 150)
-    return UNM
+            line = (m.group(1) if m else t).split("\n")[0]
+            run["last"] = clip(strip_md(re.sub(r"\s*\[\+\d+ chars.*$", "", line)), 150)
+        elif run.get("notes"):
+            run["last"] = clip(strip_md(run["notes"][-1].split("\n")[0]), 150)
+        else:
+            run["last"] = UNM
 
 
 def designer_cycles(s):
@@ -1058,6 +1078,13 @@ def dispatch_pipeline(now, errors):
 
 
 def gather(root, live=True):
+    if live:
+        with maturation_read_cache.reading():
+            return _gather(root, live)
+    return _gather(root, live)
+
+
+def _gather(root, live):
     names = designer_names()
     croot = os.path.join(root, "design", "concepts")
     try:
@@ -1077,21 +1104,31 @@ def gather(root, live=True):
     journals = {m["name"]: m.pop("_journal") for m in mods}
     runs = None if lf["records"] is None else runs_for_mods(versioned, lf["records"], lf["notes"], journals, now,
                                                                titles=lf.get("titles"))
+    endings = ending_notes(lf["notes"])
+    interventions = {}
+    for e in lf["notes"] or []:    # the journal line form is also used in ledger notes
+        if "CONDUCTOR INTERVENED" in str(e.get("text") or "").upper():
+            item = e.get("id")
+            mod = item_mod(item, versioned, (lf.get("titles") or {}).get(item))
+            if mod is not None:
+                interventions.setdefault(mod, []).append(e)
     for m in mods:
         m["held_statements"] = held["per_mod"].get(m["name"], UNM)
         if m["held_statements"] == UNM and m["table"] and isinstance(m["table"].get("held"), int):
             m["held_statements"] = m["table"]["held"]
         m["his"] = his_questions_for(m["name"], lf["questions"])
         m["runs"] = UNM if runs is None else runs.get(m["name"], [])
-        for e in lf["notes"] or []:        # the same line form in a ledger note on one of the mod's items
-            if "CONDUCTOR INTERVENED" in str(e.get("text") or "").upper() and \
-                    item_mod(e.get("id"), versioned, (lf.get("titles") or {}).get(e.get("id"))) == m["name"]:
-                g, b = parse_interventions(e.get("text"), "ledger note on %s" % e.get("id"))
-                m["ivs"] += g
-                m["iv_bad"] += b
+        for e in interventions.get(m["name"], []):
+            g, b = parse_interventions(e.get("text"), "ledger note on %s" % e.get("id"))
+            m["ivs"] += g
+            m["iv_bad"] += b
         m["boxes"] = stage_boxes(m, m["runs"], m["ivs"], m["column"])
-        for r in m["runs"] if isinstance(m["runs"], list) else []:
-            r["last"] = last_words(r, lf["notes"]) if lf["notes"] is not None else UNM
+        if isinstance(m["runs"], list):
+            if lf["notes"] is None:
+                for r in m["runs"]:
+                    r["last"] = UNM
+            else:
+                last_words(m["runs"], endings)
         m["status"], m["status_what"] = badge_of(m)
     order = {c: i for i, c in enumerate(COLUMNS)}
     mods.sort(key=lambda m: (m["held"], -order.get(m["column"], -1), m["label"].lower()))
@@ -2128,12 +2165,14 @@ PH_SIZES = {"h1": 66, "h2": 50, "h3": 42, "body": 38, "small": 32}
 class Phone:
     """A portrait page laid out top to bottom, drawn at the end at its measured height."""
 
-    def __init__(self):
+    @staticmethod
+    def fonts():
         from PIL import ImageFont
-        self.F = {}
-        for k, s in PH_SIZES.items():
-            self.F[k + "r"] = ImageFont.truetype(PH_FONTS["r"], s)
-            self.F[k + "b"] = ImageFont.truetype(PH_FONTS["b"], s)
+        return {k + style: ImageFont.truetype(path, size)
+                for k, size in PH_SIZES.items() for style, path in PH_FONTS.items()}
+
+    def __init__(self, fonts=None):
+        self.F = fonts if fonts is not None else self.fonts()
         self.ops, self.y = [], PH_M
 
     def font(self, size, bold):
@@ -2217,9 +2256,17 @@ class Phone:
                 low = max(low, yy - self.y)
         self.y += low + 10
 
-    def save(self, path):
-        from PIL import Image, ImageDraw
+    def save(self, path, cache=None, renderer=None):
+        from PIL import Image, ImageDraw, ImageFont
         h = max(int(self.y + PH_M), PH_W * 5 // 4)     # portrait even when there is little to say
+        size = PH_W, h
+        if cache is not None:
+            ops = [[(arg.path, arg.size) if isinstance(arg, ImageFont.FreeTypeFont) else arg for arg in op]
+                   for op in self.ops]
+            key = hashlib.sha256(json.dumps([renderer, size, ops]).encode()).hexdigest()
+            name = os.path.basename(path)
+            if cache.get(name) == [key, image_stamp(path)]:
+                return size
         im = Image.new("RGB", (PH_W, h), BG)
         g = ImageDraw.Draw(im)
         for op in self.ops:
@@ -2252,11 +2299,24 @@ class Phone:
         im.save(buf, "PNG", optimize=True)
         try:
             write_again(tmp, buf.getvalue())
+            temporary = image_stamp(tmp) if cache is not None else None
             os.replace(tmp, path)
+            if temporary is not None:
+                published = image_stamp(path)
+                # rename may change ctime. A concurrent writer's inode must never get our render key.
+                if published is not None and published[:-1] == temporary[:-1]:
+                    cache[name] = [key, published]
         finally:
             if os.path.exists(tmp):
                 os.remove(tmp)
-        return im.size
+        return size
+
+
+def image_stamp(path):
+    try:
+        return maturation_read_cache.fingerprint(os.stat(path))
+    except OSError:
+        return None
 
 
 # RIMMANDRAKE_RETRY_PHONE_IMAGE_WRITE_ENOMEM_FAILS_PAGE. Guards: a write to D: over 9p raised ENOMEM ("Cannot
@@ -2336,8 +2396,8 @@ def phone_trend(P, t):
         P.text(x, "small", fill=DIM, gap=8)
 
 
-def phone_overview(d, now):
-    P = Phone()
+def phone_overview(d, now, fonts=None):
+    P = Phone(fonts)
     P.text("Maturation now", "h1", True, gap=4)
     P.text("Measured %s. No model, no tokens." % pac(now), "small", fill=DIM, gap=24)
     his, co = his_rows(d), conductor_short(d["needs"].get("conductor") or [], d["mods"])
@@ -2384,11 +2444,11 @@ def phone_overview(d, now):
     return P
 
 
-def phone_mod(m, now):
-    P = Phone()
+def phone_mod(m, fonts=None):
+    P = Phone(fonts)
     P.text(m["label"], "h1", True, gap=4)
-    P.text("%s · %s · %s" % (m["version"], where_word(m), status_word(m)), "body", fill=DIM, gap=4)
-    P.text("Measured %s" % pac(now), "small", fill=FAINT, gap=20)
+    # The overview carries the page's measurement time. A mod image changes with its own contents.
+    P.text("%s · %s · %s" % (m["version"], where_word(m), status_word(m)), "body", fill=DIM, gap=20)
     P.strip(m)
     his = [q for q in m.get("jquestions") or [] if not q["answered"]]
     if his:
@@ -2420,19 +2480,35 @@ def phone_mod(m, now):
 def write_phone(d, outdir, now):
     """-> [(path, size)]; PNGs that no longer belong to a mod are removed. PIL missing -> a named refusal, no images."""
     try:
-        import PIL  # noqa: F401
+        import PIL
     except ImportError:
         return [("PIL is not installed: no phone images", None)]
     os.makedirs(outdir, exist_ok=True)
-    out = [(os.path.join(outdir, "00_overview.png"), None)]
-    out[0] = (out[0][0], phone_overview(d, now).save(out[0][0]))
+    # The manifest lives in the dispatcher state, never in outdir: the folder holds the images and nothing else.
+    manifest = os.path.join(maturation_read_cache.state_dir(), "maturation-phone-render-v1.json")
+    store = maturation_read_cache.load(manifest)
+    folder = os.path.abspath(outdir)
+    cache = store.get(folder) if isinstance(store.get(folder), dict) else {}
+    before = dict(cache)
+    renderer = [PIL.__version__, image_stamp(__file__), [image_stamp(path) for path in PH_FONTS.values()]]
+    fonts = Phone.fonts()
+    overview = os.path.join(outdir, "00_overview.png")
+    out = [(overview, phone_overview(d, now, fonts).save(overview, cache, renderer))]
     for m in d["mods"]:
         p = os.path.join(outdir, "%s.png" % m["name"])
-        out.append((p, phone_mod(m, now).save(p)))
+        out.append((p, phone_mod(m, fonts).save(p, cache, renderer)))
     keep = {os.path.basename(p) for p, _ in out}
     for f in os.listdir(outdir):
-        if f.endswith(".png") and f not in keep:
-            os.remove(os.path.join(outdir, f))
+        if f.endswith(".png") and f not in keep and not re.search(r"\.png\.\d+\.\d+\.tmp\.png$", f):
+            try:
+                os.remove(os.path.join(outdir, f))
+            except FileNotFoundError:
+                pass    # another writer has already removed it
+    cache = {name: stamp for name, stamp in cache.items() if name in keep}
+    if cache != before:
+        store[folder] = cache
+        store = {d: c for d, c in store.items() if os.path.isdir(d)}    # a gone folder (a temp run) leaves no row
+        maturation_read_cache.save(manifest, store)
     return out
 
 
