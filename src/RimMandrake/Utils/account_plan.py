@@ -1979,8 +1979,10 @@ def change_of(a, now):
         def fn(p):
             unknown = [x for x in a.accounts if p["accounts"].get(x, {}).get("kind") != "claude"]
             if unknown:
-                raise Refused("%s: no Claude account of the plan; repair: one of %s" % (
-                    ", ".join(unknown), ", ".join(claude_accounts(p))))
+                meter = [x for x in unknown if p["accounts"].get(x, {}).get("kind") == "meter"]
+                raise Refused("%s: no Claude account of the plan; repair: one of %s%s" % (
+                    ", ".join(unknown), ", ".join(claude_accounts(p)),
+                    "; a meter account's step has its place by ./acct step move" if meter else ""))
             lf = life(a, now)
             lines = dict(x.split("=", 1) for x in a.line or [])
             if lf:
