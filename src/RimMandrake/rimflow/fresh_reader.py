@@ -59,7 +59,8 @@ def is_reader(it):
 
 def parse_title(t):
     """-> (paths, sha, maker) from a reader ticket's title."""
-    m = re.match(re.escape(PREFIX) + r"(.+) at ([0-9a-f]{7,40}) \(made by (\S+?);", str(t or ""))
+    m = re.match(re.escape(PREFIX) + r"(.+) at ([0-9a-f]{7,40}) \(made by (.+?); the reader is never that run\)",
+                 str(t or ""))    # the maker may hold a space: `file` names a window with no unit "a window"
     if not m:
         return [], None, None
     return [p.strip() for p in m.group(1).split(",") if p.strip()], m.group(2), m.group(3)

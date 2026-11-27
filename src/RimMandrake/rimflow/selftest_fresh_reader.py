@@ -66,6 +66,11 @@ def t_the_lane_offers_the_reader_ticket():
     assert "FRESH READER" in LD.brief_text("R", it, row), "the lane's brief has no reader part"
     assert "design/specs/2026-11-22-list-outcome-checks/boundary.md" in b and "selftest_list_effect.py" in b, b
     assert "Do NOT read the diff" in b and "You are not %s" % MAKER in b, b
+    # a window has no unit: `file` then names the maker "a window" (its default), and the brief still names the files
+    wt = {"title": FR().title(SHA, [PATH, "src/b.py"], "a window")}
+    assert FR().parse_title(wt["title"]) == ([PATH, "src/b.py"], SHA, "a window"), FR().parse_title(wt["title"])
+    wb = FR().brief_block(wt, runner=fake)
+    assert PATH in wb and "src/b.py" in wb and "You are not a window" in wb, wb
 
 
 def t_the_check_holds_on_a_review_record():
