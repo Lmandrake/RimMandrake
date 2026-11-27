@@ -1,0 +1,127 @@
+{
+ "ew2_heavy_Scrapper": {
+  "build": "LOOK look=Scrapper parts=6 styled=6 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge",
+  "deckart": "DECKART look=Scrapper jetty=False dir=1 width=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain drawn=RM_SuspensionDeck_Heavy_Strip_root,RM_SuspensionDeck_Heavy_Strip_tip ends=own,own wrap=Clamp",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK.det\\Transient\\deck_art_heavy_scrapper_ropeY\\ew2_heavy_Scrapper.png",
+  "deckart_check": {
+   "ok": true,
+   "why": "Scrapper heavy strip, complete=True"
+  },
+  "pawn": {
+   "id": "Human18645",
+   "cell": [
+    101,
+    135
+   ],
+   "drafted": true
+  },
+  "hat": {
+   "success": true,
+   "gear": ""
+  }
+ },
+ "ew4_heavy_Scrapper": {
+  "build": "LOOK look=Scrapper parts=10 styled=10 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge",
+  "deckart": "DECKART look=Scrapper jetty=False dir=1 width=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip pieces=root,mid,mid,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain drawn=RM_SuspensionDeck_Heavy_Strip_root,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_tip ends=own,own wrap=Clamp",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK.det\\Transient\\deck_art_heavy_scrapper_ropeY\\ew4_heavy_Scrapper.png",
+  "deckart_check": {
+   "ok": true,
+   "why": "Scrapper heavy strip, complete=True"
+  },
+  "pawn": {
+   "id": "Human18649",
+   "cell": [
+    102,
+    143
+   ],
+   "drafted": true
+  },
+  "hat": {
+   "success": true,
+   "gear": ""
+  }
+ },
+ "ns4_heavy_Scrapper": {
+  "build": "LOOK look=Scrapper parts=10 styled=10 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge",
+  "deckart": "DECKART look=Scrapper jetty=False dir=0 width=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip pieces=root,mid,mid,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain drawn=RM_SuspensionDeck_Heavy_Strip_root,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_tip ends=own,own wrap=Clamp",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK.det\\Transient\\deck_art_heavy_scrapper_ropeY\\ns4_heavy_Scrapper.png",
+  "deckart_check": {
+   "ok": true,
+   "why": "Scrapper heavy strip, complete=True"
+  },
+  "pawn": {
+   "id": "Human18653",
+   "cell": [
+    112,
+    137
+   ],
+   "drafted": true
+  },
+  "hat": {
+   "success": true,
+   "gear": ""
+  }
+ },
+ "_look": [
+  [
+   "ew2_heavy_Scrapper",
+   "mid_bare",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew2_heavy_Scrapper_mid_bare.png"
+  ],
+  [
+   "ew2_heavy_Scrapper",
+   "mid_hat",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew2_heavy_Scrapper_mid_hat.png"
+  ],
+  [
+   "ew2_heavy_Scrapper",
+   "endA",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew2_heavy_Scrapper_endA.png"
+  ],
+  [
+   "ew2_heavy_Scrapper",
+   "endB",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew2_heavy_Scrapper_endB.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "mid_bare",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew4_heavy_Scrapper_mid_bare.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "mid_hat",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew4_heavy_Scrapper_mid_hat.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "endA",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew4_heavy_Scrapper_endA.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "endB",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ew4_heavy_Scrapper_endB.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "mid_bare",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ns4_heavy_Scrapper_mid_bare.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "mid_hat",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ns4_heavy_Scrapper_mid_hat.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "endA",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ns4_heavy_Scrapper_endA.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "endB",
+   "Transient/deck_art_heavy_scrapper_ropeY\\ns4_heavy_Scrapper_endB.png"
+  ]
+ ]
+}
