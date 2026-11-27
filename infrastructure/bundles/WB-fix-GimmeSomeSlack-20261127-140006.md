@@ -21,3 +21,10 @@
   bridgetools/build.py --apply, deploy_custom_mods --mod GimmeSomeSlack --apply, launch, then
   `python.exe src/RimMandrake/Utils/scene.py accept src/RimMandrake/GimmeSomeSlack/northstar/scene_wall_lamp_looks.py --game ArchBig`
   clean and `--plant master_switch_off`. Never publish while an accept run is live.
+
+## Live state (2026-11-27 07:36 PST)
+- The two bridge items: see their PROGRESS notes. Clean run SUCCESS counted at d48b6cfd11c2. The plant was a staging fault
+  (a raw settings set inside a session is refused without the driver), fixed at d1559c46be3f (needs["overlay"]).
+- Next: /mnt/d/ClaudeWork/scratch/wb_gss/accept4.sh under `game_lock.py run ArchBig` (it restarts ArchBig first); clean must
+  be SUCCESS and counted, planted must be MOD FAILURE. Then close both items. Do not run a background lease renewer: a renew
+  writes the tracked ledger shard and spoils an accept run (THE TREE CHANGED DURING THE RUN).
