@@ -54,6 +54,7 @@ Divergent work: anything that shifts or extends the 0.1.0 vision (`../vision.md`
 - **Proposed by:** the ticket-lane run that found the fault, 2026-11-27. The Conductor made the version call the same day (note on the item).
 - **What was wrong:** a thrown colonist's carried stack flies further and lands about 7 ticks after the colonist. The mod looked for the stack when the colonist landed, saw none and gave up the haul. The colonist went back to the haul only by its own choice, and at site 27,12 it never did (3 of 3 in 900 ticks).
 - **State:** built and published at 11fffbf13b (`RM_PawnFlyerPatches.ResumeHaul`, `RM_ThingFlyer_Knockback.Land`). The offline selftest fails 5 of 5 on the old code and passes on the fix. SteveDesktop lane job J20261127T141444Z-2eb3a7 reads sc_pawn_arc PASS with the mod's own resume recorded, at site 12,12.
-- **Still owed for 0.2.1:** the fresh reader of the fix (`RIMMANDRAKE_READ_FIX_11FFFBF13B_WITH_FRESH_EYES`), and one live run of sc_pawn_arc at site 27,12, where the fault showed.
+- **Fresh reader:** done, nothing significant found (`RIMMANDRAKE_READ_FIX_11FFFBF13B_WITH_FRESH_EYES`, review record 3c23aeab37). Known and not filed: the haul memory is not saved, so a save and quit inside the stack's last ticks of flight loses that one haul.
+- **Still owed for 0.2.1:** one live run of sc_pawn_arc at site 27,12, where the fault showed.
 - **Version 0.2.1 is not open.** It opens on the owner's scope answer, as every next Design Version does.
 - **Evidence:** `../in_game/road_back_2026-11-25/evidence/hunt_batches_2026-11-26/HUNT_STEP.md` §Why the lane failed.
