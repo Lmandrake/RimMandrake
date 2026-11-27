@@ -678,8 +678,8 @@ def _check(decide, load_plan, dry, now, meter_fn, poll_fn, runs_fn=default_runs,
                     or (pre["do"] == "switch" and pre.get("under"))):
                 d = pre  # a brake on a spent account is never deferred behind a slow poll (agents keep burning)
             else:
-                if pre["do"] in ACTS:
-                    write_notice({**pre, "do": "soft"}, now)
+                if pre["do"] in ACTS:       # a stopped fleet stays a stop; the rest brake soft during the poll
+                    write_notice(pre if pre["do"] == "stopped" else {**pre, "do": "soft"}, now)
                 state["last_poll"] = iso(now)
                 save_state(state)
                 poll_fn()

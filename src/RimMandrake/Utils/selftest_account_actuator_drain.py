@@ -158,6 +158,21 @@ def t_a_new_launch_waits_while_the_account_drains():
     check(n + ": a soft notice that is no drain refuses nothing", DH.drain_refusal(NOW, {}, None, path=str(p)) is None)
     p.write_text("{not json")
     check(n + ": an unreadable notice refuses nothing", DH.drain_refusal(NOW, {}, None, path=str(p)) is None)
+    # the pass polls a stopped fleet: the notice written before the poll stays a stop (polish of 2026-11-20's drain page)
+    fake_switcher()
+    (TMP / "live.txt").write_text("system")
+    meter = {**OFF, "system": R(0, 100, age=30), "lukas": R(0, 120, age=30)}
+    numbers = AP.legacy_view(PLAN, {"now": NOW, "rows": meter})
+    seen = []
+
+    def stopped(_m, live, _now, _p, _s, _mk, **_kw):
+        return {"do": "stopped", "poll": True, "account": live, "pct_left": 0, "line": 1, "why": "every account is out"}
+
+    def poll():
+        seen.append(ACT.read_json(TMP / "out" / "notice.json", {}).get("state"))
+    (TMP / "out" / "state.json").unlink(missing_ok=True)
+    ACT.check(stopped, lambda: numbers, now=NOW + 7200, meter_fn=lambda: meter, poll_fn=poll, runs_fn=lambda: [])
+    check(n + ": a stopped fleet's notice during the pass's poll reads stop, so a new launch is refused", seen == ["stop"], seen)
 
 
 def t_a_new_launch_goes_at_the_soft_line():
