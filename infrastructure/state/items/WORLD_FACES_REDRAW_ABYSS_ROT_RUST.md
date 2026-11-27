@@ -9,3 +9,26 @@ NEXT: after the mod study lands, regenerate Abyss (much darker, flow-warped swir
 ## Owner decisions by card, 2026-10-20 10:12 PM PDT
 
 Swirls: "Biome-wide swirl layer": a drawn overlay with continuous swirls across each whole biome (coordinates continuous across tiles, the way RM_WorldLook border blend draws), for Abyss (far darker, eerie swirls, near-black base made legible by pale/rim-lit decals) and The Rot (rich texture, wild-colour swirls), with a Mod Settings toggle and a performance check (7k tiles). Rust Cathedral: "Redraw it harsher": a NEW hero face with bold harsh rusty machinery at a calmer grain than the pre-calm face (compare git history before fce7ac7b4), not a restore.
+
+## spec
+
+Three world-map faces, built at 793dbc3df (landed as d6f49bba44), judged on in-game captures at mid zoom (soft and hard borders, landmarks on), against `design/RimMandrake/art_judge_brief.md` and the owner card above:
+- Abyss reads near-black with pale eerie currents (face + swirl layer).
+- The Rot reads wild-colour swirls over rich texture (face + swirl layer).
+- Rust Cathedral reads harsh rusty machinery at a calmer grain than the pre-calm face.
+
+## criteria
+
+- A2: a judge run rules each face PASS, or names the hole to close and the face to redraw.
+
+## verify
+
+A judge run captures the three faces in game at mid zoom and writes its verdict as a note on this item; PASS on all three closes the item at 793dbc3df4.
+
+## refs
+file: src/RimMandrake/Abyss/Textures/World/Biomes/RM_Abyss.png
+file: src/RimMandrake/TheRot/Textures/World/Biomes/RM_TheRot.png
+file: src/RimMandrake/RustCathedral/Textures/World/Biomes/RM_RustCathedral.png
+file: src/RimMandrake/TerminalBiomes/Textures/World/RM_Swirls/Abyss.png
+file: src/RimMandrake/TerminalBiomes/Textures/World/RM_Swirls/TheRot.png
+file: src/RimMandrake/BiomesShell/Source/RM_WorldLook.cs
