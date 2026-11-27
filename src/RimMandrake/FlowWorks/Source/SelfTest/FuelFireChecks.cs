@@ -117,8 +117,82 @@ namespace RimMandrake.FlowWorks.SelfTest
             return $"{w}x{h}: {n} cells, {anchors.Count} blasts (spacing {spacing}), {last} ticks, max {maxCells} cells / {maxBlasts} blasts per tick, plan {ms:F1} ms";
         }
 
+        // Vanilla's chemfuel CompProperties_Explosive (Core Items_Resource_Manufactured.xml): explosiveRadius 1.1,
+        // explosiveExpandPerStackcount 0.037, stackLimit 150; one Chemfuel item = 200 L = 2000 dL (RM_LiquidDefRegistry.xml
+        // RM_Liquid_Chemfuel litresPerBottle 200, RM_Volume.UnitsPerLitre 10). Production reads these at runtime.
+        private const float ChemR0 = 1.1f, ChemExpand = 0.037f;
+        private const int ChemStack = 150, ChemDlPerItem = 2000;
+
+        private static float Blast(RM_FuelBurn k, long dl, bool on = true, bool burning = false, bool recent = false)
+        {
+            return RM_FuelFireMath.IgnitionBlastRadius(k, on, burning, recent, dl, ChemDlPerItem, ChemR0, ChemExpand, ChemStack);
+        }
+
         public static void Run(Action<string, Action> Case)
         {
+            // RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK (owner 2026-11-25: lit chemfuel is an explosion that
+            // knocks back): the decision over every regime the game makes for it - each fire kind, the switch, a body already
+            // alight, a cell lit by a blast that just went off, and body volumes from a smear to a moat - against vanilla's own
+            // chemfuel-stack explosion radius at every stack count.
+            Case("FuelFire_chemfuel_ignition_blast_once_sized_like_a_vanilla_stack", () =>
+            {
+                Assert(Blast(RM_FuelBurn.Ordinary, 20000) == 0f, "tar and oil (ordinary) never blast");
+                Assert(Blast(RM_FuelBurn.Detonation, 20000) == 0f, "astrofuel keeps its own detonation, no extra ignition blast");
+                Assert(Blast(RM_FuelBurn.Inferno, 20000, on: false) == 0f, "switch off: no blast");
+                Assert(Blast(RM_FuelBurn.Inferno, 20000, burning: true) == 0f, "a front reaching more of a lit body: no blast");
+                Assert(Blast(RM_FuelBurn.Inferno, 20000, recent: true) == 0f, "a cell lit by a blast that just went off: no blast");
+                Assert(Blast(RM_FuelBurn.Inferno, 0) == 0f, "no liquid: no blast");
+                Assert(Math.Abs(Blast(RM_FuelBurn.Inferno, 1) - ChemR0) < 1e-4, "a smear blasts as one item (vanilla's smallest)");
+                // parity with CompExplosive.ExplosiveRadius() = r0 + sqrt((stack - 1) * expand) at every stack count
+                double worst = 0;
+                int n = 0;
+                for (int items = 1; items <= ChemStack; items++, n++)
+                {
+                    double want = ChemR0 + Math.Sqrt((items - 1) * ChemExpand);
+                    worst = Math.Max(worst, Math.Abs(Blast(RM_FuelBurn.Inferno, (long)items * ChemDlPerItem) - want));
+                }
+                Console.WriteLine("      vanilla stack parity: worst |r - vanilla| " + worst.ToString("G3") + " (limit 1e-4) over " + n + " stack counts");
+                Assert(worst < 1e-4, "radius matches vanilla's chemfuel stack");
+                // a sweep of volumes from 1 dL to 10^10 dL (a smear to far past any map): monotone, capped at a full stack
+                float cap = ChemR0 + (float)Math.Sqrt((ChemStack - 1) * ChemExpand), last = 0f, top = 0f;
+                int sweep = 0;
+                for (double dl = 1; dl < 1e10; dl *= 1.07, sweep++)
+                {
+                    float r = Blast(RM_FuelBurn.Inferno, (long)dl);
+                    Assert(r >= last - 1e-5f, "radius never shrinks as the body grows (" + dl + " dL)");
+                    last = r;
+                    top = Math.Max(top, r);
+                }
+                Console.WriteLine("      volume sweep: largest radius " + top.ToString("F3") + " (limit " + cap.ToString("F3") + ", vanilla's full stack) over " + sweep + " volumes");
+                Assert(top <= cap + 1e-4f && top >= cap - 1e-4f, "a moat blasts as one full stack, never larger");
+                // the recent-blast memory: inside the radius (plus the one-cell edge) and the window only
+                Assert(RM_FuelFireMath.InsideRecentBlast(2, 1, 3.45f, 10), "a cell inside a fresh blast");
+                Assert(RM_FuelFireMath.InsideRecentBlast(4, 0, 3.45f, 0), "the cell just past the edge (the blast's own spread)");
+                Assert(!RM_FuelFireMath.InsideRecentBlast(6, 0, 3.45f, 0), "a cell well outside");
+                Assert(!RM_FuelFireMath.InsideRecentBlast(0, 0, 3.45f, RM_FuelFireMath.IgnitionBlastMemoryTicks + 1), "an old blast is forgotten");
+                Assert(!RM_FuelFireMath.InsideRecentBlast(0, 0, 3.45f, -5), "a blast from another game's clock is forgotten");
+                // once per ignition: a 50-cell moat lit at one end, its front lighting one cell a step. The guarded decision fires
+                // once; the naive one (no burning-body guard) fires per cell - the can-fail.
+                int guarded = 0, naive = 0;
+                for (int k = 0; k < 50; k++)
+                {
+                    if (Blast(RM_FuelBurn.Inferno, 50L * 10000, burning: k > 0) > 0f) guarded++;
+                    if (Blast(RM_FuelBurn.Inferno, 50L * 10000) > 0f) naive++;
+                }
+                Console.WriteLine("      once per ignition: guarded " + guarded + " blast(s) (limit 1), naive " + naive + " over 50 lit cells");
+                Assert(guarded == 1, "one blast per lit body");
+                Assert(naive > 1, "can-fail: the unguarded decision already fires once");
+                // the production hooks call this rule, defer the blast out of the light, and fire flame damage
+                string lf = RiverSwitchFlipChecks.Src("RM_LiquidFire.cs");
+                string sf = RiverSwitchFlipChecks.Src("Sheet/RM_SheetFire.cs");
+                RiverSwitchFlipChecks.Has(lf, @"RM_FuelFireMath\.IgnitionBlastRadius\(", "the shared blast queue asks the rule");
+                RiverSwitchFlipChecks.Has(lf, @"Ignite\(map, c, i, hops, fluid, now\);\s*if \(kind == RM_FuelBurn\.Inferno && RM_IgnitionBlasts\.Wanted\(map, c\)\)[^;]*;\s*RM_IgnitionBlasts\.Consider\(", "the channel front offers each new inferno light");
+                RiverSwitchFlipChecks.Has(sf, @"EnsureSheetFlame\(c, f\);\s*if \(RM_LiquidFire\.BurnOf\(f\) == RM_FuelBurn\.Inferno && RM_IgnitionBlasts\.Wanted\(map, c\)\)[^;]*;\s*RM_IgnitionBlasts\.Consider\(", "the spill offers each new inferno light");
+                RiverSwitchFlipChecks.Has(lf, @"AdvanceFront\(map, ex, now\);\s*RM_IgnitionBlasts\.Fire\(map\);", "channel blasts go off after the front, not inside it");
+                RiverSwitchFlipChecks.Has(sf, @"private void FireTick\(\)\s*\{\s*RM_IgnitionBlasts\.Fire\(map\);", "sheet blasts go off on the next tick, not inside TryLight");
+                RiverSwitchFlipChecks.Has(lf, @"Inferno[^;]{0,300}?GenExplosion\.DoExplosion\([^;]*DamageDefOf\.Flame", "a flame explosion");
+            });
+
             Case("FuelFire_classify_kinds_and_settings", () =>
             {
                 Assert(RM_FuelFireMath.Classify(true, false, true, true) == RM_FuelBurn.Inferno, "chemfuel lit is an inferno");

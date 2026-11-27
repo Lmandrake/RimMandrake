@@ -346,6 +346,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			AdvanceFront(map, ex, now);
+			RM_IgnitionBlasts.Fire(map);
 			checkCount++;
 			Maintain(map, ex, checkCount % EffectEvery == 0);
 		}
@@ -404,6 +405,11 @@ namespace RimMandrake.FlowWorks
 						continue;
 					}
 					Ignite(map, c, i, hops, fluid, now);
+					if (kind == RM_FuelBurn.Inferno && RM_IgnitionBlasts.Wanted(map, c))
+					{
+						bool alight = BodyAlight(map, ex, c, out long bodyDl);
+						RM_IgnitionBlasts.Consider(map, c, kind, alight, bodyDl);
+					}
 					bool cIsSource = ex.IsSourceCell(c);
 					for (int d = 0; d < 4; d++)
 					{
@@ -427,6 +433,62 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 		}
+
+		/// <summary>RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK: is the inferno body that holds the just-lit
+		/// <paramref name="c"/> already alight elsewhere (a front reaching more of it, not a new ignition)? Walks the connected
+		/// inferno cells (N/E/S/W, the front's own step) and sums their liquid. Alight: any other cell of it burning here, or any
+		/// cell of it beside a burning spill (one body across the channel and the sheet). A source cell counts one level.
+		/// Bounded by <see cref="RM_IgnitionBlasts.MaxBodyCells"/>.</summary>
+		private bool BodyAlight(Map map, RM_MapComponent_Excavation ex, IntVec3 c, out long bodyDl)
+		{
+			bodyDl = 0;
+			Sheet.RM_MapComponent_Sheet sheet = Sheet.RM_MapComponent_Sheet.Of(map);
+			int start = map.cellIndices.CellToIndex(c);
+			blastSeen.Clear();
+			blastWalk.Clear();
+			blastSeen.Add(start);
+			blastWalk.Enqueue(c);
+			while (blastWalk.Count > 0)
+			{
+				IntVec3 q = blastWalk.Dequeue();
+				bodyDl += ex.IsExcavated(q) ? ex.WaterDlAt(q) : RM_LevelSolve.U;
+				for (int d = 0; d < 4; d++)
+				{
+					IntVec3 n = q + GenAdj.CardinalDirections[d];
+					if (!n.InBounds(map))
+					{
+						continue;
+					}
+					if (sheet != null && sheet.IsBurning(n))
+					{
+						return true;
+					}
+					int ni = map.cellIndices.CellToIndex(n);
+					if (blastSeen.Contains(ni))
+					{
+						continue;
+					}
+					FluidDef nf = BurnableFluidAt(map, ex, n);
+					if (nf == null || BurnOf(nf) != RM_FuelBurn.Inferno)
+					{
+						continue;
+					}
+					if (burning.ContainsKey(ni))
+					{
+						return true;
+					}
+					blastSeen.Add(ni);
+					if (blastSeen.Count <= RM_IgnitionBlasts.MaxBodyCells)
+					{
+						blastWalk.Enqueue(n);
+					}
+				}
+			}
+			return false;
+		}
+
+		private readonly HashSet<int> blastSeen = new HashSet<int>();
+		private readonly Queue<IntVec3> blastWalk = new Queue<IntVec3>();
 
 		private void Ignite(Map map, IntVec3 c, int i, int hops, FluidDef fluid, int now)
 		{
@@ -1289,6 +1351,160 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK (owner 2026-11-25: lit chemfuel is an explosion that
+	/// knocks back). The one blast a chemfuel or propane (inferno) body makes when it is first lit, shared by both fuel fires:
+	/// the channel's (RM_LiquidFire.AdvanceFront) and the spill's (RM_MapComponent_Sheet.TryLight). The decision is
+	/// RM_FuelFireMath.IgnitionBlastRadius; this side reads vanilla's chemfuel numbers, remembers recent blasts, and fires the
+	/// queued ones OUTSIDE the light (the light runs inside the front's walk and inside vanilla's ExplosionAffectCell, which our
+	/// own blast re-enters through RM_Patch_ExplosionLightsLiquid). The knockback itself is the Explosive Knockback mod's: it
+	/// throws pawns from any explosion by its damage type (Flame force 0.5).</summary>
+	public static class RM_IgnitionBlasts
+	{
+		/// <summary>Most cells one "is this body already alight" walk visits (our own rule: it bounds one walk; a body bigger
+		/// than this is read by its first 4096 cells, far past the volume of a full chemfuel stack).</summary>
+		public const int MaxBodyCells = 4096;
+
+		private struct Blast
+		{
+			public int map;
+			public IntVec3 cell;
+			public float radius;
+			public int tick;
+			public bool fired;
+		}
+
+		private static readonly List<Blast> blasts = new List<Blast>();
+		private static Game blastsGame;   // the game the list belongs to: a load re-issues map ids and ticks
+
+		/// <summary>Forget every blast of another game (a load or a new game re-issues the same map uniqueIDs and ticks, so a
+		/// memory from before it would refuse the first light after it).</summary>
+		private static void SameGame()
+		{
+			if (!ReferenceEquals(blastsGame, Current.Game))
+			{
+				blasts.Clear();
+				blastsGame = Current.Game;
+			}
+		}
+		private static bool read;
+		private static float baseRadius = 1.1f, expandPerItem = 0.037f;    // vanilla Chemfuel CompProperties_Explosive
+		private static int maxItems = 150;                                   // vanilla Chemfuel stackLimit
+		private static long dlPerItem = 2000;                                // RM_Liquid_Chemfuel: 200 L a Chemfuel item
+
+		/// <summary>Vanilla's numbers, read once from the defs (the fallbacks above are the same defs' 1.6 values).</summary>
+		private static void Read()
+		{
+			if (read)
+			{
+				return;
+			}
+			read = true;
+			ThingDef chem = ThingDefOf.Chemfuel;
+			CompProperties_Explosive p = chem?.GetCompProperties<CompProperties_Explosive>();
+			if (p != null)
+			{
+				baseRadius = p.explosiveRadius;
+				expandPerItem = p.explosiveExpandPerStackcount;
+			}
+			if (chem != null && chem.stackLimit > 0)
+			{
+				maxItems = chem.stackLimit;
+			}
+			int u = DefDatabase<LiquidTypes.LiquidDef>.GetNamedSilentFail("RM_Liquid_Chemfuel")?.UnitsFor(LiquidTypes.RM_ContainerSize.Bottle) ?? 0;
+			if (u > 0)
+			{
+				dlPerItem = u;
+			}
+		}
+
+		/// <summary>The largest blast (a full stack), for the settings readout.</summary>
+		public static float FullStackRadius
+		{
+			get
+			{
+				Read();
+				return RM_FuelFireMath.IgnitionBlastRadius(RM_FuelBurn.Inferno, true, false, false, long.MaxValue / 2, dlPerItem, baseRadius, expandPerItem, maxItems);
+			}
+		}
+
+		/// <summary>The cheap half of the decision, before any body walk: the switches are on and <paramref name="c"/> was not
+		/// lit by a blast that just went off.</summary>
+		public static bool Wanted(Map map, IntVec3 c)
+		{
+			return RimMandrakeFlowWorksSettings.chemfuelIgnitionBlastEnabled && RimMandrakeFlowWorksSettings.canalFireEnabled && !Recent(map, c);
+		}
+
+		private static bool Recent(Map map, IntVec3 c)
+		{
+			SameGame();
+			int now = Find.TickManager.TicksGame;
+			for (int k = 0; k < blasts.Count; k++)
+			{
+				Blast b = blasts[k];
+				if (b.map == map.uniqueID && RM_FuelFireMath.InsideRecentBlast(c.x - b.cell.x, c.z - b.cell.z, b.radius, now - b.tick))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Decide (RM_FuelFireMath.IgnitionBlastRadius) and queue the blast for <paramref name="c"/>; it is remembered
+		/// at once, so the cells it lights (and every other cell lit this tick inside it) make no blast of their own.
+		/// Returns the radius, 0 for none.</summary>
+		public static float Consider(Map map, IntVec3 c, RM_FuelBurn kind, bool bodyAlreadyBurning, long bodyDl)
+		{
+			Read();
+			float r = RM_FuelFireMath.IgnitionBlastRadius(kind, RimMandrakeFlowWorksSettings.chemfuelIgnitionBlastEnabled && RimMandrakeFlowWorksSettings.canalFireEnabled,
+				bodyAlreadyBurning, Recent(map, c), bodyDl, dlPerItem, baseRadius, expandPerItem, maxItems);
+			if (r > 0f)
+			{
+				blasts.Add(new Blast { map = map.uniqueID, cell = c, radius = r, tick = Find.TickManager.TicksGame });
+			}
+			return r;
+		}
+
+		/// <summary>Set off every queued blast on <paramref name="map"/>, and forget the old ones. Called after the channel
+		/// front's walk and at the top of the spill's tick, never inside a light.</summary>
+		public static void Fire(Map map)
+		{
+			SameGame();
+			if (blasts.Count == 0)
+			{
+				return;
+			}
+			int now = Find.TickManager.TicksGame;
+			for (int k = 0; k < blasts.Count; k++)
+			{
+				Blast b = blasts[k];
+				if (b.fired || b.map != map.uniqueID || now - b.tick > RM_FuelFireMath.IgnitionBlastMemoryTicks || now < b.tick)
+				{
+					continue;
+				}
+				b.fired = true;
+				blasts[k] = b;
+				// a queued Inferno ignition blast goes off as vanilla's own chemfuel explosion: flame damage at its default
+				GenExplosion.DoExplosion(b.cell, map, b.radius, DamageDefOf.Flame, null);
+			}
+			blasts.RemoveAll(b => now - b.tick > RM_FuelFireMath.IgnitionBlastMemoryTicks || now < b.tick);   // a stale one never goes off
+		}
+
+		/// <summary>Blasts queued or remembered (the proof surface reads it).</summary>
+		public static string Report(Map map)
+		{
+			System.Text.StringBuilder sb = new System.Text.StringBuilder("IGNITIONBLASTS");
+			foreach (Blast b in blasts)
+			{
+				if (b.map == map.uniqueID)
+				{
+					sb.Append(" ").Append(b.cell.x).Append(",").Append(b.cell.z).Append(" r=").Append(b.radius.ToString("F2"))
+						.Append(" t=").Append(b.tick).Append(b.fired ? " fired" : " queued");
+				}
+			}
+			return sb.ToString();
+		}
+	}
+
 	/// <summary>The trigger: any vanilla Fire that spawns (not a reload) offers its cell and neighbours.</summary>
 	[HarmonyPatch(typeof(Fire), nameof(Fire.SpawnSetup))]
 	[RimMandrake.Shared.PatchFeature("Burning liquid", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "canalFireEnabled")]
@@ -1354,6 +1570,14 @@ namespace RimMandrake.FlowWorks
 			Map map = Find.CurrentMap;
 			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
 			return ex == null ? "REFUSED: no excavation component on the current map" : ex.LiquidFire.Report();
+		}
+
+		/// <summary>RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK read (live_chemfuel_blast.py): the ignition blasts of the
+		/// last 60 ticks on the current map, "IGNITIONBLASTS x,z r=R t=T fired|queued ...".</summary>
+		public static string ProofIgnitionBlasts(string arg)
+		{
+			Map map = Find.CurrentMap;
+			return map == null ? "REFUSED: no current map" : RM_IgnitionBlasts.Report(map);
 		}
 
 		private static bool Cell(Map map, string s, out IntVec3 c)

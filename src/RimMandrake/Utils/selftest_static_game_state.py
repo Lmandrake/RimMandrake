@@ -88,6 +88,8 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::regionCacheTick": "with regionCache",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::lastReroute": "cleared when Current.Game changes (rerouteGame); now < last reads as expired",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::rerouteGame": "the Game guard for lastReroute",
+    # RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK (2026-11-27)
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs::blastsGame": "the Game guard for RM_IgnitionBlasts.blasts (cleared when Current.Game changes; entries hold a map uniqueID, a cell and a tick, no Map reference; an entry outside its 60-tick window is dropped unfired)",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs::walker": "[ThreadStatic], set only for the length of one Pawn_PathFollower.StartPath call and restored by its Finalizer; WalkerAt also requires w.Spawned && w.Map == map",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs::grids": "Map reference; PruneDeadMaps drops keys not in Find.Maps",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_PitPathing.cs::ladderGrids": "Map reference; dead maps pruned on each new-map miss",
@@ -221,6 +223,8 @@ REGRESSIONS = [
      "HasMaterial's tick memo lost its Current.Game guard (a reload replays pawn ids at the same tick)"),
     ("src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs", r"!ReferenceEquals\(rerouteGame, Current\.Game\)", True,
      "reroute table lost its Game guard"),
+    ("src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs", r"!ReferenceEquals\(blastsGame, Current\.Game\)", True,
+     "chemfuel ignition-blast memory lost its Game guard (a reload replays map ids and ticks, refusing the first light after it)"),
     ("src/RimMandrake/FlowWorks/Source/Superdeep/RM_SuperdeepTrap.cs", r"ReferenceEquals\(e\.map, p\.Map\)", True,
      "trap-region cache no longer checks the entry's map"),
     ("src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArtboardTools.cs", r"ArtboardPawnIds", False,

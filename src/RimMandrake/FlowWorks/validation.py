@@ -1827,7 +1827,10 @@ TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitS
                         "ladderNoKeys", "raiderTakeLadders", "breachRepairEnabled", "ladderOverWalls",
                         # SITE_SPEC_WIRE_TOWER_COST_KEY (2026-10-31): the coverage audit found these Scribed bools missing
                         # from the table (raider fill-line cap, owner ruling 3c4a9ba173; the deep-water look); no chain yet
-                        "raiderFillLineFollowsDigCap", "deepWaterTintEnabled"]
+                        "raiderFillLineFollowsDigCap", "deepWaterTintEnabled",
+                        # RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK: offline FuelFire_chemfuel_ignition_blast_*;
+                        # live northstar/live_chemfuel_blast.py (Explosive Knockback throws), not yet a toggle chain
+                        "chemfuelIgnitionBlastEnabled"]
 # KNOWN_GOOD_BUILD_SKIP_UNCHANGED_PASS (modcheck/gate.py): what these chains read beyond their code and the game. A chain
 # that shells out or reads files and declares nothing is never skipped by the known-good gate; a declaration must name
 # EVERYTHING the chain reads (it replaces the gate's read scan). The C# SelfTest: the sources it compiles and the runner

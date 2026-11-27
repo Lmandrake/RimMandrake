@@ -131,11 +131,66 @@ namespace RimMandrake.FlowWorks.Sheet
 			{
 				return false;
 			}
+			FluidDef f = FluidOf(state.Fluid[i]);
 			burnLit[i] = Find.TickManager.TicksGame;
 			burnAcc[i] = 0;
-			EnsureSheetFlame(c, FluidOf(state.Fluid[i]));
+			EnsureSheetFlame(c, f);
+			if (RM_LiquidFire.BurnOf(f) == RM_FuelBurn.Inferno && RM_IgnitionBlasts.Wanted(map, c))
+			{
+				bool alight = SpillAlight(c, out long spillDl);
+				RM_IgnitionBlasts.Consider(map, c, RM_FuelBurn.Inferno, alight, spillDl);
+			}
 			return true;
 		}
+
+		/// <summary>RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK: is the inferno spill that holds the just-lit
+		/// <paramref name="c"/> already alight elsewhere? Walks the connected inferno sheet cells (N/E/S/W) and sums their liquid.
+		/// Alight: another cell of it burning, or a cell of it beside a burning channel (one body across both fires). Bounded by
+		/// <see cref="RM_IgnitionBlasts.MaxBodyCells"/>.</summary>
+		private bool SpillAlight(IntVec3 c, out long spillDl)
+		{
+			spillDl = 0;
+			RM_MapComponent_Excavation e = Engine;
+			blastSeen.Clear();
+			blastWalk.Clear();
+			blastSeen.Add(map.cellIndices.CellToIndex(c));
+			blastWalk.Enqueue(c);
+			while (blastWalk.Count > 0)
+			{
+				IntVec3 q = blastWalk.Dequeue();
+				spillDl += state.Dl[map.cellIndices.CellToIndex(q)];
+				for (int d = 0; d < 4; d++)
+				{
+					IntVec3 n = q + GenAdj.CardinalDirections[d];
+					if (!n.InBounds(map))
+					{
+						continue;
+					}
+					if (e != null && e.LiquidFire != null && e.LiquidFire.IsBurning(map, n))
+					{
+						return true;
+					}
+					int ni = map.cellIndices.CellToIndex(n);
+					if (blastSeen.Contains(ni) || state.Dl[ni] <= 0 || RM_LiquidFire.BurnOf(FluidOf(state.Fluid[ni])) != RM_FuelBurn.Inferno)
+					{
+						continue;
+					}
+					if (burnLit.ContainsKey(ni))
+					{
+						return true;
+					}
+					blastSeen.Add(ni);
+					if (blastSeen.Count <= RM_IgnitionBlasts.MaxBodyCells)
+					{
+						blastWalk.Enqueue(n);
+					}
+				}
+			}
+			return false;
+		}
+
+		private readonly HashSet<int> blastSeen = new HashSet<int>();
+		private readonly Queue<IntVec3> blastWalk = new Queue<IntVec3>();
 
 		private void PutOut(int i)
 		{
@@ -169,6 +224,7 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		private void FireTick()
 		{
+			RM_IgnitionBlasts.Fire(map);   // a spill lit last tick goes off now, outside TryLight (which runs inside explosions)
 			if (burnLit.Count == 0 || !map.IsHashIntervalTick(FireCheckTicks))
 			{
 				return;

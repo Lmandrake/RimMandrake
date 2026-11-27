@@ -102,6 +102,10 @@ namespace RimMandrake.FlowWorks
         public static float chemfuelIntensity = 1f;
         public static float chemfuelSpreadSpeed = 1f;
         public static float chemfuelBurnRate = 1f;
+        // RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK (owner 2026-11-25: lit chemfuel is an explosion that
+        // knocks back): the first light of a chemfuel or propane body goes off as one vanilla chemfuel flame blast, sized by
+        // the fuel in it (RM_FuelFireMath.IgnitionBlastRadius). On by default.
+        public static bool chemfuelIgnitionBlastEnabled = true;
         public static bool astrofuelDetonationEnabled = true;
         public static float astrofuelBlastScale = 1f;
         public static int SourceFireReach => Mathf.Clamp(Mathf.RoundToInt(sourceFireReach), 0, 30);
@@ -585,6 +589,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref foamSmothersLiquidFireEnabled, "foamSmothersLiquidFireEnabled", true);
             Scribe_Values.Look(ref rainDousesLiquidFireEnabled, "rainDousesLiquidFireEnabled", true);
             Scribe_Values.Look(ref chemfuelInfernoEnabled, "chemfuelInfernoEnabled", true);
+            Scribe_Values.Look(ref chemfuelIgnitionBlastEnabled, "chemfuelIgnitionBlastEnabled", true);
             Scribe_Values.Look(ref chemfuelIntensity, "chemfuelIntensity", 1f);
             Scribe_Values.Look(ref chemfuelSpreadSpeed, "chemfuelSpreadSpeed", 1f);
             Scribe_Values.Look(ref chemfuelBurnRate, "chemfuelBurnRate", 1f);
@@ -810,7 +815,7 @@ namespace RimMandrake.FlowWorks
             .Declare("canalFireEnabled", "tossFlameOrderEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach",
                      "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled",
                      "chemfuelInfernoEnabled", "astrofuelDetonationEnabled")
-            .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate")
+            .Declare("chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "chemfuelIgnitionBlastEnabled")
             .Declare("astrofuelDetonationEnabled", "astrofuelBlastScale")
             .Declare("pitDrowningEnabled", "pitDrowningRateMultiplier", "pitDrowningLyingFraction")
             .Declare("slimeSlipEnabled", "slimeSlipChanceMultiplier", "slimeSlipStunSeconds", "slimeClimbOutSlipFactor")
@@ -850,7 +855,7 @@ namespace RimMandrake.FlowWorks
             .Name("waterBodyTypeFlipFixEnabled", "Water changing type keeps the game's water-body counts right")
             .Name("canalFireEnabled", "Flammable liquid in channels and ponds can be lit")
             .Name("tossFlameOrderEnabled", "Colonists can toss a flame onto a square")
-            .Name("chemfuelInfernoEnabled", "Chemfuel and propane burn like gasoline").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
+            .Name("chemfuelInfernoEnabled", "Chemfuel and propane burn like gasoline").Name("chemfuelIgnitionBlastEnabled", "Lit chemfuel and propane explode").Name("astrofuelDetonationEnabled", "Astrofuel detonates")
             .Name("pitDrowningEnabled", "Water over the head drowns whoever cannot swim")
             .Name("slimeSlipEnabled", "Slime is so slippery it is nearly impossible to cross")
             .Name("liquidCoatEnabled", "Oil, tar, blood and slime coat whoever wades out of them")
@@ -1455,7 +1460,7 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── PHASE 6: fire ───────────────────────────────────────────────
-            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "tossFlameOrderEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
+            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "tossFlameOrderEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled", "chemfuelInfernoEnabled", "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "chemfuelIgnitionBlastEnabled", "astrofuelDetonationEnabled", "astrofuelBlastScale" }))
             {
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
                 "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
@@ -1492,7 +1497,7 @@ namespace RimMandrake.FlowWorks
                     "Lit chemfuel or liquid propane in a channel goes up like a moat of gasoline: the fire races along it in seconds, the "
                   + "flames stand tall, the heat is fierce, anything that can burn within a few squares of it catches, and "
                   + "the fuel burns away within a minute. The sliders below set both. Off: both creep and smoulder for days like oil.");
-                using (Dependent(list, "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate"))
+                using (Dependent(list, "chemfuelIntensity", "chemfuelSpreadSpeed", "chemfuelBurnRate", "chemfuelIgnitionBlastEnabled"))
                 {
                     list.Label("Chemfuel and propane fire intensity (heat, reach, size of the fires it starts): x" + chemfuelIntensity.ToString("F2"));
                     chemfuelIntensity = list.Slider(chemfuelIntensity, 0.25f, 3f);
@@ -1500,6 +1505,11 @@ namespace RimMandrake.FlowWorks
                     chemfuelSpreadSpeed = list.Slider(chemfuelSpreadSpeed, 0.25f, 4f);
                     list.Label("Chemfuel and propane burn-down: half a metre every " + (RM_FuelFireMath.InfernoTicksPerLevelAt(chemfuelBurnRate) / 60f).ToString("F1") + " s");
                     chemfuelBurnRate = list.Slider(chemfuelBurnRate, 0.25f, 4f);
+                    list.CheckboxLabeled("Lit chemfuel and propane explode", ref chemfuelIgnitionBlastEnabled,
+                        "The moment a pool or channel of chemfuel or liquid propane catches, it goes off once like a stack of chemfuel "
+                      + "hit by fire: a flame blast from the lit square that reaches about one square for a splash and up to "
+                      + RM_IgnitionBlasts.FullStackRadius.ToString("F1") + " squares for a full stack's worth or more. "
+                      + "Fuel joined to a fire already burning does not go off again. Off: it only catches and burns.");
                 }
                 list.CheckboxLabeled("Astrofuel detonates", ref astrofuelDetonationEnabled,
                     "Lighting astrofuel anywhere sets off the whole connected body at once: a rippling chain of explosions "

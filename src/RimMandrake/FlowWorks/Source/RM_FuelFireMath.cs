@@ -134,6 +134,47 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Lit cells at which an inferno counts as a LARGE fire (the Utinni layer's "come and look" signal).</summary>
 		public const int LargeInfernoCells = 40;
 
+		// ── chemfuel: the ignition blast ────────────────────────────────────
+
+		/// <summary>RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK (owner 2026-11-25: lit chemfuel is an explosion
+		/// that knocks back). The radius of the one flame explosion a chemfuel (inferno) body makes when it is first lit, or 0
+		/// for none. A body blasts once: never when it is already alight (the front reaching more of it), never when the
+		/// light came from a blast that just went off (<see cref="InsideRecentBlast"/>), never with its switch off, and only an
+		/// inferno (tar, oil and astrofuel keep their own fires). The size is vanilla's own for a stack of chemfuel
+		/// (CompExplosive.ExplosiveRadius: <paramref name="baseRadius"/> + sqrt((items - 1) * <paramref name="expandPerItem"/>)),
+		/// the body's volume counted in items of <paramref name="dlPerItem"/>: at least one item (vanilla's smallest chemfuel
+		/// explosion; a smear still goes off) and at most <paramref name="maxItems"/> (the stack limit, vanilla's largest).</summary>
+		public static float IgnitionBlastRadius(RM_FuelBurn kind, bool enabled, bool bodyAlreadyBurning, bool insideRecentBlast,
+			long bodyDl, long dlPerItem, float baseRadius, float expandPerItem, int maxItems)
+		{
+			if (kind != RM_FuelBurn.Inferno || !enabled || bodyAlreadyBurning || insideRecentBlast || bodyDl <= 0)
+			{
+				return 0f;
+			}
+			long items = dlPerItem > 0 ? bodyDl / dlPerItem : 1;
+			items = Math.Max(1L, Math.Min(items, Math.Max(1, maxItems)));
+			return baseRadius + (float)Math.Sqrt((items - 1) * Math.Max(0f, expandPerItem));
+		}
+
+		/// <summary>True when a cell <paramref name="dx"/>,<paramref name="dz"/> from a blast of <paramref name="radius"/> that
+		/// went off <paramref name="ageTicks"/> ago was lit by it (or with it): within its radius plus one cell (vanilla's
+		/// explosion reaches cells whose centre is just past the radius) and within <see cref="IgnitionBlastMemoryTicks"/>.
+		/// A negative age is a clock from another game: forgotten.</summary>
+		public static bool InsideRecentBlast(int dx, int dz, float radius, int ageTicks)
+		{
+			if (ageTicks < 0 || ageTicks > IgnitionBlastMemoryTicks)
+			{
+				return false;
+			}
+			float reach = radius + 1f;
+			return dx * dx + dz * dz <= reach * reach;
+		}
+
+		/// <summary>How long a blast is remembered: one channel fire check (RM_FireMath.FireCheckIntervalTicks, 30: a cell the
+		/// blast queued lights on the next check) plus vanilla's explosion spread (Explosion.GetCellAffectTick, 1.5 ticks a cell,
+		/// ~6 ticks at a full stack's 3.45), doubled for margin.</summary>
+		public const int IgnitionBlastMemoryTicks = 60;
+
 		// ── astrofuel: the detonation ───────────────────────────────────────
 
 		/// <summary>Ticks between rings of the blast (one ring = one cell of graph distance from where it was lit): 1 tick,
