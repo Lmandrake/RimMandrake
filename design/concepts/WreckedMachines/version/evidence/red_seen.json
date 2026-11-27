@@ -12,6 +12,19 @@
   "rc": 1,
   "test_blob": "8fc35ab495221aa2f9f5f6d16e9742fd296ddad0"
  },
+ "T_LATER_STAYS_OUT": {
+  "at": "2026-11-27T14:22:01Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py",
+  "last": "T_LATER_STAYS_OUT: FAIL",
+  "patch": "diff --git a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_PlantedTurret.xml b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_PlantedTurret.xml\nnew file mode 100644\n--- /dev/null\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_PlantedTurret.xml\n@@ -0,0 +1,9 @@\n+<?xml version=\"1.0\" encoding=\"utf-8\"?>\n+<Defs>\n+  <ThingDef ParentName=\"BuildingBase\">\n+    <defName>RM_WM_Sentry_Wrecked</defName>\n+    <label>wrecked sentry gun</label>\n+    <thingClass>Building_TurretGun</thingClass>\n+    <building><turretGunDef>Gun_MiniTurret</turretGunDef></building>\n+  </ThingDef>\n+</Defs>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_PlantedTurret.xml"
+  ],
+  "patch_sha": "5f8413e239ea6a37",
+  "rc": 1,
+  "test_blob": "a7d0032ef1286b34adc2f0867a872424489f5d7d"
+ },
  "T_REPAIR_STATE_WALK": {
   "at": "2026-11-27T14:16:10Z",
   "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",

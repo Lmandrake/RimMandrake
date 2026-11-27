@@ -1,6 +1,6 @@
 # WreckedMachines 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:17:18-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:22:45-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
 
 ## How a pair is made
 
@@ -18,10 +18,10 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:17:18-0800. A bar pa
 ## Counts
 
 - bars: 30 (locked: 30)
-- tests: 48 (9 built offline, 26 live scenes with their entry written, 8 specified for Stage 3, 4 explorations, 1 look)
-- built offline tests green today: 9, red: 0 (none)
+- tests: 48 (10 built offline, 26 live scenes with their entry written, 7 specified for Stage 3, 4 explorations, 1 look)
+- built offline tests green today: 10, red: 0 (none)
 - live scenes whose tier is not defined: none
-- bars with every decider runnable today: 21 of 30
+- bars with every decider runnable today: 23 of 30
 - bars with no deciding test: 0
 
 ## Bars
@@ -42,9 +42,9 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:17:18-0800. A bar pa
 | inv_distillation_module | inventory, opened_by_owner | 4-5 | T_DISTILLATION_LOADS, sc_text_names_no_setting | sc_rider_distillation | yes | - |
 | inv_wreck_found_in_world | inventory, approved | 6 | sc_ruin_holds_wrecks, sc_rare_wreck_ordinary_map, sc_caravan_wreck_home | sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey | yes | - |
 | inv_ancient_component_source | inventory, approved | 6 | sc_ruin_holds_wrecks, sc_no_handouts, sc_rare_wreck_ordinary_map | sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey | yes | - |
-| inv_wealth_exclusion | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | no | T_LATER_STAYS_OUT |
+| inv_wealth_exclusion | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | yes | - |
 | inv_grade_changed_signal | inventory, approved | 6 | sc_repair_on_machine, T_REPAIR_STATE_WALK | - | yes | - |
-| inv_turret_line | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | no | T_LATER_STAYS_OUT |
+| inv_turret_line | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | yes | - |
 | inv_more_factory_machines | inventory, approved | 6 | sc_menu_and_research, sc_three_looks_rows, sc_cannery_tier, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_forge_plasteel, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
 | only_by_repair | live | 6 | sc_menu_and_research, sc_no_handouts, sc_cannery_tier, sc_component_gate | sc_old_save | yes | - |
 | wreck_is_found | live | 6 | sc_ruin_holds_wrecks, sc_rare_wreck_ordinary_map | T_REPAIR_STATE_WALK | yes | - |
@@ -109,7 +109,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:17:18-0800. A bar pa
 | sc_first_look_built_mod | exploration | 6 | - | an exploration accepts no bar (scenes.json); its question is read by a look in the running game |
 | sc_rider_salvage_rule | exploration | 4-5 | - | an exploration accepts no bar (scenes.json); its question is read by T_SALVAGE_RULE |
 | sc_rider_distillation | exploration | 4-5 | - | an exploration accepts no bar (scenes.json); its question is read by T_DISTILLATION_LOADS |
-| T_LATER_STAYS_OUT | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py | specified, Stage 3 builds it |
+| T_LATER_STAYS_OUT | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py | PASS |
 | LOOK_STAGE8 | look | 8 | - | Stage 8: the owner's own walk |
 
 ## The tree's checks

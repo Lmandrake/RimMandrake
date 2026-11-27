@@ -406,9 +406,8 @@ T["T_LATER_STAYS_OUT"] = dict(
              "of the mod names a turret: record inv_turret_line search_scope) and no wealth exclusion (no WealthWatcher or "
              "MarketValue patch in the mod's C#: record inv_wealth_exclusion search_scope). Red first on a planted turret def "
              "and a planted wealth patch",
-    reads=[WM], command="python3 " + WM + "/selftest_wm_later_stays_out.py", new=True, built_in_stage="3",
-    runs_today={"ran": False, "why": "specified by the Stage 2 steward (rule R7); Stage 3 builds it and records it red first"},
-    file_note="the file is proposed by the table maker; the builder may place it elsewhere and remakes the table",
+    reads=[WM + "/selftest_wm_later_stays_out.py", WM + "/Defs", WM + "/Patches", WM + "/Source"],
+    command="python3 " + WM + "/selftest_wm_later_stays_out.py",
     delegated="delegated: evidence-for-ask: a locked bar of scope `later` with no scene is decided by an absence check, as "
               "Pyrelands' two cut bars are (T_CUT_STAYS_CUT); the other choice, his card to take the two ids out of the locked "
               "bars, has no recorded evidence for it")

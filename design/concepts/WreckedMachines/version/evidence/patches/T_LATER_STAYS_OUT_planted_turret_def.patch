@@ -1,0 +1,14 @@
+diff --git a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_PlantedTurret.xml b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_PlantedTurret.xml
+new file mode 100644
+--- /dev/null
++++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_PlantedTurret.xml
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Defs>
++  <ThingDef ParentName="BuildingBase">
++    <defName>RM_WM_Sentry_Wrecked</defName>
++    <label>wrecked sentry gun</label>
++    <thingClass>Building_TurretGun</thingClass>
++    <building><turretGunDef>Gun_MiniTurret</turretGunDef></building>
++  </ThingDef>
++</Defs>
