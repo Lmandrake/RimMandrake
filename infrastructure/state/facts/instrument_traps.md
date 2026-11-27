@@ -448,6 +448,12 @@ beside the result.
   never pass (Cuisine `recipes_readback` and `skewer_stats`, 2026-11-06 and 2026-11-12). Read list fields element by
   element (thingDef+count, stat+value). `skills/rimbridge/references/traps/pawns-factions.md` already says this for
   vehicle `components`.
+- **A hand-timed run of a lock-guarded command can time its duplicate exit, not its work.** `metronome.py apart --phase
+  sense` exits 75 at once while the live `rm-metronome-sense` run holds `beat.lock`. Measured 2026-11-26 8:01 PM: a
+  timed run read 0.26 s, while the unit's pass takes about 5 s (beats.jsonl holds that run's line, `exit: duplicate`).
+  Read the command's own exit code and log line for the run you timed. To profile the work, run the child command
+  that the phase runs (`metronome_phases.json` `argv`), against a scratch store
+  (`design/specs/2026-11-26-slow-actions/metronome_profile.md`).
 
 ## Doc rot and stale gates
 

@@ -24,7 +24,7 @@ the listing misses. `deploy_custom_mods.py --full-read` reads every file and rew
 | 2 | pipeline tick (`rm-maturation-dispatch`) | 7,602 | 47 s / 119 s | 136 h | Repeated work. One run: 51 s wall, 31 s user CPU, 8,706 file opens, 11.9 M dict reads, `last_words` called 716 times. Wall is 1.9× CPU: the load of the machine. |
 | 3 | scratch reap (`rm-scratch-reap`) | 160 | 9 min / 57 min | 61 h | Reads of many files: one dry run, 639 s, 2.44 M `lstat` calls (176 s), and 309 s waiting for child commands (which ones: UNMEASURED). |
 | 4 | publish (`./publish`) | ≥94 waits, ≥371 check runs | wait 7 min / 39 min; checks 4.7 min / 9.7 min | ≥57 h | A wait in a line (19.9 h) and the real work of the checks (31.3 h pipeline checks, 6.2 h tree checks). One run of mine: 1,811 s = 1,084 s in the line + 596 s pipeline checks + 26 s tree checks. Counts are lower bounds. |
-| 5 | metronome beat and sense | 13,445 | 9 s / 25 s | 37 h | UNMEASURED. The command timed alone took 0.26 s; the sense unit used 4.4 s CPU per run (systemd), so the unit does more than I timed. |
+| 5 | metronome beat and sense | 13,445 | 9 s / 25 s | 37 h | The child commands of the phases, about 95% of each run; the metronome program itself about 0.4 s. Three repeated costs: small-file reads on `/mnt/d`, the ledger replayed again by each reader (2.3 to 4.9 s each time), and every sense pass reading 8 days of all 20 series. The 0.26 s timed alone was a duplicate exit, not a pass. Full split: `metronome_profile.md`. |
 | 6 | status page (`rm-maturation-page`) | 3,273 | 32 s / 57 s | 33 h | Repeated work. One run 43 s: 12.4 s encoding 285 PNG images and 11.5 M dict reads; the whole page is built again every minute. |
 | 7 | ticket lane tick (`list_dispatch.py`) | 516 | 169 s / 425 s | 32 h | Repeated work. One run 218 s: 193 s is 48 item outcome checks run one after the other (`list_effect.run`). |
 | 8 | ticket outcome checks (`rm-list-effect`) | 368 | 125 s / 341 s | 17 h | The same cause as row 7: the same checks run again by a second timer. |
@@ -49,7 +49,7 @@ window run median 167 s over 64 runs, 6.4 h; wake of the Conductor window UNMEAS
 | 5 | Stream collect: memoize `subject_aliases` (3.1 M calls). | S | profile of one run |
 | 6 | Scratch reap: stop at a folder's own time, not at each file (2.44 M `lstat`); find the child commands that it waits for. | M | dry run of 639 s |
 | 7 | Publish line: slot wait median 7 min and p90 39 min with 2 slots on 14 cores at load 22+. The slot count guards a named danger (`2026-11-24-treecheck-slots`); measure the danger before a change. Pipeline checks re-run 145 of 231 tests per publish. | L | needs the page's own measurement |
-| 8 | Metronome: profile the whole unit (all its phases), not one command. | S | the 4.4 s CPU per run |
+| 8 | Metronome: done (`metronome_profile.md`); its five fixes are on that page. | | |
 | 9 | Helper runs: record model seconds and tool seconds per run (today UNMEASURED); then the 833 h can be split. | S | any run's record |
 | 10 | Load: `vmstat` read 60 to 70% CPU busy, 2.5 GB swap in use, 0.5 to 1.4 GB/s disk reads while the rm timers used about 10% of the core-hours. Find the other users before adding any slot. | M | UNMEASURED who |
 
@@ -57,4 +57,4 @@ window run median 167 s over 64 runs, 6.4 h; wake of the Conductor window UNMEAS
 
 - Publish counts are lower bounds (the same line quoted twice in one transcript counts once).
 - The 7-day figures for timers are systemd's own `wall clock time` lines. Their wall time includes waiting for CPU.
-- Causes of rows 1, 5 and the split of row 1 are UNMEASURED or measured on one run only.
+- The cause of row 1 and its split are UNMEASURED or measured on one run only. Row 5 is split in `metronome_profile.md`.
