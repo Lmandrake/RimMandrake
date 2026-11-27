@@ -1,0 +1,2 @@
+A work-bundle member refused for the mod's next version must also leave the ledger: left_open_continue.py counts any member not done, dropped or superseded as open, so a 'REFUSED BY BUNDLE' note on a proposed item restarts the bundle forever. Drop it with the next_version/README.md entry as its home (as DIG_RIG_BUILD_BUCKET_OVER_THE_PIT, 2026-11-27).
+item: RIMMANDRAKE_EXPLAIN_BRIM_POUR_LITRES_WITH_NOWHERE_TO_GO
