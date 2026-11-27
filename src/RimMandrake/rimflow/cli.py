@@ -427,8 +427,12 @@ def cmd_queue(args, seat):
         return _print_acceptance(args, seat)
     which = model.canonical((args.which or seat or "").upper())     # `queue CONDUCTOR` reads BENCH's view
     if getattr(args, "owed", False):    # the owed view: short, read first at every wake (owed.py)
-        _, w = load()
-        print("\n".join(_owed().view(w, which, show_all=args.all)))
+        evs, w = load()
+        try:
+            from . import conductor_stops as _cs
+        except ImportError:
+            import conductor_stops as _cs
+        print("\n".join(_owed().view(w, which, show_all=args.all, stops=_cs.load(), asks=_cs.asks(evs, w))))
         return 0
     try:
         from . import render as _render

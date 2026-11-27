@@ -1051,6 +1051,30 @@ def t_a_lead_takes_the_ready_tickets_of_its_home():
     rows, launches, _ = run({}, systems={}, bundles_live={}, join={"B": "pipeline:test-lane"})
     chk(lambda: launches == [], "decide: a home with no ticket whose check fails launches nothing")
 
+def t_each_row_says_since_when_it_took_its_decision():
+    """conductor_stops reads the age of a stop from `since` (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX)."""
+    p = os.path.join(os.environ["RM_LIST_DISPATCH_DIR"], "state.json")
+    st = att({"unit": "u1", "failed": None, "next": None})
+    mw = it(mod_work={"mod": "GSS", "why": "its home is mod:GSS", "unreadable": None}, wait_until=NOW + 86400)
+    items = {"A": it(), "M": mw}
+    fx = {"facts": lambda s: {"items": items, "runs": {"A": {"live": [], "ended": ["u1"]}}, "other_live": 0},
+          "account": lambda: (True, ""), "launch": lambda *a: (0, "", "u9"), "need": lambda *a: None,
+          "close": lambda *a: (0, ""), "effect": lambda *a: (0, "")}
+    json.dump(st, open(p, "w"))
+    r1 = LD().tick(dict(CFG), apply=True, fx=fx, now=NOW)
+    r2 = LD().tick(dict(CFG), apply=True, fx=fx, now=NOW + 900)
+    chk(lambda: r1["items"]["A"]["decision"] == "stopped" and r2["items"]["A"].get("since") == NOW,
+        "a row keeps the time it first took its decision (%s)" % r2["items"]["A"].get("since"))
+    chk(lambda: r2["items"]["M"].get("mod") == "GSS" and r2["items"]["M"].get("wait_until") == NOW + 86400,
+        "a mod_work row names its mod and its own dated wait")
+    items["A"] = it(state="done")
+    r3 = LD().tick(dict(CFG), apply=True, fx=fx, now=NOW + 1800)
+    chk(lambda: r3["items"]["A"].get("since") == NOW + 1800, "a new decision restarts since")
+    d = LD().tick(dict(CFG), apply=False, fx=fx, now=NOW + 2700)
+    chk(lambda: d["items"]["M"].get("since") == NOW, "a dry tick reads since and writes nothing")
+    os.remove(p)
+
+
 def main():
     for t in (t_decide_is_pure_and_says_why_on_every_row,
               t_the_check_runs_before_every_attempt,
@@ -1082,7 +1106,8 @@ def main():
               t_only_narrows_the_items_never_the_gates,
               t_a_mod_ticket_is_not_the_list_pipelines,
               t_each_limit_names_its_danger,
-              t_blocked_idle_window_open_is_due):
+              t_blocked_idle_window_open_is_due,
+              t_each_row_says_since_when_it_took_its_decision):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a promise whose test cannot run is a FAIL, never a crash

@@ -855,6 +855,13 @@ def p18_dense_mod_section(d, page):
           mod.waits_text(fake))
     fake2 = {"column": "6", "waits_on": "waiting: a helper is live on it"}
     check("18 waits_text of a running mod is unchanged", mod.waits_text(fake2) == fake2["waits_on"])
+    os.environ["MATURATION_NOW_CLOCK"] = str(1_800_000_000 + 45 * 3600)
+    rest = dict(fake, rest_since=1_800_000_000.0)
+    check("18 a resting mod shows the age of its rest beside Resting (stuck-items part 4)",
+          mod.waits_text(rest).startswith("Resting 45 h, passed."), mod.waits_text(rest))
+    check("18 a rest of unknown start says so", mod.waits_text(dict(fake, rest_since=None)).startswith("Resting (age UNMEASURED), passed."),
+          mod.waits_text(dict(fake, rest_since=None)))
+    del os.environ["MATURATION_NOW_CLOCK"]
 
 
 def main():

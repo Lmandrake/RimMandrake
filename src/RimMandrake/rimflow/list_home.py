@@ -33,7 +33,7 @@ for _p in (HERE, os.path.join(REPO, "src", "RimMandrake", "Utils")):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-KINDS = ("mod", "pipeline", "game", "machine")
+KINDS = ("mod", "pipeline", "game", "machine", "fix")   # fix:<Mod>: a correction of a passed version that moves no bar (conductor_stops sort --to lane)
 UNPLACED = "unplaced"
 FLAGS = ("LOOKS CURRENT", "LOOKS OVERTAKEN", "CANNOT TELL")
 CLOSED = ("done", "dropped", "superseded")
@@ -48,7 +48,7 @@ def fields(home, group, flag, reason=None):
     reason = " ".join(str(reason or "").split()) or None
     kind, _c, name = home.partition(":")
     if home != UNPLACED and (kind not in KINDS or not NAME_RX.match(name)):
-        return None, ("the home %r is not mod:<folder>, pipeline:<part>, game:<need>, machine:<name> or unplaced "
+        return None, ("the home %r is not mod:<folder>, pipeline:<part>, game:<need>, machine:<name>, fix:<mod folder> or unplaced "
                       "(a name has no spaces)" % home)
     if not GROUP_RX.match(group):
         return None, "the group %r is not a lower-case slug (for example pipe-art)" % group

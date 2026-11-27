@@ -325,6 +325,12 @@ def read_mod(root, folder, names, live=True):
         m["column"], m["at_door"] = rcol, bool(rec.get("at_door"))
         m["stage_text"] = j.get("stage") or "%s (the stage record)" % rec.get("stage")
         m["stage_from"] = "stage record (version/stage_record.json)"
+        if rcol == "passed":    # the age of the rest beside "Resting" (stuck-items study part 4)
+            try:
+                t = dt.datetime.fromisoformat(str(rec.get("since")).replace("Z", "+00:00"))
+                m["rest_since"] = (t if t.tzinfo else t.replace(tzinfo=dt.timezone.utc)).timestamp()
+            except ValueError:
+                m["rest_since"] = None
     elif j.get("stage"):
         col, door = stage_from_text(j["stage"])
         m["column"], m["at_door"] = col or UNM, door
@@ -1877,7 +1883,13 @@ def waits_text(m):
     w = plain_wait(m["waits_on"])
     if m.get("column") == "passed":
         w = re.sub(r"^waiting:\s*", "", w)
-        return ("Resting, passed. " + w[:1].upper() + w[1:]) if w else "Resting, passed."
+        head = "Resting"
+        if "rest_since" in m:       # read from the stage record; absent only where no record was read
+            t = m["rest_since"]
+            h = (time_now() - t) / 3600 if isinstance(t, (int, float)) else None
+            head = ("Resting (age %s)" % UNM if h is None else "Resting %d h" % max(0, h) if h < 48
+                    else "Resting %d days" % (h // 24))
+        return ("%s, passed. " % head + w[:1].upper() + w[1:]) if w else "%s, passed." % head
     return w
 
 

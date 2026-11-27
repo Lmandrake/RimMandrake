@@ -51,6 +51,10 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **decide-is-pure-and-says-why-on-every-row.** `decide(cfg, st, facts, now, account)` reads only its inputs, writes
   only `st`, and returns one row per item with a non-empty `why`. A ledger that could not be read (`facts["items"]` is
   None) is one `blind` row and no launch.
+- **each-row-says-since-when-it-took-its-decision.** Each row of `reading.json` carries `since`: the time of the first
+  full applied tick that gave the item its decision; a changed decision starts it again (state `kind_since`). A
+  `mod_work` row also names `mod` and the ticket's own `wait_until`. `conductor_stops.py` reads a stop's age from it
+  (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX).
 - **a-mod-ticket-is-not-the-list-pipelines.** A ticket whose home is `mod:<folder>`, or that has no home (or `unplaced`)
   and whose every repo path (title, check, prose) lies inside one mod's folder (`src/<Tier>/<Mod>/` or
   `design/concepts/<Mod>/`), is one mod's work (`mod_work.of`, the one rule). The tick runs no check on it, adopts,

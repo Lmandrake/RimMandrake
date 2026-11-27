@@ -120,11 +120,34 @@ def _banner(world, seat, now):
                                                                   old.id)
 
 
-def view(world, seat="BENCH", now=None, show_all=False):
-    """-> [line]: the owed view, at most MAX_LINES unless `show_all`. Pure."""
+def _blind(cause):
+    c = str(cause or "").strip()
+    return c if c.startswith("could not look") else "could not look (%s)" % (c or "no cause given")
+
+
+def view(world, seat="BENCH", now=None, show_all=False, stops=None, asks=None):
+    """-> [line]: the owed view, at most MAX_LINES unless `show_all`. Pure.
+    stops, asks: (rows, cause) from conductor_stops.load and conductor_stops.asks (None: not read, no block)."""
     now = model.epoch_now() if now is None else now
     act, wait = split(world, seat, now)
     body = []
+    if stops is not None:       # the stops no program ends: the Conductor is told first (conductor_stops.py)
+        rows, cause = stops
+        if rows is None:
+            body.append((None, "STOPS FOR YOU: " + _blind(cause)))
+        elif rows:
+            body.append((None, "STOPS FOR YOU (%d): no program ends these; you decide, or route to him" % len(rows)))
+            for r in rows:
+                body.append((r, "  %-6s %-15s %s  %s" % (r["age"], r["kind"], ",".join(r["items"]), r["why"])))
+    if asks is not None:        # lane asks to him that nobody read against now (owner_queue lane-ask-filter)
+        rows, cause = asks
+        if rows is None:
+            body.append((None, "ASKS TO READ: " + _blind(cause)))
+        elif rows:
+            body.append((None, "ASKS TO READ (%d): a lane ask to him; class it STALE (remove the route), NOT HIS "
+                               "(route it to you) or HIS (`rimflow note <ID> --text \"ASK HIS: <why>\"`)" % len(rows)))
+            for x in rows:
+                body.append((x, "  %-6s %s  %s" % (x.get("age") or "age?", x["item"], " ".join(str(x["q"]).split())[:150])))  # cut-ok: a view line; the whole ask stays on the ticket
     for i in act:
         s, age = _age(i.created_at, now)
         late = "LATE" if s is not None and s > LATE_S else "    "

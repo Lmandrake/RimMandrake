@@ -1600,6 +1600,15 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         counts = {}
         for r in rows:
             counts[r["decision"]] = counts.get(r["decision"], 0) + 1
+        # since: when each item took its decision (conductor_stops reads a stop's age from it); a decision that changes,
+        # even for one tick, starts again. Only a full applied tick writes it.
+        ks_old, ks = st.get("kind_since") or {}, {}
+        for r in rows:
+            prev = ks_old.get(r["item"])
+            ks[r["item"]] = [r["decision"], prev[1] if isinstance(prev, list) and len(prev) == 2
+                             and prev[0] == r["decision"] and isinstance(prev[1], (int, float)) else now]
+        if apply and not only:
+            st["kind_since"] = ks
         # a run-now (--only) tick sees part of the lane: it neither counts nor ends the streak; a dry tick writes nothing
         bh = blind_hold(st.get("blind_hold"), rows, now) if apply and not only else st.get("blind_hold")
         if apply and not only:
@@ -1610,7 +1619,8 @@ def tick(cfg, apply, fx=None, now=None, only=None):
                            if r.get("decision") == "launched"],
               "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need")
                                          + (("onboard",) if r.get("onboard") else ())},
-                                        stage=row_stage((facts.get("items") or {}).get(r["item"]), r, now))
+                                        stage=row_stage((facts.get("items") or {}).get(r["item"]), r, now),
+                                        since=ks[r["item"]][1], **_mod_fields((facts.get("items") or {}).get(r["item"]), r))
                         for r in rows}}
         if apply:
             _write(os.path.join(d, "state.json"), st)
@@ -1621,6 +1631,14 @@ def tick(cfg, apply, fx=None, now=None, only=None):
     finally:
         if lock:
             lock.close()
+
+
+def _mod_fields(it, row):
+    """A mod_work row names its mod and the ticket's own dated wait (conductor_stops: a resting mod's tickets)."""
+    if row.get("decision") != "mod_work" or not isinstance(it, dict):
+        return {}
+    mw = it.get("mod_work") if isinstance(it.get("mod_work"), dict) else {}
+    return {"mod": mw.get("mod"), "wait_until": it.get("wait_until")}
 
 
 def blind_hold(prev, rows, now):
