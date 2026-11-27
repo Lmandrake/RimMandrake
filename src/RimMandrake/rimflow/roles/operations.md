@@ -245,8 +245,9 @@ expensive it requires immediate action for sure. But not starving it or failing 
    - What moves the alarm?
    - Check a RUNWAY_LOW on an ESTIMATE runway against the meter first.
    - A lent account raises no runway alarm. `accounts.<account>.loan_runway` (its allowance against the lent window)
-     and its week `runway` are readings only. The plan drains it to its leave line on purpose. The danger, the pool
-     dry when the lent window ends, is `FLEET_STOP_NEAR` on `accounts.fleet_stop_h`.
+     and its week `runway` are readings only. The plan drains it to its leave line on purpose. The danger, the chance
+     that the plan has no account with allowance left when the lent window ends, is `FLEET_STOP_NEAR` on
+     `accounts.fleet_stop_h`.
 2. For each open flag older than one run, find its kind: band, run, silent, or target.
    - A silent series is an instrument gone blind. Find which collector went blind and why (the point's `why`). File
      an item for the blind collector.
