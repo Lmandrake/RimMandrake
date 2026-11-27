@@ -37,4 +37,4 @@ Code: `src/RimMandrake/Utils/pre_design_concepts.py`, and its calls in `maturati
 
 ## LIMITS
 - `DUE_MAX` 4: not a guard; the most options one question card holds beside "let them all sleep".
-- `CHILD_TIMEOUT_S` 600 in the selftest: hang guard on one child run; the longest measured run is about 3 s.
+- The call to `agent_storage.py` and each child run of the selftest use `time_budget.CALL_S`: hang guard (class call).

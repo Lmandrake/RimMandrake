@@ -31,7 +31,7 @@ pit' or 'cut that tree'"
 History (7 events):
 
 - 2026-10-25T14:56:28Z OWNER `file`: for BENCH, kind design, needs offline, target v1, with his words above.
-- 2026-10-29T01:32:13Z OWNER `reassign` to FOUNDRY. Reason: "v3 cutover: BENCH lane -> FOUNDRY". His words on the
+- 2026-10-29T01:32:13Z OWNER `reassign` to FOUNDRY (a seat now retired, since 2026-11-02). Reason: "v3 cutover: BENCH lane -> FOUNDRY". His words on the
   event: "Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry".
 - 2026-10-29T04:56:21Z BENCH `note`: "Done when: a design doc under design/RimMandrake/ names the command set, which
   creature/droid classes take commands, the vanilla work-type/designation hooks used, and a v1 slice; otherwise drop as

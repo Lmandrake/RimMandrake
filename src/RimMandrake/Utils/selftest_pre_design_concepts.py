@@ -22,8 +22,8 @@ STORE = os.path.join(REPO, "design", "pre_design_concepts")
 PROG = os.path.join(HERE, "pre_design_concepts.py")
 PAGE = os.path.join(HERE, "maturation_now.py")
 sys.path.insert(0, HERE)
-# hang guard on one child run; the longest measured run is about 3 s (2026-11-26)
-CHILD_TIMEOUT_S = 600
+import time_budget  # noqa: E402
+CHILD_TIMEOUT_S = time_budget.CALL_S     # the hang guard of one child run (class call)
 
 
 def lib():

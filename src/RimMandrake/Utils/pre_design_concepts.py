@@ -30,6 +30,8 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import time_budget  # noqa: E402  the one hang guard of a call
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 STORE = os.path.join(REPO, "design", "pre_design_concepts")
 UNM = "UNMEASURED"
@@ -136,7 +138,8 @@ def conductor_dir():
     if os.environ.get("RM_PDC_CONDUCTOR_DIR"):
         return os.environ["RM_PDC_CONDUCTOR_DIR"]
     helper = os.path.expanduser("~/dev/Lodestar/bin/lib/agent_storage.py")
-    r = subprocess.run([sys.executable, helper, "rimmandrake"], capture_output=True, text=True, timeout=60)
+    r = subprocess.run([sys.executable, helper, "rimmandrake"], capture_output=True, text=True,
+                       timeout=time_budget.CALL_S)
     root = (r.stdout or "").strip()
     if r.returncode or not root:
         raise SystemExit("pre_design_concepts: agent_storage.py rimmandrake gave no root (rc %s): %s"
