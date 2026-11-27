@@ -568,6 +568,33 @@ def main():
     check("pour: a refusal for room is FAIL", O.judge_pour("REFUSED: No room")[0] == "FAIL")
     check("pour: OK that kept a remainder for room is FAIL",
           O.judge_pour("OK poured 0 L into a pit of 36 squares; 1,000 L had no room")[0] == "FAIL")
+    # RIMMANDRAKE_EXPLAIN_BRIM_POUR_LITRES_WITH_NOWHERE_TO_GO: the live 2026-11-12 reply, word for word. The judge reads the
+    # sheet ledger taken just before the pour (wet squares, the map's cap on them, the dL one square holds).
+    nowhere = ("OK poured 0 L of 1 kL RM_Fluid_Water at (143, 103) into a pit of 36 squares; spilled 0 L of 1 kL on the ground "
+               "around it; 1 kL had nowhere to go (walls, other liquids or the map's cap on wet squares) (the sheet ledger counts "
+               "it as flood input)")
+    room = "SHEETLEDGER enabled=False wet=12 cap=10000 maxWet=4000 irrigated=0"
+    full = "SHEETLEDGER enabled=False wet=4000 cap=10000 maxWet=4000 irrigated=0"
+    check("pour: spilled 0 L of 1 kL while the cap had room is FAIL (the 11-12 reply)", O.judge_pour(nowhere, room)[0] == "FAIL",
+          O.judge_pour(nowhere, room))
+    check("pour: spilled 0 L while the map's wet cap was full is UNMEASURED (a spill elsewhere spoiled it), never PASS",
+          O.judge_pour(nowhere, full)[0] == "UNMEASURED", O.judge_pour(nowhere, full))
+    check("pour: a shortfall with no ledger read is UNMEASURED, never PASS", O.judge_pour(nowhere, "Type not found")[0] == "UNMEASURED",
+          O.judge_pour(nowhere, "Type not found"))
+    whole = ("OK poured 0 L of 1 kL RM_Fluid_Water at (66, 66) into a pit of 9 squares; spilled 1 kL of 1 kL on the ground around "
+             "it (the sheet ledger counts it as flood input)")
+    check("pour: spilled 1 kL of 1 kL (live ArchSmall 2026-11-26) is PASS", O.judge_pour(whole, room)[0] == "PASS", O.judge_pour(whole, room))
+    part = ("OK poured 0 L of 1 kL RM_Fluid_Water at (66, 66) into a pit of 9 squares; spilled 0.5 kL of 1 kL on the ground "
+            "around it; 0.5 kL had nowhere to go (walls, other liquids or the map's cap on wet squares) (the sheet ledger counts "
+            "it as flood input)")
+    check("pour: half spilled with one free square that holds it all is FAIL",
+          O.judge_pour(part, "wet=3999 cap=10000 maxWet=4000")[0] == "FAIL", O.judge_pour(part, "wet=3999 cap=10000 maxWet=4000"))
+    big = ("OK poured 0 L of 10000 kL RM_Fluid_Water at (66, 66) into a pit of 9 squares; spilled 3999 kL of 10000 kL on the "
+           "ground around it; 6001 kL had nowhere to go (walls, other liquids or the map's cap on wet squares)")
+    check("pour: 10,000 kL that needs more squares than the cap has left is UNMEASURED, not FAIL",
+          O.judge_pour(big, "wet=0 cap=10000 maxWet=4000")[0] == "UNMEASURED", O.judge_pour(big, "wet=0 cap=10000 maxWet=4000"))
+    check("pour: a pit that took it all (no spill phrase) is PASS", O.judge_pour("OK poured 1 kL of 1 kL RM_Fluid_Water at (1, 1)"
+          " into a pit of 9 squares", room)[0] == "PASS")
     # screenshot mode (owner 18:15: "no longer allowing me to select objects at all")
     js = O.judge_screenshot
     check("screenshot: off before and after PASS", js({"activeBefore": False}, {"activeBefore": False})[0] == "PASS")

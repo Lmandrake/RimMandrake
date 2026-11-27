@@ -41,7 +41,9 @@ Rows (one family per owner sentence; the pure judges below are selftested by sel
   OL_one_law_over_fill      16:2x "It's as though each case is independently set" -> per thing, BP0..BP5: share never
                             falls and seenFoot never rises as the water rises.
   OL_pour_never_no_room     20:49 "it always responded "No Room." It shouldn't do that. It should go ahead and overflow."
-                            (--acts only) -> a pour into a brim-full pit replies OK and never "no room".
+                            (--acts only) -> a pour into a brim-full pit replies OK and never "no room", and the overflow
+                            lands on the ground round it while the sheet ledger, read just before, has wet squares free for it
+                            (FAIL); a full cap is UNMEASURED (a spill elsewhere spoiled the scene).
   OL_screenshot_mode_off    18:15 "The game is no longer allowing me to select objects at all..." (cause: screenshot mode
                             left on) -> at the end of the run screenshot mode is off, and it was not left on before.
   OL_label_text_true_depth  17:57 "It's supposed to show the precise depth no matter what" -> per copy, 16 cells (every
@@ -58,11 +60,13 @@ the shapes pit_fittings_matrix.py and the 20:11 live run read (ProofSubmerge tex
 """
 import json
 import os
+import re
 import sys
 from decimal import Decimal, ROUND_HALF_UP
 
 SUB = "RimMandrake.FlowWorks.RM_SubmergeDraw"
 GL = "RimMandrake.FlowWorks.RM_GodLiquid"
+SHEET_PROOFS = "RimMandrake.FlowWorks.Sheet.RM_SheetProofs"
 PW = 16
 SPARE_SIDE_DEPTH = (6, 8)       # a spare named by hand (--acts x,z) with no plan spare: the 11-12 keeper's side and notches
 THING_SHADOW_ALPHA = 0.30       # RM_UnderLiquid.DefaultThingShadowAlpha (kept equal by selftest_flowworks_underliquid_parity)
@@ -73,6 +77,7 @@ EPS = 1e-6
 OVERLAY_HOOK = "RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS"
 LABEL_T = "RimMandrake.FlowWorks.RM_Patch_MouseoverDepth"   # ProofPitLabel lives here (RM_MouseoverDepth.cs)
 FLUID_LABEL = {"RM_Fluid_Water": "water", "RM_Fluid_Tar": "tar"}   # FluidDef labels, Defs/Canals/FluidDefs/FlowWorks_Fluids.xml
+UNITS_PER_LITRE = 10            # RM_Volume.UnitsPerLitre (the sheet ledger's dL)
 UNITS_PER_LEVEL = 10000         # RM_Volume.UnitsPerLevel (dl per notch): PitLabel prints dl * 0.5 / 10000 m
 LABEL_STRIDE = 5                # label cells read per copy: i, j in 0, 5, 10, 15 (16 of 256: walls' feet and middle)
 LABEL_TAILS = (" (", " \u2014 ", " \u00b7 ")   # what LineAt appends: walk speed, depth readout, floor phrase or sunk geyser
@@ -197,14 +202,37 @@ def judge_monotone(seq):
     return ("PASS" if not bad else "FAIL"), " ".join("%d,%.3f,%.3f" % t for t in seq)
 
 
-def judge_pour(reply):
-    """A pour into a brim-full pit overflows: OK, and never 'no room'."""
+def litres_of(num, unit):
+    """'1', 'kL' -> 1000.0: the text RM_Volume.FormatLitres prints ('0.5 kL', '3999 kL', '0 L', '1,000 L')."""
+    return float(num.replace(",", "")) * (1000.0 if unit == "kL" else 1.0)
+
+
+def judge_pour(reply, ledger=None):
+    """A pour into a brim-full pit overflows: OK, never 'no room', and the overflow lands on the open ground round it.
+    ledger: RM_SheetProofs.ProofSheetLedger read just before the pour. A shortfall is FAIL while the map's wet-square cap had
+    room for it (the 11-12 reply 'spilled 0 L of 1 kL' passed before), UNMEASURED when the cap was full or unreadable."""
     r = str(reply or "")
     if not r.startswith("OK"):
         return "FAIL", r[:200]
     if "no room" in r.lower():
         return "FAIL", "replied OK but kept a remainder for room: " + r[:200]
-    return "PASS", r[:200]
+    m = re.search(r"spilled ([\d.,]+) (k?L) of ([\d.,]+) (k?L)", r)
+    if not m:
+        return "PASS", r[:200]
+    got, want = litres_of(m.group(1), m.group(2)), litres_of(m.group(3), m.group(4))
+    if got >= want:
+        return "PASS", r[:200]
+    kv = dict(re.findall(r"\b(wet|maxWet|cap)=(\d+)", str(ledger or "")))
+    if len(kv) < 3 or int(kv["cap"]) <= 0:
+        return "UNMEASURED", "spilled %s of %s L and the sheet ledger before the pour is unreadable: %s" % (
+            got, want, str(ledger)[:80])
+    wet, max_wet, cap = int(kv["wet"]), int(kv["maxWet"]), int(kv["cap"])
+    need = -(-int(round((want - got) * UNITS_PER_LITRE)) // cap)      # dry squares the shortfall needs, one square holds cap dL
+    if max_wet - wet >= need:
+        return "FAIL", "spilled %g of %g L with %d of the map's %d wet squares free (the rest needs %d): open ground refused it; %s" % (
+            got, want, max_wet - wet, max_wet, need, r[:120])
+    return "UNMEASURED", "the map's wet-square cap had %d free of %d and the rest needs %d: a spill elsewhere spoiled the scene" % (
+        max_wet - wet, max_wet, need)
 
 
 def judge_screenshot(before, after):
@@ -554,7 +582,8 @@ def acts(spare):
         return [("OL_pour_never_no_room", "UNMEASURED", "could not brim the spare pit: " + r0[:160])]
     # PourOverflow is what the dev menu's "Pour liquid..." runs; Pour keeps to the overflow switches and refuses a brim pit
     # by design (live 2026-11-12 night: "REFUSED ... had no room (the dev action overflows it)")
-    out.append(("OL_pour_never_no_room",) + judge_pour(static(GL, "PourOverflow", c + "|RM_Fluid_Water|1000")))
+    ledger = static(SHEET_PROOFS, "ProofSheetLedger", "-")     # the wet-square cap before the pour: was there room to spill?
+    out.append(("OL_pour_never_no_room",) + judge_pour(static(GL, "PourOverflow", c + "|RM_Fluid_Water|1000"), ledger))
     static(GL, "DrainAll", c)
     for dx, dz in ((-1, 0), (w, 0), (0, -1), (0, w)):          # the overflow, if it reached the ground
         static(GL, "DrainAll", "%d,%d" % (x0 + dx, z0 + dz))

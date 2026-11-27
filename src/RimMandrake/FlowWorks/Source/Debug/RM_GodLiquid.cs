@@ -298,8 +298,8 @@ namespace RimMandrake.FlowWorks
 					dry = more > 0 ? 0 : dry + 1;
 				}
 			}
-			string whyNot = sheet == null ? " (this map has no sheet component)" : !RimMandrakeFlowWorksSettings.DepthEngineActive
-				? " (the FlowWorks depth engine is off in this game)" : " (walls, other liquids or the map's cap on wet squares)";
+			string whyNot = RM_GodLiquidMath.NowhereWhy(sheet != null, RimMandrakeFlowWorksSettings.DepthEngineActive,
+				sheet?.WetCells ?? 0, sheet?.ProofParams.MaxWetCells ?? 0);
 			said = "spilled " + L(got) + " of " + L(rest) + " on the ground around it" + (rest > got ? "; " + L(rest - got) + " had nowhere to go" + whyNot : "")
 				+ " (the sheet ledger counts it as flood input)";
 			if (!overflow && got <= 0)

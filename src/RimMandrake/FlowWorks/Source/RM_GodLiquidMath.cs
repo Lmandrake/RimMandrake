@@ -212,6 +212,28 @@ namespace RimMandrake.FlowWorks
 			return -1;
 		}
 
+		/// <summary>Why a ground pour left some litres unplaced, from what was measured (RIMMANDRAKE_EXPLAIN_BRIM_POUR_LITRES_WITH_NOWHERE_TO_GO):
+		/// no sheet component, the depth engine off, the map's cap on wet squares full (<paramref name="wet"/> at or over
+		/// <paramref name="maxWet"/>), else the ground in reach, with the free squares named.</summary>
+		public static string NowhereWhy(bool hasSheet, bool engineOn, int wet, int maxWet)
+		{
+			if (!hasSheet)
+			{
+				return " (this map has no sheet component)";
+			}
+			if (!engineOn)
+			{
+				return " (the FlowWorks depth engine is off in this game)";
+			}
+			if (wet >= maxWet)
+			{
+				return " (the map's cap of " + maxWet + " wet squares is full, " + wet + " wet: drain a spill, or raise 'Most squares"
+					+ " spilled water may cover on a map' in Mod Settings)";
+			}
+			return " (" + (maxWet - wet) + " of the map's " + maxWet + " wet squares were free; the ground in reach was walls, other"
+				+ " liquids, ice or full)";
+		}
+
 		/// <summary>RIMMANDRAKE_PROVE_UNDER_LIQUID_LAW_LIVE (owner look 2026-11-14, his 9: "Provide that same fill example for all the
 		/// different options ... Define instead how full a single tile would be in terms of meters."): every step carries the same
 		/// worked example, the depth it would stand on ONE square ("1 kL (one tile 0.5 m deep)").</summary>

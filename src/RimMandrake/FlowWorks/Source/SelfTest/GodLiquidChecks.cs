@@ -81,6 +81,22 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            // RIMMANDRAKE_EXPLAIN_BRIM_POUR_LITRES_WITH_NOWHERE_TO_GO: live 2026-11-12, "1 kL had nowhere to go (walls, other liquids
+            // or the map's cap on wet squares)" named three causes and measured none; the map's cap was full (live ArchSmall
+            // 2026-11-26: 10,000 kL placed 3999 kL on 4000 squares). The reply names the cause it measured.
+            Case("GodLiquid_nowhere_to_go_names_the_measured_cause", () =>
+            {
+                string full = RM_GodLiquidMath.NowhereWhy(true, true, 4000, 4000);
+                Assert(full.Contains("4000") && full.Contains("cap") && !full.Contains("walls"), "a full cap is not named alone: " + full);
+                string room = RM_GodLiquidMath.NowhereWhy(true, true, 12, 4000);
+                Assert(!room.Contains("cap") && room.Contains("walls") && room.Contains("3988"),
+                    "under the cap the reply blames the cap or hides the free squares: " + room);
+                Assert(RM_GodLiquidMath.NowhereWhy(false, true, 0, 4000).Contains("no sheet"), "no sheet component is not named");
+                Assert(RM_GodLiquidMath.NowhereWhy(true, false, 4000, 4000).Contains("depth engine is off"),
+                    "the engine switch is not named first: " + RM_GodLiquidMath.NowhereWhy(true, false, 4000, 4000));
+                Assert(RM_GodLiquidMath.NowhereWhy(true, true, 4100, 4000).Contains("cap"), "a cap lowered under the wet count is not full");
+            });
+
             Case("GodLiquid_amounts_refuse_zero_negative_and_nonsense", () =>
             {
                 foreach (double bad in new[] { 0.0, -1.0, -2048000.0, double.NaN, double.PositiveInfinity, double.NegativeInfinity,
