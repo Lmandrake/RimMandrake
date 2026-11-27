@@ -616,7 +616,7 @@ answers, run `python3 src/RimMandrake/Utils/code_review_status.py --help`.
 - Exit 0 CLEAN.
 - Exit 1 DIRTY: a promise has no test, or the tests file of the page fails.
 - Exit 3 UNREADABLE: a page or a tests file could not be read or run. Exit 3 also means that a page is not registered
-  in `src/RimMandrake/Utils/boundary_pages.json`, or that this file cannot be read.
+  in `src/RimMandrake/Utils/boundary_pages.json`, or that `boundary_pages.json` cannot be read.
 - Exit 4 NO PAGE.
 
 `check` runs the tests file of each page that names the path, once per call. The page of `check` itself is
