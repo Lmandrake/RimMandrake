@@ -5,8 +5,6 @@
 - `rimflow bridge take` and `release` refuse his OWNER hold with exit 2 (`die`'s default), not 3 as `game_lock.py`
   does; no caller reads the code apart from 0 (fresh read, 2026-11-21).
 - `host_guard.py take` refuses his OWNER hold with exit 75, not 3 (fresh read, 2026-11-21).
-- `game_lock.run` never refreshes the lock's heartbeat; it matters only for a reader that cannot inspect the holder
-  (another machine) (fresh read, 2026-11-21).
 - `driver_lock._fence_identity` records no distro, so a Windows caller judges a WSL fence by its age only (60 s)
   (fresh read, 2026-11-21).
 - The query-work line limit 850 is 771 measured plus about 10%; at the warm query body's measured 0.26-0.31 ms per line

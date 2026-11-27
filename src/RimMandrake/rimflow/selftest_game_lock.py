@@ -198,6 +198,13 @@ def t_run_releases_on_exit_crash_and_sigterm():
     r = bx.gl("run", "a", "--for", "crash", "--", sys.executable, "-c", "import os; os.abort()")
     check(r.returncode == 134 and bx.lock() is None, "run: a crash (SIGABRT) returns 134, the lock is gone",
           (r.returncode, r.stderr))
+    # a reader that cannot inspect the holder (another machine; Windows with no distro) lets the heartbeat decide, so a
+    # run renews it while CMD lives (polish line of 2026-11-21, beside the page)
+    hb_probe = ("import json,sys,time; time.sleep(2.6); d=json.load(open(%r)); "
+                "sys.exit(0 if d['heartbeat'] != d['acquired'] else 9)" % bx.a)
+    r = bx.gl("run", "a", "--for", "long", "--", sys.executable, "-c", hb_probe, RM_GAME_LOCK_HEARTBEAT_S="0.5")
+    check(r.returncode == 0 and bx.lock() is None, "run: the lock's heartbeat is renewed while CMD lives",
+          (r.returncode, r.stderr[-300:]))
     child_probe = ("import subprocess,sys,json; r=subprocess.run([sys.executable,%r,'query','a','--json'],"
                    "capture_output=True,text=True); d=json.loads(r.stdout); sys.exit(0 if d.get('mine') else 9)" % GL)
     r = bx.gl("run", "a", "--for", "probe", "--", sys.executable, "-c", child_probe)
@@ -227,7 +234,7 @@ class Child:
     def send_signal(self, sig):
         self.code = -sig
 
-    def wait(self):
+    def wait(self, timeout=None):
         return self.code
 
 claim = G.claim

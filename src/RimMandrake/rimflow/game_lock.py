@@ -479,6 +479,17 @@ def aim_env(g, env):
     return env
 
 
+def _heartbeat_every_s():
+    """How often `run` renews its lock's heartbeat while CMD lives. Danger: a reader that cannot inspect the holder (another
+    machine; Windows with no distro on the lock) lets the heartbeat decide, and reads a run older than
+    driver_lock.STALE_HEARTBEAT_S (45 min) as FREE; modcheck and waitalive runs last up to 55 min. 10 min renews it four
+    times inside that window. RM_GAME_LOCK_HEARTBEAT_S: the selftest's short period."""
+    try:
+        return max(0.1, float(os.environ.get("RM_GAME_LOCK_HEARTBEAT_S") or 600))
+    except ValueError:
+        return 600.0
+
+
 def run(g, purpose, cmd, seat=None, force=None, flyer=False):
     """Hold game g for CMD's life: the holder is THIS process, so the lock frees when CMD ends however it ends (exit,
     crash, SIGTERM or SIGINT forwarded and then released; SIGKILL of this process: its process is gone, so the game
@@ -549,8 +560,13 @@ def run(g, purpose, cmd, seat=None, force=None, flyer=False):
             forward(signum, None)
         while True:
             try:
-                rc = child.wait()
+                rc = child.wait(timeout=_heartbeat_every_s() if release_ours else None)
                 break
+            except subprocess.TimeoutExpired:
+                try:
+                    driver_lock.heartbeat(path, me)
+                except Exception:  # noqa: BLE001  (a missed renewal costs only a reader that cannot inspect us)
+                    pass
             except InterruptedError:
                 continue
         return rc if rc >= 0 else 128 - rc
