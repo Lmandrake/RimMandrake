@@ -1,0 +1,459 @@
+{
+ "tally": {
+  "PASS": 36
+ },
+ "rows": [
+  [
+   "A2 Scrapper head on elbow N|E",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A2 Scrapper faucet on elbow S|W",
+   [
+    -0.1464,
+    -0.1464
+   ],
+   [
+    -0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Scrapper head on end",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Scrapper head on tee",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Scrapper head on straight",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Scrapper head on lone",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A2 Industrial head on elbow N|E",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A2 Industrial faucet on elbow S|W",
+   [
+    -0.1464,
+    -0.1464
+   ],
+   [
+    -0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Industrial head on end",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Industrial head on tee",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Industrial head on straight",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Industrial head on lone",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A2 Modern head on elbow N|E",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A2 Modern faucet on elbow S|W",
+   [
+    -0.1464,
+    -0.1464
+   ],
+   [
+    -0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Modern head on end",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Modern head on tee",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Modern head on straight",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Modern head on lone",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A2 Futuristic head on elbow N|E",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A2 Futuristic faucet on elbow S|W",
+   [
+    -0.1464,
+    -0.1464
+   ],
+   [
+    -0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Futuristic head on end",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Futuristic head on tee",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Futuristic head on straight",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Futuristic head on lone",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Scrapper end becomes elbow E|S when a pipe is added",
+   [
+    0.1464,
+    -0.1464
+   ],
+   [
+    0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Scrapper back to an end when that pipe is removed",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Scrapper elbow restyled Industrial keeps the head on the bend",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Industrial end becomes elbow E|S when a pipe is added",
+   [
+    0.1464,
+    -0.1464
+   ],
+   [
+    0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Industrial back to an end when that pipe is removed",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Industrial elbow restyled Modern keeps the head on the bend",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Modern end becomes elbow E|S when a pipe is added",
+   [
+    0.1464,
+    -0.1464
+   ],
+   [
+    0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Modern back to an end when that pipe is removed",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Modern elbow restyled Futuristic keeps the head on the bend",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Futuristic end becomes elbow E|S when a pipe is added",
+   [
+    0.1464,
+    -0.1464
+   ],
+   [
+    0.15,
+    -0.15
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Futuristic back to an end when that pipe is removed",
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   "PASS"
+  ],
+  [
+   "A3 Futuristic elbow restyled Scrapper keeps the head on the bend",
+   [
+    0.1464,
+    0.1464
+   ],
+   [
+    0.15,
+    0.15
+   ],
+   "PASS"
+  ]
+ ],
+ "notes": [
+  "build RM_UniversalPipe:100,130;RM_UniversalPipe:101,130;RM_UniversalPipe:100,131;RM_Un: [{'op': 'RM_UniversalPipe:100,130', 'why': 'wipeExisting=false: a RM_UniversalPipe already stands at 100,130 and replacing it means destroying it: RM_UniversalPipe28119'}, {'op': 'RM_UniversalPipe:101",
+  "build RM_SprinklerHead:100,130;RM_PipeFaucet:101,130;RM_SprinklerHead:100,134;RM_Sprin: [{'op': 'RM_SprinklerHead:100,130', 'why': 'wipeExisting=false: a RM_SprinklerHead already stands at 100,130 and replacing it means destroying it: RM_SprinklerHead28129'}, {'op': 'RM_PipeFaucet:101,13",
+  "build RM_UniversalPipe:110,130;RM_UniversalPipe:111,130;RM_UniversalPipe:110,131;RM_Un: [{'op': 'RM_UniversalPipe:110,130', 'why': 'wipeExisting=false: a RM_UniversalPipe already stands at 110,130 and replacing it means destroying it: RM_UniversalPipe28135'}, {'op': 'RM_UniversalPipe:111",
+  "build RM_SprinklerHead:110,130;RM_PipeFaucet:111,130;RM_SprinklerHead:110,134;RM_Sprin: [{'op': 'RM_SprinklerHead:110,130', 'why': 'wipeExisting=false: a RM_SprinklerHead already stands at 110,130 and replacing it means destroying it: RM_SprinklerHead28145'}, {'op': 'RM_PipeFaucet:111,13",
+  "build RM_UniversalPipe:120,130;RM_UniversalPipe:121,130;RM_UniversalPipe:120,131;RM_Un: [{'op': 'RM_UniversalPipe:120,130', 'why': 'wipeExisting=false: a RM_UniversalPipe already stands at 120,130 and replacing it means destroying it: RM_UniversalPipe28151'}, {'op': 'RM_UniversalPipe:121",
+  "build RM_SprinklerHead:120,130;RM_PipeFaucet:121,130;RM_SprinklerHead:120,134;RM_Sprin: [{'op': 'RM_SprinklerHead:120,130', 'why': 'wipeExisting=false: a RM_SprinklerHead already stands at 120,130 and replacing it means destroying it: RM_SprinklerHead28161'}, {'op': 'RM_PipeFaucet:121,13",
+  "build RM_UniversalPipe:130,130;RM_UniversalPipe:131,130;RM_UniversalPipe:130,131;RM_Un: [{'op': 'RM_UniversalPipe:130,130', 'why': 'wipeExisting=false: a RM_UniversalPipe already stands at 130,130 and replacing it means destroying it: RM_UniversalPipe28167'}, {'op': 'RM_UniversalPipe:131",
+  "build RM_SprinklerHead:130,130;RM_PipeFaucet:131,130;RM_SprinklerHead:130,134;RM_Sprin: [{'op': 'RM_SprinklerHead:130,130', 'why': 'wipeExisting=false: a RM_SprinklerHead already stands at 130,130 and replacing it means destroying it: RM_SprinklerHead28177'}, {'op': 'RM_PipeFaucet:131,13"
+ ],
+ "shots": [
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\elbow_Scrapper.png",
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\row_Scrapper.png",
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\elbow_Industrial.png",
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\row_Industrial.png",
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\elbow_Modern.png",
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\row_Modern.png",
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\elbow_Futuristic.png",
+  "D:\\ClaudeWork\\scratch\\sprinkler_seat\\run3\\row_Futuristic.png"
+ ]
+}
