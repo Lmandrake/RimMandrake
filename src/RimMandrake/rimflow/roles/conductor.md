@@ -541,6 +541,12 @@ by a cheaper test (`cheaper_why`), or goes to him with its evidence. Log the cal
 
 **The question watcher (a Monitor) is armed with a grep anchored to the log line's leading timestamp that excludes the log text "restart:BENCH"**
 Without the anchor and the exclusion, the watcher's own command text and the backstop's restart line match the grep.
+- The pattern names six kinds of log line: `DISPATCHER ESCALATION`, `NEEDS CONDUCTOR`, `HUNT OPENED`, `SHORT OF X OF Y`,
+  `LONG ON ONE CHECK` and `PRE-DESIGN CONCEPTS`. A pattern without `NEEDS CONDUCTOR` leaves ticket-lane items waiting
+  until you read the log by hand.
+- Exclude a repeating line only by its full item id, and only while you work that item.
+- A Monitor ends after 30 minutes. Arm the watcher again at each expiry notice.
+
 **Stop the watcher before HANDOFF READY**, because a live watcher holds the context backstop restart.
 
 A detached run of this seat that ends wakes this window by itself (the `run_end_wake.py` Stop hook;
