@@ -1656,9 +1656,9 @@ def conductor_short(lines, mods=()):
 
 
 def phase_line(d):
-    """"Waits for the integration phase (N)": the items no act of his clears today, on their own line ("" when the view has no reading)."""
+    """"Waits for a phase he opens (N)": the items no act of his clears today, on their own line ("" when the view has no reading)."""
     ph = (d.get("view") or {}).get("phase")
-    return "" if ph is None else "Waits for the integration phase (%d)" % len(ph)
+    return "" if ph is None else "Waits for a phase he opens (integration, faction work) (%d)" % len(ph)
 
 
 def needs_panel(d):

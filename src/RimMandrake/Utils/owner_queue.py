@@ -58,8 +58,9 @@ QUESTIONS = os.path.join(REPO, "infrastructure", "state", "owner_questions.json"
 HIS_HOLDS = ("owner_call",)
 # An item blocked until the integration phase (about version 0.3.0 of every mod) is full-mod-list work: full-list testing is
 # retired until then (CLAUDE.md §Mod development runs on small lists), so no act of his today clears it.
-# Danger: seven such items sat under "Needs Mandrake" as asks (2026-11-25).
-PHASE_RX = re.compile(r"integration phase|only for the full mod list", re.I)
+# Danger: seven such items sat under "Needs Mandrake" as asks (2026-11-25). Faction work likewise sleeps until he starts
+# it (owner, 2026-11-26: "The tribes sleep until we start faction work much later."): 15 such blocks sat there that night.
+PHASE_RX = re.compile(r"integration phase|only for the full mod list|start faction work|no faction work starts", re.I)
 ACCEPTED_RESULT = re.compile(r"result\.(.+)\.json$")   # designer_stage.close_run's rename; bare result.json is not yet read
 PASSES_TTL = 30     # s: the board asks once per item per refresh; a long-lived board must still see a new result
 _passes_memo = {}
@@ -141,7 +142,7 @@ def vetted(it, evs):
 
 
 def phase_wait(it):
-    """True when the item is blocked on the owner only until the integration phase opens: it waits for a phase, not for him."""
+    """True when the item is blocked on the owner only until a phase he opens (integration, faction work): it waits for a phase, not for him."""
     return bool(getattr(it, "blocked", False) and getattr(it, "blocked_kind", None) == "owner"
                 and PHASE_RX.search(str(getattr(it, "blocked_reason", None) or "")))
 
@@ -446,7 +447,7 @@ def home_line(home):
     return "not filed anywhere: %s%s" % (UNM if n is None else n, (" (%s)" % tail) if tail else "")
 
 
-PHASE_TITLE = "Waits for the integration phase"
+PHASE_TITLE = "Waits for a phase he opens (integration, faction work)"
 MIN_RX = re.compile(r"\b\d{1,3}(?:-\d{1,3})? ?min(?:ute)?s?\b", re.I)
 
 
@@ -587,7 +588,7 @@ def main():
     print("%d first touches certified by his own version lock (close them)" % len(n["certified"]))
     for x in n["certified"]:
         print("certified\t%s" % x["item"])
-    print("%d wait for the integration phase (no act of his clears them today)" % len(n["phase"]))
+    print("%d wait for a phase he opens (integration, faction work; no act of his clears them today)" % len(n["phase"]))
     for x in n["phase"]:
         print("phase\t%s" % x["item"])
     print("%d his later (a date ahead, or behind an unmet prerequisite)" % len(n["later"]))

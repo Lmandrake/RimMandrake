@@ -106,7 +106,7 @@ def satisfied_build_dependency_still_hides_ask():
 
 
 def real_books_covers(n, listed, routed):
-    return routed <= listed | {x["item"] for bucket in ("awaiting_designer", "answered", "certified", "later")
+    return routed <= listed | {x["item"] for bucket in ("awaiting_designer", "answered", "certified", "later", "phase")
                                for x in n[bucket]}
 
 
@@ -416,15 +416,23 @@ check("an owner block that names no phase stays his, and its block reason is the
 check("a block on a kind other than owner is not read for the phase words",
       not Q.phase_wait(phase_item(kind="item")))
 md = Q.one_view([{"item": "REAL_ONE", "q": "Sit for the flight test, 20 min"}], [], None, phase=[{"item": "PH_ONE", "q": "x"}, {"item": "PH_TWO", "q": "y"}])
-check("the view shows 'Waits for the integration phase (2)'", "Waits for the integration phase (2)" in md)
+check("the view shows 'Waits for a phase he opens (integration, faction work) (2)'", "Waits for a phase he opens (integration, faction work) (2)" in md)
 check("the view says so for zero phase items too, and nothing else changed when none is given",
-      "Waits for the integration phase" not in Q.one_view([], [], None))
+      "Waits for a phase he opens" not in Q.one_view([], [], None))
 check("a line that states no minutes says so", "minutes: not stated" in Q.one_view([{"item": "A", "q": "Look at it"}], [], None))
 check("a line that states minutes does not", "minutes: not stated" not in md)
 check("repo questions file: every real owner ask on the live books states its minutes",
       all(re.search(r"\d+ ?min", q.get(i, "")) for i in ("FLYERFRAMES_PROVE_JOINT_SESSION",
                                                            "RIMMANDRAKE_HEAR_DROID_NIGHT_QUIZ_THEN_AUDITION_CLAUDE_IS_DEAF")))
 
+
+# 2026-11-26 23:43Z: a run blocked 15 faction tickets kind owner on his words "We are not ready to do faction work yet.
+# The tribes sleep until we start faction work much later." They sat under Needs Mandrake as asks.
+FACTION_WHY = ('Faction work waits for the owner\'s word: no faction work starts until he says so (owner, 2026-11-26: "We are '
+               'not ready to do faction work yet. The tribes sleep until we start faction work much later.")')
+fa = Q.needs_you({"FA_ONE": phase_item(why=FACTION_WHY), "REAL_ONE": real_ask}, {}, {}, evs=[])
+check("an item that sleeps until he starts faction work is not under Needs Mandrake",
+      [x["item"] for x in fa["lines"]] == ["REAL_ONE"] and [x["item"] for x in fa["phase"]] == ["FA_ONE"])
 
 print("RESULT %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))
 sys.exit(1 if FAILS else 0)
