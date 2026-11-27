@@ -395,6 +395,25 @@ def t_a_test_worker_never_writes_this_machines_real_list(r):
           "%s: a test's own compose and tier-swap commands still run (%s)" % (name, told,))
     check(isinstance(real, list) and any("cli.py compose" in c for c in real[0]) and real[2] == "REAL",
           "%s: the lane's worker still composes and swaps for real (%s)" % (name, real,))
+    # the tier swap's own call site, driven whole: real_list_cmd alone stays green while tier_load bypasses it
+    tier = ("import worker as W\ncalls = []\n"
+            "a = W.Attempt.__new__(W.Attempt)\na.job = {'mod': 'J0', 'profile': 'tier:minimal'}\na.aid = 'J0.a1'\n"
+            "a.res = {}\na.say = lambda m: None\na.load = lambda: True\n"
+            "a.sh = lambda cmd, log_name=None, timeout=None: (calls.append(cmd), (0, ''))[1]\n"
+            "ok = a.tier_load()\n"
+            "print(json.dumps([ok, a.res.get('outcome'), a.res.get('cause'), a.res.get('note') or '', calls]))")
+    t_test = r.py(tier, TESTQ_CMD_TIERSWAP=None, RM_GAME_INSTANCE="b")
+    t_told = r.py(tier, TESTQ_CMD_TIERSWAP="echo swap", RM_GAME_INSTANCE="b")
+    t_real = r.py(tier, TESTQ_CMD_TIERSWAP=None, TESTQ_SKIP_PULL=None)
+    check(isinstance(t_test, list) and t_test[:3] == [False, "INVALID", "LOAD"] and "TESTQ_CMD_TIERSWAP" in t_test[3]
+          and not any("modset_builder" in c for c in t_test[4]),
+          "%s: a test's tier job runs no real swap and ends INVALID/LOAD naming TESTQ_CMD_TIERSWAP (%s)" % (name, t_test))
+    check(isinstance(t_told, list) and t_told[0] is True and "echo swap minimal" in t_told[4]
+          and not any("modset_builder" in c for c in t_told[4]),
+          "%s: a test's own tier-swap command runs in tier_load (%s)" % (name, t_told))
+    check(isinstance(t_real, list) and t_real[0] is True
+          and any("modset_builder.py --apply" in c and c.endswith(" minimal") for c in t_real[4]),
+          "%s: the lane's tier_load still swaps the real list (%s)" % (name, t_real))
 
 
 def t_steve2_reads_its_own_install(r):
