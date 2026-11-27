@@ -137,6 +137,19 @@ def main() -> int:
     m = X.wire_multi(DOC, "RM_Bar", "Things/Pawn/Animal/RM_Bar/RM_Bar")
     check(bodies(kind(m, "RM_Bar"))[0].findtext("graphicClass") == "Graphic_Multi", "faces: the body turns Graphic_Multi")
     check(X.wire_multi(DOC, "RM_Bar", "Things/Other") == DOC, "faces: a body drawing another texPath is untouched")
+    import tempfile
+    from PIL import Image
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        im = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+        im.paste((200, 100, 50, 255), (10, 20, 50, 41))          # subject rows 20..40
+        im.save(td / "a.png")
+        check(X._feet_row(td / "a.png") == 40, "feet: the lowest opaque row is read", X._feet_row(td / "a.png"))
+        out = X._align_feet(td / "a.png", 60, td / "b.png")
+        check(out == td / "b.png" and X._feet_row(out) == 60, "feet: a new facing is moved to the accepted feet row")
+        check(Image.open(out).getchannel("A").getbbox()[3] - Image.open(out).getchannel("A").getbbox()[1] == 21,
+              "feet: moved, never scaled")
+        check(X._align_feet(td / "a.png", 70, td / "c.png") == td / "a.png", "feet: a shift that would cut the art is not made")
     print(f"{'OK' if not FAILS else 'FAILED'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

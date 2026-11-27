@@ -607,25 +607,54 @@ def face_master(kind: str, out: Path) -> tuple[str, str, Path]:
     return mod, tex, p
 
 
-def face_jobs(kind: str) -> list[tuple[str, str]]:
-    return [(f, f"owedface_{kind}_v1_{f}") for f in FACE_KINDS[kind][1]]
+def face_version(kind: str, q: Path | None) -> int:
+    """The newest owedface version the queue holds for the kind (1 when none)."""
+    n = 1
+    for v in range(2, 10):
+        if q is not None and any(job_state(q, f"owedface_{kind}_v{v}_{f}") != "none" for f in FACE_KINDS[kind][1]):
+            n = v
+    return n
+
+
+def face_jobs(kind: str, q: Path | None = None) -> list[tuple[str, str]]:
+    n = face_version(kind, q)
+    return [(f, f"owedface_{kind}_v{n}_{f}") for f in FACE_KINDS[kind][1]]
+
+
+SAME_SCALE = (" SCALE: draw the animal at the SAME scale as the reference: the body as tall on the canvas as in the "
+              "reference, feet (or lowest point) on the same row; a front or rear view is narrower than a side view, "
+              "never smaller.")
 
 
 def cmd_faces_file(a) -> int:
     import artledger as L
     out = data() / "faces"
     rows = []
+    fixes = {}
+    if a.regen_from:
+        rj = REPO / "infrastructure/state/art_eval/runs" / a.regen_from / "regen_jobs.json"
+        by = {g["target_def"]: g["prompt"] for g in (json.loads(rj.read_text()) if rj.is_file() else [])}
+        for subj, d in decisions(a.regen_from).items():
+            if d.get("decision") == "REGEN" and subj.endswith("__faces"):
+                fixes[subj[:-len("__faces")]] = by.get(subj) or "; ".join(d.get("reasons") or [])[:600]
+    q = artpipe()
     for kind, (view, fac) in FACE_KINDS.items():
+        if a.regen_from and kind not in fixes or a.kinds and kind not in a.kinds:
+            continue
+        n = face_version(kind, q) + (1 if a.regen_from else 0)
+        if not a.regen_from and n > 1:
+            continue
         mod, tex, master = face_master(kind, out)
         sp = base_spec(kind)
         ref = str(L.store_path(L.store_put_file(master)))     # pinned: the daemon never reads a clone
+        fix = (SAME_SCALE + " FIX from review: " + fixes[kind]) if kind in fixes else ""
         rows.append({
-            "id": f"owedface_{kind}_v1", "rimflow_item_id": FACES_ITEM, "target_def": kind, "target_texpath": tex,
+            "id": f"owedface_{kind}_v{n}", "rimflow_item_id": FACES_ITEM, "target_def": kind, "target_texpath": tex,
             "facings": fac, "priority": 40, "biome_neutral": True, "canvas_w": 256, "canvas_h": 256,
             "drawsize": (sp.get("size") or {}).get("drawSize", [1.0])[0],
             "install_to": f"src/{mod}/Textures/{tex}" + "_{facing}.png", "canon_reference": ref,
             "prompt": FACE_PROMPT.format(view="front" if view == "south" else "side", label=sp.get("label") or kind,
-                                         desc=sp.get("description", ""), feat="; ".join(sp.get("departures") or [])),
+                                         desc=sp.get("description", ""), feat="; ".join(sp.get("departures") or [])) + fix,
         })
     p = out / "rows.json"
     p.write_text(json.dumps(rows, indent=1))
@@ -634,12 +663,39 @@ def cmd_faces_file(a) -> int:
     return r.returncode
 
 
+def _feet_row(p: Path) -> int | None:
+    """The lowest row with an opaque pixel (alpha >= 16), as facing_scale_lint measures the feet."""
+    from PIL import Image
+    a = Image.open(p).convert("RGBA").getchannel("A").point(lambda v: 255 if v >= 16 else 0)
+    b = a.getbbox()
+    return b[3] - 1 if b else None
+
+
+def _align_feet(p: Path, row: int, out: Path) -> Path:
+    """A new facing moved up or down (never scaled) so its feet stand on `row`, the accepted view's feet row; the
+    lint's feet band is +-3% of the canvas. Nothing is cut: a shift that would push opaque pixels off the canvas is not
+    made, and the render goes to the judge as drawn."""
+    from PIL import Image
+    im = Image.open(p).convert("RGBA")
+    b = im.getchannel("A").point(lambda v: 255 if v >= 16 else 0).getbbox()
+    if not b:
+        return p
+    dy = row - (b[3] - 1)
+    if dy == 0 or b[1] + dy < 0 or b[3] + dy > im.height:
+        return p
+    canvas = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    canvas.alpha_composite(im, (0, dy))
+    out.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(out)
+    return out
+
+
 def faces_spec(kind: str, q: Path, out: Path) -> Path:
     sys.path.insert(0, str(HERE))
     import scale_panel as SP
     mod, tex, master = face_master(kind, data() / "faces")
     imgs = {}
-    for f, j in face_jobs(kind):
+    for f, j in face_jobs(kind, q):
         if job_state(q, j) != "done":
             raise SystemExit(f"{j}: {job_state(q, j)}")
         p = render_file(q, j)
@@ -648,6 +704,13 @@ def faces_spec(kind: str, q: Path, out: Path) -> Path:
         imgs[f] = str(p)
     view = FACE_KINDS[kind][0]
     imgs.setdefault("east", str(master))
+    anchor_files = [str(master)] if view != "south" else [
+        str(REPO / "src" / mod / "Textures" / f"{tex}_{f}.png") for f in ("south", "north")]
+    feet = [_feet_row(Path(p)) for p in anchor_files]
+    feet = [x for x in feet if x is not None]
+    if feet:
+        for f, _ in face_jobs(kind, q):
+            imgs[f] = str(_align_feet(Path(imgs[f]), round(sum(feet) / len(feet)), out / "aligned" / f"{kind}_{f}.png"))
     for f in ("south", "north"):
         if f not in imgs:
             imgs[f] = str(REPO / "src" / mod / "Textures" / f"{tex}_{f}.png")
@@ -659,13 +722,13 @@ def faces_spec(kind: str, q: Path, out: Path) -> Path:
     SP.render_panel(Path(imgs["east"]).read_bytes(), {"kind": "animal",
                     "drawSize": tuple((sp.get("size") or {}).get("drawSize") or (1.0, 1.0))}, cp, pan / f"{subj}_scale_full.png")
     imgs["scale"] = str(cp)
-    drawn = [f for f, _ in face_jobs(kind)]
+    drawn = [f for f, _ in face_jobs(kind, q)]
     sp.update(subject=subj, candidate="r1", images=imgs, owner_kept=False, kept_install=[], install_mod=mod,
-              target_texpath=tex, artpipe_job=f"owedface_{kind}_v1",
+              target_texpath=tex, artpipe_job=f"owedface_{kind}_v{face_version(kind, q)}",
               installed_facings=[f for f in ("east", "south", "north") if f not in drawn and
                                  (REPO / "src" / mod / "Textures" / f"{tex}_{f}.png").is_file()],
               provenance=(f"{FACES_ITEM}: the creature was drawn on one picture ({view} view); "
-                          f"{'/'.join(drawn)} drawn from it (canon_reference), artpipe jobs owedface_{kind}_v1_*"))
+                          f"{'/'.join(drawn)} drawn from it (canon_reference), artpipe jobs owedface_{kind}_v{face_version(kind, q)}_*"))
     sp.setdefault("owner_notes", [])
     sp["owner_notes"] = list(sp["owner_notes"]) + [
         f"Only the {'/'.join(drawn)} facing(s) are new; judge them against the "
@@ -859,7 +922,9 @@ def main(argv=None) -> int:
     p.add_argument("--dry-run", action="store_true"); p.set_defaults(fn=cmd_install)
     p = sub.add_parser("wire"); p.add_argument("subjects", nargs="*"); p.add_argument("--dry-run", action="store_true")
     p.set_defaults(fn=cmd_wire)
-    p = sub.add_parser("faces-file"); p.add_argument("--dry-run", action="store_true"); p.set_defaults(fn=cmd_faces_file)
+    p = sub.add_parser("faces-file"); p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--regen-from", help="file the next version of each set this art_eval run sent back (REGEN)")
+    p.add_argument("--kinds", nargs="*"); p.set_defaults(fn=cmd_faces_file)
     p = sub.add_parser("faces-wire"); p.add_argument("kinds", nargs="+"); p.add_argument("--dry-run", action="store_true")
     p.set_defaults(fn=cmd_faces_wire)
     p = sub.add_parser("rescue"); p.add_argument("--dry-run", action="store_true"); p.set_defaults(fn=cmd_rescue)
