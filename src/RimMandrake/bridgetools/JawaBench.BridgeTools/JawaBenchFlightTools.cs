@@ -292,8 +292,9 @@ namespace JawaBench.BridgeTools
                 "For an action, each row also carries changed, refusedReason (why the engine " +
                 "declined, never a bare false) and the before/after flightState. " +
                 "After a maintain window: ticksElapsed, reasserts, and flyingLowWater - the " +
-                "smallest number of the selected pawns seen flying at any poll. If " +
-                "flyingLowWater is less than the pawn count, the window was NOT clean and any " +
+                "smallest number of the held pawns seen flying at any poll, where maintainedCount " +
+                "is the number held (refused pawns are not held). If flyingLowWater is less than " +
+                "maintainedCount, the window was NOT clean and any " +
                 "measurement taken across it is contaminated. waitEnded is 'ticks', 'timeout' or 'paused'.")]
         public static async Task<object> PawnFlight(
             IRimBridgeContext ctx,
@@ -569,7 +570,7 @@ namespace JawaBench.BridgeTools
                 maintainedCount = maintained.Count,
                 polls,
                 reasserts,
-                // 🔴 The integrity number. Less than count means the window was
+                // 🔴 The integrity number. Less than maintainedCount means the window was
                 // NOT clean and anything measured across it is contaminated.
                 flyingLowWater = maintainTicks > 0 ? flyingLowWater : -1,
                 flyingAtEnd,
