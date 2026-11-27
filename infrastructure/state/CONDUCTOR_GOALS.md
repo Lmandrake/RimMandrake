@@ -19,6 +19,12 @@ His words of about 9:57 AM PST the same day (owner-said on
 infrastructure at max speed to that we can truly test the system as intended. Do not lose any work. Park only at natural
 pipeline breakpoints."* A mod parks only at a stage exit or at the end of a run; a stopped run's work is kept.
 
+His words of about 12:03 PM PST the same day (owner-said on `RIMMANDRAKE_PAUSE_CODE_REVIEW_PIPELINE_WORKS_BEFORE_HARDENING`):
+*"Let's please pause the clean/dirty code review items for now. We need the pipeline working before we invest in
+hardening."* Code review tickets start no new run: the fresh readers of fixes, the blind review of new machinery and the
+Codex review load. A run still files the fresh reader of its fix, and the ticket waits. A fix is still built test first.
+`./pipe show` lists each switch; he lifts the pause.
+
 1. **All scheduled infrastructure is built, at full speed**, week of 2026-11-23:
    `RIMMANDRAKE_READY_ALL_SCHEDULED_INFRASTRUCTURE_HE_SAID_MAX_SPEED` makes each piece a ticket that the ticket lane
    launches; `RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY` sweeps the open pipeline and machine tickets;
