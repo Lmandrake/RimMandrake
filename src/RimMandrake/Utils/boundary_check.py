@@ -219,6 +219,7 @@ PAGES = {
     "design/specs/2026-11-21-launch-returns-a-kept-clone/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-22-launch-missing-clone/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-25-clone-lock-file-returned/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
+    "design/specs/2026-11-27-return-step-says-failed-only-for-failure/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-26-run-root-rename/boundary.md": "src/RimMandrake/rimflow/selftest_run_root_rename.py",
     "design/specs/2026-11-25-park-item-given-to-mod/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-23-half-made-pool-clone/boundary.md": "src/RimMandrake/rimflow/selftest_take_clone_half_made.py",

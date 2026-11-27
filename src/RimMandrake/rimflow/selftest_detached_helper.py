@@ -1930,6 +1930,62 @@ def t_origin_check_reads_the_legacy_ledger_file_too():
           "legacy: a note's mention and an unknown id are still refused")
 
 
+class RE:
+    """A runner answer with its own stdout, stderr and exit code."""
+    def __init__(self, rc=0, out="", err=""):
+        self.returncode, self.stdout, self.stderr = rc, out, err
+
+
+def publish_steps(publish_answer, bundle):
+    """Runs one return whose ./publish answers `publish_answer`; -> the return steps. bundle=None: the shard publish (the run
+    left a dirty shard); a path: the bundle note's publish."""
+    unit, clone = det_clone("PUBSTEP_%d" % len(os.listdir(DH.runs_dir())))
+    calls, base = sh_runner(shard_dirty=bundle is None)
+
+    def run(argv, **kw):
+        if argv[0] == "./publish":
+            calls.append(list(argv))
+            return publish_answer
+        return base(argv, **kw)
+    seen, ev = fake_evictor(bundle=bundle)
+    os.environ["RM_DETACHED_POOL"] = POOL
+    try:
+        DH.return_clone(unit, now=T0, runner=run, evictor=ev, busy=not_busy)
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+    return [x for x in DH.read_record(unit).get("return_steps", []) if x.startswith("publish")]
+
+
+def t_a_return_step_says_failed_only_for_a_failure():
+    """RIMMANDRAKE_FIX_RETURN_STEP_SAYS_FAILED_WHEN_PUBLISH_LANDED: a push-lock line of 600 characters on stderr pushed
+    `PUBLISHED <sha>` out of the last 400 characters, and a publish that landed was written as FAILED."""
+    lock = "waiting for the push lock held by: ./publish --ledger -m ledger: SOME_OTHER_ITEM " + "x" * 520
+    for name, bundle in (("publish", None), ("publish note", "/store/orphans/bundles/PUBSTEP")):
+        landed = "an earlier line\nPUBLISHED 0123456789ab\n"
+        steps = " | ".join(publish_steps(RE(0, landed, lock), bundle))
+        check("0123456789" in steps and "FAILED" not in steps,
+              "%s: a landed publish shows its sha when a long push-lock line follows on stderr (%s)" % (name, steps[:90]))
+        steps = " | ".join(publish_steps(RE(0, landed, ""), bundle))
+        check("0123456789" in steps and "FAILED" not in steps, "%s: a landed publish with an empty stderr shows its sha" % name)
+        steps = " | ".join(publish_steps(RE(1, "something else\n", "the end of stderr"), bundle))
+        check("FAILED (exit 1)" in steps and "the end of stderr" in steps and "no PUBLISHED line" not in steps,
+              "%s: a non-zero exit reads FAILED with the exit code and the end of stderr (%s)" % (name, steps[:90]))
+        steps = " | ".join(publish_steps(RE(0, "nothing printed that lands\n", lock), bundle))
+        check("no PUBLISHED line" in steps and "FAILED" not in steps,
+              "%s: exit 0 with no PUBLISHED line reads \"no PUBLISHED line\", not FAILED (%s)" % (name, steps[:90]))
+    unit, _ = det_clone("PUBSTEP_NOTHING")
+    calls, run = sh_runner(shard_dirty=False)
+    seen, ev = fake_evictor()
+    os.environ["RM_DETACHED_POOL"] = POOL
+    try:
+        DH.return_clone(unit, now=T0, runner=run, evictor=ev, busy=not_busy)
+    finally:
+        os.environ.pop("RM_DETACHED_POOL", None)
+    steps = DH.read_record(unit).get("return_steps", [])
+    check("publish nothing to publish" in steps and "FAILED" not in " ".join(steps) and all(c[0] != "./publish" for c in calls),
+          "publish: nothing to publish runs no publish and the step says so (%s)" % steps)
+
+
 def main():
     test_clone_shape()
     test_refuse()
@@ -1971,6 +2027,7 @@ def main():
     t_a_live_or_dead_holder_is_never_returned_by_the_launch()
     t_a_kept_return_records_why()
     t_a_returned_clone_takes_its_lock_file_with_it()
+    t_a_return_step_says_failed_only_for_a_failure()
     t_a_launch_never_holds_an_unlinked_lock_file()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

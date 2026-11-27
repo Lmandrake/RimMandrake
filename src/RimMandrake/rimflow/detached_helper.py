@@ -981,6 +981,18 @@ def _tail(r, n=140):
     return ((getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or "")).strip()[-n:]
 
 
+def publish_step(name, r):
+    """The return step text of one ./publish run. FAILED only for a non-zero exit (with the exit code and the end of stderr);
+    exit 0 with no PUBLISHED line is "no PUBLISHED line", never FAILED. The search reads the whole stdout: a push-lock line
+    on stderr is long and used to push `PUBLISHED <sha>` out of a joined tail."""
+    found = re.findall(r"PUBLISHED ([0-9a-f]{7,40})", getattr(r, "stdout", "") or "")
+    if found:
+        return "%s %s" % (name, found[-1][:10])
+    if r.returncode:
+        return "%s FAILED (exit %d): %s" % (name, r.returncode, _tail(r, 200))
+    return "%s: no PUBLISHED line (exit 0)" % name
+
+
 def kept_why(rec, reason, root=None):
     """A finished run's return that keeps its clone writes the reason into return_steps (never `returned`), so a later
     refusal names it instead of "its return step left no steps". The step leaves the clone's path out: the refusal
@@ -1033,8 +1045,9 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
         shards = dirty_shards(clone, seat, lambda argv, **kw: run(argv, "shard status", 60))
         if shards:
             r = run(["./publish", "-m", "ledger: %s returned its clone" % item] + shards, "publish")
-            m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", _tail(r, 400))
-            steps.append("publish " + (m.group(1)[:10] if m else "FAILED: " + _tail(r, 100)))
+            steps.append(publish_step("publish", r))
+        else:
+            steps.append("publish nothing to publish")
     run(["./sync"], "sync")
     told = []
 
@@ -1048,8 +1061,7 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
                  "--seat", seat, "--why", "detached run clone returned"], "bundle note", 120)
         if r.returncode == 0:
             r = run(["./publish", "-m", "ledger: %s clone bundled" % item, shard], "publish note")
-            m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", _tail(r, 400))
-            steps.append("publish note " + (m.group(1)[:10] if m else "FAILED: " + _tail(r, 100)))
+            steps.append(publish_step("publish note", r))
     try:
         bundle, kept = (evictor or evict_clone)(item, clone, before)
     except Exception as e:  # noqa: BLE001  never lose the clone to a surprise: it stays
