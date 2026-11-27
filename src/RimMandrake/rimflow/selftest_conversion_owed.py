@@ -91,7 +91,7 @@ def t_owed_at_next_version():
     check(state == "owed", "Alpha 0.2.0 against 0.1.0 is owed", (state, why))
     check(sec is not None and "Dive.cs:76" in sec, "the section's rows come back", sec)
     p = packet_text(d, st("Alpha"))
-    check("Owed input: the universal-mechanics conversion" in p and LIST in p and "Dive.cs:76" in p,
+    check("Owed input: the universal-mechanics conversion" in p and LIST in p and "## Alpha" in p and "Dive.cs:76" in p,
           "the packet names the list, the heading and the rows", p[-600:])
     check("offline test" not in p and "home biome" in p and "plain on/off" in p,
           "the packet demands no offline test, tests on the home biome, and turns the switch into a plain on/off",
@@ -142,6 +142,11 @@ def t_unreadable_is_unmeasured():
     state, why, _ = DS.conversion_owed(TMP, d, st("Alpha"))
     check(state == "unmeasured" and "absent" in why, "an absent list is unmeasured", (state, why))
     check("UNMEASURED" in packet_text(d, st("Alpha")), "the packet says UNMEASURED")
+    os.makedirs(os.path.dirname(lp), exist_ok=True)
+    with open(lp, "wb") as f:     # a list whose bytes are not UTF-8 is unreadable, never a crash and never none
+        f.write(b"## Alpha\n\xff\xfe\n")
+    state, why, _ = DS.conversion_owed(TMP, d, st("Alpha"))
+    check(state == "unmeasured" and "could not be read" in why, "an unreadable list is unmeasured", (state, why))
     write(LIST, FIXTURE)
     d = concept("Gamma", "0.2.0")
     state, why, _ = DS.conversion_owed(TMP, d, st("Gamma"))
@@ -163,6 +168,8 @@ def t_real_list_is_readable():
     mods = [h for h in secs if " " not in h]          # a mod heading is a bare name; the two notes sections are not
     bad = [h for h in mods if DS.conversion_base(secs[h])[0] is None]
     check(not bad, "every mod section has one readable version line", bad)
+    check(DS.conversion_base(secs.get("Pyrelands"))[0] == (0, 1, 0), "the list's Pyrelands section reads 0.1.0",
+          DS.conversion_base(secs.get("Pyrelands")))
     check(sorted(h for h in secs if " " in h) == ["Dated design records that state the old reading",
                                                   "Rule texts (corrected by this item)"],
           "the only non-mod sections are the two notes sections", sorted(h for h in secs if " " in h))
