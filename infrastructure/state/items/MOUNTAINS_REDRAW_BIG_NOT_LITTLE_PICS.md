@@ -3,7 +3,7 @@
 Program step 3 of 6 (design/Jawa/worldbuilding/world_look_program_2026-10-24.md). Owner, 2026-10-24: "make mountains look BIG/mountainous rather than just little pics of mountains". This is Hills 2 (our own drawn mountain pass) scaled to read big. Contagion variant first (CONTAGION_PEAKS_REDRAW_AS_RAIN_MAKERS).
 
 ## spec
-Today: vanilla `WorldDrawLayer_Hills` draws one small rotated quad per hilly tile; we only swap the four shared hill materials (`RM_Hills` soft atlas). A one-tile sprite per tile cannot look big.
+Today: `RM_WorldPeaks` (fc14689e9, toggle `worldSunPeaks`, on) replaces the vanilla hill quads with one sun-turned peak-cluster sprite per hilly tile (`World/RM_Peaks` atlases from `world_peak_decals.py`; size tunables `sizeMountains` 1.32, `sizeImpassable` 1.42 hex). A one-tile sprite per tile cannot look big: the judge of WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS refused it on 2026-11-27 (clause E4) on ArchBig captures at altitude 320 and 900. The peaks read as a per-hex token lattice. Verdict, its would_pass and smallest_fix: `infrastructure/state/delegated/2026-11-27/WORLD_MOUNTAINS_REDRAW_PEAKS_NOT_FIELDS.json`. Build on `RM_WorldPeaks`, do not start over.
 Options (pick after offline renders):
 - A. Range mesh: our own hills layer that merges adjacent Mountainous/LargeHills tiles into ranges and draws ridgelines across tiles (lit face + shade face, unrotated, light from one side), with snow/biome caps.
 - B. Oversized sprites: per-tile peaks 2-3x a hex, sorted back to front so neighbours overlap into a massif.
