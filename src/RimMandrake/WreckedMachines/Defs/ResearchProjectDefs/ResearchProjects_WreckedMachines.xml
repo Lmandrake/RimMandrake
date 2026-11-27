@@ -63,7 +63,7 @@
     <generalRules>
       <rulesStrings>
         <li>subject->the automated smelter's dead circuitry</li>
-        <li>subject_gerund->restoring wrecked ship machinery</li>
+        <li>subject_gerund->restoring wrecked ancient machinery</li>
       </rulesStrings>
     </generalRules>
   </ResearchProjectDef>
@@ -113,7 +113,7 @@
   <ResearchProjectDef>
     <defName>RM_WM_AlloyForgeRestoration</defName>
     <label>alloy forge restoration</label>
-    <description>Bring the ship's alloy forge back to heat. Once the smelter runs, the forge is the next furnace down the line: it bonds refined metal with a hardening mineral into tougher alloys.\n\nRestoring it unlocks the forge and its first, easiest alloys. Harder alloys need further study.</description>
+    <description>Bring an ancient alloy forge back to heat. Once the smelter runs, the forge is the next furnace down the line: it bonds refined metal with a hardening mineral into tougher alloys.\n\nRestoring it unlocks the forge and its first, easiest alloys. Harder alloys need further study.</description>
     <baseCost>1500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
@@ -127,7 +127,7 @@
     <generalRules>
       <rulesStrings>
         <li>subject->the alloy forge's cold crucibles</li>
-        <li>subject_gerund->restoring the ship's alloy forge</li>
+        <li>subject_gerund->restoring an ancient alloy forge</li>
       </rulesStrings>
     </generalRules>
   </ResearchProjectDef>

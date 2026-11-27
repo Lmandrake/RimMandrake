@@ -1,6 +1,6 @@
 # WreckedMachines 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T05:38:26-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:03:32-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
 
 ## How a pair is made
 
@@ -18,10 +18,10 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T05:38:26-0800. A bar pa
 ## Counts
 
 - bars: 30 (locked: 30)
-- tests: 48 (7 built offline, 26 live scenes with their entry written, 10 specified for Stage 3, 4 explorations, 1 look)
-- built offline tests green today: 6, red: 1 (sc_text_names_no_setting)
-- live scenes whose tier is not defined: sc_study_without_research_reinvented, sc_cannery_tier
-- bars with every decider runnable today: 15 of 30
+- tests: 48 (8 built offline, 26 live scenes with their entry written, 9 specified for Stage 3, 4 explorations, 1 look)
+- built offline tests green today: 8, red: 0 (none)
+- live scenes whose tier is not defined: none
+- bars with every decider runnable today: 20 of 30
 - bars with no deciding test: 0
 
 ## Bars
@@ -32,30 +32,30 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T05:38:26-0800. A bar pa
 | inv_smelter_line | inventory, approved | 6 | sc_levels_do_their_work, sc_menu_and_research, sc_three_looks_rows, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
 | inv_power_cell_line | inventory, approved | 6 | sc_cell_and_emanator, sc_levels_under_settings, sc_carry_wreck_home, sc_switch_machine_off | - | yes | - |
 | inv_emanator_line | inventory, approved | 6 | sc_cell_and_emanator, sc_marks_agree, sc_carry_wreck_home, sc_no_handouts | sc_levels_under_settings, sc_switch_machine_off | yes | - |
-| inv_study_the_wreck | inventory, approved | 6 | sc_study_opens_first_project, sc_second_study, sc_study_without_research_reinvented | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_repair_on_machine, sc_component_gate, sc_whole_journey | no | sc_study_without_research_reinvented |
+| inv_study_the_wreck | inventory, approved | 6 | sc_study_opens_first_project, sc_second_study, sc_study_without_research_reinvented | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_repair_on_machine, sc_component_gate, sc_whole_journey | yes | - |
 | inv_ancient_component | inventory, approved | 6 | sc_component_gate | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_whole_journey | yes | - |
 | inv_donor_smelter_hidden | inventory, approved | 6 | sc_menu_and_research, sc_switch_machine_off, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_three_looks_rows, sc_forge_plasteel | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
-| inv_mod_settings | inventory, approved | 6 | sc_switch_machine_off, sc_all_switches_off, sc_levels_under_settings, sc_ruin_holds_wrecks, sc_cannery_tier | sc_cell_and_emanator | no | sc_cannery_tier |
+| inv_mod_settings | inventory, approved | 6 | sc_switch_machine_off, sc_all_switches_off, sc_levels_under_settings, sc_ruin_holds_wrecks, sc_cannery_tier | sc_cell_and_emanator | yes | - |
 | inv_wrecks_draw_links | inventory, approved | 4-5 | sc_wreck_link_tags | - | yes | - |
 | inv_alloy_forge_gates | inventory, opened_by_owner | 6 | sc_forge_plasteel | sc_menu_and_research, sc_three_looks_rows, T_FORGE_GATES_GONE | yes | - |
 | inv_one_salvage_rule | inventory, not_opened | 4-5 | T_SALVAGE_RULE | sc_rider_salvage_rule | yes | - |
-| inv_distillation_module | inventory, opened_by_owner | 4-5 | T_DISTILLATION_LOADS, sc_text_names_no_setting | sc_rider_distillation | no | T_DISTILLATION_LOADS, sc_text_names_no_setting |
+| inv_distillation_module | inventory, opened_by_owner | 4-5 | T_DISTILLATION_LOADS, sc_text_names_no_setting | sc_rider_distillation | yes | - |
 | inv_wreck_found_in_world | inventory, approved | 6 | sc_ruin_holds_wrecks, sc_rare_wreck_ordinary_map, sc_caravan_wreck_home | sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey | yes | - |
 | inv_ancient_component_source | inventory, approved | 6 | sc_ruin_holds_wrecks, sc_no_handouts, sc_rare_wreck_ordinary_map | sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey | yes | - |
 | inv_wealth_exclusion | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | no | T_LATER_STAYS_OUT |
 | inv_grade_changed_signal | inventory, approved | 6 | sc_repair_on_machine, T_REPAIR_STATE_WALK | - | no | T_REPAIR_STATE_WALK |
 | inv_turret_line | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | no | T_LATER_STAYS_OUT |
-| inv_more_factory_machines | inventory, approved | 6 | sc_menu_and_research, sc_three_looks_rows, sc_cannery_tier, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_forge_plasteel, LOOK_STAGE8 | no | sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
-| only_by_repair | live | 6 | sc_menu_and_research, sc_no_handouts, sc_cannery_tier, sc_component_gate | sc_old_save | no | sc_cannery_tier |
+| inv_more_factory_machines | inventory, approved | 6 | sc_menu_and_research, sc_three_looks_rows, sc_cannery_tier, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_forge_plasteel, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| only_by_repair | live | 6 | sc_menu_and_research, sc_no_handouts, sc_cannery_tier, sc_component_gate | sc_old_save | yes | - |
 | wreck_is_found | live | 6 | sc_ruin_holds_wrecks, sc_rare_wreck_ordinary_map | T_REPAIR_STATE_WALK | yes | - |
 | wreck_comes_home | live | 6 | sc_carry_wreck_home, sc_caravan_wreck_home | T_REPAIR_STATE_WALK, sc_uninstall_during_repair, sc_repair_needs_ground | yes | - |
-| study_opens_research | live | 6 | sc_study_opens_first_project, sc_second_study, sc_whole_second_order, sc_study_without_research_reinvented, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK | no | sc_study_without_research_reinvented, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
-| repair_on_the_machine | live | 6 | sc_repair_on_machine, sc_repair_cancelled, sc_repair_needs_ground, sc_component_gate, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, sc_uninstall_during_repair | no | sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
-| levels_of_function | live | 6 | sc_levels_do_their_work, sc_forge_plasteel, sc_cell_and_emanator, sc_levels_under_settings, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_LEVEL_NUMBERS, T_REPAIR_STATE_WALK, T_ONBOARDING_TABLE_OFFLINE, T_KERNEL_FUZZ | no | sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| study_opens_research | live | 6 | sc_study_opens_first_project, sc_second_study, sc_whole_second_order, sc_study_without_research_reinvented, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| repair_on_the_machine | live | 6 | sc_repair_on_machine, sc_repair_cancelled, sc_repair_needs_ground, sc_component_gate, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, sc_uninstall_during_repair | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| levels_of_function | live | 6 | sc_levels_do_their_work, sc_forge_plasteel, sc_cell_and_emanator, sc_levels_under_settings, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_LEVEL_NUMBERS, T_REPAIR_STATE_WALK, T_ONBOARDING_TABLE_OFFLINE, T_KERNEL_FUZZ | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
 | last_repair_needs_component | live | 6 | sc_component_gate, sc_ruin_holds_wrecks, sc_no_handouts | - | yes | - |
-| levels_told_apart | live | 6 | sc_three_looks_rows, sc_marks_agree, sc_text_names_no_setting, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, LOOK_STAGE8 | no | sc_text_names_no_setting, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| levels_told_apart | live | 6 | sc_three_looks_rows, sc_marks_agree, sc_text_names_no_setting, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
 | switch_gives_machine_back | live | 6 | sc_switch_machine_off, sc_all_switches_off, sc_forge_plasteel | T_LEVEL_NUMBERS | yes | - |
-| no_setting_named | offline | 4-5 | sc_text_names_no_setting | T_NEIGHBOUR_NAMES | no | sc_text_names_no_setting |
+| no_setting_named | offline | 4-5 | sc_text_names_no_setting | T_NEIGHBOUR_NAMES | yes | - |
 | wrecks_join_lines | offline | 4-5 | sc_wreck_link_tags | - | yes | - |
 | whole_journey | live | 6 | sc_whole_journey, sc_whole_second_order | T_REPAIR_STATE_WALK, LOOK_STAGE8 | yes | - |
 
@@ -72,7 +72,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T05:38:26-0800. A bar pa
 | T_REPAIR_STATE_WALK | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py | specified, Stage 3 builds it |
 | T_NEIGHBOUR_NAMES | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py | specified, Stage 3 builds it |
 | T_FORGE_GATES_GONE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py | specified, Stage 3 builds it |
-| T_DISTILLATION_LOADS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py | specified, Stage 3 builds it |
+| T_DISTILLATION_LOADS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py | PASS |
 | sc_old_save | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_old_save | specified, Stage 3 builds it |
 | T_LINT_DEFS | offline | 4-5 | src/RimMandrake/Utils/lint_wreckedmachines_defs.py | PASS |
 | T_LINT_PLANTS | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_lint.py | PASS |
@@ -95,14 +95,14 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T05:38:26-0800. A bar pa
 | sc_marks_agree | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_marks_agree | entry written |
 | sc_switch_machine_off | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_switch_machine_off | entry written |
 | sc_all_switches_off | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_all_switches_off | entry written |
-| sc_text_names_no_setting | offline | 4-5 | src/RimMandrake/WreckedMachines/validation.py::scene_text_names_no_setting | FAIL |
+| sc_text_names_no_setting | offline | 4-5 | src/RimMandrake/WreckedMachines/validation.py::scene_text_names_no_setting | PASS |
 | sc_wreck_link_tags | offline | 4-5 | src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py::main | PASS |
 | sc_whole_journey | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_whole_journey | entry written |
 | sc_whole_second_order | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_whole_second_order | entry written |
 | sc_uninstall_during_repair | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_uninstall_during_repair | entry written |
 | sc_repair_needs_ground | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_repair_needs_ground | entry written |
-| sc_study_without_research_reinvented | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_study_without_research_reinvented | entry written, tier not defined |
-| sc_cannery_tier | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_cannery_tier | entry written, tier not defined |
+| sc_study_without_research_reinvented | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_study_without_research_reinvented | entry written |
+| sc_cannery_tier | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_cannery_tier | entry written |
 | sc_every_machine_onboarded | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_every_machine_onboarded | entry written |
 | sc_caravan_wreck_home | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_caravan_wreck_home | entry written |
 | sc_study_spike | exploration | 6 | - | an exploration accepts no bar (scenes.json); its question is read by a look in the running game |

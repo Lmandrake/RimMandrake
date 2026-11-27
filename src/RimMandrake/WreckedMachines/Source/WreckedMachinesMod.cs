@@ -183,13 +183,13 @@ namespace RimMandrake.WreckedMachines
             {
                 list.Label("Restoration research cost: " + researchCostFactor.ToString("0.00") + "x");
                 list.Label(
-                    "Scales the research needed to unlock the Repaired tier. 1.0x is "
+                    "Scales the research needed to unlock the Refurbished level. 1.0x is "
                     + "the shipped cost.");
                 researchCostFactor = list.Slider(researchCostFactor, 0.25f, 4f);
                 list.Label("Rebuild material cost: " + materialCostFactor.ToString("0.00") + "x");
                 list.Label(
                     "Scales the steel and components spent stepping a wreck up to "
-                    + "Kludged or Repaired. 1.0x is the shipped cost.");
+                    + "Kludged or Refurbished. 1.0x is the shipped cost.");
                 materialCostFactor = list.Slider(materialCostFactor, 0.25f, 4f);
                 list.CheckboxLabeled(
                     "Skip the restoration research for the upper grades",

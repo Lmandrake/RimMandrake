@@ -1,0 +1,11 @@
+diff --git a/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml b/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml
+index 413cb2bcc8..007f28003d 100644
+--- a/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml
++++ b/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml
+@@ -99,5 +99,5 @@
+             <li Class="CompProperties_Breakdownable" />
+             <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+-              <tier>Household</tier>
++              <tier>Kludged</tier>
+               <distillsAny>true</distillsAny>
+               <distillProduct>RM_Liquid_FreshWater</distillProduct>

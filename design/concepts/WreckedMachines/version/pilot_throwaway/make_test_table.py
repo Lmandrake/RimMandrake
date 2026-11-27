@@ -108,9 +108,15 @@ CHECK_TESTS = [
     ("C_repair_state_walk", "T_REPAIR_STATE_WALK", "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py", None, False, "offline"),
     ("C_neighbour_names", "T_NEIGHBOUR_NAMES", WM + "/selftest_wm_neighbour_names.py", None, False, "offline"),
     ("C_forge_gates_gone", "T_FORGE_GATES_GONE", WM + "/selftest_wm_forge_gates_gone.py", None, False, "offline"),
-    ("C_distillation_loads", "T_DISTILLATION_LOADS", WM + "/selftest_wm_distillation_loads.py", None, False, "offline"),
+    ("C_distillation_loads", "T_DISTILLATION_LOADS", WM + "/selftest_wm_distillation_loads.py", None, True, "offline"),
     ("C_old_save", "sc_old_save", VAL, None, False, "live_minimal"),
 ]
+# What a check test that Stage 3 built reads beside its own file (the change relation reads `reads`).
+BUILT_READS = {
+    "T_DISTILLATION_LOADS": [WM + "/Patches/WreckedMachines_DistillationModule.xml", "src/RimMandrake/FlowWorks/About/About.xml",
+                             "src/RimMandrake/FlowWorks/Defs", "src/RimMandrake/FlowWorks/Patches",
+                             "src/RimMandrake/FlowWorks/Source"],
+}
 CHECK_ALIAS = {"C_power_mark": ("sc_marks_agree", "the scene's kind_note: 'this scene re-reads the fault of the first look "
                                 "(record contradiction c_bolt_on_powered_machine) and classes it'")}
 CHECK_TO_TEST = {c: t for c, t, *_ in CHECK_TESTS}
@@ -315,7 +321,7 @@ def names_bar(text, ids):
 for cid, tid, f, cmd, built, kind in CHECK_TESTS:
     what = CHECKS[cid]["what"]
     row = dict(id=tid, kind=kind, stage="4-5" if kind == "offline" else "6", file=f, check=cid, observes=what,
-               reads=[f] if built else [WM], command=cmd or "python3 " + f)
+               reads=([f] + BUILT_READS.get(tid, [])) if built else [WM], command=cmd or "python3 " + f)
     if cid == "C_old_save":
         row["floor_line"] = "save_compat (floor.json names this check for it)"
     if not built:
@@ -532,10 +538,11 @@ for t in T.values():
     elif t["kind"].startswith("live") and not t.get("new"):
         t["runs_today"] = {"ran": False, "entry_exists": t["entry_exists"],
                            "why": "a scene is run at its stage (Stage 6)" if t["entry_exists"] else "entry not written yet"}
-T["sc_text_names_no_setting"]["red_today"] = (
-    "the read finds the setting's words in the mod's texts as built (the log names each hit). plan.md 'Changed': 'The setting "
-    "words leave every text, and no text calls a level Repaired'. That is the build's work at Stage 3, and this check is its "
-    "red-first reading")
+if T["sc_text_names_no_setting"]["runs_today"].get("result") != "PASS":
+    T["sc_text_names_no_setting"]["red_today"] = (
+        "the read finds the setting's words in the mod's texts as built (the log names each hit). plan.md 'Changed': 'The "
+        "setting words leave every text, and no text calls a level Repaired'. That is the build's work at Stage 3, and this "
+        "check is its red-first reading")
 T["sc_wreck_link_tags"]["partial"] = ("scenes.json kind_note: 'The script exists and is green on the smelter; the count line is "
                                       "new.' The count of Wrecked defs against the count of ancient machines is built with the "
                                       "onboarding (Stage 3)")

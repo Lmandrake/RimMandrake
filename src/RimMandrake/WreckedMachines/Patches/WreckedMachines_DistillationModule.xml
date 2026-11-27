@@ -32,7 +32,7 @@
             </buildingTags>
           </building>
           <label>wrecked distillation module</label>
-          <description>The ship's water distillation module, torn off its mounts in the crash. The boiler is cracked and the condenser coil crushed flat. For now it is rubble: clear it, or build a kludged module over it.</description>
+          <description>An ancient water distillation module, torn off its mounts long ago. The boiler is cracked and the condenser coil crushed flat. For now it is rubble: clear it, or build a kludged module over it.</description>
           <thingClass>Building</thingClass>
           <graphicData>
             <texPath>Things/Building/Ruins/AncientGenerator</texPath>
@@ -62,7 +62,7 @@
         <ThingDef ParentName="BuildingBase">
           <defName>RM_WM_Distillation_Kludged</defName>
           <label>kludged distillation module</label>
-          <description>The ship's distillation module, patched back together with a scavenged coil and a boiler wrapped in wire. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another, slowly. It will not touch tar, oil, fuel or slime.</description>
+          <description>An ancient distillation module, patched back together with a scavenged coil and a boiler wrapped in wire. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another, slowly. It will not touch tar, oil, fuel or slime.</description>
           <thingClass>Building</thingClass>
           <tickerType>Rare</tickerType>
           <graphicData>
@@ -110,15 +110,15 @@
           <modExtensions>
             <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
               <key>RM_WM_Distillation</key>
-              <label>Ship distillation module (Wrecked Machines)</label>
+              <label>Distillation module (Wrecked Machines)</label>
             </li>
           </modExtensions>
         </ThingDef>
 
         <ThingDef ParentName="BuildingBase">
           <defName>RM_WM_Distillation_Repaired</defName>
-          <label>repaired distillation module</label>
-          <description>The ship's distillation module, restored. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another at its full rate. It will not touch tar, oil, fuel or slime.</description>
+          <label>refurbished distillation module</label>
+          <description>An ancient distillation module, refurbished. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another at its full rate. It will not touch tar, oil, fuel or slime.</description>
           <thingClass>Building</thingClass>
           <tickerType>Rare</tickerType>
           <graphicData>
@@ -166,7 +166,7 @@
           <modExtensions>
             <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
               <key>RM_WM_Distillation</key>
-              <label>Ship distillation module (Wrecked Machines)</label>
+              <label>Distillation module (Wrecked Machines)</label>
             </li>
           </modExtensions>
         </ThingDef>

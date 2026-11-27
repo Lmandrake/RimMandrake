@@ -1,0 +1,15 @@
+{
+ "T_DISTILLATION_LOADS": {
+  "at": "2026-11-27T14:01:38Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py",
+  "last": "T_DISTILLATION_LOADS: FAIL (7 rows, 1 not PASS)",
+  "patch": "diff --git a/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml b/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml\nindex 413cb2bcc8..007f28003d 100644\n--- a/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml\n+++ b/src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml\n@@ -99,5 +99,5 @@\n             <li Class=\"CompProperties_Breakdownable\" />\n             <li Class=\"RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter\">\n-              <tier>Household</tier>\n+              <tier>Kludged</tier>\n               <distillsAny>true</distillsAny>\n               <distillProduct>RM_Liquid_FreshWater</distillProduct>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml"
+  ],
+  "patch_sha": "4120377da4982bd9",
+  "rc": 1,
+  "test_blob": "8fc35ab495221aa2f9f5f6d16e9742fd296ddad0"
+ }
+}

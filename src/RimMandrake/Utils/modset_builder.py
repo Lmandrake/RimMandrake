@@ -439,6 +439,25 @@ TIERS = {
                  "petetimessix.researchreinvented", "mandrake.rm.flowworks"],
         "dlc": True,
     },
+    "wreckedmachines_no_research_reinvented": {
+        "why": "One scene of WreckedMachines 0.1.0, sc_study_without_research_reinvented (plan.md, 'Each of the two "
+               "tiers serves one scene'): the wreckedmachines_solo list without Research Reinvented, so the base "
+               "game's own study of the wreck is read with no second study offer on top. Research Reinvented is "
+               "forbidden, so a stale copy on the list fails the build of the list and not the scene.",
+        "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.wreckedmachines", "VanillaExpanded.VFEFactory",
+                 "mandrake.rm.flowworks"],
+        "forbid": ["petetimessix.researchreinvented"],
+        "dlc": True,
+    },
+    "wreckedmachines_cannery": {
+        "why": "One scene of WreckedMachines 0.1.0, sc_cannery_tier (plan.md; floor.json line test_isolation): the "
+               "wreckedmachines_solo list plus Vanilla Cooking Expanded (VanillaExpanded.VCookE, workshop "
+               "2134308519), the mod whose presence makes VFE Factory load its 18th production machine, the "
+               "cannery. Every other scene and his walk stay on wreckedmachines_solo.",
+        "want": [BRIDGE, CHARACTER_EDITOR, "mandrake.rm.wreckedmachines", "VanillaExpanded.VFEFactory",
+                 "petetimessix.researchreinvented", "mandrake.rm.flowworks", "VanillaExpanded.VCookE"],
+        "dlc": True,
+    },
     "explosivegrowth_solo": {
         "why": "EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 north-star script on the smallest list that loads the engine: "
                "that is Baroque Biomes (mandrake.rm.biomes, which composes it, everyday bands included since "
