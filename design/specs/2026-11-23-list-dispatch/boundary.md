@@ -255,12 +255,27 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   is not `blind`. It goes through every gate of a launch and takes a free game of `game_lock.query_all` on Archmagi, two
   rows of one tick never the same game: one Work run, never folded into a work bundle, whose brief claims, deploys and
   releases that game. No free game reads `waits_game` with each game's line; it carries no `could_not_look`, so
-  `blind_hold` does not count it. Games that could not be read read `blind`. Every other unmeasured check stays `blind`:
-  an offline item's exit 2, any item's exit 127 or other exit, a deadline, a missing file. A live item whose check
+  `blind_hold` does not count it. Games that could not be read read `blind`. Every other unmeasured check reads `blind`
+  (an offline item's exit 2, any item's exit 127 or other exit, a deadline, a missing file) until its repair run
+  (a-check-that-stays-blind-gets-a-repair-run). A live item whose check
   fails takes no game. The tick reads the games only when a row may take one (`games_wanted`). Why: on 2026-11-26 and
   27 the alarm rang five times; in the fifth outage `DONOR_MUTATORS_MIGRATE_TWENTY_TWO_CAME_HOME` read blind on
   "not in the RUNNING mod list" and nothing launched. The Conductor ruled (note 16 on
   `OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ`): "a live check reads as waiting for a game, not blind".
+- **a-check-that-stays-blind-gets-a-repair-run.** One item's check that is unmeasured, on an item with no live run or
+  live bundle and that is no live check waiting for a game, reads `blind` (with `could_not_look`) on its first
+  `blind_repair_passes - 1` applied ticks in a row (list_dispatch.json, at or under the alarm's line of more than 3).
+  On the next it goes through every launch gate as one Work run on opus, never folded into a work bundle, whose row
+  carries `repair_check` and whose brief names the check's output and the repair it owes: the check, the cause in the
+  lane's clone, or the runner `list_effect.py`. The streak is per item (`blind_n` in the item's state), counted and ended
+  only by an applied full tick; a launch, or any other reading of the check, ends it. A repair row that a gate holds
+  (slots, load, account, chain) keeps its streak and carries no `could_not_look`, so `blind_hold` does not count it.
+  The run is counted as a Work run, so a check that still cannot look after it ended reads `stopped` on the
+  Conductor's view by the Work-run rule (no next act, or `max_runs_per_item`), never `blind` for ever. A hold that is
+  not one item's check (the ledger, the games, the load, the run records) stays `blind` and is told by the alarm. Why:
+  item RELAPSE_MATURATION_FIX_DIED_TWICE. `maturation.list_gate_blind_passes` rang in six episodes on 2026-11-26 and
+  27, each a new reason why one item's check could not look; each was fixed by hand after an Operations read, and the
+  incident `maturation-20261121225203` was tamed after two relapses.
 - **the-judge-filter-reads-the-ask-against-now.** `judge_facts(ask, root)`: stale when the ask names repo paths and
   every one is gone from `root`; an ask that names one path of now, or none, is not stale by program (the judge's own
   step 1 reads it against now). live when the ask names in-game captures, a screenshot, a live game or "on this build".

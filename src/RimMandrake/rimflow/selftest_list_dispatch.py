@@ -1509,6 +1509,66 @@ def t_a_live_check_with_no_game_takes_a_free_game_or_waits():
         "a row that takes a game is its own run, never in a bundle that may run on a host (%s)" % grows)
 
 
+def t_a_check_that_stays_blind_gets_a_repair_run():
+    # RELAPSE_MATURATION_FIX_DIED_TWICE: maturation.list_gate_blind_passes rang in six episodes on 2026-11-26 and 27,
+    # each a new reason why one item's check could not look (a PATH, an unlanded file, a live bundle, no game, a bridge
+    # profile). The row read blind on every tick; nothing repaired the check but an Operations read bought by the alarm.
+    out = "exit 127 (only 0 holds and 1 fails)\npython.exe: command not found"
+    blind = lambda **kw: it(verdict="unmeasured", out=out, **kw)
+    acts = []
+    fx = {"account": lambda: (True, ""), "launch": lambda *a: acts.append(a) or (0, "", "u-repair"),
+          "need": lambda *a: None, "close": lambda *a: (0, ""), "effect": lambda *a: (0, "")}
+    os.environ["RM_LIST_DISPATCH_DIR"] = tempfile.mkdtemp(prefix="ld_repair_")
+    cfg = dict(CFG, blind_repair_passes=3)
+    world = {"items": {"A": blind(), "B": blind()}, "runs": {}, "other_live": 0}
+
+    def tick(facts, t, apply=True, **kw):
+        return LD().tick(dict(cfg), apply=apply, fx=dict(fx, facts=lambda st: facts), now=t, **kw)
+    rd = [tick(world, NOW)]
+    dry = tick(world, NOW + 100, apply=False)
+    only = tick(world, NOW + 200, only=["A"])
+    rd.append(tick(world, NOW + 600))
+    chk(lambda: [r["items"]["A"]["decision"] for r in rd] == ["blind", "blind"] and rd[1]["blind_hold"]["passes"] == 2
+        and acts == [], "the first ticks of a check that cannot look read blind and launch nothing (%s)"
+        % [r["items"]["A"] for r in rd])
+    chk(lambda: dry["items"]["A"]["decision"] == "blind" and only["items"]["A"]["decision"] == "blind" and acts == [],
+        "a dry tick and a run-now tick neither count nor end the streak (else the second applied tick would launch)")
+    world2 = dict(world, items={"A": blind(), "B": it(verdict="holds", out="x")})      # B's check reads: its streak ends
+    rd3 = tick(world2, NOW + 1200)
+    a = rd3["items"]["A"]
+    chk(lambda: a["decision"] == "launched" and len(acts) == 1 and acts[0][0] == "A" and acts[0][1] == "opus"
+        and rd3["blind_hold"]["passes"] == 0,
+        "the third blind tick launches one repair run on opus, and the alarm's streak ends (%s, %s)" % (a, rd3["blind_hold"]))
+    brief = acts[0][3] if acts else ""
+    chk(lambda: "could not look" in brief and "python.exe: command not found" in brief and "repair" in brief
+        and "cli.py shape A" in brief, "the repair run's brief names the check's output and the repair it owes")
+    world3 = dict(world, items={"A": blind(), "B": blind()})
+    rd4 = tick(world3, NOW + 1800)
+    chk(lambda: rd4["items"]["B"]["decision"] == "blind",
+        "a streak is per item: B's check read once, so it starts again at 1 (%s)" % rd4["items"]["B"])
+    ended = dict(world3, runs={"A": {"live": [], "ended": ["u-repair"]}})
+    rds = [tick(ended, NOW + 2400 + 600 * k) for k in range(3)]
+    chk(lambda: rd4["items"]["A"]["decision"] == "blind" and [r["items"]["A"]["decision"] for r in rds] == [
+        "blind", "stopped", "stopped"] and len(acts) == 2,
+        "after the repair run ended with no next act and the check still cannot look, A reads stopped, never blind "
+        "for ever (%s)" % [r["items"]["A"]["decision"] for r in rds])
+    chk(lambda: acts[1][0] == "B", "B, blind three ticks in a row on its own, got its own repair run (%s)"
+        % [x[0] for x in acts])
+    rows, launches, _ = run({"A": blind()}, st={"items": {"A": {"blind_n": 2}}}, cfg=dict(CFG, blind_repair_passes=3),
+                            runs={"A": {"live": ["u9"], "ended": []}})
+    chk(lambda: rows["A"]["decision"] == "live" and launches == [], "a live run on the item outranks a repair run")
+    rows, launches, _ = run({"A": blind()}, st={"items": {"A": {"blind_n": 2}}}, cfg=dict(CFG, blind_repair_passes=3,
+                                                                                         max_live=0))
+    chk(lambda: rows["A"]["decision"] == "slots_full" and not rows["A"].get("could_not_look") and rows["A"].get("check_blind"),
+        "a repair run held by a gate keeps its streak and is no could-not-look hold (%s)" % rows["A"])
+    chk(lambda: isinstance(LD().load_cfg().get("blind_repair_passes"), int)
+        and LD().load_cfg()["blind_repair_passes"] <= [t for t in json.load(open(os.path.join(
+            REPO, "src", "RimMandrake", "Utils", "ops_watch_rules.json")))["targets"]
+            if t.get("key") == "maturation.list_gate_blind_passes"][0]["value"],
+        "the shipped repair line comes before the alarm's line, so one item's check never rings it")
+    os.environ["RM_LIST_DISPATCH_DIR"] = tempfile.mkdtemp(prefix="ld_selftest_")
+
+
 def t_the_judge_filter_reads_the_ask_against_now():
     root = tempfile.mkdtemp(prefix="ld_judge_")
     os.makedirs(os.path.join(root, "design"))
@@ -1685,6 +1745,7 @@ def main():
               t_a_judge_route_launches_one_fresh_judge_run,
               t_the_judge_filter_reads_the_ask_against_now,
               t_a_live_check_with_no_game_takes_a_free_game_or_waits,
+              t_a_check_that_stays_blind_gets_a_repair_run,
               t_the_code_review_pause_holds_every_review_ticket,
               t_the_shipped_pause_names_the_three_kinds_and_only_them,
               t_the_pause_command_edits_one_line_and_nothing_else):

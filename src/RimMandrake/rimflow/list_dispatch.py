@@ -542,7 +542,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("off", it["off"])
             continue
         claimed = it.get("claimed") if not att else None     # the lease of a run of ours never stops our next run
-        shape = judge = live_game = False
+        shape = judge = live_game = repair = False
         if not it.get("effect"):
             acc = it.get("accept")
             if claimed:
@@ -591,9 +591,17 @@ def decide(cfg, st, facts, now, account=(True, "")):
                        if run.get("bundle") else ", ".join(run["live"])))
                 continue
             if not waits_for_game(it):
-                put("blind","the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
-                continue
-            live_game = True    # its live check cannot look: no game runs what it reads. A free game takes the work
+                # one item's check that cannot look: blind for its first ticks (a file or an event that lands minutes
+                # later clears it), then a Work run that repairs the check (RELAPSE_MATURATION_FIX_DIED_TWICE)
+                row["check_blind"] = True       # tick() counts the item's streak of these rows (blind_n)
+                rp = cfg.get("blind_repair_passes", _shipped().get("blind_repair_passes"))
+                n = int(s.get("blind_n") or 0) + 1      # this tick is the n-th in a row
+                if not (isinstance(rp, int) and not isinstance(rp, bool) and rp > 0) or n < rp:
+                    put("blind", "the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
+                    continue
+                repair = n
+            else:
+                live_game = True    # its live check cannot look: no game runs what it reads. A free game takes the work
         if it.get("route") and it["route"].get("who") == "judge":
             judge = True
         elif it.get("route"):     # an open routed part holds the item: its answer re-shapes it (list_shape.py)
@@ -778,6 +786,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
             model, mwhy = "opus", "a judge run is a judgement on work it did not make"
         elif look:
             model, mwhy = "opus", "a second look is a judgement"
+        elif repair:
+            model, mwhy = "opus", "the repair of a check that cannot look is a judgement"
         else:
             model, mwhy = pick_model(cfg, it.get("effect"))
         cap = cfg.get("%s_cap_usd" % model, _shipped().get("%s_cap_usd" % model))   # a partial cfg keeps the shipped cap
@@ -808,11 +818,15 @@ def decide(cfg, st, facts, now, account=(True, "")):
             if game:
                 games_taken.add(game)
                 row["game"] = game      # brief_text tells the run to claim it; work_bundle.group keeps it its own run
+            if repair:
+                row["repair_check"] = repair    # brief_text: repair the check first; work_bundle.group: its own run
             put("launch", "Work run %d%s%s: %s (%s); %s" % (
                 len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "",
                 ", past a stale block" if row.get("stale_block") else "", model, mwhy,
                 "its live check cannot look until a game runs what it reads (%s); it takes %s"
-                % (_one(it.get("out"), 120), game) if game else "the check fails: %s" % _one(it.get("out"), 120)))
+                % (_one(it.get("out"), 120), game) if game else
+                "its check could not look on %d ticks in a row (%s); the run repairs the check" % (
+                    repair, _one(it.get("out"), 120)) if repair else "the check fails: %s" % _one(it.get("out"), 120)))
         if grant:
             row["chain_grant"] = grant.get("at")
             row["why"] = "%s; past the chain stop (depth %s) by the clear of %s: %s" % (
@@ -1792,7 +1806,8 @@ Steps:
            out=_one(it.get("out"), 600) or "(nothing)",
            look=LOOK % _one(row["look"], 400) if row.get("look") else "",
            stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "") + (
-        GAME % {"game": row["game"], "item": iid} if row.get("game") else "") + _reader(it)
+        GAME % {"game": row["game"], "item": iid} if row.get("game") else "") + (
+        REPAIR % {"n": row["repair_check"], "item": iid} if row.get("repair_check") else "") + _reader(it)
 
 
 GAME = """
@@ -1803,6 +1818,18 @@ small list of the mod that the check reads (design/concepts/<Mod>/version/small_
 for ArchSmall pass --instance ArchSmall), load it, and run the check against %(game)s until it reads. Release the game
 the moment the check has read: python3 src/RimMandrake/rimflow/game_lock.py release %(game)s. Never fullscreen or focus
 the game, and never live-test a creature flyer's flight.
+"""
+
+
+REPAIR = """
+Its check could not look on %(n)s ticks of the lane in a row: it neither holds nor fails (see what it printed above). A
+check that cannot look is a fault of the check or of the program that runs it, not a verdict on the work, so this run
+repairs the check first. Run the check in your clone (the command of step 3). If it reads there, find why the lane's
+clone could not read it (a file not yet on origin/main, a tool missing from the timer's PATH, a ledger event not yet
+landed) and repair that cause. If it cannot look in your clone either, give the item a check that can look: shape it
+again with the same split and that part's check repaired, python3 src/RimMandrake/rimflow/cli.py shape %(item)s --parts
+'<json list>' --seat BENCH --why "repair of a check that cannot look" --publish. When every check of one form fails the
+same way, repair the runner (src/RimMandrake/rimflow/list_effect.py) instead. Then do the work.
 """
 
 
@@ -2165,6 +2192,14 @@ def tick(cfg, apply, fx=None, now=None, only=None):
                              and prev[0] == r["decision"] and isinstance(prev[1], (int, float)) else now]
         if apply and not only:
             st["kind_since"] = ks
+            # each item's streak of ticks whose check could not look (decide reads blind_n); a launch, or any other
+            # reading of the check, ends it. A dry or run-now tick neither counts nor ends it, as blind_hold
+            sti = st.setdefault("items", {})
+            for r in rows:
+                if r.get("check_blind") and r.get("decision") != "launched":
+                    sti.setdefault(r["item"], {})["blind_n"] = int((sti.get(r["item"]) or {}).get("blind_n") or 0) + 1
+                elif r["item"] in sti:
+                    sti[r["item"]].pop("blind_n", None)
         # a run-now (--only) tick sees part of the lane: it neither counts nor ends the streak; a dry tick writes nothing
         bh = blind_hold(st.get("blind_hold"), rows, now) if apply and not only else st.get("blind_hold")
         if apply and not only:
