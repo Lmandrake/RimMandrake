@@ -12,7 +12,8 @@ it, three readers (`maturation_now.py`, `rimflow_metrics.py`, `fleet_mods.py`) e
 ## DOES NOT SURVIVE
 
 - An item whose id and title name no mod, or name two equally: the answer is None. A run on such an item is placed on
-  a mod only by its launch record (`RM_CONTROL_MOD`).
+  a mod only by its launch record (`RM_CONTROL_MOD`). A run is never placed by its item's title (a title may only name
+  a mod as the example of a pipeline-tool fault), and a run that the ticket lane launched is on no mod.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -24,5 +25,10 @@ it, three readers (`maturation_now.py`, `rimflow_metrics.py`, `fleet_mods.py`) e
   no stage is on no stage: no journal heading and no note text place it. Before this, the page guessed the stage from
   prose, and on the 2026-11-22 records the guess matched the recorded stage for 17 of 91 runs (13 wrong, 22 with extra
   stages, 39 with none) [measured].
+- **a-run-is-placed-by-its-record-or-its-id-never-its-title.** `maturation_now.runs_for_mods` puts a run on the mod its
+  launch recorded (`RM_CONTROL_MOD`), else the mod its item's id names; a title never places a run, and a run with no
+  `RM_CONTROL_STAGE` that the ticket lane launched is on no mod. So the badge of a mod reads a live run only when the run
+  is work on that mod (RIMMANDRAKE_FIX_PASSED_MOD_BADGE_HELPER_WAS_TOOL_REPAIR). Tested by case 19 of
+  `selftest_maturation_now.py` (`p19_badges`).
 - **one-alias-table.** A short name that is not in a mod's own name (`HOSE`, `FW` for FlowWorks) is in `ALIASES` here
   and nowhere else among the readers.

@@ -568,13 +568,39 @@ def t_an_unreadable_machine_reads_could_not_look():
     assert "could not look" in " ".join(m["lines"]).lower(), m
 
 
+def t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair():
+    """RIMMANDRAKE_FIX_PASSED_MOD_BADGE_HELPER_WAS_TOOL_REPAIR: the lane never launches mod work, so a run it launched is a
+    Workshop Pipeline run though its title names a mod and an older launch recorded that word as RM_CONTROL_MOD. A run
+    of a mod's own stage (RM_CONTROL_STAGE) is mod work."""
+    s = stores()
+    tid = "RIMMANDRAKE_FIX_HAND_ACT_CLOCK_LOCAL_TIME_READ_AS_UTC"
+    s["items"][tid] = item(tid, "Hand act clock: the Pyrelands pass read as UTC", days=0.2)
+    lane = rec("u-lane", tid, NOW - 1 * H, status="running", env={"RM_CONTROL_MOD": "Pyrelands"}, next_act_owner="list_dispatch")
+    s["records"].append(lane)
+    x = sec(s)
+    assert tid in x["stage_of"], "a lane run on a ticket that names a mod is not in the Workshop Pipeline"
+    assert any(r["id"] == tid for r in x["doing"]), "the page does not list the lane run with the pipeline repairs"
+    # the same record with a recorded stage is the mod's own stage run: mod work, in no list
+    own = dict(lane, env={"RM_CONTROL_MOD": "Pyrelands", "RM_CONTROL_STAGE": "offline_build"}, next_act_owner="maturation_dispatch")
+    s2 = stores()
+    s2["items"][tid] = s["items"][tid]
+    s2["records"].append(own)
+    assert tid not in sec(s2)["stage_of"], "a mod's own stage run was listed as a pipeline repair"
+    # a hand launch with no recorded mod, on a ticket whose id names no mod: no run on a mod, so a pipeline repair too
+    s3 = stores()
+    s3["items"][tid] = s["items"][tid]
+    s3["records"].append(rec("u-hand", tid, NOW - 1 * H, status="running", env={}))
+    assert any(r["id"] == tid for r in sec(s3)["doing"]), "a hand run with no recorded mod is on no page list"
+
+
 def main():
     tests = [t_mod_or_not_by_one_rule, t_stages_from_one_rule, t_launcher_from_records, t_doing_now_rows,
              t_next_names_its_wait, t_closed_last_day, t_open_by_reason_oldest_first, t_escalated_from_run_ends,
              t_ready_for_review, t_cannot_see_is_unmeasured, t_four_answers_differ, t_lists_go_to_detail,
              t_page_is_a_picture_not_a_log, t_a_question_for_the_conductor_is_its_own_block, t_waits_in_plain_words, t_plain_titles, t_page_four_answers_differ,
              t_needs_short_and_his_first, t_trend_on_the_page, t_plain_waits, t_same_inputs_same_section,
-             t_each_machine_shows_its_runs_room_games_and_lane, t_an_unreadable_machine_reads_could_not_look]
+             t_each_machine_shows_its_runs_room_games_and_lane, t_an_unreadable_machine_reads_could_not_look,
+             t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair]
     failed = 0
     for t in tests:
         try:

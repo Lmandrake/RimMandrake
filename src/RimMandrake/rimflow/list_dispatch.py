@@ -182,6 +182,15 @@ def mod_of(iid, title, mods):
     return None
 
 
+def run_mod(it):
+    """-> the mod a launched run is recorded on (RM_CONTROL_MOD), or None. Only mod_work's reading ties a run to a mod
+    (home mod:<folder>, or every repo path inside that mod's folder). The word tie of mod_of (a word of the id or title)
+    gates a launch (a stop or a hold on the mod) and never names the run's mod: a pipeline-tool ticket that names a mod
+    as its example is no work on that mod, and the status page read such a run as a helper on the mod."""
+    mw = (it or {}).get("mod_work")
+    return mw.get("mod") if isinstance(mw, dict) and mw.get("mod") else None
+
+
 def time_script(path, limit, runner=subprocess.run):
     """-> probe_result: value(seconds one `python3 <path>` run took from the repo root), or could_not_look(cause) when it
     did not end inside `limit` or could not start: either way it cannot be a beat's check."""
@@ -1963,7 +1972,7 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
                                      + ([it["shape_unit"]] if it.get("shape_unit") else []))
         else:
             brief = brief_text(iid, it, row)
-        rc, text, unit = do_launch(iid, row["model"], row["cap"], brief, cfg.get("seat", "BENCH"), it.get("mod"),
+        rc, text, unit = do_launch(iid, row["model"], row["cap"], brief, cfg.get("seat", "BENCH"), run_mod(it),
                                    **({"host": row["host"]} if row.get("host") else {}))
         ok = rc == 0 and bool(unit)
         s.pop("told", None)
@@ -1988,7 +1997,7 @@ def launch_bundle_row(cfg, st, row, items, now, do_launch, remote=None, rows=())
     b = row["bundle"]
     model = row["model"] if len(b["members"]) == 1 and not b.get("host") else "opus"
     cap = row["cap"] if model == row["model"] else cfg.get("opus_cap_usd", _shipped().get("opus_cap_usd"))
-    mod = (items.get(b["members"][0]) or {}).get("mod")
+    mod = run_mod(items.get(b["members"][0]))
     why = ("the onboarding run of the old tickets of %s, with its ready tickets (list_dispatch tick, %s)" if b.get("onboard")
            else "the Workshop Pipeline's ready tickets of %s (list_dispatch tick, %s)") % (b["system"], UNIT)
     if b.get("host"):

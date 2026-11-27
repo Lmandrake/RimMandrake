@@ -110,7 +110,7 @@ BG, CARD, EDGE, TEXT, DIM, FAINT = "#171310", "#211b16", "#4a3d2e", "#efe7d9", "
 ALERT, INK = "#ff8a7a", "#14100c"
 DONE = "#3f5a2c"
 STATUS = {   # key: (fill, text colour, word on the chip, legend line)
-    "helper": ("#8aa24a", INK, "helper on it", "a helper is on it now"),
+    "helper": ("#8aa24a", INK, "run live", "a run is live on it now (its chip names the stage or item)"),
     "waiting": ("#c98536", INK, "waiting", "waiting for its next step"),
     "held": ("hatch", TEXT, "held", "held on purpose"),
     "unknown": ("#6d6252", TEXT, "stage unread", "its stage could not be read"),
@@ -494,7 +494,7 @@ def live_facts(mods):
 # ---- runs, interventions and what needs a reaction ---------------------------------------------------------------
 #
 # A run (a detached-run record, detached_helper.py) is on the mod and the stage its launch recorded (RM_CONTROL_MOD,
-# RM_CONTROL_STAGE); a run with no recorded mod is the mod's its item names (item_identity.item_mod). A run with no
+# RM_CONTROL_STAGE); a run with no recorded mod is the mod its item's id names (item_identity.item_mod). A run with no
 # recorded stage is on no stage ("before the pipeline" when it is older than the journal); a live one sits in the mod's
 # current box, uncounted.
 # An intervention is a line "CONDUCTOR INTERVENED (stage N, <date time PST>, kind K): what" in the journal or in a ledger
@@ -642,9 +642,39 @@ def run_view(rec, now, spend=read_spend):
             "died": not live and (st == "dead" or bool(res) and not FC.of_run(dict(rec, status="finished")).counts)}
 
 
+def badge_of(m):
+    """-> (status key, what the live run does or "") of a mod's badge. The owner's hold outranks a run. A run that is on
+    the mod is in m["runs"] (runs_for_mods); a run of the ticket lane never is. what: the stage of the run, else its item
+    (a hand run on the mod records none), and "+N" for N more live runs."""
+    if m["column"] == UNM:
+        return "unknown", ""
+    if m["held"]:
+        return "held", ""
+    live = [r for r in m["runs"] if r["live"]] if isinstance(m["runs"], list) else []
+    if not live:
+        return "waiting", ""
+    r = live[0]
+    what = ("at " + stage_title(r["stages"][0])) if r.get("stages") else "on " + r["item"]
+    return "helper", what + (" +%d" % (len(live) - 1) if len(live) > 1 else "")
+
+
+def status_word(m, short=False):
+    """The word on a mod's badge: for a live run, what it does (its stage, else its item). short: for the chip in a stage
+    column of the picture, where about 14 characters fit."""
+    if m["status"] != "helper" or not m.get("status_what"):
+        return STATUS[m["status"]][2]
+    what = m["status_what"]
+    if short:
+        if what.startswith("at Stage "):
+            return "run: stage %s" % what[len("at Stage "):].split(" ")[0]
+        return ("run: " + what[3:].split(" ")[0].lower()) if what.startswith("at ") else "run: item"
+    return "run live " + clip(what, 56)
+
+
 def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titles=None):
-    """-> {folder: [run]}. titles: {item id: title}. A run is on the mod its launch recorded (env RM_CONTROL_MOD, every
-    pipeline launch), else the one its item's id or title names (item_mod). A hand launch on a mod whose id and title
+    """-> {folder: [run]}. titles: unused (a run is never placed by its item's title). A run is on the mod its launch
+    recorded (env RM_CONTROL_MOD, every pipeline launch), else the one its item's id names (item_mod); a run that the
+    ticket lane launched is on none (maturation_nonmod.lane_launched). A hand launch on a mod whose id and title
     name none passes `--env RM_CONTROL_MOD=<Mod>`. A run is on the stage its launch recorded (RM_CONTROL_STAGE) and on
     no other: prose places none (design/specs/2026-11-22-item-identity/boundary.md, a-run-is-on-its-recorded-stage)."""
     out = {f: [] for f in folders}
@@ -656,9 +686,11 @@ def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titl
     cache = {}
     for rec in records or []:
         item = str(rec.get("item") or "")
+        if MNM.lane_launched(rec):      # the lane never launches a mod's work: the word its launch recorded is no mod's run
+            continue
         said = (rec.get("env") or {}).get("RM_CONTROL_MOD")
         if not said and item not in cache:
-            cache[item] = item_mod(item, folders, (titles or {}).get(item))
+            cache[item] = item_mod(item, folders)      # the id only: a title that names a mod is no run on it
         f = (said if said in out else None) if said else cache[item]
         if not f:
             continue
@@ -1060,15 +1092,7 @@ def gather(root, live=True):
         m["boxes"] = stage_boxes(m, m["runs"], m["ivs"], m["column"])
         for r in m["runs"] if isinstance(m["runs"], list) else []:
             r["last"] = last_words(r, lf["notes"]) if lf["notes"] is not None else UNM
-        live_runs = [r for r in m["runs"] if r["live"]] if isinstance(m["runs"], list) else []
-        if m["column"] == UNM:
-            m["status"] = "unknown"
-        elif m["held"]:
-            m["status"] = "held"
-        elif live_runs:
-            m["status"] = "helper"
-        else:
-            m["status"] = "waiting"
+        m["status"], m["status_what"] = badge_of(m)
     order = {c: i for i, c in enumerate(COLUMNS)}
     mods.sort(key=lambda m: (m["held"], -order.get(m["column"], -1), m["label"].lower()))
     other = []
@@ -1128,11 +1152,10 @@ def concepts_line(d):
 def trend(lf, mods, now, live):
     """maturation_trend's reading of tickets by hour (design/specs/2026-11-23-ticket-trend-graph/boundary.md)."""
     recs = lf.get("records")
-    run_mods = {r.get("item") for r in recs or []
-                if str((r.get("env") or {}).get("RM_CONTROL_MOD") or "").strip().lower() not in ("", "none")}
+    run_mods, lane = MNM.run_mods_of(recs), MNM.lane_items_of(recs, mods)
     cause = "live reads off (--no-live)" if not live else next(
         (e for e in lf.get("errors") or [] if e.startswith("ledger")), "the ledger was not read")
-    return MT.safe(lf.get("_evs"), now, mods, MNM.classify, run_mods, recs, MNM.is_live, cause=cause)
+    return MT.safe(lf.get("_evs"), now, mods, lambda i, t, m, r: MNM.classify(i, t, m, r, lane), run_mods, recs, MNM.is_live, cause=cause)
 
 
 def convergence(root, errors):
@@ -1312,9 +1335,9 @@ def mod_row(m, y, row_h):
             ink = STATUS[m["status"]][1]
             dash = ' stroke="%s" stroke-width="1.5" stroke-dasharray="4 3"' % TEXT if m["at_door"] else ""
             p.append('<rect x="%.1f" y="%d" width="%.1f" height="22" rx="5" fill="%s"%s/>' % (cx, y + 8, w, fill, dash))
-            word = "at the door" if m["at_door"] else STATUS[m["status"]][2]
+            word = "at the door" if m["at_door"] else status_word(m, short=True)
             if m["at_door"] and m["status"] == "helper":
-                word = "door, helper"
+                word = "door, run"
             p.append(t_(cx + w / 2, y + 23, word, 10.5, ink, 700, "middle"))
         elif before:
             p.append('<rect x="%.1f" y="%d" width="%.1f" height="22" rx="4" fill="%s"/>' % (cx, y + 8, w, DONE))
@@ -1385,7 +1408,8 @@ def strip_html(m):
 
 
 def card(m):
-    fill, ink, word, _ = STATUS[m["status"]]
+    fill, ink, _w, _ = STATUS[m["status"]]
+    word = status_word(m)
     head = ['<span style="font-size:18px;font-weight:800">%s</span>' % esc(m["label"]),
             chip("no Design Version named yet" if m["versionless"] else
                  (m["version"] if m["version"] != UNM else "version UNMEASURED"), "#e6dcc8"),
@@ -2336,7 +2360,7 @@ def phone_overview(d, now):
     P.text(pipeline_line(d), "small", fill=DIM, gap=16)
     for m in d["mods"]:
         P.text(m["label"], "h2", True, gap=2)
-        P.text("%s · %s · %s" % (m["version"], where_word(m), STATUS[m["status"]][2]), "small", fill=DIM, gap=14)
+        P.text("%s · %s · %s" % (m["version"], where_word(m), status_word(m)), "small", fill=DIM, gap=14)
         P.strip(m)
         for c, x in (m.get("boxes") or {}).items():
             for r in [r for r in x["runs"] + x["unplaced_live"] if r["live"]]:
@@ -2363,7 +2387,7 @@ def phone_overview(d, now):
 def phone_mod(m, now):
     P = Phone()
     P.text(m["label"], "h1", True, gap=4)
-    P.text("%s · %s · %s" % (m["version"], where_word(m), STATUS[m["status"]][2]), "body", fill=DIM, gap=4)
+    P.text("%s · %s · %s" % (m["version"], where_word(m), status_word(m)), "body", fill=DIM, gap=4)
     P.text("Measured %s" % pac(now), "small", fill=FAINT, gap=20)
     P.strip(m)
     his = [q for q in m.get("jquestions") or [] if not q["answered"]]

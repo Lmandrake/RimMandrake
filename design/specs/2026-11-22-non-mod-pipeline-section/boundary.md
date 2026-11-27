@@ -59,10 +59,19 @@ MATURATION_DETAIL.
   the Conductor" with its ask, on the picture, the lists and the phone, and not under "stuck, needs a hand". With no such
   item the block is absent from the picture. Tested by `t_a_question_for_the_conductor_is_its_own_block`.
 - **mod-or-not-by-one-rule.** An item is mod work when its id or its title names a mod on the page
-  (`item_identity.named_mod`, the rule the mod cards use) or when a run on it recorded `RM_CONTROL_MOD`. An id or title
+  (`item_identity.named_mod`, the rule the mod cards use) or when a run of a mod's own stage on it recorded
+  `RM_CONTROL_MOD` (a run that the Workshop Pipeline launched is not one: see the next promise). An id or title
   that names a mod but ties between two mods is "could not class": counted and shown, and in no list. A run that
   recorded `RM_CONTROL_MOD=none` (detached_helper's mark for no mod) recorded no mod. Every other item is non-mod work.
   The section states this rule in words. Tested by `t_mod_or_not_by_one_rule`.
+- **a-lane-run-on-a-ticket-that-names-a-mod-is-a-pipeline-repair.** A run that the ticket lane launched (record
+  `next_act_owner` list_dispatch, or a work bundle that is not `WB-mod-`) with no `RM_CONTROL_STAGE` is a Workshop
+  Pipeline run, never a mod's: the lane never launches a mod's work (`mod_work`), so a mod that such a record carries in
+  `RM_CONTROL_MOD` is only a word of the ticket's title (older launches recorded it). The item is non-mod work and is
+  listed under "Doing now" with its stage; the mod's badge on the mod pipeline is not "run live"
+  (`maturation_now.runs_for_mods` skips the record). A run with `RM_CONTROL_STAGE` stays the mod's.
+  Tested by `t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair`, and for the badge by case 19 of
+  `selftest_maturation_now.py`.
 - **stages-from-one-rule.** Each open non-mod item sits at exactly one stage, the one `stage_of` (the function the
   page is given, `list_pipeline.stage_of` by default) returns over `list_pipeline.facts` of the item, its runs, the
   tick's row, whether it is his, its ready note and its last act (`list_pipeline.last_act`: a program's note about a

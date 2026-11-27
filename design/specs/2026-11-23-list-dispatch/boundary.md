@@ -66,6 +66,12 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   cannot be read, launches nothing and is not offered: the row reads `blind` and the stage `unmeasured`, "could not
   look". A live run on such a ticket still shows as Work. Measured 2026-11-24: the Codex lane built two HugeThings tickets
   (home mod:HugeThings), because HugeThings has no version folder and the page counted them as list work.
+- **a-run-carries-a-mod-only-when-mod-work-reads-the-ticket-as-that-mods.** The mod that a launch records
+  (`RM_CONTROL_MOD`) is `mod_work`'s reading of the ticket (`run_mod`), never the word tie of `mod_of`. A pipeline-tool
+  ticket that names a mod only in its title launches a run tied to no mod. The word tie still gates the launch (a `pipe`
+  stop or an owner hold on the mod). Measured 2026-11-27: a lane run that repaired `maturation_hands.py` carried
+  `RM_CONTROL_MOD=ExplosiveKnockback` and the status page read "helper on it" under that passed mod. Tested by
+  `t_a_run_carries_a_mod_only_when_mod_work_reads_the_ticket_as_that_mods`.
 - **the-check-runs-before-every-attempt.** An item whose check holds reads `close`, whatever its runs; the tick closes it
   as the pipeline's act (`list_effect.close_item`, role unit `rm-list-dispatch.service`) if its live gate allows it,
   and launches nothing on it. Both ticks share the live gate on the outcome-check boundary page. An

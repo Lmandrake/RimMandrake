@@ -54,8 +54,9 @@ RED_WAIT = {"launch": "launches at its next tick", "slots_full": "waits for a fr
 
 STAGE_ORDER = ("shape", "waiting", "ready", "work", "verify", "trouble", "review", "conflict", "unmeasured")
 RULE = ("An item is mod work when its id or title names a mod on this page (the rule the mod cards use, "
-        "item_identity.named_mod) or a run on it recorded its mod; a name that ties between two mods is \"could not "
-        "class\"; every other item is work that is not mod work.")
+        "item_identity.named_mod) or a run of a mod's own stage recorded its mod; a name that ties between two mods is "
+        "\"could not class\"; an item that the ticket lane launched a run on is not mod work, whatever its title names; "
+        "every other item is work that is not mod work.")
 
 CANNOT = [
     "UNMEASURED: work promised in conversation and never filed on the ledger. No store holds it.",
@@ -130,8 +131,44 @@ def named(iid, title):
     return "%s (`%s`)" % (t, iid)
 
 
-def classify(iid, title, mods, run_mods):
-    """-> 'mod' | 'nonmod' | 'unclassed' (mod-or-not-by-one-rule)."""
+def lane_launched(r):
+    """True when the Workshop Pipeline launched the run record `r` (the ticket lane, or a work bundle that is not a mod's)
+    and it is no run of a mod's own stage (no RM_CONTROL_STAGE). The lane never launches a mod's work (mod_work), so the
+    mod that such a record carries in RM_CONTROL_MOD is only a word of the ticket's title that older launches recorded
+    (RIMMANDRAKE_FIX_PASSED_MOD_BADGE_HELPER_WAS_TOOL_REPAIR)."""
+    env = r.get("env") or {}
+    if env.get("RM_CONTROL_STAGE"):
+        return False
+    wb = str(env.get("RM_WORK_BUNDLE") or "")
+    return r.get("next_act_owner") == "list_dispatch" or bool(wb) and not wb.startswith("WB-mod-")
+
+
+def run_mods_of(recs):
+    """-> the set of item ids with a run recorded on a mod (a lane-launched run never counts)."""
+    return {r.get("item") for r in recs or []
+            if str((r.get("env") or {}).get("RM_CONTROL_MOD") or "").strip().lower() not in ("", "none")
+            and not lane_launched(r)}     # detached_helper records "none" on a run for no mod
+
+
+def lane_items_of(recs, mods=()):
+    """-> the set of item ids with a run on no mod: the Workshop Pipeline launched it, or no launch recorded a mod or a
+    stage and the item's id names none of `mods` (a hand launch on a pipeline-tool ticket). Such an item is not mod work,
+    whatever its title names: maturation_now.runs_for_mods places no run by a title."""
+    out = set()
+    for r in recs or []:
+        if lane_launched(r):
+            out.add(r.get("item"))
+        env = r.get("env") or {}
+        if not env.get("RM_CONTROL_STAGE") and str(env.get("RM_CONTROL_MOD") or "").strip().lower() in ("", "none") \
+                and not named_mod([w for w in str(r.get("item") or "").upper().split("_") if w], mods)[0]:
+            out.add(r.get("item"))
+    return out
+
+
+def classify(iid, title, mods, run_mods, lane_items=()):
+    """-> 'mod' | 'nonmod' | 'unclassed' (mod-or-not-by-one-rule). lane_items: items the lane launched a run on."""
+    if iid in lane_items:
+        return "nonmod"
     hit, mod = named_mod([w for w in str(iid or "").upper().split("_") if w], mods)
     if not hit:
         hit, mod = named_mod(re.findall(r"[A-Z0-9]+", str(title or "").upper()), mods, words_too=False)
@@ -279,9 +316,7 @@ def feed_off():
 
 def _lane_run(r):
     """A live Workshop Pipeline run on this machine: launched by the lane tick, or a work bundle's run."""
-    wb = str((r.get("env") or {}).get("RM_WORK_BUNDLE") or "")
-    return is_live(r) and not r.get("host") and (r.get("next_act_owner") == "list_dispatch"
-                                                 or bool(wb) and not wb.startswith("WB-mod-"))   # a mod's bundle is mod work
+    return is_live(r) and not r.get("host") and lane_launched(r)     # a mod's bundle (WB-mod-) is mod work
 
 
 def machines(s, now):
@@ -410,11 +445,10 @@ def section(s, now, spend=None, stage=None):
     for e in evs or []:
         if isinstance(e, dict) and e.get("event") == "note":
             notes.setdefault(e.get("id"), []).append(e)
-    byitem, run_mods = {}, set()
+    byitem = {}
     for r in recs or []:
         byitem.setdefault(r.get("item"), []).append(r)
-        if str((r.get("env") or {}).get("RM_CONTROL_MOD") or "").strip().lower() not in ("", "none"):
-            run_mods.add(r.get("item"))     # detached_helper records "none" on a run for no mod
+    run_mods, lane_items = run_mods_of(recs), lane_items_of(recs, mods)
     for v in byitem.values():
         v.sort(key=lambda r: r.get("at") or 0)
     red_state = s.get("red_state")
@@ -428,7 +462,7 @@ def section(s, now, spend=None, stage=None):
     klass, unclassed = {}, []
     for iid, it in items.items():
         if g(it, "state") in OPEN_STATES:
-            k = classify(iid, g(it, "title"), mods, run_mods)
+            k = classify(iid, g(it, "title"), mods, run_mods, lane_items)
             klass[iid] = k
             if k == "unclassed":
                 unclassed.append(iid)
@@ -497,7 +531,7 @@ def section(s, now, spend=None, stage=None):
         by_stage.setdefault(st["stage"], []).append(i)
     out["stages"] = [{"stage": k, "who": LP.MOVED_BY[k][0], "how": LP.MOVED_BY[k][1], "count": len(by_stage.get(k, [])),
                       "oldest": oldest(by_stage.get(k, []))} for k in STAGE_ORDER]
-    lv = [(i, it) for i, it in items.items() if g(it, "live") and classify(i, g(it, "title"), mods, run_mods) == "nonmod"]
+    lv = [(i, it) for i, it in items.items() if g(it, "live") and classify(i, g(it, "title"), mods, run_mods, lane_items) == "nonmod"]
     dead = sorted(i for i, it in lv if g(it, "live_broken"))
     out["promises"] = {"kept": len(lv) - len(dead), "dead": dead}
     al = s.get("alarms")
@@ -597,7 +631,7 @@ def section(s, now, spend=None, stage=None):
         it = items.get(i)
         if it is None or g(it, "state") in OPEN_STATES:
             continue
-        if classify(i, g(it, "title"), mods, run_mods) == "nonmod":
+        if classify(i, g(it, "title"), mods, run_mods, lane_items) == "nonmod":
             st = stage_fn(LP.facts(it, byitem.get(i, []), now=now), now)
             cl.append({"at": t, "verb": verb, "what": named(i, g(it, "title")), "id": i, "title": g(it, "title"),
                        "when": pac(t),

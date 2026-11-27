@@ -115,8 +115,33 @@ def t_a_run_is_on_its_recorded_stage():
     return bad
 
 
+def t_a_run_is_placed_by_its_record_or_its_id_never_its_title():
+    """RIMMANDRAKE_FIX_PASSED_MOD_BADGE_HELPER_WAS_TOOL_REPAIR: a title that names a mod (the example of a pipeline-tool
+    fault) places no run, and a run that the ticket lane launched is on no mod, whatever its record's RM_CONTROL_MOD says."""
+    mn = importlib.import_module("maturation_now")
+    now = 1_800_000_000.0
+    base = {"unit": "u1", "item": "RIMMANDRAKE_FIX_HAND_ACT_CLOCK", "model": "opus", "at": now - 600, "status": "running",
+            "live_state": "running", "out": "/nonexistent"}
+    spend = lambda r: ("UNMEASURED", None, "UNMEASURED")      # noqa: E731
+    title = {"RIMMANDRAKE_FIX_HAND_ACT_CLOCK": "the ExplosiveKnockback pass read as UTC"}
+    cases = {"no record, title only": dict(base),
+             "lane launch, word tie recorded": dict(base, next_act_owner="list_dispatch",
+                                                    env={"RM_CONTROL_MOD": "ExplosiveKnockback"})}
+    bad = []
+    for what, rec in cases.items():
+        got = mn.runs_for_mods(["ExplosiveKnockback"], [rec], [], {}, now, spend=spend, titles=title)["ExplosiveKnockback"]
+        if got:
+            bad.append("%s: the run is placed on ExplosiveKnockback" % what)
+    own = dict(base, item="RIMMANDRAKE_ADVANCE_X", next_act_owner="maturation_dispatch",
+               env={"RM_CONTROL_MOD": "ExplosiveKnockback", "RM_CONTROL_STAGE": "offline_build"})
+    if not mn.runs_for_mods(["ExplosiveKnockback"], [own], [], {}, now, spend=spend)["ExplosiveKnockback"]:
+        bad.append("a run of a mod's own stage is not placed on the mod")
+    return bad
+
+
 def main():
-    tests = (t_one_answer, t_id_before_title, t_a_tie_names_none, t_one_alias_table, t_a_run_is_on_its_recorded_stage)
+    tests = (t_one_answer, t_id_before_title, t_a_tie_names_none, t_one_alias_table, t_a_run_is_on_its_recorded_stage,
+             t_a_run_is_placed_by_its_record_or_its_id_never_its_title)
     fails = 0
     for t in tests:
         bad = t()

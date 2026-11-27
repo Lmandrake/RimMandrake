@@ -181,6 +181,23 @@ def t_a_stop_names_the_outcome_the_reason_and_the_smallest_act():
     os.remove(p)
 
 
+def t_a_run_carries_a_mod_only_when_mod_work_reads_the_ticket_as_that_mods():
+    """A ticket that names a mod only in its title (a pipeline-tool repair with the mod as its example) launches a run
+    tied to no mod: the status page read such a run as work on the mod (RIMMANDRAKE_FIX_PASSED_MOD_BADGE_HELPER_WAS_TOOL_REPAIR).
+    The word tie (`mod`) still gates the launch (a stop or a hold on the mod); it is never the run's recorded mod."""
+    seen = []
+    tool = it(mod="FlowWorks", mod_work={"mod": None, "why": "no home and no path inside one mod", "unreadable": None})
+    fx = {"facts": lambda s: {"items": {"A": tool}, "runs": {}, "other_live": 0},
+          "account": lambda: (True, ""), "launch": lambda *a, **k: seen.append(a) or (0, "", "u9"),
+          "need": lambda *a: None, "close": lambda *a: (0, ""), "effect": lambda *a: (0, "")}
+    LD().tick(dict(CFG), apply=True, fx=fx, now=NOW)
+    chk(lambda: len(seen) == 1 and seen[0][5] is None,
+        "a ticket that names a mod only by a word launches a run tied to no mod (got %r)" % (seen[0][5] if seen else "no launch"))
+    p = os.path.join(os.environ["RM_LIST_DISPATCH_DIR"], "state.json")
+    if os.path.exists(p):
+        os.remove(p)
+
+
 def t_waits_are_not_launched():
     r, l, _ = run({"A": it(waits_on=["B_OPEN"])})
     chk(lambda: r["A"]["decision"] == "waits_on" and "B_OPEN" in r["A"]["why"] and l == [], "waits on an open item")
@@ -1515,6 +1532,7 @@ def main():
               t_one_work_run_then_one_more_only_on_a_named_next_act,
               t_a_launch_that_never_started_is_not_spent, t_a_list_run_that_died_spends_no_run,
               t_a_stop_names_the_outcome_the_reason_and_the_smallest_act,
+              t_a_run_carries_a_mod_only_when_mod_work_reads_the_ticket_as_that_mods,
               t_waits_are_not_launched,
               t_a_block_whose_predecessor_is_done_is_not_a_block,
               t_the_gates_launch_nothing,

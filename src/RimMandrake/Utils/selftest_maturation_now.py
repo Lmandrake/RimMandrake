@@ -864,6 +864,52 @@ def p18_dense_mod_section(d, page):
     del os.environ["MATURATION_NOW_CLOCK"]
 
 
+def p19_badges():
+    """A mod's badge is true (RIMMANDRAKE_FIX_PASSED_MOD_BADGE_HELPER_WAS_TOOL_REPAIR): a run of the ticket lane that repairs
+    a pipeline tool is no work on a mod, though an older launch recorded the word tie as RM_CONTROL_MOD; a run of a mod's
+    own stage names its stage or item; no run leaves the badge as it was; a held mod reads held."""
+    M = MN()
+    now = 1_800_000_000.0
+    spend = lambda r: ("UNMEASURED", None, "UNMEASURED")      # noqa: E731
+    live = {"at": now - 600, "status": "running", "live_state": "running", "budget_usd": 15, "out": "/nonexistent",
+            "model": "opus"}
+    lane = dict(live, unit="u-lane", item="RIMMANDRAKE_FIX_HAND_ACT_CLOCK_LOCAL_TIME_READ_AS_UTC",
+                next_act_owner="list_dispatch", env={"RM_CONTROL_MOD": "ExplosiveKnockback"})
+    own = dict(live, unit="u-own", item="RIMMANDRAKE_ADVANCE_FOOMOD_OFFLINE", next_act_owner="maturation_dispatch",
+               env={"RM_CONTROL_MOD": "FooMod", "RM_CONTROL_STAGE": "offline_build"})
+
+    def mod_view(folder, column, recs, held=False):
+        r = M.runs_for_mods(["ExplosiveKnockback", "FooMod"], recs, [], {}, now, spend=spend)[folder]
+        m = {"name": folder, "column": column, "held": held, "runs": r}
+        m["status"], m["status_what"] = M.badge_of(m)
+        return m
+
+    m1 = mod_view("ExplosiveKnockback", "passed", [lane])
+    check("19 a Passed mod with one live run on a pipeline-tool item: the badge is not 'helper on it'",
+          m1["status"] != "helper" and "helper on it" not in M.status_word(m1) and not m1["runs"],
+          "status %r word %r runs %d" % (m1["status"], M.status_word(m1), len(m1["runs"])))
+    hand = dict(live, unit="u-hand", item="RIMMANDRAKE_FIX_PASSED_MOD_BADGE", env=None)    # a hand launch, no recorded mod
+    r1b = M.runs_for_mods(["ExplosiveKnockback", "FooMod"], [hand], [], {}, now, spend=spend,
+                          titles={"RIMMANDRAKE_FIX_PASSED_MOD_BADGE": "Explosive Knockback 0.2.0 read helper on it"})
+    check("19 a run with no recorded mod, on a ticket whose title (not its id) names a mod, is on no mod",
+          not r1b["ExplosiveKnockback"] and not r1b["FooMod"], "%r" % r1b)
+    m2 = mod_view("FooMod", "3", [own])
+    w2, w2s = M.status_word(m2), M.status_word(m2, short=True)
+    check("19 a mod in a build stage with one live run of its own stage: the badge names the stage",
+          m2["status"] == "helper" and "Offline build" in w2 and "3" in w2s and "helper on it" not in w2 + w2s,
+          "status %r long %r short %r" % (m2["status"], w2, w2s))
+    m2b = mod_view("FooMod", "3", [dict(own, env={"RM_CONTROL_MOD": "FooMod"})])
+    check("19 a hand run on a mod with no recorded stage: the badge names its item",
+          m2b["status"] == "helper" and "RIMMANDRAKE_ADVANCE_FOOMOD_OFFLINE" in M.status_word(m2b),
+          "word %r" % M.status_word(m2b))
+    m3 = mod_view("FooMod", "3", [])
+    check("19 a mod with no live run: the badge is unchanged (waiting)",
+          m3["status"] == "waiting" and M.status_word(m3) == "waiting", "%r %r" % (m3["status"], M.status_word(m3)))
+    m4 = mod_view("FooMod", "3", [own], held=True)
+    check("19 a held mod with a live run tied to it: the badge still reads held",
+          m4["status"] == "held" and M.status_word(m4) == "held", "%r %r" % (m4["status"], M.status_word(m4)))
+
+
 def main():
     if not os.path.exists(PROG):
         check("maturation_now.py exists", False, PROG)
@@ -892,6 +938,7 @@ def main():
     p16_clone_line()
     p17_owed_close()
     p18_dense_mod_section(d, page)
+    p19_badges()
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
