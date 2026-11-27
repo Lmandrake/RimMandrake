@@ -421,7 +421,7 @@ def make_clone(iid, job):
     name = "cx-%s-%d" % (re.sub(r"[^a-z0-9]+", "-", iid.lower())[:30].strip("-"), int(time.time()))
     r = subprocess.run([sys.executable, os.path.join(UTILS, "scratch_clone.py"), "clone", "codex lane " + iid,
                         "--name", name, "--slim"], capture_output=True, text=True, timeout=GIT_TIMEOUT_S,
-                       stdin=subprocess.DEVNULL, cwd=REPO)
+                       stdin=subprocess.DEVNULL, cwd=REPO, env=dict(os.environ, RM_SEAT=os.environ.get("RM_SEAT") or "BENCH"))
     path = (r.stdout or "").strip().splitlines()[-1:] if r.returncode == 0 else []
     if not path or not os.path.isdir(path[0]):
         raise RuntimeError("scratch_clone.py clone exit %s: %s" % (r.returncode, _one(r.stderr or r.stdout, 300)))

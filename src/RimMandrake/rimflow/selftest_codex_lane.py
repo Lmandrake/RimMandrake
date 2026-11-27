@@ -292,6 +292,20 @@ def t_the_codex_child_reads_no_real_state():
         v = seen["env"].get(k)
         assert v and v.startswith(os.path.join(job, "sandbox")), (k, v)
     assert "./publish" in seen["prompt"] and "Never" in seen["prompt"], seen["prompt"][:400]
+    # the scratch clone is made under the lane's seat, never UNKNOWN (seen on Archmagi 2026-11-27 12:51 PM PST)
+    calls = []
+    real = CL.subprocess.run
+    try:
+        class R(object):
+            returncode, stdout, stderr = 1, "", "fake"
+        CL.subprocess.run = lambda argv, **kw: calls.append(kw.get("env") or {}) or R()
+        try:
+            CL.make_clone("A", job)
+        except RuntimeError:
+            pass
+    finally:
+        CL.subprocess.run = real
+    assert calls and calls[0].get("RM_SEAT") == "BENCH", calls
 
 
 def t_review_goes_by_code_review_brief():
