@@ -497,9 +497,10 @@ namespace RimMandrake.Pyrelands.Fuzz
 
         /// <summary>The flank table the Python model (pyre_burn_sim.flank_plan_checksum) also computes: 2,000 LCG-drawn 41 x 41
         /// neighbourhoods, the burn lying nowhere, near, on one side or all round, the fire's own cell and ground seed drawn too (negative cells
-        /// included), CarryPlan then FlankPlan; and the carry age on each. selftest_pyrelands_burn_front_lanes.py asserts the same
-        /// number (RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT).</summary>
-        internal const long FlankPlanChecksum = 707081263L;
+        /// included), CarryPlan then FlankPlan; and the carry age on each at the Fire pace's default, low end and high end
+        /// (bar fire_catches_and_runs). selftest_pyrelands_burn_front_lanes.py asserts the same number
+        /// (RIMMANDRAKE_WIDEN_PYRE_LONE_FIRE_INTO_A_FRONT).</summary>
+        internal const long FlankPlanChecksum = 249717019L;
 
         internal static long FlankPlanTable(out int opened, out int shut)
         {
@@ -537,7 +538,9 @@ namespace RimMandrake.Pyrelands.Fuzz
                 if (m > n) opened++;
                 if (m < n) shut++;
                 for (int i = 0; i < m; i++) h = (h * 31 + (ox[i] + 20) * 41 + (oz[i] + 20)) % 1000000007L;
-                h = (h * 31 + m * 7 + RM_BurnKernel.CarryAge(fx, fz, seed, 28)) % 1000000007L;
+                h = (h * 31 + m * 7 + RM_BurnKernel.CarryAge(fx, fz, seed, 28, RM_BurnKernel.FirePacePercentDefault)) % 1000000007L;
+                h = (h * 31 + RM_BurnKernel.CarryAge(fx, fz, seed, 28, RM_BurnKernel.FirePacePercentMin)) % 1000000007L;
+                h = (h * 31 + RM_BurnKernel.CarryAge(fx, fz, seed, 28, RM_BurnKernel.FirePacePercentMax)) % 1000000007L;
             }
             return h;
         }
@@ -623,10 +626,16 @@ namespace RimMandrake.Pyrelands.Fuzz
                     }
                     Check(bestDot > 0.92, $"neither of the first two wind probes is the compass step nearest the bearing {bearing:F1}");
                     // one fire, one rule: vanilla's spread and the wind's carry never both run for a fire, and a carried fire is never carried again
-                    int age = RM_BurnKernel.CarryAge(r.Next(-20, 350), r.Next(-20, 350), r.Next(), 28);
-                    Check(age >= RM_BurnKernel.WindCarryTicks && age < RM_BurnKernel.WindCarryTicks + RM_BurnKernel.WindCarryExtraTicks, "carry age " + age);
+                    // the Fire pace (bar fire_catches_and_runs): drawn past both ends of the slider, which the kernel holds to its range
+                    int pace = r.Next(RM_BurnKernel.FirePacePercentMin - 100, RM_BurnKernel.FirePacePercentMax + 100);
+                    int clamped = RM_BurnKernel.ClampPace(pace);
+                    Check(clamped >= RM_BurnKernel.FirePacePercentMin && clamped <= RM_BurnKernel.FirePacePercentMax && (clamped == pace) == (pace >= RM_BurnKernel.FirePacePercentMin && pace <= RM_BurnKernel.FirePacePercentMax), "fire pace " + pace + " held to " + clamped);
+                    Check(RM_BurnKernel.CarryTicks(RM_BurnKernel.FirePacePercentMin) == RM_BurnKernel.WindCarryTicks && RM_BurnKernel.CarryExtraTicks(RM_BurnKernel.FirePacePercentMin) == RM_BurnKernel.WindCarryExtraTicks, "the slider's low end is not 0.1.0's pace");
+                    Check(RM_BurnKernel.CarryTicks(pace + 1) <= RM_BurnKernel.CarryTicks(pace) && RM_BurnKernel.CarryExtraTicks(pace + 1) <= RM_BurnKernel.CarryExtraTicks(pace), "a faster pace carries later at " + pace);
+                    int age = RM_BurnKernel.CarryAge(r.Next(-20, 350), r.Next(-20, 350), r.Next(), 28, pace);
+                    Check(age >= RM_BurnKernel.CarryTicks(pace) && age < RM_BurnKernel.CarryTicks(pace) + RM_BurnKernel.CarryExtraTicks(pace), "carry age " + age + " at pace " + pace);
                     for (int hp = 0; hp <= 32; hp++)
-                        Check((RM_BurnKernel.CarryAge(40, 40, 5, hp) == RM_BurnKernel.CarryAge(40, 40, 5, 28)) == (hp > RM_BurnKernel.FuelSpentHp || RM_BurnKernel.CarryAge(40, 40, 5, 28) == RM_BurnKernel.WindCarryTicks), "carry age at fuel " + hp);
+                        Check((RM_BurnKernel.CarryAge(40, 40, 5, hp, pace) == RM_BurnKernel.CarryAge(40, 40, 5, 28, pace)) == (hp > RM_BurnKernel.FuelSpentHp || RM_BurnKernel.CarryAge(40, 40, 5, 28, pace) == RM_BurnKernel.CarryTicks(pace)), "carry age at fuel " + hp);
                     for (int m = 0; m < 8; m++)
                     {
                         bool en = (m & 1) != 0, free = (m & 2) != 0, ground = (m & 4) != 0;

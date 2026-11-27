@@ -45,6 +45,10 @@ MUTATIONS = [
     ('RM_BurnKernel.cs', 'return tribesPresent && !hostile;', 'return tribesPresent;', 'hostile tribes still send a harvest'),
     ('RM_BurnKernel.cs', 'return enabled && !(roll01 >= fraction);', 'return enabled && !(roll01 > fraction);', 'the rite roll is inclusive'),
     ('RM_BurnKernel.cs', 'hi = max < min ? min : max;', 'hi = max;', 'a rite party range with max below min'),
+    # bar fire_catches_and_runs: the Fire pace
+    ('RM_BurnKernel.cs', 'Math.Max(FirePacePercentMin, Math.Min(FirePacePercentMax, pacePct));', 'Math.Max(FirePacePercentMin, pacePct);', 'the Fire pace runs past its high end'),
+    ('RM_BurnKernel.cs', 'public static int CarryTicks(int pacePct) => WindCarryTicks * 100 / ClampPace(pacePct);', 'public static int CarryTicks(int pacePct) => WindCarryTicks;', 'the carry clock ignores the Fire pace'),
+    ('RM_BurnKernel.cs', 'WindCarryExtraTicks * 100 / ClampPace(pacePct);', 'WindCarryExtraTicks * ClampPace(pacePct) / 100;', 'a faster pace waits longer for its spread'),
     ('RM_FurnaceKernel.cs', 'float over = Math.Min(ambient - chargeAmbientC, chargeSpanC);', 'float over = ambient - chargeAmbientC;', 'a freak reading fills the beast in one check'),
     ('RM_FurnaceKernel.cs', 'step = -bleedPerCheckAtFullCold * (under / bleedSpanC);', 'step = bleedPerCheckAtFullCold * (under / bleedSpanC);', 'cold charges the beast'),
     ('RM_FurnaceKernel.cs', 'return charge < 0f ? 0f : charge > 1f ? 1f : charge;', 'return charge > 1f ? 1f : charge;', 'charge below zero'),

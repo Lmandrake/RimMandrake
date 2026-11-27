@@ -67,6 +67,10 @@ namespace RimMandrake.Pyrelands
         // RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE: the wind carries the fire (RM_BurnKernel.WindProbes). Off gives
         // vanilla's even spread back, under which a grass fire is a ring that takes the map.
         public static bool windCarriesFireEnabled = true;
+        // bar fire_catches_and_runs (Pyrelands 0.2.0, "next version puts more aggressive fire"): how fast the wind carries the fire, in
+        // percent of Pyrelands 0.1.0's carry clock (RM_BurnKernel.CarryTicks). The literal equals RM_BurnKernel.FirePacePercentDefault
+        // and the slider's ends are its Min (0.1.0's pace) and Max; the settings sweep reads all three. Read on each fire's tick.
+        public static int firePacePercent = 200;
         public static bool blackRainDousingEnabled = true;
         public const float BlackRainDousingDefault = 40f; // the literal the settings sweep parses; equals RM_FireEcoKernel.BlackRainDousingDefault (the fuzz model)
         public static float blackRainDousing = BlackRainDousingDefault;
@@ -194,6 +198,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref blackRainWaterHours, "blackRainWaterHours", 24);
             Scribe_Values.Look(ref blackRainDousingEnabled, "blackRainDousingEnabled", true);
             Scribe_Values.Look(ref windCarriesFireEnabled, "windCarriesFireEnabled", true);
+            Scribe_Values.Look(ref firePacePercent, "firePacePercent", 200);
             Scribe_Values.Look(ref blackRainDousing, "blackRainDousing", BlackRainDousingDefault);
             Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
             Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
@@ -225,6 +230,7 @@ namespace RimMandrake.Pyrelands
             .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
             .Declare("fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled")
             .Declare("burnLineEnabled", "windCarriesFireEnabled")
+            .Declare("windCarriesFireEnabled", "firePacePercent")
             .Declare("furnaceThermalEnabled", "furnaceWarmthStrength")
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
@@ -494,7 +500,7 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "windCarriesFireEnabled", "fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled" }))
+            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "windCarriesFireEnabled", "firePacePercent", "fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled" }))
             {
             using (Dependent(list, "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled"))
             {
@@ -508,6 +514,13 @@ namespace RimMandrake.Pyrelands
                       + "prevailing wind, as a front whose edges wander: a lone fire fans out, and gaps in a line close. Putting out the whole "
                       + "head of a front stops it. "
                       + "Off: vanilla's even spread, under which a grass fire grows as a ring and takes the whole map.");
+                using (Dependent(list, "firePacePercent"))
+                {
+                    list.Label("Fire pace: " + firePacePercent + "% (100% = Pyrelands 0.1.0's pace; default " + RM_BurnKernel.FirePacePercentDefault + "%)", -1f,
+                        (TipSignal?)("How soon each fire is carried to the next cell downwind, so how fast the head of a front walks. Higher: the head runs "
+                      + "faster and more of the front burns at once. 100% is Pyrelands 0.1.0, where a spark in grass barely caught."));
+                    firePacePercent = Mathf.RoundToInt(list.Slider(firePacePercent, 100f, 250f));
+                }
                 }
                 list.CheckboxLabeled("Fire-hawk ember carrying", ref fireHawkSpreadEnabled,
                     "A fire-hawk can carry a live ember and drop it to start a new burn elsewhere. "

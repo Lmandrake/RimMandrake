@@ -62,6 +62,10 @@ DEFAULTS = dict(
     carry_extra=400,         # RM_BurnKernel.WindCarryExtraTicks (selftest_pyrelands_burn_front_lanes.py reads these from the C# file)
     flank_width=10, flank_cap=576, flank_narrow=8, flank_rows=4, flank_look=10, flank_beside=2, flank_fuel=2, flank_patch=5,
     pace_patch=8, fuel_spent=3,
+    # RM_BurnKernel.FirePacePercentDefault / Min / Max (selftest_pyrelands_fire_pace.py reads them from the C# file): the Fire pace
+    # slider (RM_PyrelandsSettings.firePacePercent). A carry waits carry_ticks + 0..carry_extra scaled by 100 / pace (paced), so
+    # 100 is 0.1.0's pace and the shipped 200 carries twice as often (bar fire_catches_and_runs)
+    fire_pace=200, fire_pace_min=100, fire_pace_max=250,
     carry_heal=None,         # DROPPED candidate: lanes that heal (wind_carry_plan); None = the shipped one-cell rule
     carry_splits=1,          # MUTANT only: a fire lights this many cells (2 = a fire makes two, the flood comes back)
     cure_days=0.0,           # DROPPED candidate: grass younger than this does not carry fire
@@ -169,6 +173,13 @@ def ground_noise(x, z, seed, patch):
     a, b, c, d = (ground_hash(ix, iz, seed), ground_hash(ix + 1, iz, seed), ground_hash(ix, iz + 1, seed),
                   ground_hash(ix + 1, iz + 1, seed))
     return ((a * (patch - fx) + b * fx) * (patch - fz) + (c * (patch - fx) + d * fx) * fz) // (patch * patch)
+
+
+def paced(ticks, pace, lo=None, hi=None):
+    """RM_BurnKernel.CarryTicks / CarryExtraTicks: a carry interval at a Fire pace percent (100 = 0.1.0's), the pace held to the
+    slider's range."""
+    pace = max(DEFAULTS["fire_pace_min"] if lo is None else lo, min(DEFAULTS["fire_pace_max"] if hi is None else hi, int(pace)))
+    return ticks * 100 // pace
 
 
 def carry_extra(x, z, seed, extra, patch):
@@ -347,7 +358,11 @@ def flank_plan_checksum(cases=2000, reach=2, heal_reach=5, P=None):
         opened += len(plan) > full; shut += len(plan) < full
         for dx, dz in plan:
             h = (h * 31 + (dx + 20) * 41 + (dz + 20)) % 1000000007
-        h = (h * 31 + len(plan) * 7 + P["carry_ticks"] + carry_extra(fx, fz, seed, P["carry_extra"], P["pace_patch"])) % 1000000007
+        age = [paced(P["carry_ticks"], pc) + carry_extra(fx, fz, seed, paced(P["carry_extra"], pc), P["pace_patch"])
+               for pc in (P["fire_pace"], P["fire_pace_min"], P["fire_pace_max"])]      # RM_BurnKernel.CarryAge at each pace
+        h = (h * 31 + len(plan) * 7 + age[0]) % 1000000007
+        h = (h * 31 + age[1]) % 1000000007
+        h = (h * 31 + age[2]) % 1000000007
     return h, opened, shut
 
 
@@ -387,8 +402,11 @@ class Sim:
         self.flank_opens = self.flank_shuts = 0
         self.ground_seed = seed
         self.carry_extra = np.zeros(plant.shape, np.int64)
+        # RM_BurnKernel.CarryAge at the Fire pace (RM_PyrelandsSettings.firePacePercent, read at the call site)
+        self.carry_ticks = paced(self.P["carry_ticks"], self.P["fire_pace"])
         if self.P["flank"] and self.P["carried"]:
-            self.carry_extra = np.array([[carry_extra(x, z, seed, self.P["carry_extra"], self.P["pace_patch"])
+            extra = paced(self.P["carry_extra"], self.P["fire_pace"])
+            self.carry_extra = np.array([[carry_extra(x, z, seed, extra, self.P["pace_patch"])
                                           for x in range(self.W)] for z in range(self.H)])
         self.carries = 0; self.carry_lit = 0      # fires carried on, cells they lit (never more than one each)
 
@@ -518,10 +536,10 @@ class Sim:
             self.burn[zs[~out], xs[~out]] = self.tick
             # spread
             if P["carried"]:
-                due = (~out) & (~self.carried[zs, xs]) & (self.tick - self.born[zs, xs] >= P["carry_ticks"] + self.carry_extra[zs, xs])
+                due = (~out) & (~self.carried[zs, xs]) & (self.tick - self.born[zs, xs] >= self.carry_ticks + self.carry_extra[zs, xs])
                 if P["flank"]:      # RM_BurnKernel.CarryAge: a fire whose grass is nearly spent does not wait for the ground
                     spent = self.hp[zs, xs] <= P["fuel_spent"]
-                    due |= (~out) & (~self.carried[zs, xs]) & spent & (self.tick - self.born[zs, xs] >= P["carry_ticks"])
+                    due |= (~out) & (~self.carried[zs, xs]) & spent & (self.tick - self.born[zs, xs] >= self.carry_ticks)
                 dz_, dx_ = zs[due], xs[due]
                 for i in rng.permutation(len(dz_)):      # the game ticks its fires in no row order
                     z0, x0 = int(dz_[i]), int(dx_[i])

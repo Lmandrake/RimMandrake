@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
++++ b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs
+@@ -328,7 +328,7 @@
+                 bool carried = burn.WasCarried(__instance);
+                 IntVec3 at = __instance.Position;
+                 int age = carried ? 0 : RM_BurnKernel.CarryAge(at.x, at.z, WindCarriedFire.GroundSeed(__instance.Map),
+-                    at.GetPlant(__instance.Map)?.HitPoints ?? 0, pace);
++                    at.GetPlant(__instance.Map)?.HitPoints ?? 0, RM_BurnKernel.FirePacePercentDefault);
+                 if (RM_BurnKernel.WindCarryDue(true, true, true, carried, __instance.TicksSinceSpawn, age))
+                 {
+                     WindCarriedFire.Carry(__instance, burn);

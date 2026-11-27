@@ -104,6 +104,20 @@
   "rc": 1,
   "test_blob": "58fcb05e761cb4ec6ce26d118950c7cc784b950e"
  },
+ "T_FIRE_PACE_MODEL_OFFLINE": {
+  "at": "2026-11-27T06:48:33Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fire_pace.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_fire_pace.py",
+  "last": "FAIL: 8 of 10 rows hold",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n+++ b/src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs\n@@ -532,7 +532,7 @@\n         /// under half (selftest_pyrelands_fire_pace.py) and its worst day under T_BURN_ECOLOGY's seventh (0.116), while 300 burned more than a seventh of the map on one day (T_BURN_ECOLOGY's\n         /// flood row, 0.155). Model: pyre_burn_sim.DEFAULTS fire_pace, fire_pace_min, fire_pace_max.</summary>\n         public const int FirePacePercentMin = 100;\n-        public const int FirePacePercentDefault = 200;\n+        public const int FirePacePercentDefault = 100;\n         public const int FirePacePercentMax = 250;\n \n         /// <summary>A Fire pace held to the slider's range (a hand-edited settings file cannot stall or flood the carry).</summary>\n--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n+++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py\n@@ -65,7 +65,7 @@\n     # RM_BurnKernel.FirePacePercentDefault / Min / Max (selftest_pyrelands_fire_pace.py reads them from the C# file): the Fire pace\n     # slider (RM_PyrelandsSettings.firePacePercent). A carry waits carry_ticks + 0..carry_extra scaled by 100 / pace (paced), so\n     # 100 is 0.1.0's pace and the shipped 200 carries twice as often (bar fire_catches_and_runs)\n-    fire_pace=200, fire_pace_min=100, fire_pace_max=250,\n+    fire_pace=100, fire_pace_min=100, fire_pace_max=250,\n     carry_heal=None,         # DROPPED candidate: lanes that heal (wind_carry_plan); None = the shipped one-cell rule\n     carry_splits=1,          # MUTANT only: a fire lights this many cells (2 = a fire makes two, the flood comes back)\n     cure_days=0.0,           # DROPPED candidate: grass younger than this does not carry fire\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "src/RimMandrake/Pyrelands/pyre_burn_sim.py"
+  ],
+  "patch_sha": "2537349b36dfceaa",
+  "rc": 1,
+  "test_blob": "c42f4291802bb9bafcc59e7bea3af0336277fe2b"
+ },
  "T_FUZZ": {
   "at": "2026-11-23T21:41:44Z",
   "command": "python3 src/RimMandrake/Utils/selftest_pyrelands_fuzz.py",
@@ -157,17 +171,17 @@
   "test_blob": "e79cc7d17295196ddf3d13fd165a62d243c2f438"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-27T04:24:59Z",
+  "at": "2026-11-27T06:51:13Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "last": "FAIL: the unchanged copy is not green",
-  "patch": "--- a/src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs\n+++ b/src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs\n@@ -12,7 +12,7 @@\n     /// </summary>\n     public static class PyrelandsMechanicsGate\n     {\n-        public static bool On => RM_PyrelandsSettings.pyrelandsEnabled;\n+        public static bool On => true;\n     }\n \n     /// <summary>\n",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs\n+++ b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs\n@@ -328,7 +328,7 @@\n                 bool carried = burn.WasCarried(__instance);\n                 IntVec3 at = __instance.Position;\n                 int age = carried ? 0 : RM_BurnKernel.CarryAge(at.x, at.z, WindCarriedFire.GroundSeed(__instance.Map),\n-                    at.GetPlant(__instance.Map)?.HitPoints ?? 0, pace);\n+                    at.GetPlant(__instance.Map)?.HitPoints ?? 0, RM_BurnKernel.FirePacePercentDefault);\n                 if (RM_BurnKernel.WindCarryDue(true, true, true, carried, __instance.TicksSinceSpawn, age))\n                 {\n                     WindCarriedFire.Carry(__instance, burn);\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs"
+   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs"
   ],
-  "patch_sha": "9a2e5a31fef720cd",
+  "patch_sha": "d6347ee5249829f0",
   "rc": 1,
-  "test_blob": "d9545ce72c15a8890e7bb0a760b8f54c807702e9"
+  "test_blob": "ec6c98005d200b738e32832e478ae12e722b9c80"
  },
  "T_SITE": {
   "at": "2026-11-27T04:25:38Z",

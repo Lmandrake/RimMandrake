@@ -44,6 +44,9 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
   opening_scar     yesterday's fire respects the ash dusting and fresh-burn bonus switches independently
   roster_weather   a running map refreshes the Clear/Ash Drift split when the effective gate changes in either direction
   fruit_landing    the fire's 3x3 scan requires fresh burn history on the landing cell, even with the fertility bonus off
+  fire_pace        the Fire pace setting (bar fire_catches_and_runs) ships RM_BurnKernel.FirePacePercentDefault, faster than
+                   0.1.0; its slider runs FirePacePercentMin (0.1.0's pace) to FirePacePercentMax; and the wind-carry tick
+                   passes the setting, not a constant, to both RM_BurnKernel.CarryTicks and RM_BurnKernel.CarryAge
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -339,7 +342,44 @@ def facts(mod):
         if cls == "RM_JobDriver_Burrow" and "hide.AddFinishAction(()=>RemoveBurrowedHediff(pawn));" not in body:
             bad.append("RM_JobDriver_Burrow leaves its protection in place when the wait toil ends")
     fact("job_ends_off", bad, "%d job(s) in flight end when their switch or the gate goes off" % len(JOB_GUARDS))
+    fact("fire_pace", _pace_failures(ms, fields, sliders, consts, code), "the slider is the kernel's range and the tick reads it")
     return out
+
+
+PACE_FIELD = "firePacePercent"
+
+
+def _pace_failures(ms, fields, sliders, consts, code):
+    """bar fire_catches_and_runs: the Fire pace's default and ends are the kernel's, and the carry tick reads the setting."""
+    kern = code.get(os.path.join("Kernel", "RM_BurnKernel.cs"), "")
+    k = {n: int(v) for n, v in re.findall(r"public const int (FirePacePercent(?:Min|Default|Max)) = (\d+);", kern)}
+    if len(k) != 3:
+        return ["RM_BurnKernel.cs lacks FirePacePercentMin/Default/Max (found %s)" % sorted(k)]
+    bad = []
+    if PACE_FIELD not in fields:
+        return ["no %s setting" % PACE_FIELD]
+    if fields[PACE_FIELD][1] != k["FirePacePercentDefault"]:
+        bad.append("%s ships %s, the kernel's default is %s" % (PACE_FIELD, fields[PACE_FIELD][1], k["FirePacePercentDefault"]))
+    if not k["FirePacePercentMin"] < k["FirePacePercentDefault"] <= k["FirePacePercentMax"]:
+        bad.append("the shipped pace %s is not faster than 0.1.0's %s within the max %s" % (
+            k["FirePacePercentDefault"], k["FirePacePercentMin"], k["FirePacePercentMax"]))
+    mine = [(lo, hi) for t, a, lo, hi in sliders if t == PACE_FIELD]
+    if len(mine) != 1:
+        bad.append("%d sliders set %s" % (len(mine), PACE_FIELD))
+    elif (_num(mine[0][0], consts), _num(mine[0][1], consts)) != (k["FirePacePercentMin"], k["FirePacePercentMax"]):
+        bad.append("the Fire pace slider runs [%s, %s], the kernel's range is [%s, %s]" % (
+            mine[0][0].strip(), mine[0][1].strip(), k["FirePacePercentMin"], k["FirePacePercentMax"]))
+    body = _method_body(code.get("FireEcologyHook.cs", ""), "Patch_FireTick_WindCarries", "Postfix") or ""
+    local = set(re.findall(r"\bint (\w+) = RM_PyrelandsSettings\.%s;" % PACE_FIELD, body))
+    reads = local | {"RM_PyrelandsSettings." + PACE_FIELD}
+    for meth, pos in (("CarryTicks", 0), ("CarryAge", 4)):
+        calls = [_call_args(body, m.end() - 1) for m in re.finditer(r"RM_BurnKernel\.%s\(" % meth, body)]
+        if not calls:
+            bad.append("Patch_FireTick_WindCarries.Postfix never calls RM_BurnKernel.%s" % meth)
+        for a in calls:
+            if a is None or len(a) <= pos or a[pos] not in reads:
+                bad.append("RM_BurnKernel.%s in the carry tick takes %r, not the Fire pace setting" % (meth, a[pos] if a and len(a) > pos else None))
+    return bad
 
 
 # (kernel method, the truth it must hold: args in signature order -> expected bool, or None = any)
@@ -530,6 +570,12 @@ MUTANTS = [
     ("burrow outlives its switch", S + "RM_JobDriver_Burrow.cs", " || !RM_PyrelandsSettings.burrowOnFireEnabled);", ");"),
     ("burrow keeps the hediff on exit", S + "RM_JobDriver_Burrow.cs", "hide.AddFinishAction(() => RemoveBurrowedHediff(pawn));", ""),
     ("furnace keeps stale rest while off", S + "CompFurnaceBedIgnition.cs", "restingTicks = 0;", ""),
+    ("fire pace low end is not 0.1.0's", S + SETTINGS, "list.Slider(firePacePercent, 100f, 250f)", "list.Slider(firePacePercent, 150f, 250f)"),
+    ("fire pace ships unlike the kernel", S + SETTINGS, "public static int firePacePercent = 200;", "public static int firePacePercent = 150;"),
+    ("fire pace kernel max moves", S + "Kernel/RM_BurnKernel.cs", "public const int FirePacePercentMax = 250;", "public const int FirePacePercentMax = 300;"),
+    ("fire pace shipped at 0.1.0's", S + "Kernel/RM_BurnKernel.cs", "public const int FirePacePercentDefault = 200;", "public const int FirePacePercentDefault = 100;"),
+    ("carry age ignores the fire pace", S + "FireEcologyHook.cs", "?.HitPoints ?? 0, pace);", "?.HitPoints ?? 0, RM_BurnKernel.FirePacePercentDefault);"),
+    ("carry wait ignores the fire pace", S + "FireEcologyHook.cs", "RM_BurnKernel.CarryTicks(pace)) return;", "RM_BurnKernel.WindCarryTicks) return;"),
 ]
 
 

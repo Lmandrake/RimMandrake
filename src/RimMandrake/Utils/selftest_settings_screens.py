@@ -215,7 +215,7 @@ MODS = {
         "Plant art and wild flora": "Now",
         "Scorched ruins (new maps)": "NewMapsOnly",
         "Biome placement (WORLDGEN-AFFECTING)": "NewMapsOnly",
-        "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)": "Now",
+        "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)": "Now",   # its Fire pace slider: Patch_FireTick_WindCarries reads it on each fire's tick
         "Giants and herds (restart)": "NextGameStart",
         "Burrowers": "Now",
         "Firefoam sprayer": "Now",        # MapComponent_RM_FoamPath reads sprayerFoamsPathEnabled every tick

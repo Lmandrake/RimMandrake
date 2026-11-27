@@ -321,12 +321,14 @@ namespace RimMandrake.Pyrelands
         {
             try
             {
-                if (__instance == null || __instance.TicksSinceSpawn < RM_BurnKernel.WindCarryTicks) return;
+                // bar fire_catches_and_runs: the Fire pace setting, read here so a change takes on the next tick
+                int pace = RM_PyrelandsSettings.firePacePercent;
+                if (__instance == null || __instance.TicksSinceSpawn < RM_BurnKernel.CarryTicks(pace)) return;
                 if (!WindCarriedFire.Governs(__instance, out MapComponent_BurnLine burn)) return;
                 bool carried = burn.WasCarried(__instance);
                 IntVec3 at = __instance.Position;
                 int age = carried ? 0 : RM_BurnKernel.CarryAge(at.x, at.z, WindCarriedFire.GroundSeed(__instance.Map),
-                    at.GetPlant(__instance.Map)?.HitPoints ?? 0);
+                    at.GetPlant(__instance.Map)?.HitPoints ?? 0, pace);
                 if (RM_BurnKernel.WindCarryDue(true, true, true, carried, __instance.TicksSinceSpawn, age))
                 {
                     WindCarriedFire.Carry(__instance, burn);
@@ -795,4 +797,93 @@ namespace RimMandrake.Pyrelands
             return true;
         }
     }
+    /// <summary>sc_fire_catches_and_runs (fire_catches_live.py, bar fire_catches_and_runs) test reads through jawa/static_call.
+    /// Read-only: nothing here changes the map. Each returns one `key=value;...` line; the harness does the arithmetic
+    /// (its pure helpers are selftest_pyrelands_fire_catches.py's).</summary>
+    // FireCatchesProbe begin: sc_fire_catches_and_runs's read-only probe, self-contained: fire_catches_take010.py builds it
+    // into the mod/Pyrelands/v0.1.0 DLL so the 0.1.0 reading is taken by the same instrument
+    public static class FireCatchesProbe
+    {
+        private const string Grass = "RM_FE_Plant_EmberGrass";
+        private static readonly FieldInfo BurnTickField = AccessTools.Field(typeof(MapComponent_PyrelandsAshField), "burnTick");
+
+        private static bool Open(Map map, IntVec3 c)
+        {
+            TerrainDef t = c.GetTerrain(map);
+            return t != null && !t.IsWater && !c.Impassable(map) && c.GetEdifice(map) == null;
+        }
+
+        private static bool Parse(string args, int n, out int[] v)
+        {
+            string[] p = (args ?? "").Split(',');
+            v = new int[n];
+            if (p.Length != n) return false;
+            for (int i = 0; i < n; i++)
+                if (!int.TryParse(p[i].Trim(), out v[i])) return false;
+            return true;
+        }
+
+        /// <summary>"x,z,bearing,len,halfWidth": the corridor downwind of (x, z), along in [0, len] and |across| &lt;= halfWidth
+        /// (bearing 90 = east, the burn line's own). -> "cells=;open=;ember=;emberAt=0|1;pawns=;buildings=;edge=" where ember
+        /// counts open cells holding RM_FE_Plant_EmberGrass and edge is the along-wind distance to the map edge.</summary>
+        public static string Corridor(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "error=no current map";
+            if (!Parse(args, 5, out int[] a)) return "error=args must be x,z,bearing,len,halfWidth";
+            double r = a[2] * Math.PI / 180.0, wx = Math.Sin(r), wz = Math.Cos(r);
+            int cells = 0, open = 0, ember = 0, edge = 0;
+            foreach (IntVec3 c in map.AllCells)
+            {
+                double al = (c.x - a[0]) * wx + (c.z - a[1]) * wz, ac = (c.x - a[0]) * wz - (c.z - a[1]) * wx;
+                if (Math.Abs(ac) <= 0.5 && al > edge) edge = (int)Math.Round(al);
+                if (al < 0 || al > a[3] || Math.Abs(ac) > a[4]) continue;
+                cells++;
+                if (!Open(map, c)) continue;
+                open++;
+                if (c.GetPlant(map)?.def?.defName == Grass) ember++;
+            }
+            IntVec3 s = new IntVec3(a[0], 0, a[1]);
+            bool emberAt = s.InBounds(map) && s.GetPlant(map)?.def?.defName == Grass;
+            int pawns = 0, buildings = 0;
+            Func<IntVec3, bool> inside = c =>
+            {
+                double al = (c.x - a[0]) * wx + (c.z - a[1]) * wz, ac = (c.x - a[0]) * wz - (c.z - a[1]) * wx;
+                return al >= 0 && al <= a[3] && Math.Abs(ac) <= a[4];
+            };
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned) if (inside(p.Position)) pawns++;
+            foreach (Thing b in map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial)) if (inside(b.Position)) buildings++;
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "cells={0};open={1};ember={2};emberAt={3};pawns={4};buildings={5};edge={6}",
+                cells, open, ember, emberAt ? 1 : 0, pawns, buildings, edge);
+        }
+
+        /// <summary>"sinceTick" -> "tick=;open=;fires=x:z:carriedAt|...;burned=x:z|..." on the current map: every free fire with
+        /// the tick a carry last reached its cell (-1 none), and every cell whose burn stamp is at or after sinceTick.</summary>
+        public static string Burn(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "error=no current map";
+            if (!int.TryParse((args ?? "").Trim(), out int since)) return "error=args must be sinceTick";
+            MapComponent_BurnLine line = MapComponent_BurnLine.For(map);
+            var fires = new List<string>();
+            foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.Fire))
+            {
+                if (!(t is Fire f) || f.parent != null) continue;
+                fires.Add(f.Position.x + ":" + f.Position.z + ":" + (line != null ? line.CarriedAt(f.Position) : -1));
+            }
+            var burned = new List<string>();
+            int open = 0;
+            int[] stamp = BurnTickField?.GetValue(MapComponent_PyrelandsAshField.For(map)) as int[];
+            for (int i = 0; i < map.cellIndices.NumGridCells; i++)
+            {
+                IntVec3 c = map.cellIndices.IndexToCell(i);
+                if (Open(map, c)) open++;
+                if (stamp != null && i < stamp.Length && stamp[i] >= since) burned.Add(c.x + ":" + c.z);
+            }
+            return "tick=" + Find.TickManager.TicksGame + ";open=" + open + ";stamps=" + (stamp != null ? 1 : 0)
+                + ";fires=" + string.Join("|", fires) + ";burned=" + string.Join("|", burned);
+        }
+    }
+    // FireCatchesProbe end
 }

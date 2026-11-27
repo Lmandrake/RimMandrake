@@ -1,0 +1,14 @@
+--- a/src/RimMandrake/Pyrelands/pyre_burn_sim.py
++++ b/src/RimMandrake/Pyrelands/pyre_burn_sim.py
+@@ -576,8 +576,9 @@
+                             self.flank_opens += opened
+                             if len(plan) < full:
+                                 self.flank_shuts += 1; healed = 0
+-                        for dx, dz in plan:
+-                            self.start(z0 + dz, x0 + dx, 0.1)
++                        for dx, dz in DIRS8:    # planted fault: a carry that lights every neighbour (a flood)
++                            if 0 <= x0 + dx < self.W and 0 <= z0 + dz < self.H and self.chance(z0 + dz, x0 + dx) > 0:
++                                self.start(z0 + dz, x0 + dx, 0.1)
+                         self.carry_lit += len(plan) - healed - opened; self.heal_lit += healed
+                         continue
+                     # DROPPED candidate (lanes that heal): see wind_carry_plan.

@@ -520,8 +520,29 @@ namespace RimMandrake.Pyrelands
         public const int WindCarryTicks = 1200;
 
         /// <summary>The most the ground slows a carry. With WindCarryTicks the mean is 1,400 ticks a cell, 43 cells a day, the pace
-        /// the walk saves measured; the longest, 1,600, stays under an ember-grass fire's life (28 HP: 12 to 13 beats, 1,800).</summary>
+        /// the walk saves measured; the longest, 1,600, stays under an ember-grass fire's life (28 HP: 12 to 13 beats, 1,800).
+        /// Both are 0.1.0's pace, Fire pace 100%: CarryTicks and CarryExtraTicks scale them by the slider.</summary>
         public const int WindCarryExtraTicks = 400;
+
+        /// <summary>The Fire pace slider (RM_PyrelandsSettings.firePacePercent), in percent of 0.1.0's carry pace: a carry waits
+        /// WindCarryTicks + 0..WindCarryExtraTicks times 100 / pace. Bar fire_catches_and_runs (his walk of 0.1.0, 2026-11-24: "The
+        /// fire barely catches ... I had expected faster spread"): the low end is 0.1.0's own pace; the default 200 (a carry every
+        /// 600 + 0..200 ticks) was measured to hold every T_BURN_LANES and T_BURN_ECOLOGY row with the black rain called no more
+        /// often than under 0.1.0 (16 seasons: 8.3 rains against 8.0); the high end 250 keeps the burned share of open ground
+        /// under half (selftest_pyrelands_fire_pace.py) and its worst day under T_BURN_ECOLOGY's seventh (0.116), while 300 burned more than a seventh of the map on one day (T_BURN_ECOLOGY's
+        /// flood row, 0.155). Model: pyre_burn_sim.DEFAULTS fire_pace, fire_pace_min, fire_pace_max.</summary>
+        public const int FirePacePercentMin = 100;
+        public const int FirePacePercentDefault = 200;
+        public const int FirePacePercentMax = 250;
+
+        /// <summary>A Fire pace held to the slider's range (a hand-edited settings file cannot stall or flood the carry).</summary>
+        public static int ClampPace(int pacePct) => Math.Max(FirePacePercentMin, Math.Min(FirePacePercentMax, pacePct));
+
+        /// <summary>The least ticks after it is lit that a fire is carried on at this Fire pace (WindCarryTicks at 100).</summary>
+        public static int CarryTicks(int pacePct) => WindCarryTicks * 100 / ClampPace(pacePct);
+
+        /// <summary>The most the ground slows a carry at this Fire pace (WindCarryExtraTicks at 100).</summary>
+        public static int CarryExtraTicks(int pacePct) => WindCarryExtraTicks * 100 / ClampPace(pacePct);
 
         /// <summary>How far downwind a spark is tried when the next cell is bare. Bar burn_line_walks ("never out for long"): a
         /// line must cross thin grass. 2 is vanilla's own spark reach (GenRadial.ManualRadialPattern[10..20], two cells out).</summary>
@@ -729,14 +750,14 @@ namespace RimMandrake.Pyrelands
         /// (1.75) deals (0.0125 + 0.0036 x 1.75) x 150 = 2.8, rounded at random to 2 or 3.</summary>
         public const int FuelSpentHp = 3;
 
-        /// <summary>Ticks after it is lit that a fire on this cell is carried on: WindCarryTicks plus what the ground slows it. A fire
+        /// <summary>Ticks after it is lit that a fire on this cell is carried on at the Fire pace pacePct: CarryTicks plus what the ground slows it. A fire
         /// whose plant is nearly spent does not wait for the ground: a lightning strike's flame burst takes 10 of the 28 hit points of
         /// the grass it lights, and that grass is gone before the slowest carry. fuelHp 0: the plant is gone, or none burns here.</summary>
-        public static int CarryAge(int x, int z, int seed, int fuelHp)
+        public static int CarryAge(int x, int z, int seed, int fuelHp, int pacePct)
         {
-            if (fuelHp <= FuelSpentHp) return WindCarryTicks;
+            if (fuelHp <= FuelSpentHp) return CarryTicks(pacePct);
             int v = Math.Max(0, Math.Min(1023, 512 + (GroundNoise(x, z, unchecked(seed + 7), PacePatch) - 512) * 2));
-            return WindCarryTicks + v * WindCarryExtraTicks / 1024;
+            return CarryTicks(pacePct) + v * CarryExtraTicks(pacePct) / 1024;
         }
 
         private static bool LiveNear(Func<int, int, RM_CarryCell> cell, int ax, int az, int nx, int nz, int rows)
