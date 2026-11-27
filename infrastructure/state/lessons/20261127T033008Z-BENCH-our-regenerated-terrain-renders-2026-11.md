@@ -1,0 +1,3 @@
+Our regenerated terrain renders (2026-11) carry a 1-px dark frame on all four edges (3-26 luminance levels below the next row; donor files 0-2), which the game shows as a grid line at every repeat. A judge on art_judge_brief.md calls it UNSURE because no lettered line covers seams. Measure with src/RimMandrake/Utils/art/terrain_wrap.py check; repair with terrain_wrap.py heal. Do not repair a wrap by blending toward a half-shifted copy: that copy carries the old wrap seam into the middle of each border band, and the frame/wrap measures do not see it. Look at a 2x2 tile of every repair.
+item: RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE
+home: src/RimMandrake/Utils/art/terrain_wrap.py
