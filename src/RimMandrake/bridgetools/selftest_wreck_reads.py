@@ -6,6 +6,7 @@ Item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL. The tools:
   jawa/install_blueprint  place the install blueprint of a carried building (or the reinstall one of a standing one)
   jawa/study_record       read the game's study record for a kind of thing, and the projects that need it
   jawa/processor_fill     place the inputs of a factory process (PipeSystem's processor)
+  jawa/caravan_mass       a caravan's load against its capacity; jawa/caravan_form_load starts the game's own formation
 
 Checks: (1) every unit of WreckReadsSelfTest passes on the production core; (2) each planted fault (one rule broken in a copy of
 the core) turns its named unit red; (3) each tool's game half calls its core rule inside its one main-thread hop, so a tool
@@ -24,7 +25,7 @@ CS = os.path.join(HERE, "JawaBench.BridgeTools")
 CORE = "JawaBenchWreckReadsCore.cs"
 TOOLS = "JawaBenchWreckTools.cs"
 PROJ = os.path.join(HERE, "WreckReadsSelfTest", "WreckReadsSelfTest.csproj")
-N_UNITS = 17
+N_UNITS = 20
 
 # (planted fault: old -> new in the core, the unit that must go red)
 PLANTS = [
@@ -46,6 +47,10 @@ PLANTS = [
      "fill_skips_net_owner"),
     ("l.def = firstOfCategory;", "l.def = category;", "fill_category_uses_first_def"),
     ("if (l.want == 0) l.skip", "if (l.want < 0) l.skip", "fill_full_skipped"),
+    ("return usage > capacity;", "return usage >= capacity;", "caravan_over_only_above_capacity"),
+    ("if (thingsElsewhere > 0) return", "if (thingsElsewhere > 1) return", "form_refuses_no_pawn_or_elsewhere"),
+    ("            return null;\n        }\n\n        // ------------------------------------------------------------ processor_fill",
+     "            return \"PassDoors\";\n        }\n\n        // ------------------------------------------------------------ processor_fill", "traverse_mode_named_or_refused"),
 ]
 
 # (tool, the core call that must sit inside its main-thread hop)
@@ -57,6 +62,11 @@ WIRING = [
     ("jawa/study_record", [r"JawaBenchWreckReadsCore\.StudyStatus\(", r"JawaBenchWreckReadsCore\.CompletedCount\(",
                            r"Find\.AnalysisManager\.TryGetAnalysisProgress\(", r"requiredAnalyzed"]),
     ("jawa/processor_fill", [r"JawaBenchWreckReadsCore\.Plan\(", r"\"AddFromThing\"", r"\"IngredientsOwners\""]),
+    ("jawa/caravan_mass", [r"JawaBenchWreckReadsCore\.OverCapacity\(", r"CollectionsMassCalculator\.Capacity\(",
+                           r"CollectionsMassCalculator\.MassUsage\("]),
+    ("jawa/reach_edge", [r"JawaBenchWreckReadsCore\.TraverseModeName\(", r"reachability\.CanReachMapEdge\("]),
+    ("jawa/caravan_form_load", [r"JawaBenchWreckReadsCore\.FormRefusal\(", r"CaravanFormingUtility\.StartFormingCaravan\(",
+                                r"new TransferableOneWay\(\)"]),
 ]
 
 

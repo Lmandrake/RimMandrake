@@ -1,5 +1,6 @@
-// JawaBenchWreckTools.cs - four generic reads and acts that the Wrecked Machines scenes name
-// (item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL; design/concepts/WreckedMachines/plan.md, "order", step 2).
+// JawaBenchWreckTools.cs - seven generic reads and acts that the Wrecked Machines scenes name
+// (item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL; design/concepts/WreckedMachines/plan.md, "order", step 2;
+// the two caravan tools for the scene sc_caravan_wreck_home, added by the Designer's stage 5).
 // Nothing here knows that mod: each tool works on any ThingSetMakerDef, TraderKindDef, minified building, analysable def or
 // PipeSystem processor. The decisions (run limits, tally, install mode, study status, fill amounts) are in the Verse-free
 // JawaBenchWreckReadsCore.cs and are proven offline by src/RimMandrake/bridgetools/selftest_wreck_reads.py.
@@ -17,6 +18,8 @@ using RimWorld;
 using RimWorld.Planet;
 using RimBridgeServer.Sdk;
 using Verse;
+using Verse.AI;
+using Verse.AI.Group;
 
 namespace JawaBench.BridgeTools
 {
@@ -402,6 +405,177 @@ namespace JawaBench.BridgeTools
                     success = true, thing = t.ThingID, process = defOf(chosen), dryRun, rows, processes = names, allFull,
                     ticksGame = TicksGameSafe()
                 };
+            }, cancellationToken);
+        }
+    
+
+        // ================================================================
+        //  jawa/caravan_mass, jawa/caravan_form_load
+        // ================================================================
+        private static List<Thing> WreckThings(string ids, out string err)
+        {
+            err = null;
+            var list = new List<Thing>();
+            foreach (string id in (ids ?? "").Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                Thing t = WreckFindThing(id.Trim(), out err);
+                if (t == null) return null;
+                list.Add(t);
+            }
+            return list;
+        }
+
+        [Tool(
+            "jawa/caravan_mass",
+            Description =
+                "Read a candidate caravan's load the way the Form Caravan dialog does: CollectionsMassCalculator.Capacity of the " +
+                "pawns (with what they carry) and MassUsage of the pawns' gear plus the named things, and whether the load is over " +
+                "capacity (the dialog's rule: usage above capacity). Reads only; moves nothing.",
+            ResultDescription = "success, pawns[], things[] (id, def, mass), capacity, usage, over.")]
+        public static async Task<object> CaravanMass(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated pawn ids (colonists and pack animals).")] string pawns = null,
+            [ToolParameter(Description = "Comma-separated ids of the things to load.")] string things = null)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (Current.Game == null) return Fail("No game loaded.");
+                string err;
+                var ps = WreckThings(pawns, out err);
+                if (ps == null) return Fail(err);
+                if (ps.Any(p => !(p is Pawn))) return Fail("Not every id in 'pawns' is a pawn.");
+                var ts = WreckThings(things, out err);
+                if (ts == null) return Fail(err);
+                var counts = ps.Select(p => new ThingCount(p, 1)).Concat(ts.Select(t => new ThingCount(t, t.stackCount))).ToList();
+                float cap = CollectionsMassCalculator.Capacity(counts);
+                float use = CollectionsMassCalculator.MassUsage(counts, IgnorePawnsInventoryMode.DontIgnore, false);
+                return (object)new
+                {
+                    success = true, pawns = ps.Select(p => p.ThingID).ToList(),
+                    things = ts.Select(t => new { id = t.ThingID, def = t.def.defName, mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount }).ToList(),
+                    capacity = cap, usage = use, over = JawaBenchWreckReadsCore.OverCapacity(use, cap), ticksGame = TicksGameSafe()
+                };
+            }, cancellationToken);
+        }
+
+        [Tool(
+            "jawa/caravan_form_load",
+            Description =
+                "Start forming a caravan the way the Form Caravan dialog does on accept (CaravanFormingUtility.StartFormingCaravan): " +
+                "the named pawns join a LordJob_FormAndSendCaravan, colonists haul the named things into it by their own jobs, and the " +
+                "caravan leaves at an edge cell that the first pawn can reach, bound for destTile. Refused by name: no pawn, a downed or " +
+                "non-player pawn, a thing not spawned on the pawns' map. Returns at once; advance the clock to watch the loading.",
+            ResultDescription = "success, lord (loadID), exit (x, z), startTile, destTile, things[], capacity, usage, over.")]
+        public static async Task<object> CaravanFormLoad(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Comma-separated pawn ids (colonists and pack animals).")] string pawns = null,
+            [ToolParameter(Description = "Comma-separated ids of the things to load.")] string things = null,
+            [ToolParameter(Description = "The world tile to travel to (e.g. the home map's tile).")] int destTile = -1)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (Current.Game == null) return Fail("No game loaded.");
+                string err;
+                var ps = WreckThings(pawns, out err);
+                if (ps == null) return Fail(err);
+                var pawnList = ps.OfType<Pawn>().ToList();
+                var ts = WreckThings(things, out err);
+                if (ts == null) return Fail(err);
+                Map map = pawnList.FirstOrDefault()?.MapHeld;
+                int bad = pawnList.Count(p => p.Downed || p.Faction != Faction.OfPlayer) + (ps.Count - pawnList.Count);
+                int elsewhere = ts.Count(t => !t.Spawned || t.Map != map);
+                string refusal = JawaBenchWreckReadsCore.FormRefusal(pawnList.Count, bad, elsewhere, ts.Count);
+                if (refusal != null) return Fail(refusal + ".");
+                if (destTile < 0) return Fail("Give destTile, the world tile to travel to.");
+                IntVec3 exit;
+                Pawn lead = pawnList.First();
+                if (!CellFinder.TryFindRandomEdgeCellWith(c => c.Standable(map) && lead.CanReach(c, Verse.AI.PathEndMode.OnCell, Danger.Deadly),
+                        map, CellFinder.EdgeRoadChance_Ignore, out exit))
+                    return Fail("No map edge cell that " + lead.LabelShort + " can reach.");
+                var transfer = new List<TransferableOneWay>();
+                foreach (Thing t in ts)
+                {
+                    var tr = new TransferableOneWay();
+                    tr.things.Add(t);
+                    tr.AdjustTo(t.stackCount);
+                    transfer.Add(tr);
+                }
+                var counts = pawnList.Select(p => new ThingCount(p, 1)).Concat(ts.Select(t => new ThingCount(t, t.stackCount))).ToList();
+                float cap = CollectionsMassCalculator.Capacity(counts);
+                float use = CollectionsMassCalculator.MassUsage(counts, IgnorePawnsInventoryMode.DontIgnore, false);
+                CaravanFormingUtility.StartFormingCaravan(pawnList, new List<Pawn>(), Faction.OfPlayer, transfer, lead.Position, exit,
+                    map.Tile, new PlanetTile(destTile));
+                var lord = lead.GetLord();
+                return (object)new
+                {
+                    success = lord != null && lord.LordJob is LordJob_FormAndSendCaravan,
+                    lord = lord?.loadID, exit = new { x = exit.x, z = exit.z }, startTile = map.Tile.tileId, destTile,
+                    things = ts.Select(t => t.ThingID).ToList(), capacity = cap, usage = use,
+                    over = JawaBenchWreckReadsCore.OverCapacity(use, cap), ticksGame = TicksGameSafe()
+                };
+            }, cancellationToken);
+        }
+    
+
+        // ================================================================
+        //  jawa/reach_edge
+        // ================================================================
+        [Tool(
+            "jawa/reach_edge",
+            Description =
+                "For each named cell: can a pawn get from it to the map's edge, by the game's own Reachability.CanReachMapEdge with " +
+                "TraverseParms.For(mode). mode PassDoors (default) walks and opens doors and never digs or breaks; NoPassClosedDoors, " +
+                "NoPassClosedDoorsOrWater and PassAllDestroyableThings (which digs and breaks) are the other names; an unknown mode is " +
+                "REFUSED, never defaulted. A cell inside a building is read from the building's interaction cell when it has one, else " +
+                "from the first standable cell beside the building. Reads only.",
+            ResultDescription = "success, mode, cells[] (x, z, from (x, z), canReachEdge, why).")]
+        public static async Task<object> ReachEdge(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Cells 'x,z;x,z;...'.")] string cells = null,
+            [ToolParameter(Description = "PassDoors (default), NoPassClosedDoors, NoPassClosedDoorsOrWater or PassAllDestroyableThings.")]
+            string mode = null)
+        {
+            return await ctx.MainThread.InvokeAsync<object>(() =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                string err;
+                Map map = MapOrNull(out err);
+                if (map == null) return Fail(err);
+                string m = JawaBenchWreckReadsCore.TraverseModeName(mode);
+                if (m == null) return Fail("Unknown mode '" + mode + "'.", new { modes = JawaBenchWreckReadsCore.TraverseModes });
+                var tm = (TraverseMode)Enum.Parse(typeof(TraverseMode), m);
+                var rows = new List<object>();
+                foreach (string part in (cells ?? "").Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var xz = part.Split(',');
+                    int x, z;
+                    if (xz.Length != 2 || !int.TryParse(xz[0].Trim(), out x) || !int.TryParse(xz[1].Trim(), out z))
+                        return Fail("Cell '" + part + "' is not 'x,z'.");
+                    var c = new IntVec3(x, 0, z);
+                    if (!c.InBounds(map)) { rows.Add(new { x, z, from = (object)null, canReachEdge = (bool?)null, why = "outside the map" }); continue; }
+                    IntVec3 from = c;
+                    Building b = c.GetFirstBuilding(map);
+                    if (b != null && !c.Standable(map))
+                    {
+                        if (b.def.hasInteractionCell) from = b.InteractionCell;
+                        else
+                        {
+                            from = IntVec3.Invalid;
+                            foreach (IntVec3 a in GenAdj.CellsAdjacent8Way(b))
+                                if (a.InBounds(map) && a.Standable(map)) { from = a; break; }
+                            if (!from.IsValid)
+                            { rows.Add(new { x, z, from = (object)null, canReachEdge = (bool?)false, why = "no standable cell beside the building" }); continue; }
+                        }
+                    }
+                    bool ok = map.reachability.CanReachMapEdge(from, TraverseParms.For(tm));
+                    rows.Add(new { x, z, from = new { x = from.x, z = from.z }, canReachEdge = (bool?)ok, why = (string)null });
+                }
+                return (object)new { success = true, mode = m, cells = rows, ticksGame = TicksGameSafe() };
             }, cancellationToken);
         }
     }

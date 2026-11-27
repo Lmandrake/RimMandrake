@@ -140,6 +140,15 @@ namespace JawaBench.BridgeTools
                 var o = C.Plan("Steel", null, null, 120, 100, null);
                 return l.want == 0 && l.skip != null && o.want == 0 ? null : "want " + l.want + "/" + o.want;
             });
+            U("caravan_over_only_above_capacity", () =>
+                !C.OverCapacity(70f, 70f) && C.OverCapacity(70.5f, 70f) && !C.OverCapacity(10f, 70f) ? null : "the edge is wrong");
+            U("form_refuses_no_pawn_or_elsewhere", () =>
+                C.FormRefusal(0, 0, 0, 1) != null && C.FormRefusal(2, 1, 0, 1) != null && C.FormRefusal(2, 0, 1, 1) != null
+                && C.FormRefusal(2, 0, 0, 0) != null && C.FormRefusal(2, 0, 0, 1) == null ? null : "a bad formation was accepted, or a good one refused");
+            U("traverse_mode_named_or_refused", () =>
+                C.TraverseModeName(null) == "PassDoors" && C.TraverseModeName("nopassclosedDOORS") == "NoPassClosedDoors"
+                && C.TraverseModeName("Dig") == null && C.TraverseModeName("PassAllDestroyableThings") == "PassAllDestroyableThings"
+                ? null : "default " + C.TraverseModeName(null) + ", unknown " + C.TraverseModeName("Dig"));
             Console.WriteLine("U-count " + n);
             return 0;
         }

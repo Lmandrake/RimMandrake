@@ -1,7 +1,10 @@
-// The Verse-free decisions of four generic reads and acts (item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL):
+// The Verse-free decisions of seven generic reads and acts (item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL):
 //   jawa/thing_set_sample      run a ThingSetMakerDef, or a TraderKindDef's stock, N times and list the defs it produced
 //   jawa/install_blueprint     place the install blueprint of a carried (minified) building, or the reinstall one of a standing one
 //   jawa/study_record          read the game's study (analysis) record for a kind of thing, and the projects that need it
+//   jawa/caravan_mass          a caravan's load against its capacity, the reading of the Form Caravan dialog
+//   jawa/caravan_form_load     start the game's own caravan formation with named things to load (colonists haul them)
+//   jawa/reach_edge            can a pawn walk from a cell to the map edge (Reachability.CanReachMapEdge), by a named traverse mode
 //   jawa/processor_fill        place the inputs of a factory process (PipeSystem's processor holds counts, not a ThingOwner,
 //                              so jawa/container_fill cannot reach it; measured from PipeSystem.dll metadata 2026-11-27)
 // The game half is JawaBenchWreckTools.cs. Offline harness: src/RimMandrake/bridgetools/WreckReadsSelfTest (net8.0, no RimWorld),
@@ -120,6 +123,36 @@ namespace JawaBench.BridgeTools
         public static int CompletedCount(IEnumerable<string> statuses)
         {
             return statuses.Count(s => s == Complete);
+        }
+
+        // ------------------------------------------------------------ caravan_mass, caravan_form_load
+        // Dialog_FormCaravan shows the load as over capacity when the mass usage is above the capacity (no margin).
+        public static bool OverCapacity(float usage, float capacity)
+        {
+            return usage > capacity;
+        }
+
+        // A formation needs at least one pawn that can walk, and every thing to load on the pawns' map; null when it may start.
+        public static string FormRefusal(int pawns, int downedOrNotPlayer, int thingsElsewhere, int things)
+        {
+            if (pawns < 1) return "a caravan needs at least one pawn";
+            if (downedOrNotPlayer > 0) return downedOrNotPlayer + " pawn(s) are downed or not of the player's faction";
+            if (things < 1) return "name at least one thing to load";
+            if (thingsElsewhere > 0) return thingsElsewhere + " thing(s) are not spawned on the pawns' map";
+            return null;
+        }
+
+        // ------------------------------------------------------------ reach_edge
+        // The traverse modes a caller may name, matched without case; default PassDoors (walks, opens doors, never digs or
+        // breaks). null for a name the tool must refuse, so an unknown mode never falls back to a default silently.
+        public static readonly string[] TraverseModes = { "PassDoors", "NoPassClosedDoors", "NoPassClosedDoorsOrWater", "PassAllDestroyableThings" };
+
+        public static string TraverseModeName(string asked)
+        {
+            if (string.IsNullOrWhiteSpace(asked)) return "PassDoors";
+            foreach (string m in TraverseModes)
+                if (string.Equals(m, asked.Trim(), StringComparison.OrdinalIgnoreCase)) return m;
+            return null;
         }
 
         // ------------------------------------------------------------ processor_fill
