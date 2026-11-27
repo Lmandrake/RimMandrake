@@ -1233,7 +1233,7 @@ def account_death(res):
         return None
     if len(str(res.get("result") or "")) <= AUTH_TEXT_MAX and CLOUDFLARE_RX.search(str(res.get("result") or "")):
         return "cloudflare"                              # before AUTH_RX: its text says "Please run /login" too
-    err = str(res.get("api_error") or "")
+    err = str(res.get("api_error") or res.get("api_error_type") or "")     # the CLI of 2026-11 names it api_error_type
     if err in ACCOUNT_ERRORS:
         return err
     if res.get("api_error_status") == 429:

@@ -39,6 +39,12 @@ def death(**usage):
 def test_classify():
     check("the measured outage result is an account death", RL.account_death(death()) == "usage_limit_reached")
     check("a bare 429 is one", RL.account_death({"is_error": True, "api_error_status": 429}) == "429")
+    # measured 2026-11-27 (rm-role-designer-1795773471, 24 min of stage work): the CLI names the error in api_error_type,
+    # not api_error. Read only api_error, a 529 ended the run as a role failure and a counted stage rejection.
+    check("a 529 overloaded_error result (api_error_type, no api_error) is one", RL.account_death(
+        {"is_error": True, "terminal_reason": "api_error", "api_error_status": 529,
+         "api_error_type": "overloaded_error",
+         "result": "API Error: 529 Overloaded. This is a server-side issue, usually temporary"}) == "overloaded_error")
     check("a short limit text on an api_error is one", RL.account_death(
         {"is_error": True, "terminal_reason": "api_error", "result": "You've hit your session limit"}) == "limit")
     check("an auth death is not (login_watch's)", RL.account_death(
