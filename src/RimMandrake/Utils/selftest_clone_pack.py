@@ -177,6 +177,8 @@ def t_dead_temp_files_go_live_ones_stay(tmp):
 def t_pack_when_git_would_have(tmp):
     loose = make_repo(tmp / "loose")
     add_loose(loose, 300, "loose")
+    orphan = subprocess.run(["git", "-C", str(loose), "hash-object", "-w", "--stdin"], input="no ref reaches me\n",
+                            capture_output=True, text=True, check=True, timeout=TB.CALL_S).stdout.strip()
     many = make_repo(tmp / "many")
     add_packs(many, 6)
     tidy = make_repo(tmp / "tidy")
@@ -196,6 +198,8 @@ def t_pack_when_git_would_have(tmp):
                             text=True, timeout=TB.CALL_S)
         ok(fs.returncode == 0 and git(r, "rev-list", "--count", "HEAD") == "3",
            "pack_when_git_would_have: %s still reads its whole history (fsck rc %d)" % (r.name, fs.returncode))
+    ok(git(loose, "cat-file", "-p", orphan, check=False) == "no ref reaches me",
+       "pack_when_git_would_have: the pack prunes nothing (an object that no ref reaches still reads)")
     on_disk = json.loads((state / "reading.json").read_text())
     ok(on_disk["clones"] == reading["clones"] and all(r["held"] for r in on_disk["clones"]),
        "pack_when_git_would_have: reading.json holds each clone, each held")
