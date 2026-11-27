@@ -761,11 +761,9 @@ def _fly_a_ship(t):
                     nbr[int(p[0])] = [int(q) for q in p[1:] if q.strip().lstrip("-").isdigit()]
     except OSError as e:
         raise ExpectationFailed("UNMEASURED: the neighbour dump is unreadable (%s)" % e)
-    # ring 2 first: a longer hop keeps the ship on the globe for more ticks
-    ring1 = nbr.get(origin, [])
-    ring2 = [b for a in ring1 for b in nbr.get(a, []) if b not in ring1 and b != origin]
+    # the farthest ring first: a longer hop carries the ship off its origin tile, out from under the colony's icon
     target, refusals = None, []
-    for cand in list(dict.fromkeys(ring2)) + ring1:
+    for cand in [c for ring in reversed(tile_rings(nbr, origin, 3)) for c in ring]:
         chk = _wc(t, "jawa/gravship_launch_check", targetTile=cand)
         if chk.get("wouldLaunch"):
             target = cand
@@ -787,7 +785,8 @@ def _fly_a_ship(t):
     while time.time() < deadline:
         r = _wc(t, "jawa/world_objects_get", **{"def": "Gravship", "textures": True})
         if r.get("count"):
-            return {"origin": origin, "target": target, "ship": r}
+            return {"origin": origin, "target": target, "ship": r, "nbr": nbr,
+                    "shipTile": _off_origin(t, origin, r)}
         st = _wc(t, "jawa/gravship_status")
         if st.get("landingConfirmationPending"):
             raise ExpectationFailed("UNMEASURED: the ship landed between two reads (no flight was seen)")
@@ -797,12 +796,48 @@ def _fly_a_ship(t):
     raise ExpectationFailed("UNMEASURED: no Gravship world object appeared in 600 s after the launch")
 
 
-def _globe_shots(t, tile):
+def tile_rings(nbr, origin, n):
+    """Rings 1..n of tiles around `origin` from a neighbour map {tile: [tiles]}. -> [[ring1], [ring2], ...], each
+    without repeats and without a tile of an inner ring. Pure: the offline selftest drives it."""
+    seen, rings, edge = {origin}, [], [origin]
+    for _ in range(n):
+        ring = []
+        for a in edge:
+            for b in nbr.get(a, []):
+                if b not in seen:
+                    seen.add(b)
+                    ring.append(b)
+        rings.append(ring)
+        edge = ring
+    return rings
+
+
+def _off_origin(t, origin, first):
+    """Step the clock in small slices until the ship in flight stands on another tile than its origin, where the
+    colony's own icon does not cover it. -> the ship's tile (the origin if it lands first)."""
+    tile = (((first.get("objects") or [{}])[0].get("row") or {}).get("tile"))
+    for _ in range(120):     # hang guard: 120 x 5 ticks; a two-tile hop reached its landing marker inside it (2026-11-27)
+        if tile is not None and tile != origin:
+            return tile
+        if _wc(t, "jawa/gravship_status").get("landingConfirmationPending"):
+            break
+        _wc(t, "rimworld/step_game_ticks", ticks=5)
+        r = _wc(t, "jawa/world_objects_get", **{"def": "Gravship", "textures": True})
+        tile = (((r.get("objects") or [{}])[0].get("row") or {}).get("tile"))
+    return tile if tile is not None else origin
+
+
+def _globe_shots(t, tile, aside=None):
     """Capture the globe centred on `tile` at each altitude. -> [(name, altitude, path or None, why)]."""
     import time
     out = []
-    for name, alt in WORLD_ICON_ALTITUDES:
-        v = _wc(t, "jawa/world_view", show=True, centerTile=tile, altitude=alt, northUp=True)
+    # the shot centred on the ship puts the cursor's hover box over it (2026-11-27 close shot): one more close shot is
+    # centred on a neighbouring tile, so the ship sits off the cursor
+    views = [(name, alt, tile) for name, alt in WORLD_ICON_ALTITUDES]
+    if aside is not None:
+        views.insert(1, ("close_aside", WORLD_ICON_ALTITUDES[0][1], aside))
+    for name, alt, centre in views:
+        v = _wc(t, "jawa/world_view", show=True, centerTile=centre, altitude=alt, northUp=True)
         _wc(t, "jawa/clear_ui")
         time.sleep(1.5)        # let the camera settle and the expanding icons fade to their altitude
         s = _wc(t, "rimworld/take_screenshot", fileName="world_icon_in_flight_%s_%d" % (name, int(time.time())),
@@ -834,12 +869,11 @@ def world_icon_in_flight(t):
     with t.component("globe_captured_on_the_ship_for_the_judge", beyond_toggle=True):
         if not _live(t):
             raise RowDone()
-        rows = (state["ship"].get("objects") or [{}])
-        tile = ((rows[0].get("row") or {}).get("tile"))
-        if tile is None:
-            tile = state["origin"]
-        shots = _globe_shots(t, tile)
-        t._record("globe captures on the ship (tile %s)" % tile, {"shots": shots, "target": state["target"]})
+        tile = state.get("shipTile", state["origin"])
+        aside = next((b for b in state.get("nbr", {}).get(tile, []) if b != state["origin"]), None)
+        shots = _globe_shots(t, tile, aside)
+        t._record("globe captures on the ship (tile %s, origin %s)" % (tile, state["origin"]),
+                  {"shots": shots, "target": state["target"], "offOrigin": tile != state["origin"]})
         missing = [s for s in shots if not s[2]]
         if missing:
             raise ExpectationFailed("UNMEASURED: %d of %d captures came back empty: %s"

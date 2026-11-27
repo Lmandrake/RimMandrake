@@ -71,6 +71,17 @@ def walk_checks(v):
               len(fake.calls) <= v.WALK_ROUNDS, len(fake.calls))
 
 
+def ring_checks(v):
+    #   1 - 2 - 3 - 4      a chain of tiles with a branch: 2 also touches 5
+    #       |
+    #       5
+    nbr = {1: [2], 2: [1, 3, 5], 3: [2, 4], 4: [3], 5: [2]}
+    got = v.tile_rings(nbr, 1, 3)
+    check("rings: by distance, no repeats", got == [[2], [3, 5], [4]], got)
+    got = v.tile_rings(nbr, 9, 2)
+    check("rings: an unknown origin gives empty rings", got == [[], []], got)
+
+
 def main():
     spec = importlib.util.spec_from_file_location("up_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -94,6 +105,7 @@ def main():
             got = f(r, field)
             check("%s is UNMEASURED: %s" % (name, field), got[0] == "UNMEASURED", got)
     walk_checks(v)
+    ring_checks(v)
     print("RESULT: %s" % ("PASS" if not FAILS else "FAIL %d" % len(FAILS)))
     return 1 if FAILS else 0
 

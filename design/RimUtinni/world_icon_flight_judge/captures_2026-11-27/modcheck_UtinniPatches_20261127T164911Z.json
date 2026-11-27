@@ -1,0 +1,1196 @@
+{
+ "mod": "UtinniPatches",
+ "stamp": "20261127T164911Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "world_icon_in_flight",
+    "components": [
+     {
+      "name": "ship_in_flight_draws_our_icon_zoomed_out",
+      "toggle": "utinniWorldIconEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(44)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 303 thing(s) across 1936 cell(s); 4 pawn(s) left alone; 4 non-destroyable thing(s) left alone.",
+         "cellsExamined": 1936,
+         "outOfBounds": 0,
+         "destroyed": 303,
+         "pawnsSkipped": 4,
+         "undestroyableSkipped": 4,
+         "perCategory": {
+          "Filth": 185,
+          "Item": 97,
+          "Plant": 21
+         },
+         "samples": [
+          {
+           "x": 105,
+           "z": 133,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 105,
+           "z": 135,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 106,
+           "z": 133,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 106,
+           "z": 134,
+           "def": "ChunkSlate",
+           "category": "Item"
+          },
+          {
+           "x": 106,
+           "z": 134,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 106,
+           "z": 135,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 106,
+           "z": 136,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 107,
+           "z": 131,
+           "def": "Plant_Grass",
+           "category": "Plant"
+          }
+         ],
+         "readBack": {
+          "ok": true,
+          "tool": "jawa/destroy_batch",
+          "faults": [],
+          "frameOpen": 5982,
+          "frameReply": 5982,
+          "sameFrame": true,
+          "rows": 303,
+          "rowsWrong": 0,
+          "wrong": [],
+          "made": [
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18569",
+            "x": 105,
+            "z": 133,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18568",
+            "x": 105,
+            "z": 135,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18565",
+            "x": 106,
+            "z": 133,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18567",
+            "x": 106,
+            "z": 134,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18570",
+            "x": 106,
+            "z": 134,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18564",
+            "x": 106,
+            "z": 135,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18553",
+            "x": 106,
+            "z": 136,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Plant_Grass15672",
+            "x": 107,
+            "z": 131,
+            "got": {
+             "def": "Plant_Grass",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18561",
+            "x": 107,
+            "z": 134,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18566",
+            "x": 107,
+            "z": 134,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18555",
+            "x": 107,
+            "z": 135,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18562",
+            "x": 107,
+            "z": 135,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18551",
+            "x": 107,
+            "z": 136,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18554",
+            "x": 107,
+            "z": 136,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18545",
+            "x": 107,
+            "z": 137,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18541",
+            "x": 107,
+            "z": 138,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18539",
+            "x": 107,
+            "z": 139,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Plant_Grass15575",
+            "x": 107,
+            "z": 142,
+            "got": {
+             "def": "Plant_Grass",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18563",
+            "x": 108,
+            "z": 133,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18558",
+            "x": 108,
+            "z": 134,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18556",
+            "x": 108,
+            "z": 135,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18548",
+            "x": 108,
+            "z": 136,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18559",
+            "x": 108,
+            "z": 136,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18547",
+            "x": 108,
+            "z": 137,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18549",
+            "x": 108,
+            "z": 137,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18543",
+            "x": 108,
+            "z": 138,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18546",
+            "x": 108,
+            "z": 138,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18538",
+            "x": 108,
+            "z": 139,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18542",
+            "x": 108,
+            "z": 139,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18533",
+            "x": 108,
+            "z": 140,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18544",
+            "x": 109,
+            "z": 137,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Silver15284",
+            "x": 109,
+            "z": 138,
+            "got": {
+             "def": "Silver",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18540",
+            "x": 109,
+            "z": 138,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18536",
+            "x": 109,
+            "z": 139,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18537",
+            "x": 109,
+            "z": 139,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ChunkSlate18531",
+            "x": 109,
+            "z": 140,
+            "got": {
+             "def": "ChunkSlate",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18535",
+            "x": 109,
+            "z": 140,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Plant_Grass15481",
+            "x": 110,
+            "z": 108,
+            "got": {
+             "def": "Plant_Grass",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Gun_BoltActionRifle15288",
+            "x": 110,
+            "z": 133,
+            "got": {
+             "def": "Gun_BoltActionRifle",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "MealSurvivalPack15303",
+            "x": 110,
+            "z": 134,
+            "got": {
+             "def": "MealSurvivalPack",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Apparel_FlakPants15291",
+            "x": 110,
+            "z": 135,
+            "got": {
+             "def": "Apparel_FlakPants",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "ComponentIndustrial15287",
+            "x": 110,
+            "z": 137,
+            "got": {
+             "def": "ComponentIndustrial",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Plant_Grass15505",
+            "x": 110,
+            "z": 137,
+            "got": {
+             "def": "Plant_Grass",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Silver15301",
+            "x": 110,
+            "z": 138,
+            "got": {
+             "def": "Silver",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "MeleeWeapon_Knife15290",
+            "x": 110,
+            "z": 139,
+            "got": {
+             "def": "MeleeWeapon_Knife",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Filth_RubbleRock18532",
+            "x": 110,
+            "z": 140,
+            "got": {
+             "def": "Filth_RubbleRock",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "MealSurvivalPack15304",
+            "x": 111,
+            "z": 133,
+            "got": {
+             "def": "MealSurvivalPack",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "MealSurvivalPack15302",
+            "x": 111,
+            "z": 134,
+            "got": {
+             "def": "MealSurvivalPack",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "MealSurvivalPack15305",
+            "x": 111,
+            "z": 135,
+            "got": {
+             "def": "MealSurvivalPack",
+             "destroyed": "True"
+            }
+           },
+           {
+            "op": "gone",
+            "id": "Apparel_AdvancedHelmet15293",
+            "x": 111,
+            "z": 138,
+            "got": {
+             "def": "Apparel_AdvancedHelmet",
+             "destroyed": "True"
+            }
+           }
+          ],
+          "leftBlocking": 0,
+          "leftKept": 8,
+          "left": [
+           {
+            "def": "SteamGeyser",
+            "id": "SteamGeyser15725",
+            "x": 104,
+            "z": 109,
+            "why": "not destroyable",
+            "blocking": false
+           },
+           {
+            "def": "SteamGeyser",
+            "id": "SteamGeyser15725",
+            "x": 104,
+            "z": 110,
+            "why": "not destroyable",
+            "blocking": false
+           },
+           {
+            "def": "SteamGeyser",
+            "id": "SteamGeyser15725",
+            "x": 105,
+            "z": 109,
+            "why": "not destroyable",
+            "blocking": false
+           },
+           {
+            "def": "SteamGeyser",
+            "id": "SteamGeyser15725",
+            "x": 105,
+            "z": 110,
+            "why": "not destroyable",
+            "blocking": false
+           },
+           {
+            "def": "Human",
+            "id": "Human617",
+            "x": 110,
+            "z": 138,
+            "why": "a pawn: never destroyed by this tool",
+            "blocking": false
+           },
+           {
+            "def": "Human",
+            "id": "Human620",
+            "x": 111,
+            "z": 134,
+            "why": "a pawn: never destroyed by this tool",
+            "blocking": false
+           },
+           {
+            "def": "YorkshireTerrier",
+            "id": "YorkshireTerrier15294",
+            "x": 111,
+            "z": 134,
+            "why": "a pawn: never destroyed by this tool",
+            "blocking": false
+           },
+           {
+            "def": "Human",
+            "id": "Human631",
+            "x": 118,
+            "z": 138,
+            "why": "a pawn: never destroyed by this tool",
+            "blocking": false
+           }
+          ],
+          "digest": "93cdec5f675ebdc8"
+         },
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_0f3fb6f30b694fa0a0b4478f0465603e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 88
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "clear_area(44) removed pawns {'vanished': ['YorkshireTerrier15294'], 'shot': []}",
+        "result": {
+         "vanished": [
+          "YorkshireTerrier15294"
+         ],
+         "shot": []
+        }
+       },
+       {
+        "call": "colonists standing on the pad",
+        "result": 3
+       },
+       {
+        "call": "gravship_launch 118865 -> 118870",
+        "result": {
+         "success": true,
+         "launched": true,
+         "dryRun": false,
+         "engineId": "GravEngine20662",
+         "originTile": 118865,
+         "originLayer": "Surface",
+         "targetTile": 118870,
+         "targetLayer": "Surface",
+         "fuelCost": 50.0,
+         "fuelAboard": 250.0,
+         "distance": 2,
+         "originMapWillBeDestroyed": true,
+         "nextState": "cutscene -> travel -> landing marker; poll jawa/gravship_status, then jawa/gravship_land",
+         "ticksGame": 2298,
+         "operation": {
+          "OperationId": "op_d14a26996ec641aa89c533a964080bba",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 92
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 2298
+         }
+        }
+       },
+       {
+        "call": "Gravship world object textures in flight",
+        "result": {
+         "success": true,
+         "count": 1,
+         "returned": 1,
+         "allObjectsOnPlanet": 107,
+         "settlements": 97,
+         "objectsWithNoFaction": 8,
+         "factionWarning": "A Settlement with a null faction is DESTROYED on load. Fix before saving.",
+         "byDef": {
+          "Gravship": 1
+         },
+         "byFaction": {
+          "PlayerColony": 1
+         },
+         "objects": [
+          {
+           "row": {
+            "id": 106,
+            "def": "Gravship",
+            "label": "gravship",
+            "tile": 118865,
+            "layer": "Surface",
+            "faction": "PlayerColony",
+            "factionName": "New Arrivals",
+            "hasFaction": true,
+            "isSettlement": false,
+            "namedByPlayer": false,
+            "spawned": true
+           },
+           "textures": {
+            "expandingIcon": "RUT_Utinni",
+            "expandingIconDefPath": "World/WorldObjects/Expanding/RUT_Utinni",
+            "materialTexture": "RUT_UtinniCaravan",
+            "materialDefPath": "World/WorldObjects/RUT_UtinniCaravan"
+           }
+          }
+         ],
+         "ticksGame": 2299,
+         "operation": {
+          "OperationId": "op_c5fcd470328441d8b09850d43b134006",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 327
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Normal",
+          "tick": 2299
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "ship_in_flight_draws_our_ship_zoomed_in",
+      "toggle": "utinniWorldIconEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     },
+     {
+      "name": "globe_captured_on_the_ship_for_the_judge",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "execution": "ran",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "globe captures on the ship (tile 118865)",
+        "result": {
+         "shots": [
+          [
+           "close",
+           160,
+           "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\world_icon_in_flight_close_1795798142.png",
+           null
+          ],
+          [
+           "mid",
+           400,
+           "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\world_icon_in_flight_mid_1795798146.png",
+           null
+          ],
+          [
+           "far",
+           900,
+           "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\world_icon_in_flight_far_1795798148.png",
+           null
+          ]
+         ],
+         "target": 118870
+        }
+       },
+       {
+        "call": "gravship_land after the captures",
+        "result": {
+         "success": true,
+         "landedAt": {
+          "x": 74,
+          "z": 178,
+          "rot": 0,
+          "mapId": 1
+         },
+         "moved": false,
+         "placed": true,
+         "engineId": "GravEngine20662",
+         "spawnedThings": 5,
+         "nextState": "ship placed synchronously; verify with jawa/gravship_status and rimworld/list_colonists",
+         "ticksGame": 2335,
+         "operation": {
+          "OperationId": "op_014c8f3c020249ccb7b593bb43cb1a8c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 99
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": false,
+          "timeSpeed": "Normal",
+          "tick": 2337
+         }
+        }
+       }
+      ],
+      "screenshots": [
+       "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\world_icon_in_flight_close_1795798142.png",
+       "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\world_icon_in_flight_mid_1795798146.png",
+       "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\world_icon_in_flight_far_1795798148.png"
+      ],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null,
+      "freshness": "fresh",
+      "validity": null,
+      "suspected_cause": null,
+      "cause_confidence": null,
+      "lead": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null,
+    "site_hold": {
+     "bland": true,
+     "problems": [],
+     "notes": [],
+     "dead": [],
+     "steps": [
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "clear_map_fog",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "hostilesBefore": [],
+        "foggedBefore": 10586,
+        "foggedNow": 0,
+        "releasedByUnfog": [],
+        "sweepPasses": 0,
+        "hostilesAfter": [],
+        "verified": true,
+        "error": null
+       }
+      },
+      {
+       "name": "pause",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "quiet_world",
+       "acted": 3,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "profile": "isolated",
+        "quests": "not touched",
+        "notSuppressed": [
+         "active quests and their parts (never ended by default: ending a quest changes the world)",
+         "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+         "existing game conditions, map/world/game components and mod tickers",
+         "hives and other pawn-spawning structures, births, egg hatching, breeders",
+         "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+         "weather transitions, fires, existing hostile behaviour"
+        ],
+        "storyteller": {
+         "cleared_count": 0,
+         "cleared": []
+        },
+        "logRaidInfo": "on",
+        "wildSpawner": "blocked (read back)",
+        "readBack": {
+         "enableStoryteller": false,
+         "enableRandomMentalStates": false,
+         "enableRandomDiseases": false,
+         "logRaidInfo": true,
+         "threatScale": 0.0,
+         "allowBigThreats": false
+        },
+        "incidentQueueAfterClear": 0,
+        "diseaseTraits": {
+         "colonists": 3,
+         "removed": [],
+         "seen": {
+          "Human617": [
+           "HAR_Xenophobia 1",
+           "TooSmart 0"
+          ],
+          "Human620": [
+           "NaturalMood 1"
+          ],
+          "Human631": [
+           "TooSmart 0"
+          ]
+         }
+        }
+       }
+      },
+      {
+       "name": "quiet_site_map",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "removed": [],
+        "threatsAfter": 0,
+        "lettersUnsentAfter": 0
+       }
+      },
+      {
+       "name": "kill_hostiles",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "kill_wildlife",
+       "acted": 8,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "route": "destroy_bulk"
+       }
+      },
+      {
+       "name": "clear_strangers",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {
+        "targeted": []
+       }
+      },
+      {
+       "name": "extinguish",
+       "acted": 0,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      },
+      {
+       "name": "restore_colonists",
+       "acted": 13,
+       "verified": true,
+       "residue": [],
+       "evidence": {}
+      }
+     ]
+    },
+    "site_reload": null,
+    "setup_records": [
+     {
+      "call": "restore_touched_settings []",
+      "result": true
+     }
+    ],
+    "env_reset": {
+     "log_reset": "ok",
+     "weather": "ok",
+     "map_info": "ok",
+     "unroof": "ok",
+     "gas_ToxGas": "ok",
+     "gas_BlindSmoke": "ok",
+     "gas_RotStink": "ok",
+     "gas_DeadlifeDust": "ok",
+     "gas_things": "ok"
+    },
+    "phase_s": {
+     "hold": 10.491,
+     "body": 56.04,
+     "teardown": 0.0
+    }
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runs\\clones\\UTINNI_WORLDMAP_FLIGHT_ICON_1.det\\design\\validation_walks\\RimUtinni\\UtinniPatches.md",
+  "acceptance": {
+   "overall": "INDETERMINATE",
+   "rows": [
+    {
+     "row": "world_icon_in_flight/ship_in_flight_draws_our_icon_zoomed_out",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "world_icon_in_flight/ship_in_flight_draws_our_ship_zoomed_in",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    },
+    {
+     "row": "world_icon_in_flight/globe_captured_on_the_ship_for_the_judge",
+     "verdict": "PASS",
+     "class": "other",
+     "grade": "INDETERMINATE",
+     "notes": [
+      "envelope_off: run without the situational envelope: blocking window and visitors unobserved"
+     ]
+    }
+   ],
+   "spoils": [
+    {
+     "class": "envelope_off",
+     "why": "run without the situational envelope: blocking window and visitors unobserved",
+     "chain": "world_icon_in_flight"
+    }
+   ],
+   "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "INDETERMINATE": 3,
+    "UNMEASURED": 0,
+    "NOT_RUN": 0
+   },
+   "classes": [
+    "envelope_off"
+   ]
+  },
+  "reuse": {
+   "reused": [],
+   "reusable": []
+  },
+  "host": "Archmagi",
+  "offline_chains": [],
+  "fresh_green": true,
+  "invalid": [],
+  "leads": [],
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true,
+  "targeted": {
+   "chains": [
+    "world_icon_in_flight"
+   ],
+   "of_chains": 12,
+   "rows": [],
+   "item": null,
+   "by": [
+    "chain world_icon_in_flight: named by --chains"
+   ],
+   "rows_run": [
+    "ship_in_flight_draws_our_icon_zoomed_out",
+    "ship_in_flight_draws_our_ship_zoomed_in",
+    "globe_captured_on_the_ship_for_the_judge"
+   ],
+   "scope": {
+    "world_icon_in_flight": {
+     "mode": "full",
+     "requested_rows": [],
+     "reasons": [
+      "named by --chains"
+     ],
+     "executed": [
+      "ship_in_flight_draws_our_icon_zoomed_out",
+      "ship_in_flight_draws_our_ship_zoomed_in",
+      "globe_captured_on_the_ship_for_the_judge"
+     ],
+     "skipped": []
+    }
+   },
+   "offline_skipped": {},
+   "incomplete": {}
+  },
+  "restarted_onto_list": {
+   "game": "ArchBig",
+   "why": [
+    "jawa/running_mods raised (RimBridgeError: cannot reach the bridge at 127.0.0.1:5174 ([WinError 10061] No connection could be made because the target machine actively refused it) - is RimWorld running with RimBridgeServer enabled?)"
+   ],
+   "steps": [
+    {
+     "step": "mine",
+     "rc": 0,
+     "said": "ArchBig: MINE: held by this process for 'world_icon_in_flight live pass, UTINNI_WORLDMAP_FLIGHT_ICON_1 gravship world-map icon' (gen 1764)"
+    },
+    {
+     "step": "stop",
+     "rc": 0,
+     "said": "ArchBig is not running"
+    },
+    {
+     "step": "pid",
+     "rc": 0,
+     "said": ""
+    },
+    {
+     "step": "deploy",
+     "rc": 0,
+     "said": "try 1"
+    },
+    {
+     "step": "launch",
+     "rc": 0,
+     "said": "g directly (Steam answered WaitingPrevProcess while ArchSmall runs), flags -disable-compute-shaders, pid 52076, bridge on port 5174 after 168 s; LIST CHANGED since modset_builder's last write (tier gimmesomeslack_walk, md5 1c53a3ab, by BENCH at 07:03 PST): ArchBig loads md5 fcb89aa8 (35 mods, mtime 2026-11-27 08:35:32 PST), not written by modset_builder; no copy with the same bytes and mtime found"
+    }
+   ],
+   "restarted": true,
+   "refused": null
+  }
+ },
+ "benign_stops": []
+}
