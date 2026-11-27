@@ -2228,8 +2228,9 @@ def cmd_ack(aid):
 
 def cmd_stop(aid):
     st = read_json(p("attempts", aid, "state.json")) or {}
-    # the attempt's Windows processes before its unit: a unit stop (KillMode=control-group) kills every shim at once,
-    # and the children of the python.exe a shim took with it would live on, unseen (RIMMANDRAKE_KILL_WINDOWS_CHILD_...)
+    # the attempt's Windows processes before its unit: a unit started under KillMode=control-group, or an attempt pinned
+    # to a sha older than its own Windows step, ends every shim at once, and the children of the python.exe a shim took
+    # with it would live on, unseen (UNIT_KILL_MODE; RIMMANDRAKE_KILL_WINDOWS_CHILD_...)
     won, why = kill_windows_tree(aid)
     stopped = False
     if st.get("unit") and shutil.which("systemctl"):
