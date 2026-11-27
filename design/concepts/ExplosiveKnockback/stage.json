@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: owner passed ExplosiveKnockback on his word 2026-11-13 (OWNER:1794608649743135329); no Designer or judge run until the owner-certified lock lands; judging stopped on ExplosiveKnockback (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -794,10 +793,17 @@
     "ref": "exam12 control rm-judge ab882a445d0744fa2 (opus; RIMMANDRAKE_REWORD_KNOCKBACK_REBOUND_LEAF_THEN_RETAKE_WHOLE_EXAM)",
     "stage": 5,
     "tokens": 68377
+   },
+   {
+    "at": "2026-11-27T04:01:30Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795751318",
+    "stage": 3,
+    "tokens": 1204328
    }
   ],
   "reserve": 60000,
-  "spent": 97534579
+  "spent": 98738907
  },
  "coverage_releases": [
   {
@@ -1778,6 +1784,30 @@
    "stage": 5,
    "what": "locked_change",
    "why": "the Conductor's reword of leaf goods_arc_spin_rebound (f4ee3a572c, under his ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS) and the whole exam retake on the reworded tree (69bcfdc36c); OWNER:1794748823561950419 (Certify, and fix the rule, 2026-11-15) was taken in at the 0.1.0 re-pin of 2026-11-15 (previous/0.1.0/bars.md) and by exam11; re-pinned stage 3 (sheet, tree); stage 5 (tree, sheet); stage 4 left stale, its exam void (sheet, tree, scenes, exam, owner changed): the next open retakes it; unlocked for the retake, stage 5 locks it again; sources OWNER:1795101809846892855@f4ee3a572c0b07bf861f01ebdaa13640867c7d93, OWNER:1795102877259618005@f4ee3a572c0b07bf861f01ebdaa13640867c7d93, OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33, OWNER:1794834159094900561@65eb8bf28a7f4df0b2e2e4ccda796fe490f12f1c, OWNER:1794836946186553250@1dd790af20699f4ffaa4f3062f2e7a8314875cea, OWNER:1795101809846892855@69bcfdc36cd6eaf9e4074db680f670868f864d43, OWNER:1795102877259618005@69bcfdc36cd6eaf9e4074db680f670868f864d43, OWNER:1794748823561950419"
+  },
+  {
+   "at": "2026-11-27T03:49:27Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-27T03:49:27Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "97534579 of 4000000 spent; run rm-role-designer-1795751318 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T03:49:27Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1795751318, stage 3, budget 3940000"
+  },
+  {
+   "at": "2026-11-27T04:01:31Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1795751318: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1825,7 +1855,6 @@
    "why": "his card 2026-11-13 ~11:55 PST (OWNER:1794599570900465333) allowed one more judge: rm-coverage-judge-1794599960 not_covered, 6 gaps (1 new: sweep animal/mech masses unpinned under creatureMassLimit 90; 5 carried as unfixed only because no coverage_fixes.json claim was written, its reasons say they look fixed); no second judge"
   }
  ],
- "pending_decision": "Coverage judge not_covered (19 gaps, all return_to 3, none needs the owner: each is settled by a record decision). Rewrite scenes/tree/sheet per coverage_verdict.json gaps: limit the 40-throw cap to pawns or remove it (d_c_all_fly) and stage more goods than the cap; showcase 1 is his one flagship scene only, with one named weapon, an in-line heavy stack and an expectation on the covered pit cell; narrow no_careless_fall to d_pit_only_forced (enemies may fall into a concealed pit by walking); add leaves and sheet lines for the shipped behaviours the sheet omits (who is spared, recovery immunity, per-weapon caps, hose drop, doors and deep water stopping a throw, explosions only); give wall_stop, shield, gas-chain, containers, teleport trace, frame probe, hose drop, settings and the walk real controls or scenes; fill record.json script_audit. Also set tree.json root_state VALIDATED and root_hash to the walk's (gate refusal). Then re-run the stage 4 exam on refrozen scenarios and the judge.",
  "recovery": [],
  "results": [
   {
@@ -2065,335 +2094,50 @@
    "why": "inputs changed since stage 3 was accepted: scenes; back to stage 3"
   },
   {
-   "at": "2026-11-13T22:48:47Z",
-   "inputs": {
-    "exam": "62595e96a93d811b3fc9e020c6897faae2c2d0feb64f98fc2ad3a996d0925a92",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "ef3b05ca446288b1b373dec19626c58f958884d4abe65009bbf94fd0c678c654",
-    "sheet": "22a3215f5781450b7b0d8c4325cbe252d4acbc40e69b17f82360fbd000acd086",
-    "tree": "1b35bfc1f5e684411be85c01305cba548bb981533dcb41b9377b19906bd98bce"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "pinned_at": {
-    "sheet": "35d323ec4a0aaaa9e2ec5532a3bc2968d76e4f1d",
-    "tree": "35d323ec4a0aaaa9e2ec5532a3bc2968d76e4f1d"
-   },
-   "repinned": [
-    {
-     "at": "2026-11-15T13:31:54Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794748823561950419@3d5eeb0e4466",
-      "OWNER:1794610188062865138",
-      "OWNER:1794636784570467650@60428da17f",
-      "OWNER:1794636784570467650@12efcb3138",
-      "OWNER:1794688782235148624@8498e2b493",
-      "OWNER:1794696195350158091@8bd7e7e715",
-      "OWNER:1794748404753740828@709c740f76"
-     ]
-    },
-    {
-     "at": "2026-11-16T03:39:06Z",
-     "inputs": [
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a",
-      "OWNER:1794790816821560212"
-     ]
-    },
-    {
-     "at": "2026-11-16T04:34:23Z",
-     "inputs": [
-      "sheet",
-      "tree"
-     ],
-     "sources": [
-      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
-      "OWNER:1794748823561950419"
-     ]
-    },
-    {
-     "at": "2026-11-16T13:06:43Z",
-     "inputs": [
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794834159094900561@65eb8bf28a",
-      "OWNER:1794799770273329641@3aa7e5c15d",
-      "OWNER:1794748823561950419"
-     ]
-    },
-    {
-     "at": "2026-11-16T13:59:26Z",
-     "inputs": [
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794836946186553250@1dd790af20",
-      "OWNER:1794834159094900561@65eb8bf28a",
-      "OWNER:1794799770273329641@3aa7e5c15d",
-      "OWNER:1794748823561950419"
-     ]
-    },
-    {
-     "at": "2026-11-25T02:39:38Z",
-     "inputs": [
-      "sheet",
-      "tree"
-     ],
-     "sources": [
-      "OWNER:1795101809846892855@f4ee3a572c0b07bf861f01ebdaa13640867c7d93",
-      "OWNER:1795102877259618005@f4ee3a572c0b07bf861f01ebdaa13640867c7d93",
-      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
-      "OWNER:1794834159094900561@65eb8bf28a7f4df0b2e2e4ccda796fe490f12f1c",
-      "OWNER:1794836946186553250@1dd790af20699f4ffaa4f3062f2e7a8314875cea",
-      "OWNER:1795101809846892855@69bcfdc36cd6eaf9e4074db680f670868f864d43",
-      "OWNER:1795102877259618005@69bcfdc36cd6eaf9e4074db680f670868f864d43",
-      "OWNER:1794748823561950419"
-     ]
-    }
-   ],
-   "run": "bench-ek-owner-lock-st3-20261113",
+   "at": "2026-11-27T03:49:27Z",
+   "outcome": "invalidated",
    "stage": 3,
-   "summary": "No model run: the stage-3 artifacts (tree, sheet, scenes, floor) as fixed and claimed for rm-coverage-judge-1794599960 gaps g1-g6 (sc_settings_sweep animal and mech pinned under 90 kg) are accepted as they stand; lint, scene contract, showcases and floor pass."
+   "why": "inputs changed since stage 3 was accepted: tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-13T22:48:54Z",
+   "at": "2026-11-27T04:01:30Z",
    "inputs": {
-    "exam": "ba75858ead6b1f371e4011053fe0f9b44f60ffd106bab1772fa2ca8e12a8cc6e",
-    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "68d8ef5bc68be1bf579d834b4b8d95ae41bcc119cb5dd292e3c1cb8f4eec8ec5",
-    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "346b20d4fdad2ccbc5cddc62b5765d2072d7137db3a741a3e8e8a2939aca59bb",
-    "sheet": "c33a997273ea4ba3bdbf589bd33884d5e3558c785dc30edbe84abe5e13bc664d",
-    "tree": "82b1a19515fa0b14c7d36176233baf8369de3a2c82760979c8e8a2a355b1d0c0"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1794610188062865138",
-    "1794790816821560212"
-   ],
-   "repinned": [
-    {
-     "at": "2026-11-15T13:31:54Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes",
-      "exam",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794748823561950419@3d5eeb0e4466",
-      "OWNER:1794610188062865138",
-      "OWNER:1794636784570467650@60428da17f",
-      "OWNER:1794636784570467650@12efcb3138",
-      "OWNER:1794688782235148624@8498e2b493",
-      "OWNER:1794696195350158091@8bd7e7e715",
-      "OWNER:1794748404753740828@709c740f76"
-     ]
-    },
-    {
-     "at": "2026-11-16T03:39:06Z",
-     "inputs": [
-      "scenes",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a",
-      "OWNER:1794790816821560212"
-     ]
-    }
-   ],
-   "run": "bench-ek-owner-lock-st4-20261113",
-   "stage": 4,
-   "summary": "No model run: exam.json as it stands meets the exam checks against the stage-3 artifacts.",
-   "voided": [
-    {
-     "at": "2026-11-16T04:34:23Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
-      "OWNER:1794748823561950419"
-     ],
-     "why": "its exam ran against another tree or sheet: retake it"
-    },
-    {
-     "at": "2026-11-16T13:06:43Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794834159094900561@65eb8bf28a",
-      "OWNER:1794799770273329641@3aa7e5c15d",
-      "OWNER:1794748823561950419"
-     ],
-     "why": "its exam ran against another tree or sheet: retake it"
-    },
-    {
-     "at": "2026-11-16T13:59:26Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794836946186553250@1dd790af20",
-      "OWNER:1794834159094900561@65eb8bf28a",
-      "OWNER:1794799770273329641@3aa7e5c15d",
-      "OWNER:1794748823561950419"
-     ],
-     "why": "its exam ran against another tree or sheet: retake it"
-    },
-    {
-     "at": "2026-11-25T02:39:38Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes",
-      "exam",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1795101809846892855@f4ee3a572c0b07bf861f01ebdaa13640867c7d93",
-      "OWNER:1795102877259618005@f4ee3a572c0b07bf861f01ebdaa13640867c7d93",
-      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
-      "OWNER:1794834159094900561@65eb8bf28a7f4df0b2e2e4ccda796fe490f12f1c",
-      "OWNER:1794836946186553250@1dd790af20699f4ffaa4f3062f2e7a8314875cea",
-      "OWNER:1795101809846892855@69bcfdc36cd6eaf9e4074db680f670868f864d43",
-      "OWNER:1795102877259618005@69bcfdc36cd6eaf9e4074db680f670868f864d43",
-      "OWNER:1794748823561950419"
-     ],
-     "why": "its exam ran against another tree or sheet: retake it"
-    }
-   ]
-  },
-  {
-   "at": "2026-11-13T22:49:02Z",
-   "inputs": {
-    "exam": "62595e96a93d811b3fc9e020c6897faae2c2d0feb64f98fc2ad3a996d0925a92",
+    "exam": "f71c2d757982389c33a4c6d9185856452d88afeb70b311487b9c78da9cc1e604",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "d16a2aec414a6dd250a9036c95005753f87ae1bf29dcd1e00986d4ed8753baba",
+    "scenes": "2eada9ea2bae7c36607112104ab30b760143b8a4e0078f4e15c8041ecfd63035",
     "sheet": "22a3215f5781450b7b0d8c4325cbe252d4acbc40e69b17f82360fbd000acd086",
-    "tree": "1b35bfc1f5e684411be85c01305cba548bb981533dcb41b9377b19906bd98bce"
+    "tree": "2f443fba60ab70c63c687ce3fc5265c4fe4729e8e526650d80e60672e5e9e810"
    },
    "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_scene_contract.md": "09226da911e86bf1a7e5930a39dd7b7afb416df68b4ff54fffd2e5b090b629b8",
+    "designer_write.md": "c97c5bac20083d5d6c474f01c6c1ff1de9db66915ea20e709a6ba1a384dbf026"
    },
    "outcome": "done",
    "owner_uncited": [],
    "pinned_at": {
-    "sheet": "35d323ec4a0aaaa9e2ec5532a3bc2968d76e4f1d",
-    "tree": "35d323ec4a0aaaa9e2ec5532a3bc2968d76e4f1d"
+    "exam": "0a9706e4f40b9cecd6d1ddb5489bc847c97004c0",
+    "floor": "0a9706e4f40b9cecd6d1ddb5489bc847c97004c0",
+    "root": "0a9706e4f40b9cecd6d1ddb5489bc847c97004c0",
+    "scenes": "0a9706e4f40b9cecd6d1ddb5489bc847c97004c0",
+    "sheet": "0a9706e4f40b9cecd6d1ddb5489bc847c97004c0",
+    "tree": "0a9706e4f40b9cecd6d1ddb5489bc847c97004c0"
    },
-   "repinned": [
-    {
-     "at": "2026-11-15T13:31:54Z",
-     "inputs": [
-      "tree",
-      "sheet"
-     ],
-     "sources": [
-      "OWNER:1794748823561950419@3d5eeb0e4466",
-      "OWNER:1794610188062865138",
-      "OWNER:1794636784570467650@60428da17f",
-      "OWNER:1794636784570467650@12efcb3138",
-      "OWNER:1794688782235148624@8498e2b493",
-      "OWNER:1794696195350158091@8bd7e7e715",
-      "OWNER:1794748404753740828@709c740f76"
-     ]
-    },
-    {
-     "at": "2026-11-16T04:34:23Z",
-     "inputs": [
-      "tree",
-      "sheet"
-     ],
-     "sources": [
-      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
-      "OWNER:1794748823561950419"
-     ]
-    },
-    {
-     "at": "2026-11-16T13:06:43Z",
-     "inputs": [
-      "tree"
-     ],
-     "sources": [
-      "OWNER:1794834159094900561@65eb8bf28a",
-      "OWNER:1794799770273329641@3aa7e5c15d",
-      "OWNER:1794748823561950419"
-     ]
-    },
-    {
-     "at": "2026-11-16T13:59:26Z",
-     "inputs": [
-      "tree"
-     ],
-     "sources": [
-      "OWNER:1794836946186553250@1dd790af20",
-      "OWNER:1794834159094900561@65eb8bf28a",
-      "OWNER:1794799770273329641@3aa7e5c15d",
-      "OWNER:1794748823561950419"
-     ]
-    },
-    {
-     "at": "2026-11-25T02:39:38Z",
-     "inputs": [
-      "tree",
-      "sheet"
-     ],
-     "sources": [
-      "OWNER:1795101809846892855@f4ee3a572c0b07bf861f01ebdaa13640867c7d93",
-      "OWNER:1795102877259618005@f4ee3a572c0b07bf861f01ebdaa13640867c7d93",
-      "OWNER:1794799770273329641@3aa7e5c15d76a0ea2ad774c76c1fed46515e9c33",
-      "OWNER:1794834159094900561@65eb8bf28a7f4df0b2e2e4ccda796fe490f12f1c",
-      "OWNER:1794836946186553250@1dd790af20699f4ffaa4f3062f2e7a8314875cea",
-      "OWNER:1795101809846892855@69bcfdc36cd6eaf9e4074db680f670868f864d43",
-      "OWNER:1795102877259618005@69bcfdc36cd6eaf9e4074db680f670868f864d43",
-      "OWNER:1794748823561950419"
-     ]
-    }
-   ],
-   "run": "bench-ek-owner-lock-st5-20261113",
-   "stage": 5,
-   "summary": "Locked on the owner's word: coverage passed on his word (OWNER:1794608649743135329, 2026-11-13, 'Yes, fix it like that, and then please record this as an actual Pass.') past rm-coverage-judge-1794599960 not_covered (6 gaps, all claimed fixed); concept_tree gate, scenes and showcases pass."
+   "quick_look": {
+    "offer": false,
+    "why": "nothing here waits on him: 0.2.0 passed his live walk on 2026-11-26 (OWNER:1795714498917797906), and this run only brings the concept's scene set and citations up to the built and passed mod"
+   },
+   "run": "rm-role-designer-1795751318",
+   "stage": 3,
+   "summary": "Stage 3 reopened because the builders' 0.2.0 commits changed tree.json and scenes.json (12d6c0feab, d420ae2e45, 6e78fea88e). The packet's carried 'missing decision' (the 19 coverage gaps of 2026-11-12) is stale: those gaps were reworked in later rounds, and coverage passed on his word on 2026-11-13 (d_owner_pass_on_his_word). Lint (Gate A) passed unchanged. The one stage-3 refusal: the 14 inventory bars of 0.2.0 were covered by no showcase and no scene. Repair, on the Pyrelands 0.2.0 precedent: (1) scenes.json gets the 8 built 0.2.0 lane scenes as acceptance scenes. Each cites the 0.1.0 leaf that its parent scene decides, with bars_0_2_0 naming the record.json bars it decides. Each carries its start, its control from its own plants and its restore. (2) The blast show is showcase 2 (sc_blast_show plus sc_settings_sweep_show_switches): 9 new capabilities, 0 overlap. (3) The other 5 lane bars go in coverage_rest. Showcase set accepted. (4) sc_pawn_arc's stale 0.1.0 'holds the same stack in flight' clause is corrected to the 0.2.0 carried_thing_own_arc. (5) All 36 owner words that the packet listed are cited: 13 go to existing decisions and 4 to new decisions (walk frame against mod-off, goods into the pit first, the lit chemfuel ruling, the big-blast whoosh), and 20 are owner_elsewhere_reviewed with a reason; uncited is now 0. (6) plan.md answers offline simulation: yes, the shipped kernel against a model map. (7) version/next_version/README.md gets the chemfuel and whoosh entries; neither moves a 0.2.0 bar. The tree is not touched: it is locked and owner-certified, so the 0.2.0 bars stay record.json inventory rows, as dc_open_0_2_0 wrote them. Stage 4 must retake the exam on the changed scenes."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
