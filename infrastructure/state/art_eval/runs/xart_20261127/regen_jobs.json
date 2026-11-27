@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RSW_Shyrack__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Shyrack__variant",
+  "prompt": "RimWorld creature sprite sheet of one animal, a shyrack: a large bat-like cave creature from the caves of Korriban, ungainly when alone and dangerous in a flock. Painterly, realistic vanilla RimWorld style with soft painted edges, and value and colour contrast against the ground that carry the silhouette, on a transparent background. Body: heavy and hunched, walking on sturdy hind legs and the knuckles of its wing arms, with a broad chest, a short thick neck, a large head with big ears, a wide mouth showing sharp teeth, and a long tail. Its eyes are set forward in the face. Leathery wings are folded against the flanks, their roots rising from the shoulders. Coat: the body, belly, haunches, neck, head and tail are warm red-brown, mid value, covered in dense dark-brown leopard-like rosette spots, with the same spot pattern and the same density on the body and the tail. Wing membranes are wine-red with purple mottling and darker plum blotches between the wing fingers, with the wing bones and finger struts in a darker red-brown. Soft shading models the form, while the hue, saturation, spot pattern and membrane colour stay constant, so the whole animal reads as one creature with one coat. Body size and proportions are consistent throughout.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Shyrack/ShyrackVariant"
+ }
+]

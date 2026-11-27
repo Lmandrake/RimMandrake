@@ -27,6 +27,10 @@ def check(cond, msg, detail=""):
 DOC = """<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!-- a comment that must survive -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Foo</defName>
+    <graphicData><texPath>Things/Pawn/Animal/RM_Foo/RM_Foo</texPath></graphicData>
+  </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Foo</defName>
     <race>RM_Foo</race>
@@ -78,7 +82,7 @@ DOC = """<?xml version="1.0" encoding="utf-8"?>
 
 def kind(text, dn):
     for d in ET.fromstring(text.split("?>", 1)[1]):
-        if d.findtext("defName") == dn:
+        if d.tag == "PawnKindDef" and d.findtext("defName") == dn:
             return d
     raise KeyError(dn)
 
@@ -96,6 +100,8 @@ def main() -> int:
     check(kind(v, "RM_Bar").findtext("alternateGraphicChance") == "0.5", "variant: another kind is untouched")
     check("a comment that must survive" in v, "variant: comments survive")
     check(X.wire_variant(v, "RM_Foo", "T/RM_FooVariant") == v, "variant: wiring twice changes nothing")
+    th = [d for d in ET.fromstring(v.split("?>", 1)[1]) if d.tag == "ThingDef"][0]
+    check(th.find("alternateGraphics") is None, "variant: the race ThingDef of the same defName is untouched")
     v2 = X.wire_variant(DOC, "RM_Bar", "T/RM_BarVariant")
     check([li.findtext("texPath") for li in kind(v2, "RM_Bar").find("alternateGraphics")]
           == ["Things/Pawn/Animal/RM_Bar/RM_BarOld", "T/RM_BarVariant"] and

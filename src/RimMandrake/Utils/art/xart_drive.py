@@ -334,21 +334,41 @@ def decisions(run_id: str) -> dict:
 
 
 def verdict_file(subj: str) -> str | None:
-    hits = sorted(glob.glob(str(DELEGATED / "*" / f"{subj}.json")))
+    hits = sorted(glob.glob(str(DELEGATED / "*" / f"{subj}.json")) + glob.glob(str(DELEGATED / "*" / f"{subj}__*.json")))
     return str(Path(hits[-1]).relative_to(REPO)) if hits else None
 
 
 # ---------------------------------------------------------------------------------------------------------- install
-def install_png(mod: str, rel: str, png: Path, why: str, dry: bool) -> tuple[int, str]:
+def install_png(mod: str, rel: str, png: Path, why: str, dry: bool, reason: str | None = None) -> tuple[int, str]:
     stage = REPO / "Transient" / "xart_stage" / Path(rel).name
     stage.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(png, stage)
     cmd = [sys.executable, "src/RimMandrake/Utils/art/art.py", "install", mod, rel, "--file", str(stage), "--why", why]
+    if reason:          # a mechanical copy names its writer (art_guard: script:<repo path>), never a free --why alone
+        cmd += ["--reason", reason]
     if dry:
         cmd.append("--dry-run")
     r = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, timeout=600)  # hang guard: an install is ~5 s
     stage.unlink(missing_ok=True)
     return r.returncode, (r.stdout + r.stderr).strip().splitlines()[-1][:200] if (r.stdout + r.stderr).strip() else ""
+
+
+def pack_sources(row: dict, rows: dict) -> dict:
+    """{facing: adult Pack PNG} a young or female look must also carry as `<look texPath>Pack_<facing>`: the game draws a
+    pack animal's load from the CURRENT stage's body (or female) texPath + "Pack" (PawnRenderNode_AnimalPack), so a
+    young or female look on a pack animal with no Pack texture shows a missing texture under a load. Vanilla's young pack
+    animals draw the adult's pack at their own drawSize; the same bytes give that parity. A commissioned female pack
+    set (female_pack row) is the female's own and wins."""
+    if row["slot"] not in ("young", "female") or f"{row['race']}__female_pack" in rows:
+        return {}
+    ref = REPO / row["reference"]
+    stem = ref.name.rsplit("_", 1)[0] if ref.name.rsplit("_", 1)[-1][:-4] in ("east", "south", "north") else ref.stem
+    out = {}
+    for f in ("east", "south", "north"):
+        p = ref.parent / f"{stem}Pack_{f}.png"
+        if p.is_file():
+            out[f] = p
+    return out
 
 
 def cmd_install(a) -> int:
@@ -381,20 +401,27 @@ def cmd_install(a) -> int:
             rc, line = install_png(mod, rel, Path(p), f"delegated: art {vf}", a.dry_run)
             print(subj, f or "single", "rc", rc, line)
             bad += rc != 0
+        if not subj.endswith("__faces"):
+            for f, p in pack_sources(rows[subj], rows).items():
+                rc, line = install_png(mod, f"{tex}Pack_{f}.png", p, f"mechanical: the adult pack drawn on the {rows[subj]['slot']} "
+                                       f"look of a pack animal (vanilla parity; xart_drive.pack_sources)", a.dry_run,
+                                       reason="script:src/RimMandrake/Utils/art/xart_drive.py")
+                print(subj, "pack", f, "rc", rc, line)
+                bad += rc != 0
     return 1 if bad else 0
 
 
 # ---------------------------------------------------------------------------------------------------------- wire
 def _block(text: str, kind: str) -> tuple[int, int]:
-    """(start, end) of the <PawnKindDef> element whose defName is `kind`, as text offsets."""
-    m = re.search(r"<defName>\s*%s\s*</defName>" % re.escape(kind), text)
-    if not m:
-        raise ValueError(f"{kind}: no defName")
-    s = text.rfind("<PawnKindDef", 0, m.start())
-    e = text.find("</PawnKindDef>", m.end())
-    if s < 0 or e < 0:
-        raise ValueError(f"{kind}: not inside a PawnKindDef")
-    return s, e
+    """(start, end) of the <PawnKindDef> element whose defName is `kind`, as text offsets. A race ThingDef often shares
+    the defName, so only PawnKindDef elements are searched."""
+    for m in re.finditer(r"<PawnKindDef\b", text):
+        e = text.find("</PawnKindDef>", m.end())
+        if e < 0:
+            break
+        if re.search(r"<defName>\s*%s\s*</defName>" % re.escape(kind), text[m.start():e]):
+            return m.start(), e
+    raise ValueError(f"{kind}: no PawnKindDef of that defName")
 
 
 def _stages(block: str) -> list[tuple[int, int]]:
@@ -515,6 +542,9 @@ def cmd_wire(a) -> int:
             pk = rows[f"{r['race']}__female_pack"]
             if look_status(pk, q, hold) not in ("INSTALLED", "WIRED"):
                 print(subj, "waits for its female pack set"); continue
+        lack = [f for f in pack_sources(r, rows) if not tex_file(r["install_mod"], r["tex_path"] + "Pack", f).is_file()]
+        if lack:
+            print(subj, "NOT WIRED: a pack animal; its Pack facings are not installed", lack); bad += 1; continue
         f, _ = kinds[r["kind"]]
         text = f.read_text()
         fn = {"variant": wire_variant, "young": wire_young, "female": wire_female}[r["slot"]]
