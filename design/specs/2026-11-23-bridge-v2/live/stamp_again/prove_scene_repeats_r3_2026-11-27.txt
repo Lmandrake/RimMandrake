@@ -1,0 +1,39 @@
+prove_scene_repeats 2026-11-27T10:21:27 on ArchSmall, rows R1,R2,R3, stage RM_Stage_ArchSmall_settlement
+make settlement: exit 0, 46.6 s wall
+  the game stands at Entry: starting a quicktest for the green room
+  green room: map 0, tile 86170, RM_TheRot, 4 colonist(s)
+  green room fed: 90 meal(s) beside 3 colonist(s), food need full
+  made the settlement map on tile 86110 (RM_TheRot): map 1, 100x100, 3.5 s
+  emptied: 3 pawn(s) vanished, 5740 thing(s) cleared, terrain Granite_Rough on 10000 cell(s) (read-back ok=True), fog lifted, 0 pawn(s) left, 1.3 s
+  MADE settlement stage RM_Stage_ArchSmall_settlement: 100x100, map 1 current, green room map 0; make 3.5 s, total 6.1 s; stage file D:\ClaudeWork\rimmandrake\scratch\scene_stages\made\RM_Stage_ArchSmall_settlement.json
+  ArchSmall: held for `python.exe \\wsl.localhost\Ubuntu\home\mandrake\rm\runs\clones\RIMMANDRAKE_GIVE_ONE_MOD_A_DIGEST_HOOK_SO_A_DIRTY_RESET_CAN_SHOW.det\src\RimMandrake\Utils\stage_map.py --inner make ArchSmall --kind settlement --save RM_Stage_ArchSmall_settlement` (gen 333, inherited)
+  [bridge split] 45.3 s wall: load 8.3 / ticks 0.0 / reads 3.0 / other 4.1 / outside calls 29.9 s
+  single run 1: 68.8 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  single run 2: 45.2 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  single run 3: 46.7 s wall, SUCCESS (the victim lies in a SleepingSpot)
+  the hooked mods before the series: mod RimMandrakeLuminousPigment; prove clean {"mod": "RimMandrakeLuminousPigment", "build": "RELEASE", "trace": "yes", "reset": "RimMandrake.LuminousPigment.Deepfire, dirty act {"success": true, "method": "Int32 NoteGodCoatEvent(System.String)", "result": "0", "thingArgs": [], "ticksGame": 2, "op, prove dirty {"mod": "RimMandrakeLuminousPigment", "build": "RELEASE", "trace": "yes", "reset": "RimMandrake.LuminousPigment.DeepfireTestHooks.Reset", "digest": "RimMandrake; reset {"mod": "RimMandrakeLuminousPigment", "build": "RELEASE", "trace": "yes", "reset": "verified", "digest": "RimMandrake.LuminousPigment.DeepfireTestHooks.Digest",
+  copy 1 at (1, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 2 at (20, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 3 at (39, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 4 at (58, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 5 at (77, 1, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 6 at (1, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 7 at (20, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 8 at (39, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 9 at (58, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 10 at (77, 18, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 11 at (1, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 12 at (20, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 13 at (39, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 14 at (58, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 15 at (77, 35, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 16 at (1, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 17 at (20, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 18 at (39, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 19 at (58, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  copy 20 at (77, 52, 7, 5): SUCCESS (the victim lies in a SleepingSpot); 4 rescuer cell(s) read
+  series 5193a532: counts {'launches': 20, 'opportunities': 20, 'exposures': 20, 'samples': 1, 'clusters': 1, 'stopped': False}; station digests ['010cd37ab6a1e109']; mods {'RimMandrake.Abyss': 'no digest hook', 'RimMandrake.Biomes': 'no digest hook', 'RimMandrake.BlueDesert': 'no digest hook', 'RimMandrake.Bones': 'no digest hook', 'RimMandrake.Cauldron': 'no digest hook', 'RimMandrake.Contagion': 'no digest hook', 'RimMandrake.CrackedLands': 'no digest hook', 'RimMandrake.CreatureBehaviors': 'no digest hook', 'RimMandrake.DivingInteraction': 'no digest hook', 'RimMandrake.EnvironmentalHazards': 'no digest hook', 'RimMandrake.ExplosiveGrowth': 'no digest hook', 'RimMandrake.FeverWood': 'no digest hook', 'RimMandrake.Greentide': 'no digest hook', 'RimMandrake.LanternDeeps': 'no digest hook', 'RimMandrake.LeaningScrub': 'no digest hook', 'RimMandrake.LongShade': 'no digest hook', 'RimMandrake.Miasma': 'no digest hook', 'RimMandrake.RustCathedral': 'no digest hook', 'RimMandrake.RustCathedral.Hum': 'no digest hook', 'RimMandrake.RustCathedral.Walls': 'no digest hook', 'RimMandrake.SleepingIce': 'no digest hook', 'RimMandrake.Stillsand': 'no digest hook', 'RimMandrake.TerminalBiomes': 'no digest hook', 'RimMandrake.TheForge': 'no digest hook', 'RimMandrake.TheRot': 'no digest hook', 'RimMandrake.TheSump': 'no digest hook', 'RimMandrake.Utinni.UtinniPatches': 'no digest hook', 'RimMandrake.Warscar': 'no digest hook', 'RimMandrake.Wastes': 'no digest hook', 'RimMandrake.Webwork': 'no digest hook', 'RimMandrake.WeepingStones': 'no digest hook', 'RimMandrake.Wreckage': 'no digest hook', 'RimMandrakeBeastMechanicsRSW': 'no digest hook', 'RimMandrakeFlowWorks': 'no digest hook', 'RimMandrakeGelatinousSlime': 'no digest hook', 'RimMandrakeLivestockRSW': 'no digest hook', 'RimMandrakeLuminousPigment': 'godCoat[] impressed[]', 'RimMandrakeMovingDunes': 'no digest hook', 'RimMandrakePatches': 'no digest hook', 'RimMandrakeSeaShores': 'no digest hook'}; 20 ledger lines, clusters ['5193a532.c1']
+PASS R1 20 stamped copies of the rescue finish in less wall time than 3 single runs: 20 copies in one session and one run: 103.3 s wall; 3 single runs: 68.8, 45.2, 46.7 = 160.7 s; 20 of 20 SUCCESS, 0 order(s) not given, 0 breach(es)
+PASS R2 a planted cross-talk between two copies is a BREACH and both copies read UNRESOLVED: plant {'success': True, 'job': None, 'curJob': None, 'message': None}; stations (1, 1, 7, 5) and (20, 1, 7, 5); ["BREACH: rescuer_201 of launch 1 was at (14, 3), on launch 2's station (20, 1, 7, 5) (margin 6)"]; ledger outcomes ['UNRESOLVED', 'UNRESOLVED'], spoiled_by ['cross-talk between copies of cluster 9f38d516.c1']; the planted rescuer's cells [(2, 3), (3, 3), (4, 3), (5, 3), (6, 3), (7, 3), (8, 3), (9, 3)]; before the breach the victims read {'victim_201': 'SUCCESS', 'victim_202': 'SUCCESS'}
+PASS R3 a mod state left dirty on purpose changes the reset digest and stops the repeat RESET_DIGEST_DIFFERS: mod RimMandrakeLuminousPigment; prove clean {"mod": "RimMandrakeLuminousPigment", "build": "RELEASE", "trace": "yes", "reset": "RimMandrake.LuminousPigment.Deepfire, dirty act {"success": true, "method": "Int32 NoteGodCoatEvent(System.String)", "result": "0", "thingArgs": [], "ticksGame": 2, "op, prove dirty {"mod": "RimMandrakeLuminousPigment", "build": "RELEASE", "trace": "yes", "reset": "RimMandrake.LuminousPigment.DeepfireTestHooks.Reset", "digest": "RimMandrake; reset {"mod": "RimMandrakeLuminousPigment", "build": "RELEASE", "trace": "yes", "reset": "verified", "digest": "RimMandrake.LuminousPigment.DeepfireTestHooks.Digest",; dirty act again {"success": true, "method": "Int32 NoteGodCoatEvent(System.String)", "result": "0", "thingArgs": [], "ticksGame": 2, "op; stop RESET_DIGEST_DIFFERS [('mod RimMandrakeLuminousPigment', 'godCoat[] impressed[]', 'godCoat[24:thing:RM_StampAgainProbe=1] impressed[]')]
+prove_scene_repeats: 3 of 3 rows held, 0 failed, 0 could not look, 0 unrun
