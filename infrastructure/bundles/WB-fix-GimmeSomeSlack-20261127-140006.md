@@ -28,3 +28,11 @@
 - Next: /mnt/d/ClaudeWork/scratch/wb_gss/accept4.sh under `game_lock.py run ArchBig` (it restarts ArchBig first); clean must
   be SUCCESS and counted, planted must be MOD FAILURE. Then close both items. Do not run a background lease renewer: a renew
   writes the tracked ledger shard and spoils an accept run (THE TREE CHANGED DURING THE RUN).
+
+## Done (resume, 2026-11-27 08:53 PST)
+- Live both ways on ArchBig, tier gimmesomeslack_walk (the restart had loaded a 315-mod list someone else wrote, so the
+  first try refused WRONG_BUILD; accept5.sh now sets the tier and deploys the mod before the launch): clean SUCCESS
+  counts_for_bar (scn_58aad20732b7:run_3ed8d9e026), planted master_switch_off MOD FAILURE (scn_de17848d2cc6:run_0e166bace2).
+  Published 76da45a34615 (scene_runs.jsonl + live row, visit 5 early_rows.jsonl); verify pass L2 on both bridge items.
+- Fresh reader filed: RIMMANDRAKE_READ_FIX_EF32AA5907_WITH_FRESH_EYES (ced3a3a675).
+- Bundle complete: all three members closed, nothing left.
