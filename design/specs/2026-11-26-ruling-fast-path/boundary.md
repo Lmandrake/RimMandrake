@@ -73,4 +73,7 @@ The command composes parts that exist. It writes no second copy of any of them:
 ## PROOF
 
 - The selftest is green on the fix, with planted faults caught (`evidence/plants.txt`).
-- One timed real use on a scratch item, from the call to the published sha (`evidence/real_use.txt`).
+- One timed real use on a scratch item, from the call to the published sha (`evidence/real_use.txt`), Archmagi,
+  2026-11-26 7:06 PM PST, while 5 publishes waited for a tree-check slot: 264.7 s from the call to the last sha. His
+  words and the park landed by the ledger door in 18.3 s; the rule text by the text door in 151.3 s. The same ruling
+  by a model worker took about 90 minutes on the same day.

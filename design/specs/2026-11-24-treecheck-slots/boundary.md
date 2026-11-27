@@ -73,6 +73,10 @@ Up to six door checks ran at once on one disk: the disk read 100% busy, load rea
   on the code before (`evidence/text_publish_parent.txt`), and landed in 0.9 s on the fix. Measured with the door-reads
   hook (2026-11-26, a clone at `4a9fd316d7`): 9 of the 28 whole-tree checks read no text, and they carry the mark; the
   other 19 read a `.md` file, list a folder that holds one, or run git over the whole tree.
+  Real use on Archmagi, 2026-11-26 7:00 to 7:15 PM PST, while 3 to 5 publishes waited for a slot: three one-file
+  text publishes took 86.4 s (the first; the text tree made fresh in 26.9 s, 5045 MB written), 151.3 s and 146.4 s
+  (with `selftest_conductor_authority.py`, 64.5 s, for `standing_rulings.md`). The two code publishes of the same
+  run waited 443 s and 638 s for a slot.
 
 ## LIMITS
 

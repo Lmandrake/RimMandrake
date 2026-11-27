@@ -1,0 +1,10 @@
+# One timed real use of ruling_fast.py on a scratch item, Archmagi, clone level with origin/main, 5 publishes waiting for a tree-check slot
+start 2026-11-26 07:06:43 PM PST
+LANDED his words on RIMMANDRAKE_TRY_RULING_FAST_PATH_ONCE_THEN_DROP_IT (OWNER event 1795748818665164154, Thu 2026-11-26 7:06 PM PST); parked RIMMANDRAKE_PARK_SCRATCH_TICKET_FOR_RULING_FAST_TRY: PUBLISHED 55f6a7da6206 (ledger door, 18.3 s)
+LANDED his words in design/RimMandrake/standing_rulings.md §Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): PUBLISHED 24a4a273f00f (151.3 s)
+FOLLOW-UP RIMMANDRAKE_SPREAD_SLOW_PART_OF_RULING_FAST_PATH_ONCE (owed, caused by RIMMANDRAKE_TRY_RULING_FAST_PATH_ONCE_THEN_DROP_IT): the CLAUDE.md rule line, lines that say the opposite, tickets he did not name: PUBLISHED f085aa5408b9
+UNDO: the ledger keeps his words on RIMMANDRAKE_TRY_RULING_FAST_PATH_ONCE_THEN_DROP_IT (a note can say they were withdrawn); rimflow unblock RIMMANDRAKE_PARK_SCRATCH_TICKET_FOR_RULING_FAST_TRY; git revert 24a4a273f00f, then ./publish; rimflow drop RIMMANDRAKE_SPREAD_SLOW_PART_OF_RULING_FAST_PATH_ONCE --reason "..."
+rc=0 wall=264.7 s, end 07:11:08 PM PST
+
+# Removed after: the scratch bullet by a text-only publish (bc1c59241b, 146.4 s: 19 tree checks 53.6 s, selftest_conductor_authority 64.5 s);
+# the follow-up, the parked ticket and the scratch item dropped (afa0cf8468, e7837d3e07, 0219f79e4a).
