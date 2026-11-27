@@ -31,8 +31,13 @@ Machine work: about 8 minutes (deploy 3, list 0.5, launch 0.7, rebuild 3.2, capt
 a model reading code to learn steps that do not change between walks, two one-time fixes, judging, and paperwork.
 `walk_stage.py` does the machine steps alone and reads the steps from data. A walk whose save is on the list and whose
 game is up on that list costs: list 16 s, deploy plan 80 s (measured 2026-11-26 on ArchSmall, in sync), load, sweep,
-pause and 38 captures. A restart adds the cold load; a rebuild adds about 3 minutes. The deploy plan is the slowest
+pause and 38 captures. A restart adds the cold load; a rebuild adds about 5 minutes. The deploy plan is the slowest
 fixed step: its def guard reads every mod over the Windows mount.
+
+Measured on ArchSmall, 2026-11-26 PST, no model in any run: the save loaded on a game already up on the list, READY in
+151 s (list 16, deploy plan 107, load 4, pause 2, 38 captures 19); a game on another list, restarted, then the save
+copied from ArchBig, loaded and re-saved; the map rebuilt (`--rebuild`) from a stopped game, READY in 534 s (deploy plan
+148, launch 39, rebuild 288, captures 21).
 
 ## ACCEPTS
 
