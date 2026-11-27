@@ -156,6 +156,7 @@ def peek_run(rec, now, projects=None, repo=REPO, mod=None):
         ids = check_ids(rec.get("clone"), row["mod"], repo)
         path = RA.transcript(rec, projects)
         evs, undated = calls(path)
+        evs = [e for e in evs if e[0] >= (rec.get("at") or 0)]   # a resumed session's older calls are not this run's
     except (CouldNotLook, RA.CouldNotLook) as e:
         row["blind"] = "could not look: %s" % e
         return row

@@ -28,6 +28,8 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_run_pe
 - The time from each call to the next call (to now, for the last call of a live run) goes to each check in the focus.
   The time of a long command, such as a scene run, is in the gap after that command.
 
+A call dated before the run's `at` is skipped before this count starts (a resumed session carries older calls).
+
 ## DOES NOT SURVIVE (not promised)
 
 - **a-check-never-named.** A run that works on a check and never writes its id in a tool call puts no time on it.
@@ -44,6 +46,9 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_run_pe
 - **the-conductor-is-asked-once.** The tick writes one `LONG ON ONE CHECK:` line into the Conductor log and one Needs
   Conductor line, once for each run and check. The line asks the four questions: is the test sensible, defer it,
   re-examine it or replace it with a cheaper test, or raise it with him. A later tick does not write the same line again.
+- **a-check-time-is-never-longer-than-the-run.** A check's time comes only from tool calls made at or after the run's
+  launch (`at`). A run that resumes an older session holds that session's calls in its transcript; they put no time on
+  any check. So the time of a check is at most the age of the run.
 - **the-focus-lapses.** The time after `LAPSE_CALLS` calls that do not name the check is not put on that check.
 - **bookkeeping-is-not-focus.** A call that names more than two checks, or claims an item, puts no time on any check.
 - **a-blind-run-says-so.** A run whose transcript or test table cannot be read reads blind, with the cause. It is never

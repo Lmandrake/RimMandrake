@@ -101,6 +101,22 @@ def t_a_long_check_is_named():
           json.dumps(r2)[:300])
 
 
+def t_a_check_time_is_never_longer_than_the_run():
+    """A resumed run's transcript holds the old session's calls; a check's time comes only from this run's own calls."""
+    old = [call(T0 - 70000, "python3 scene.py run sc_barrage"), call(T0 - 69990, "python3 scene.py run sc_barrage")]
+    rec, proj = world(TMP, "u-resumed", old + [call(T0, "ls"), call(T0 + 60, "ls")])
+    rec["at"] = T0 - 10         # the run began 10 s before its first call; the old calls are 19 h older
+    now = rec["at"] + 240       # the run is 4 min old
+    row = RP.peek_run(rec, now, proj, repo=TMP)
+    secs = [s for _, s in row.get("checks", [])]
+    check("a-check-time-is-never-longer-than-the-run", row.get("long") == [] and all(s <= 240 for s in secs)
+          and row.get("calls") == 2, json.dumps(row)[:300])
+    rec2, proj2 = world(TMP, "u-own", [call(T0 - 5, "python3 scene.py run sc_gas"), call(T0 + 100, "ls")])
+    r2 = RP.peek_run(rec2, rec2["at"] + 240, proj2, repo=TMP)
+    check("a-check-time-is-never-longer-than-the-run: its own call at the launch still counts",
+          r2.get("checks") == [["sc_gas", 235]], json.dumps(r2)[:300])
+
+
 def t_the_focus_lapses():
     evs = [(T0, "run sc_gas")] + [(T0 + 10 * (i + 1), "ls") for i in range(11)] + [(T0 + 7200, "ls")]
     tot, focus = RP.dwell(evs, set(IDS), T0 + 7300)
@@ -213,7 +229,8 @@ def t_it_changes_no_run():
 
 
 def main():
-    tests = (t_a_long_check_is_named, t_the_conductor_is_asked_once, t_the_focus_lapses, t_bookkeeping_is_not_focus,
+    tests = (t_a_long_check_is_named, t_the_conductor_is_asked_once, t_the_focus_lapses, t_a_check_time_is_never_longer_than_the_run,
+             t_bookkeeping_is_not_focus,
              t_a_blind_run_says_so, t_the_tick_reads_its_own_runs, t_one_run_never_stops_the_others,
              t_the_peek_fails_quiet_in_the_tick, t_live_says_the_tick_runs_it, t_it_changes_no_run)
     try:
