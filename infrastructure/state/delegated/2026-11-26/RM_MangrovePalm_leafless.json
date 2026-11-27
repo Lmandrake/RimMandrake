@@ -1,0 +1,260 @@
+{
+ "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RM_MangrovePalm_leafless",
+ "maker": "ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR run (installed 9967aa8641, judged by eye itself)",
+ "judge": "fresh Opus sessions launched by this item's run (/mnt/d/ClaudeWork/scratch/judge32/run.py on art_calibration's schema and contract check); none made the art",
+ "looks": [
+  {
+   "judge_model": [
+    "claude-opus-5-5"
+   ],
+   "cost_usd": [
+    0.4961403999999999
+   ],
+   "weighted_tokens": [
+    124036
+   ],
+   "outcome": "pass",
+   "contract_errors": [],
+   "inputs": [
+    "donor_A.png",
+    "donor_B.png",
+    "playzoom_A.png",
+    "playzoom_B.png",
+    "scale_A.png",
+    "scale_B.png",
+    "sibling_AB_MangrovePalmA.png",
+    "sibling_AB_MangrovePalmB.png",
+    "subject.json",
+    "variant_A.png",
+    "variant_B.png"
+   ],
+   "inputs_sha": "8a30b2f66dc5ed28",
+   "picture_sha256": {
+    "variant_A.png": "50b97723aa2c8856aea5be0e5e32723cf59fef15bbbebb9e9f564be9b0763e7d",
+    "variant_B.png": "cd129eb90b8e23837f847c7fe24fb7dd135e1e3306d1020d7bfaa700689e6d61"
+   },
+   "verdicts": [
+    {
+     "picture": "variant_A.png",
+     "facing": "none (plant, single picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Inputs complete (subject.json, variant_A.png, scale_A.png, playzoom_A.png, siblings, donors). No owner keep and no notes on this subject (subject.json), so E3 and E4 do not apply. No canon entry (canon_entry null, invented), so A does not apply. B1/B1a: painterly bare tree with no keyline. Three ringed, palm-like trunks rise from one flared root base and end in bare forked branches. B2: at 32 px/cell (playzoom_A.png, scale_A.png) it reads as three bold trunks. The warm mid-brown body (mean luma about 98) is darker than the panel's tan ground. That is not grey mud, though it is the weaker of the two variants in value separation. B3: same painterly hand and size class as sibling_AB_MangrovePalmA.png (also three trunks from a rooted base, ringed trunk) and fills the 256 canvas similarly (alpha bbox 41,4 to 214,253). D1: on scale_A.png the tree stands about 2.5 cells tall, which suits a tree. D2: 256 px canvas for a 2.5-cell quad (about 102 px/cell, near the drawSize x 128 rule) and not down-resolved. D3: the base sits on the bottom edge and the crown is near the top. D4: corners have alpha 0, and on magenta the base shows no halo or ground shadow. E1/E2: our own drawing, unlike donor_A.png (a dark black-brown root clump). Not a script-drawn stand-in. C and F do not apply (plant, no facings, no pawn)."
+    },
+    {
+     "picture": "variant_B.png",
+     "facing": "none (plant, single picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Inputs complete. No owner keep, no notes, no canon (subject.json). B1/B1a: painterly bare mangrove with a twisted single trunk, a spreading bare crown and distinct arched stilt roots. No outline. B2: at 32 px/cell (playzoom_B.png, scale_B.png) the trunk, crown fan and root arches read as clear shapes. The grey-brown body stands apart from the tan ground. Not grey mud. B3: matches sibling_AB_MangrovePalmB.png's twisted trunk over splayed prop roots, in the same painterly register and size class. Alpha bbox 20,7 to 251,250 fills the canvas as the siblings do. D1/D2: scale_B.png shows a tree about 2.5 cells tall beside the human, on a 256 px canvas. D3: the roots touch the bottom edge and nothing overflows. D4: corners have alpha 0, and on magenta the stilt roots end clean with no ground shadow or halo. The only near-black partial pixels have alpha about 1 (antialias residue), which is invisible. E1/E2: own drawing, unlike donor_B.png (a dark hooked root mass). C and F do not apply."
+    }
+   ],
+   "proposals": [
+    "Leafless graphics of a tree should keep the silhouette of the same variant's leafy sibling (trunk count, root form), so the leaf drop does not visibly reshape the tree. Evidence: variant_A.png has a flared buttress base, but sibling_AB_MangrovePalmA.png has open stilt roots. variant_B.png keeps sibling_AB_MangrovePalmB.png's stilt roots. No constraint states this now.",
+    "A 'palm' leafless graphic could be required to read as a palm (ringed trunk, few or no twig branches) rather than a generic bare deciduous tree. variant_B.png's twig-fork crown reads deciduous more than palm. variant_A.png's ringed trunks read palm. No constraint states this, and the siblings themselves branch."
+   ],
+   "contract": {
+    "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+    "family": "art_judge_brief",
+    "sha": "8a30b2f66dc5ed28",
+    "passed": [
+     {
+      "clause": "A1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B1",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png"
+      ]
+     },
+     {
+      "clause": "B1a",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "scale_A.png",
+       "scale_B.png"
+      ]
+     },
+     {
+      "clause": "B2",
+      "evidence": [
+       "playzoom_A.png",
+       "playzoom_B.png",
+       "scale_A.png",
+       "scale_B.png"
+      ]
+     },
+     {
+      "clause": "B3",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "sibling_AB_MangrovePalmA.png",
+       "sibling_AB_MangrovePalmB.png"
+      ]
+     },
+     {
+      "clause": "B4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B5",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png"
+      ]
+     },
+     {
+      "clause": "B6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5a",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C6",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png"
+      ]
+     },
+     {
+      "clause": "D1",
+      "evidence": [
+       "scale_A.png",
+       "scale_B.png",
+       "playzoom_A.png",
+       "playzoom_B.png"
+      ]
+     },
+     {
+      "clause": "D2",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D3",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "scale_A.png",
+       "scale_B.png"
+      ]
+     },
+     {
+      "clause": "D4",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png"
+      ]
+     },
+     {
+      "clause": "E1",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "donor_A.png",
+       "donor_B.png"
+      ]
+     },
+     {
+      "clause": "E2",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png"
+      ]
+     },
+     {
+      "clause": "E3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "F1",
+      "evidence": [
+       "subject.json"
+      ]
+     }
+    ],
+    "refusals": []
+   },
+   "look": "first: full inspection of the installed pictures"
+  }
+ ]
+}

@@ -1,0 +1,270 @@
+{
+ "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+ "doc": "The 32 renders installed by 9967aa8641 over byte copies of Alpha Biomes art: each row's live bytes, the verdict and the file that holds the judge's looks. Checked by src/RimMandrake/Utils/art/terrain_wrap.py manifest <this file>.",
+ "rows": [
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Terrain/Surfaces/AB_DenseGrass_Polluted.png",
+   "sha256": "44e173e1ba39dbb33ae61f458e2f81611f403cc5a147f606d1d3e1b724dd814c",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_DenseGrass_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_DenseGrass_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Terrain/Surfaces/AB_DenseMud_Polluted.png",
+   "sha256": "9c5b37c113269731a5ec3610d26b755babb7ffabfc37342d0299933dc7096072",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_DenseMud_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_DenseMud_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/Miasma/Textures/Terrain/Surfaces/AB_FertileMud_Polluted.png",
+   "sha256": "41dc58ebab95233da4e78705b3fbbed6bb6777ee6148e598024e02e20b9e9159",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_FertileMud_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_FertileMud_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/Abyss/Textures/Terrain/Surfaces/AB_FineForsakenSands_Polluted.png",
+   "sha256": "97cf5b2e588203fbecae49ef956c9d0a2840ebb31bfe25f212cfb35ff638c280",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_FineForsakenSands_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_FineForsakenSands_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/Abyss/Textures/Terrain/Surfaces/AB_ForsakenSands_Polluted.png",
+   "sha256": "86f117ba2d4c4692d4adf72a10142e1dd909ae1293f97c3311e6dc67cd4c7031",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_ForsakenSands_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_ForsakenSands_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/TheSump/Textures/Terrain/Surfaces/AB_GrassySand_Polluted.png",
+   "sha256": "552d433c81163806ea584ba462621c60a4a97a83a07b4c0ea2ce0ab2b97db91e",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_GrassySand_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_GrassySand_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/TheForge/Textures/Terrain/Surfaces/AB_HardenedGrass_Polluted.png",
+   "sha256": "2b14e7ed571e60971c60363e36545a7501f884176ed36072df2bb5a1a138a408",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_HardenedGrass_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_HardenedGrass_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/TheSump/Textures/Terrain/Surfaces/AB_LushGrass_Polluted.png",
+   "sha256": "b57692514c14f9c357a0e10a37cda6ffd6a2bba6d407aea4a0aa81af7f75c11c",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_LushGrass_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_LushGrass_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/RustCathedral/Textures/Terrain/Surfaces/AB_Polymer_Polluted.png",
+   "sha256": "91f84560231c6447fa7ca486ef3f472b8adb219a25863cc5ca5d3bbe1af61691",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_Polymer_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_Polymer_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/GelatinousSlime/Textures/Terrain/Surfaces/AB_RichSlime_Polluted.png",
+   "sha256": "64137fda511724d1deea046d173f2ae84ef0f59ee3d7d74d55192efd0035671c",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_RichSlime_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_RichSlime_Polluted.json",
+   "held": "GelatinousSlime",
+   "repair_store_sha": "479c300cc47ae0a115754200e69777f941fbcfe2a1eb7599c0f4b4b0ee29405e"
+  },
+  {
+   "path": "src/RimMandrake/GelatinousSlime/Textures/Terrain/Surfaces/AB_Slime_Polluted.png",
+   "sha256": "5c173e090621f49d3529ea38f28e5e545c18779de3a809368021e003c9962fa0",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_Slime_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_Slime_Polluted.json",
+   "held": "GelatinousSlime",
+   "repair_store_sha": "8e7f613ed535358ae67146cebbacc2c2f72132485a6b5a6a887996040f9f8681"
+  },
+  {
+   "path": "src/RimMandrake/TerminalBiomes/Textures/Terrain/Surfaces/AB_Snow_Polluted.png",
+   "sha256": "4153f2df97876ebd6d38c375b949053cca4ce4c5751e9e1e82f8600d3f9c3ebb",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_Snow_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_Snow_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/TerminalBiomes/Textures/Terrain/Surfaces/AB_WhiteIce_Polluted.png",
+   "sha256": "17f39ecd76e1cf0535b0af94b09be7633cb1c050c88fc038e9865adfc24e3384",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "AB_WhiteIce_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/AB_WhiteIce_Polluted.json"
+  },
+  {
+   "path": "src/RimMandrake/Contagion/Textures/Terrain/Surfaces/GU_AlienSandFine_Polluted.png",
+   "sha256": "06152aabb70404aac100d84667d2ede27d5f637b633e342adc72554a78cd29c6",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "GU_AlienSandFine_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/GU_AlienSandFine_Polluted.json",
+   "held": "Contagion",
+   "repair_store_sha": "19605242f7f4752ee1195cf9ec34469cd30fe43943e6b9e729695efab4e4df0f"
+  },
+  {
+   "path": "src/RimMandrake/Contagion/Textures/Terrain/Surfaces/GU_AlienSand_Polluted.png",
+   "sha256": "76237b60cf1fc3bae785036e37227fc858cc97039cf4c5ff3865cb5134517293",
+   "verdict": "KEEP",
+   "terrain": true,
+   "subject": "GU_AlienSand_Polluted",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/GU_AlienSand_Polluted.json",
+   "held": "Contagion",
+   "repair_store_sha": "25e4888dae9d65c55a6df4d8c8a9e4140c9880eb677bdadd26550b38c2d75d79"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/RM_JungleTree/AB_JungleTreeA.png",
+   "sha256": "620860f918f1e29657ba7f4b4c08990a03b3b8dc80f6e98bde716d3123679a09",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/RM_JungleTree/AB_JungleTreeB.png",
+   "sha256": "bee0b34e26ea50f519af0ceae2520432c713e3d154a773c526f95fcf0848d0bc",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/RM_JungleTree/AB_JungleTreeC.png",
+   "sha256": "e97816f5b51b93ac352b433968f48bcb4e929e966d3ae8f9d17b5aa68e0f27a4",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/RM_JungleTree/AB_JungleTreeD.png",
+   "sha256": "3b580c0983383f5653996793b3bdda39f3c8da9ac9814e979d0326f9ac8083a6",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/RM_JungleTree/AB_JungleTreeE.png",
+   "sha256": "fd09c9cc58a7a7fda26b8567d69998076448d70a02954f7f5c72062ef5632005",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/RM_JungleTree/AB_JungleTreeF.png",
+   "sha256": "a1a5a544e3195dc6bc702c515aa149a7ccba9aa7a7b2dedc18df3e0ced20a62a",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/RM_JungleTree/AB_JungleTreeG.png",
+   "sha256": "e196be96f16cfe9049e9a8dc1ab455240a172e6d380323fdf6999c2705f9c4dd",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeA.png",
+   "sha256": "da29486cf44f7bedb790a2f906946b2d62f075b0d57837bff63f29e4dde43f06",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeB.png",
+   "sha256": "cc563af2fe83a20136799498b23957d32cc772e493b36fdbd7e29240cd143714",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeC.png",
+   "sha256": "92401905cbdae24d6d7c2117a085b477b5800c1d57f8951c9bede092bbbec33d",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plants/AB_JungleTreeLeafless/AB_JungleTreeD.png",
+   "sha256": "29cfdb770c362aadb75747e3de59e1c01c0600582e70f5626dcc49d8776ea3a5",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_JungleTree_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_JungleTree_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Miasma/Textures/Things/Plants/AB_MangrovePalmLeafless/AB_MangrovePalmA.png",
+   "sha256": "50b97723aa2c8856aea5be0e5e32723cf59fef15bbbebb9e9f564be9b0763e7d",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_MangrovePalm_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_MangrovePalm_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Miasma/Textures/Things/Plants/AB_MangrovePalmLeafless/AB_MangrovePalmB.png",
+   "sha256": "cd129eb90b8e23837f847c7fe24fb7dd135e1e3306d1020d7bfaa700689e6d61",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_MangrovePalm_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_MangrovePalm_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Miasma/Textures/Things/Plants/AB_MangroveTreeLeafless/AB_MangroveTreeA.png",
+   "sha256": "563667a11c7c92edddeb88d5bfc5f4ecea4ced2610fe3353314d19ecec5f2b93",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_MangroveTree_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_MangroveTree_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Miasma/Textures/Things/Plants/AB_MangroveTreeLeafless/AB_MangroveTreeB.png",
+   "sha256": "937130d2755c590ad2985b20e9028de0afcb9a8490429f48b8a75d6f012f5451",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_MangroveTree_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_MangroveTree_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/Miasma/Textures/Things/Plants/AB_MangroveTreeLeafless/AB_MangroveTreeC.png",
+   "sha256": "961cddd7a4949c02f4ae9cbbb336afca53f5e1f32d31074f64d408df5b7e011f",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_MangroveTree_leafless",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_MangroveTree_leafless.json"
+  },
+  {
+   "path": "src/RimMandrake/BlueDesert/Textures/Things/Plants/RM_ToxiGrass.png",
+   "sha256": "6a277da00172e3e01e3ca0508a09bfb869eb0a7df95f57b1407bbb2c726b1a6b",
+   "verdict": "KEEP",
+   "terrain": false,
+   "subject": "RM_ToxiGrass",
+   "verdict_file": "infrastructure/state/delegated/2026-11-26/RM_ToxiGrass.json"
+  }
+ ]
+}

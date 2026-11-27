@@ -1,0 +1,293 @@
+{
+ "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RM_MangroveTree_leafless",
+ "maker": "ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR run (installed 9967aa8641, judged by eye itself)",
+ "judge": "fresh Opus sessions launched by this item's run (/mnt/d/ClaudeWork/scratch/judge32/run.py on art_calibration's schema and contract check); none made the art",
+ "looks": [
+  {
+   "judge_model": [
+    "claude-opus-5-5"
+   ],
+   "cost_usd": [
+    0.608776
+   ],
+   "weighted_tokens": [
+    152194
+   ],
+   "outcome": "pass",
+   "contract_errors": [],
+   "inputs": [
+    "donor_A.png",
+    "donor_B.png",
+    "donor_C.png",
+    "playzoom_A.png",
+    "playzoom_B.png",
+    "playzoom_C.png",
+    "scale_A.png",
+    "scale_B.png",
+    "scale_C.png",
+    "sibling_AB_MangroveTreeA.png",
+    "sibling_AB_MangroveTreeB.png",
+    "sibling_AB_MangroveTreeC.png",
+    "subject.json",
+    "variant_A.png",
+    "variant_B.png",
+    "variant_C.png"
+   ],
+   "inputs_sha": "4206f668f52c1887",
+   "picture_sha256": {
+    "variant_A.png": "563667a11c7c92edddeb88d5bfc5f4ecea4ced2610fe3353314d19ecec5f2b93",
+    "variant_B.png": "937130d2755c590ad2985b20e9028de0afcb9a8490429f48b8a75d6f012f5451",
+    "variant_C.png": "961cddd7a4949c02f4ae9cbbb336afca53f5e1f32d31074f64d408df5b7e011f"
+   },
+   "verdicts": [
+    {
+     "picture": "variant_A.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Our own painterly leafless mangrove: grey-taupe twisted trunk, bare branching crown, an arched prop-root skirt that fits the description's 'complex root system'. No outline (B1a). It is not the donor: the bytes differ from donor_A.png, and the donor is a black, keylined, gnarled stump. At 32 px/cell (playzoom_A.png, scale_A.png) it reads as a few bold shapes (crown fan, trunk, root arch), lighter than the brown ground, so it is not grey mud. Alpha is clean: no backdrop, halo or ground shadow. Outside the body there are only 3507 stray px at alpha <=2, which no one can see, including a faint smudge at the lower right. The silhouette is ground-anchored in its 3.8-cell quad (bbox x15-244, y8-250). Palette and painterly register match the sibling live slots (sibling_AB_MangroveTreeA/B/C.png), which have the same root form and trunk tones without leaves."
+    },
+    {
+     "picture": "variant_B.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Our own painting: a reddish-brown trunk streaked with grey bark, a bare crown and a tall prop-root skirt with hanging aerial-root stubs. No outline. It is not donor_B.png, which is a black keylined stump. At 32 px/cell (playzoom_B.png, scale_B.png) it reads as a trunk plus a root arch plus a branch fan, and its warm red value stands clearly apart from the sand ground. Clean alpha: stray px are alpha <=5 and invisible. It fills the 3.8-cell quad the same way A and C do, so all three variants are one size class. The red trunk echoes the reddish trunk of sibling_AB_MangroveTreeA.png, so it reads as the same artist."
+    },
+    {
+     "picture": "variant_C.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Our own painting: a pale beige trunk, a finely forked bare crown, prop roots, and small pneumatophore stubs at the base. These stubs are the subject's own roots, not scenery. No outline. It is not donor_C.png. This is the closest of the three to B2: its beige hue sits nearest the sand ground. Still, at 32 px/cell (playzoom_C.png, scale_C.png) the trunk and root arch read lighter than the ground as clear shapes. The finest twigs dissolve at 18 px/cell, which is expected for twigs and is not a fault of the body. I judge it not grey mud by eye. Clean alpha (stray px alpha <=1). It matches A and B in size and the sibling slots in register."
+    }
+   ],
+   "proposals": [
+    "D2 for plants: the def has no drawSize, so the literal 'drawSize x 128 px per cell' gives 128 px, and the 256 px canvas passes. But the plant quad is 3.8 cells, so the art carries only ~67 px/cell, and the 128 px/cell max-zoom panels in scale_A/B/C.png are upsampled and slightly soft. Proposal: for plants, size the canvas from quad_cells (visualSizeRange.max x drawSize) x 128, which here is ~486 px. That would be a new rule, not a current one.",
+    "D3 for trees: a tree's silhouette always overflows its 1x1 footprint by design (visualSizeRange 3.8). Proposal: state that for plants D3 is judged against the quad (graphicData.drawSize x visualSizeRange.max), anchored at the bottom, not against the def footprint.",
+    "Optional cleanup: variant_A/B/C.png carry 1.3k to 3.5k stray pixels at alpha 1-5 outside the body, left over from background removal. They are invisible in game, but an alpha floor (zero any alpha < 8 that is not connected to the body) would keep the files clean."
+   ],
+   "contract": {
+    "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+    "family": "art_judge_brief",
+    "sha": "4206f668f52c1887",
+    "passed": [
+     {
+      "clause": "A1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B1",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png"
+      ]
+     },
+     {
+      "clause": "B1a",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "donor_A.png",
+       "donor_B.png",
+       "donor_C.png"
+      ]
+     },
+     {
+      "clause": "B2",
+      "evidence": [
+       "playzoom_A.png",
+       "playzoom_B.png",
+       "playzoom_C.png",
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png"
+      ]
+     },
+     {
+      "clause": "B3",
+      "evidence": [
+       "sibling_AB_MangroveTreeA.png",
+       "sibling_AB_MangroveTreeB.png",
+       "sibling_AB_MangroveTreeC.png",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B5",
+      "evidence": [
+       "variant_B.png"
+      ]
+     },
+     {
+      "clause": "B6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C2",
+      "evidence": [
+       "subject.json",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png"
+      ]
+     },
+     {
+      "clause": "C3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5a",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D1",
+      "evidence": [
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png",
+       "playzoom_A.png",
+       "playzoom_B.png",
+       "playzoom_C.png"
+      ]
+     },
+     {
+      "clause": "D2",
+      "evidence": [
+       "subject.json",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "donor_A.png"
+      ]
+     },
+     {
+      "clause": "D3",
+      "evidence": [
+       "subject.json",
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png"
+      ]
+     },
+     {
+      "clause": "D4",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png"
+      ]
+     },
+     {
+      "clause": "E1",
+      "evidence": [
+       "donor_A.png",
+       "donor_B.png",
+       "donor_C.png",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png"
+      ]
+     },
+     {
+      "clause": "E2",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png"
+      ]
+     },
+     {
+      "clause": "E3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "F1",
+      "evidence": [
+       "subject.json"
+      ]
+     }
+    ],
+    "refusals": []
+   },
+   "look": "first: full inspection of the installed pictures"
+  }
+ ]
+}

@@ -1,0 +1,312 @@
+{
+ "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RM_JungleTree_leafless",
+ "maker": "ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR run (installed 9967aa8641, judged by eye itself)",
+ "judge": "fresh Opus sessions launched by this item's run (/mnt/d/ClaudeWork/scratch/judge32/run.py on art_calibration's schema and contract check); none made the art",
+ "looks": [
+  {
+   "judge_model": [
+    "claude-opus-5-5"
+   ],
+   "cost_usd": [
+    0.5911514000000001
+   ],
+   "weighted_tokens": [
+    147788
+   ],
+   "outcome": "pass",
+   "contract_errors": [],
+   "inputs": [
+    "donor_A.png",
+    "donor_B.png",
+    "donor_C.png",
+    "donor_D.png",
+    "playzoom_A.png",
+    "playzoom_B.png",
+    "playzoom_C.png",
+    "playzoom_D.png",
+    "scale_A.png",
+    "scale_B.png",
+    "scale_C.png",
+    "scale_D.png",
+    "sibling_AB_JungleTreeA.png",
+    "sibling_AB_JungleTreeB.png",
+    "sibling_AB_JungleTreeC.png",
+    "sibling_AB_JungleTreeD.png",
+    "sibling_AB_JungleTreeE.png",
+    "sibling_AB_JungleTreeF.png",
+    "sibling_AB_JungleTreeG.png",
+    "subject.json",
+    "variant_A.png",
+    "variant_B.png",
+    "variant_C.png",
+    "variant_D.png"
+   ],
+   "inputs_sha": "701df540a00c026e",
+   "picture_sha256": {
+    "variant_A.png": "da29486cf44f7bedb790a2f906946b2d62f075b0d57837bff63f29e4dde43f06",
+    "variant_B.png": "cc563af2fe83a20136799498b23957d32cc772e493b36fdbd7e29240cd143714",
+    "variant_C.png": "92401905cbdae24d6d7c2117a085b477b5800c1d57f8951c9bede092bbbec33d",
+    "variant_D.png": "29cfdb770c362aadb75747e3de59e1c01c0600582e70f5626dcc49d8776ea3a5"
+   },
+   "verdicts": [
+    {
+     "picture": "variant_A.png",
+     "facing": "none (plant, single picture)",
+     "verdict": "KEEP",
+     "notes": "Inputs complete per subject.json; not owner-kept, no notes, no canon. Our own painterly render of a bare, twisted jungle tree with a flared root mass. It is not the donor: donor_A.png is a narrow grey cartoon stump with a dark keyline. No outline (B1a). Value is clearly apart from the tan ground in scale_A.png and from the brown ground in playzoom_A.png: the trunk, three main limbs and root flare read as bold shapes (B2 pass). It fills the 10-cell quad like the sibling keeps sibling_AB_JungleTreeA-G.png, in the same painterly register and trunk palette (B3). Real alpha: no backdrop, halo or ground shadow; the core alpha is about 252, the same as the siblings (D4)."
+    },
+    {
+     "picture": "variant_B.png",
+     "facing": "none (plant, single picture)",
+     "verdict": "KEEP",
+     "notes": "Our own render, not donor_B.png. It is painterly with no keyline and has light moss on the trunk and roots. This is the lightest of the four: on the tan ground in scale_B.png the fine outer twigs lose contrast. The trunk, limbs and root flare still read darker than the ground with clear shapes in playzoom_B.png and at 18 px/cell, so neither grey-mud fault applies (B2 pass, marginal; flagged here only). The size class and style match the sibling keeps. Clean alpha."
+    },
+    {
+     "picture": "variant_C.png",
+     "facing": "none (plant, single picture)",
+     "verdict": "KEEP",
+     "notes": "Our own render, not donor_C.png. It has a spiral-twisted trunk with warm rust bark highlights, a broad branching crown and a root flare. It reads as bold shapes, clearly darker than the ground, in playzoom_C.png and scale_C.png. It has no outline and its scale and register match the siblings. Clean alpha; the bbox reaches the canvas foot (no float)."
+    },
+    {
+     "picture": "variant_D.png",
+     "facing": "none (plant, single picture)",
+     "verdict": "KEEP",
+     "notes": "Our own render, not donor_D.png. It is the darkest of the four (red-brown) and has the strongest value separation from the ground in playzoom_D.png and scale_D.png. It is painterly with no keyline, matches the sibling scale and style, and has clean alpha."
+    }
+   ],
+   "proposals": [
+    "D2's formula (drawSize x 128 px/cell) is blind to plant.visualSizeRange. This subject's drawSize is the engine default (1,1), so the literal bar is 128 px. Its real quad is 10 cells (subject.json), so the 256 px canvas gives 25.6 px/cell, below even the 32 px/cell play zoom; the 128 px/cell max-zoom pane of scale_A.png shows the softness. Proposal: for plants, measure D2 against drawSize.x x visualSizeRange.max x 128 (here 1280 px). This would be a new line, not grounds for this verdict. The siblings (sibling_AB_JungleTreeA.png and the rest) share the same 256 px canvas.",
+    "A leafless graphic could echo the trunk form of the leafed sibling keeps: the siblings have rope-like, multi-stem banyan trunks with aerial roots, while all four variants are single-trunk oak-like forms. Then a tree that loses its leaves would not appear to change species. No current line states this, so it is a wish only."
+   ],
+   "contract": {
+    "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+    "family": "art_judge_brief",
+    "sha": "701df540a00c026e",
+    "passed": [
+     {
+      "clause": "A1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B1",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png"
+      ]
+     },
+     {
+      "clause": "B1a",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "donor_A.png"
+      ]
+     },
+     {
+      "clause": "B2",
+      "evidence": [
+       "playzoom_A.png",
+       "playzoom_B.png",
+       "playzoom_C.png",
+       "playzoom_D.png",
+       "scale_B.png"
+      ]
+     },
+     {
+      "clause": "B3",
+      "evidence": [
+       "sibling_AB_JungleTreeA.png",
+       "sibling_AB_JungleTreeB.png",
+       "sibling_AB_JungleTreeC.png",
+       "sibling_AB_JungleTreeD.png",
+       "sibling_AB_JungleTreeE.png",
+       "sibling_AB_JungleTreeF.png",
+       "sibling_AB_JungleTreeG.png",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png"
+      ]
+     },
+     {
+      "clause": "B4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B5",
+      "evidence": [
+       "variant_B.png"
+      ]
+     },
+     {
+      "clause": "B6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5a",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C6",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png"
+      ]
+     },
+     {
+      "clause": "D1",
+      "evidence": [
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png",
+       "scale_D.png",
+       "playzoom_A.png",
+       "playzoom_B.png",
+       "playzoom_C.png",
+       "playzoom_D.png"
+      ]
+     },
+     {
+      "clause": "D2",
+      "evidence": [
+       "subject.json",
+       "variant_A.png",
+       "donor_A.png"
+      ]
+     },
+     {
+      "clause": "D3",
+      "evidence": [
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png",
+       "scale_D.png",
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D4",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png"
+      ]
+     },
+     {
+      "clause": "E1",
+      "evidence": [
+       "donor_A.png",
+       "donor_B.png",
+       "donor_C.png",
+       "donor_D.png",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png"
+      ]
+     },
+     {
+      "clause": "E2",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png"
+      ]
+     },
+     {
+      "clause": "E3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "F1",
+      "evidence": [
+       "subject.json"
+      ]
+     }
+    ],
+    "refusals": []
+   },
+   "look": "first: full inspection of the installed pictures"
+  }
+ ]
+}

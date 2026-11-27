@@ -1,0 +1,477 @@
+{
+ "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "AB_GrassySand_Polluted",
+ "maker": "ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR run (installed 9967aa8641, judged by eye itself)",
+ "judge": "fresh Opus sessions launched by this item's run (/mnt/d/ClaudeWork/scratch/judge32/run.py on art_calibration's schema and contract check); none made the art",
+ "looks": [
+  {
+   "judge_model": [
+    "claude-opus-5-5"
+   ],
+   "cost_usd": [
+    0.560147
+   ],
+   "weighted_tokens": [
+    140037
+   ],
+   "outcome": "pass",
+   "contract_errors": [],
+   "inputs": [
+    "donor_standin.png",
+    "sibling_unpolluted.png",
+    "subject.json",
+    "terrain.png",
+    "tiled_2x2.png"
+   ],
+   "inputs_sha": "7fbf6af0f1a314fd",
+   "picture_sha256": {
+    "terrain.png": "43918cdcf40dfe87c67fda6132f20a7c022343f0f4b23ba45f7e5fecc2535689"
+   },
+   "verdicts": [
+    {
+     "picture": "terrain.png (sha256 43918cdcf40dfe87…)",
+     "facing": "none (terrain, one top-down surface per subject.json)",
+     "verdict": "KEEP",
+     "notes": "Own art, not the donor: donor_standin.png is a flat grey speckled gravel (mean RGB 138/139/130, saturation 16.5) while terrain.png is a warm olive grass-and-sand ground (mean RGB 114/99/66). Luminance correlation with the donor is 0.014, so E1 passes. It reads as the sibling_unpolluted.png ground (same tufts of grass over sandy patches, same painterly-photographic register, no outlines) made darker, less saturated and stained with grey-brown smears. That is a fitting polluted variant of the same terrain. Tiling: tiled_2x2.png shows no visible seam at the joins at normal view. Measured wrap-edge difference is 6.9–7.0 vs 4.3 for neighbouring columns, about the same as pixels 4 apart (6.5), so a faint join line is barely there on close zoom. Concerns, which no constraint decides: (1) the 512 px canvas is half the sibling's 1024 px. Its features are coarser: autocorrelation length on a 512-normalised tile is 9 px at half-correlation vs 2 px for the sibling. Grass tufts and blotches on a polluted cell will therefore render roughly 2–4x larger and softer than on the neighbouring unpolluted cell. The sibling is not an owner keep, so B3 does not bind. (2) terrain.png carries a 1 px border at alpha 220 (0.78% of pixels; everything else is 255). If the terrain shader honours main-texture alpha, this could draw a faint grid line every repeat. A1–A5 do not apply: canon_entry is null and the subject is invented."
+    }
+   ],
+   "proposals": [
+    "Terrain seam constraint: a terrain texture must tile without a visible join in a 2x2 edge-to-edge render. Evidence: tiled_2x2.png is supplied for exactly this check, but no lettered line A1–F1 states it, so a visible seam could not be refused.",
+    "Terrain sibling scale constraint: a polluted terrain texture matches its unpolluted sibling's resolution and feature scale, so a polluted cell does not change grain size next to a clean one. Evidence: terrain.png is 512 px and sibling_unpolluted.png is 1024 px, with tile-normalised correlation length 9 px vs 2 px.",
+    "Terrain alpha constraint: terrain textures are fully opaque (alpha 255 everywhere) or carry no alpha channel. Evidence: terrain.png has a 1 px frame at alpha 220. D4 is written for sprites and does not address full-coverage ground."
+   ],
+   "contract": {
+    "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+    "family": "art_judge_brief",
+    "sha": "7fbf6af0f1a314fd",
+    "passed": [
+     {
+      "clause": "A1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B1",
+      "evidence": [
+       "terrain.png",
+       "sibling_unpolluted.png"
+      ]
+     },
+     {
+      "clause": "B1a",
+      "evidence": [
+       "terrain.png"
+      ]
+     },
+     {
+      "clause": "B2",
+      "evidence": [
+       "terrain.png",
+       "tiled_2x2.png"
+      ]
+     },
+     {
+      "clause": "B3",
+      "evidence": [
+       "sibling_unpolluted.png",
+       "subject.json",
+       "terrain.png"
+      ]
+     },
+     {
+      "clause": "B4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B5",
+      "evidence": [
+       "terrain.png"
+      ]
+     },
+     {
+      "clause": "B6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5a",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D1",
+      "evidence": [
+       "subject.json",
+       "tiled_2x2.png"
+      ]
+     },
+     {
+      "clause": "D2",
+      "evidence": [
+       "terrain.png",
+       "donor_standin.png",
+       "sibling_unpolluted.png"
+      ]
+     },
+     {
+      "clause": "D3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D4",
+      "evidence": [
+       "terrain.png",
+       "tiled_2x2.png"
+      ]
+     },
+     {
+      "clause": "D4 exception",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E1",
+      "evidence": [
+       "terrain.png",
+       "donor_standin.png"
+      ]
+     },
+     {
+      "clause": "E2",
+      "evidence": [
+       "terrain.png"
+      ]
+     },
+     {
+      "clause": "E3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "F1",
+      "evidence": [
+       "subject.json"
+      ]
+     }
+    ],
+    "refusals": []
+   },
+   "look": "first: full inspection of the installed pictures"
+  },
+  {
+   "judge_model": [
+    "claude-opus-5-5"
+   ],
+   "cost_usd": [
+    0.46615300000000004
+   ],
+   "weighted_tokens": [
+    116539
+   ],
+   "outcome": "pass",
+   "contract_errors": [],
+   "inputs": [
+    "before_repair.png",
+    "donor_standin.png",
+    "sibling_unpolluted.png",
+    "subject.json",
+    "terrain.png",
+    "tiled_2x2.png"
+   ],
+   "inputs_sha": "3836be681099a87b",
+   "picture_sha256": {
+    "terrain.png": "0d6d2cb3a008d8aa1084ec5e09e72041318889cf5af3f30d367020dd020f0139"
+   },
+   "verdicts": [
+    {
+     "picture": "terrain.png",
+     "facing": "none (terrain, one top-down surface)",
+     "verdict": "KEEP",
+     "notes": "Check of the repair only. (1) The frame is gone: alpha is 255 on every pixel (min = max = 255), so the 1 px alpha-220 border that could draw a grid line in game no longer exists. The step from column 0 to column 1 is 4.15 and from row 0 to row 1 is 4.48, against an interior step of 4.04 to 4.06, so no dark or light edge row is left. (2) Wrap seam: the step from the last column to the first is 4.49 against 4.04 interior (1.11x). The step from the last row to the first is 4.44 against 4.06 (1.09x). In tiled_2x2.png, at full view and in a 3x nearest-neighbour crop centred on the four-way join, I see no join line in either direction. The seam is resolved. (3) The blend band: a difference map against before_repair.png shows that the repair changed only a band about 96 px wide along every edge; the centre is untouched. In that band local contrast drops: the mean 16 px-window std is 5.1 to 5.8 against 6.7 inside, and the band-wide std is 8.0 to 8.2 against 9.5. So the outer band is roughly 15 to 25% softer and a little hazier than the middle of the tile. I see no doubled or ghosted grass tufts at full size. In the 2x2 view the softening reads at most as a faint smoother cross where the copies meet, and it is not noticeable at normal view. No constraint decides this. The picture outside the band is unchanged from the first look's KEEP: our own olive grass-and-sand ground, not the grey donor gravel; a darker, stained variant of the sibling's style."
+    }
+   ],
+   "proposals": [
+    "Seam: none remains. The wrap step is 1.09 to 1.11x the interior pixel step, and no join is visible in tiled_2x2.png. No proposal is needed on the seam itself.",
+    "Blend-band softening (terrain.png compared with before_repair.png): the 96 px border band that the repair blended toward the half-shifted copy has about 15 to 25% less local contrast than the centre (16 px-window std 5.1 to 5.8 against 6.7). Proposed constraint: a terrain made seamless by cross-blending keeps its local contrast in the blend band within about 10% of the interior, so a repeating texture does not show a faint soft grid. The fix is an offset-and-heal or a histogram-preserving blend in place of a straight linear blend. This is advisory and blocks nothing.",
+    "Carried from the first look and still open (sibling_unpolluted.png, terrain.png): the polluted file is 512 px and its sibling is 1024 px, so features on a polluted cell render about 2x coarser than on the clean cell beside it. Proposed constraint: a polluted variant of a terrain matches its unpolluted sibling's canvas resolution."
+   ],
+   "contract": {
+    "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+    "family": "art_judge_brief",
+    "sha": "3836be681099a87b",
+    "passed": [
+     {
+      "clause": "A1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B1",
+      "evidence": [
+       "terrain.png",
+       "sibling_unpolluted.png"
+      ]
+     },
+     {
+      "clause": "B1a",
+      "evidence": [
+       "terrain.png",
+       "tiled_2x2.png"
+      ]
+     },
+     {
+      "clause": "B2",
+      "evidence": [
+       "terrain.png",
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B3",
+      "evidence": [
+       "sibling_unpolluted.png",
+       "subject.json",
+       "terrain.png"
+      ]
+     },
+     {
+      "clause": "B4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B5",
+      "evidence": [
+       "terrain.png"
+      ]
+     },
+     {
+      "clause": "B6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5a",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D1",
+      "evidence": [
+       "subject.json",
+       "tiled_2x2.png"
+      ]
+     },
+     {
+      "clause": "D2",
+      "evidence": [
+       "terrain.png",
+       "before_repair.png",
+       "donor_standin.png"
+      ]
+     },
+     {
+      "clause": "D3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D4",
+      "evidence": [
+       "terrain.png",
+       "before_repair.png",
+       "tiled_2x2.png"
+      ]
+     },
+     {
+      "clause": "E1",
+      "evidence": [
+       "terrain.png",
+       "donor_standin.png"
+      ]
+     },
+     {
+      "clause": "E2",
+      "evidence": [
+       "terrain.png"
+      ]
+     },
+     {
+      "clause": "E3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "F1",
+      "evidence": [
+       "subject.json"
+      ]
+     }
+    ],
+    "refusals": []
+   },
+   "look": "second: check of the repair (repair v1, never installed)"
+  }
+ ],
+ "installed": {
+  "path": "src/RimMandrake/TheSump/Textures/Terrain/Surfaces/AB_GrassySand_Polluted.png",
+  "sha256": "552d433c81163806ea584ba462621c60a4a97a83a07b4c0ea2ce0ab2b97db91e",
+  "how": "terrain_wrap.py heal of the first-look picture (repair v3), installed through art.py install",
+  "measured": {
+   "frame_step": 0.65,
+   "wrap_ratio": 1.07
+  }
+ },
+ "window_verdict": {
+  "verdict": "KEEP",
+  "basis": "Both looks found no lettered line (A1-F1) broken; no REDO and no refusal record. The first look's UNSUREs named one point no line covers: a 1-px dark frame and a weak wrap step, a grid line at every repeat in game (measured: frame 3-26 levels, wrap up to 6x; donors 0-2 and 1.0-1.2x). The second look checked repair v1 and found it drew the old wrap seam at the midline of each border band (UNSURE on 3; measured on all 15). Repair v3 removes the frame and cross-fades the wrap without a shifted copy: measured frame <= 0.8, wrap 0.97-1.23x, worst straight line in the file and across the wrap <= 1.52x the median step (donors 1.5-8.7x), and a 2x2 tile shows no line by eye. The brief allows no third look (§When the look is enough, and when to stop), so v3 stands on its measurements. A Slime UNSURE on the second look was for the missing play-zoom input, which the brief does not define for a terrain (proposal)."
+ }
+}

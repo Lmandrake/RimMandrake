@@ -1,0 +1,226 @@
+{
+ "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RM_ToxiGrass",
+ "maker": "ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR run (installed 9967aa8641, judged by eye itself)",
+ "judge": "fresh Opus sessions launched by this item's run (/mnt/d/ClaudeWork/scratch/judge32/run.py on art_calibration's schema and contract check); none made the art",
+ "looks": [
+  {
+   "judge_model": [
+    "claude-opus-5-5"
+   ],
+   "cost_usd": [
+    0.40163780000000004
+   ],
+   "weighted_tokens": [
+    100410
+   ],
+   "outcome": "pass",
+   "contract_errors": [],
+   "inputs": [
+    "donor_single.png",
+    "playzoom_single.png",
+    "scale_single.png",
+    "subject.json",
+    "variant_single.png"
+   ],
+   "inputs_sha": "17b7e6330fbd11b8",
+   "picture_sha256": {
+    "variant_single.png": "6a277da00172e3e01e3ca0508a09bfb869eb0a7df95f57b1407bbb2c726b1a6b"
+   },
+   "verdicts": [
+    {
+     "picture": "variant_single.png (sha256 6a277da00172e3e0…; src/RimMandrake/BlueDesert/Textures/Things/Plants/RM_ToxiGrass.png)",
+     "facing": "single (plant, not rotatable)",
+     "verdict": "KEEP",
+     "notes": "Our own painterly drawing, not the donor: donor_single.png is a set of flat purple-black curved spikes; the variant is a different plant (a tuft of twisted olive and mauve leaves with perforated tips and yellow-green bulbs), so E1 is met. Painterly shading with no drawn keyline; the edges are soft and slightly darker, with no black outline (B1, B1a). Real alpha: composited on brown and on magenta at x4, there is no backdrop, halo or ground shadow; the base sits at the canvas bottom, bbox x 6-120, y 3-125 of 128 (D3, D4). Canvas 128 px for engine-default drawSize 1 (D2). At 32 px/cell (playzoom_single.png, 19 px quad) and in scale_single.png, the tufts read as olive/yellow over purple, apart from the brown ground by hue; it is a small plant, but it is not grey mud (B2, advisory). Its size beside the human in scale_single.png is right for a ground plant at 0.6 cells. The sickly olive, mauve and pustule look suits 'a pollution plant: Better not eat this'. There is no owner keep, no note, no sibling and no canon, per subject.json."
+    }
+   ],
+   "proposals": [
+    "Plants: the brief has no line on whether a plant is judged as one picture or at its maxMeshCount cluster density. scale_single.png shows this one as a 3x3 cluster at maxMeshCount 9, where the bulbs repeat as a pattern. A line naming which view decides legibility would remove the ambiguity (evidence: subject.json size.maxMeshCount 9; scale_single.png)."
+   ],
+   "contract": {
+    "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+    "family": "art_judge_brief",
+    "sha": "17b7e6330fbd11b8",
+    "passed": [
+     {
+      "clause": "A1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B1",
+      "evidence": [
+       "variant_single.png"
+      ]
+     },
+     {
+      "clause": "B1a",
+      "evidence": [
+       "variant_single.png"
+      ]
+     },
+     {
+      "clause": "B2",
+      "evidence": [
+       "playzoom_single.png",
+       "scale_single.png"
+      ]
+     },
+     {
+      "clause": "B3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B5",
+      "evidence": [
+       "variant_single.png"
+      ]
+     },
+     {
+      "clause": "B6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5a",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C6",
+      "evidence": [
+       "variant_single.png"
+      ]
+     },
+     {
+      "clause": "D1",
+      "evidence": [
+       "scale_single.png",
+       "playzoom_single.png"
+      ]
+     },
+     {
+      "clause": "D2",
+      "evidence": [
+       "variant_single.png",
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D3",
+      "evidence": [
+       "variant_single.png",
+       "scale_single.png"
+      ]
+     },
+     {
+      "clause": "D4",
+      "evidence": [
+       "variant_single.png"
+      ]
+     },
+     {
+      "clause": "E1",
+      "evidence": [
+       "variant_single.png",
+       "donor_single.png"
+      ]
+     },
+     {
+      "clause": "E2",
+      "evidence": [
+       "variant_single.png"
+      ]
+     },
+     {
+      "clause": "E3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "F1",
+      "evidence": [
+       "subject.json"
+      ]
+     }
+    ],
+    "refusals": []
+   },
+   "look": "first: full inspection of the installed pictures"
+  }
+ ]
+}

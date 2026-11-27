@@ -1,0 +1,393 @@
+{
+ "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RM_JungleTree",
+ "maker": "ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR run (installed 9967aa8641, judged by eye itself)",
+ "judge": "fresh Opus sessions launched by this item's run (/mnt/d/ClaudeWork/scratch/judge32/run.py on art_calibration's schema and contract check); none made the art",
+ "looks": [
+  {
+   "judge_model": [
+    "claude-opus-5-5"
+   ],
+   "cost_usd": [
+    0.8177131999999999
+   ],
+   "weighted_tokens": [
+    204429
+   ],
+   "outcome": "pass",
+   "contract_errors": [],
+   "inputs": [
+    "donor_A.png",
+    "donor_B.png",
+    "donor_C.png",
+    "donor_D.png",
+    "donor_E.png",
+    "donor_F.png",
+    "donor_G.png",
+    "playzoom_A.png",
+    "playzoom_B.png",
+    "playzoom_C.png",
+    "playzoom_D.png",
+    "playzoom_E.png",
+    "playzoom_F.png",
+    "playzoom_G.png",
+    "scale_A.png",
+    "scale_B.png",
+    "scale_C.png",
+    "scale_D.png",
+    "scale_E.png",
+    "scale_F.png",
+    "scale_G.png",
+    "sibling_AB_JungleTreeA.png",
+    "sibling_AB_JungleTreeB.png",
+    "sibling_AB_JungleTreeC.png",
+    "sibling_AB_JungleTreeD.png",
+    "subject.json",
+    "variant_A.png",
+    "variant_B.png",
+    "variant_C.png",
+    "variant_D.png",
+    "variant_E.png",
+    "variant_F.png",
+    "variant_G.png"
+   ],
+   "inputs_sha": "6beaa7523030b327",
+   "picture_sha256": {
+    "variant_A.png": "620860f918f1e29657ba7f4b4c08990a03b3b8dc80f6e98bde716d3123679a09",
+    "variant_B.png": "bee0b34e26ea50f519af0ceae2520432c713e3d154a773c526f95fcf0848d0bc",
+    "variant_C.png": "e97816f5b51b93ac352b433968f48bcb4e929e966d3ae8f9d17b5aa68e0f27a4",
+    "variant_D.png": "3b580c0983383f5653996793b3bdda39f3c8da9ac9814e979d0326f9ac8083a6",
+    "variant_E.png": "fd09c9cc58a7a7fda26b8567d69998076448d70a02954f7f5c72062ef5632005",
+    "variant_F.png": "a1a5a544e3195dc6bc702c515aa149a7ccba9aa7a7b2dedc18df3e0ced20a62a",
+    "variant_G.png": "e196be96f16cfe9049e9a8dc1ab455240a172e6d380323fdf6999c2705f9c4dd"
+   },
+   "verdicts": [
+    {
+     "picture": "variant_A.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Painterly broadleaf canopy of layered dark-green leaf fans over a thick, twisted, moss-covered trunk with flared roots. No drawn keyline: edge pixels have luminance 64 and interior pixels 62. At 32 px/cell (playzoom_A.png, scale_A.png) it reads as a few bold shapes: a dark canopy mass over an olive-brown trunk, clearly apart from the tan ground. Real alpha: the four corners are 0 and the base is roots only, with no shadow or ground props. It fills the 10-cell quad (bbox x 2-253, y 5-251). It is our own drawing and shares nothing with the outlined cel-style donor_A.png. No owner keep, no notes, no canon entry."
+    },
+    {
+     "picture": "variant_B.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Tall twisting trunk with five rounded canopy pads, hanging moss and small ferns growing on the trunk and roots (epiphytes on the tree, not ground scenery). No keyline (edge luminance 53, interior 55). In playzoom_B.png and scale_B.png the canopy pads and trunk read as distinct shapes against the ground. Clean alpha, bbox x 7-254, y 2-254. Not the donor (donor_B.png is a flat outlined leaf-palm)."
+    },
+    {
+     "picture": "variant_C.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Brighter yellow-green clustered canopy, strongly twisted moss-wrapped trunk, wide buttress roots, hanging moss strands. No keyline (edge luminance 56, interior 60). It reads clearly at play zoom (playzoom_C.png, scale_C.png). Clean alpha with no ground shadow, bbox x 2-255, y 2-252. Not the donor (donor_C.png)."
+    },
+    {
+     "picture": "variant_D.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Three teal-green canopy domes with heavy hanging moss over a braided trunk and looping roots. No keyline (edge luminance 59, interior 63). In playzoom_D.png and scale_D.png the three canopy masses and trunk read as bold shapes. Clean alpha, bbox x 5-251, y 6-249. Not the donor (donor_D.png)."
+    },
+    {
+     "picture": "variant_E.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Two intertwined trunks under palm-like leaf canopies with hanging vines. One root curls up into a spiral hook at the right. The hook is unusual, but it fits the description's 'thick, twisting roots' and breaks no constraint. No keyline (edge luminance 50, interior 56). It reads clearly in playzoom_E.png and scale_E.png. Clean alpha, with no ground props at the base. Bbox x 17-240 is slightly narrower than its siblings but neither floats nor overflows. Not the donor (donor_E.png)."
+    },
+    {
+     "picture": "variant_F.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Rounded clustered canopy in four lobes over a forked, twisting, mossy trunk with spreading roots. No keyline (edge luminance 56, interior 60). It reads at 32 px/cell (playzoom_F.png, scale_F.png). Clean alpha, bbox x 7-249, y 5-250. Not the donor (donor_F.png)."
+    },
+    {
+     "picture": "variant_G.png",
+     "facing": "none (plant, one picture per variant)",
+     "verdict": "KEEP",
+     "notes": "Banyan-like tree: layered flat canopy tiers, long hanging vines and aerial roots, bromeliads on the branches, and a buttressed root mass. It is the busiest of the seven, but at 32 px/cell the canopy tiers and trunk still read as distinct shapes (playzoom_G.png, scale_G.png). No keyline (edge luminance 69, interior 73). Clean alpha, bbox x 5-253, y 7-251. Not the donor (donor_G.png)."
+    }
+   ],
+   "proposals": [
+    "D2 for plants: measure the canvas against the drawn quad (drawSize.x x visualSizeRange.max, here 10 cells, per subject.json), not the def drawSize (engine default 1x1). These 256 px canvases give 25.6 px per cell, below even normal play zoom. The 128 px/cell max-zoom panels in scale_A.png to scale_G.png are visibly soft (a 5x upscale). A quad-based rule would ask 1280 px. The canvas equals the donor canvas (donor_A.png is 256 px), so nothing was down-resolved, and the literal D2 formula passes. Hence a proposal, not a refusal.",
+    "Def check, not art: visualSizeRange.max 10.0 draws this tree about ten humans tall in scale_A.png to scale_G.png, against roughly 2 cells for vanilla oaks. If 10 comes from an Alpha Biomes value carried over by mistake, fixing the def would remove most of the resolution concern above.",
+    "D4 measurement: in all seven variants the body alpha is near-opaque, not opaque. The median alpha is 251-253, and only 0-6% of non-transparent pixels are 255, so about 1% of the ground shows through the whole tree. It is invisible by eye. A gate could require body alpha 255 so the ground never tints a sprite."
+   ],
+   "contract": {
+    "item": "RIMMANDRAKE_JUDGE_THIRTY_TWO_ALPHA_RENDERS_THEIR_MAKER_PASSED_BY_EYE",
+    "family": "art_judge_brief",
+    "sha": "6beaa7523030b327",
+    "passed": [
+     {
+      "clause": "A1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "A5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B1",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "variant_E.png",
+       "variant_F.png",
+       "variant_G.png",
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png",
+       "scale_D.png",
+       "scale_E.png",
+       "scale_F.png",
+       "scale_G.png"
+      ]
+     },
+     {
+      "clause": "B1a",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "variant_E.png",
+       "variant_F.png",
+       "variant_G.png",
+       "donor_A.png"
+      ]
+     },
+     {
+      "clause": "B2",
+      "evidence": [
+       "playzoom_A.png",
+       "playzoom_B.png",
+       "playzoom_C.png",
+       "playzoom_D.png",
+       "playzoom_E.png",
+       "playzoom_F.png",
+       "playzoom_G.png",
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png",
+       "scale_D.png",
+       "scale_E.png",
+       "scale_F.png",
+       "scale_G.png"
+      ]
+     },
+     {
+      "clause": "B3",
+      "evidence": [
+       "subject.json",
+       "sibling_AB_JungleTreeA.png",
+       "sibling_AB_JungleTreeB.png",
+       "sibling_AB_JungleTreeC.png",
+       "sibling_AB_JungleTreeD.png",
+       "variant_A.png",
+       "variant_G.png"
+      ]
+     },
+     {
+      "clause": "B4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "B5",
+      "evidence": [
+       "variant_C.png",
+       "variant_D.png"
+      ]
+     },
+     {
+      "clause": "B6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C1",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C2",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C5a",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "C6",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "D1",
+      "evidence": [
+       "scale_A.png",
+       "scale_B.png",
+       "scale_C.png",
+       "scale_D.png",
+       "scale_E.png",
+       "scale_F.png",
+       "scale_G.png",
+       "playzoom_A.png",
+       "playzoom_B.png",
+       "playzoom_C.png",
+       "playzoom_D.png",
+       "playzoom_E.png",
+       "playzoom_F.png",
+       "playzoom_G.png"
+      ]
+     },
+     {
+      "clause": "D2",
+      "evidence": [
+       "subject.json",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "variant_E.png",
+       "variant_F.png",
+       "variant_G.png",
+       "donor_A.png",
+       "donor_B.png",
+       "donor_C.png",
+       "donor_D.png",
+       "donor_E.png",
+       "donor_F.png",
+       "donor_G.png"
+      ]
+     },
+     {
+      "clause": "D3",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "variant_E.png",
+       "variant_F.png",
+       "variant_G.png",
+       "scale_E.png"
+      ]
+     },
+     {
+      "clause": "D4",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "variant_E.png",
+       "variant_F.png",
+       "variant_G.png"
+      ]
+     },
+     {
+      "clause": "E1",
+      "evidence": [
+       "subject.json",
+       "donor_A.png",
+       "donor_B.png",
+       "donor_C.png",
+       "donor_D.png",
+       "donor_E.png",
+       "donor_F.png",
+       "donor_G.png",
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "variant_E.png",
+       "variant_F.png",
+       "variant_G.png"
+      ]
+     },
+     {
+      "clause": "E2",
+      "evidence": [
+       "variant_A.png",
+       "variant_B.png",
+       "variant_C.png",
+       "variant_D.png",
+       "variant_E.png",
+       "variant_F.png",
+       "variant_G.png"
+      ]
+     },
+     {
+      "clause": "E3",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "E4",
+      "evidence": [
+       "subject.json"
+      ]
+     },
+     {
+      "clause": "F1",
+      "evidence": [
+       "subject.json"
+      ]
+     }
+    ],
+    "refusals": []
+   },
+   "look": "first: full inspection of the installed pictures"
+  }
+ ]
+}
