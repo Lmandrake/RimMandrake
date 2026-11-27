@@ -146,3 +146,23 @@ Judge 2's offline evidence (D:\ClaudeWork\rimmandrake\heavy_bridge_scrapper\j2\)
 - anchors_and_ind_pawn.png: pick B's ends, and the same far-hanger fault in pick B.
 
 Code (read only): src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_DeckArt.cs:456-459 (and the same layer at 547 and 601).
+
+## 2026-11-27: fresh judge, question (a) again on the fix build 486dcad2f6
+
+Judge: a detached art judge that did not make the fix. One full look; no second round. Captures:
+`design/concepts/FlowWorks/version/in_game/deck_rope_over_head_20261127/fix_live_J20261127T150946Z-24bd14/` (SteveDesktop, fresh quicktest),
+compared with the base build's captures of job J20261127T132644Z-f03cad (`D:\ClaudeWork\scratch\deckrope\job1\`).
+The base captures that the first verdict names (`...ADD_LIGHT_ANYTHING_FLAMMABLE_ORDER_TO_ALL_COLONISTS.det\Transient\heavy_scrapper_look\`) are gone; the job f03cad captures stand in for them.
+
+| Thing | Verdict | Picture and place |
+|---|---|---|
+| (a) far hanger and far cable, ew2 | PASS | ew2_heavy_Scrapper_mid_bare.png and _mid_hat.png at 3x: the hanger stops at the top edge of his hair and of the hat crown; the far cable runs behind both |
+| (a) far hanger and far cable, ew4 | PASS | ew4_mid_hat_base_left_fix_right.png: left (base) the hanger crosses the hat crown and brim; right (fix) it stops at the crown, behind the hat. ew4_heavy_Scrapper_mid_bare.png at 3x: behind the hair |
+| (a) near cables, ew2 | PASS | ew2 mid bare and hat: the near chain and its hanger cross his body, over it |
+| (a) near cables, ew4 | PASS | ew4 mid bare and hat: the near chain crosses his legs, over him |
+| North-south span, ns4 | PASS, as before | ns4_heavy_Scrapper_mid_hat.png beside the base's (same frame): both chain runs pass beside him, nothing crosses him; the only change is the colonist |
+| New depth error | none seen | ew2 endA/endB, ew4 endA: near rails and chains over him, far behind; posts and anchors unchanged |
+
+Refusals: none. The far-hanger NOT ACCEPTABLE of the first verdict's question (a) is closed by the pictures.
+
+Polish (no ticket): ew4_heavy_Scrapper_endB.png shows no colonist in its frame, so that end proves nothing about depth; the other three ends do.
