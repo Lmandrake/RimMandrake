@@ -778,7 +778,8 @@ def t_live_pass_takes_a_free_game_or_says_unrun():
     def runner(argv):
         ran.append(argv)
         return 0
-    rc = W.live_pass(rec["id"], "the lamp scene", ["python3", "scene.py", "--x"], query=query, runner=runner, now=NOW)
+    rc = W.live_pass(rec["id"], "the lamp scene", ["python3", "scene.py", "--x"], query=query, runner=runner, now=NOW,
+                     mach="archmagi")
     chk(lambda: rc == 0 and asked == ["ArchBig", "ArchSmall"] and ran and "ArchSmall" in ran[0] and "run" in ran[0]
         and ran[0][-3:] == ["python3", "scene.py", "--x"], "live: ArchBig held, so the check runs on ArchSmall under game_lock run (%s)" % ran)
     on = W.store_read(rec["id"])
@@ -786,7 +787,7 @@ def t_live_pass_takes_a_free_game_or_says_unrun():
         "live: the record keeps the game and the check's exit")
     ran.clear()
     rc2 = W.live_pass(rec["id"], "the lamp scene", ["python3", "scene.py"], query=lambda g: (
-        {"ArchBig": 3, "ArchSmall": 2}[g], "%s: answer" % g), runner=runner, now=NOW)
+        {"ArchBig": 3, "ArchSmall": 2}[g], "%s: answer" % g), runner=runner, now=NOW, mach="archmagi")
     on = W.store_read(rec["id"])
     last = on["live_runs"][-1]
     chk(lambda: rc2 == 4 and not ran and last.get("unrun") and last["cmd"] == "python3 scene.py"
@@ -797,6 +798,39 @@ def t_live_pass_takes_a_free_game_or_says_unrun():
     chk(lambda: o.what == "the lamp scene" and o.cmd == ["python3", "-c", "print(1)"] and o.bundle == "WB-x",
         "live: the command line parses --for and the command after -- (%s)" % vars(o))
 
+
+
+def t_live_pass_asks_the_games_of_this_machine():
+    """2026-11-27: on SteveDesktop the live pass asked ArchBig and ArchSmall, both refused there as games on archmagi,
+    so every live check of a bundle that the lane placed on SteveDesktop read UNRUN with Steve1 and Steve2 free."""
+    W = WB()
+    rec = bundle_rec(W, ["V2"])
+    asked, ran = [], []
+
+    def query(g):
+        asked.append(g)
+        return {"Steve1": (75, "Steve1: held by rm-x"), "Steve2": (0, "Steve2: FREE")}.get(g, (2, "%s: refused" % g))
+
+    def runner(argv):
+        ran.append(argv)
+        return 0
+    rc = W.live_pass(rec["id"], "the lamp scene", ["python3", "scene.py"], query=query, runner=runner, now=NOW,
+                     mach="stevedesktop")
+    chk(lambda: rc == 0 and asked == ["Steve1", "Steve2"] and ran and ran[0][ran[0].index("run") + 1] == "Steve2",
+        "live: on SteveDesktop the pass asks Steve1, then Steve2, and runs on the free one (%s, %s)" % (asked, ran))
+    saved = os.environ.get("RM_HOST")
+    try:
+        os.environ["RM_HOST"] = "stevedesktop"
+        here = W.games_here()
+        os.environ["RM_HOST"] = "archmagi"
+        there = W.games_here()
+    finally:
+        if saved is None:
+            os.environ.pop("RM_HOST", None)
+        else:
+            os.environ["RM_HOST"] = saved
+    chk(lambda: here == ("Steve1", "Steve2") and there == ("ArchBig", "ArchSmall"),
+        "live: the games are this machine's, from game_names (%s, %s)" % (here, there))
 
 # ---- part 6: the Maturation Pipeline's road back is one bundle ------------------------------------------------------
 
@@ -1735,7 +1769,8 @@ def main():
               t_a_restart_that_ended_by_itself_with_no_member_ended_raises,
               t_a_restart_that_never_starts_leaves_the_bundle_gated,
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
-              t_live_pass_takes_a_free_game_or_says_unrun, t_the_page_shows_each_live_bundle,
+              t_live_pass_takes_a_free_game_or_says_unrun, t_live_pass_asks_the_games_of_this_machine,
+              t_the_page_shows_each_live_bundle,
               t_the_maturation_road_back_is_one_bundle, t_a_test_never_writes_the_real_store,
               t_the_conductor_ends_a_dead_bundle, t_five_tickets_two_fixed_one_run,
               t_each_limit_names_its_danger, t_old_tickets_are_onboarded_by_home, t_an_archmagi_only_home_runs_on_archmagi,

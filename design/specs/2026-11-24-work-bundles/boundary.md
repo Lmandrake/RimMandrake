@@ -156,9 +156,12 @@ bundle began). A member with none of these is **open**.
 - **a-refused-member-is-stopped-with-its-reason.** In the lane, an open member refused in an ended bundle reads
   `stopped`, and its Needs Conductor line quotes the refusal.
 - **live-pass-takes-a-free-game-or-says-unrun.** `work_bundle.py live <id> --for "..." -- CMD` asks `game_lock.py
-  query` for ArchBig, then ArchSmall, and runs CMD under `game_lock.py run` on the first free one. When no game is free
+  query` for the games of the machine it runs on (ArchBig, then ArchSmall; on SteveDesktop, Steve1, then Steve2), and runs CMD under `game_lock.py run` on the first free one. When no game is free
   (held, his hold, `pipe off`, or could not look), it runs nothing and records `UNRUN` with the exact command and each
   game's answer, in the record and on stdout.
+- **live-pass-asks-the-games-of-this-machine.** The games are the machine's own, from `game_names.GAMES`: on
+  SteveDesktop, where the lane's bundles run, a live check takes Steve1 or Steve2. A game of another machine is never
+  asked (measured 2026-11-27: SteveDesktop asked ArchBig and ArchSmall, both refused there, and every check read UNRUN).
 - **a-test-never-writes-the-real-store.** A process under a selftest with no `RM_WORK_BUNDLE_DIR` is refused by name
   (measured 2026-11-25: a holder selftest wrote `WB-mod-WreckedMachines` into the real store).
 - **the-page-shows-each-live-bundle.** The Maturation Pipeline page has one short line per live bundle, by meaning:

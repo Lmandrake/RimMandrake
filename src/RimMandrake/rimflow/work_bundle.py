@@ -13,7 +13,8 @@ selftest selftest_work_bundle.py.
     python3 src/RimMandrake/rimflow/work_bundle.py step <bundle> "<step>"   the worker's step, shown on the page
     python3 src/RimMandrake/rimflow/work_bundle.py end <bundle> --why "..."   the Conductor ends a bundle whose run cannot
     python3 src/RimMandrake/rimflow/work_bundle.py live <bundle> --for "<what>" -- CMD   CMD on the first free game
-                                                  (ArchBig, then ArchSmall) under game_lock run; else UNRUN, recorded
+                                                  of this machine (ArchBig, then ArchSmall; on SteveDesktop Steve1,
+                                                  then Steve2) under game_lock run; else UNRUN, recorded
 
 A system is a home of list_home.py (pipeline:<part>, game:<need>, machine:<name>), a mod (mod:<folder>), or item:<ID>
 for a ticket with no home. The sort runs each open member's test on this clone's build: a green test closes the member
@@ -1339,7 +1340,12 @@ def members_of_run(rec):
 
 # ---- part 5: the live pass ------------------------------------------------------------------------------------------
 
-GAMES = ("ArchBig", "ArchSmall")      # this machine's games; Steve1 and Steve2 go through the SteveDesktop test lane
+def games_here(mach=None):
+    """-> the names of this machine's games, in order (game_names.GAMES): ArchBig, ArchSmall on Archmagi; Steve1, Steve2
+    on SteveDesktop, where the lane's bundles run. A game of another machine is never asked: game_lock refuses it."""
+    import game_names as GN
+    here = GN.machine(mach)
+    return tuple(n for n, _k, m, _l in GN.GAMES if m == here)
 
 
 def game_query(game):
@@ -1365,14 +1371,14 @@ def run_held(argv):
         return 124
 
 
-def live_pass(bid, what, cmd, query=game_query, runner=None, now=None):
-    """Run `cmd` on the first free game, held by `game_lock.py run` for its life; or run nothing and record UNRUN with
+def live_pass(bid, what, cmd, query=game_query, runner=None, now=None, mach=None):
+    """Run `cmd` on the first free game of this machine (games_here), held by `game_lock.py run` for its life; or run nothing and record UNRUN with
     the exact command and each game's answer. -> the check's exit, or 4 for UNRUN."""
     import shlex
     now = time.time() if now is None else now
     runner = runner or run_held
     answers, game = {}, None
-    for g in GAMES:
+    for g in games_here(mach):
         code, line = query(g)
         answers[g] = "exit %d: %s" % (code, line)
         if code == 0:
