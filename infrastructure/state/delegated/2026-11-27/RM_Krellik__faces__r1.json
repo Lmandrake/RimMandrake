@@ -1,0 +1,64 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.44618519999999995
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 32.5
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Krellik__faces",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_SOUTH_NOT_FRONT', 'DUPLICATE']; polish []; unreadable ['SOUTH_FRONT']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "9de697b4fc58f7a294d92231093dab0d1da0a9f663746515bb3c9b0a09fce0ec",
+  "east.png": "21ce40e485cf5de626df0e664230d40b27c5b1272f0d542c4193cb1c09ecb388",
+  "north.png": "7a9689638502d7271c1302c52d49e1521a152a0e7b61aed4576cd3f32720ec2b",
+  "scale.png": "325d9aaf97f2c7ef8831cbb5b42d53e7b4598a484e45b90b7f8babefab7e5a07",
+  "facings.png": "3afef04df71f28f36049ea556cca0bf4ecc7d7a3c6d779ca0299fc7f2fa196bc"
+ }
+}

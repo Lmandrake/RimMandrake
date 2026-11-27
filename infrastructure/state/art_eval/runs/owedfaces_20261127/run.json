@@ -1,0 +1,20 @@
+{
+ "run_id": "owedfaces_20261127",
+ "test": false,
+ "started": "2026-11-27T04:45:12-08:00",
+ "subjects": [
+  "RM_Fessu__faces",
+  "RM_Hesuun__faces",
+  "RM_Krellik__faces",
+  "RM_Oddu__faces",
+  "RM_Oovanam__faces",
+  "RM_Oovu__faces",
+  "RM_Tarnn__faces",
+  "RM_Zhiil__faces",
+  "RM_Tarruq__faces",
+  "RSW_Moornak__faces",
+  "RSW_Onnik__faces",
+  "RSW_SandStalker__faces"
+ ],
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v6#6f57c5+creature@v5#78b1be"
+}

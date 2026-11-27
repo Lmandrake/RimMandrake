@@ -1,0 +1,182 @@
+[
+ {
+  "id": "arteval_RM_Fessu__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fessu__faces",
+  "prompt": "Two views of one RimWorld creature sprite, the fessu, on a transparent background, in painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. Reference image: the accepted side view of this exact individual, a hand-wide, paper-thin fish-thing made of translucent frozen-hydrocarbon crystal lattice, flat as a snowflake, with a sharp snout point, dorsal and ventral spines, a forked tail and a dark living thread at its core. Keep this individual's pale icy-blue palette, its translucent lattice, its spine count, its thread and its tail shape exactly as in the reference. Both views are the game's camera, looking at the creature from a slight downward angle, with the body receding behind the near end. FRONT VIEW (snout toward the viewer): the thin plate is seen nose-on as a narrow vertical crystal sliver, about one fifth as wide as it is tall. The sharp snout point sits at the centre of the sprite, facing the viewer. The dorsal spine rises above the sliver and the ventral spine hangs below it, with the same spine count as the reference. The living thread is a small dark dot at the core, glowing faintly through the translucent crystal. The rest of the plate stretches away behind the snout point, seen almost edge-on and foreshortened, so its lattice branches read as fine pale ribs tucked close to the sliver. REAR VIEW (tail toward the viewer): the same plate seen tail-on as the same narrow vertical sliver, about one fifth as wide as it is tall. The forked tail stands as a vertical blade at the centre, nearest the viewer, with the dorsal and ventral spines above and below it. The living thread is a short dark dash at the core, seen through the translucent lattice. The body recedes behind the tail, foreshortened. In both views the plate is a thin crystal blade, and its outer edge carries a faint layered rim band: several successive frost-growth rings, each in a slightly different pale tint, stepped outward along the margin like tree rings, each night's fall adding one. Translucent crystal with soft light passing through it, subtle pale-blue and white highlights, and a slow, drifting, calm presence. The two views are drawn at the same scale and centred, each in its own square of the sheet.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_TOPDOWN, F_SOUTH_NOT_FRONT, OWNER_NOTE_IGNORED, DEPARTURE_MISSING, F_INCONSISTENT, F_TOPDOWN, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 0.45,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Fessu/RM_Fessu"
+ },
+ {
+  "id": "arteval_RM_Hesuun__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Hesuun__faces",
+  "prompt": "A single RimWorld creature sprite on a transparent background, front view, seen from the front with the colony's face toward the viewer (the south facing). The creature is an articulated colony of wax, wagon-sized: a broad, heavy, jointed body of pale yellow-cream wax segments with a translucent waxy sheen, warm ochre and soft amber shadows. It has no shell and no flesh. A tall, full, rounded wax dome crowns the front of the colony and rises high above the belly. The dome is as tall as the dome in the east and north views, about 165-170 px of visible height at the shared scale, and its width is similar to the north view. Its vertical mass matches the accepted east view. Beneath the dome the belly is low and broad, and a band of comb-like plates, pale hexagonal comb cells, hangs under the belly just above the ground. Short, thick, jointed wax legs carry the body. The body fills the frame upward and reads as massive and upright at the same scale as the other facings. Painterly vanilla RimWorld style, realistic, with soft painted edges. Value and colour contrast against the ground carry the silhouette. Transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 3.2,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun"
+ },
+ {
+  "id": "arteval_RM_Oddu__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Oddu__faces",
+  "prompt": "RimWorld creature sprite sheet, one individual shown in three views on a transparent background: front view with the crown seen from the viewer's side, east side view in profile, and rear view seen from behind. The three views are the same animal rotated, at the same scale, with the shell the same width in every view. Painterly vanilla RimWorld style, realistic, soft painted edges, the same simplified painterly shading on all three views; value and colour contrast against the ground carry the silhouette. The subject is the oddu, a fist-sized shell-thing that sits low on the ground and draws propane out of its surroundings. Its shell is a frost-white, rounded, lumpy nodule built from a few thick uneven plates of different sizes, fused like frozen crust. A granular rime layer and small frost crystals cover the plates. The mass is asymmetric, wider than tall, closed along one hairline seam across the crown, with no radiating ribs. From the crown of the shell, centred on the seam, grows one sac of clear jelly, a translucent slightly blue-tinted dome with a few drifting bubbles and a wet highlight, about one third as tall as the shell. The sac is part of the body: shell plates and rime crust creep up around its root, and the sac wall is continuous with the seam. The sac is in the same place in every view: in the front view the dome rises above the top of the shell, centred; in the east view it sits on the crown in profile; in the rear view the same dome rises above the top of the shell, centred, seen from behind, with the shell's back plates showing below it. The shell has the same full width and body volume in all three views, and the sac adds height on top. The animal has no eyes, limbs or tail; it is a still, closed shell with a jelly sac. Cool pale blue shadows, near-white highlights, a small soft contact shadow under the shell.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, OWNER_NOTE_IGNORED, F_SIZE_JUMP, STYLE_EARTHLY, F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 0.45,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Oddu/RM_Oddu"
+ },
+ {
+  "id": "arteval_RM_Oovanam__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Oovanam__faces",
+  "prompt": "Two sprites of the same creature, an oovanam, on a transparent background: a front view (seen head-on, mouth area toward the viewer) and a rear view (seen from behind, rear rim and rear paddles toward the viewer). Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. Both views use the same low camera elevation and the same scale: the shell is a low flat dome, markedly wider than tall, with the same width and the same height in both views. The oovanam is a soot-dark, flattened alien crawler that works a floor of pale dust and sifts ash from it. Its shell is made of irregular overlapping plates of unequal size, near-black brown-grey, with slightly lighter worn plate edges and a faint dusting of pale tholin-tan powder along the lower rim. Its head is hidden inside the armor under the front plate. Front view: a low, wide, recessed mouth area built into the front armor, framed by fine bristle fringes and short comb-edged sifting palps. Short, many-jointed scraper legs with comb-like edges are held low beneath the rim of the front plate, and the shell rim sits close to the ground. Rear view: the low flat dome of plates continues to a ragged rear rim, and two broad flat rear paddles extend toward the viewer. Same plate pattern, palette and proportions in both views. Stationary stance, body resting low on the ground, a small soft contact shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, STYLE_EARTHLY, F_SIZE_JUMP, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 0.45,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam"
+ },
+ {
+  "id": "arteval_RM_Oovu__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Oovu__faces",
+  "prompt": "oovu: A bell of frozen hydrocarbon jelly that rides high in the fuel column where the snow falls, catching it \u2014 a hanging cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. It is NOT an Earth animal: bell body made of frozen hydrocarbon jelly; body shaped as a hanging cup; crystal rim on the cup. The south view is redrawn as a ground-camera view at the east view's height (measured: enlarging x1.99 > 1.25 loses detail; width/E after rescale 1.28 outside vanilla 0.28-1.11; rescaled silhouette would leave the canvas). Painterly vanilla RimWorld style, realistic, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 0.45,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Oovu/RM_Oovu"
+ },
+ {
+  "id": "arteval_RM_Tarnn__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tarnn__faces",
+  "prompt": "Painterly vanilla RimWorld sprite of a tarnn, a crystal colony the size of a bucket, a single resting individual that has never moved as a whole, sitting on the ground. Transparent background, realistic painted style. All edges are soft and painted, and value and colour contrast against the ground carry the silhouette. The body is a branching lattice of clear glassy crystal, half of it frozen hydrocarbon, a pale amber-white and slightly cloudy. Living pink matter is threaded through the crystal as fine veins, and the veins gather in a central hub that fills the centre of the colony. About eight evenly spaced crystal branches radiate in a ring around the pink vein hub, all of similar length. Each branch forks into smaller crystal twigs. The branch spacing, lengths and colours are the same all the way around the colony, and the soft painted edges are the same throughout. The body shape, palette and proportions match the accepted reference of this colony.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 0.65,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn"
+ },
+ {
+  "id": "arteval_RM_Tarruq__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tarruq__faces",
+  "prompt": "tarruq: A lean, long-limbed climber built for the vertical dark of the crack network \u2014 grip-padded feet, a deep resonating throat-chamber that carries its low territorial calls for hundreds of meters, each animal answering its neighbors down the line. On an ordinary day the Cracked Lands' soundscape is wind, then tarruq, then wind. It goes silent and climbs when the cracks begin to fill \u2014 a Farmer trusts that hush as the biome's second warning, before even the chimes. It is NOT an Earth animal: grip-padded feet; a deep resonating throat-chamber. The north view stands with its feet on the same row as the east view's feet (measured: feet row +0.074 of canvas height from east's). The south view stands with its feet on the same row as the east view's feet (measured: feet row +0.070 of canvas height from east's). Painterly vanilla RimWorld style, realistic, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_FACING_TRUTH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 1.3,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq"
+ },
+ {
+  "id": "arteval_RSW_Onnik__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Onnik__faces",
+  "prompt": "Rear view, seen from behind, of the onnik, a RimWorld creature. A squat, thick-walled grazer with a barrel body on four sturdy legs. The body is faintly warm, like a living kiln. The reference image is the accepted east view of the same animal; draw the rear view of that same shell and body. The back and haunches face the viewer, the head is turned away and its eyes are hidden. The shell is a single surface of large, irregular polygonal plates fitted edge to edge. Each plate has a broad tan interior and a red border, and warm orange glowing seams run between the plates. The plates curve over the rounded barrel body and foreshorten toward the flanks, with the same plate size, arrangement and colours as the east view. The thick shell wall shows at the rim of the rear. Two sturdy hind legs stand in front, with the front legs partly visible behind them, and a short tail sits low at the centre. The pose is placid and slow, with all four feet planted. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/Onnik/Onnik"
+ },
+ {
+  "id": "arteval_RSW_SandStalker__faces_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_SandStalker__faces",
+  "prompt": "Sand stalker, a low, broad-shouldered ambush hunter of deep desert sand, painted as one individual in the same size, build and colour in every facing. Reference image: the accepted east (side) view, which fixes the size, lean build, palette and proportions of this individual. Body plan: a low, broad, heavy-shouldered body carried close to the ground, built for one explosive lunge out of sand, with a lean frame behind the shoulders. The head is carried low, level with the shoulders. Front view, eyes toward the viewer: the accepted east individual seen from the front, at the same size and with the same lean build. The shoulder tops and head top stand at the same height as the back line and head top of the east view, the shoulders are broad and heavy, the legs are planted in a wide, low stance, and the head is held low between the shoulders. Rear view, seen from behind: the same individual and the same size, the back, the shoulders and the haunches shown at the same height as the east back line, the eyes hidden. Side views: the accepted east profile, mirrored for west. All views share one ground line, one scale and one height for the shoulders and the head top. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette, with no outlines.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, OWNER_NOTE_IGNORED, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "owedfaces_20261127",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/Skarnix/Skarnix"
+ }
+]

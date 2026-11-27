@@ -5,13 +5,11 @@
   "Things/Pawn/Animal/RM_Tellurox/RM_Tellurox": "TELLUROX_FACINGS_REDRAW_ALWAYS_SIDEWAYS"
  },
  "texPaths": [
-  "Things/Pawn/Animal/Moornak/Moornak",
   "Things/Pawn/Animal/Onnik/Onnik",
   "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
   "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
   "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun",
   "Things/Pawn/Animal/RM_Karrask/RM_Karrask",
-  "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
   "Things/Pawn/Animal/RM_Oddu/RM_Oddu",
   "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
   "Things/Pawn/Animal/RM_Oovu/RM_Oovu",
@@ -19,7 +17,6 @@
   "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn",
   "Things/Pawn/Animal/RM_Tarruq/RM_Tarruq",
   "Things/Pawn/Animal/RM_Tellurox/RM_Tellurox",
-  "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
   "Things/Pawn/Animal/Skarnix/Skarnix"
  ]
 }
