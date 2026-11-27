@@ -271,7 +271,10 @@ namespace RimMandrake.Pyrelands
             if (!cache.TryGetValue(key, out Graphic tinted))
             {
                 Color tint = stage == RM_RoofWitherKernel.StageWilting ? Wilting : Withered;
-                tinted = g.GetColoredVersion(g.Shader, g.color * tint, g.colorTwo * tint);
+                // Graphic_Random takes no colorTwo: a non-white one logs "Cannot use Graphic_Random.GetColoredVersion with a
+                // non-white colorTwo." and is dropped (Verse.Graphic_Random). Ember grass is Graphic_Random.
+                Color two = g is Graphic_Random ? Color.white : g.colorTwo * tint;
+                tinted = g.GetColoredVersion(g.Shader, g.color * tint, two);
                 cache[key] = tinted;
             }
             return tinted;

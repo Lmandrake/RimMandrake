@@ -64,6 +64,10 @@ MIN_PATCH = 150                # the selftest's Monte Carlo (printed): the small
 #                                in every trial of a fair kernel is 143 at its seeds; 150 with room. A holds 188 plant cells.
 B_MIN = 20                     # our own rule: the control holds at least 20 of its 25 cells
 LIT = 0.3                      # GlowGrid.cs:201 GameGlowLitThreshold (0.3): a cell reads Lit above it
+NOROOF_B = True                # B and its ring go in the map's no-roof area before the walls rise: B's doorless ring closes a
+#                                room, vanilla AutoBuildRoofAreaSetter puts a closed room in the build-roof area unless NoRoof,
+#                                and the colonists roof it (ArchSmall 2026-11-27: 16 of B's 25 cells roofed by tick 7500, B
+#                                wilting, withers_unevenly UNMEASURED on its own "B cells roofed" guard)
 CAL_CELLS = 6                  # our own rule: the first capture's zoom probe, a rect this small at A's middle.
 #                                play_zoom.shoot probes its first rect at the zoom the last call left and refuses when that
 #                                rect does not fit the screen (ArchSmall 2026-11-27, smoke_weather_live's 50 x 50 sky:
@@ -507,6 +511,10 @@ def register(suite, V):
             t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
             V._extinguish(t)
             V._open_ground(t, g["scene"], margin=2)
+            if NOROOF_B:   # before the ring closes the room: the auto-roof reads the area when the room forms
+                b_ring = (g["B"][0] - 1, g["B"][1] - 1, B_S + 2, B_S + 2)
+                t.bridge_call("jawa/paint_area", area="roof", ops=V._rs(b_ring), value=False)
+                t.bridge_call("jawa/paint_area", area="noroof", ops=V._rs(b_ring))
             t.bridge_call("jawa/build_batch", ops=";".join("Wall:%d,%d" % c for c in g["ringA"] + g["ringB"]), stuff="Steel",
                           faction="player")
             t.bridge_call("jawa/build_batch", ops="Door:%d,%d" % g["door"], stuff="Steel", faction="player")

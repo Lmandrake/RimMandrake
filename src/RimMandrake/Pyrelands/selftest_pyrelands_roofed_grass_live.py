@@ -193,6 +193,7 @@ class Game(object):
         self.clock, self.next_id = 500000, 40000
         self.things, self.roof, self.kills, self.cut_orders, self.notes = {}, set(), [], [], []
         self.calibrated, self.shot_rects = False, []
+        self.walls, self.doors, self.noroof, self.walls_at = set(), set(), set(), None
 
     def spawn(self, d, x, z, hp=None):
         self.next_id += 1
@@ -254,10 +255,31 @@ class Game(object):
             for i in [k for k, th in self.things.items() if (self.clock + th["phase"]) % L == 0]:
                 if i in self.things and i not in self.kills:
                     self.long_tick(i)
+        if self.walls and self.clock - self.walls_at >= AUTOROOF_TICKS:
+            self.auto_roof()
         for i in self.cut_orders:
             if self.fault != "cut_fails":
                 self.things.pop(i, None)
         self.cut_orders = []
+
+    def auto_roof(self):
+        # vanilla AutoBuildRoofAreaSetter (Verse, rw16 decompile): a room closed by player walls (a door closes it too) goes
+        # into the build-roof area, cell by cell unless NoRoof; the colonists then build it (ArchSmall 2026-11-27: B's
+        # doorless ring and its 16 inner edge cells roofed within 5000 ticks). The twin roofs every enclosed cell.
+        xs, zs = [c[0] for c in self.walls], [c[1] for c in self.walls]
+        x0, x1, z0, z1 = min(xs) - 1, max(xs) + 1, min(zs) - 1, max(zs) + 1
+        shut = self.walls | self.doors
+        out, todo = set(), [(x0, z0)]
+        while todo:
+            c = todo.pop()
+            if c in out or c in shut or not (x0 <= c[0] <= x1 and z0 <= c[1] <= z1):
+                continue
+            out.add(c)
+            todo.extend([(c[0] + 1, c[1]), (c[0] - 1, c[1]), (c[0], c[1] + 1), (c[0], c[1] - 1)])
+        for x in range(x0, x1 + 1):
+            for z in range(z0, z1 + 1):
+                if (x, z) not in out and (x, z) not in self.noroof:
+                    self.roof.add((x, z))
 
     def lines(self, i):
         th = self.things[i]
@@ -299,6 +321,18 @@ class Game(object):
             x, z, w, h = (int(v) for v in kw["rects"].split(","))
             return {"ops": ";".join("%s:%d,%d,1,1" % ("RoofConstructed" if c in self.roof else "None", c[0], c[1])
                                     for c in R.cells_of((x, z, w, h)))}
+        if tool == "jawa/build_batch":
+            for op in kw["ops"].split(";"):
+                d, _, xz = op.partition(":")
+                (self.walls if d == "Wall" else self.doors).add(tuple(int(v) for v in xz.split(",")[:2]))
+            self.walls_at = self.clock
+            return {}
+        if tool == "jawa/paint_area":
+            for rect in kw["ops"].split(";"):
+                cells = R.cells_of(tuple(int(v) for v in rect.split(",")))
+                if kw["area"] == "noroof":
+                    (self.noroof.update if kw.get("value", True) else self.noroof.difference_update)(cells)
+            return {"success": True}
         if tool == "jawa/spawn_batch":
             for op in kw["ops"].split(";"):
                 d, _, xz = op.partition(":")
@@ -338,6 +372,7 @@ FAULTS = {"one_clock": "roofed_grass_withers_unevenly", "no_remains": "roofed_gr
           "error_line": "roofed_grass_no_error_line"}
 
 
+AUTOROOF_TICKS = 2500   # measured, ArchSmall 2026-11-27: B unroofed at the 2500-tick read, 9 cells roofed at 5000, 16 at 7500
 PROBE_FITS = 10   # the twin's screen, cells: under A's 12 x 16, so an unprobed first capture of A is refused (the live
 #                   refusal was the smoke scene's 50 x 50; how small a screen can get is not measured, so the twin is strict)
 
@@ -455,6 +490,53 @@ finally:
 print("[rgd-st] planted no zoom probe: stage %r" % v.get("roofed_grass_stage"))
 check("planted no zoom probe: the stage reads UNMEASURED (the smoke scene's live reading)",
       v.get("roofed_grass_stage") == "UNMEASURED", v)
+real_nr = R.NOROOF_B
+R.NOROOF_B = False   # the planted fault: the pre-repair scene, B's ring left to the auto-roof
+try:
+    gm = Game()
+    v, _ = run(gm)
+finally:
+    R.NOROOF_B = real_nr
+print("[rgd-st] planted no no-roof area on B: withers_unevenly %r, B cells roofed %d" % (
+    v.get("roofed_grass_withers_unevenly"), len([c for c in gm.roof if c in R.cells_of(R.geometry(V.R6_PAD_WITHER)["B"])])))
+check("planted no no-roof area on B: the auto-roof roofs B and withers_unevenly reads UNMEASURED (the live reading)",
+      v.get("roofed_grass_withers_unevenly") == "UNMEASURED", v)
+gm = Game()
+v, _ = run(gm)
+nb = len([c for c in gm.roof if c in R.cells_of(R.geometry(V.R6_PAD_WITHER)["B"])])
+print("[rgd-st] repaired: B cells roofed at the end %d (limit 0), B no-roof cells %d" % (nb, len(gm.noroof)))
+check("repaired: the no-roof area keeps B unroofed through the auto-roof", nb == 0 and v.get("roofed_grass_withers_unevenly") == "PASS", v)
+def tint_two_args(src):
+    """Pure. The colorTwo argument of every GetColoredVersion call in RM_RoofWitherLook (CompWithersUnderRoof.cs)."""
+    body = src[src.index("class RM_RoofWitherLook"):]
+    body = body[:body.index("class RM_Plant_WithersUnderRoof")]
+    out = []
+    for m in re.finditer(r"GetColoredVersion\(", body):
+        depth, i, args, cur = 1, m.end(), [], ""
+        while depth:
+            ch = body[i]
+            depth += {"(": 1, ")": -1}.get(ch, 0)
+            if ch == "," and depth == 1:
+                args.append(cur.strip()); cur = ""
+            elif depth:
+                cur += ch
+            i += 1
+        args.append(cur.strip())
+        out.append(args[2] if len(args) > 2 else "")
+    two_vars = dict(re.findall(r"Color\s+(\w+)\s*=\s*([^;]+);", body))
+    return [two_vars.get(x, x) for x in out]
+
+
+# Verse.Graphic_Random.GetColoredVersion (rw16 decompile): newColorTwo != Color.white -> Log.ErrorOnce("Cannot use
+# Graphic_Random.GetColoredVersion with a non-white colorTwo."), and the colorTwo is dropped. Ember grass is Graphic_Random
+# (EmberGrass.xml), so a tinted colorTwo is a red error line on every save that roofs grass (ArchSmall 2026-11-27, the
+# first wilting long tick of sc_roofed_grass_declines' planted run).
+twos = tint_two_args(open(R.COMP_CS, encoding="utf-8").read())
+bad = [x for x in twos if not ("Color.white" in x and "Graphic_Random" in x)]
+print("[rgd-st] tint colorTwo args: %r; not white for a Graphic_Random: %d (limit 0) of %d calls" % (twos, len(bad), len(twos)))
+check("the wither tint passes Color.white as colorTwo to a Graphic_Random (it logs an error otherwise)", twos and not bad, twos)
+assert tint_two_args("class RM_RoofWitherLook { x = g.GetColoredVersion(g.Shader, g.color * t, g.colorTwo * t); } "
+                     "class RM_Plant_WithersUnderRoof") == ["g.colorTwo * t"]
 check("the probe rect lies at the middle of A", R.calibration_rect((81, 117, 12, 16)) == (84, 122, 6, 6))
 v, _ = run(Game(), env="mass_kill")
 print("[rgd-st] planted scene %s=mass_kill: %r" % (R.PLANT_ENV, v))
