@@ -52,7 +52,8 @@ def live_runs(records=None, status=None, now=None):
         if rec.get("status") not in ("launching", "running"):
             continue
         st = status(rec)
-        word = "DEAD (finish never ran: detached_helper.py finish --unit %s)" % rec["unit"] if st == "dead" else st
+        word = ("DEAD (finish never ran: python3 src/RimMandrake/rimflow/detached_helper.py finish --unit %s)"
+                % rec["unit"] if st == "dead" else st)
         where = " on %s" % rec["host"] if rec.get("host") else ""
         out.append("%s  item %s  %s  %s%s  %s" % (rec["unit"], rec.get("item"), rec.get("model"), word, where,
                                                   _age(now - (rec.get("at") or now))))
