@@ -184,8 +184,17 @@ def t_twilight_glass_listed(results):
     return results["glass list"]
 
 
-def t_glass_scale_per_biome(results):
-    return results["uv scale"]
+def t_glass_scale_per_biome(results, look):
+    """UvScale itself runs above; these pins hold the other half of the promise, the tile width that BuildSwirls
+    measures and hands it (a width of 0 or a bare spacing would draw the glass at the global or a wrong scale)."""
+    bad = list(results["uv scale"])
+    if "RM_WorldLookLists.UvScale(kv.Value.widthsPerRepeat, width, swirlUvScale)" not in look:
+        bad.append("BuildSwirls does not hand UvScale the measured tile width")
+    if not re.search(r"float width = .*\(1\.7320508f / 1\.612f\) \* spacingSum\[kv\.Key\] / cn", look):
+        bad.append("BuildSwirls does not turn the biome's mean TileSpacingOf into a centre-to-centre width")
+    if not re.search(r"spacingSum\[a\] = ss \+ TileSpacingOf\(tv, c\);", look):
+        bad.append("BuildSwirls does not sum TileSpacingOf over the biome's tiles")
+    return bad
 
 
 def t_glass_draws_on_water(look):
@@ -322,7 +331,7 @@ def main(argv=None):
     for name, fn, arg in (("chill_unlit_by_default", t_chill_unlit_by_default, results),
                           ("film_override_grammar", t_film_override_grammar, results),
                           ("twilight_glass_listed", t_twilight_glass_listed, results),
-                          ("glass_scale_per_biome", t_glass_scale_per_biome, results),
+                          ("glass_scale_per_biome", lambda r: t_glass_scale_per_biome(r, look), results),
                           ("glass_draws_on_water", t_glass_draws_on_water, look),
                           ("chill_films_skipped", t_chill_films_skipped, look),
                           ("toggles_scribed_and_drawn", t_toggles_scribed_and_drawn, mod),
