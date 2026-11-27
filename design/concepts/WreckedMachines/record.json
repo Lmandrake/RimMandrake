@@ -228,6 +228,41 @@
     "verdict": "pass",
     "why": "His words do not settle how many machines ('specified' machines and 'will only support Vanilla Factory Enhanced' leave it open); the answer changes the build by 0, 16 or 136 new pictures; the evidence against the obvious answer is real; every option leaves the built smelter line as it is; nothing asks him to predict a look. No rewording. The count of 18 was measured again by the reviewer (17 without Vanilla Cooking Expanded)."
    }
+  },
+  {
+   "about": [
+    "inv_wreck_found_in_world",
+    "inv_smelter_line"
+   ],
+   "author": "rm-role-designer-1795761299",
+   "decision": "who may lift a wrecked machine in a game without Droidworks: a colonist by hand, a hauler that this mod brings, or nobody",
+   "evidence_against": "The obvious answer is the one turn 2 took: a colonist lifts a wreck by hand, since every machine in the factory mod's def file installs like furniture. Against it: your reply of 2026-11-26 puts the lift with 'special hauler droids or machines you can ride in', and its last four words, which I do not read, may say more; the built mod's own design calls a wreck 'not haulable'; and the lift list of 2026-11-01 makes a wrecked machine 'droid only' on purpose ('a colonist still may not move it'). Against the opposite answer: Droidworks is a RimStarWars campaign mod, and you ruled that this mod stands alone, so a stranger's game has no hauler unless this mod brings one.",
+   "id": "a_who_moves_a_wreck",
+   "offers_removal": false,
+   "owner_cites": [
+    "OWNER:1795760440829904733",
+    "OWNER:1795755622961436106",
+    "OWNER:1795749349214480499"
+   ],
+   "source": [
+    "design/concepts/WreckedMachines/turn_03.md",
+    "design/RimMandrake/salvage_lift_policy_2026-11-01.md",
+    "src/RimMandrake/RimProperty/Source/TheftHauler/FloatMenuOptionProvider_TheftHaulUninstall.cs",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
+   ],
+   "status": "sent",
+   "text": "A stranger's game has Wrecked Machines and the factory mod, and no Droidworks. Three colonists stand in an ancient ruin in front of a wrecked smelter of 3 by 4 cells. How does it get home? (a) By hand: colonists uninstall it and carry it, as they carry any machine of the factory mod. Who may lift a wreck is data that a layer above can narrow, so the campaign gives the lift to hauler droids and ride-in machines only. (b) Only by a heavy hauler, in every game, and this mod brings a plain hauler of its own for a game without Droidworks. (c) Only by a heavy hauler, in every game, and this mod brings none: without one, a colony repairs a wreck only where it lies. I recommend (a), judged on one test: can a stranger with this mod and the factory mod alone do what your statement says, 'found and retrieved to a safe location'?",
+   "turn": "design/concepts/WreckedMachines/turn_03.md",
+   "review": {
+    "by": "rm-judge a44e086c95b4295e7 (fresh Opus, not the author)",
+    "verdict": "pass",
+    "why": "His reply settles only the campaign ('through droidworks'); the stand-alone ruling does not say who lifts a wreck in a stranger's game; nothing built settles it (the smelter wreck has no carried form, the RM_Lift_ tags are only in a Utils selftest). Each answer builds something different: a carried form plus a data gate, a new hauler, or no move at all. The three options are distinct pictures. The ask reads nothing into 'but notified or built'. Three sentences of the page said more than their sources and were corrected, and the picture of answer (c) was made to match the answer's words."
+   },
+   "sent": {
+    "at": "2026-11-27T06:45:37Z",
+    "run": "rm-role-designer-1795761299",
+    "turn": "design/concepts/WreckedMachines/turn_03.md"
+   }
   }
  ],
  "built_reviewed": [
@@ -458,7 +493,8 @@
    "text": "The root says a wreck is 'found and retrieved to a safe location'. The built smelter wreck and the kludged smelter have no minified form, so neither can be picked up, and a place rule refuses an upper grade on open ground. His words of 2026-09-15 praised 'repairing big machines in place'. Position: d_reading_retrieve_then_repair (carry the wreck home, then repair it where it stands). Stage 2 shows him that reading and resolves this.",
    "resolved": true,
    "resolution": "d_wreck_is_carried: a wreck of any size is carried home, and each repair is made where the machine stands. The build gives the smelter wreck a carried form.",
-   "resolved_by": "rm-role-designer-1795757288"
+   "resolved_by": "rm-role-designer-1795757288",
+   "note_rm-role-designer-1795761299": "His reply of 2026-11-26 (OWNER:1795760440829904733) confirms that a wreck is moved. Who lifts it is a new contradiction, c_who_lifts_a_wreck; the resolution here (the smelter wreck gets a carried form, repairs are made where the machine stands) holds in every answer to it."
   },
   {
    "core": true,
@@ -508,6 +544,22 @@
    ],
    "status": "open",
    "text": "The root says the Original is 'no longer attainable through research or repair'. A Mod Setting, off as shipped, puts the original-grade smelter back in the build menu. Shipped behaviour matches the root. The setting is a player's override, as every mod's settings are; stage 3 says so in one line and no bar judges the original as a thing a colony reaches."
+  },
+  {
+   "core": true,
+   "id": "c_who_lifts_a_wreck",
+   "status": "open",
+   "routed": "stage 2: a_who_moves_a_wreck",
+   "source": [
+    "OWNER:1795760440829904733",
+    "OWNER:1795755622961436106",
+    "OWNER:1795749349214480499",
+    "design/RimMandrake/salvage_lift_policy_2026-11-01.md",
+    "src/RimStarWars/Droidworks/About/About.xml",
+    "design/concepts/WreckedMachines/turn_03.md"
+   ],
+   "text": "The root says a colony must find a machine and bring it to a safe place. His reply of 2026-11-26 says a wreck can be moved 'with special hauler droids or machines you can ride in through droidworks'. Droidworks is a RimStarWars campaign mod, and this mod stands alone at the RimMandrake tier. So in a stranger's game, with this mod and the factory mod only, either a colonist lifts a wreck by hand, or this mod brings a hauler of its own, or the wreck stays where it is found and the root's sentence holds only where another mod brings a hauler.",
+   "position": "Colonists lift by hand in a game with no hauler; who may lift a wreck is data that a layer above narrows (the campaign's lift list gives it to haulers). Held until he answers a_who_moves_a_wreck."
   }
  ],
  "decisions": [
@@ -620,7 +672,14 @@
    ],
    "speaker": "agent",
    "what": "A Wrecked machine of any size can be taken up and carried, like the furniture-installable machine it was, and each repair is made on the machine where it stands, with no workbench. His statement says 'found and retrieved to a safe location'; his sentence of 2026-09-15, 'The existing mod is about repairing big machines in place, and that's excellent', was said of a mod whose smelter wreck cannot be picked up, so the two sentences conflict on where a wreck is repaired, and the newer statement decides. 'Where the machine stands, with no workbench' is the Designer's gloss of what stays of the older sentence, not his words (review a15c1525ac03b2c3f). Measured from the factory mod's defs: all 18 of its production machines have a minified form, the 3 by 4 smelter included. The built smelter wreck cannot be picked up; the build changes that. Whether a Kludged machine can be moved is onboarding data of each machine and stays as built: the kludged smelter cannot (its def: 'a bodge does not survive being uninstalled and moved'), the kludged cell and emanator can. No ask: his newest statement is explicit, and nothing found argues against the reading. Shown to him as reading 1 of turn_02.md.",
-   "run": "rm-role-designer-1795757288"
+   "run": "rm-role-designer-1795757288",
+   "reopened": {
+    "by": "rm-role-designer-1795761299",
+    "on": "OWNER:1795760440829904733",
+    "stands": "A wreck is brought to a safe place, and each repair is made on the machine where it stands. The build gives the smelter wreck a carried form; a hauler needs one too (d_feasible_wreck_lift).",
+    "open": "Who lifts a wreck. This call had a colonist take it up 'like the furniture-installable machine it was'. His reply puts the lift with special hauler droids or ride-in machines, through Droidworks. That answers the campaign. In a game without Droidworks it is his to answer: a_who_moves_a_wreck (c_who_lifts_a_wreck).",
+    "missed": "The call said 'nothing found argues against the reading'. Two texts did, and the run did not read them: the lift list of 2026-11-01 ('droid only', 'a colonist still may not move it') and design/Jawa/wrecked_machines_resurrection.md (his words of 2026-08-31 on a hauler droid that carries buildings)."
+   }
   },
   {
    "date": "2026-11-26",
@@ -714,6 +773,36 @@
    "speaker": "agent",
    "what": "A relic's value outside colony wealth is for the next version, not 0.1.0. The bench's note of his card of 2026-10-03 records the ruling and names no version; his statement of the mod does not need it; calling it an extra is the Designer's call; his first-version card then sends an extra to the next version. It is not built, so there is nothing to switch off. Feasibility stands (d_feasible_wealth). Shown to him as reading 7 of turn_02.md.",
    "run": "rm-role-designer-1795757288"
+  },
+  {
+   "date": "2026-11-26",
+   "id": "d_look_accepted",
+   "kind": "owner_answer",
+   "source": [
+    "OWNER:1795760440829904733",
+    "design/concepts/WreckedMachines/look_01.md"
+   ],
+   "speaker": "owner",
+   "run": "rm-role-designer-1795761299",
+   "what": "He accepted the look at the running mod: 'Yes I will look at the existing wrecked machines.' What the save shows is written in look_01.md (an exploration scene on the mod's small list: the smelter, the power cell and the emanator at each built grade, a colonist sent to study a wreck, a Kludged smelter about to be built over a wreck, and a wrecked smelter beside a wrecked power cell to show what moving a wreck is today). A Designer run may not take a game, so the staging is the item RIMMANDRAKE_STAGE_WRECKED_MACHINES_LOOK_HE_SAID_YES. The look explores d_three_looks and d_study_before_each_repair; no open ask waits for it."
+  },
+  {
+   "date": "2026-11-26",
+   "id": "d_feasible_wreck_lift",
+   "kind": "feasibility",
+   "speaker": "agent",
+   "run": "rm-role-designer-1795761299",
+   "source": [
+    "src/RimMandrake/RimProperty/Source/TheftHauler/FloatMenuOptionProvider_TheftHaulUninstall.cs",
+    "src/RimMandrake/RimProperty/Source/TheftHauler/TheftHaulerExtension.cs",
+    "src/RimMandrake/RimProperty/Patches/TheftHauler/MuckrakerChassis_TheftHauler.xml",
+    "src/RimMandrake/RimProperty/Patches/TheftHauler/DroidLoaders_TheftHauler.xml",
+    "design/RimMandrake/salvage_lift_policy_2026-11-01.md",
+    "design/Jawa/wrecked_machines_resurrection.md",
+    "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml",
+    "src/RimStarWars/Droidworks/About/About.xml"
+   ],
+   "what": "Measured after his reply of 2026-11-26. (1) A hauler is built, in the Property mod (src/RimMandrake/RimProperty, the RimMandrake tier): a pawn whose race carries the marker TheftHaulerExtension may uninstall a building of any faction and carry it off; FindMod-guarded patches put the marker on five Droidworks chassis (the Muckraker and four labour and mining droids). (2) That job refuses a building whose def is not Minifiable, and the built smelter wreck has no minified form ('No minifiedDef: a wreck is not haulable and cannot be uninstalled'), so today no pawn, a hauler droid included, lifts the built smelter wreck; the cell and emanator wrecks have a minified form and a colonist lifts them. (3) The lift list of 2026-11-01 classes a wrecked machine WRECKED_TIER, 'minify | droid only', 'a colonist still may not move it'; the pass that applies the list is not built: the tag prefix RM_Lift_ is in no def and no mod source under src/, only in src/RimMandrake/Utils/selftest_salvage_lift_policy.py. (4) No machine that a colonist rides in and that moves a building was found; search scope: src/RimStarWars/Droidworks Defs, Source and Patches for ride, piloted, lifter, loader. Missing evidence is not evidence of absence. (5) Droidworks is mandrake.rsw.droidworks, a RimStarWars mod that needs Humanoid Alien Races and calls itself a 'Private campaign mod'; this mod stands alone at the RimMandrake tier (s_standalone_no_setting), so it cannot require Droidworks. (6) The factory mod's smelter is 3 by 4 cells with Mass 60, and the base game gives a pawn a caravan capacity of 35 kg times body size (MassUtility.Capacity, read through RimSage). Feasible in every option of a_who_moves_a_wreck: the wreck needs a minified form in each, and who may order the uninstall is a rule on top (the lift list's own method: give the def a minifiedDef and refuse the colonist's Uninstall)."
   }
  ],
  "failure_modes": [
@@ -1057,6 +1146,10 @@
   {
    "mod": "vanilla (Core and DLC)",
    "role": "does parts of the job already: intact vanometric cells and psychic emanators arrive as quest rewards and cannot be built; Odyssey scatters ancient machines as scenery to take apart; Biotech's mechanitor chips are 'study the thing to open the research'. No vanilla thing is found broken and built back up. No third-party mod was searched for."
+  },
+  {
+   "mod": "src/RimMandrake/RimProperty (the Property mod) and src/RimStarWars/Droidworks",
+   "role": "RimProperty owns the hauler job: a pawn whose race carries its marker may uninstall and carry off a building that has a minified form; its patches mark five Droidworks chassis. The lift list (design/RimMandrake/salvage_lift_policy_2026-11-01.md, pass not built) is the layer that says who may lift what, wrecked machines included. This mod must give each wreck a minified form and must not require either mod."
   }
  ],
  "owner_elsewhere_reviewed": [
@@ -1083,6 +1176,10 @@
   {
    "not_design_input": "the item that carries the same Codex permission",
    "source": "OWNER:1795734430591185497"
+  },
+  {
+   "source": "OWNER:1795758284303786840",
+   "not_design_input": "the Designer's own record of the seven calls of turn 2, filed under the Evidence-for-Ask ruling; it holds none of his words, and each call is a decision of this record"
   }
  ],
  "packageId": "mandrake.rm.wreckedmachines",
@@ -1298,6 +1395,15 @@
    ],
    "speaker": "owner",
    "text": "His answer to a_riders, which he called 'confounded'. A machine enters this mod by onboarding: 'Each machine Certainly Will need specific recipies blessed per repair tier, production rates, etc... that will be the normal onboarding process for any device into the Wrecked Machines mod.' Onboarding is by hand in 0.1.0: 'We may be able to semi-automate this to support other machines, but not in 0.1.0.' Which machine a colony gets first is not this mod's: 'Giving the \"smelter first\" is an Utinni-tier decision independent of this mod about machine availability.' The distillation machine is FlowWorks': 'Water Distillation is definitely a FlowWorks machine that would then be onboarded into this mod to become Wrecked if we so desired (and without this, it would remain a fully functional machine in FlowWorks).'"
+  },
+  {
+   "date": "2026-11-26",
+   "id": "s_look_yes_and_haulers",
+   "source": [
+    "OWNER:1795760440829904733"
+   ],
+   "speaker": "owner",
+   "text": "His reply to turn 2, typed on his phone: 'Yes I will look at the existing wrecked machines. By the way they CAN be moved with special hauler droids or machines you can ride in through droidworks but notified or built.' Two things are taken as said: he accepts the look at the running mod; and a wreck can be moved, by a special hauler droid or by a machine that a colonist rides in, through Droidworks. The last four words, 'but notified or built', are kept as typed: their meaning is not known, the Conductor asked him, and nothing in this record is read from them."
   }
  ],
  "script_audit": [

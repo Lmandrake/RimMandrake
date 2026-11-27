@@ -154,3 +154,32 @@ Three sentences of the page said more than the sources and were corrected:
 
 - a_how_study_feels: his statement settled it; the part about Research Reinvented is taken in
   `d_study_before_each_repair`.
+
+## 2026-11-26 his reply to turn 2 (OWNER:1795760440829904733, 10:20 PM PST), and turn 3 (run rm-role-designer-1795761299), sent 10:47 PM PST
+
+His reply, word for word: "Yes I will look at the existing wrecked machines. By the way they CAN be moved with special
+hauler droids or machines you can ride in through droidworks but notified or built." The last four words are kept as
+typed; the Conductor asked him what they mean, and nothing is read from them. He has not answered the two asks of
+turn 2; both stay sent.
+
+Text of turn 3: `design/concepts/WreckedMachines/turn_03.md`. The look: `design/concepts/WreckedMachines/look_01.md`,
+staging filed as `RIMMANDRAKE_STAGE_WRECKED_MACHINES_LOOK_HE_SAID_YES`.
+
+### Ask sent (one)
+
+3. **a_who_moves_a_wreck:** A stranger's game has Wrecked Machines and the factory mod, and no Droidworks. Three colonists stand in an ancient ruin in front of a wrecked smelter of 3 by 4 cells. How does it get home? (a) By hand: colonists uninstall it and carry it, as they carry any machine of the factory mod. Who may lift a wreck is data that a layer above can narrow, so the campaign gives the lift to hauler droids and ride-in machines only. (b) Only by a heavy hauler, in every game, and this mod brings a plain hauler of its own for a game without Droidworks. (c) Only by a heavy hauler, in every game, and this mod brings none: without one, a colony repairs a wreck only where it lies. I recommend (a), judged on one test: can a stranger with this mod and the factory mod alone do what your statement says, 'found and retrieved to a safe location'?
+
+### Review
+
+Reviewed by rm-judge a44e086c95b4295e7 (fresh Opus, not the author): the ask passes, and it reads nothing into the four
+words. Three sentences of the page said more than their sources and were corrected (a guess that the four words might
+be this same question; "all say" in the Attack; the lift list "says what your reply says"). The picture of answer (c)
+was made to match the answer's words.
+
+### Changed in the record by this run
+
+- `s_look_yes_and_haulers`: his reply. `d_look_accepted`: the look is accepted and filed.
+- `d_feasible_wreck_lift`: what is built for lifting a wreck (the Property mod's hauler job, five marked Droidworks
+  chassis, the lift list of 2026-11-01 with its pass not built, the built smelter wreck with no carried form).
+- `d_wreck_is_carried` is reopened in one part: who lifts a wreck. It had missed the lift list and the hauler design.
+- `c_who_lifts_a_wreck`: new, core, open, waiting for a_who_moves_a_wreck.
