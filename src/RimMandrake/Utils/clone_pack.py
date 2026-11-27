@@ -27,7 +27,8 @@ USER_UNITS = Path.home() / ".config" / "systemd" / "user"
 ROOT = Path(os.environ.get("RM_CLONE_ROOT", "/home/mandrake/rm"))
 
 HOLD = (("gc.auto", "0"), ("maintenance.auto", "false"))
-# git's own thresholds (gc.auto and gc.autoPackLimit defaults): run packs a clone exactly when git would have.
+# About git's own thresholds (gc.auto and gc.autoPackLimit defaults). Not exact: git 2.53 packs at 51 packs, not 50
+# (measured 2026-11-27), and git estimates the loose count from objects/17. run may pack one pack earlier; no harm.
 LOOSE_AT = 6700
 PACKS_AT = 50
 # The delta search of one pack: memory per thread (pack.windowMemory) times threads. Ends no work. Measured with these

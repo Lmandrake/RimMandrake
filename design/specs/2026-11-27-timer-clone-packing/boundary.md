@@ -35,8 +35,9 @@ call of `clone_pack.hold` at the top of `sync_clone` in `src/RimMandrake/rimflow
   lies in a git work tree names that work tree. A bare repository (`mirror.git`, `store.git`) is never named: those
   have their own rules (`mirror.py`, `scratch_clone.py` `STORE_CONFIG`).
 - **Pack.** `rm-clone-pack.service` runs `clone_pack.py run --apply` once an hour, in its own unit. For each timer
-  clone it first deletes the dead temporary files (below). Then it packs the clone when git itself would have packed
-  it: 6700 or more loose objects, or 50 or more packs (git's own `gc.auto` and `gc.autoPackLimit` defaults). The pack
+  clone it first deletes the dead temporary files (below). Then it packs the clone at about the point where git itself
+  would have packed it: 6700 or more loose objects, or 50 or more packs (git's own `gc.auto` and `gc.autoPackLimit`
+  defaults; git 2.53 packs at 51 packs, and it estimates the loose count from `objects/17`). The pack
   is `git repack -d -q --geometric=2` with `pack.threads=4` and `pack.windowMemory=256m`: it packs the loose objects
   and rolls the small packs into one, and it leaves the large pack as it is. It prunes nothing: an object that the
   clone holds stays readable.
