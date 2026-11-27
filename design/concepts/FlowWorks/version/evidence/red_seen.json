@@ -104,15 +104,15 @@
   "test_blob": "341c089f6a7fdc1734c294df893126a63a89c156"
  },
  "T_BRIDGES": {
-  "at": "2026-11-23T04:09:50Z",
+  "at": "2026-11-27T15:03:22Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Drawbridge*,SpanBase*,Suspension*,SuspensionBridges*,Underpass*,Waters*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "can-fail: a pit cover lets the floor band under by the shared span rule (setting + 2 m clearance)",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs\n+++ b/src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs\n@@ -182,7 +182,7 @@\n                     return false;\n                 }\n                 RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(Map);\n-                return eng != null && RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.PitCover, RM_SuspensionSettings.suspensionWalkUnder,\n+                return eng != null && RM_SpanMath.PassesUnder(RM_SpanMath.SpanKind.PitCover, false,\n                     eng.ClimbDepthAt(Position), DeckNotches);\n             }\n         }\n",
+  "last": "dir 1 side -1: a rope north of the deck draws behind pawns, every other over them",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\nindex 50fde71046..f954e7ffc6 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\n@@ -61,7 +61,7 @@ namespace RimMandrake.FlowWorks\n \t\t/// Pawn); the south side, and both sides of a north-south run, stand beside or in front of him and print over him.</summary>\n \t\tpublic static bool RopeOverPawns(int sideZ, float sg)\n \t\t{\n-\t\t\treturn sideZ * sg <= 0f;\n+\t\t\treturn true;   // PLANTED: every rope over pawns (the base)\n \t\t}\n \n \t\t/// <summary>Widest drag by kind: rope 1, timber 2, steel and heavy 4.</summary>\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/Pits/Building_PitCover.cs"
+   "src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs"
   ],
-  "patch_sha": "e0887158039f24a4",
+  "patch_sha": "7dd53dba823cdbfe",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },

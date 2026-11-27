@@ -1,0 +1,13 @@
+diff --git a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs
+index 50fde71046..f954e7ffc6 100644
+--- a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs
++++ b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs
+@@ -61,7 +61,7 @@ namespace RimMandrake.FlowWorks
+ 		/// Pawn); the south side, and both sides of a north-south run, stand beside or in front of him and print over him.</summary>
+ 		public static bool RopeOverPawns(int sideZ, float sg)
+ 		{
+-			return sideZ * sg <= 0f;
++			return true;   // PLANTED: every rope over pawns (the base)
+ 		}
+ 
+ 		/// <summary>Widest drag by kind: rope 1, timber 2, steel and heavy 4.</summary>
