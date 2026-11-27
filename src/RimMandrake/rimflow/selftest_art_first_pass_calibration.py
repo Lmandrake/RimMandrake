@@ -109,10 +109,11 @@ def t_band_is_the_answer():
           len(w) == len(pl) and all(c["got"] == "second look" and c["overall"] == "good" for c in w.values()), w)
     check("band-is-the-answer: all-WEAK is not CALIBRATED", RC.judge_cases(pl, {"cases": list(w.values())})[0] == "FAILED")
     _rc, g = ran(lambda p, d: (reply(p, "good"), META))
-    check("band-is-the-answer: GOOD is pass", all(c["got"] == "pass" for c in g.values()), g)
+    check("band-is-the-answer: GOOD is pass", len(g) == len(pl) and all(c["got"] == "pass" for c in g.values()), g)
     _rc, b = ran(lambda p, d: (reply(p, "really_bad", [{"code": "STYLE_EARTHLY", "confidence": 0.95},
                                                       {"code": "DESC_MISS", "confidence": 0.95}]), META))
-    check("band-is-the-answer: a confident blocking finding is refuse", all(c["got"] == "refuse" for c in b.values()), b)
+    check("band-is-the-answer: a confident blocking finding is refuse",
+          len(b) == len(pl) and all(c["got"] == "refuse" for c in b.values()), b)
     check("band-is-the-answer: accept-all and refuse-all both read FAILED", all(
         RC.judge_cases(pl, {"cases": list(x.values())})[0] == "FAILED" for x in (g, b)))
     mix = [dict(c, got=c["expect"]) for c in g.values()]
