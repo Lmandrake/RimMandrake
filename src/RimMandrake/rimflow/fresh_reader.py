@@ -7,7 +7,8 @@ RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX, part 7. His answer by card, 2
 reader. Why: 5 of 6 fresh-reader runs in the 7 days to 2026-11-26 were launched by hand.
 
     python3 src/RimMandrake/rimflow/fresh_reader.py file --fix <sha> <path>...   the fixing run, before it ends
-                                                    (a file with a review record already, FLAGGED included, is left out)
+                                                    (a file with a review record already, FLAGGED included, is left out;
+                                                    so is a file that a reader ticket of this fix names: exit 0)
     python3 src/RimMandrake/rimflow/fresh_reader.py holds <sha> <path>...        the ticket's outcome check
 
 The ticket's check holds when each fixed file carries a review record: `code_review_status.py mark-clean` on its
@@ -16,6 +17,7 @@ reviews a FLAGGED file again). The lane's brief for it names the fixed files, th
 boundary pages and tests, and never the diff of the fix or the findings that led to it.
 """
 import argparse
+import hashlib
 import os
 import re
 import subprocess
@@ -47,9 +49,36 @@ def title(sha, paths, maker):
     return "%s%s at %s (made by %s; the reader is never that run)" % (PREFIX, ", ".join(paths), sha, maker or "unknown")
 
 
-def file_argv(sha, paths, maker, seat="BENCH"):
-    """-> the `rimflow file` line the fixing run runs (exactly one ticket per fix)."""
-    return [sys.executable, os.path.join(HERE, "cli.py"), "file", ticket_id(sha), "--for", "BENCH",
+def twin_id(sha, paths):
+    """-> the id of a second reader ticket of one fix: the files that the fix's own ticket does not name. The id keys on
+    the files, so the same files give the same twin (a numbered `_2` does not parse: numbered ids are retired)."""
+    h = hashlib.sha1("\n".join(sorted(paths)).encode("utf-8")).hexdigest()[:6].upper()
+    return "RIMMANDRAKE_READ_FIX_%s_%s_WITH_FRESH_EYES" % (re.sub(r"[^0-9A-Fa-f]", "", str(sha))[:10].upper(), h)
+
+
+def resolve(sha, paths, tickets):
+    """-> (id, rest). tickets: {id: [path]} of the reader tickets that exist, in any state. rest is the paths that no
+    reader ticket of this fix names; id is the ticket to file them under (the fix's id, or its twin when that id is
+    taken), or, when rest is empty, the ticket that names them (nothing to file: a second filing is not a refusal)."""
+    base = ticket_id(sha)
+    fam = sorted(i for i in tickets or {} if i == base or (i.startswith(base[:-len("_WITH_FRESH_EYES")] + "_")
+                                                           and i.endswith("_WITH_FRESH_EYES")))
+    named = {p for i in fam for p in tickets[i] or []}
+    rest = [p for p in paths if p not in named]
+    if not rest:
+        return next((i for i in fam if set(paths) & set(tickets[i] or [])), base), []
+    return (base if base not in (tickets or {}) else twin_id(sha, rest)), rest
+
+
+def reader_tickets():
+    """-> {id: [path]} of every reader ticket in this repo's ledger, in any state. Raises when the ledger cannot be read."""
+    import model
+    return {i: parse_title(x.title)[0] for i, x in model.replay(model.read()).items.items() if is_reader(x)}
+
+
+def file_argv(sha, paths, maker, seat="BENCH", tid=None):
+    """-> the `rimflow file` line the fixing run runs (exactly one ticket per fix; `tid` names its twin, `resolve`)."""
+    return [sys.executable, os.path.join(HERE, "cli.py"), "file", tid or ticket_id(sha), "--for", "BENCH",
             "--title", title(sha, paths, maker), "--effect", effect(sha, paths), "--not-now", NOT_NOW,
             "--seat", seat, "--why", "the fixing run files the fresh reader of its fix (his card, 2026-11-26)", "--publish"]
 
@@ -187,8 +216,17 @@ def main(argv=None):
         print("no reader owed: each file already has a review record (READ-CLEAN on its bytes, or FLAGGED: nobody "
               "reviews it again); nothing filed")
         return 0
-    argv = file_argv(a.fix, owed, a.maker)
-    print(" ".join(argv[1:3]) + " " + ticket_id(a.fix))
+    try:
+        tickets = reader_tickets()
+    except Exception as e:  # noqa: BLE001 - the filing goes on under the fix's id; rimflow itself refuses a taken name
+        print("could not read the reader tickets (%s: %s); filing under the fix's own id" % (type(e).__name__, e))
+        tickets = {}
+    tid, owed = resolve(a.fix, owed, tickets)
+    if not owed:
+        print("already filed: %s names each file; nothing filed" % tid)
+        return 0
+    argv = file_argv(a.fix, owed, a.maker, tid=tid)
+    print(" ".join(argv[1:3]) + " " + tid)
     return subprocess.run(argv, cwd=REPO, timeout=6 * 3600).returncode    # budget: danger=a publish that never returns; longest=1800s (a publish in the door's line, 2026-11-26)
 
 

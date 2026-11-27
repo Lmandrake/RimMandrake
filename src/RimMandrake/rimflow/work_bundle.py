@@ -1554,8 +1554,8 @@ def cmd_end(o):
 # ---- the one fresh reader at a bundle's end (design step 4) ---------------------------------------------------------
 # Item RIMMANDRAKE_LAUNCH_BUNDLE_FRESH_READER_THREE_FIXES_UNREAD. The design and the role promise one fresh run that reads
 # the changed files once, at the bundle's end; the worker may not start it (its brief bars helpers). On 2026-11-26 three
-# bundle fixes ended unread (c7dd53c26a, 062867f85d, e283fe2c2d62). So the bundle's end files that reader as ONE
-# fresh_reader ticket, and the ticket lane launches it. A bundle's commits are those on origin/main since it began whose
+# bundle fixes ended unread (c7dd53c26a, 062867f85d, e283fe2c2d62). So the bundle's end files that reader, one
+# fresh_reader ticket per fix sha (a reader ticket that the worker filed already counts), and the lane launches it. A bundle's commits are those on origin/main since it began whose
 # message names a member or the bundle; a polish commit touches only files that such a commit changed.
 
 READER_SKIP_PREFIXES = ("infrastructure/state/", STATE_FILES + "/", "design/", "Transient/")
@@ -1575,27 +1575,34 @@ def names_bundle(rec, msg):
 
 
 def plan_reader(rec, commits, owed=None):
-    """-> None, or {"sha", "paths", "commits"}: the ONE reader run that an ended bundle owes. Pure over its inputs.
-    commits: [{"sha", "ts", "msg", "files"}], newest first (git log order). None when the bundle is not ended, has a
-    reader record already, or its commits change no code; owed(sha, paths) -> the paths that still owe a read (a file
-    READ-CLEAN on its bytes, or FLAGGED, owes none: never a third read)."""
+    """-> None, or {"sha", "paths", "commits", "groups"}: the reader runs that an ended bundle owes, one per fix sha.
+    Pure over its inputs. commits: [{"sha", "ts", "msg", "files"}], newest first (git log order). Each code file goes in
+    the group of the newest bundle commit that changed it (the reader reads it as it stands; that sha names it). groups:
+    [{"sha", "paths"}], newest first. None when the bundle is not ended, has a reader record already, or its commits
+    change no code; owed(sha, paths) -> the paths of that group that still owe a read (a file READ-CLEAN on its bytes,
+    or FLAGGED, owes none: never a third read)."""
     if (rec or {}).get("state") != "ended" or rec.get("reader"):
         return None
     since = float(rec.get("at") or 0)
     ours = [c for c in commits or [] if float(c.get("ts") or 0) >= since and names_bundle(rec, c.get("msg"))]
-    paths, shas = [], []
+    paths, shas, last = [], [], {}
     for c in reversed(ours):                        # oldest first: the paths in the order the bundle changed them
         code = [f for f in c.get("files") or [] if is_code(f)]
         if code:
             shas.append(c["sha"])
         paths += [f for f in code if f not in paths]
-    if not paths:
+        last.update((f, c["sha"]) for f in code)
+    groups = []
+    for sha in reversed(shas):                      # newest first
+        ps = [p for p in paths if last[p] == sha]
+        if ps and owed is not None:
+            ps = list(owed(sha, ps))
+        if ps:
+            groups.append({"sha": sha, "paths": ps})
+    if not groups:
         return None
-    if owed is not None:
-        paths = list(owed(shas[-1], paths))
-        if not paths:
-            return None
-    return {"sha": shas[-1], "paths": paths, "commits": list(reversed(shas))}
+    return {"sha": groups[0]["sha"], "paths": [p for p in paths if any(p in g["paths"] for g in groups)],
+            "commits": list(reversed(shas)), "groups": groups}
 
 
 OPEN_READERS = r"""
@@ -1665,9 +1672,29 @@ def file_reader(argv, root):
                           timeout=6 * 3600).returncode    # budget: danger=a publish that never returns; longest=1800s (a publish in the door's line, 2026-11-26)
 
 
-def reader_step(bid, root, now, say=None, commits=None, owed=None, filer=None):
-    """At a bundle's end: file its ONE fresh reader (fresh_reader.file_argv) when plan_reader plans one, and record it
-    on the bundle (`reader`), so a second end files none. -> one line. Never raises: the end is written already.
+def reader_tickets(root):
+    """-> {id: [path]} of every reader ticket, in any state, as the ledger of `root` folds it. Raises when it cannot."""
+    import time_budget as TB
+    r = subprocess.run([sys.executable, "-c", READER_TICKETS], cwd=root, capture_output=True, text=True,
+                       timeout=TB.RIMFLOW_S, stdin=subprocess.DEVNULL)
+    if r.returncode:
+        raise RuntimeError("the reader-ticket read in %s exited %d: %s" % (root, r.returncode, _one(r.stderr, 300)))
+    return json.loads(r.stdout)
+
+
+READER_TICKETS = r"""
+import json, os, sys
+sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
+import fresh_reader as FR
+print(json.dumps(FR.reader_tickets()))
+"""
+
+
+def reader_step(bid, root, now, say=None, commits=None, owed=None, filer=None, tickets=None):
+    """At a bundle's end: file its fresh readers, one per fix sha that plan_reader plans (fresh_reader.file_argv), and
+    record them on the bundle (`reader`), so a second end files none. A reader ticket that exists already (the worker
+    filed it) counts as filed (fresh_reader.resolve): no second filing, no "by hand" line. -> one line. Never raises:
+    the end is written already.
     Under a selftest with no injected reads it looks at nothing (a test never fetches or files from the real clone)."""
     say = say or (lambda line: conductor_say(line, now))
     if os.environ.get("RM_UNDER_SELFTEST") and commits is None and filer is None:
@@ -1685,8 +1712,13 @@ def reader_step(bid, root, now, say=None, commits=None, owed=None, filer=None):
             store_write(rec)
         finally:
             lk.close()
-        q = plan_reader(dict(rec, reader=None), (commits or bundle_commits)(rec, root),
-                        owed=owed or (lambda sha, ps: reader_owed(ps, sha, open_reader_paths(root))))
+        seen = []                                   # the open reader paths, read once for every group
+
+        def _owed(sha, ps):
+            if not seen:
+                seen.append(open_reader_paths(root))
+            return reader_owed(ps, sha, seen[0])
+        q = plan_reader(dict(rec, reader=None), (commits or bundle_commits)(rec, root), owed=owed or _owed)
     except Exception as e:  # noqa: BLE001 - nothing filed, nothing recorded: the Conductor is told
         _reader_unmark(bid)
         line = "work bundle %s: its fresh reader could not look (%s: %s); nothing filed. File it by hand: " \
@@ -1698,19 +1730,34 @@ def reader_step(bid, root, now, say=None, commits=None, owed=None, filer=None):
         return "reader: none (no code that still owes a read)"
     units = rec.get("units") or []
     maker = "work bundle %s (%s)" % (bid, units[-1].get("unit") if units else rec.get("launched_by") or "unknown")
-    argv = FR.file_argv(q["sha"], q["paths"], maker)
     try:
-        rc = (filer or file_reader)(argv, root)
-    except Exception as e:  # noqa: BLE001
-        rc = "%s: %s" % (type(e).__name__, _one(str(e), 200))
-    ticket = FR.ticket_id(q["sha"])
-    _reader_record(bid, {"at": now, "ticket": ticket, "sha": q["sha"], "paths": q["paths"], "commits": q["commits"],
-                         "rc": rc})
-    if rc != 0:
+        known = (tickets or (lambda: reader_tickets(root)))()
+    except Exception as e:  # noqa: BLE001 - filed under each fix's own id; rimflow itself refuses a taken name
+        known = {}
+        _say(say, "work bundle %s: its reader tickets could not be read (%s: %s); filing under each fix's own id"
+             % (bid, type(e).__name__, _one(str(e), 200)))
+    done, bad = [], []
+    for g in q["groups"]:
+        tid, rest = FR.resolve(g["sha"], g["paths"], known)
+        if not rest:
+            done.append({"ticket": tid, "sha": g["sha"], "paths": g["paths"], "rc": "exists"})
+            continue
+        try:
+            rc = (filer or file_reader)(FR.file_argv(g["sha"], rest, maker, tid=tid), root)
+        except Exception as e:  # noqa: BLE001
+            rc = "%s: %s" % (type(e).__name__, _one(str(e), 200))
+        done.append({"ticket": tid, "sha": g["sha"], "paths": rest, "rc": rc})
+        if rc != 0:
+            bad.append(done[-1])
+    _reader_record(bid, {"at": now, "ticket": done[0]["ticket"], "sha": q["sha"], "paths": q["paths"],
+                         "commits": q["commits"], "rc": bad[0]["rc"] if bad else 0, "tickets": done})
+    for b in bad:
         _say(say, "work bundle %s: its fresh reader %s was NOT filed (%s); file it by hand: `fresh_reader.py file "
-                  "--fix %s %s`" % (bid, ticket, rc, q["sha"], " ".join(q["paths"])))
-        return "reader: NOT filed (%s)" % rc
-    return "reader: filed %s over %d file(s)" % (ticket, len(q["paths"]))
+                  "--fix %s %s`" % (bid, b["ticket"], b["rc"], b["sha"], " ".join(b["paths"])))
+    if bad:
+        return "reader: NOT filed (%s)" % ", ".join("%s %s" % (b["ticket"], b["rc"]) for b in bad)
+    return "reader: %s" % "; ".join("%s %s over %d file(s)" % ("filed" if d["rc"] == 0 else "filed already", d["ticket"],
+                                                               len(d["paths"])) for d in done)
 
 
 def _say(say, line):

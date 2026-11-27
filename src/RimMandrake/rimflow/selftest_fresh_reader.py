@@ -159,11 +159,54 @@ def t_a_reviewed_file_is_owed_no_reader():
         f.holds, f.subprocess.run = real
 
 
+def t_a_second_filing_for_one_fix_is_not_a_refusal():
+    """A filing for a fix whose reader ticket exists and names each file files nothing, exits 0 and names that ticket;
+    a file that no reader ticket of the fix names is filed under a twin id that parses, never the taken id (item
+    RIMMANDRAKE_ACCEPT_READER_ALREADY_FILED_HAND_ACT_ALSO_REFUSED: `rimflow file` refused the taken id, exit 2, for
+    b553269938 and 5f4a5eaecc, 2026-11-27, and so did the hand act that the bundle's line named)."""
+    import contextlib
+    import io
+    f = FR()
+    base = f.ticket_id(SHA)
+    assert f.resolve(SHA, [PATH], {}) == (base, [PATH]), "no ticket yet: the fix's own id"
+    assert f.resolve(SHA, [PATH], {base: [PATH]}) == (base, []), "the ticket names each file: nothing to file"
+    tid, rest = f.resolve(SHA, [PATH, "src/b.py"], {base: [PATH]})
+    assert rest == ["src/b.py"] and tid != base and tid.startswith("RIMMANDRAKE_READ_FIX_") and tid.endswith(
+        "_WITH_FRESH_EYES"), (tid, rest)
+    assert f.resolve(SHA, ["src/b.py"], {base: [PATH], tid: ["src/b.py"]}) == (tid, []), "the twin names it: nothing"
+    import time_budget
+    r = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", tid], capture_output=True,
+                       text=True, timeout=time_budget.CALL_S)
+    assert r.returncode == 0, "the twin id does not parse: %s" % (r.stdout + r.stderr)[-300:]
+    real = (f.holds, f.subprocess.run, f.reader_tickets)
+    filed = []
+    try:
+        f.holds = lambda sha, ps, **kw: 1
+        f.subprocess.run = lambda argv, **kw: filed.append(argv) or types.SimpleNamespace(returncode=0)
+        f.reader_tickets = lambda: {base: [PATH]}
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = f.main(["file", "--fix", SHA, PATH])
+        assert rc == 0 and filed == [] and base in out.getvalue(), (rc, filed, out.getvalue())
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = f.main(["file", "--fix", SHA, PATH, "src/b.py"])
+        assert rc == 0 and len(filed) == 1 and filed[0][3] == tid, filed
+        t = filed[0][filed[0].index("--title") + 1]
+        assert f.parse_title(t)[0] == ["src/b.py"], t
+        # a ledger that cannot be read: the filing goes on under the fix's id (rimflow itself refuses a taken name)
+        f.reader_tickets = lambda: 1 / 0
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = f.main(["file", "--fix", SHA, PATH])
+        assert rc == 0 and len(filed) == 2 and filed[1][3] == base, filed[1:]
+    finally:
+        f.holds, f.subprocess.run, f.reader_tickets = real
+
+
 def main():
     failed = 0
     tests = [t_the_fixing_run_files_one_reader_ticket, t_the_lane_offers_the_reader_ticket,
              t_the_check_holds_on_a_review_record, t_the_rule_is_in_every_brief,
-             t_a_reviewed_file_is_owed_no_reader]
+             t_a_reviewed_file_is_owed_no_reader, t_a_second_filing_for_one_fix_is_not_a_refusal]
     for t in tests:
         try:
             t()

@@ -1624,6 +1624,30 @@ def t_a_code_bundle_gets_one_fresh_read():
                   owed=lambda sha, ps: ps, filer=lambda argv, root: filed.append(argv) or 0)
     chk(lambda: len(filed) == 1 and not W.store_read(rec3["id"]).get("reader") and any("could not look" in x for x in lines),
         "reader: commits that cannot be read file nothing, record nothing and say so (%s)" % lines[-1:])
+    # one reader per fix sha, each file under the newest bundle commit that changed it; a reader ticket that the worker
+    # filed already counts as filed, with no "by hand" line (item RIMMANDRAKE_ACCEPT_READER_ALREADY_FILED_HAND_ACT_ALSO_
+    # REFUSED: seen 2026-11-27, b553269938's reader existed, the bundle re-filed its id for a file of fa9a5f4176: exit 2)
+    import fresh_reader as FR0
+    f1 = {"sha": "fa9a5f4176", "ts": NOW + 30, "msg": "R8: the first fix\n",
+          "files": ["src/x/Tools.cs", "src/x/selftest_icon.py", "src/x/validation.py"]}
+    f2 = {"sha": "b553269938", "ts": NOW + 60, "msg": "R8: the second fix\n", "files": ["src/x/validation.py"]}
+    rec8 = W.store_write(dict(bundle_rec(W, ["R8"], at=NOW + 6), state="ended"))
+    q8 = W.plan_reader(rec8, [f2, f1])
+    chk(lambda: q8 and q8["groups"] == [{"sha": "b553269938", "paths": ["src/x/validation.py"]},
+                                        {"sha": "fa9a5f4176", "paths": ["src/x/Tools.cs", "src/x/selftest_icon.py"]}],
+        "reader: one group per fix sha, each file under the newest bundle commit that changed it (%s)" % q8)
+    filed8, lines8 = [], []
+    out8 = W.reader_step(rec8["id"], TMP, NOW + 100, say=lines8.append, commits=lambda r, root: [f2, f1],
+                         owed=lambda sha, ps: ps, filer=lambda argv, root: filed8.append(argv) or 0,
+                         tickets=lambda: {FR0.ticket_id("b553269938"): ["src/x/validation.py", "src/x/selftest_icon.py"]})
+    r8 = W.store_read(rec8["id"]).get("reader") or {}
+    chk(lambda: len(filed8) == 1 and filed8[0][3] == FR0.ticket_id("fa9a5f4176")
+        and FR0.parse_title(filed8[0][filed8[0].index("--title") + 1])[0] == ["src/x/Tools.cs", "src/x/selftest_icon.py"]
+        and not any("by hand" in x for x in lines8) and r8.get("rc") == 0
+        and [t.get("ticket") for t in r8.get("tickets") or []] == [FR0.ticket_id("b553269938"),
+                                                                   FR0.ticket_id("fa9a5f4176")],
+        "reader: the worker's own reader ticket is filed already (no refusal, no 'by hand' line); the other fix sha "
+        "gets its own reader over the files it changed (%s / %s / %s)" % (out8, lines8, r8))
     # the wiring: at_finish's end and the Conductor's end both call the step
     import left_open_continue as LOC
     import detached_helper as DH

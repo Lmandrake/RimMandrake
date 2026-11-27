@@ -147,8 +147,10 @@ bundle began). A member with none of these is **open**.
 - **a-code-bundle-gets-one-fresh-read.** When a bundle ends (finish, in its run's clone; or `end` by hand), its
   commits are read: those on origin/main since it began whose message names a member or the bundle. When they change
   code (not the ledger, the bundle state files, design prose or media), and a file of it still owes a read
-  (`fresh_reader.owed_paths`: READ-CLEAN or FLAGGED owes none; a file that an open reader ticket names owes none), the end files ONE `fresh_reader` ticket over those files,
-  and the ticket lane launches the reader. The bundle records `reader`; a second end files none. A bundle with no code
+  (`fresh_reader.owed_paths`: READ-CLEAN or FLAGGED owes none; a file that an open reader ticket names owes none), the end files one `fresh_reader` ticket per fix sha,
+  each over the files whose newest bundle commit is that sha, and the ticket lane launches the reader. A reader ticket
+  that exists already for that fix and those files (the worker filed it, `fresh_reader.resolve`) counts as filed: no
+  second filing and no "by hand" line. The bundle records `reader` (with `tickets`, one per fix sha); a second end files none. A bundle with no code
   change, or one already read, files none. Commits that cannot be read file nothing, record nothing, and reach the
   Conductor log. Measured 2026-11-26: three bundle fixes ended unread (c7dd53c26a, 062867f85d, e283fe2c2d62).
 - **a-refused-member-is-stopped-with-its-reason.** In the lane, an open member refused in an ended bundle reads
