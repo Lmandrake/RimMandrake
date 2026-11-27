@@ -179,6 +179,30 @@ def t_a_home_never_launches_or_closes():
     chk(lambda: b.home and all(getattr(a, k) == getattr(b, k) for k in keys), "no other field moved")
 
 
+def t_a_parked_ticket_is_not_offered():
+    """A ticket whose block holds (kind owner here: he decides) or whose dated wait is ahead is not offered to a lane or
+    to Codex; it is counted and named as parked. A block that ended and a wait that passed offer it again."""
+    import time
+    owner, waited, free = (fil("RIMMANDRAKE_TEST_HOME_PARKED_" + s) for s in ("OWNER_BLOCK", "WAIT_AHEAD", "FREE"))
+    ended, passed = fil("RIMMANDRAKE_TEST_HOME_PARKED_BLOCK_ENDED"), fil("RIMMANDRAKE_TEST_HOME_PARKED_WAIT_PASSED")
+    tomorrow = time.strftime("%Y-%m-%d", time.gmtime(time.time() + 86400))
+    cli("block", owner, "--kind", "owner", "--reason", "faction work starts on his word", "--why", "t")
+    cli("block", ended, "--kind", "time", "--lift-at", tomorrow, "--reason", "after tomorrow", "--why", "t")
+    w = world()
+    # a dated wait is written on started work only (claim, wait, release); the offer reads the replayed fields
+    w.items[waited].wait_until, w.items[waited].wait_reason = "2099-01-01", "read again then"
+    w.items[passed].wait_until, w.items[passed].wait_reason = tomorrow, "r"
+    ids = [owner, waited, free, ended, passed]
+    later = time.time() + 3 * 86400        # past the second wait's date, long before 2099
+    o = LH().offer(w.items, ids, set(), reading=lambda it: {}, now=later)
+    chk(lambda: sorted(o["offer"]) == sorted([free, ended, passed]) and sorted(o["parked"]) == sorted([owner, waited]),
+        "a holding block and a wait ahead are parked, not offered (%s)" % o)
+    chk(lambda: "faction work starts on his word" in o["parked"].get(owner, "")
+        and "2099-01-01" in o["parked"].get(waited, ""), "each parked ticket names its reason (%s)" % o.get("parked"))
+    text = "\n".join(LH().offer_lines(o, w.items))
+    chk(lambda: "parked, not offered" in text and owner in text and waited in text, "the offer lines name the parked")
+
+
 def main():
     top = X["top"] = tempfile.mkdtemp(prefix="selftest_list_home_")
     env = dict(RIMFLOW_LEDGER=os.path.join(top, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(top, "items"),
@@ -195,7 +219,8 @@ def main():
                   t_the_list_is_by_home_and_group_with_counts,
                   t_a_closed_ticket_leaves_the_list,
                   t_could_not_look_is_not_an_empty_list,
-                  t_a_home_never_launches_or_closes):
+                  t_a_home_never_launches_or_closes,
+                  t_a_parked_ticket_is_not_offered):
             try:
                 t()
             except Exception as e:  # noqa: BLE001

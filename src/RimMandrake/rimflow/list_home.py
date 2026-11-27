@@ -10,8 +10,9 @@ the old tickets grouped by mod, pipeline repair and other kinds once, and the li
     python3 src/RimMandrake/rimflow/list_home.py no-home            the open list tickets that have no home
     python3 src/RimMandrake/rimflow/list_home.py json               the whole view, for a program
     python3 src/RimMandrake/rimflow/list_home.py offer [--by-mod]   the tickets the Workshop Pipeline may hand to a lane or
-                                                                    to Codex: not one mod's work (mod_work.of); the rest
-                                                                    are counted by mod (--by-mod: and listed)
+                                                                    to Codex: not parked (a block that holds, a dated
+                                                                    wait ahead) and not one mod's work (mod_work.of); the
+                                                                    rest are counted by mod (--by-mod: and listed)
     exit 0 read; 2 could not look (the ledger or the page's ticket set could not be read)
 
 The write is `rimflow home <ID> --home H --group G --flag F [--reason R]`, or `rimflow home --from <rows.tsv>` (ID, HOME,
@@ -158,15 +159,44 @@ def read():
     return open_homes(stores["items"], list(sec["stage_of"])), stores["items"]
 
 
-def offer(items, ids, modset, reading=None):
-    """-> {"offer": [ids], "mods": {mod: [ids]}, "blind": {id: cause}} over the open list tickets `ids`. A ticket that is
-    one mod's work waits for that mod's Maturation Pipeline run; a ticket whose home cannot be read is not offered."""
+class _World(object):
+    """The one field priority.block_holds reads of a world: its items."""
+    def __init__(self, items):
+        self.items = items
+
+
+def parked(items, it, now):
+    """-> why `it` is parked (a block that holds, or a dated wait still ahead), else None. A parked ticket goes to no lane
+    and to no Codex run: list_dispatch.py reads the same block and wait and launches nothing on it."""
+    import model as LM
+    e = LM.iso_epoch(it.wait_until) if getattr(it, "wait_until", None) else None
+    if e is not None and e > now:
+        return "waits until %s: %s" % (it.wait_until, it.wait_reason or "no reason given")
+    if getattr(it, "blocked", None):
+        up = os.path.dirname(HERE)
+        if up not in sys.path:
+            sys.path.insert(0, up)          # priority imports only as rimflow.priority
+        from rimflow import priority as PR
+        if PR.block_holds(_World(items), it, now):
+            return "blocked: %s" % PR.block_line(it)
+    return None
+
+
+def offer(items, ids, modset, reading=None, now=None):
+    """-> {"offer": [ids], "mods": {mod: [ids]}, "parked": {id: why}, "blind": {id: cause}} over the open list tickets
+    `ids`. A parked ticket (a block that holds, a dated wait ahead) is not offered; a ticket that is one mod's work waits
+    for that mod's Maturation Pipeline run; a ticket whose home cannot be read is not offered."""
     import mod_work as MW
     reading = reading or (lambda it: MW.reading(it, modset))
-    out = {"offer": [], "mods": collections.defaultdict(list), "blind": {}}
+    now = time.time() if now is None else now
+    out = {"offer": [], "mods": collections.defaultdict(list), "parked": {}, "blind": {}}
     for i in sorted(ids):
         it = items[i]
         if it.state in CLOSED:
+            continue
+        why = parked(items, it, now)
+        if why:
+            out["parked"][i] = why
             continue
         r = reading(it)
         if r.get("unreadable"):
@@ -190,6 +220,8 @@ def offer_lines(o, items, by_mod=False):
         out.append("    %-28s %d" % (m, len(o["mods"][m])))
         if by_mod:
             out += ["        %s" % i for i in o["mods"][m]]
+    out.append("parked, not offered (a block that holds or a dated wait ahead): %d" % len(o.get("parked") or {}))
+    out += ["    %s: %s" % (i, " ".join(str(w).split())[:160]) for i, w in sorted((o.get("parked") or {}).items())]  # cut-ok: terminal display
     out.append("could not look, not offered: %d" % len(o["blind"]))
     out += ["    %s: %s" % kv for kv in sorted(o["blind"].items())]
     return out

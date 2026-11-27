@@ -2069,8 +2069,29 @@ His card answers, 2026-11-13, and his later rulings:
   - Pyrelands 0.1.0 is the biome alone and passes first.
   - The Tribes mod is `src/RimUtinni/PyrelandsMechanics`, `mandrake.rut.pyrelandsmechanics`, design
     `design/concepts/PyrelandsMechanics`. The Tribes mod gets its own Design Version 0.1.0.
-  - The Tribes mod is started only after the biome passes. Until then, the Tribes mod stays out of test mod lists. The
-    design is kept as written.
+  - The Tribes mod sleeps until faction work starts (next bullet). Until then, the Tribes mod stays out of test mod
+    lists. The design is kept as written.
+- **No faction work starts until his word; the Deep Desert Tribes mod sleeps until then** (owner, Thu 2026-11-26
+  12:45 PM PST, OWNER event `1795725958667522790` on `RIMMANDRAKE_CARRY_HIS_WORD_TRIBES_SLEEP_UNTIL_FACTION_WORK`, his
+  answer on the "Tribes mod" question of the Pyrelands 0.2.0 scope card): *"We are not ready to do faction work yet. The
+  tribes sleep until we start faction work much later."*
+  - No faction work starts until he says that faction work starts. No date lifts this; only his word does.
+  - The Deep Desert Tribes mod (`PyrelandsMechanics`) is held by him: `mod_owner_hold.py` holds it with his words of
+    that day (§Owner hold). The hold of 2026-11-26 is a different and longer stop than the `pipe off` of 2026-11-18
+    (act ct_000028, "pipeline repairs first"). When the pipeline is repaired, `pipe on PyrelandsMechanics` does not
+    lift his hold.
+  - Design runs on the Tribes mod wait too. The Designer and DesignerCodex chain never run on a held mod, and a
+    design-only pass (`designer_cleanse.py`) runs on a held mod only where his hold record allows it
+    (`design_allowed`). The hold record of `PyrelandsMechanics` does not allow it.
+  - Each open faction-work ticket is parked on the list with `rimflow block <ID> --kind owner`. The reason names his
+    word. A block of kind owner is never offered to a lane, a Work Bundle or Codex (`list_dispatch.py`,
+    `list_home.py offer`), and the age line never makes it stale. The Conductor reads the question again on
+    2027-01-15. That date is a re-read date, not a start date.
+  - **The Conductor's reading of "faction work"** (not his words; logged as delegated, evidence-for-ask): faction work
+    is work that builds or changes what a faction is or does: its defs, its settlements, its raids, its trade, its
+    goodwill rules, its rites, its visitors, its place in the campaign. Three kinds of work are not faction work: the
+    deletion of a dead faction def or tombstone; a fix of a failure that happened in a mod that advances today; a
+    design text. When a ticket cannot be classed, it is not parked; the Conductor classes it.
 - **He reviews the scope of a mod's next Design Version before it opens** (owner, Thu 2026-11-26 10:46 AM PST, OWNER
   event `1795718805213683043` on `RIMMANDRAKE_OPEN_PYRELANDS_NEXT_VERSION_HE_ASKED_FASTER_FIRE`: *"If we're opening
   0.2.0 for Pyrelands, I want to review what we might put into it, ok? That's not an automatic decision"*). He said it
@@ -2984,6 +3005,9 @@ mod right now. They are poorly defined builds right now and the system choked at
   - After a lift, publish `mod_owner_hold.json`. `mod_owner_hold.py show` lists the holds.
   - A lifted mod still does not run while its readiness list is not READY (§No mod runs forward on a broken pipeline,
     owner 2026-11-19).
+- **The Deep Desert Tribes mod (`PyrelandsMechanics`) is held too** (owner, 2026-11-26), with no design pass allowed:
+  no faction work starts until his word. Full text: §Mod Design Versions, the bullet "No faction work starts until his
+  word".
 - **A new hold** is a row in the same file, with his words. `mod_owner_hold.py hold <Mod> --said "<his words>"` writes
   the row into the store and the file. Then publish `mod_owner_hold.json`. After a row is written by hand, run `./pipe
   init --import` (safe to repeat). Then every launch refuses the mod, not only the tick.

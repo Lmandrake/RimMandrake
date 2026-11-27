@@ -47,4 +47,7 @@ and nothing closes or drops a ticket.
   the count of each flag. The counts sum to the count of open list tickets.
 - **a-closed-ticket-leaves-the-list.** An item that is done, dropped or superseded is not in the list.
 - **could-not-look-is-not-an-empty-list.** A ledger or a page set that could not be read exits 2 with the cause.
+- **a-parked-ticket-is-not-offered.** `list_home.py offer` offers no ticket whose block holds (`priority.block_holds`) or
+  whose dated wait is still ahead. It counts each one as parked and names its reason. A block that ended, or a wait
+  that passed, offers the ticket again.
 - **a-home-never-launches-or-closes.** A home event changes no state, no naming for Shape, no check, no claim and no wait.

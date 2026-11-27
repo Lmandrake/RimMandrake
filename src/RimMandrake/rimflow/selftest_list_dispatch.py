@@ -942,7 +942,7 @@ def t_blocked_idle_window_open_is_due():
         import datetime as dt
         return dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    def world(needs, block_at, opens, verb="game", state="UP", block=True, extra=()):
+    def world(needs, block_at, opens, verb="game", state="UP", block=True, extra=(), kind="external"):
         n = [0]
 
         def ev(t, **k):
@@ -951,7 +951,8 @@ def t_blocked_idle_window_open_is_due():
         evs = [ev(block_at - 60, event="file", id="LD_AGE_LINE_ITEM_ONE", title="t", kind="task", needs=needs,
                   **{"for": "BENCH"})]
         if block:
-            evs.append(ev(block_at, event="block", id="LD_AGE_LINE_ITEM_ONE", reason="needs a live game", kind="external"))
+            evs.append(ev(block_at, event="block", id="LD_AGE_LINE_ITEM_ONE", reason="needs a live game", kind=kind,
+                          **({"lift_at": ts(NOW + 30 * day)} if kind == "time" else {})))
         evs += [ev(t, event="bridge", state="released") if verb == "bridge" else
                 dict(ev(t, event="game", state=state), seat="OWNER") for t in opens]     # only OWNER stamps the game
         evs += [ev(t, **k) for t, k in extra]
@@ -980,6 +981,9 @@ def t_blocked_idle_window_open_is_due():
         chk(lambda needs=needs: not world(needs, old, [old + day, old + 2 * day])[0],
             "needs %s: no ledger event opens that window, so the age line never fires" % needs)
     chk(lambda: not world("game-up", old, [old + day, old + 2 * day], block=False)[0], "an item with no block")
+    for kind in ("owner", "time"):      # his word, or its own date, lifts it: a game window is never its lift event
+        chk(lambda kind=kind: not world("game-up", old, [old + day, old + 2 * day], kind=kind)[0],
+            "a block of kind %s never goes stale by its needs window (the faction-work park of 2026-11-26)" % kind)
     stale = "its block (needs a live game) idle 5.0 d; the game came UP 2 times since"
     r, l, _ = run({"A": it(blocked=True, effect=None, verdict=None, shape_due=True, shape_why=stale, block_stale=stale)})
     chk(lambda: r["A"]["decision"] == "shape" and l == ["A"] and stale in r["A"]["why"],

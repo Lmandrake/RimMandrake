@@ -101,6 +101,18 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   they are not deprecated.
 - Full text: `design/RimMandrake/standing_rulings.md` §Owner hold.
 
+## No faction work starts until the owner says so; the Deep Desert Tribes mod sleeps
+
+- Do not start faction work. Faction work starts only on the owner's word. No date starts it.
+- The Deep Desert Tribes mod (`PyrelandsMechanics`) is held by the owner. Design runs on that mod also wait, because
+  its hold record allows no design pass.
+- Park each open faction-work ticket with `rimflow block <ID> --kind owner`. Name the owner's word in the reason.
+- Faction work is work that builds or changes what a faction is or does: its defs, settlements, raids, trade, goodwill
+  rules, rites, visitors and place in the campaign. Three kinds of work are not faction work: the deletion of a dead
+  faction def or tombstone, a fix of a failure in a mod that advances today, and a design text.
+- If you cannot tell whether a ticket is faction work, do not park it. Ask the Conductor to class it.
+- Full text: `design/RimMandrake/standing_rulings.md` §Mod Design Versions, "No faction work starts until his word".
+
 ## No mod runs forward on a broken pipeline
 
 - Do not run a mod forward while an open pipeline ticket classed BLOCKS lies on that mod's path.

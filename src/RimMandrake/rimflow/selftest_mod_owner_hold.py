@@ -45,7 +45,10 @@ def test_the_shipped_list():
     os.environ.pop("RM_OWNER_HOLD_FILE", None)
     hs = OH.load(OH.PATH)    # the shipped file alone: pipe's live switches (pipeline_control) are not shipped
     check(set(SIX) <= set(hs), "owner_hold.json holds the six biome mods: %s" % sorted(hs))
-    check(not any(OH.held(m, hs) for m in UNTOUCHED), "Pyrelands, PyrelandsMechanics: not held")
+    check(not OH.held("Pyrelands", hs), "Pyrelands: not held")
+    pm = OH.held("PyrelandsMechanics", hs) or {}
+    check(pm.get("date") == "2026-11-26" and "faction work" in (pm.get("said") or "") and not pm.get("design_allowed"),
+          "PyrelandsMechanics (the Deep Desert Tribes): held with his words of 2026-11-26, no design pass: %r" % pm)
     check(all("Only Pyrelands" in hs[m]["said"] and hs[m]["date"] == "2026-11-16" for m in SIX if m in hs),
           "each of the six carries his words and the date 2026-11-16")
     check(all(h.get("said") and re.fullmatch(r"\d{4}-\d\d-\d\d", h.get("date") or "") for h in hs.values()),

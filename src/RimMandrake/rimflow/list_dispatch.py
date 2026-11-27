@@ -1034,6 +1034,9 @@ def block_age(x, op, now, cfg):
     window opened block_window_min times or more since. Pure over (x, op, now, cfg)."""
     if not getattr(x, "blocked", None):
         return False, "not blocked"
+    kind = getattr(x, "blocked_kind", None)
+    if kind in ("owner", "time"):       # his word, or its own date, lifts it; a game window is never its lift event
+        return False, "a block of kind %s lifts on its own event, not on a needs window" % kind
     w = WINDOW_EVENTS.get(getattr(x, "needs", None))
     if w is None:
         return False, "needs %s: no ledger event opens that window" % getattr(x, "needs", None)

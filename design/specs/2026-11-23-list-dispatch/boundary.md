@@ -89,8 +89,9 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   for Shape, and the Shape brief's why names the block and `rimflow unblock`. A stale block on an item whose check
   fails does not stop its Work run, and the Work brief asks to settle the block first. Every later gate still holds.
   `needs` offline, deploy, harvest and owner have no ledger event that opens their window, so the age line never
-  fires on them. Measured 2026-11-24: 30 items blocked past 3 days, 18 with a window that had opened since, and no
-  program looked at one.
+  fires on them. A block of kind `owner` (he decides) or `time` (its own date) is never stale by a `needs` window: a
+  window is not its lift event. Measured 2026-11-24: 30 items blocked past 3 days, 18 with a window that had opened
+  since, and no program looked at one.
 - **a-passed-wait-gets-one-second-look.** A lane item with a check (named for the lane, or filed at or after `shape_from`)
   whose dated wait passed and whose check still fails gets one Work run (opus) after that date, whose brief names what the
   wait was for and asks first if the work is still worth the touch. It counts as a Work run: after `max_runs_per_item` the
