@@ -70,8 +70,6 @@ def _install():
 
     def child(exe, argv, cwd, env):
         argv = [os.fsdecode(a) if isinstance(a, (bytes, os.PathLike)) else str(a) for a in (argv or [])]
-        if isinstance(argv, str):
-            argv = [argv]
         exe = exe if exe is not None else (argv[0] if argv else "")
         if is_py(exe):
             e = env if env is not None else os.environ
