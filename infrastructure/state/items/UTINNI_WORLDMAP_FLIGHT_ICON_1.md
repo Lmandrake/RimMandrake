@@ -46,3 +46,14 @@ at that size: a ring with a hub, dark hull, no dome.
 - Expanding icons are drawn through `WorldObjectDef.ExpandingIconColor` / faction
   colour tinting in `ExpandableWorldObjectsUtility`; author the sprite so a tint
   doesn't wreck it (read that class before picking colours).
+
+## criteria
+- A1: The UtinniWorldIcon texPath fields resolve live to the RUT_Utinni textures.
+- A2: The icon style is judged acceptable (a delegated art judge, `design/RimMandrake/art_judge_brief.md`).
+- A3: The globe in flight shows the icon, and it reads as our ring-hull ship (now a delegated art call, not his look).
+
+## refs
+file: src/RimUtinni/UtinniPatches/Patches/UtinniWorldIcon.xml
+file: src/RimUtinni/UtinniPatches/Textures/World/WorldObjects/Expanding/RUT_Utinni.png
+file: src/RimUtinni/UtinniPatches/Textures/World/WorldObjects/RUT_UtinniCaravan.png
+def: WorldObjectDef/Gravship
