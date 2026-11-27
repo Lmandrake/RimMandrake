@@ -3,7 +3,7 @@
  "version": "0.1.0",
  "program": "design/concepts/WreckedMachines/version/pilot_throwaway/preflight_wreckedmachines.py (throwaway, no model)",
  "table": "design/concepts/WreckedMachines/version/test_table.json",
- "at": "2026-11-27T06:31:59-08:00",
+ "at": "2026-11-27T07:24:36-08:00",
  "dump": {
   "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
   "provenance": {
@@ -14,17 +14,13 @@
    "modlist_fingerprint": "d66ead97de339ac9"
   }
  },
- "seconds": 18.14,
+ "seconds": 19.03,
  "verdict": "refuse",
  "refusals": 2,
  "refusals_by_route": {
   "Stage 3 (the bar is sound; the build is owed)": 2
  },
  "stage3_owed": [
-  "T_ONBOARDING_TABLE_OFFLINE",
-  "T_LEVEL_NUMBERS",
-  "T_NEIGHBOUR_NAMES",
-  "T_FORGE_GATES_GONE",
   "sc_old_save"
  ],
  "checks": [
@@ -73,7 +69,7 @@
    "what": "every built test's file exists",
    "verdict": "pass",
    "refusals": [],
-   "evidence": "38 built tests",
+   "evidence": "42 built tests",
    "smallest_fix": null,
    "route": null,
    "seconds": 0.0
@@ -96,20 +92,20 @@
    "evidence": "read with designer_stage.entry_point_exists",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.045
+   "seconds": 0.038
   },
   {
    "id": "C6_built_deciders_run",
    "what": "every built deciding test runs green today; a deciding test that is specified and not built is Stage 3 work, not a refusal",
    "verdict": "refuse",
    "refusals": [
-    "T_ONBOARDED_SET: red today (rc 1: T_ONBOARDED_SET: FAIL (4 rows, 3 not PASS)); it decides inv_smelter_line, inv_donor_smelter_hidden, inv_more_factory_machines, study_opens_research, repair_on_the_machine, levels_of_function, levels_told_apart. the onboarding table (Defs/MachineLines) does not hold a line for each of the 20 machines yet: the check is built and red first; it goes green when the last machine is onboarded (plan.md, order, step 7)",
-    "T_ONBOARDING_COMPLETE: red today (rc 1: T_ONBOARDING_COMPLETE: FAIL (7 rows, 7 not PASS, 0 lines)); it decides inv_smelter_line, inv_donor_smelter_hidden, inv_more_factory_machines, study_opens_research, repair_on_the_machine, levels_of_function, levels_told_apart. a machine on the table lacks a level def, a carried form, a studied project, a picture of its own, the art judge's record or its Mod Settings line: the check is built and red first; it goes green when every machine's onboarding is whole (plan.md, order, steps 4 to 7)"
+    "T_ONBOARDED_SET: red today (rc 1: T_ONBOARDED_SET: FAIL (4 rows, 2 not PASS)); it decides inv_smelter_line, inv_donor_smelter_hidden, inv_more_factory_machines, study_opens_research, repair_on_the_machine, levels_of_function, levels_told_apart. the onboarding table (Defs/MachineLines) does not hold a line for each of the 20 machines yet: the check is built and red first; it goes green when the last machine is onboarded (plan.md, order, step 7)",
+    "T_ONBOARDING_COMPLETE: red today (rc 1: T_ONBOARDING_COMPLETE: FAIL (7 rows, 2 not PASS, 3 lines)); it decides inv_smelter_line, inv_donor_smelter_hidden, inv_more_factory_machines, study_opens_research, repair_on_the_machine, levels_of_function, levels_told_apart. a machine on the table lacks a level def, a carried form, a studied project, a picture of its own, the art judge's record or its Mod Settings line: the check is built and red first; it goes green when every machine's onboarding is whole (plan.md, order, steps 4 to 7)"
    ],
    "evidence": "33 deciding tests; 2 not green or not written; 0 specified for Stage 3: none",
    "smallest_fix": "Stage 3 does the build work that each line names, then remakes the table",
    "route": "Stage 3 (the bar is sound; the build is owed)",
-   "seconds": 0.045
+   "seconds": 0.038
   },
   {
    "id": "C7_game_reason_written",
@@ -129,7 +125,7 @@
    "evidence": "2 line(s) of design/RimMandrake/validation_holding/*.md match 'wreck|kludg|refurbish|smelter|vanometric|emanator|ancient component|alloy forge'; 0 placed; the table's note: 0 held look statements name this mod: a grep of design/RimMandrake/validation_holding/*.md for 'wreck|kludg|refurbish|smelter|vanometric|emanator|ancient component|alloy forge' finds 2 line(s) (design/RimMandrake/validation_holding/flowworks_walk_20261120.md:77, design/RimMandrake/validation_holding/flowworks_walk_20261120.md:164), and each is FlowWorks' ruined bridge (RM_SuspensionWreck), not a machine of this mod",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.009
+   "seconds": 0.007
   },
   {
    "id": "C9_defs_real",
@@ -139,7 +135,7 @@
    "evidence": "16 names checked (11 from validation.py's ORIGINAL and staging constants); dump captured 2026-11-27T06:22:12Z, 51180 defs, 318 mods",
    "smallest_fix": null,
    "route": null,
-   "seconds": 1.168
+   "seconds": 0.593
   },
   {
    "id": "C10_mods_real",
@@ -149,7 +145,7 @@
    "evidence": "tier wreckedmachines_solo: brrainz.rimbridgeserver, void.charactereditor, mandrake.rm.wreckedmachines, VanillaExpanded.VFEFactory, petetimessix.researchreinvented, mandrake.rm.flowworks",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.003
+   "seconds": 0.005
   },
   {
    "id": "C10b_tiers_defined",
@@ -159,7 +155,7 @@
    "evidence": "3 tiers named: wreckedmachines_cannery, wreckedmachines_no_research_reinvented, wreckedmachines_solo",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.003
+   "seconds": 0.005
   },
   {
    "id": "C11_scene_kinds",
@@ -179,7 +175,7 @@
    "evidence": "9 pins (stage.json is state and is not compared)",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.016
+   "seconds": 0.013
   },
   {
    "id": "C13_scenes_and_checks_wired",
@@ -199,7 +195,7 @@
    "evidence": "44 tool names",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.13
+   "seconds": 0.163
   },
   {
    "id": "C15_items_real",
@@ -209,7 +205,7 @@
    "evidence": "1 items: RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL",
    "smallest_fix": null,
    "route": null,
-   "seconds": 0.208
+   "seconds": 0.266
   },
   {
    "id": "C16_small_list",
@@ -219,7 +215,7 @@
    "evidence": "ok    WreckedMachines: tier wreckedmachines_solo, 16 mods",
    "smallest_fix": null,
    "route": null,
-   "seconds": 16.316
+   "seconds": 17.789
   }
  ]
 }

@@ -184,7 +184,7 @@ CLAUSE_PARTS = {
     "A2": {"mod": "WreckedMachines", "pid": "mandrake.rm.wreckedmachines",
            "needs": ("mandrake.rm.wreckedmachines",) + VE_KEEP,
            "without": (),
-           "has": ("ThingDef/RM_WM_AutomatedSmelter_Kludged", "ThingDef/RM_WM_AutomatedSmelter_Repaired"),
+           "has": ("ThingDef/RM_WM_AutomatedSmelter_Kludged", "ThingDef/RM_WM_AutomatedSmelter_Refurbished"),
            "absent": ("SetIngredients", "RecipeDefGenerator", "GenerateAutoProcesses")},
 }
 

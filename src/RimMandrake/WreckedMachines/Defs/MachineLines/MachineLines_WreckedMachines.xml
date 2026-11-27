@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The onboarding table of Wrecked Machines (DESIGN.md "The onboarding table"): one row for each ancient machine, written by hand.
+  The three rows here are the first lines. Costs and work are the numbers the level defs carried before the table took them over
+  (kludge = the old Kludged def's costList and WorkToBuild; refurbish = the old Refurbished def's). They are still provisional.
+  The second project of each row keeps the name the neighbours read (Cold Storage, the Cuisine mod, ResearchRetag, the alloy forge).
+-->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_smelter</defName>
+    <key>smelter</key>
+    <label>automated smelter</label>
+    <original>VFEFactory_AutomatedSmelter</original>
+    <wrecked>RM_WM_AutomatedSmelter_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedSmelter_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedSmelter_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedSmelterKludging</firstProject>
+    <secondProject>RM_WM_AutomatedSmelterRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_SmeltMetalFromSlag</li>
+      <li>VFEFactory_SmeltMetalFromMechSlag</li>
+      <li>VFEFactory_SmeltWeapon</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>120</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>3000</kludgeWork>
+    <refurbishCost>
+      <Steel>200</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>4000</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_powercell</defName>
+    <key>powercell</key>
+    <label>vanometric power cell</label>
+    <original>VanometricPowerCell</original>
+    <wrecked>RM_WM_PowerCell_Wrecked</wrecked>
+    <kludged>RM_WM_PowerCell_Kludged</kludged>
+    <refurbished>RM_WM_PowerCell_Refurbished</refurbished>
+    <firstProject>RM_WM_PowerCellKludging</firstProject>
+    <secondProject>RM_WM_PowerCellRestoration</secondProject>
+    <kludgeCost>
+      <Steel>60</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2500</kludgeWork>
+    <refurbishCost>
+      <Steel>80</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>4000</refurbishWork>
+    <kludgedMovable>true</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_emanator</defName>
+    <key>emanator</key>
+    <label>psychic emanator</label>
+    <original>PsychicEmanator</original>
+    <wrecked>RM_WM_PsychicEmanator_Wrecked</wrecked>
+    <kludged>RM_WM_PsychicEmanator_Kludged</kludged>
+    <refurbished>RM_WM_PsychicEmanator_Refurbished</refurbished>
+    <firstProject>RM_WM_EmanatorKludging</firstProject>
+    <secondProject>RM_WM_EmanatorRestoration</secondProject>
+    <kludgeCost>
+      <Steel>40</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2000</kludgeWork>
+    <refurbishCost>
+      <Steel>50</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>3500</refurbishWork>
+    <kludgedMovable>true</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

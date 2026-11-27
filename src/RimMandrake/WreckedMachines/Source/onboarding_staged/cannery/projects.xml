@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the automated cannery line: its two research projects on the tab RM_WM_Restoration.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Mods/VanillaCookingExpanded/Defs/ThingDefs_Buildings/Buildings_Factories_VCE.xml, ThingDef VFEFactory_AutomatedCannery (line 4 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <ResearchProjectDef MayRequire="VanillaExpanded.VCookE">
+    <defName>RM_WM_AutomatedCanneryKludging</defName>
+    <label>automated cannery kludging</label>
+    <description>Work out how to patch a wrecked automated cannery back into crude service. Needs a wrecked automated cannery that a researcher has studied.\n\nOnce this is done, order the kludge on the wrecked automated cannery where it stands.</description>
+    <baseCost>1050</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedCannery_Wrecked</li>
+    </requiredAnalyzed>
+    <researchViewX>0</researchViewX>
+    <researchViewY>20</researchViewY>
+  </ResearchProjectDef>
+  <ResearchProjectDef MayRequire="VanillaExpanded.VCookE">
+    <defName>RM_WM_AutomatedCanneryRestoration</defName>
+    <label>automated cannery refurbishment</label>
+    <description>Learn to bring a kludged automated cannery close to what it was. This is not the original engineering, which its makers already solved. It is the colony's own hard-won knowledge of how to bring a dead one back. Needs a kludged automated cannery that a researcher has studied.\n\nOnce this is done, order the refurbishment on the kludged automated cannery where it stands. It needs an ancient component.</description>
+    <baseCost>2100</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <prerequisites>
+      <li>RM_WM_AutomatedCanneryKludging</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedCannery_Kludged</li>
+    </requiredAnalyzed>
+    <researchViewX>1</researchViewX>
+    <researchViewY>20</researchViewY>
+  </ResearchProjectDef>
+</Defs>

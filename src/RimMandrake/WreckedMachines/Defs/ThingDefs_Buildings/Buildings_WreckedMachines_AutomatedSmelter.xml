@@ -1,72 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  WreckedMachines — Automated Smelter, four grades (Wrecked, Kludged,
-  Refurbished, and Repaired = the 1.0 original).
+  WreckedMachines - the automated smelter line: three level defs (Wrecked, Kludged, Refurbished). The fourth level, the Original,
+  is the factory mod's own VFEFactory_AutomatedSmelter. The line's row is Defs/MachineLines/MachineLines_WreckedMachines.xml.
+  Nobody builds a level: a level def has no designationCategory, no research prerequisite and no place worker. A machine is
+  repaired where it stands, by an order on the machine (DESIGN.md "The repair on the machine"), after study and research.
 
-  DONOR, read 2026-08-12, quoted rather than remembered:
-    /mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3686924415
-      /1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml   lines 184-289
-    defName VFEFactory_AutomatedSmelter · size (3,4) · drawSize (4,5)
-    Graphic_Multi · Steel 260 + ComponentIndustrial 7 · research VFE_BasicFactories
-    terrainAffordanceNeeded FactoryFloor · 300 W · heatPerSecond 14
+  DONOR, read 2026-11-27 (quoted, not remembered):
+    /mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3686924415/1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml
+    defName VFEFactory_AutomatedSmelter, lines 184-289: size (3,4), drawSize (4,5), Graphic_Multi, Mass 60, thingCategories
+    VFEFactory_FactoryCategory, terrainAffordanceNeeded FactoryFloor, 300 W, heatPerSecond 14, six processes in this order:
+    SmeltMetalFromSlag, SmeltMetalFromMechSlag, SmeltWeapon, SmeltApparel, SmeltMetalFromChunk, SmeltMechanoid.
 
-  RULING (DESIGN.md §1, owner 2026-08-12): these are PARALLEL defs, not a
-  retexture. VFEFactory_AutomatedSmelter is left completely untouched as a
-  ThingDef — its stats, comps and processes are unchanged, and our Kludged/
-  Repaired tiers still call its own ProcessDefs — but it is no longer
-  BUILDABLE. WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1 (owner ruling 2026-09-16,
-  verbatim: "remove the VFE factory, not the manual one") closed the "both
-  appear in the build menu" gap that used to be documented here as a known,
-  accepted testing-phase cost: Defs/Patches/WreckedMachines_
-  HideDonorSmelter.xml clears its <designationCategory> so it can no longer
-  be newly built, while vanilla's own hand-run ElectricSmelter ("the manual
-  one") is untouched.
-
-  RULING (DESIGN.md §1, owner 2026-08-12): "POWER DENSITY explodes, not the fact
-  it's a machine." The wrecked tier is discharged, so it takes NO
-  CompProperties_Explosive — not a small radius, none at all. Whoever implements
-  the detonation feature in TODO.md §1 must skip this def deliberately.
-
-  ✅ RESEARCH GATE RE-POINTED, WRECKED_MACHINES_RESURRECTION_1 (owner
-  ruling 2026-08-31, canon.yml wrecked_machines): the repaired tier's
-  researchPrerequisites now names RM_WM_AutomatedSmelterRestoration
-  (Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml), a new
-  Ship-tree project owned by this mod — NOT VFE_BasicFactories, which stays
-  the untouched donor building's own gate. See that file's header for the
-  full account, including the techprint-gate fork left OPEN (faction-held
-  is BLOCKED on TECHPRINT_FACTION_GATING_1; this pilot ships ungated rather
-  than guessing a faction).
-
-  ⚠️ STILL PROVISIONAL: the <costList> material amounts on all three tiers.
-  DESIGN.md §2 calls this the "still open" half of the recommendation (the
-  material cost of each rung, and the Survival Tools Reborn tool requirement
-  on Wrecked -> Kludged) and today's ruling did not touch it — only the
-  research/techprint half of §2 was in scope. Revisit costList when §2's
-  material-cost half is ratified.
-
-  ⚠️ THIS IS THE v1 CUT (owner, 2026-08-12): "They will just be rubble for now."
-  Two features that DESIGN.md still describes at length are DELIBERATELY ABSENT
-  here, so that a playable loop can be iterated on now — both are V2.md items:
-
-    * SACRED SCRAP. Every tier is ordinary, deconstructible, claimable rubble.
-      Nothing enforces "the wreck cannot be cleared" yet. This is not an
-      oversight and not a regression; setting deconstructible=false is what
-      BLOCKS the repair (DESIGN.md §4), so it cannot come back alone.
-    * STUDYING THE WRECK. No SpecialResearchOpportunityDef ships. Research is
-      plain VFE_BasicFactories, reached however the player normally reaches it.
-
-  The repair loop that DOES ship is `replaceTags` — a vanilla 1.6 field, shared
-  across all three tiers below, letting each be built directly over another.
+  The wrecked level takes no CompProperties_Explosive and no power comp (owner ruling 2026-08-12, "power density explodes, not the
+  fact it's a machine"). Its draw-in tag RM_RuinDrawsConduit lets a neighbouring power line reach it for drawing only.
+  The cost lists of the Wrecked def are its salvage; the costs and work of the two repairs are in the table row.
+  The Kludged and Refurbished defs' processes, speed and breakdowns are re-derived by the C# at startup from the donor and the row.
 -->
 <Defs>
 
   <!-- ==================================================================
-       TIER 1 — WRECKED.  Dead. Occupies its tiles and nothing else.
+       WRECKED. Dead. Occupies its tiles and nothing else. Can be carried.
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_WM_AutomatedSmelter_Wrecked</defName>
     <label>wrecked automated smelter</label>
-    <description>What is left of an automated smelter. The casing is split, the electromagnets are gone, and the feed throat is choked with its own cooled slag. It has no power in it and nothing to give.\n\nFor now it is simply rubble: clear it, or build the machine it used to be over the top of it.</description>
+    <description>What is left of an automated smelter. The casing is split, the electromagnets are gone, and the feed throat is choked with its own cooled slag. It has no power in it and nothing to give.\n\nA researcher can study it where it stands, and what they learn opens the research to patch it back into service. It can be carried to a factory floor. The repair itself is ordered on the machine, once the research is done.</description>
     <drawerType>MapMeshOnly</drawerType>
     <graphicData>
       <texPath>WreckedMachines/Factories/AutomatedSmelter/Wrecked/AutomatedSmelter</texPath>
@@ -79,20 +37,15 @@
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
     </graphicData>
-    <!-- Token cost. This tier exists to be map-authored or dev-spawned; the
-         build entry is a TESTING AFFORDANCE so the ladder can be exercised by
-         hand. Remove designationCategory before ship. -->
+    <thingCategories>
+      <li>VFEFactory_FactoryCategory</li>
+    </thingCategories>
     <costList>
       <Steel>30</Steel>
     </costList>
     <altitudeLayer>Building</altitudeLayer>
     <rotatable>true</rotatable>
     <neverMultiSelect>true</neverMultiSelect>
-    <!-- Identical to the donor. A wreck stands on a factory
-         deck, so map authoring must lay VFEF_FactoryFloor under every wreck;
-         relaxing this would deadlock the ladder, because a floor cannot be
-         built beneath an occupied cell. -->
-    <terrainAffordanceNeeded>FactoryFloor</terrainAffordanceNeeded>
     <uiIconScale>0.8</uiIconScale>
     <fillPercent>0.5</fillPercent>
     <useHitPoints>True</useHitPoints>
@@ -106,48 +59,57 @@
     </statBases>
     <tickerType>Never</tickerType>
     <size>(3,4)</size>
-    <designationCategory>VFEFactory_Factories</designationCategory>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
-    <!-- v1: SHARES a replaceTag with the repaired tier, so the working machine
-         can be built straight over the wreck. `replaceTags` is vanilla 1.6
-         (Core: Stool/DiningChair share "Chair", the beds share "Bed") and needs
-         no mod. See DESIGN.md §4. -->
-    <replaceTags>
-      <li>WM_AutomatedSmelter</li>
-    </replaceTags>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <building>
-      <!-- ⚠️ v1 ONLY. SACRED SCRAP IS DEFERRED TO v2 (V2.md §7). This is
-           deliberately ordinary rubble: deconstructible and claimable, so the
-           loop can be played and iterated on now.
-           Do NOT set deconstructible=false here without first solving the
-           build-over conflict in DESIGN.md §4 — non-deconstructible is exactly
-           the condition that makes the repair impossible. -->
       <deconstructible>true</deconstructible>
       <isInert>true</isInert>
       <buildingTags>
         <li>Production</li>
-        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it stays comp-less -->
+        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it joins no net -->
       </buildingTags>
     </building>
+    <comps>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120011</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the wrecked automated smelter</jobString>
+        <inspectString>A researcher can study how this smelter was put together.</inspectString>
+        <completedLetterLabel>Wrecked smelter studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the wrecked automated smelter, {PAWN_labelShort} has worked out how its split casing and dead magnets can be patched back into service.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the repair on the smelter itself.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Wrecked</grade>
-        <line>WM_AutomatedSmelter</line>
+        <line>smelter</line>
       </li>
     </modExtensions>
-    <!-- No minifiedDef: a wreck is not haulable and cannot be uninstalled.
-         No comps at all: no power, no heat, no processes, and above all no
-         CompProperties_Explosive. -->
   </ThingDef>
 
   <!-- ==================================================================
-       TIER 2 — KLUDGED.  Runs, badly, on the crudest recipes only.
+       KLUDGED. Runs, badly, on the crudest recipes only. Bolted down.
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_WM_AutomatedSmelter_Kludged</defName>
     <label>kludged automated smelter</label>
-    <description>An automated smelter dragged back into service by people who did not build it. Mismatched plating covers the worst of the breach, the coil loom is spliced by hand, and something that was never meant to be a thermal regulator is bolted across the intake.\n\nIt melts anything already mostly metal. Ask it for precision and it will give you slag and a temperature alarm. It runs hotter than it should, breaks down often, and cannot be overclocked.</description>
+    <description>An automated smelter dragged back into service by people who did not build it. Mismatched plating covers the worst of the breach, the coil loom is spliced by hand, and something that was never meant to be a thermal regulator is bolted across the intake.\n\nIt melts anything already mostly metal. Ask it for precision and it will give you slag and a temperature alarm. It runs hotter than it should, breaks down often, and cannot be overclocked. The splicing holds it to the floor, so it cannot be carried.\n\nA researcher can study it further, and what they learn opens the research to refurbish it properly. The refurbishment is ordered on the machine and needs an ancient component.\n\nFactory buildings need factory hoppers for input and output. Needs factory floor.</description>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
       <texPath>WreckedMachines/Factories/AutomatedSmelter/Kludged/AutomatedSmelter</texPath>
@@ -160,15 +122,10 @@
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
     </graphicData>
-    <!-- PROVISIONAL (DESIGN.md §2, unratified): salvage + components, no
-         research — scavengers doing what scavengers do. The recommendation
-         also calls for a Survival Tools Reborn tool requirement, which is not
-         expressed here because it needs that mod's own def hooks. -->
     <costList>
       <Steel>120</Steel>
       <ComponentIndustrial>3</ComponentIndustrial>
     </costList>
-    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <altitudeLayer>Building</altitudeLayer>
     <rotatable>true</rotatable>
     <neverMultiSelect>true</neverMultiSelect>
@@ -183,26 +140,19 @@
       <WorkToBuild>3000</WorkToBuild>
       <MaxHitPoints>300</MaxHitPoints>
       <Flammability>1</Flammability>
-      <!-- Twice the donor's breakdown rate. Overclocking is blocked by
-           canOverclock=false in the processor comp below, NOT by zeroing this
-           stat: 0 is a value the donor never uses and VEF's overclock maths is
-           unread, so do not introduce it here for no gain. -->
+      <!-- Twice the donor's breakdown rate (donor 3). Overclocking is blocked by canOverclock=false in the processor comp below,
+           not by zeroing this stat: 0 is a value the donor never uses. -->
       <VEF_BuildingBreakdownFactor>6</VEF_BuildingBreakdownFactor>
       <VEF_BuildingMaxOverclockFactor>1</VEF_BuildingMaxOverclockFactor>
     </statBases>
     <tickerType>Rare</tickerType>
     <size>(3,4)</size>
-    <designationCategory>VFEFactory_Factories</designationCategory>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,-2)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
-    <replaceTags>
-      <li>WM_AutomatedSmelter</li>
-    </replaceTags>
     <building>
-      <!-- ⚠️ v1 ONLY — see the wrecked tier above. Sacred scrap is V2.md §7. -->
       <deconstructible>true</deconstructible>
       <relatedBuildCommands>
         <li>VFEFactory_FactoryHopper</li>
@@ -237,12 +187,9 @@
         <notWorkingKey>VFEFactory_FactoryNotWorking</notWorkingKey>
         <canOverclock>false</canOverclock>
         <alwaysShowProgressBar>true</alwaysShowProgressBar>
-        <!-- DESIGN.md §3: choose the subset by fiction, not by tier number.
-             The rule applied here is "if it is already mostly metal, the bodge
-             can melt it." Dropped from the donor's six: SmeltApparel (needs to
-             handle soft goods without igniting them), SmeltMetalFromChunk
-             (separating metal from stone needs a working thermal stage), and
-             SmeltMechanoid (needs an intact feed to swallow a whole body). -->
+        <!-- The subset is chosen by fiction: if it is already mostly metal, the bodge can melt it. Left out of the donor's six:
+             SmeltApparel (soft goods ignite), SmeltMetalFromChunk (needs a working thermal stage) and SmeltMechanoid (needs an
+             intact feed). The same list is the row's kludgedProcesses. -->
         <processes>
           <li>VFEFactory_SmeltMetalFromSlag</li>
           <li>VFEFactory_SmeltMetalFromMechSlag</li>
@@ -256,40 +203,46 @@
           <li>VFEFactory_Heatsink</li>
         </linkableFacilities>
       </li>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120012</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the kludged automated smelter</jobString>
+        <inspectString>A researcher can study how to refurbish this smelter.</inspectString>
+        <completedLetterLabel>Kludged smelter studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the kludged automated smelter, {PAWN_labelShort} has found which of its splices can stay and which must be redone to bring the machine close to what it was.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the refurbishment on the smelter itself. It needs an ancient component.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
     </comps>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Kludged</grade>
-        <line>WM_AutomatedSmelter</line>
+        <line>smelter</line>
       </li>
     </modExtensions>
-    <placeWorkers>
-      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
-    </placeWorkers>
-    <!-- No minifiedDef: a bodge does not survive being uninstalled and moved.
-         This tier IS powered, so per the ratified rule it is the tier that
-         SHOULD carry a detonation comp once TODO.md §1 lands. -->
   </ThingDef>
 
   <!-- ==================================================================
-       TIER 3 — REFURBISHED (0.75).  The ceiling a player normally reaches.
-       Ruling 1 (2026-09-15): the 0.75 rung "does not exist yet and must be
-       authored". Factories step by recipe set and stats, not by a scaled
-       number — no per-class factory ratio has been set (item "Still open").
-       Five of the donor's six processes (SmeltMechanoid needs an intact feed
-       to swallow a whole body); no overclock; 1.5x the donor's breakdown
-       rate. Gated on the restoration research and on ancient components.
-       ⚠️ PLACEHOLDER ART: reuses the Repaired texture until a Refurbished
-       sprite passes the art judge (design/RimMandrake/delegation_policy.md).
+       REFURBISHED. Everything the donor's smelter melts, in the donor's order; no overclock; a little slower and less reliable.
+       Draws the picture it drew before the table (the donor-style picture under Factories/AutomatedSmelter/Repaired).
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_WM_AutomatedSmelter_Refurbished</defName>
     <label>refurbished automated smelter</label>
-    <description>An automated smelter refurbished from salvage by people who learned it from the wreck. The breaches are sealed, the coil loom is mostly original again, and a scavenged ancient component holds the thermal stage together.
-
-It melts almost everything the original did — but not a whole mechanoid, and it cannot be overclocked. Three-quarters of a working machine, built from scrap.
-
-Factory buildings need factory hoppers for input and output. Needs to be constructed on factory floor, over a lower grade of the same machine.</description>
+    <description>An automated smelter refurbished from salvage by people who learned it from the wreck. The breaches are sealed, the coil loom is mostly original again, and a scavenged ancient component holds the thermal stage together.\n\nIt melts everything the original did, a whole mechanoid included, but it runs a little slower, breaks down more often, and cannot be overclocked. It can be carried.\n\nFactory buildings need factory hoppers for input and output. Needs factory floor.</description>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
       <texPath>WreckedMachines/Factories/AutomatedSmelter/Repaired/AutomatedSmelter</texPath>
@@ -305,13 +258,11 @@ Factory buildings need factory hoppers for input and output. Needs to be constru
     <thingCategories>
       <li>VFEFactory_FactoryCategory</li>
     </thingCategories>
-    <!-- PROVISIONAL amounts, same status as the other tiers' costLists. -->
     <costList>
       <Steel>200</Steel>
       <ComponentIndustrial>5</ComponentIndustrial>
       <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
     </costList>
-    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
     <altitudeLayer>Building</altitudeLayer>
     <rotatable>true</rotatable>
     <neverMultiSelect>true</neverMultiSelect>
@@ -331,18 +282,11 @@ Factory buildings need factory hoppers for input and output. Needs to be constru
     </statBases>
     <tickerType>Rare</tickerType>
     <size>(3,4)</size>
-    <designationCategory>VFEFactory_Factories</designationCategory>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,-2)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
-    <replaceTags>
-      <li>WM_AutomatedSmelter</li>
-    </replaceTags>
-    <researchPrerequisites>
-      <li>RM_WM_AutomatedSmelterRestoration</li>
-    </researchPrerequisites>
     <building>
       <relatedBuildCommands>
         <li>VFEFactory_FactoryHopper</li>
@@ -375,144 +319,7 @@ Factory buildings need factory hoppers for input and output. Needs to be constru
         <notWorkingKey>VFEFactory_FactoryNotWorking</notWorkingKey>
         <canOverclock>false</canOverclock>
         <alwaysShowProgressBar>true</alwaysShowProgressBar>
-        <processes>
-          <li>VFEFactory_SmeltMetalFromSlag</li>
-          <li>VFEFactory_SmeltMetalFromMechSlag</li>
-          <li>VFEFactory_SmeltWeapon</li>
-          <li>VFEFactory_SmeltApparel</li>
-          <li>VFEFactory_SmeltMetalFromChunk</li>
-        </processes>
-        <hideSettings>true</hideSettings>
-      </li>
-      <li Class="CompProperties_AffectedByFacilities">
-        <linkableFacilities>
-          <li>VFEFactory_Booster</li>
-          <li>VFEFactory_Heatsink</li>
-        </linkableFacilities>
-      </li>
-    </comps>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <modExtensions>
-      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
-        <grade>Refurbished</grade>
-        <line>WM_AutomatedSmelter</line>
-      </li>
-    </modExtensions>
-    <placeWorkers>
-      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
-    </placeWorkers>
-  </ThingDef>
-
-  <!-- ==================================================================
-       THE ORIGINAL (1.0) — "REPAIRED".  Mechanically identical to the donor.
-       Ruling 1 (2026-09-15): "Repaired" is not a grade, it is the original,
-       so this def is the 1.0 rung. Hidden from the Architect menu unless the
-       "full restoration" Mod Setting is on (LadderPatcher, default OFF).
-       ================================================================== -->
-  <ThingDef ParentName="BuildingBase">
-    <defName>RM_WM_AutomatedSmelter_Repaired</defName>
-    <label>repaired automated smelter</label>
-    <description>An automated smelter rebuilt by scavengers. The breaches are filled with metal that does not match, the cabling is routed almost neatly, and a few improvised vents still smoke under load — but the electromagnets sing again and the feed runs clean.\n\nIt does everything the original did. It will never look like the original again.\n\nFactory buildings need factory hoppers for input and output. They produce significant heat and consume much power, but can be overclocked for higher efficiency, increasing both heat generation and power consumption. Needs to be constructed on factory floor.</description>
-    <drawerType>MapMeshAndRealTime</drawerType>
-    <graphicData>
-      <texPath>WreckedMachines/Factories/AutomatedSmelter/Repaired/AutomatedSmelter</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(4,5)</drawSize>
-      <damageData>
-        <cornerTL>Damage/Corner</cornerTL>
-        <cornerTR>Damage/Corner</cornerTR>
-        <cornerBL>Damage/Corner</cornerBL>
-        <cornerBR>Damage/Corner</cornerBR>
-      </damageData>
-    </graphicData>
-    <thingCategories>
-      <li>VFEFactory_FactoryCategory</li>
-    </thingCategories>
-    <!-- Identical to the donor, per the owner's "otherwise identical mechanics
-         underneath". Every field below this line matches
-         VFEFactory_AutomatedSmelter except texPath, defName, label and
-         description. Keep it that way — this def is the A/B comparison target,
-         and any mechanical drift makes the art comparison dishonest. -->
-    <costList>
-      <Steel>260</Steel>
-      <ComponentIndustrial>7</ComponentIndustrial>
-    </costList>
-    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
-    <altitudeLayer>Building</altitudeLayer>
-    <rotatable>true</rotatable>
-    <neverMultiSelect>true</neverMultiSelect>
-    <terrainAffordanceNeeded>FactoryFloor</terrainAffordanceNeeded>
-    <uiIconScale>0.8</uiIconScale>
-    <fillPercent>0.5</fillPercent>
-    <useHitPoints>True</useHitPoints>
-    <statBases>
-      <Mass>60</Mass>
-      <Beauty>-10</Beauty>
-      <WorkToBuild>5000</WorkToBuild>
-      <MaxHitPoints>450</MaxHitPoints>
-      <Flammability>1</Flammability>
-      <VEF_BuildingBreakdownFactor>3</VEF_BuildingBreakdownFactor>
-      <VEF_BuildingMaxOverclockFactor>1</VEF_BuildingMaxOverclockFactor>
-    </statBases>
-    <tickerType>Rare</tickerType>
-    <size>(3,4)</size>
-    <designationCategory>VFEFactory_Factories</designationCategory>
-    <passability>PassThroughOnly</passability>
-    <pathCost>50</pathCost>
-    <hasInteractionCell>True</hasInteractionCell>
-    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
-    <surfaceType>Item</surfaceType>
-    <!-- Same replaceTag as the two tiers below, so this can be built directly
-         over either of them. This is the whole v1 repair loop. -->
-    <replaceTags>
-      <li>WM_AutomatedSmelter</li>
-    </replaceTags>
-    <!-- RE-POINTED, WRECKED_MACHINES_RESURRECTION_1 (owner ruling
-         2026-08-31): gates on OUR OWN Ship-tree restoration project, not
-         VFE's vanilla research — the ruling's "restoration rows live in THE
-         SHIP tree" and item 5's "keeps VFE-Factory's building untouched."
-         See ResearchProjects_WreckedMachines.xml for the full account and
-         the still-open techprint-gate fork (faction-held stays BLOCKED on
-         TECHPRINT_FACTION_GATING_1; shipped ungated rather than guessed). -->
-    <researchPrerequisites>
-      <li>RM_WM_AutomatedSmelterRestoration</li>
-    </researchPrerequisites>
-    <building>
-      <relatedBuildCommands>
-        <li>VFEFactory_FactoryHopper</li>
-      </relatedBuildCommands>
-      <buildingTags>
-        <li>Production</li>
-      </buildingTags>
-      <workTableRoomRole>VFEFactory_FactoryRoom</workTableRoomRole>
-      <workTableNotInRoomRoleFactor>0.5</workTableNotInRoomRoleFactor>
-    </building>
-    <inspectorTabs>
-      <li>PipeSystem.ITab_Processor</li>
-    </inspectorTabs>
-    <comps>
-      <li Class="CompProperties_Power">
-        <compClass>CompPowerTrader</compClass>
-        <shortCircuitInRain>true</shortCircuitInRain>
-        <basePowerConsumption>300</basePowerConsumption>
-      </li>
-      <li>
-        <compClass>PipeSystem.CompPowerTrader_Overclocked</compClass>
-      </li>
-      <li Class="CompProperties_HeatPusher">
-        <compClass>PipeSystem.CompHeatPusherPowered_Overclocked</compClass>
-        <heatPerSecond>14</heatPerSecond>
-        <heatPushMaxTemperature>120</heatPushMaxTemperature>
-      </li>
-      <li Class="CompProperties_Flickable" />
-      <li Class="PipeSystem.CompProperties_AdvancedResourceProcessor">
-        <notWorkingKey>VFEFactory_FactoryNotWorking</notWorkingKey>
-        <canOverclock>true</canOverclock>
-        <overclockGizmo>UI/Gizmo/Factory_Overclock</overclockGizmo>
-        <overclockLabel>VFEFactory_Overclock</overclockLabel>
-        <overclockWindowLabel>VFEFactory_OverclockWindowLabel</overclockWindowLabel>
-        <overclockDesc>VFEFactory_OverclockDesc</overclockDesc>
-        <alwaysShowProgressBar>true</alwaysShowProgressBar>
+        <!-- The donor's six processes, in the donor's order. -->
         <processes>
           <li>VFEFactory_SmeltMetalFromSlag</li>
           <li>VFEFactory_SmeltMetalFromMechSlag</li>
@@ -529,17 +336,15 @@ Factory buildings need factory hoppers for input and output. Needs to be constru
           <li>VFEFactory_Heatsink</li>
         </linkableFacilities>
       </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
     </comps>
     <minifiedDef>MinifiedThing</minifiedDef>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
-        <grade>Original</grade>
-        <line>WM_AutomatedSmelter</line>
+        <grade>Refurbished</grade>
+        <line>smelter</line>
       </li>
     </modExtensions>
-    <placeWorkers>
-      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
-    </placeWorkers>
   </ThingDef>
 
 </Defs>

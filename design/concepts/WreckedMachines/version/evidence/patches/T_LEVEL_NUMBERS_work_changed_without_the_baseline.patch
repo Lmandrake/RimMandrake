@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines.xml
++++ b/src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines.xml
+@@ -26,7 +26,7 @@
+       <Steel>120</Steel>
+       <ComponentIndustrial>3</ComponentIndustrial>
+     </kludgeCost>
+-    <kludgeWork>3000</kludgeWork>
++    <kludgeWork>3500</kludgeWork>
+     <refurbishCost>
+       <Steel>200</Steel>
+       <ComponentIndustrial>5</ComponentIndustrial>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 15 -->
+<!-- Row of the automated distillery line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedDistillery. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_distillery</defName>
+    <key>distillery</key>
+    <label>automated distillery</label>
+    <original>VFEFactory_AutomatedDistillery</original>
+    <wrecked>RM_WM_AutomatedDistillery_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedDistillery_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedDistillery_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedDistilleryKludging</firstProject>
+    <secondProject>RM_WM_AutomatedDistilleryRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_MakeBeerFromHops</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>70</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>1800</kludgeWork>
+    <refurbishCost>
+      <Steel>120</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>2500</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

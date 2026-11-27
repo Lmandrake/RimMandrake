@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 14 -->
+<!-- Row of the automated ammunition press line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedAmmunitionPress. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_ammopress</defName>
+    <key>ammopress</key>
+    <label>automated ammunition press</label>
+    <original>VFEFactory_AutomatedAmmunitionPress</original>
+    <wrecked>RM_WM_AutomatedAmmunitionPress_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedAmmunitionPress_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedAmmunitionPress_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedAmmunitionPressKludging</firstProject>
+    <secondProject>RM_WM_AutomatedAmmunitionPressRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_MakeHighExplosiveShells</li>
+      <li>VFEFactory_MakeIncendiaryShells</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>100</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2500</kludgeWork>
+    <refurbishCost>
+      <Steel>170</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>3400</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

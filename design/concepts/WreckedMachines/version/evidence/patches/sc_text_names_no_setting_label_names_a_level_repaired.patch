@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml
++++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml
+@@ -241,7 +241,7 @@
+        ================================================================== -->
+   <ThingDef ParentName="BuildingBase">
+     <defName>RM_WM_AutomatedSmelter_Refurbished</defName>
+-    <label>refurbished automated smelter</label>
++    <label>repaired automated smelter</label>
+     <description>An automated smelter refurbished from salvage by people who learned it from the wreck. The breaches are sealed, the coil loom is mostly original again, and a scavenged ancient component holds the thermal stage together.\n\nIt melts everything the original did, a whole mechanoid included, but it runs a little slower, breaks down more often, and cannot be overclocked. It can be carried.\n\nFactory buildings need factory hoppers for input and output. Needs factory floor.</description>
+     <drawerType>MapMeshAndRealTime</drawerType>
+     <graphicData>

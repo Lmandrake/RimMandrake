@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 6 -->
+<!-- Row of the automated drill platform line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedDrillPlatform. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_drill</defName>
+    <key>drill</key>
+    <label>automated drill platform</label>
+    <original>VFEFactory_AutomatedDrillPlatform</original>
+    <wrecked>RM_WM_AutomatedDrillPlatform_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedDrillPlatform_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedDrillPlatform_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedDrillPlatformKludging</firstProject>
+    <secondProject>RM_WM_AutomatedDrillPlatformRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_DigForSandstoneChunk</li>
+      <li>VFEFactory_DigForGraniteChunk</li>
+      <li>VFEFactory_DigForLimestoneChunk</li>
+      <li>VFEFactory_DigForSlateChunk</li>
+      <li>VFEFactory_DigForMarbleChunk</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>100</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2500</kludgeWork>
+    <refurbishCost>
+      <Steel>170</Steel>
+      <ComponentIndustrial>7</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>3400</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

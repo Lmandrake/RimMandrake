@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the automated mincer line: its two research projects on the tab RM_WM_Restoration.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml, ThingDef VFEFactory_AutomatedMincer (line 502 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_WM_AutomatedMincerKludging</defName>
+    <label>automated mincer kludging</label>
+    <description>Work out how to patch a wrecked automated mincer back into crude service. Needs a wrecked automated mincer that a researcher has studied.\n\nOnce this is done, order the kludge on the wrecked automated mincer where it stands.</description>
+    <baseCost>750</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedMincer_Wrecked</li>
+    </requiredAnalyzed>
+    <researchViewX>0</researchViewX>
+    <researchViewY>10</researchViewY>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_WM_AutomatedMincerRestoration</defName>
+    <label>automated mincer refurbishment</label>
+    <description>Learn to bring a kludged automated mincer close to what it was. This is not the original engineering, which its makers already solved. It is the colony's own hard-won knowledge of how to bring a dead one back. Needs a kludged automated mincer that a researcher has studied.\n\nOnce this is done, order the refurbishment on the kludged automated mincer where it stands. It needs an ancient component.</description>
+    <baseCost>1500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <prerequisites>
+      <li>RM_WM_AutomatedMincerKludging</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedMincer_Kludged</li>
+    </requiredAnalyzed>
+    <researchViewX>1</researchViewX>
+    <researchViewY>10</researchViewY>
+  </ResearchProjectDef>
+</Defs>

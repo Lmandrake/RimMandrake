@@ -1,6 +1,6 @@
 # WreckedMachines 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:31:41-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T07:24:11-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
 
 ## How a pair is made
 
@@ -18,8 +18,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:31:41-0800. A bar pa
 ## Counts
 
 - bars: 30 (locked: 30)
-- tests: 48 (12 built offline, 26 live scenes with their entry written, 5 specified for Stage 3, 4 explorations, 1 look)
-- built offline tests green today: 10, red: 2 (T_ONBOARDED_SET, T_ONBOARDING_COMPLETE)
+- tests: 48 (16 built offline, 26 live scenes with their entry written, 1 specified for Stage 3, 4 explorations, 1 look)
+- built offline tests green today: 13, red: 3 (T_ONBOARDED_SET, T_ONBOARDING_COMPLETE, T_FORGE_GATES_GONE)
 - live scenes whose tier is not defined: none
 - bars with every decider runnable today: 23 of 30
 - bars with no deciding test: 0
@@ -29,7 +29,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:31:41-0800. A bar pa
 | bar | kind | proves at | decides | supports | runnable today | waits on |
 |---|---|---|---|---|---|---|
 | inv_grade_ladder | inventory, approved | 6 | sc_repair_on_machine, sc_levels_under_settings, sc_component_gate | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_whole_journey, T_KERNEL_FUZZ | yes | - |
-| inv_smelter_line | inventory, approved | 6 | sc_levels_do_their_work, sc_menu_and_research, sc_three_looks_rows, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| inv_smelter_line | inventory, approved | 6 | sc_levels_do_their_work, sc_menu_and_research, sc_three_looks_rows, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey, T_ONBOARDING_TABLE_OFFLINE, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
 | inv_power_cell_line | inventory, approved | 6 | sc_cell_and_emanator, sc_levels_under_settings, sc_carry_wreck_home, sc_switch_machine_off | - | yes | - |
 | inv_emanator_line | inventory, approved | 6 | sc_cell_and_emanator, sc_marks_agree, sc_carry_wreck_home, sc_no_handouts | sc_levels_under_settings, sc_switch_machine_off | yes | - |
 | inv_study_the_wreck | inventory, approved | 6 | sc_study_opens_first_project, sc_second_study, sc_study_without_research_reinvented | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_repair_on_machine, sc_component_gate, sc_whole_journey | yes | - |
@@ -67,11 +67,11 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T06:31:41-0800. A bar pa
 | T_SALVAGE_RULE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_salvage_rule.py | PASS |
 | T_ONBOARDED_SET | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py | FAIL |
 | T_ONBOARDING_COMPLETE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py | FAIL |
-| T_ONBOARDING_TABLE_OFFLINE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py | specified, Stage 3 builds it |
-| T_LEVEL_NUMBERS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py | specified, Stage 3 builds it |
+| T_ONBOARDING_TABLE_OFFLINE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py | PASS |
+| T_LEVEL_NUMBERS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py | PASS |
 | T_REPAIR_STATE_WALK | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py | PASS |
-| T_NEIGHBOUR_NAMES | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py | specified, Stage 3 builds it |
-| T_FORGE_GATES_GONE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py | specified, Stage 3 builds it |
+| T_NEIGHBOUR_NAMES | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py | PASS |
+| T_FORGE_GATES_GONE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py | FAIL |
 | T_DISTILLATION_LOADS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py | PASS |
 | sc_old_save | live_minimal | 6 | src/RimMandrake/WreckedMachines/validation.py::scene_old_save | specified, Stage 3 builds it |
 | T_LINT_DEFS | offline | 4-5 | src/RimMandrake/Utils/lint_wreckedmachines_defs.py | PASS |

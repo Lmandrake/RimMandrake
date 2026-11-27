@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 11 -->
+<!-- Row of the conveyor oven line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_ConveyorOven. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_conveyoroven</defName>
+    <key>conveyoroven</key>
+    <label>conveyor oven</label>
+    <original>VFEFactory_ConveyorOven</original>
+    <wrecked>RM_WM_ConveyorOven_Wrecked</wrecked>
+    <kludged>RM_WM_ConveyorOven_Kludged</kludged>
+    <refurbished>RM_WM_ConveyorOven_Refurbished</refurbished>
+    <firstProject>RM_WM_ConveyorOvenKludging</firstProject>
+    <secondProject>RM_WM_ConveyorOvenRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_MakeKibble</li>
+      <li>VFEFactory_MakePemmican</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>110</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2800</kludgeWork>
+    <refurbishCost>
+      <Steel>180</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>3700</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

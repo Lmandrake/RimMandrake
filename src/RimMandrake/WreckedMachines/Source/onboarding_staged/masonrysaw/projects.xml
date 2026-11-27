@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the automated masonry saw line: its two research projects on the tab RM_WM_Restoration.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml, ThingDef VFEFactory_AutomatedMasonrySaw (line 400 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_WM_AutomatedMasonrySawKludging</defName>
+    <label>automated masonry saw kludging</label>
+    <description>Work out how to patch a wrecked automated masonry saw back into crude service. Needs a wrecked automated masonry saw that a researcher has studied.\n\nOnce this is done, order the kludge on the wrecked automated masonry saw where it stands.</description>
+    <baseCost>700</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedMasonrySaw_Wrecked</li>
+    </requiredAnalyzed>
+    <researchViewX>0</researchViewX>
+    <researchViewY>9</researchViewY>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_WM_AutomatedMasonrySawRestoration</defName>
+    <label>automated masonry saw refurbishment</label>
+    <description>Learn to bring a kludged automated masonry saw close to what it was. This is not the original engineering, which its makers already solved. It is the colony's own hard-won knowledge of how to bring a dead one back. Needs a kludged automated masonry saw that a researcher has studied.\n\nOnce this is done, order the refurbishment on the kludged automated masonry saw where it stands. It needs an ancient component.</description>
+    <baseCost>1400</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <prerequisites>
+      <li>RM_WM_AutomatedMasonrySawKludging</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedMasonrySaw_Kludged</li>
+    </requiredAnalyzed>
+    <researchViewX>1</researchViewX>
+    <researchViewY>9</researchViewY>
+  </ResearchProjectDef>
+</Defs>

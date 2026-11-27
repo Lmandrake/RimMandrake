@@ -30,30 +30,20 @@ namespace RimMandrake.WreckedMachines
     // behaviour byte-for-byte — turning this mod's settings window off
     // changes nothing.
     //
-    // None of these toggles touch worldgen or map generation: the mod places
-    // no biome, terrain or map-gen worker, so none needs the "affects new
-    // maps only" label MOD_OPTIONS_RETROFIT_1 requires for worldgen-affecting
-    // options.
+    // No setting here is read at map generation yet: the two placement switches
+    // (plan.md, order, step 5) come with the placement step, so that no switch
+    // on this screen does nothing.
     // ════════════════════════════════════════════════════════════════════
     public class WreckedMachinesSettings : ModSettings
     {
-        // Shipped default: OFF. The donor's own VFEFactory_AutomatedSmelter
-        // stays hidden from the Architect menu (WreckedMachines_
-        // HideDonorSmelter.xml, WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1), so
-        // the wreck ladder is the only way onto the factory floor.
-        public static bool allowDonorSmelter = false;
-
-        // Shipped default: 1.0x — the recorded baseCost (2000) on
-        // RM_WM_AutomatedSmelterRestoration, untouched.
+        // Shipped default: 1.0x — every line project's baseCost as loaded (RM_MachineLines.ApplyResearchCost).
         public static float researchCostFactor = 1f;
 
-        // Shipped default: 1.0x — the recorded costList Steel/
-        // ComponentIndustrial amounts on the Kludged and Repaired tiers,
-        // untouched.
+        // Shipped default: 1.0x — the materials of each repair step as the line's row has them (RM_MachineLines.StepCost; the
+        // Ancient Component is never scaled), and the level defs' own costList (what deconstruction gives back).
         public static float materialCostFactor = 1f;
 
-        // Shipped default: OFF. Repaired still requires
-        // RM_WM_AutomatedSmelterRestoration to be finished first.
+        // Shipped default: OFF. Each repair step needs its line's project finished (CompWreckedMachine.ProjectDone).
         public static bool skipRestorationResearch = false;
 
         // ── The grade ladder (WreckedMachinesLadder.cs). Defaults are the
@@ -61,10 +51,6 @@ namespace RimMandrake.WreckedMachines
         public static float wreckedRatio = 0.001f;
         public static float kludgedRatio = 0.2f;
         public static float refurbishedRatio = 0.75f;
-
-        // Shipped default: OFF. Refurbished (0.75) is the cap; the Original
-        // rung (the donor-identical machine) cannot be built.
-        public static bool allowFullRestoration = false;
 
         // Shipped default: ON. A Kludged/Refurbished/Original machine can only
         // be built over a lower grade of the same machine.
@@ -95,26 +81,67 @@ namespace RimMandrake.WreckedMachines
         // the gear burns with the corpse unless a pawn strips it first.
         public static bool cremateWithoutStripping = true;
 
+        // ── The ancient machines (DESIGN.md, Mod Settings). One switch per RM_MachineLineDef, keyed by its key; a key that is
+        // missing is on (the shipped value). Off: the donor is back in the build menu, the line's projects are hidden, and its
+        // machines on the map stand unchanged and take no order. ──
+        public static Dictionary<string, bool> machineLines = new Dictionary<string, bool>();
+
+
         /// <summary>The ratios the ladder uses: ordered and held inside the slider ranges, whatever the saved config says.</summary>
         public static RM_WreckedMachinesKernel.Ladder Ladder => RM_WreckedMachinesKernel.Normalize(wreckedRatio, kludgedRatio, refurbishedRatio);
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref allowDonorSmelter, "allowDonorSmelter", false, true);
             Scribe_Values.Look(ref researchCostFactor, "researchCostFactor", 1f, true);
             Scribe_Values.Look(ref materialCostFactor, "materialCostFactor", 1f, true);
             Scribe_Values.Look(ref skipRestorationResearch, "skipRestorationResearch", false, true);
             Scribe_Values.Look(ref wreckedRatio, "wreckedRatio", 0.001f, true);
             Scribe_Values.Look(ref kludgedRatio, "kludgedRatio", 0.2f, true);
             Scribe_Values.Look(ref refurbishedRatio, "refurbishedRatio", 0.75f, true);
-            Scribe_Values.Look(ref allowFullRestoration, "allowFullRestoration", false, true);
             Scribe_Values.Look(ref requireLowerGradeUnderneath, "requireLowerGradeUnderneath", true, true);
             Scribe_Values.Look(ref enableSalvagedEmanators, "enableSalvagedEmanators", true, true);
             Scribe_Values.Look(ref alloyForgeProgressiveGate, "alloyForgeProgressiveGate", true, true);
             Scribe_Values.Look(ref plasteelAlloyEnabled, "plasteelAlloyEnabled", true, true);
             Scribe_Values.Look(ref smeltersFollowSalvageRule, "smeltersFollowSalvageRule", true, true);
             Scribe_Values.Look(ref cremateWithoutStripping, "cremateWithoutStripping", true, true);
+            Scribe_Collections.Look(ref machineLines, "machineLines", LookMode.Value, LookMode.Value);
+            if (machineLines == null) machineLines = new Dictionary<string, bool>();
+        }
+
+        /// <summary>The Mod Settings line of one machine line (also the proof type's LineLabels). It says when it takes effect.</summary>
+        public static string LineLabel(RM_MachineLineDef line)
+        {
+            string name = line.label.NullOrEmpty() ? line.key : line.label;
+            return name.CapitalizeFirst() + " is an ancient machine (takes effect now; a machine already on the map stays as it is)";
+        }
+
+        /// <summary>The machine-line switches as text, one key=on for every line of the table: what the player has, a missing key
+        /// read as on. All lines on is the shipped text.</summary>
+        private static string LinesText(bool shipped)
+        {
+            return string.Join(",", RM_MachineLines.All.Select(l => l.key + "=" + (shipped || RM_MachineLines.IsOn(l) ? "true" : "false")));
+        }
+
+        private static string ValueString(object v)
+        {
+            if (v is bool b) return b ? "true" : "false";
+            if (v is float f) return f.ToString("0.#####", System.Globalization.CultureInfo.InvariantCulture);
+            if (v is int i) return i.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            return v == null ? "null" : v.ToString();
+        }
+
+        /// <summary>A setting's value as the proof type prints it.</summary>
+        public static string ValueText(string name, object value)
+        {
+            return name == nameof(machineLines) ? LinesText(false) : ValueString(value);
+        }
+
+        /// <summary>A setting's shipped value as the proof type prints it (read from the field initialisers).</summary>
+        public static string ShippedText(string name)
+        {
+            if (name == nameof(machineLines)) return LinesText(true);
+            return shippedDefaults.TryGetValue(name, out object v) ? ValueString(v) : "unknown";
         }
 
                 // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -135,7 +162,8 @@ namespace RimMandrake.WreckedMachines
             foreach (string n in names)
             {
                 FieldInfo f = typeof(WreckedMachinesSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
-                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+                if (n == nameof(machineLines)) machineLines = new Dictionary<string, bool>();
+                else if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
             }
         }
 
@@ -145,7 +173,7 @@ namespace RimMandrake.WreckedMachines
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the mod places no biome, terrain or map-gen worker, so nothing is read at world or map generation. WreckedMachinesPatcher re-derives the def edits when this window closes ([now]); the two Architect-menu switches are the exception, applied when the menu builds its buttons ([next game start], a label local to this screen).</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the mod places no biome, terrain or map-gen worker, so nothing is read at world or map generation. WreckedMachinesPatcher re-derives the def edits when this window closes ([now]); the two placement switches are read only when a map is generated ([new maps only]).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -179,36 +207,52 @@ namespace RimMandrake.WreckedMachines
             list.Begin(viewRect);
             searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
+            if (Group(list, "Ancient machines", RimMandrake.Shared.SettingScope.Now, new[] { "machineLines" }))
+            {
+                list.Label("Each machine below is found as a wreck and repaired where it stands. Off: the machine is the factory "
+                    + "mod's ordinary building again, buildable from the Architect menu, and its restoration projects are hidden. "
+                    + "A machine of it already on the map stays as it is and takes no repair order.");
+                foreach (RM_MachineLineDef line in RM_MachineLines.All)
+                {
+                    bool on = RM_MachineLines.IsOn(line);
+                    bool was = on;
+                    list.CheckboxLabeled(LineLabel(line), ref on,
+                        "On (shipped default): the " + (line.label ?? line.key) + " is found wrecked and repaired in steps. "
+                        + "Off: it is built new from the Architect menu, as its own mod has it.");
+                    if (on != was) machineLines[line.key] = on;
+                }
+                list.GapLine();
+            }
+
             if (Group(list, "Research and material costs", RimMandrake.Shared.SettingScope.Now, new[] { "researchCostFactor", "materialCostFactor", "skipRestorationResearch" }))
             {
                 list.Label("Restoration research cost: " + researchCostFactor.ToString("0.00") + "x");
                 list.Label(
-                    "Scales the research needed to unlock the Refurbished level. 1.0x is "
+                    "Scales the research of every ancient machine's two restoration projects. 1.0x is "
                     + "the shipped cost.");
                 researchCostFactor = list.Slider(researchCostFactor, 0.25f, 4f);
-                list.Label("Rebuild material cost: " + materialCostFactor.ToString("0.00") + "x");
+                list.Label("Repair material cost: " + materialCostFactor.ToString("0.00") + "x");
                 list.Label(
-                    "Scales the steel and components spent stepping a wreck up to "
-                    + "Kludged or Refurbished. 1.0x is the shipped cost.");
+                    "Scales the steel and components a repair asks for (the Ancient Component is never scaled). "
+                    + "1.0x is the shipped cost. A repair already ordered keeps the amounts it was given.");
                 materialCostFactor = list.Slider(materialCostFactor, 0.25f, 4f);
                 list.CheckboxLabeled(
-                    "Skip the restoration research for the upper grades",
+                    "Repairs need no research",
                     ref skipRestorationResearch,
-                    "Off (shipped default): stepping a wrecked smelter up to Refurbished "
-                    + "or Original needs the Automated Smelter Restoration research "
-                    + "project finished first. On: no research gate, materials alone.");
+                    "Off (shipped default): each repair step needs its machine's restoration project "
+                    + "finished first. On: the repair order does not ask for the project; materials and work alone.");
                 list.GapLine();
             }
 
-            if (Group(list, "The grade ladder", RimMandrake.Shared.SettingScope.Now, new[] { "wreckedRatio", "kludgedRatio", "refurbishedRatio", "requireLowerGradeUnderneath", "enableSalvagedEmanators" }))
+            if (Group(list, "Level ratios", RimMandrake.Shared.SettingScope.Now, new[] { "wreckedRatio", "kludgedRatio", "refurbishedRatio", "requireLowerGradeUnderneath", "enableSalvagedEmanators" }))
             {
-                list.Label("Each grade works at a fraction of the original machine. Nothing "
-                    + "equals the original unless full restoration is switched on below.");
+                list.Label("Each level works at a fraction of the original machine. Nothing "
+                    + "equals the original.");
                 list.Gap();
 
                 list.Label("Wrecked capability: " + wreckedRatio.ToString("0.000") + "x of the original");
-                list.Label("A wrecked power source still trickles this much (default 0.001, a faint flicker). "
-                    + "Wrecked machines of every other kind are inert.");
+                list.Label("Read by machines of other mods that use these levels (a wrecked stasis locker, default 0.001). "
+                    + "An ancient machine of this mod is inert while it is Wrecked.");
                 wreckedRatio = list.Slider(wreckedRatio, 0f, 0.05f);
                 list.Gap();
 
@@ -219,20 +263,19 @@ namespace RimMandrake.WreckedMachines
                 list.Label("Refurbished capability: " + refurbishedRatio.ToString("0.00") + "x of the original");
                 refurbishedRatio = list.Slider(refurbishedRatio, 0.3f, 0.95f);
                 if (kludgedRatio > refurbishedRatio) kludgedRatio = refurbishedRatio;
-                list.Label("Applies to power output (salvaged power cells) and mood (salvaged emanators). "
-                    + "Factory machines step by recipe set and stats instead.");
+                list.Label("Applies to power output (salvaged power cells), mood (salvaged emanators) "
+                    + "and the work speed of factory machines.");
                 list.CheckboxLabeled(
-                    "Upper grades must be built over a lower grade",
+                    "Machines of other mods: a higher level is built over a lower one",
                     ref requireLowerGradeUnderneath,
-                    "On (shipped default): a Kludged, Refurbished or original machine can "
-                    + "only be built over a lower grade of the same machine, so restoring "
-                    + "a found wreck is the only way to get one. Off: they can be built "
-                    + "on open ground too.");
+                    "On (shipped default): a building of another mod that uses these levels "
+                    + "can only be built over a lower level of the same kind. Off: on open ground too. "
+                    + "Ancient machines are repaired where they stand and do not read this.");
                 list.CheckboxLabeled(
                     "Salvaged psychic emanators soothe nearby pawns",
                     ref enableSalvagedEmanators,
                     "On (shipped default): a powered Kludged or Refurbished emanator "
-                    + "gives nearby pawns a mood bonus, scaled by its grade. Off: they "
+                    + "gives nearby pawns a mood bonus, scaled by its level. Off: they "
                     + "still draw power but do nothing.");
 
                 list.GapLine();
@@ -278,29 +321,6 @@ namespace RimMandrake.WreckedMachines
                 list.GapLine();
             }
 
-            if (Group(list, "Architect menu (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "allowDonorSmelter", "allowFullRestoration" }, "[next game start]"))
-            {
-                list.CheckboxLabeled(
-                    "Allow the original VFE automated smelter to be built",
-                    ref allowDonorSmelter,
-                    "Off (shipped default): the donor mod's own Automated Smelter is "
-                    + "hidden from the Architect menu, so the wreck-restoration ladder "
-                    + "is the only way onto the factory floor. On: the donor building "
-                    + "reappears in the Architect menu alongside our three tiers, "
-                    + "restoring the old testing arrangement. Not worldgen-affecting, "
-                    + "but the Architect menu caches its buttons at startup, so this "
-                    + "takes full effect after your next game load.");
-                list.CheckboxLabeled(
-                    "Allow full restoration to the original machine",
-                    ref allowFullRestoration,
-                    "Off (shipped default): Refurbished is the ceiling, and the original "
-                    + "grade cannot be built. On: the original (1.0) grade appears in the "
-                    + "Architect menu and can be built over a Refurbished machine. The "
-                    + "Architect menu caches its buttons at startup, so this takes full "
-                    + "effect after your next game load.");
-                list.GapLine();
-            }
-
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
@@ -330,9 +350,8 @@ namespace RimMandrake.WreckedMachines
         {
             base.WriteSettings();
             // Re-derive live def state from the settings the player just
-            // closed the window with, so the number/tuning sliders take
-            // effect without a restart (the Architect-menu toggle is the
-            // one exception — see its tooltip above).
+            // closed the window with, so every switch and slider takes
+            // effect without a restart (the Architect buttons are rebuilt).
             WreckedMachinesPatcher.Apply();
         }
     }
@@ -354,39 +373,15 @@ namespace RimMandrake.WreckedMachines
     [StaticConstructorOnStartup]
     public static class WreckedMachinesPatcher
     {
-        private static readonly ThingDef DonorSmelter =
-            DefDatabase<ThingDef>.GetNamedSilentFail("VFEFactory_AutomatedSmelter");
+        // The Architect category of each line's donor as loaded, captured once before any edit: a line switched off gives
+        // its donor this category back (the build menu as the donor's own mod has it); a line on takes it away.
+        private static readonly Dictionary<ThingDef, DesignationCategoryDef> DonorCategories =
+            new Dictionary<ThingDef, DesignationCategoryDef>();
 
-        private static readonly DesignationCategoryDef FactoryCategory =
-            DefDatabase<DesignationCategoryDef>.GetNamedSilentFail("VFEFactory_Factories");
-
-        private static readonly ResearchProjectDef RestorationResearch =
-            DefDatabase<ResearchProjectDef>.GetNamedSilentFail("RM_WM_AutomatedSmelterRestoration");
-
-        private static readonly ThingDef KludgedTier =
-            DefDatabase<ThingDef>.GetNamedSilentFail("RM_WM_AutomatedSmelter_Kludged");
-
-        private static readonly ThingDef RefurbishedTier =
-            DefDatabase<ThingDef>.GetNamedSilentFail("RM_WM_AutomatedSmelter_Refurbished");
-
-        private static readonly ThingDef RepairedTier =
-            DefDatabase<ThingDef>.GetNamedSilentFail("RM_WM_AutomatedSmelter_Repaired");
-
-        // Shipped baselines, captured once before any settings-driven edit,
-        // so every Apply() re-derives its scalar from the true v1 numbers
-        // instead of compounding a factor onto an already-scaled value.
-        private static readonly float BaseResearchCost =
-            RestorationResearch != null ? RestorationResearch.baseCost : 0f;
-
-        private static readonly List<ResearchProjectDef> RepairedResearchPrereq =
-            RepairedTier != null && RepairedTier.researchPrerequisites != null
-                ? new List<ResearchProjectDef>(RepairedTier.researchPrerequisites)
-                : null;
-
-        private static readonly List<ResearchProjectDef> RefurbishedResearchPrereq =
-            RefurbishedTier != null && RefurbishedTier.researchPrerequisites != null
-                ? new List<ResearchProjectDef>(RefurbishedTier.researchPrerequisites)
-                : null;
+        // DesignationCategoryDef.ResolveDesignators is private (1.6 decomp, Verse/DesignationCategoryDef.cs); it rebuilds the
+        // category's build buttons from the defs that name it, so a donor shown or hidden here shows at once.
+        private static readonly MethodInfo ResolveDesignators =
+            HarmonyLib.AccessTools.Method(typeof(DesignationCategoryDef), "ResolveDesignators");
 
         // ── Alloy forge (SHIP_ALLOY_FORGE_1). PipeSystem types are VFE's and
         // this assembly does not reference them, so the process def and the
@@ -436,15 +431,20 @@ namespace RimMandrake.WreckedMachines
         static WreckedMachinesPatcher()
         {
             RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.wreckedmachines"), typeof(WreckedMachinesPatcher).Assembly, "WreckedMachines");
-            CaptureBaseCost(KludgedTier);
-            CaptureBaseCost(RefurbishedTier);
-            CaptureBaseCost(RepairedTier);
+            foreach (RM_MachineLineDef line in RM_MachineLines.All)
+            {
+                if (line.original != null && !DonorCategories.ContainsKey(line.original))
+                    DonorCategories[line.original] = line.original.designationCategory;
+                CaptureBaseCost(line.kludged);
+                CaptureBaseCost(line.refurbished);
+            }
+            RM_ProcessLists.Capture();
             Apply();
         }
 
         private static void CaptureBaseCost(ThingDef def)
         {
-            if (def == null || def.costList == null) return;
+            if (def == null || def.costList == null || BaseCosts.ContainsKey(def)) return;
             var copy = new List<ThingDefCountClass>();
             foreach (var entry in def.costList)
                 copy.Add(new ThingDefCountClass(entry.thingDef, entry.count));
@@ -453,38 +453,42 @@ namespace RimMandrake.WreckedMachines
 
         public static void Apply()
         {
-            if (DonorSmelter != null)
-            {
-                DonorSmelter.designationCategory =
-                    WreckedMachinesSettings.allowDonorSmelter ? FactoryCategory : null;
-            }
-
-            if (RestorationResearch != null)
-            {
-                RestorationResearch.baseCost =
-                    RM_WreckedMachinesKernel.ScaledResearch(BaseResearchCost, WreckedMachinesSettings.researchCostFactor);
-            }
-
-            RescaleCost(KludgedTier);
-            RescaleCost(RefurbishedTier);
-            RescaleCost(RepairedTier);
-
-            if (RefurbishedTier != null && RefurbishedResearchPrereq != null)
-            {
-                RefurbishedTier.researchPrerequisites = WreckedMachinesSettings.skipRestorationResearch
-                    ? new List<ResearchProjectDef>()
-                    : new List<ResearchProjectDef>(RefurbishedResearchPrereq);
-            }
-
-            if (RepairedTier != null && RepairedResearchPrereq != null)
-            {
-                RepairedTier.researchPrerequisites = WreckedMachinesSettings.skipRestorationResearch
-                    ? new List<ResearchProjectDef>()
-                    : new List<ResearchProjectDef>(RepairedResearchPrereq);
-            }
-
+            ApplyLines();
+            RM_MachineLines.ApplyResearchCost();
+            foreach (ThingDef def in BaseCosts.Keys.ToList())
+                RescaleCost(def);
             LadderPatcher.Apply();
             ApplyAlloyForge();
+            RM_ProcessLists.Apply();
+        }
+
+        /// <summary>The machine-line switches. On: the donor has no Architect category (a wreck repaired is the way in) and its
+        /// projects show. Off: the donor's own category comes back; the research tab hides its projects (the tab's postfix
+        /// below). The categories whose buttons changed are rebuilt now.</summary>
+        private static void ApplyLines()
+        {
+            var touched = new HashSet<DesignationCategoryDef>();
+            foreach (RM_MachineLineDef line in RM_MachineLines.All)
+            {
+                ThingDef donor = line.original;
+                if (donor == null || !DonorCategories.TryGetValue(donor, out DesignationCategoryDef shipped)) continue;
+                DesignationCategoryDef want = RM_MachineLines.IsOn(line) ? null : shipped;
+                if (donor.designationCategory == want) continue;
+                if (donor.designationCategory != null) touched.Add(donor.designationCategory);
+                if (want != null) touched.Add(want);
+                donor.designationCategory = want;
+            }
+            foreach (DesignationCategoryDef c in touched)
+            {
+                try
+                {
+                    ResolveDesignators?.Invoke(c, null);
+                }
+                catch (System.Exception e)
+                {
+                    Log.Warning("[Wrecked Machines] could not rebuild the Architect buttons of " + c.defName + ": " + e.Message);
+                }
+            }
         }
 
         private static void ApplyAlloyForge()
@@ -542,6 +546,21 @@ namespace RimMandrake.WreckedMachines
                 scaled.Add(new ThingDefCountClass(entry.thingDef, count));
             }
             def.costList = scaled;
+        }
+    }
+
+    /// <summary>A switched-off machine line's two projects leave the research tab (DESIGN.md, Mod Settings: "the line's projects
+    /// are hidden"). The game has no general hide for a project (hideWhen is a difficulty flag), so the tab's own list of visible
+    /// projects is trimmed; the list is rebuilt each time the tab opens (MainTabWindow_Research.PreOpen), so a line switched on
+    /// again shows its projects at the next opening. A project being researched stays, as the game keeps it.</summary>
+    [HarmonyLib.HarmonyPatch(typeof(MainTabWindow_Research), nameof(MainTabWindow_Research.VisibleResearchProjects), HarmonyLib.MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("A switched-off ancient machine hides its restoration projects")]
+    public static class Patch_HideOffLineProjects
+    {
+        public static void Postfix(List<ResearchProjectDef> __result)
+        {
+            if (__result == null || !RM_MachineLines.AnyOff()) return;
+            __result.RemoveAll(p => RM_MachineLines.ProjectOfOffLine(p) && !Find.ResearchManager.IsCurrentProject(p));
         }
     }
 

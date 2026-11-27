@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 10 -->
+<!-- Row of the automated mincer line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedMincer. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_mincer</defName>
+    <key>mincer</key>
+    <label>automated mincer</label>
+    <original>VFEFactory_AutomatedMincer</original>
+    <wrecked>RM_WM_AutomatedMincer_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedMincer_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedMincer_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedMincerKludging</firstProject>
+    <secondProject>RM_WM_AutomatedMincerRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_MinceCorpses</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>90</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2300</kludgeWork>
+    <refurbishCost>
+      <Steel>150</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>3100</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

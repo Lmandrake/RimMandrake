@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 12 -->
+<!-- Row of the automated assembler line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedAssembler. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_assembler</defName>
+    <key>assembler</key>
+    <label>automated assembler</label>
+    <original>VFEFactory_AutomatedAssembler</original>
+    <wrecked>RM_WM_AutomatedAssembler_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedAssembler_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedAssembler_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedAssemblerKludging</firstProject>
+    <secondProject>RM_WM_AutomatedAssemblerRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_AssembleComponent</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>180</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>4600</kludgeWork>
+    <refurbishCost>
+      <Steel>300</Steel>
+      <ComponentIndustrial>14</ComponentIndustrial>
+      <ComponentSpacer>3</ComponentSpacer>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>6200</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

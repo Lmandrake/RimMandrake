@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the conveyor oven line: its two research projects on the tab RM_WM_Restoration.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml, ThingDef VFEFactory_ConveyorOven (line 608 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_WM_ConveyorOvenKludging</defName>
+    <label>conveyor oven kludging</label>
+    <description>Work out how to patch a wrecked conveyor oven back into crude service. Needs a wrecked conveyor oven that a researcher has studied.\n\nOnce this is done, order the kludge on the wrecked conveyor oven where it stands.</description>
+    <baseCost>900</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <requiredAnalyzed>
+      <li>RM_WM_ConveyorOven_Wrecked</li>
+    </requiredAnalyzed>
+    <researchViewX>0</researchViewX>
+    <researchViewY>11</researchViewY>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_WM_ConveyorOvenRestoration</defName>
+    <label>conveyor oven refurbishment</label>
+    <description>Learn to bring a kludged conveyor oven close to what it was. This is not the original engineering, which its makers already solved. It is the colony's own hard-won knowledge of how to bring a dead one back. Needs a kludged conveyor oven that a researcher has studied.\n\nOnce this is done, order the refurbishment on the kludged conveyor oven where it stands. It needs an ancient component.</description>
+    <baseCost>1800</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <prerequisites>
+      <li>RM_WM_ConveyorOvenKludging</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_WM_ConveyorOven_Kludged</li>
+    </requiredAnalyzed>
+    <researchViewX>1</researchViewX>
+    <researchViewY>11</researchViewY>
+  </ResearchProjectDef>
+</Defs>

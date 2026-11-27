@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 19 -->
+<!-- Row of the automated fishfarm line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedFishfarm. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_fishfarm</defName>
+    <key>fishfarm</key>
+    <label>automated fishfarm</label>
+    <original>VFEFactory_AutomatedFishfarm</original>
+    <wrecked>RM_WM_AutomatedFishfarm_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedFishfarm_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedFishfarm_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedFishfarmKludging</firstProject>
+    <secondProject>RM_WM_AutomatedFishfarmRestoration</secondProject>
+    <kludgedProcessCount>2</kludgedProcessCount>
+    <kludgeCost>
+      <Steel>50</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>1400</kludgeWork>
+    <refurbishCost>
+      <Steel>90</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>1800</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

@@ -286,12 +286,12 @@ MODS = {
         "Work and timing": "Now",
     }, ()),
     "WreckedMachines": ("WreckedMachinesMod.cs", "RM_WreckedMachines.csproj", {
+        "Ancient machines": "Now",
         "Research and material costs": "Now",
-        "The grade ladder": "Now",
+        "Level ratios": "Now",
         "The alloy forge": "Now",
         "Salvage": "Now",
-        "Architect menu (restart)": "NextGameStart",
-    }, ()),
+    }, ("machineLines",)),   # one switch for each row of the onboarding table, saved as a dictionary (Scribe_Collections)
     "Webwork": ("RM_WebworkMod.cs", "RM_Webwork.csproj", {
         "World generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Emergent spawn": "Now",

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the neutroamine synthesizer line: its two research projects on the tab RM_WM_Restoration.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml, ThingDef VFEFactory_NeutroamineSynthesizer (line 821 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_WM_NeutroamineSynthesizerKludging</defName>
+    <label>neutroamine synthesizer kludging</label>
+    <description>Work out how to patch a wrecked neutroamine synthesizer back into crude service. Needs a wrecked neutroamine synthesizer that a researcher has studied.\n\nOnce this is done, order the kludge on the wrecked neutroamine synthesizer where it stands.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <requiredAnalyzed>
+      <li>RM_WM_NeutroamineSynthesizer_Wrecked</li>
+    </requiredAnalyzed>
+    <researchViewX>0</researchViewX>
+    <researchViewY>13</researchViewY>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_WM_NeutroamineSynthesizerRestoration</defName>
+    <label>neutroamine synthesizer refurbishment</label>
+    <description>Learn to bring a kludged neutroamine synthesizer close to what it was. This is not the original engineering, which its makers already solved. It is the colony's own hard-won knowledge of how to bring a dead one back. Needs a kludged neutroamine synthesizer that a researcher has studied.\n\nOnce this is done, order the refurbishment on the kludged neutroamine synthesizer where it stands. It needs an ancient component.</description>
+    <baseCost>2000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <prerequisites>
+      <li>RM_WM_NeutroamineSynthesizerKludging</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_WM_NeutroamineSynthesizer_Kludged</li>
+    </requiredAnalyzed>
+    <researchViewX>1</researchViewX>
+    <researchViewY>13</researchViewY>
+  </ResearchProjectDef>
+</Defs>

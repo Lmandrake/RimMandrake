@@ -843,7 +843,7 @@ def ores_and_smelts_static(defs_dir=None, ast_patch=None, smelt_patch=None):
                 "RSW_SmeltPhrik": ({"RSW_Phrikite"}, "RSW_Phrik"),
                 "RSW_SmeltPlasteelFromSlag": ({"KotORChunk_plasteel"}, "Plasteel"),
                 "RSW_SmeltDurasteelFromSlag": ({"KotORChunk_durasteel"}, "RSW_Durasteel")}
-        smelters = ("VFEFactory_AutomatedSmelter", "RM_WM_AutomatedSmelter_Kludged", "RM_WM_AutomatedSmelter_Refurbished", "RM_WM_AutomatedSmelter_Repaired")
+        smelters = ("VFEFactory_AutomatedSmelter", "RM_WM_AutomatedSmelter_Kludged", "RM_WM_AutomatedSmelter_Refurbished")
         attach = {}
         for op in list(sp.iter("li")) + list(sp.iter("match")):  # match: the guarded Add inside a def-exists Conditional
             x = op.findtext("xpath") or ""

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 9 -->
+<!-- Row of the automated masonry saw line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedMasonrySaw. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_masonrysaw</defName>
+    <key>masonrysaw</key>
+    <label>automated masonry saw</label>
+    <original>VFEFactory_AutomatedMasonrySaw</original>
+    <wrecked>RM_WM_AutomatedMasonrySaw_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedMasonrySaw_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedMasonrySaw_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedMasonrySawKludging</firstProject>
+    <secondProject>RM_WM_AutomatedMasonrySawRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_MakeStoneBlocks</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>80</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2100</kludgeWork>
+    <refurbishCost>
+      <Steel>140</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>2800</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

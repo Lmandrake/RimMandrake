@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Offline lint of WreckedMachines (mandrake.rm.wreckedmachines): the generic mod lint (lint_mod_defs.py) plus data checks it cannot see.
 
-  wm-ladder   every def carrying WreckedMachineGrade names a known grade and a line; each line has Wrecked, Kludged and Refurbished exactly
-              once (the ladder's only way in is a Wrecked base), every def's replaceTags contains its line (stepping up is vanilla replaceTags),
-              and all defs of a line agree on the donor `original`
+  wm-ladder   every def carrying WreckedMachineGrade names a known level and a line; the line is a key of the onboarding table
+              (Defs/MachineLines); each line has Wrecked, Kludged and Refurbished exactly once; no level def can be built (no
+              replaceTags, no build-over place worker, no designationCategory: a level is reached by a repair on the machine, design
+              0.1.0); and all defs of a line agree on the donor `original`
   wm-thought  the salvaged-emanator thought has one stage per emanating grade, and its shipped stage moods equal vanilla's soothe (5) x the
               default ratios (the patcher rewrites them at startup; a different shipped number would flash wrong until then)
   wm-kernel   the kernel is Verse-free and compiled by the csproj; the slider ranges in the settings window equal the kernel's caps; the
@@ -56,14 +57,21 @@ def main(argv):
             if d.get("Name"):
                 names[d.get("Name")] = d
 
-    def tags_of(d):
+    def inherited(d, path):
+        """The elements at `path` on the def or the nearest parent of this mod that has any."""
         cur, hops = d, 0
         while cur is not None and hops < 8:
-            ts = [t.text for t in cur.findall("replaceTags/li")]
-            if ts:
-                return ts
+            got = cur.findall(path)
+            if got:
+                return got
             cur, hops = names.get(cur.get("ParentName")), hops + 1
         return []
+
+    keys = set()
+    for p in glob.glob(os.path.join(mod, "Defs", "MachineLines", "*.xml")):
+        for d in ET.parse(p).getroot():
+            if d.tag == "RimMandrake.WreckedMachines.RM_MachineLineDef" and d.findtext("key"):
+                keys.add(d.findtext("key").strip())
 
     for p in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True):
         for d in ET.parse(p).getroot():
@@ -80,9 +88,14 @@ def main(argv):
                 if not line:
                     E("wm-ladder", f"{dn}: no line (the ladder cannot find what is underneath)")
                     continue
-                tags = tags_of(d)
-                if line not in tags:
-                    E("wm-ladder", f"{dn}: replaceTags {tags} does not contain its line {line!r} (the step-up would not replace the lower grade)")
+                if line not in keys:
+                    E("wm-ladder", f"{dn}: its line {line!r} is no key of the onboarding table {sorted(keys)} (Defs/MachineLines)")
+                tags = [t.text for t in inherited(d, "replaceTags/li")]
+                workers = [t.text for t in inherited(d, "placeWorkers/li") if t.text and "BuildOverLowerGrade" in t.text]
+                menu = [t.text for t in inherited(d, "designationCategory")]
+                if tags or workers or menu:
+                    E("wm-ladder", f"{dn}: a level def can be built (replaceTags {tags}, place worker {workers}, build menu {menu}); "
+                                   "a level is reached only by a repair on the machine")
                 lines.setdefault(line, []).append((grade, dn, orig, li.findtext("emanates") == "true"))
     for line, rows in sorted(lines.items()):
         n["lines"] += 1

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 7 -->
+<!-- Row of the autofarmer line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_Autofarmer. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_autofarmer</defName>
+    <key>autofarmer</key>
+    <label>autofarmer</label>
+    <original>VFEFactory_Autofarmer</original>
+    <wrecked>RM_WM_Autofarmer_Wrecked</wrecked>
+    <kludged>RM_WM_Autofarmer_Kludged</kludged>
+    <refurbished>RM_WM_Autofarmer_Refurbished</refurbished>
+    <firstProject>RM_WM_AutofarmerKludging</firstProject>
+    <secondProject>RM_WM_AutofarmerRestoration</secondProject>
+    <kludgeCost>
+      <Steel>90</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2300</kludgeWork>
+    <refurbishCost>
+      <Steel>150</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>3100</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

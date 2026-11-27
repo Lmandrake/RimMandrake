@@ -11,7 +11,9 @@ the mod just quietly loses whatever that patch was supposed to do.
 Two files shipped this way for weeks before it was caught: `DryingBiomes.xml`
 (GelatinousSlime's whole cure-geography mechanic) and
 `WreckedMachines_HideDonorSmelter.xml` (an owner ruling from 2026-09-16 that
-had been a no-op since the day it was "shipped"). Both are correct XML — the
+had been a no-op since the day it was "shipped"; the file is gone since the smelter
+line no longer hides the donor, and this mod's `WreckedMachines_AlloyForgeGates.xml`
+stands in for it below). Both are correct XML — the
 defect was purely which folder they sat in.
 
 WHAT THIS TESTS
@@ -89,11 +91,11 @@ def t_the_two_known_fixed_files_are_where_they_belong():
     """Guards the specific regression, not just the general rule."""
     must_exist = [
         "src/RimMandrake/GelatinousSlime/Patches/DryingBiomes.xml",
-        "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_HideDonorSmelter.xml",
+        "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml",
     ]
     must_not_exist = [
         "src/RimMandrake/GelatinousSlime/Defs/Patches/DryingBiomes.xml",
-        "src/RimMandrake/WreckedMachines/Defs/Patches/WreckedMachines_HideDonorSmelter.xml",
+        "src/RimMandrake/WreckedMachines/Defs/Patches/WreckedMachines_AlloyForgeGates.xml",
     ]
     for rel in must_exist:
         assert os.path.isfile(os.path.join(REPO, rel)), (

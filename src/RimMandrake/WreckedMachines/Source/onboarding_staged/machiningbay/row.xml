@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 17 -->
+<!-- Row of the automated machining bay line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedMachiningBay. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_machiningbay</defName>
+    <key>machiningbay</key>
+    <label>automated machining bay</label>
+    <original>VFEFactory_AutomatedMachiningBay</original>
+    <wrecked>RM_WM_AutomatedMachiningBay_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedMachiningBay_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedMachiningBay_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedMachiningBayKludging</firstProject>
+    <secondProject>RM_WM_AutomatedMachiningBayRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_ShredMechanoid</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>200</Steel>
+      <ComponentIndustrial>7</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>5100</kludgeWork>
+    <refurbishCost>
+      <Steel>330</Steel>
+      <ComponentIndustrial>13</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>6800</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

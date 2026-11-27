@@ -1,37 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  WreckedMachines — MOBILE structures (owner rulings 2026-09-15 and
-  2026-09-20: "other mobile structures should also be included"; the named set
-  is "turrets, batteries, psychic emitters, and other traditionally archotech
-  sources", open-ended by design).
+  WreckedMachines - MOBILE machines: the vanometric power cell line and the psychic emanator line. Three level defs each
+  (Wrecked, Kludged, Refurbished); the Original is the base game's own VanometricPowerCell / PsychicEmanator. The rows are in
+  Defs/MachineLines/MachineLines_WreckedMachines.xml. (Owner rulings 2026-09-15 and 2026-09-20: "other mobile structures
+  should also be included"; the named set is open-ended.)
 
-  Built here: the two Core archotech-sourced buildings with a clean donor —
-    * vanometric power cell (VanometricPowerCell, Core Buildings_Special.xml) —
-      "the archotech battery". Its ratio applies to POWER OUTPUT: Wrecked
-      trickles 1000 W x 0.001 = 1 W, a faint flicker (ruling 1's battery
-      number); Kludged 200 W; Refurbished 750 W. LadderPatcher recomputes the
-      basePowerConsumption below from the vanilla def at startup and whenever
-      settings close, so the numbers written here are only the defaults.
-    * psychic emanator (PsychicEmanator, same file). Its ratio applies to MOOD
-      via RM_WM_SalvagedEmanatorSoothe (vanilla's worker reads only its own
-      def). Wrecked is inert.
-  NOT built: turrets — Core has no working archotech turret to be the 1.0
-  donor (AncientSecurityTurret is a broken prop), so the line needs a donor
-  chosen. Batteries in the capacity sense (storedEnergyMax) — vanilla's
-  Battery is not archotech-sourced.
+  Nobody builds a level here: no level def carries a designationCategory, a research prerequisite or a place worker.
+  A machine is repaired where it stands, by an order on the machine, after study and research (DESIGN.md "The repair on the machine").
 
-  The Original (1.0) rung of both lines is the untouched vanilla def. It is
-  NOT on this ladder yet: building it over a Refurbished machine would need
-  the vanilla def made buildable, which this mod does not do.
+  DONOR, read 2026-11-27 (quoted, not remembered):
+    /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/ThingDefs_Buildings/Buildings_Special.xml
+    VanometricPowerCell: thingCategories BuildingsSpecial, Mass 15.   PsychicEmanator: thingCategories BuildingsSpecial, Mass 15.
+  Every level here is minifiable, so a found wreck can be carried home; reinstalling is free.
 
-  Mobile = minifiable at every grade, so a found wreck can be carried home and
-  installed like any other building. Upper grades are built over a lower grade
-  of the same line (PlaceWorker_BuildOverLowerGrade); reinstalling is free.
+  Power: LadderPatcher recomputes the Kludged and Refurbished output from the base game's def at startup and whenever settings close,
+  so the watts written here are only the defaults. The wreck has no power comp (a dead machine; owner ruling 2026-08-12); its
+  small indicator glow stays, because it is light, not power.
 
-  ⚠️ PLACEHOLDER ART: every grade reuses the vanilla texture, tinted darker
-  the lower the grade. Real sprites pass the art judge first (delegation_policy.md).
-  ⚠️ Where wrecks are found (ruled 2026-10-03: ancient ruin sites) is not
-  wired: nothing spawns them yet. Dev-spawn only.
+  PLACEHOLDER ART: every level reuses the base game's texture, tinted darker the lower the level. Real sprites pass the art judge first.
+  Where wrecks are found is not wired: nothing spawns them yet. Dev-spawn only.
 -->
 <Defs>
 
@@ -58,26 +45,20 @@
     <canOverlapZones>false</canOverlapZones>
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.5</staticSunShadowHeight>
-    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
-    <thingCategories>
-      <li>BuildingsSpecial</li>
-    </thingCategories>
-    <tickerType>Normal</tickerType>
     <size>(1, 2)</size>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <replaceTags>
-      <li>WM_PowerCell</li>
-    </replaceTags>
     <tradeability>Sellable</tradeability>
   </ThingDef>
 
   <ThingDef ParentName="RM_WM_PowerCellBase">
     <defName>RM_WM_PowerCell_Wrecked</defName>
     <label>wrecked vanometric power cell</label>
-    <description>A vanometric power cell, ancient and broken. The housing is cracked, the field lattice is mostly dark, and it gives out barely enough current to light an indicator. It has done so for longer than anyone can say, and it will go on doing it.\n\nStudy it to learn how to restore it, then build a better grade over it.</description>
+    <description>A vanometric power cell, ancient and broken. The housing is cracked and the field lattice is dark. Only a faint glow still shows at an indicator. It is not producing any power.\n\nA researcher can study it where it stands, and what they learn opens the research to coax it back into a trickle of power. It can be carried. The repair itself is ordered on the machine, once the research is done.</description>
     <graphicData>
       <color>(105,98,90)</color>
     </graphicData>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
     <statBases>
       <MarketValue>250</MarketValue>
       <MaxHitPoints>200</MaxHitPoints>
@@ -85,21 +66,46 @@
       <Mass>15</Mass>
       <Beauty>-5</Beauty>
     </statBases>
+    <tickerType>Never</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <building>
+      <buildingTags>
+        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it joins no net -->
+      </buildingTags>
+    </building>
     <comps>
-      <li Class="CompProperties_Power">
-        <compClass>CompPowerPlant</compClass>
-        <basePowerConsumption>-1</basePowerConsumption>
-        <transmitsPower>true</transmitsPower>
-      </li>
       <li Class="CompProperties_Glower">
         <glowRadius>1</glowRadius>
         <glowColor>(227,233,168,0)</glowColor>
       </li>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120021</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the wrecked vanometric power cell</jobString>
+        <inspectString>A researcher can study how this power cell was put together.</inspectString>
+        <completedLetterLabel>Wrecked power cell studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the wrecked vanometric power cell, {PAWN_labelShort} has worked out how its dark field lattice can be coaxed back into a trickle of power.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the repair on the power cell itself.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
     </comps>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Wrecked</grade>
-        <line>WM_PowerCell</line>
+        <line>powercell</line>
         <original>VanometricPowerCell</original>
       </li>
     </modExtensions>
@@ -108,10 +114,13 @@
   <ThingDef ParentName="RM_WM_PowerCellBase">
     <defName>RM_WM_PowerCell_Kludged</defName>
     <label>kludged vanometric power cell</label>
-    <description>A wrecked vanometric power cell coaxed back into a fraction of its old output. The cracked housing is strapped shut, the dead lattice segments are bypassed with ordinary cable, and it hums unevenly. It makes a fifth of what an intact cell would — free power, forever, just not much of it.\n\nMust be built over a wrecked cell.</description>
+    <description>A wrecked vanometric power cell coaxed back into a fraction of its old output. The cracked housing is strapped shut, the dead lattice segments are bypassed with ordinary cable, and it hums unevenly. It makes a fifth of what an intact cell would: free power, forever, just not much of it.\n\nA researcher can study it further, and what they learn opens the research to refurbish it properly. The refurbishment is ordered on the machine and needs an ancient component. It can be carried.</description>
     <graphicData>
       <color>(160,152,140)</color>
     </graphicData>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
     <statBases>
       <MarketValue>450</MarketValue>
       <MaxHitPoints>150</MaxHitPoints>
@@ -124,8 +133,9 @@
       <Steel>60</Steel>
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
-    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
-    <designationCategory>Power</designationCategory>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <comps>
       <li Class="CompProperties_Power">
         <compClass>CompPowerPlant</compClass>
@@ -136,14 +146,34 @@
         <glowRadius>2</glowRadius>
         <glowColor>(227,233,168,0)</glowColor>
       </li>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120022</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the kludged vanometric power cell</jobString>
+        <inspectString>A researcher can study how to refurbish this power cell.</inspectString>
+        <completedLetterLabel>Kludged power cell studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the kludged vanometric power cell, {PAWN_labelShort} has found which of its bypasses can stay and which must be redone to bring the field lattice close to what it was.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the refurbishment on the power cell itself. It needs an ancient component.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
     </comps>
-    <placeWorkers>
-      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
-    </placeWorkers>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Kludged</grade>
-        <line>WM_PowerCell</line>
+        <line>powercell</line>
         <original>VanometricPowerCell</original>
       </li>
     </modExtensions>
@@ -152,7 +182,10 @@
   <ThingDef ParentName="RM_WM_PowerCellBase">
     <defName>RM_WM_PowerCell_Refurbished</defName>
     <label>refurbished vanometric power cell</label>
-    <description>A vanometric power cell refurbished from a wreck. Most of the field lattice glows again, held in place by an ancient component nobody could have made, and it gives three-quarters of what an intact cell would. The seams still show; it is a kludge that happens to work very well.\n\nMust be built over a wrecked or kludged cell.</description>
+    <description>A vanometric power cell refurbished from a wreck. Most of the field lattice glows again, held in place by an ancient component nobody could have made, and it gives three-quarters of what an intact cell would. The seams still show; it is a kludge that happens to work very well.\n\nIt can be carried.</description>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
     <statBases>
       <MarketValue>900</MarketValue>
       <MaxHitPoints>180</MaxHitPoints>
@@ -165,11 +198,9 @@
       <ComponentIndustrial>3</ComponentIndustrial>
       <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
     </costList>
-    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
-    <designationCategory>Power</designationCategory>
-    <researchPrerequisites>
-      <li>RM_WM_PowerCellRestoration</li>
-    </researchPrerequisites>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <tickerType>Normal</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <comps>
       <li Class="CompProperties_Power">
         <compClass>CompPowerPlant</compClass>
@@ -180,14 +211,12 @@
         <glowRadius>3</glowRadius>
         <glowColor>(227,233,168,0)</glowColor>
       </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
     </comps>
-    <placeWorkers>
-      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
-    </placeWorkers>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Refurbished</grade>
-        <line>WM_PowerCell</line>
+        <line>powercell</line>
         <original>VanometricPowerCell</original>
       </li>
     </modExtensions>
@@ -209,9 +238,6 @@
       </damageData>
     </graphicData>
     <uiIconScale>0.85</uiIconScale>
-    <thingCategories>
-      <li>BuildingsSpecial</li>
-    </thingCategories>
     <altitudeLayer>Building</altitudeLayer>
     <building>
       <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
@@ -222,11 +248,6 @@
     <passability>PassThroughOnly</passability>
     <rotatable>false</rotatable>
     <canOverlapZones>false</canOverlapZones>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <tickerType>Normal</tickerType>
-    <replaceTags>
-      <li>WM_PsychicEmanator</li>
-    </replaceTags>
     <tradeability>Sellable</tradeability>
   </ThingDef>
 
@@ -234,14 +255,17 @@
     <defName>RM_WM_PsychicEmanator_Wrecked</defName>
     <building>
       <buildingTags>
-        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it stays comp-less -->
+        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it joins no net -->
       </buildingTags>
     </building>
     <label>wrecked psychic emanator</label>
-    <description>An ancient psychic emanator, long dead. The field coil is fused and the casing is pitted through. Whatever it once did to the minds around it, it does nothing now.\n\nStudy it to learn how to restore it, then build a better grade over it.</description>
+    <description>An ancient psychic emanator, long dead. The field coil is fused and the casing is pitted through. Whatever it once did to the minds around it, it does nothing now.\n\nA researcher can study it where it stands, and what they learn opens the research to patch it back into a weak field. It can be carried. The repair itself is ordered on the machine, once the research is done.</description>
     <graphicData>
       <color>(105,98,90)</color>
     </graphicData>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
     <statBases>
       <MarketValue>250</MarketValue>
       <MaxHitPoints>100</MaxHitPoints>
@@ -249,10 +273,37 @@
       <Beauty>-5</Beauty>
       <Mass>15</Mass>
     </statBases>
+    <tickerType>Never</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <comps>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120031</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the wrecked psychic emanator</jobString>
+        <inspectString>A researcher can study how this emanator was put together.</inspectString>
+        <completedLetterLabel>Wrecked emanator studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the wrecked psychic emanator, {PAWN_labelShort} has worked out how its fused field coil can be patched into a weak, uneven field.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the repair on the emanator itself.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Wrecked</grade>
-        <line>WM_PsychicEmanator</line>
+        <line>emanator</line>
         <original>PsychicEmanator</original>
       </li>
     </modExtensions>
@@ -261,10 +312,13 @@
   <ThingDef ParentName="RM_WM_EmanatorBase">
     <defName>RM_WM_PsychicEmanator_Kludged</defName>
     <label>kludged psychic emanator</label>
-    <description>A wrecked psychic emanator patched back into a weak, uneven field. It soothes the people around it a little, draws more power than it should, and breaks down often.\n\nMust be built over a wrecked emanator.</description>
+    <description>A wrecked psychic emanator patched back into a weak, uneven field. It soothes the people around it a little, draws more power than it should, and breaks down often.\n\nA researcher can study it further, and what they learn opens the research to refurbish it properly. The refurbishment is ordered on the machine and needs an ancient component. It can be carried.</description>
     <graphicData>
       <color>(160,152,140)</color>
     </graphicData>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
     <statBases>
       <MarketValue>450</MarketValue>
       <MaxHitPoints>80</MaxHitPoints>
@@ -277,9 +331,9 @@
       <Steel>40</Steel>
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
-    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
-    <designationCategory>Misc</designationCategory>
     <specialDisplayRadius>14.9</specialDisplayRadius>
+    <tickerType>Normal</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <comps>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
@@ -291,14 +345,34 @@
       </li>
       <li Class="CompProperties_Breakdownable"/>
       <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120032</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the kludged psychic emanator</jobString>
+        <inspectString>A researcher can study how to refurbish this emanator.</inspectString>
+        <completedLetterLabel>Kludged emanator studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the kludged psychic emanator, {PAWN_labelShort} has found which of its patches can stay and which must be redone to steady the field.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the refurbishment on the emanator itself. It needs an ancient component.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
     </comps>
-    <placeWorkers>
-      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
-    </placeWorkers>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Kludged</grade>
-        <line>WM_PsychicEmanator</line>
+        <line>emanator</line>
         <original>PsychicEmanator</original>
         <emanates>true</emanates>
       </li>
@@ -308,7 +382,10 @@
   <ThingDef ParentName="RM_WM_EmanatorBase">
     <defName>RM_WM_PsychicEmanator_Refurbished</defName>
     <label>refurbished psychic emanator</label>
-    <description>A psychic emanator refurbished from a wreck around an ancient component. Its field is steady again, if not as strong as an intact one: the people around it feel strange, and mostly relaxed.\n\nMust be built over a wrecked or kludged emanator.</description>
+    <description>A psychic emanator refurbished from a wreck around an ancient component. Its field is steady again, if not as strong as an intact one: the people around it feel strange, and mostly relaxed.\n\nIt can be carried.</description>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
     <statBases>
       <MarketValue>900</MarketValue>
       <MaxHitPoints>100</MaxHitPoints>
@@ -321,12 +398,9 @@
       <ComponentIndustrial>3</ComponentIndustrial>
       <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
     </costList>
-    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
-    <designationCategory>Misc</designationCategory>
-    <researchPrerequisites>
-      <li>RM_WM_EmanatorRestoration</li>
-    </researchPrerequisites>
     <specialDisplayRadius>14.9</specialDisplayRadius>
+    <tickerType>Normal</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <comps>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
@@ -338,14 +412,12 @@
       </li>
       <li Class="CompProperties_Breakdownable"/>
       <li Class="CompProperties_Flickable"/>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine" />
     </comps>
-    <placeWorkers>
-      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
-    </placeWorkers>
     <modExtensions>
       <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
         <grade>Refurbished</grade>
-        <line>WM_PsychicEmanator</line>
+        <line>emanator</line>
         <original>PsychicEmanator</original>
         <emanates>true</emanates>
       </li>

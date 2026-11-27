@@ -4,41 +4,21 @@
 Grounded in this mod's actual Defs. The mod carries C# and a settings class
 (`Source/WreckedMachinesMod.cs`, SETTINGS below). Each setting that Apply reads is
 driven by its chain setting_<field>_drives_def (set, re-run WreckedMachinesPatcher.Apply,
-read the def it rewrites, restore); the tier shapes (process counts, canOverclock,
-shared replaceTags, research gate) are also asserted offline by
-`static_checks()` (`python3 validation.py`).
+read what it rewrites, restore); the level shapes (the table's rows, process counts, no
+overclock, nothing that can be built, the two studied projects) are also asserted offline
+by `static_checks()` (`python3 validation.py`).
 
-WHAT THIS MOD ACTUALLY SHIPS (Buildings_WreckedMachines_AutomatedSmelter.xml,
-ResearchProjects_WreckedMachines.xml, SpecialResearchOpportunities_
-WreckedMachines.xml): three PARALLEL ThingDefs for one building --
-RM_WM_AutomatedSmelter_Wrecked (inert rubble, no comps at all, `isInert`),
-_Kludged (powered, VFEFactory/PipeSystem comps, a 3-process
-AdvancedResourceProcessor with `canOverclock=false`), and _Repaired
-(mechanically identical to the donor VFEFactory_AutomatedSmelter, all six
-processes, `canOverclock=true`) -- sharing one `replaceTags` entry
-("WM_AutomatedSmelter") so each can be built directly over the last, and the
-Repaired tier gated behind this mod's OWN research project
-(RM_WM_AutomatedSmelterRestoration) rather than VFE's vanilla one. The donor
-building (VFEFactory_AutomatedSmelter) is left completely untouched --
-About.xml's own description says both remain buildable side by side, on
-purpose, for this v1 testing phase.
+WHAT THIS MOD SHIPS (Design Version 0.1.0; src/RimMandrake/WreckedMachines/DESIGN.md is the build's contract): an
+onboarding table (Defs/MachineLines, one RM_MachineLineDef for each ancient machine) and, for each line, three level
+ThingDefs: Wrecked (inert, a carried form, studied where it stands), Kludged (a part of the donor's processes, studied
+again) and Refurbished (all of the donor's processes, slower). Nobody builds a level: a level is reached by a repair
+ordered on the machine. The donor's own def (the factory mod's, or the base game's) is the Original and leaves the build
+menu while its line is on in Mod Settings.
 
-REAL DEPENDENCY, not a soft-hook: `<modDependencies>` names
-VanillaExpanded.VFEFactory (not just loadAfter) -- the Kludged/Repaired
-comps (`PipeSystem.CompPowerTrader_Overclocked`,
-`PipeSystem.CompHeatPusherPowered_Overclocked`,
-`PipeSystem.CompProperties_AdvancedResourceProcessor`) are that mod's
-classes, and this mod cannot even load without it. VFEFactory (and its own
-dependency, OskarPotocki.VanillaFactionsExpanded.Core) MUST be on this
-mod's minimal test environment alongside `mandrake.rm.wreckedmachines`
-itself, or every ThingDef below fails to load with a "type not found"
-Config error rather than the failures these components are built to catch.
-That list is `modcheck_env.py` beside this file (MODCHECK_DONOR_ENVIRONMENTS_1),
-composed by `modcheck run` through TIERS["wreckedmachines"]; it says why no
-other VE mod is needed.
-`petetimessix.researchreinvented` is MayRequire-guarded (the Analyse
-special-opportunity def) and is NOT required for anything this suite
-exercises.
+REAL DEPENDENCY, not a soft-hook: `<modDependencies>` names VanillaExpanded.VFEFactory. The Kludged and Refurbished
+comps (`PipeSystem.CompPowerTrader_Overclocked`, `PipeSystem.CompProperties_AdvancedResourceProcessor`) are that mod's
+classes. The test environment is `modcheck_env.py` beside this file and the tier `wreckedmachines_solo`.
+`petetimessix.researchreinvented` is MayRequire-guarded and is not required for anything this suite exercises.
 
 THE SCENES (item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL): one chain scene_<x> per acceptance
 and interaction scene of design/concepts/WreckedMachines/scenes.json, each asserting its row's start, then its action and
@@ -49,9 +29,7 @@ no scene may make after its start, on a fake game. They replace the three spawn-
 play-time rows of the build before this design.
 
 Still not proven by this suite:
-  1. The replaceTags build-over of the current build (tier_shapes_static/replace_tags_build_over_live stays UNMEASURED):
-     the 0.1.0 design removes that ladder for a repair on the machine (plan.md), so no live check is written for it.
-  2. `RM_WM_AnalyseWreckedSmelter` (the ResearchReinvented Analyse opportunity) is not exercised; its file header records
+  1. `RM_WM_AnalyseWreckedSmelter` (the ResearchReinvented Analyse opportunity) is not exercised; its file header records
      it as "NOT VERIFIED AT RUNTIME".
 """
 import os
@@ -62,15 +40,12 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 SETTINGS_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesSettings"
 PATCHER_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesPatcher"
-SETTINGS = ("allowDonorSmelter", "researchCostFactor", "materialCostFactor", "skipRestorationResearch",
-            "wreckedRatio", "kludgedRatio", "refurbishedRatio", "allowFullRestoration",
+SETTINGS = ("researchCostFactor", "materialCostFactor", "skipRestorationResearch",
+            "wreckedRatio", "kludgedRatio", "refurbishedRatio",
             "requireLowerGradeUnderneath", "enableSalvagedEmanators",
             "alloyForgeProgressiveGate", "plasteelAlloyEnabled",
             "smeltersFollowSalvageRule", "cremateWithoutStripping")
-# Settings read at play time rather than by Apply (PlaceWorker / ThoughtWorker).
-RUNTIME_SETTINGS = ("requireLowerGradeUnderneath", "enableSalvagedEmanators")
-# Read at play time by the workers in Source/WreckedMachinesSalvage.cs.
-SALVAGE_SETTINGS = ("smeltersFollowSalvageRule", "cremateWithoutStripping")
+# machineLines (one switch for each row of the onboarding table) is a dictionary, driven by the scenes that switch a line.
 GRADE_EXT = "RimMandrake.WreckedMachines.WreckedMachineGrade"
 BUILD_OVER = "RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade"
 
@@ -87,23 +62,49 @@ def _mobile():
     return {d.findtext("defName"): d for d in root.findall("ThingDef") if d.findtext("defName")}
 
 
-def _ladder_checks(defs, bad):
-    """Every grade def names its grade and line; the line equals its replaceTag (inherited
-    from an abstract parent for the mobile lines, so read the def or report it); every grade
-    above Wrecked carries the build-over PlaceWorker."""
+LINE_TAG = "RimMandrake.WreckedMachines.RM_MachineLineDef"
+STUDY_COMP = "CompProperties_CompAnalyzableUnlockResearch"
+MACHINE_COMP = "RimMandrake.WreckedMachines.CompProperties_WreckedMachine"
+
+
+def _lines():
+    """The onboarding table: key -> row element."""
+    out = {}
+    d = os.path.join(HERE, "Defs", "MachineLines")
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+        if f.endswith(".xml"):
+            for row in ET.parse(os.path.join(d, f)).getroot().iter(LINE_TAG):
+                out[(row.findtext("key") or "").strip()] = row
+    return out
+
+
+def _level_checks(defs, lines, bad):
+    """Every level def names its level and a line of the table; the row names the def back; no level can be built (no
+    replaceTags, no build-over place worker, no designationCategory, no research gate on the def: design 0.1.0); every
+    level carries the machine comp; Wrecked and Kludged carry the study comp and Refurbished does not."""
     for dn, d in defs.items():
         ext = [li for li in d.findall("modExtensions/li") if li.get("Class") == GRADE_EXT]
         if len(ext) != 1:
             bad.append("%s carries %d WreckedMachineGrade extensions, want 1" % (dn, len(ext)))
             continue
         grade = (ext[0].findtext("grade") or "").strip()
-        if grade not in ("Wrecked", "Kludged", "Refurbished", "Original"):
-            bad.append("%s has unknown grade %r" % (dn, grade))
-        pws = [li.text for li in d.findall("placeWorkers/li")]
-        if grade != "Wrecked" and BUILD_OVER not in pws:
-            bad.append("%s (grade %s) lacks %s" % (dn, grade, BUILD_OVER))
-        if grade == "Refurbished" and "RM_WM_AncientComponent" not in [c.tag for c in d.findall("costList/*")]:
-            bad.append("%s is Refurbished but does not cost RM_WM_AncientComponent" % dn)
+        line = (ext[0].findtext("line") or "").strip()
+        if grade not in ("Wrecked", "Kludged", "Refurbished"):
+            bad.append("%s has level %r, want Wrecked, Kludged or Refurbished (the Original is the donor's own def)" % (dn, grade))
+            continue
+        row = lines.get(line)
+        if row is None or (row.findtext(grade.lower()) or "").strip() != dn:
+            bad.append("%s says it is the %s level of line %r, and the onboarding table does not name it there" % (dn, grade, line))
+        for tag in ("replaceTags", "designationCategory", "researchPrerequisites"):
+            if d.find(tag) is not None:
+                bad.append("%s carries <%s>: a level is reached only by a repair on the machine" % (dn, tag))
+        if BUILD_OVER in [li.text for li in d.findall("placeWorkers/li")]:
+            bad.append("%s carries the build-over place worker" % dn)
+        comps = [li.get("Class") for li in d.findall("comps/li")]
+        if comps.count(MACHINE_COMP) != 1:
+            bad.append("%s carries %d machine comps, want 1" % (dn, comps.count(MACHINE_COMP)))
+        if comps.count(STUDY_COMP) != (0 if grade == "Refurbished" else 1):
+            bad.append("%s (%s) carries %d study comps" % (dn, grade, comps.count(STUDY_COMP)))
 
 
 def _alloy_forge_checks(bad):
@@ -142,33 +143,25 @@ def static_checks():
     bad = []
     _alloy_forge_checks(bad)
     tiers = _tiers()
-    if len(tiers) < 4:
-        return ["only %d ThingDefs parsed (sanity probe failed)" % len(tiers)]
+    if len(tiers) != 3:
+        return ["the smelter file parsed %d ThingDefs, want 3 (Wrecked, Kludged, Refurbished)" % len(tiers)]
     mobile = _mobile()
     if len(mobile) != 6:
         bad.append("mobile file parsed %d concrete ThingDefs, want 6 (3 power cell + 3 emanator)" % len(mobile))
-    _ladder_checks(tiers, bad)
-    _ladder_checks(mobile, bad)
-    for dn, d in tiers.items():
-        ext = d.find("modExtensions/li")
-        if ext is not None and ext.findtext("line") != "WM_AutomatedSmelter":
-            bad.append("%s line is not WM_AutomatedSmelter" % dn)
-    for dn in ("RM_WM_AutomatedSmelter_Wrecked", "RM_WM_AutomatedSmelter_Kludged",
-               "RM_WM_AutomatedSmelter_Refurbished", "RM_WM_AutomatedSmelter_Repaired"):
+    lines = _lines()
+    if sorted(lines)[:0] or not {"smelter", "powercell", "emanator"} <= set(lines):
+        bad.append("the onboarding table lacks a line of smelter, powercell, emanator (has %s)" % sorted(lines))
+    _level_checks(tiers, lines, bad)
+    _level_checks(mobile, lines, bad)
+    w = tiers.get("RM_WM_AutomatedSmelter_Wrecked")
+    if w is not None and (w.findtext("building/isInert") != "true" or w.findtext("tickerType") != "Never"
+                          or any("Power" in (li.get("Class") or "") + (li.findtext("compClass") or "") for li in w.findall("comps/li"))):
+        bad.append("the Wrecked smelter is not inert (isInert true, tickerType Never, no power comp)")
+    donor_n = 6     # VFEFactory_AutomatedSmelter's processes, VFE Factory 1.6 Buildings_Factories.xml (read 2026-11-27)
+    for dn, nproc in (("RM_WM_AutomatedSmelter_Kludged", 3), ("RM_WM_AutomatedSmelter_Refurbished", donor_n)):
         d = tiers.get(dn)
         if d is None:
             bad.append("%s missing" % dn)
-            continue
-        if [li.text for li in d.findall("replaceTags/li")] != ["WM_AutomatedSmelter"]:
-            bad.append("%s does not carry the shared replaceTags WM_AutomatedSmelter (build-over breaks)" % dn)
-    w = tiers.get("RM_WM_AutomatedSmelter_Wrecked")
-    if w is not None and (w.findtext("building/isInert") != "true" or w.find("comps") is not None or w.findtext("tickerType") != "Never"):
-        bad.append("Wrecked tier is not inert (isInert true, no comps, tickerType Never)")
-    for dn, nproc, oc in (("RM_WM_AutomatedSmelter_Kludged", 3, "false"),
-                          ("RM_WM_AutomatedSmelter_Refurbished", 5, "false"),
-                          ("RM_WM_AutomatedSmelter_Repaired", 6, "true")):
-        d = tiers.get(dn)
-        if d is None:
             continue
         proc = [li for li in d.findall("comps/li") if li.get("Class") == "PipeSystem.CompProperties_AdvancedResourceProcessor"]
         if len(proc) != 1:
@@ -177,33 +170,51 @@ def static_checks():
         n = len(proc[0].findall("processes/li"))
         if n != nproc:
             bad.append("%s runs %d processes, want %d" % (dn, n, nproc))
-        if (proc[0].findtext("canOverclock") or "").strip() != oc:
-            bad.append("%s canOverclock is %r, want %s" % (dn, proc[0].findtext("canOverclock"), oc))
-    for dn in ("RM_WM_AutomatedSmelter_Refurbished", "RM_WM_AutomatedSmelter_Repaired"):
-        r = tiers.get(dn)
-        if r is not None and "RM_WM_AutomatedSmelterRestoration" not in [li.text for li in r.findall("researchPrerequisites/li")]:
-            bad.append("%s is not gated by RM_WM_AutomatedSmelterRestoration" % dn)
+        if (proc[0].findtext("canOverclock") or "").strip() != "false":
+            bad.append("%s canOverclock is %r, want false (no repaired machine works as well as the Original)" % (dn, proc[0].findtext("canOverclock")))
+    row = lines.get("smelter")
+    if row is not None:
+        kl = [li.text for li in row.findall("kludgedProcesses/li")]
+        d = tiers.get("RM_WM_AutomatedSmelter_Kludged")
+        got = [li.text for li in d.findall("comps/li/processes/li")] if d is not None else []
+        if kl != got:
+            bad.append("the smelter row's Kludged part %s is not the Kludged def's list %s" % (kl, got))
+    rroot = ET.parse(os.path.join(HERE, "Defs", "ResearchProjectDefs", "ResearchProjects_WreckedMachines.xml")).getroot()
+    projects = {d.findtext("defName"): d for d in rroot.findall("ResearchProjectDef")}
+    for key, row in sorted(lines.items()):
+        p1, p2 = (row.findtext("firstProject") or "").strip(), (row.findtext("secondProject") or "").strip()
+        for pn, lvl in ((p1, "wrecked"), (p2, "kludged")):
+            pd = projects.get(pn)
+            if pd is None or [li.text for li in pd.findall("requiredAnalyzed/li")] != [(row.findtext(lvl) or "").strip()]:
+                bad.append("%s: project %r is not opened by the study of its %s def" % (key, pn, lvl))
+        if p2 in projects and p1 not in [li.text for li in projects[p2].findall("prerequisites/li")]:
+            bad.append("%s: the second project does not follow the first" % key)
+        if row.find("refurbishCost/RM_WM_AncientComponent") is None:
+            bad.append("%s: the last repair costs no RM_WM_AncientComponent" % key)
     src = open(os.path.join(HERE, "Source", "WreckedMachinesMod.cs"), encoding="utf-8").read()
     fields = re.findall(r"public\s+static\s+(?:bool|float)\s+(\w+)\s*=", src)
     if sorted(fields) != sorted(SETTINGS):
         bad.append("settings fields drifted: source has %s, suite drives %s" % (sorted(fields), sorted(SETTINGS)))
     scribed = src.split("void ExposeData", 1)[-1].split("DoWindowContents", 1)[0]
     ui = src.split("void DoWindowContents", 1)[-1].split("class WreckedMachinesMod", 1)[0]
-    ladder = open(os.path.join(HERE, "Source", "WreckedMachinesLadder.cs"), encoding="utf-8").read()
-    salvage = open(os.path.join(HERE, "Source", "WreckedMachinesSalvage.cs"), encoding="utf-8").read()
-    apply = src.split("public static void Apply", 1)[-1] + ladder  # LadderPatcher.Apply reads ratios via RatioFor
+    # A setting is read when code outside the settings class names it (the class itself only declares, saves and draws it).
+    settings_class = src.split("class WreckedMachinesSettings", 1)[-1].split("class WreckedMachinesMod", 1)[0]
+    readers = src.replace(settings_class, "")
+    for f_ in sorted(os.listdir(os.path.join(HERE, "Source"))):
+        if f_.endswith(".cs") and f_ != "WreckedMachinesMod.cs":
+            readers += open(os.path.join(HERE, "Source", f_), encoding="utf-8").read()
+    readers = re.sub(r"//[^\n]*", "", readers)
     for f in fields:
         if '"%s"' % f not in scribed:
             bad.append("%s is not Scribed" % f)
         if not re.search(r"\b%s\b" % f, ui):
             bad.append("%s has no control in DoWindowContents" % f)
-        reader = salvage if f in SALVAGE_SETTINGS else ladder if f in RUNTIME_SETTINGS else apply
-        # The three ratios are read through the normalised WreckedMachinesSettings.Ladder property, which is
-        # itself built from the raw fields (src, the settings class) - so a read of .Ladder is a read of each.
+        # The three ratios are read through the normalised WreckedMachinesSettings.Ladder property, which is itself built from
+        # the raw fields (the settings class), so a read of .Ladder is a read of each.
         via_ladder = (f in ("wreckedRatio", "kludgedRatio", "refurbishedRatio")
                       and re.search(r"Ladder\s*=>[^;]*\b%s\b" % f, src) is not None
-                      and "WreckedMachinesSettings.Ladder" in reader)
-        if "WreckedMachinesSettings.%s" % f not in reader and not via_ladder:
+                      and "WreckedMachinesSettings.Ladder" in readers)
+        if not re.search(r"WreckedMachinesSettings\.%s\b" % f, readers) and not via_ladder:
             bad.append("%s is never read (a dead setting)" % f)
     return bad
 
@@ -230,37 +241,9 @@ if Suite is None:
 suite = Suite("WreckedMachines")
 suite.toggles = list(SETTINGS)
 
-WRECKED = "RM_WM_AutomatedSmelter_Wrecked"
-KLUDGED = "RM_WM_AutomatedSmelter_Kludged"
-REPAIRED = "RM_WM_AutomatedSmelter_Repaired"
-RESTORATION_PROJECT = "RM_WM_AutomatedSmelterRestoration"
-
 # Every Config-error / load-failure needle this mod's own defNames/namespace
 # would show up under if a comp class or texture failed to resolve.
 ERROR_NEEDLES = ["WreckedMachines", "RM_WM_", "AutomatedSmelter"]
-
-
-def _assert_no_mod_errors(t):
-    r = t.bridge_call("jawa/drain_log", limit=200, errorsOnly=True)
-    if t._guard() and not (r or {}).get("success"):
-        raise ExpectationFailed("UNMEASURED: jawa/drain_log did not answer: %r" % (r,))   # unreadable != clean
-    msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
-    hit = [m for m in msgs if any(n.lower() in m.lower() for n in ERROR_NEEDLES)]
-    if hit:
-        raise ExpectationFailed("error/warning-level log line(s) mention this mod: %r" % hit)
-
-
-def _assert_inspects_cleanly(t, thing_id):
-    r = t.bridge_call("jawa/inspect_string", thingIds=thing_id)
-    rows = (r or {}).get("things") or []
-    row = next((x for x in rows if x.get("id") == thing_id), None)
-    if row is None:
-        raise ExpectationFailed(
-            "jawa/inspect_string(%r) returned no row for it: %r" % (thing_id, r))
-    if row.get("error"):
-        raise ExpectationFailed(
-            "%s's comps threw building its inspect string: %r" % (thing_id, row.get("error")))
-    return row
 
 
 def _setting(t, action, field, value=None):
@@ -309,32 +292,40 @@ def _num(x):
 POWERCELL_WRECKED = "RM_WM_PowerCell_Wrecked"
 
 
-def _wrecked_power(t):
-    """The REAL output of a spawned Wrecked power cell. wreckedRatio scales the private
-    CompProperties_Power.basePowerConsumption (never serialised, so get_defs' idlePowerDraw is a vanilla -1.0
-    default constant and cannot move). The spawned Thing's CompPowerTrader.EnergyOutputPerTick is what the mod's
-    rewrite actually changes. Returns (energyOutputPerTick or None, raw)."""
-    if getattr(t, "_wm_wrecked_cell", None) is None:
-        cells = t.spawn(POWERCELL_WRECKED, count=1, at="point")
-        rows = (t.bridge_call("jawa/list_things", defName=POWERCELL_WRECKED,
-                              rect="%d,%d,20,20" % (cells[0][0] - 10, cells[0][1] - 10)) or {}).get("things") or []
-        if not rows:
-            return None, "no %s found after spawning it" % POWERCELL_WRECKED
-        t._wm_wrecked_cell = rows[0]["id"]
-    t.wait_ticks(250)
-    r = t.bridge_call("jawa/power_net", thing=t._wm_wrecked_cell)
-    if not isinstance(r, dict) or not r.get("success") or not r.get("isPowerTrader"):
+def _costs_read(t):
+    """What the smelter's first repair costs now, after the cost slider: the proof type's Costs(line) row of step 1."""
+    r = t.bridge_call("jawa/static_call", type=PROOF, method="Costs", args="smelter")
+    text = str((r or {}).get("result") or "")
+    rows = [_fields(ln) for ln in text.splitlines() if ln.startswith("COST ")]
+    first = [x for x in rows if x.get("step") == "1"]
+    if not (r or {}).get("success") or not first:
         return None, r
-    return r.get("energyOutputPerTick"), r
+    return first[0].get("materials"), r
 
 
-def _wrecked_power_check(b, a):
-    # Default wreckedRatio 0.001 -> drive sets 0.01: a ten-fold change in output. Ratio of two reads, so the
-    # original cell's wattage does not need to be hard-coded. Output is negative (a producer).
-    bb, aa = _num(b), _num(a)
-    if not bb or aa is None:
-        return "Wrecked cell output unreadable (before %r, after %r)" % (b, a)
-    return None if abs(aa / bb - 10.0) < 0.5 else "Wrecked cell output ratio %.3f, expected 10 (0.001 -> 0.01)" % (aa / bb)
+def _wreck_order_read(t):
+    """Whether the repair order on a staged wrecked power cell is available, and its reason text. The cell needs no floor, and
+    its first project is not finished on a fresh map, so research is the one thing in the way."""
+    if getattr(t, "_wm_order_cell", None) is None:
+        x, z = t.anchor
+        t.bridge_call("jawa/build_batch", ops="%s:%d,%d,south" % (POWERCELL_WRECKED, x + 14, z + 14), faction="player")
+        rows = (t.bridge_call("jawa/list_things", defName=POWERCELL_WRECKED, rect="%d,%d,5,5" % (x + 12, z + 12)) or {}).get("things") or []
+        if not rows:
+            return None, "no %s stood after build_batch" % POWERCELL_WRECKED
+        t._wm_order_cell = rows[0]["id"]
+    present, ok, reason, _ = _repair_order(t, t._wm_order_cell)
+    if not present:
+        return None, "the staged wreck shows no repair order"
+    return "available" if ok else "unavailable: " + reason, None
+
+
+def _wrecked_ratio_read(t):
+    """The Wrecked ratio as the neighbours' ladders read it: WreckedMachineGrade.RatioFor(Wrecked). No machine of this mod's own
+    table uses it (a wreck is inert); Cold Storage's and the Cuisine mod's wrecked rungs do."""
+    r = t.bridge_call("jawa/static_call", type=GRADE_EXT, method="RatioFor", args="Wrecked")
+    if not isinstance(r, dict) or not r.get("success"):
+        return None, r
+    return r.get("result"), r
 
 
 # One chain per setting (a failure in one must not taint the others). Each: set the
@@ -343,22 +334,19 @@ def _wrecked_power_check(b, a):
 DRIVES = (
     ("researchCostFactor", 2.0, "ResearchProjectDef/RM_WM_AutomatedSmelterRestoration", "baseCost",
      lambda b, a: None if _num(a) is not None and _num(b) and abs(_num(a) - 2 * _num(b)) < 1 else "baseCost did not double"),
-    ("materialCostFactor", 2.0, "ThingDef/RM_WM_AutomatedSmelter_Kludged", "costList",
-     lambda b, a: None if a != b and "240" in str(a) else "Kludged costList did not scale (Steel 120 -> 240)"),
-    ("skipRestorationResearch", True, "ThingDef/RM_WM_AutomatedSmelter_Repaired", "researchPrerequisites",
-     lambda b, a: None if "RM_WM_AutomatedSmelterRestoration" in str(b) and "RM_WM_AutomatedSmelterRestoration" not in str(a)
-     else "Repaired still names the restoration research"),
-    ("allowDonorSmelter", True, "ThingDef/VFEFactory_AutomatedSmelter", "designationCategory",
-     lambda b, a: None if "VFEFactory_Factories" in str(a) and "VFEFactory_Factories" not in str(b)
-     else "donor smelter did not reappear in the Factories category", "null_ok"),
-    ("allowFullRestoration", True, "ThingDef/RM_WM_AutomatedSmelter_Repaired", "designationCategory",
-     lambda b, a: None if "VFEFactory_Factories" in str(a) and "VFEFactory_Factories" not in str(b)
-     else "the Original (Repaired) grade did not reappear in the Factories category", "null_ok"),
+    # The shipped row costs 120 steel (Defs/MachineLines, smelter, kludgeCost): the slider at 2 makes the order ask for 240.
+    ("materialCostFactor", 2.0, "the smelter's first repair", "materials",
+     lambda b, a: None if a != b and "Steel:240" in str(a) and "Steel:120" in str(b) else "the repair's steel did not double (120 -> 240)", "costs"),
+    ("skipRestorationResearch", True, "a wrecked power cell's repair order", "availability",
+     lambda b, a: None if str(b).startswith("unavailable") and "research" in str(b).lower() and a == "available"
+     else "the order did not go from unavailable for research to available", "order"),
     ("refurbishedRatio", 0.5, "ThoughtDef/RM_WM_SalvagedEmanatorSoothe", "stages",
      lambda b, a: None if str(a) != str(b) else "Refurbished emanator mood did not change"),
     ("kludgedRatio", 0.1, "ThoughtDef/RM_WM_SalvagedEmanatorSoothe", "stages",
      lambda b, a: None if str(a) != str(b) else "Kludged emanator mood did not change"),
-    ("wreckedRatio", 0.01, "ThingDef/RM_WM_PowerCell_Wrecked", "powerOutput", _wrecked_power_check, "power"),
+    # Default 0.001 -> 0.01: ten times, read as a ratio of two reads.
+    ("wreckedRatio", 0.01, "WreckedMachineGrade.RatioFor", "Wrecked",
+     lambda b, a: None if _num(b) and _num(a) is not None and abs(_num(a) / _num(b) - 10.0) < 0.5 else "the Wrecked ratio did not rise ten times", "ratio"),
     # SHIP_ALLOY_FORGE_1. Off restores VFE's stock gate on the forge.
     ("alloyForgeProgressiveGate", False, "ThingDef/VFEFactory_AutomatedAlloyForge", "researchPrerequisites",
      lambda b, a: None if "RM_WM_AlloyForgeRestoration" in str(b) and "VFE_ComplexFactories" in str(a)
@@ -372,8 +360,12 @@ DRIVES = (
 
 def _make_drive(field, new, defpath, defield, check, mode=None):
     def read(t):
-        if mode == "power":
-            return _wrecked_power(t)
+        if mode == "costs":
+            return _costs_read(t)
+        if mode == "order":
+            return _wreck_order_read(t)
+        if mode == "ratio":
+            return _wrecked_ratio_read(t)
         return _def_field(t, defpath, defield, null_ok=(mode == "null_ok"))
 
     def chain(t):
@@ -520,18 +512,12 @@ def alloy_forge_gated(t):
 
 @suite.chain("tier_shapes_static")
 def tier_shapes_static(t):
-    """Offline-provable halves of the tier contract (process counts, canOverclock, replaceTags
-    build-over key, research gate, settings wiring), asserted from the shipped XML/C#.
-    The live build-over through a blueprint is still UNMEASURED: no bridge tool resolves a
-    blueprint through GenConstruct (jawa/spawn_batch places finished things)."""
+    """The offline half of the level contract (the table's rows, process counts, no overclock, nothing that can be built, the
+    studied projects, the settings wiring), asserted from the shipped XML and C#."""
     with t.component("tiers_have_the_promised_shapes", beyond_toggle=True):
         problems = static_checks()
         if problems:
             raise ExpectationFailed("; ".join(problems))
-    with t.component("replace_tags_build_over_live", beyond_toggle=True):
-        if t.session is not None:
-            _unmeasured(t, "needs a blueprint placed over a standing tier and resolved by construction; "
-                         "no bridge tool places a blueprint (jawa/spawn_batch spawns finished things)")
 
 
 # =========================================================================== scenes.json entry points
@@ -558,6 +544,7 @@ def tier_shapes_static(t):
 #   InRuinRoom(<x>,<z>)      "ROOM <true|false>"
 #   Speed(<thingId>)         "SPEED <factor>"   the applied work speed of a level (1 = the Original's)
 #   Onboarding(<line>)       "ROW <line> | kludged <processDef>,... | refurbished <processDef>,..."  the onboarding table's row
+#   Costs(<line>)            "COST <line> | step <1|2> | materials <def>:<n>,... | work <n>"  what each repair asks for now
 #   LineLabels()             "LABEL <line> | label <the Mod Settings label text>"
 #   TextureIds()             "TEX <def> | hash <hash of the texture loaded>"   the art of the build under test
 #   PlantLighterWrecked(<line>)  stages the planted row of sc_three_looks_rows (Kludged drawn as Wrecked, lighter); "PLANTED <def>"
@@ -591,7 +578,7 @@ RUIN_MAPS = 6                           # ruin maps, sc_ruin_holds_wrecks
 ORDINARY_MAPS, ORDINARY_WANT = 20, 1    # Y ordinary maps and X of them with a wreck, sc_rare_wreck_ordinary_map (kind B)
 FLOOD = 12                              # "no map is flooded": more of this mod's things than this on one ruin map
 STUDY_DAYS = 6                          # days of clock a study scene gives the researcher
-# Every word the player must not read (sc_text_names_no_setting); the Star Wars names come from biome_rulings.md.
+# Every word the player must not read (sc_text_names_no_setting); the Star Wars names come from the canon library (_star_wars_names).
 SETTING_WORDS = ("ship", "Kolyska", "Rakatan", "Utinni", "Jawa", "clan", "god", "favour", "the crash")
 
 # Acts that a scene may not make after its asserted start (the item's criteria): finish research, finish a study, set a level,
@@ -2090,6 +2077,9 @@ def _player_text_hits(root, words):
     fields = re.compile(r"<(label|description|labelShort|jobString|reportString|text|letterText|letterLabel|tooltip|"
                         r"[A-Za-z_.]+)>([^<]*)</", re.S)
     pats = [(w, re.compile(r"\b%s\b" % re.escape(w), re.I)) for w in words] + [("Repaired", re.compile(r"\bRepaired\b"))]
+    # A label names the thing, so "repaired" in any case names a level there (rule R_level_names); in a description the lower-case
+    # word is a verb ("it can be repaired") and is not a hit.
+    label_repaired = re.compile(r"\brepaired\b", re.I)
     for dp, _, fs in os.walk(root):
         if os.sep + "art_source" in dp or os.sep + "obj" in dp or os.sep + "bin" in dp:
             continue
@@ -2106,6 +2096,8 @@ def _player_text_hits(root, words):
                     if tag.endswith(("defName", "Class", "texPath", "xpath", "packageId")):
                         continue
                     for w, pat in pats:
+                        if w == "Repaired" and tag in ("label", "labelShort"):
+                            pat = label_repaired
                         if pat.search(val) and not (w == "Repaired" and tag not in ("label", "description", "labelShort")):
                             hits.append((rel, txt[:m.start()].count("\n") + 1, w))
             elif f.endswith(".cs") and "SelfTest" not in rel and "Kernel" not in rel:
@@ -2122,16 +2114,24 @@ def _player_text_hits(root, words):
 
 
 def _star_wars_names():
-    """The Star Wars names that design/RimMandrake/biome_rulings.md lists as real IP to keep out of RM_ text, read from its
-    backticked names under the IP heading; empty when the file cannot be read (then the scene says so)."""
-    p = os.path.join(HERE, "..", "..", "..", "design", "RimMandrake", "biome_rulings.md")
+    """The Star Wars names to keep out of this mod's text: the entries of the canon library, design/RimStarWars/canon_references
+    (one folder for each canon thing; `chak_root` reads "chak root", every `droid_*` entry reads "droid"), which is this repo's
+    own list of what is canon. None when the library cannot be read or reads as too few names to be believed (then the scene
+    says so and reports nothing). Before 2026-11-27 this read backticked words of biome_rulings.md, which names no canon thing
+    in backticks: the list was the one word `None`, so the check saw no Star Wars name and then hit the proof type's own
+    "LEVEL none" line."""
+    lib = os.path.join(HERE, "..", "..", "..", "design", "RimStarWars", "canon_references")
     try:
-        txt = open(p, encoding="utf-8").read()
+        entries = [n for n in os.listdir(lib) if os.path.isdir(os.path.join(lib, n)) and re.match(r"[a-z][a-z0-9_]+$", n)]
     except OSError:
         return None
-    i = txt.find("NOT Star Wars IP")
-    seg = txt[i:i + 6000] if i >= 0 else ""
-    return sorted(set(n for n in re.findall(r"`([A-Z][a-z]{3,})`", seg)))
+    names = set()
+    for n in entries:
+        if n.startswith("droid_"):
+            names.add("droid")
+        elif len(n) >= 4:
+            names.add(n.replace("_", " "))
+    return sorted(names) if len(names) >= 50 else None
 
 
 @suite.chain("scene_text_names_no_setting", offline=True)
@@ -2148,7 +2148,7 @@ def scene_text_names_no_setting(t):
             sha = subprocess.run(["git", "-C", HERE, "rev-parse", "--short=10", "HEAD"], capture_output=True, text=True).stdout.strip()
             names = _star_wars_names()
             if names is None:
-                raise ExpectationFailed("start: design/RimMandrake/biome_rulings.md could not be read")
+                raise ExpectationFailed("start: the canon library design/RimStarWars/canon_references could not be read as a list of names")
             st["words"] = SETTING_WORDS + tuple(names)
             t._current.detail = "commit %s, %d words" % (sha or "UNREAD", len(st["words"]))
             START_MARK(t, "sc_text_names_no_setting")

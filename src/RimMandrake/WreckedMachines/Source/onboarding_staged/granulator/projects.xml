@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the medicine granulator line: its two research projects on the tab RM_WM_Restoration.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml, ThingDef VFEFactory_MedicineGranulator (line 1351 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_WM_MedicineGranulatorKludging</defName>
+    <label>medicine granulator kludging</label>
+    <description>Work out how to patch a wrecked medicine granulator back into crude service. Needs a wrecked medicine granulator that a researcher has studied.\n\nOnce this is done, order the kludge on the wrecked medicine granulator where it stands.</description>
+    <baseCost>750</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <requiredAnalyzed>
+      <li>RM_WM_MedicineGranulator_Wrecked</li>
+    </requiredAnalyzed>
+    <researchViewX>0</researchViewX>
+    <researchViewY>16</researchViewY>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_WM_MedicineGranulatorRestoration</defName>
+    <label>medicine granulator refurbishment</label>
+    <description>Learn to bring a kludged medicine granulator close to what it was. This is not the original engineering, which its makers already solved. It is the colony's own hard-won knowledge of how to bring a dead one back. Needs a kludged medicine granulator that a researcher has studied.\n\nOnce this is done, order the refurbishment on the kludged medicine granulator where it stands. It needs an ancient component.</description>
+    <baseCost>1500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <prerequisites>
+      <li>RM_WM_MedicineGranulatorKludging</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_WM_MedicineGranulator_Kludged</li>
+    </requiredAnalyzed>
+    <researchViewX>1</researchViewX>
+    <researchViewY>16</researchViewY>
+  </ResearchProjectDef>
+</Defs>

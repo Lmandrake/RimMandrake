@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the two work givers (DESIGN.md "The repair on the machine").
+  Fields follow the base game's own giver of the same work type, read 2026-11-27 from
+  /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/WorkGiverDefs/WorkGivers_Misc.xml:
+    ConstructDeliverResourcesToFrames: workType Construction, priorityInType 70, Manipulation, nonColonistsCanDo, equivalenceGroup AssistInConstruction.
+    Research: workType Research, priorityInType 100, Manipulation, canBeDoneByMechs false.
+  priorityInType: a higher number is done first within a work type. The repair sits just above the base game's delivery to frames (70);
+  the study sits below the base game's bench research (100), so a researcher at a bench is not pulled away to study a machine.
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_WM_RepairMachine</defName>
+    <label>repair ancient machines</label>
+    <giverClass>RimMandrake.WreckedMachines.WorkGiver_RepairMachine</giverClass>
+    <workType>Construction</workType>
+    <priorityInType>75</priorityInType>
+    <verb>repair</verb>
+    <gerund>repairing</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_WM_StudyMachine</defName>
+    <label>study ancient machines</label>
+    <giverClass>RimMandrake.WreckedMachines.WorkGiver_StudyMachine</giverClass>
+    <workType>Research</workType>
+    <priorityInType>90</priorityInType>
+    <verb>study</verb>
+    <gerund>studying</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
+</Defs>

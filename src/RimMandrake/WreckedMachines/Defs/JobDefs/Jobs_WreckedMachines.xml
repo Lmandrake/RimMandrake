@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the two jobs of the repair on the machine (DESIGN.md "The repair on the machine").
+  Fields follow the base game's own jobs of the same kind, read 2026-11-27 from
+  /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/JobDefs/Jobs_Work.xml:
+    HaulToContainer (hauling): suspendable false, allowOpportunisticPrefix true.
+    FinishFrame (construction): allowOpportunisticPrefix true.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_WM_DeliverToRepair</defName>
+    <driverClass>RimMandrake.WreckedMachines.JobDriver_DeliverToRepair</driverClass>
+    <reportString>hauling TargetA to TargetB.</reportString>
+    <suspendable>false</suspendable>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_WM_RepairMachine</defName>
+    <driverClass>RimMandrake.WreckedMachines.JobDriver_RepairMachine</driverClass>
+    <reportString>repairing TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+</Defs>

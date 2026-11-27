@@ -127,7 +127,7 @@ def main():
     for name, pipes, conduit in (("RM_PumpingStation_Wrecked", True, True), ("RM_DesalPlant_Wrecked", True, True),
                                  ("RM_DetoxWorks_Wrecked", True, True), ("RM_TarRefinery_Wrecked", True, True),
                                  ("RM_WM_Distillation_Wrecked", True, True), ("RM_WM_AutomatedSmelter_Wrecked", False, True),
-                                 ("RM_WM_PsychicEmanator_Wrecked", False, True), ("RM_WM_PowerCell_Wrecked", False, False),
+                                 ("RM_WM_PsychicEmanator_Wrecked", False, True), ("RM_WM_PowerCell_Wrecked", False, True),
                                  ("RM_AncientStasisLocker_Wrecked", False, False)):
         if by.get(name) != (name, pipes, conduit):
             bad.append("census misread %s: %s" % (name, by.get(name)))

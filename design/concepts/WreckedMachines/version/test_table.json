@@ -1,7 +1,7 @@
 {
  "mod": "WreckedMachines",
  "version": "0.1.0",
- "made": "2026-11-27T06:31:41-0800",
+ "made": "2026-11-27T07:24:11-0800",
  "made_by": "design/concepts/WreckedMachines/version/pilot_throwaway/make_test_table.py (throwaway, no model), steward run RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
  "stages": {
   "2": "preflight (a program)",
@@ -44,10 +44,6 @@
  },
  "checks_with_no_bar": {},
  "stage3_build_list": {
-  "T_ONBOARDING_TABLE_OFFLINE": "C_onboarding_table_offline",
-  "T_LEVEL_NUMBERS": "C_level_numbers",
-  "T_NEIGHBOUR_NAMES": "C_neighbour_names",
-  "T_FORGE_GATES_GONE": "C_forge_gates_gone",
   "sc_old_save": "C_old_save"
  },
  "stage3_also": [
@@ -87,9 +83,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.6,
-    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.63s total -> OK",
-    "at": "2026-11-27T14:30:21Z",
+    "seconds": 2.1,
+    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.61s total -> OK",
+    "at": "2026-11-27T15:23:13Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_KERNEL_FUZZ.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py"
@@ -109,9 +105,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 5.0,
+    "seconds": 4.8,
     "last": "salvage rule: OK (fuzz salvage: 3000 cases, 8003 steps, 0.04s, 0 failures; 41 variants executed, 40 red)",
-    "at": "2026-11-27T14:30:26Z",
+    "at": "2026-11-27T15:23:17Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_SALVAGE_RULE.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py"
@@ -132,9 +128,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 6.3,
-    "last": "T_ONBOARDED_SET: FAIL (4 rows, 3 not PASS)",
-    "at": "2026-11-27T14:30:32Z",
+    "seconds": 10.6,
+    "last": "T_ONBOARDED_SET: FAIL (4 rows, 2 not PASS)",
+    "at": "2026-11-27T15:23:28Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDED_SET.txt",
     "result": "FAIL",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py"
@@ -160,9 +156,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 2.2,
-    "last": "T_ONBOARDING_COMPLETE: FAIL (7 rows, 7 not PASS, 0 lines)",
-    "at": "2026-11-27T14:30:35Z",
+    "seconds": 2.8,
+    "last": "T_ONBOARDING_COMPLETE: FAIL (7 rows, 2 not PASS, 3 lines)",
+    "at": "2026-11-27T15:23:31Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDING_COMPLETE.txt",
     "result": "FAIL",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py"
@@ -177,16 +173,21 @@
    "check": "C_onboarding_table_offline",
    "observes": "Each onboarding row read against the factory mod's real XML with the patch interpreter of prove_alloy_forge_offline.py: the Kludged process list is not empty and is a strict part of the donor's list (or the one process, for a machine with one); the Refurbished list equals the donor's list.",
    "reads": [
-    "src/RimMandrake/WreckedMachines"
+    "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
+    "src/RimMandrake/WreckedMachines/Defs",
+    "src/RimStarWars/Armoury/Patches"
    ],
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
-   "new": true,
-   "built_in_stage": "3",
    "runs_today": {
-    "ran": false,
-    "why": "specified at the lock of 0.1.0 (tree check C_onboarding_table_offline); Stage 3 builds it and records it red first (maturation.py red-seen)"
-   },
-   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.3,
+    "last": "T_ONBOARDING_TABLE_OFFLINE: PASS (1 lines read)",
+    "at": "2026-11-27T15:23:32Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDING_TABLE_OFFLINE.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py"
+   }
   },
   "T_LEVEL_NUMBERS": {
    "id": "T_LEVEL_NUMBERS",
@@ -196,18 +197,26 @@
    "check": "C_level_numbers",
    "observes": "A baseline that can be diffed: the level ratios, breakdown factors, power values, mood offsets, repair costs, study lengths, project costs, placement weights and chances, and the component's rarity. No number here passes or refuses a bar.",
    "reads": [
-    "src/RimMandrake/WreckedMachines"
+    "src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
+    "src/RimMandrake/WreckedMachines/level_numbers.json",
+    "src/RimMandrake/WreckedMachines/Defs",
+    "src/RimMandrake/WreckedMachines/Patches",
+    "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs",
+    "src/RimMandrake/WreckedMachines/Source/Kernel"
    ],
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
-   "new": true,
-   "built_in_stage": "3",
-   "runs_today": {
-    "ran": false,
-    "why": "specified at the lock of 0.1.0 (tree check C_level_numbers); Stage 3 builds it and records it red first (maturation.py red-seen)"
-   },
-   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table",
    "support_only": true,
-   "note": "the tree: 'No number here passes or refuses a bar.' A baseline that can be diffed"
+   "note": "the tree: 'No number here passes or refuses a bar.' A baseline that can be diffed",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "last": "T_LEVEL_NUMBERS: PASS",
+    "at": "2026-11-27T15:23:32Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LEVEL_NUMBERS.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py"
+   }
   },
   "T_REPAIR_STATE_WALK": {
    "id": "T_REPAIR_STATE_WALK",
@@ -225,9 +234,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.3,
+    "seconds": 2.4,
     "last": "T_REPAIR_STATE_WALK: PASS",
-    "at": "2026-11-27T14:30:37Z",
+    "at": "2026-11-27T15:23:35Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_REPAIR_STATE_WALK.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py"
@@ -241,16 +250,27 @@
    "check": "C_neighbour_names",
    "observes": "The names that four neighbours read still resolve after the build: Cold Storage (the level extension, the place rule, RatioFor, RM_WM_AncientComponent), the Cuisine mod's stasis ladder, the Armoury's recipes on the smelter's and the forge's levels, and ResearchRetag's research tabs. A patch that matches nothing logs nothing, so each neighbour's patch is counted as applied.",
    "reads": [
-    "src/RimMandrake/WreckedMachines"
+    "src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
+    "src/RimMandrake/WreckedMachines/Defs",
+    "src/RimMandrake/WreckedMachines/Patches",
+    "src/RimMandrake/WreckedMachines/Source",
+    "src/RimMandrake/WreckedMachines/About",
+    "src/RimMandrake/ColdStorage",
+    "src/RimStarWars/Cuisine",
+    "src/RimStarWars/Armoury",
+    "src/RimUtinni/ResearchRetag"
    ],
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
-   "new": true,
-   "built_in_stage": "3",
    "runs_today": {
-    "ran": false,
-    "why": "specified at the lock of 0.1.0 (tree check C_neighbour_names); Stage 3 builds it and records it red first (maturation.py red-seen)"
-   },
-   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.3,
+    "last": "T_NEIGHBOUR_NAMES: PASS (5 rows, 0 not PASS)",
+    "at": "2026-11-27T15:23:37Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_NEIGHBOUR_NAMES.txt",
+    "result": "PASS",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py"
+   }
   },
   "T_FORGE_GATES_GONE": {
    "id": "T_FORGE_GATES_GONE",
@@ -260,16 +280,24 @@
    "check": "C_forge_gates_gone",
    "observes": "After the alloy forge's onboarding: the projects RM_WM_AlloyForgeRestoration and RM_WM_PlasteelAlloying and the settings alloyForgeProgressiveGate and plasteelAlloyEnabled are absent, and ResearchRetag names neither project.",
    "reads": [
-    "src/RimMandrake/WreckedMachines"
+    "src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py",
+    "src/RimMandrake/WreckedMachines/Defs",
+    "src/RimMandrake/WreckedMachines/Patches",
+    "src/RimMandrake/WreckedMachines/Source",
+    "src/RimUtinni/ResearchRetag",
+    "src/RimStarWars/Armoury/Patches"
    ],
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py",
-   "new": true,
-   "built_in_stage": "3",
    "runs_today": {
-    "ran": false,
-    "why": "specified at the lock of 0.1.0 (tree check C_forge_gates_gone); Stage 3 builds it and records it red first (maturation.py red-seen)"
-   },
-   "file_note": "the file is proposed by the table maker; the builder may place it elsewhere and remakes the table"
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.0,
+    "last": "T_FORGE_GATES_GONE: FAIL (5 rows, 5 not PASS); the forge is not onboarded yet, so the gates are expected to be there",
+    "at": "2026-11-27T15:23:37Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_FORGE_GATES_GONE.txt",
+    "result": "FAIL",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py"
+   }
   },
   "T_DISTILLATION_LOADS": {
    "id": "T_DISTILLATION_LOADS",
@@ -290,9 +318,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.8,
+    "seconds": 0.9,
     "last": "T_DISTILLATION_LOADS: PASS (7 rows, 0 not PASS)",
-    "at": "2026-11-27T14:30:38Z",
+    "at": "2026-11-27T15:23:38Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_DISTILLATION_LOADS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py"
@@ -341,9 +369,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.9,
-    "last": "wreckedmachines lint (data): 10 graded defs, 3 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
-    "at": "2026-11-27T14:30:40Z",
+    "seconds": 2.0,
+    "last": "wreckedmachines lint (data): 9 graded defs, 3 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
+    "at": "2026-11-27T15:23:40Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_DEFS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py"
@@ -363,9 +391,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 30.1,
-    "last": "WreckedMachines lint planted-defect selftest: 17/17 ok",
-    "at": "2026-11-27T14:31:10Z",
+    "seconds": 30.8,
+    "last": "WreckedMachines lint planted-defect selftest: 19/19 ok",
+    "at": "2026-11-27T15:24:11Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_PLANTS.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py"
@@ -388,7 +416,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "STATIC: PASS (0 findings)",
-    "at": "2026-11-27T14:31:10Z",
+    "at": "2026-11-27T15:24:11Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_STATIC.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/validation.py"
@@ -1001,7 +1029,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "sc_text_names_no_setting: PASS 3 components, 0 not PASS",
-    "at": "2026-11-27T14:31:10Z",
+    "at": "2026-11-27T15:24:11Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_text_names_no_setting.txt",
     "result": "PASS",
     "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\""
@@ -1027,9 +1055,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.6,
-    "last": "wrecked_links: 9 wrecked defs judged, 5 owe pipes, 7 owe conduit, 0 problems",
-    "at": "2026-11-27T14:31:10Z",
+    "seconds": 0.4,
+    "last": "wrecked_links: 9 wrecked defs judged, 5 owe pipes, 8 owe conduit, 0 problems",
+    "at": "2026-11-27T15:24:11Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_wreck_link_tags.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py"
@@ -1387,7 +1415,7 @@
     "rc": 0,
     "seconds": 0.0,
     "last": "T_LATER_STAYS_OUT: PASS",
-    "at": "2026-11-27T14:31:10Z",
+    "at": "2026-11-27T15:24:11Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LATER_STAYS_OUT.txt",
     "result": "PASS",
     "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py"
@@ -1465,6 +1493,7 @@
     "sc_repair_on_machine",
     "sc_component_gate",
     "sc_whole_journey",
+    "T_ONBOARDING_TABLE_OFFLINE",
     "LOOK_STAGE8"
    ],
    "pair_rules": {
@@ -1479,6 +1508,7 @@
     "sc_repair_on_machine": "R8 showcase smelter_comes_home",
     "sc_component_gate": "R8 showcase smelter_comes_home",
     "sc_whole_journey": "R8 showcase smelter_comes_home",
+    "T_ONBOARDING_TABLE_OFFLINE": "R8 the file names the bar or its scene",
     "LOOK_STAGE8": "R9"
    },
    "held": [],

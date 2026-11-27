@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 18 -->
+<!-- Row of the conveyor crematorium line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedCrematorium. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_crematorium</defName>
+    <key>crematorium</key>
+    <label>conveyor crematorium</label>
+    <original>VFEFactory_AutomatedCrematorium</original>
+    <wrecked>RM_WM_AutomatedCrematorium_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedCrematorium_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedCrematorium_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedCrematoriumKludging</firstProject>
+    <secondProject>RM_WM_AutomatedCrematoriumRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_CremateAnimal</li>
+      <li>VFEFactory_BurnApparel</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>120</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>3000</kludgeWork>
+    <refurbishCost>
+      <Steel>200</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>4000</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

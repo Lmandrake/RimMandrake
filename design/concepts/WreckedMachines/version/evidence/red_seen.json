@@ -25,6 +25,32 @@
   "rc": 1,
   "test_blob": "a7d0032ef1286b34adc2f0867a872424489f5d7d"
  },
+ "T_LEVEL_NUMBERS": {
+  "at": "2026-11-27T15:24:17Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
+  "last": "T_LEVEL_NUMBERS: FAIL (a number changed without the baseline: if the change is meant, run with --write and commit level_numbers.json)",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines.xml\n@@ -26,7 +26,7 @@\n       <Steel>120</Steel>\n       <ComponentIndustrial>3</ComponentIndustrial>\n     </kludgeCost>\n-    <kludgeWork>3000</kludgeWork>\n+    <kludgeWork>3500</kludgeWork>\n     <refurbishCost>\n       <Steel>200</Steel>\n       <ComponentIndustrial>5</ComponentIndustrial>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines.xml"
+  ],
+  "patch_sha": "c3b3644a259df363",
+  "rc": 1,
+  "test_blob": "60b3584c91fcce2073e9c9ef181ef97afdaefe43"
+ },
+ "T_NEIGHBOUR_NAMES": {
+  "at": "2026-11-27T15:24:16Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
+  "last": "T_NEIGHBOUR_NAMES: FAIL (5 rows, 1 not PASS)",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml\n@@ -14,7 +14,7 @@\n <Defs>\n \n   <ThingDef ParentName=\"ResourceBase\">\n-    <defName>RM_WM_AncientComponent</defName>\n+    <defName>RM_WM_AncientPart</defName>\n     <label>ancient component</label>\n     <description>A component pulled from an ancient machine. Nobody alive can make one: the tolerances are wrong for any modern fabricator, the materials are not on any known list, and after an age of neglect it still works. Restoring an ancient machine past a bodge needs parts like this, and there are never enough.</description>\n     <graphicData>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml"
+  ],
+  "patch_sha": "a55836bf655fe740",
+  "rc": 1,
+  "test_blob": "e7d05f8855bd2158827487ba0fa2d6525ae62efa"
+ },
  "T_REPAIR_STATE_WALK": {
   "at": "2026-11-27T14:16:10Z",
   "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
@@ -37,5 +63,31 @@
   "patch_sha": "ce191cf8987a8689",
   "rc": 1,
   "test_blob": "a20d682aedc61973a29cb90221983125b4b5911e"
+ },
+ "sc_text_names_no_setting": {
+  "at": "2026-11-27T15:23:02Z",
+  "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\"",
+  "file": "src/RimMandrake/WreckedMachines/validation.py",
+  "last": "sc_text_names_no_setting: FAIL 3 components, 1 not PASS",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml\n@@ -241,7 +241,7 @@\n        ================================================================== -->\n   <ThingDef ParentName=\"BuildingBase\">\n     <defName>RM_WM_AutomatedSmelter_Refurbished</defName>\n-    <label>refurbished automated smelter</label>\n+    <label>repaired automated smelter</label>\n     <description>An automated smelter refurbished from salvage by people who learned it from the wreck. The breaches are sealed, the coil loom is mostly original again, and a scavenged ancient component holds the thermal stage together.\\n\\nIt melts everything the original did, a whole mechanoid included, but it runs a little slower, breaks down more often, and cannot be overclocked. It can be carried.\\n\\nFactory buildings need factory hoppers for input and output. Needs factory floor.</description>\n     <drawerType>MapMeshAndRealTime</drawerType>\n     <graphicData>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"
+  ],
+  "patch_sha": "33ce2284ecb76c6d",
+  "rc": 1,
+  "test_blob": "9abb5b9c7a99aae40aa32a4065b03e36609f6158"
+ },
+ "sc_wreck_link_tags": {
+  "at": "2026-11-27T15:23:03Z",
+  "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+  "file": "src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+  "last": "wrecked_links: 9 wrecked defs judged, 5 owe pipes, 8 owe conduit, 1 problems",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml\n@@ -69,8 +69,7 @@\n     <tickerType>Never</tickerType>\n     <minifiedDef>MinifiedThing</minifiedDef>\n     <building>\n-      <buildingTags>\n-        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it joins no net -->\n+      <buildingTags>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it joins no net -->\n       </buildingTags>\n     </building>\n     <comps>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml"
+  ],
+  "patch_sha": "38f3a2637b8b3a2e",
+  "rc": 1,
+  "test_blob": "f158de9c5c76d21310cbb8ba9266595e8353c202"
  }
 }

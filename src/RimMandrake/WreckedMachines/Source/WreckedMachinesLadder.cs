@@ -12,17 +12,17 @@ namespace RimMandrake.WreckedMachines
     //   Wrecked      0.001  inert; a dying power source flickers like a faint LED
     //   Kludged      0.2    works, badly, visibly bodged
     //   Refurbished  0.75   the ceiling a player normally reaches
-    //   Original     1.0    the unmodified donor machine; reachable only when
-    //                       the "full restoration" Mod Setting is on (default OFF)
+    //   Original     1.0    the unmodified donor machine (never reached by repair;
+    //                       a line switched off in Mod Settings builds it again)
     //
     // Nothing equals or exceeds the original (ruling 2). Every ratio is a
     // player-tunable default, applied here to the def from the ORIGINAL def's
     // own number, so the ladder cannot drift from its donor.
     //
-    // Stepping is vanilla `replaceTags`: build the next grade over the old
-    // footprint. PlaceWorker_BuildOverLowerGrade below makes the ladder the
-    // only way in — a Kludged or Refurbished machine must be built over a
-    // lower grade of the same line, never on a clean floor.
+    // An ancient machine steps up by repair where it stands (RM_MachineRepair.cs).
+    // PlaceWorker_BuildOverLowerGrade below stays for the neighbours' own
+    // ladders (built over the old footprint with replaceTags); no def of this
+    // mod uses it.
     // ════════════════════════════════════════════════════════════════════
     public enum MachineGrade
     {
@@ -155,27 +155,8 @@ namespace RimMandrake.WreckedMachines
         private static readonly ThoughtDef VanillaSoothe =
             DefDatabase<ThoughtDef>.GetNamedSilentFail("PsychicEmanatorSoothe");
 
-        // Designation category of each Original-grade def as shipped, so the
-        // full-restoration toggle can restore it.
-        private static readonly Dictionary<ThingDef, DesignationCategoryDef> OriginalCategories = Capture();
-
-        private static Dictionary<ThingDef, DesignationCategoryDef> Capture()
-        {
-            var map = new Dictionary<ThingDef, DesignationCategoryDef>();
-            foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
-            {
-                WreckedMachineGrade ext = d.GetModExtension<WreckedMachineGrade>();
-                if (ext != null && ext.grade == MachineGrade.Original)
-                    map[d] = d.designationCategory;
-            }
-            return map;
-        }
-
         public static void Apply()
         {
-            foreach (KeyValuePair<ThingDef, DesignationCategoryDef> kv in OriginalCategories)
-                kv.Key.designationCategory = WreckedMachinesSettings.allowFullRestoration ? kv.Value : null;
-
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 WreckedMachineGrade ext = d.GetModExtension<WreckedMachineGrade>();

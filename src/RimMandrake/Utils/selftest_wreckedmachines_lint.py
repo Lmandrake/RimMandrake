@@ -14,10 +14,12 @@ T = "Defs/ThoughtDefs/Thoughts_WreckedMachines.xml"
 K = "Source/Kernel/RM_WreckedMachinesKernel.cs"
 S = "Source/WreckedMachinesMod.cs"
 PLANTS = [
-    ("unknown grade", M, "<grade>Kludged</grade>\n        <line>WM_PowerCell</line>", "<grade>Kludgd</grade>\n        <line>WM_PowerCell</line>", "unknown grade"),
-    ("line missing", M, "<line>WM_PsychicEmanator</line>\n        <original>PsychicEmanator</original>\n        <emanates>true</emanates>", "<original>PsychicEmanator</original>\n        <emanates>true</emanates>", "no line"),
-    ("replaceTags drift from the line", M, "<li>WM_PowerCell</li>", "<li>WM_PowerCel</li>", "replaceTags"),
-    ("a rung duplicated", M, "<grade>Refurbished</grade>\n        <line>WM_PowerCell</line>", "<grade>Kludged</grade>\n        <line>WM_PowerCell</line>", "needs exactly one"),
+    ("unknown grade", M, "<grade>Kludged</grade>\n        <line>powercell</line>", "<grade>Kludgd</grade>\n        <line>powercell</line>", "unknown grade"),
+    ("line missing", M, "<line>emanator</line>\n        <original>PsychicEmanator</original>\n        <emanates>true</emanates>", "<original>PsychicEmanator</original>\n        <emanates>true</emanates>", "no line"),
+    ("a level def that can be built over", M, "<modExtensions>\n      <li Class=\"RimMandrake.WreckedMachines.WreckedMachineGrade\">\n        <grade>Kludged</grade>\n        <line>powercell</line>", "<replaceTags><li>WM_PowerCell</li></replaceTags>\n    <modExtensions>\n      <li Class=\"RimMandrake.WreckedMachines.WreckedMachineGrade\">\n        <grade>Kludged</grade>\n        <line>powercell</line>", "can be built"),
+    ("a level def in the build menu", M, "<modExtensions>\n      <li Class=\"RimMandrake.WreckedMachines.WreckedMachineGrade\">\n        <grade>Refurbished</grade>\n        <line>powercell</line>", "<designationCategory>Power</designationCategory>\n    <modExtensions>\n      <li Class=\"RimMandrake.WreckedMachines.WreckedMachineGrade\">\n        <grade>Refurbished</grade>\n        <line>powercell</line>", "can be built"),
+    ("a line that is not on the onboarding table", M, "<grade>Wrecked</grade>\n        <line>powercell</line>", "<grade>Wrecked</grade>\n        <line>powercel</line>", "no key of the onboarding table"),
+    ("a rung duplicated", M, "<grade>Refurbished</grade>\n        <line>powercell</line>", "<grade>Kludged</grade>\n        <line>powercell</line>", "needs exactly one"),
     ("donor original disagrees within a line", M, "<original>VanometricPowerCell</original>", "<original>VanometricPowerCel</original>", "different donor originals"),
     ("kludged mood drifts from 5 x 0.2", T, "<baseMoodEffect>1</baseMoodEffect>", "<baseMoodEffect>2</baseMoodEffect>", "vanilla soothe"),
     ("refurbished mood drifts from 5 x 0.75", T, "<baseMoodEffect>3.75</baseMoodEffect>", "<baseMoodEffect>9</baseMoodEffect>", "vanilla soothe"),

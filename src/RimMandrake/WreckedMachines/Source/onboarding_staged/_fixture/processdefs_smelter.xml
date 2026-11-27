@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Fixture of selftest_onboard.py: the factory mod's own ProcessDefs of the smelter's six processes (label only is read). -->
+  <PipeSystem.ProcessDef>
+    <defName>VFEFactory_SmeltMetalFromSlag</defName>
+    <label>Smelt metal from slag</label>
+  </PipeSystem.ProcessDef>
+  <PipeSystem.ProcessDef>
+    <defName>VFEFactory_SmeltMetalFromMechSlag</defName>
+    <label>Smelt metal from mechanoid slag</label>
+  </PipeSystem.ProcessDef>
+  <PipeSystem.ProcessDef>
+    <defName>VFEFactory_SmeltWeapon</defName>
+    <label>Smelt weapons</label>
+  </PipeSystem.ProcessDef>
+  <PipeSystem.ProcessDef>
+    <defName>VFEFactory_SmeltApparel</defName>
+    <label>Smelt apparel</label>
+  </PipeSystem.ProcessDef>
+  <PipeSystem.ProcessDef>
+    <defName>VFEFactory_SmeltMetalFromChunk</defName>
+    <label>Extract metal from stone chunk</label>
+  </PipeSystem.ProcessDef>
+  <PipeSystem.ProcessDef>
+    <defName>VFEFactory_SmeltMechanoid</defName>
+    <label>Smelt steel from mechanoid</label>
+  </PipeSystem.ProcessDef>
+</Defs>

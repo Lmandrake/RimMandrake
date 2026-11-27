@@ -22,7 +22,7 @@ namespace RimMandrake.StarWars.Armoury
         static readonly string[] Smelters =
         {
             "VFEFactory_AutomatedSmelter", "RM_WM_AutomatedSmelter_Kludged",
-            "RM_WM_AutomatedSmelter_Refurbished", "RM_WM_AutomatedSmelter_Repaired",
+            "RM_WM_AutomatedSmelter_Refurbished",
         };
 
         static readonly string[] AsteroidSteps = { "Asteroid", "Asteroid_NoRuins", "AsteroidBasic" };

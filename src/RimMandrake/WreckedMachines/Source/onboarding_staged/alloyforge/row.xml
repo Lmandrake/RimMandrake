@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 5 -->
+<!-- Row of the automated alloy forge line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_AutomatedAlloyForge. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_alloyforge</defName>
+    <key>alloyforge</key>
+    <label>automated alloy forge</label>
+    <original>VFEFactory_AutomatedAlloyForge</original>
+    <wrecked>RM_WM_AutomatedAlloyForge_Wrecked</wrecked>
+    <kludged>RM_WM_AutomatedAlloyForge_Kludged</kludged>
+    <refurbished>RM_WM_AutomatedAlloyForge_Refurbished</refurbished>
+    <firstProject>RM_WM_AutomatedAlloyForgeKludging</firstProject>
+    <secondProject>RM_WM_AutomatedAlloyForgeRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_CreateObsidian</li>
+      <li>VFEFactory_AlloyBronze</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>210</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>5300</kludgeWork>
+    <refurbishCost>
+      <Steel>350</Steel>
+      <ComponentIndustrial>10</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>7100</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>

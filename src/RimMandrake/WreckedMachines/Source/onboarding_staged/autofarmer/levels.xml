@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the autofarmer line (key autofarmer, line number 7): three level defs. The Original is the factory mod's own VFEFactory_Autofarmer.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml, ThingDef VFEFactory_Autofarmer (line 3 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <!--WRECKED. Dead. Occupies its tiles and nothing else. Can be carried.-->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WM_Autofarmer_Wrecked</defName>
+    <label>wrecked autofarmer</label>
+    <description>What is left of an autofarmer. It has no power in it and nothing to give.\n\nA researcher can study it where it stands, and what they learn opens the research to patch it back into service. It can be carried. The repair itself is ordered on the machine, once the research is done.</description>
+    <drawerType>MapMeshOnly</drawerType>
+    <graphicData>
+      <texPath>WreckedMachines/Factories/Autofarmer/Wrecked/Autofarmer</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(7, 3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <thingCategories>
+      <li>VFEFactory_FactoryCategory</li>
+    </thingCategories>
+    <costList>
+      <Steel>25</Steel>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>true</rotatable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <fillPercent>0</fillPercent>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <Mass>60</Mass>
+      <Beauty>-30</Beauty>
+      <WorkToBuild>800</WorkToBuild>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <tickerType>Never</tickerType>
+    <size>(7, 3)</size>
+    <passability>Impassable</passability>
+    <pathCost>50</pathCost>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <building>
+      <deconstructible>true</deconstructible>
+      <isInert>true</isInert>
+      <buildingTags>
+        <li>Production</li>
+        <li>RM_RuinDrawsConduit</li>
+        <!-- draw only: it joins no net -->
+      </buildingTags>
+    </building>
+    <comps>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120071</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the wrecked autofarmer</jobString>
+        <inspectString>A researcher can study how this autofarmer was put together.</inspectString>
+        <completedLetterLabel>Wrecked autofarmer studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the wrecked autofarmer, {PAWN_labelShort} has worked out how it can be patched back into service.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the repair on the autofarmer itself.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine"/>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Wrecked</grade>
+        <line>autofarmer</line>
+      </li>
+    </modExtensions>
+  </ThingDef>
+  <!--KLUDGED. Runs, badly, on part of the original's work.-->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WM_Autofarmer_Kludged</defName>
+    <thingClass>VanillaFurnitureExpandedFactory.Building_Autofarmer</thingClass>
+    <label>kludged autofarmer</label>
+    <description>An autofarmer dragged back into service by people who did not build it. The worst of the damage is plated over and the wiring is spliced by hand.\n\nIt does the original's work, but poorly. It draws more power. The splicing holds it in place, so it cannot be carried.\n\nA researcher can study it further, and what they learn opens the research to refurbish it properly. The refurbishment is ordered on the machine and needs an ancient component.\n\nFactory buildings need factory hoppers for input and output.</description>
+    <drawerType>RealtimeOnly</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <graphicData>
+      <texPath>WreckedMachines/Factories/Autofarmer/Kludged/Autofarmer</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(7, 3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <costList>
+      <Steel>90</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>true</rotatable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <fillPercent>0</fillPercent>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <!-- The donor has no processor comp: the Kludged level's slower work is set by C#. -->
+    <statBases>
+      <Mass>60</Mass>
+      <Beauty>-20</Beauty>
+      <WorkToBuild>2300</WorkToBuild>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>1</Flammability>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <size>(7, 3)</size>
+    <passability>Impassable</passability>
+    <pathCost>50</pathCost>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+      <li>VanillaFurnitureExpandedFactory.PlaceWorker_Autofarmer</li>
+    </placeWorkers>
+    <building>
+      <deconstructible>true</deconstructible>
+      <sowTag>Ground</sowTag>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+      <relatedBuildCommands>
+        <li>VFEFactory_FactoryHopper</li>
+      </relatedBuildCommands>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>60</basePowerConsumption>
+        <shortCircuitInRain>false</shortCircuitInRain>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="VanillaFurnitureExpandedFactory.CompProperties_ShowAutofarmerSpots"/>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <compClass>RimMandrake.WreckedMachines.CompMachineStudy</compClass>
+        <analysisID>77120072</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <canStudyInPlace>true</canStudyInPlace>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <analysisDurationHours>4</analysisDurationHours>
+        <cooldownTicks>20000</cooldownTicks>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <jobString>study the kludged autofarmer</jobString>
+        <inspectString>A researcher can study how to refurbish this autofarmer.</inspectString>
+        <completedLetterLabel>Kludged autofarmer studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the kludged autofarmer, {PAWN_labelShort} has found which of its splices can stay and which must be redone to bring the machine close to what it was.\n\nThe research project {RESEARCH} can now be done at a research bench. Once it is done, order the refurbishment on the autofarmer itself. It needs an ancient component.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine"/>
+    </comps>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Kludged</grade>
+        <line>autofarmer</line>
+      </li>
+    </modExtensions>
+  </ThingDef>
+  <!--REFURBISHED. All the original's work; no overclock; a little less reliable. Draws the donor's own picture.-->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WM_Autofarmer_Refurbished</defName>
+    <thingClass>VanillaFurnitureExpandedFactory.Building_Autofarmer</thingClass>
+    <label>refurbished autofarmer</label>
+    <description>An autofarmer refurbished from salvage by people who learned it from the wreck. The breaches are sealed, the wiring is mostly original again, and an ancient component holds the worst of it together.\n\nIt does everything the original did. It draws a little more power. It can be carried.\n\nFactory buildings need factory hoppers for input and output.</description>
+    <drawerType>RealtimeOnly</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <graphicData>
+      <texPath>Things/Building/Factories/Autofarmer/Autofarmer</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(7, 3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <thingCategories>
+      <li>VFEFactory_FactoryCategory</li>
+    </thingCategories>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </costList>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>true</rotatable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <fillPercent>0</fillPercent>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <Mass>60</Mass>
+      <Beauty>-15</Beauty>
+      <WorkToBuild>3100</WorkToBuild>
+      <MaxHitPoints>270</MaxHitPoints>
+      <Flammability>1</Flammability>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <size>(7, 3)</size>
+    <passability>Impassable</passability>
+    <pathCost>50</pathCost>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+      <li>VanillaFurnitureExpandedFactory.PlaceWorker_Autofarmer</li>
+    </placeWorkers>
+    <building>
+      <sowTag>Ground</sowTag>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+      <relatedBuildCommands>
+        <li>VFEFactory_FactoryHopper</li>
+      </relatedBuildCommands>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>55</basePowerConsumption>
+        <shortCircuitInRain>false</shortCircuitInRain>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="VanillaFurnitureExpandedFactory.CompProperties_ShowAutofarmerSpots"/>
+      <li Class="RimMandrake.WreckedMachines.CompProperties_WreckedMachine"/>
+    </comps>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Refurbished</grade>
+        <line>autofarmer</line>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

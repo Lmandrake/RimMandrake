@@ -1,0 +1,12 @@
+--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml
++++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml
+@@ -69,8 +69,7 @@
+     <tickerType>Never</tickerType>
+     <minifiedDef>MinifiedThing</minifiedDef>
+     <building>
+-      <buildingTags>
+-        <li>RM_RuinDrawsConduit</li>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it joins no net -->
++      <buildingTags>   <!-- WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES: draw only; it joins no net -->
+       </buildingTags>
+     </building>
+     <comps>

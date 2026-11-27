@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines - the automated ammunition press line: its two research projects on the tab RM_WM_Restoration.
+  Stamped by Source/onboard.py from the row beside it and the donor def; do not edit by hand: change the row, or the tool, and stamp again.
+  DONOR: 1.6/Defs/ThingDefs_Buildings/Buildings_Factories.xml, ThingDef VFEFactory_AutomatedAmmunitionPress (line 926 of that file), factory mod folder as read at stamp time.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_WM_AutomatedAmmunitionPressKludging</defName>
+    <label>automated ammunition press kludging</label>
+    <description>Work out how to patch a wrecked automated ammunition press back into crude service. Needs a wrecked automated ammunition press that a researcher has studied.\n\nOnce this is done, order the kludge on the wrecked automated ammunition press where it stands.</description>
+    <baseCost>850</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedAmmunitionPress_Wrecked</li>
+    </requiredAnalyzed>
+    <researchViewX>0</researchViewX>
+    <researchViewY>14</researchViewY>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_WM_AutomatedAmmunitionPressRestoration</defName>
+    <label>automated ammunition press refurbishment</label>
+    <description>Learn to bring a kludged automated ammunition press close to what it was. This is not the original engineering, which its makers already solved. It is the colony's own hard-won knowledge of how to bring a dead one back. Needs a kludged automated ammunition press that a researcher has studied.\n\nOnce this is done, order the refurbishment on the kludged automated ammunition press where it stands. It needs an ancient component.</description>
+    <baseCost>1700</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RM_WM_Restoration</tab>
+    <prerequisites>
+      <li>RM_WM_AutomatedAmmunitionPressKludging</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_WM_AutomatedAmmunitionPress_Kludged</li>
+    </requiredAnalyzed>
+    <researchViewX>1</researchViewX>
+    <researchViewY>14</researchViewY>
+  </ResearchProjectDef>
+</Defs>

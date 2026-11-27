@@ -103,16 +103,21 @@ CHECK_TESTS = [
     ("C_salvage_rule_offline", "T_SALVAGE_RULE", WM + "/selftest_salvage_rule.py", None, True, "offline"),
     ("C_onboarded_set", "T_ONBOARDED_SET", WM + "/selftest_wm_onboarded_set.py", None, True, "offline"),
     ("C_onboarding_complete", "T_ONBOARDING_COMPLETE", WM + "/selftest_wm_onboarding_complete.py", None, True, "offline"),
-    ("C_onboarding_table_offline", "T_ONBOARDING_TABLE_OFFLINE", WM + "/selftest_wm_onboarding_table.py", None, False, "offline"),
-    ("C_level_numbers", "T_LEVEL_NUMBERS", WM + "/selftest_wm_level_numbers.py", None, False, "offline"),
+    ("C_onboarding_table_offline", "T_ONBOARDING_TABLE_OFFLINE", WM + "/selftest_wm_onboarding_table.py", None, True, "offline"),
+    ("C_level_numbers", "T_LEVEL_NUMBERS", WM + "/selftest_wm_level_numbers.py", None, True, "offline"),
     ("C_repair_state_walk", "T_REPAIR_STATE_WALK", "src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py", None, True, "offline"),
-    ("C_neighbour_names", "T_NEIGHBOUR_NAMES", WM + "/selftest_wm_neighbour_names.py", None, False, "offline"),
-    ("C_forge_gates_gone", "T_FORGE_GATES_GONE", WM + "/selftest_wm_forge_gates_gone.py", None, False, "offline"),
+    ("C_neighbour_names", "T_NEIGHBOUR_NAMES", WM + "/selftest_wm_neighbour_names.py", None, True, "offline"),
+    ("C_forge_gates_gone", "T_FORGE_GATES_GONE", WM + "/selftest_wm_forge_gates_gone.py", None, True, "offline"),
     ("C_distillation_loads", "T_DISTILLATION_LOADS", WM + "/selftest_wm_distillation_loads.py", None, True, "offline"),
     ("C_old_save", "sc_old_save", VAL, None, False, "live_minimal"),
 ]
 # What a check test that Stage 3 built reads beside its own file (the change relation reads `reads`).
 BUILT_READS = {
+    "T_FORGE_GATES_GONE": [WM + "/Defs", WM + "/Patches", WM + "/Source", "src/RimUtinni/ResearchRetag", "src/RimStarWars/Armoury/Patches"],
+    "T_ONBOARDING_TABLE_OFFLINE": [WM + "/Defs", "src/RimStarWars/Armoury/Patches"],
+    "T_LEVEL_NUMBERS": [WM + "/level_numbers.json", WM + "/Defs", WM + "/Patches", WM + "/Source/WreckedMachinesMod.cs", WM + "/Source/Kernel"],
+    "T_NEIGHBOUR_NAMES": [WM + "/Defs", WM + "/Patches", WM + "/Source", WM + "/About", "src/RimMandrake/ColdStorage", "src/RimStarWars/Cuisine",
+                          "src/RimStarWars/Armoury", "src/RimUtinni/ResearchRetag"],
     # the table is Defs/MachineLines and the judge's records are evidence/art; each is named by its parent here, which exists
     # before the first line and the first record do (the preflight refuses a path that is not there)
     "T_ONBOARDED_SET": [WM + "/Defs"],

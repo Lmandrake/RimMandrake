@@ -267,8 +267,11 @@ def run(mod_name, argv, known_missing_art=(), require_xml=True, require_settings
                 W("settings-scribed", f"settings field {fld} is never read by any code (dead toggle)")
             if not re.search(pat, ui):
                 W("settings-scribed", f"settings field {fld} has no control in the settings window")
+        # a setting kept as a collection (one value for each key of a table: `Dictionary<string, bool> lines = ...`) is a declared
+        # field too; its generic type holds a comma, which the scalar pattern above does not read
+        collections = set(re.findall(_PS + r"(?:Dictionary|List|HashSet)<[^;=]+>\s+(\w+)\s*=(?!>)", sbody))
         for m in sorted(set(re.findall(sname + r"\.(\w+)", code))):
-            if m not in decl and m not in ("DoWindowContents", "DoSettingsWindowContents", "ExposeData", "Instance"):
+            if m not in decl and m not in collections and m not in ("DoWindowContents", "DoSettingsWindowContents", "ExposeData", "Instance"):
                 if re.match(r"[a-z]", m):
                     E("settings-scribed", f"code reads {sname}.{m} which is not a declared field")
 

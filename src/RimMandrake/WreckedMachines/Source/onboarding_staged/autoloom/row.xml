@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- line number 4 -->
+<!-- Row of the autoloom line, written by hand (DESIGN.md "The onboarding table"). Donor: VFEFactory_Autoloom. Costs and work are provisional: kludge 45% steel, 40% components; refurbish 75% steel, 70% components, half the spacer components, half of any other material; work 3000 and 4000 x donor steel / 260. -->
+<Defs>
+
+  <RimMandrake.WreckedMachines.RM_MachineLineDef>
+    <defName>RM_WM_Line_autoloom</defName>
+    <key>autoloom</key>
+    <label>autoloom</label>
+    <original>VFEFactory_Autoloom</original>
+    <wrecked>RM_WM_Autoloom_Wrecked</wrecked>
+    <kludged>RM_WM_Autoloom_Kludged</kludged>
+    <refurbished>RM_WM_Autoloom_Refurbished</refurbished>
+    <firstProject>RM_WM_AutoloomKludging</firstProject>
+    <secondProject>RM_WM_AutoloomRestoration</secondProject>
+    <kludgedProcesses>
+      <li>VFEFactory_MakePatchleather</li>
+    </kludgedProcesses>
+    <kludgeCost>
+      <Steel>90</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </kludgeCost>
+    <kludgeWork>2300</kludgeWork>
+    <refurbishCost>
+      <Steel>150</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </refurbishCost>
+    <refurbishWork>3100</refurbishWork>
+    <kludgedMovable>false</kludgedMovable>
+    <refurbishedMovable>true</refurbishedMovable>
+  </RimMandrake.WreckedMachines.RM_MachineLineDef>
+
+</Defs>
