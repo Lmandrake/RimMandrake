@@ -28,7 +28,7 @@ the stage machine continues there.
 
     role_clones.py ensure NAME...          make the missing clones (prints each path, or why it failed)
     role_clones.py land --clone C --seat S publish what the run left (one JSON line; exit 1 on a failure)
-    role_clones.py level --clone C         land a stranded ledger-only commit (one JSON line; exit 1 unless level)
+    role_clones.py level --clone C         land a stranded ledger-only commit (one JSON line; exit 1 unless level or landed)
     role_clones.py list                    one JSON line per role clone on disk
 """
 import argparse
@@ -212,8 +212,9 @@ def fix_line(clone, rows):
 
 def level(clone, land_sh=None):
     """Land what a role clone holds that is not on origin/main, when that is safe. -> {"state", "landed", "left", "fix",
-    "why"}; never raises. state: "level" (HEAD is origin/main: nothing was ahead of the clone's own origin/main ref, no
-    fetch made; or all that was ahead was already on origin and seat_sync moved the clone) · "landed" (every stranded
+    "why"}; never raises. state: "level" (HEAD is not ahead of origin/main, it may be behind: nothing was ahead of the
+    clone's own origin/main ref, no fetch made; or all that was ahead was already on origin and seat_sync moved the
+    clone) · "landed" (every stranded
     commit was ledger-only, is now published with land.sh <sha> <paths>, and the clone moved) · "stranded" (a commit
     that is not ledger-only, a merge, or one land.sh refused, stays; or seat_sync could not move the clone past commits
     already on origin; `fix` is the line that passes) · "UNMEASURED" (a git read or the fetch failed: could not look,

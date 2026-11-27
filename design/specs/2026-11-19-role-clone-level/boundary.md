@@ -81,4 +81,4 @@ PST. Each promise has a test of its name in `src/RimMandrake/rimflow/selftest_ro
   `RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO`, 2026-11-26: WreckedMachines' first run-now was refused
   because the Designer's clone stood at a commit of 2026-11-21).
 
-Later lists beside this page: `polish.md` and `next_version.md` (none yet).
+Later lists beside this page: `polish.md`, and `next_version.md` (none yet).
