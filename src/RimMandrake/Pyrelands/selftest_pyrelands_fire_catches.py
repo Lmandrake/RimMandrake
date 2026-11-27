@@ -5,16 +5,20 @@
      front are read along and across the wind; the front is T_FIRE_PACE_MODEL_OFFLINE's own measure (cross-checked against
      selftest_pyrelands_fire_pace.front_width on the model's burns); the share, the uncarried fires (the spark aside), the
      row pick, the corridor, the opportunity (valid, and each check NOT on its own planted break), the verdict (each row
-     False on its own planted fault, None while the 0.1.0 reading or the judge is owed), the end, the capture size.
-  2. its numbers against their sources: FlankWidth, HealReach and the Fire pace default from RM_BurnKernel.cs; FRONT_HOURS
+     False on its own planted fault, None while the same-session pace-100 baseline (off its pace,
+     its spark, or headless) or the judge is owed), the end, the capture size.
+  2. its numbers against their sources: FlankWidth, HealReach, the Fire pace default and the baseline's
+     FirePacePercentMin from RM_BurnKernel.cs (a planted kernel's numbers read back); FRONT_HOURS
      and SHARE_MAX from the decider; the grass defName from the Defs; the probe's methods in FireEcologyHook.cs, its block
      self-contained (fire_catches_take010.py puts it in the 0.1.0 source once); DAY_REACH and HALF_W hold a re-measure of
      the model's day-one burn at the slider's high end.
-  3. the shipped chain on a game scripted by the burn model (pyre_burn_sim at the shipped pace): stage, burn, log PASS and
-     the verdict owed only the judge and the 0.1.0 reading; with a 0.1.0 reading taken by the chain itself on the model at
-     0.1.0's pace, the head row holds; FAIL on each planted forbidden effect (a flood, a fire no carry reached, a spark
-     that never takes, a head no faster than 0.1.0, a new error line); UNMEASURED on each planted invalid opportunity (a
-     pawn in every corridor, the weather turned).
+  3. the shipped chain on a game scripted by the burn model (pyre_burn_sim at the setting's pace; settings stay over a
+     reload, the map does not): the pace-100 pass first, then a fresh load and the shipped pass on the same spark cell;
+     baseline, stage, burn, log PASS and the verdict owed only the judge; the stored 0.1.0 reading (taken by the chain's
+     take mode on the model) is the cross-check only: a stored 999 or 1.0 decides nothing; FAIL on each planted forbidden
+     effect (a flood, a fire no carry reached, a spark that never takes, a build that ignores the Fire pace so the head
+     is no faster than the pace-100 head, a new error line); UNMEASURED on each planted invalid opportunity (a pawn in
+     every corridor, the weather turned).
   4. the record: validation.py registers the chain; the test table's row names the bar, the chain and its command.
 
 Run: python3 <this file>   exit 0 = every check PASS. Each section prints its worst value, its limit and its cases.
@@ -164,12 +168,17 @@ def burn_read(fires, burned, open_=1000):
 
 
 SP = (12, 100)
+PMIN = FP.kconst("FirePacePercentMin")   # the 0.1.0 carry clock (Conductor's ruling 2026-11-27 5:28 AM PST), from the C#
+BASE = {"head": 49.0, "pace": PMIN, "spark": SP}   # a same-session pace-100 reading
+HEAD_ROW = "the day-end head beats the same-session pace-%d head" % PMIN
 good = [(1, burn_read([(12, 100, -1), (13, 100, 2)], [SP])),
         (5, burn_read([(30, z, 9) for z in range(95, 108)], [(x, 100) for x in range(12, 30)])),
         (24, burn_read([(90, z, 9) for z in range(90, 110)], [(x, 100) for x in range(12, 90)]))]
-rows = W.verdict(good, SP, 90, {"head": 49.0}, judge=True)
+rows = W.verdict(good, SP, 90, BASE, judge=True)
 check("verdict: a good day holds every row", all(x["ok"] is True for x in rows) and len(rows) == 7, rows)
 check("verdict rows carry worst, limit and cases", all(set(x) == {"check", "ok", "worst", "limit", "cases"} for x in rows))
+check("verdict: the head row compares against the same-session pace-%d baseline" % PMIN, HEAD_ROW in [x["check"] for x in rows],
+      [x["check"] for x in rows])
 fh = [x for x in rows if x["check"].startswith("a front")][0]
 check("verdict: the front's hour is the first with FlankWidth across", fh["worst"] == 5, fh)
 
@@ -178,28 +187,42 @@ def only_false(rows, name):
     return [x["check"] for x in rows if x["ok"] is False] == [name]
 
 
-faults = (("the spark burns at hour 1", [(1, burn_read([], [SP]))] + good[1:], {"head": 49.0}),
+faults = (("the spark burns at hour 1", [(1, burn_read([], [SP]))] + good[1:], BASE),
           ("a front FlankWidth wide by hour 24", [good[0], (24, burn_read([(90, z, 9) for z in range(95, 104)],
-                                                                          [(x, 100) for x in range(12, 90)]))], {"head": 49.0}),
-          ("the day-end head beats 0.1.0's", good, {"head": 78.0}),
+                                                                          [(x, 100) for x in range(12, 90)]))], BASE),
+          (HEAD_ROW, good, dict(BASE, head=78.0)),
           ("burning or black share of open ground", good[:2] + [(24, burn_read(good[2][1]["fires"], good[2][1]["burned"],
-                                                                                open_=150))], {"head": 49.0}),
+                                                                                open_=150))], BASE),
           ("fire on a cell no carry reached", good[:2] + [(24, burn_read(good[2][1]["fires"] + [(200, 10, -1)],
-                                                                         good[2][1]["burned"]))], {"head": 49.0}),
+                                                                         good[2][1]["burned"]))], BASE),
           ("fire on a cell no carry reached", good[:2] + [(24, burn_read(good[2][1]["fires"] + [(10, 100, 9)],   # upwind,
-                                                                         good[2][1]["burned"]))], {"head": 49.0}),  # carried
+                                                                         good[2][1]["burned"]))], BASE),  # carried
           ("a fire the wind does not carry", [good[0], (5, burn_read(good[1][1]["fires"] + [(31, 100, -1)], good[1][1]["burned"])),
                                               (24, burn_read(good[2][1]["fires"] + [(31, 100, -1)], good[2][1]["burned"]))],
-           {"head": 49.0}))
+           BASE))
 for name, hourly, reading in faults:
     rows = W.verdict(hourly, SP, 90, reading, judge=True)
     check("verdict: planted fault breaks only %r" % name, only_false(rows, name), [(x["check"], x["ok"]) for x in rows])
 rows = W.verdict(good, SP, 90, None, judge=None)
-check("verdict: no 0.1.0 reading and no judge leave those two rows None, none False", [x["check"] for x in rows
-      if x["ok"] is None] == ["the day-end head beats 0.1.0's", "a blind judge reads a walking line"]
+check("verdict: no baseline and no judge leave those two rows None, none False", [x["check"] for x in rows
+      if x["ok"] is None] == [HEAD_ROW, "a blind judge reads a walking line"]
       and not [x for x in rows if x["ok"] is False], rows)
-check("verdict: the owed reading names its take", W.TAKE_ENV in [x for x in rows if x["ok"] is None][0]["limit"])
-rows = W.verdict(good, SP, 90, {"head": 49.0}, judge=False)
+check("verdict: the owed baseline names its pass", "pace-%d pass" % PMIN in [x for x in rows if x["ok"] is None][0]["limit"],
+      [x for x in rows if x["ok"] is None][0])
+# the baseline is the bar's only when it was read at FirePacePercentMin on the same spark: a reading at another pace (the
+# shipped one: a baseline that equals what it is compared with) or off another spark is no baseline, never a pass or a fail
+worst_off = []
+for label, base in (("at the shipped pace", dict(BASE, pace=W.PACE_DEFAULT, head=10.0)), ("with no pace read", dict(BASE, pace=None,
+                    head=10.0)), ("off another spark", dict(BASE, spark=(12, 140), head=10.0)),
+                    ("with no head", dict(BASE, head=None))):
+    rows = W.verdict(good, SP, 90, base, judge=True)
+    hr = [x for x in rows if x["check"] == HEAD_ROW]
+    worst_off.append((label, hr[0]["ok"] if hr else "absent"))
+    check("verdict: a baseline %s leaves the head row None (no verdict), every other row holds" % label,
+          hr and hr[0]["ok"] is None and all(x["ok"] is True for x in rows if x["check"] not in (HEAD_ROW,)), (label, hr))
+print("[fcr-self] baselines off the bar's (pace %d, same spark): head row %r limit None cases %d" % (PMIN, worst_off,
+                                                                                                    len(worst_off)))
+rows = W.verdict(good, SP, 90, BASE, judge=False)
 check("verdict: a judge who reads no walking line breaks only that row", only_false(rows, "a blind judge reads a walking line"))
 check("end at the day", W.end_reached(24, good[0][1], SP, 90, 237) and not W.end_reached(23, good[0][1], SP, 90, 237))
 check("end at the edge", W.end_reached(3, burn_read([(248, 100, 9)], []), SP, 90, 237))
@@ -217,6 +240,16 @@ check("FLANK_WIDTH is RM_BurnKernel.FlankWidth", W.FLANK_WIDTH == FP.kconst("Fla
 check("HEAL_REACH is RM_BurnKernel.HealReach", W.HEAL_REACH == FP.kconst("HealReach"), (W.HEAL_REACH, FP.kconst("HealReach")))
 check("PACE_DEFAULT is RM_BurnKernel.FirePacePercentDefault", W.PACE_DEFAULT == FP.kconst("FirePacePercentDefault"),
       (W.PACE_DEFAULT, FP.kconst("FirePacePercentDefault")))
+check("PACE_MIN is RM_BurnKernel.FirePacePercentMin", getattr(W, "PACE_MIN", None) == FP.kconst("FirePacePercentMin"),
+      (getattr(W, "PACE_MIN", None), FP.kconst("FirePacePercentMin")))
+# read from the C#, never a copied number: the module's reader follows a planted kernel file
+_k = os.path.join(tempfile.mkdtemp(prefix="fcr_kernel_"), "RM_BurnKernel.cs")
+with open(_k, "w", encoding="utf-8") as _f:
+    _f.write("public const int FirePacePercentMin = 137;\npublic const int FirePacePercentDefault = 211;\n")
+_kc = getattr(W, "kernel_const", None)
+check("the baseline pace is read from RM_BurnKernel.cs (a planted kernel's 137 is read as 137)",
+      callable(_kc) and _kc("FirePacePercentMin", _k) == 137 and _kc("FirePacePercentDefault", _k) == 211,
+      _kc and _kc("FirePacePercentMin", _k))
 check("CARRY_REACH is RM_BurnKernel.WindCarryReach", W.CARRY_REACH == FP.kconst("WindCarryReach"),
       (W.CARRY_REACH, FP.kconst("WindCarryReach")))
 slow = (FP.kconst("WindCarryTicks") + FP.kconst("WindCarryExtraTicks")) * 100 / float(FP.kconst("FirePacePercentMin"))
@@ -312,9 +345,12 @@ class Game(object):
     """A 250 x 250 synthetic map burned by pyre_burn_sim at `pace`, east wind; the probe's replies read its arrays."""
 
     def __init__(self, pace=200, seed=1, cover=0.97):
+        self.seed, self.cover, self.pace0, self.cuts = seed, cover, pace, []
+        self.loads = []          # at each load of the registered site: how many sparks were lit before it
+        self.lit_paces = []      # the Fire pace setting at each spark (None: the tag's build has no such setting)
+        self.ignore_pace = False  # planted: the build carries at FirePacePercentMin whatever the setting says
         self.plant, self.plantable = M.synthetic_map(250, seed, cover=cover)
-        self.sim = M.Sim(self.plant, self.plantable, seed, weather=False, clock=False, keepalive=False, wind=90.0,
-                         carried=True, fire_pace=pace)
+        self.sim = self.new_sim(pace)
         self.weather, self.log, self.dud, self.pawn_rows, self.flood_at, self.stray_at, self.rain_at = \
             "Clear", [], False, False, None, None, None
         self.stray, self.shots, self.lit, self.settings = [], [], [], {}
@@ -324,8 +360,33 @@ class Game(object):
         self.upwind_at = self.ungov_at = None   # planted: a carried fire upwind of the spark; the spark cell burning uncarried
         self.extra = []                         # (x, z, carriedAt) fires those plant
 
-    def cut(self, x0, x1, plantable=False):
+    def new_sim(self, pace):
+        return M.Sim(self.plant, self.plantable, self.seed, weather=False, clock=False, keepalive=False, wind=90.0,
+                     carried=True, fire_pace=PMIN if self.ignore_pace else pace)
+
+    def pace(self):
+        return self.settings.get("firePacePercent", self.pace0)
+
+    def set(self, values):
+        """Mod settings are the game's, not the map's: they stay over a reload. The carry clock reads the pace."""
+        self.settings.update(values)
+        if "firePacePercent" in values and len(self.lit) == (self.loads[-1] if self.loads else 0):   # no spark on this map yet
+            self.sim = self.new_sim(self.pace())
+
+    def reload(self):
+        """A fresh load of the registered site: the save's own map back (the stage's planting and the burn gone; a
+        planted firebreak is the site's, it stays), the clock at the save's."""
+        self.loads.append(len(self.lit))
+        self.plant, self.plantable = M.synthetic_map(250, self.seed, cover=self.cover)
+        self.sim = self.new_sim(self.pace())
+        for a in self.cuts:
+            self.cut(*a, keep=False)
+        self.stray, self.extra, self.weather = [], [], "Clear"
+
+    def cut(self, x0, x1, plantable=False, keep=True):
         """A bare band across the whole map over columns x0..x1-1 (unplantable: a firebreak nothing grows over)."""
+        if keep:
+            self.cuts.append((x0, x1, plantable))
         for arr in (self.plant, self.sim.plant):
             arr[:, x0:x1] = 0
         self.sim.hp[:, x0:x1] = 0.0
@@ -420,9 +481,12 @@ def run(game, env=None, reading=None):
                         "isCompleteList": full}
             elif tool == "jawa/static_call" and p.get("method") == "SetWindForTest":
                 return {"success": True, "result": int(p["args"])}
+            elif tool == "jawa/mod_settings_field" and p.get("action") == "get":
+                return {"success": True, "value": game.settings.get(p.get("field"))}
             elif tool == "jawa/map_fire" and p.get("action") == "start":
                 x, z, w, h = (int(v) for v in p["rect"].split(","))
                 game.lit.append((x, z, p.get("fireSize")))
+                game.lit_paces.append(game.settings.get("firePacePercent"))
                 if not game.dud:
                     game.sim.start(z, x, p["fireSize"])
             return {"success": True}
@@ -447,11 +511,11 @@ def run(game, env=None, reading=None):
     chains = {}
     ns = types.SimpleNamespace(
         _teardown=lambda **k: (lambda fn: fn), _comp=lambda t, n, **k: Comp(n), _live=lambda t: True,
-        _independent=lambda t: None, _load_registered_site=lambda t: (1, None), _on_site=lambda t: None,
+        _independent=lambda t: None, _load_registered_site=lambda t: (game.reload(), (1, None))[1], _on_site=lambda t: None,
         _note=lambda t, n, v: out["notes"].append((n, v)), _wait=lambda t, n: game.advance(n),
         _extinguish=lambda t: [game.sim.burn.__setitem__((z, x), game.tick) for x, z in game.put_out], _ash=lambda t, r=None: {"weather": game.weather}, _map_size=lambda t: (250, 250),
         _plants=plants, _rs=V._rs, _log_mark=lambda t: "m", _log_since=lambda t, m: game.log,
-        _set=lambda t, v: game.settings.update(v), _unmeasured=stop("UNMEASURED"), _fail=stop("FAIL"))
+        _set=lambda t, v: game.set(v), SETTINGS=V.SETTINGS, _unmeasured=stop("UNMEASURED"), _fail=stop("FAIL"))
     W.register(types.SimpleNamespace(chain=lambda n: (lambda fn: chains.setdefault(n, fn))), ns)
     keep = dict((k, os.environ.get(k)) for k in (W.TAKE_ENV, W.OUT_ENV))
     keep_reading = W.READING_010
@@ -503,7 +567,7 @@ check("the chain on the model at the shipped pace: stage, burn and log PASS", al
 check("... the verdict owed only the judge (UNMEASURED, never FAIL)", x["verdicts"].get("fire_catches_verdict") == "UNMEASURED"
       and "judge" in x["why"].get("fire_catches_verdict", "") and "0.1.0" not in x["why"].get("fire_catches_verdict", ""),
       x["why"])
-check("... every mechanical row holds, the head beats the 0.1.0 reading", rows and all(rw["ok"] is True for k, rw in rows.items()
+check("... every mechanical row holds, the head beats the same-session pace-100 head", rows and all(rw["ok"] is True for k, rw in rows.items()
       if k != "a blind judge reads a walking line"), rows)
 check("... the Fire pace set is the shipped default and wind carries on", g.settings == dict(W.HOLD_OFF, windCarriesFireEnabled=True,
       firePacePercent=W.PACE_DEFAULT), g.settings)
@@ -517,17 +581,52 @@ check("... the stage reads every plant from the spark column a day's reach on, e
       and max(h for _, _, _, h in g.plant_reads) <= W.FUEL_ROWS, g.plant_reads[:6])
 check("... the stage's fuel_walk is the map's: a day's reach", (x["manifest"] or {}).get("walk") == W.DAY_REACH,
       (x["manifest"] or {}).get("walk"))
-check("... one spark, one cell, at SPARK_SIZE", g.lit == [(W.SPARK_X, g.lit[0][1], W.SPARK_SIZE)] if g.lit else False, g.lit)
+check("... one spark a pass, one cell, at SPARK_SIZE, the same cell both passes", len(g.lit) == 2
+      and g.lit == [(W.SPARK_X, g.lit[0][1], W.SPARK_SIZE)] * 2, g.lit)
 check("... captures named by hour, each at or under SHOT_PX", g.shots and all(max(s[1][2], s[1][3]) * s[2] <= W.SHOT_PX
       for s in g.shots) and [s[0] for s in g.shots][0] == "fcr_h01", g.shots)
+# the baseline (Conductor's ruling 2026-11-27 5:28 AM PST): the same chain run reads the head at FirePacePercentMin (the
+# 0.1.0 carry clock) on a fresh load of the same site, in the same session, then at the shipped pace; the verdict compares
+# those two; the stored 0.1.0 reading is only the cross-check of pace 100 against the 0.1.0 build
+man = x["manifest"] or {}
+base = man.get("baseline") or {}
+print("[fcr-self] model chain: baseline (pace %s) head %s, shipped head %s, margin %s limit > 0 cases 1; loads %r, paces at "
+      "the sparks %r" % (base.get("pace"), base.get("head"), man.get("head"), None if base.get("head") is None or
+                         man.get("head") is None else round(man["head"] - base["head"], 1), g.loads, g.lit_paces))
+check("... the chain lit the pace-%d spark first, then the shipped one (the setting at each spark)" % PMIN,
+      g.lit_paces == [PMIN, W.PACE_DEFAULT], g.lit_paces)
+check("... a fresh load of the site before each pass, the second after the baseline's spark (one session, no stop)",
+      g.loads == [0, 1], g.loads)
+check("... the baseline component PASS, its reading the game's pace read back, the shipped spark's cell",
+      x["verdicts"].get("fire_catches_baseline") == "PASS" and base.get("pace") == PMIN and base.get("head")
+      and tuple(base.get("spark") or ()) == tuple(man.get("spark") or ()), (x["verdicts"], x["why"], base))
+cc = man.get("cross_check") or {}
+check("... the cross-check records the pace-%d head, the stored 0.1.0 head and their difference" % PMIN,
+      cc.get("measured") is True and cc.get("pace_min_head") == base.get("head") and cc.get("head_010") == (r010 or {}).get("head")
+      and cc.get("diff") == round(base["head"] - r010["head"], 1), cc)
 x2 = run(Game(pace=200), reading=None)
-check("no 0.1.0 reading: the verdict UNMEASURED, owed the reading and the judge", x2["verdicts"].get("fire_catches_verdict") ==
-      "UNMEASURED" and "0.1.0" in x2["why"].get("fire_catches_verdict", ""), x2["why"])
-fast = os.path.join(tempfile.mkdtemp(prefix="fcr_fast_"), "r.json")
-y = run(Game(pace=250), env={W.TAKE_ENV: "1"}, reading=fast)
-x3 = run(Game(pace=200), reading=fast)
-check("a head no faster than the reading FAILs the verdict", x3["verdicts"].get("fire_catches_verdict") == "FAIL"
-      and "0.1.0" in x3["why"].get("fire_catches_verdict", ""), (x3["why"], W.load_reading(fast)))
+cc2 = (x2["manifest"] or {}).get("cross_check") or {}
+check("no stored 0.1.0 reading: the verdict still owed only the judge, the cross-check says not measured",
+      x2["verdicts"].get("fire_catches_verdict") == "UNMEASURED" and "judge" in x2["why"].get("fire_catches_verdict", "")
+      and "0.1.0" not in x2["why"].get("fire_catches_verdict", "") and cc2.get("measured") is False
+      and "not measured" in str(cc2.get("why")), (x2["why"], cc2))
+high = os.path.join(tempfile.mkdtemp(prefix="fcr_high_"), "r.json")
+W.write_json(high, {"head": 999.0, "spark": [W.SPARK_X, 125], "tag": "planted"})
+x3 = run(Game(pace=200), reading=high)
+check("a stored 0.1.0 head of 999 decides nothing: the head row holds on the same-session baseline",
+      x3["verdicts"].get("fire_catches_verdict") == "UNMEASURED" and "judge" in x3["why"].get("fire_catches_verdict", ""),
+      x3["why"])
+low = os.path.join(tempfile.mkdtemp(prefix="fcr_low_"), "r.json")
+W.write_json(low, {"head": 1.0, "spark": [W.SPARK_X, 125], "tag": "planted"})
+gi = Game(pace=200)
+gi.ignore_pace = True
+x4 = run(gi, reading=low)
+r4 = [rw for rw in (x4["manifest"] or {}).get("rows", []) if rw["ok"] is False]
+print("[fcr-self] planted a build that carries at pace %d whatever the setting: head %s vs baseline %s, rows NOT %r cases 1" % (
+    PMIN, (x4["manifest"] or {}).get("head"), ((x4["manifest"] or {}).get("baseline") or {}).get("head"),
+    [rw["check"] for rw in r4]))
+check("planted a build that ignores the Fire pace (a stored 0.1.0 head of 1.0 beside it): the verdict FAILs on the head row",
+      x4["verdicts"].get("fire_catches_verdict") == "FAIL" and [rw["check"] for rw in r4] == [HEAD_ROW], (x4["why"], r4))
 for label, setup, comp, want in (
         ("a flood at hour 6", lambda gm: setattr(gm, "flood_at", 6), "fire_catches_verdict", "FAIL"),
         ("a fire no carry reached at hour 3", lambda gm: setattr(gm, "stray_at", 3), "fire_catches_verdict", "FAIL"),

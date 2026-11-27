@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/fire_catches_live.py
++++ b/src/RimMandrake/Pyrelands/fire_catches_live.py
+@@ -534,7 +534,7 @@
+             with V._comp(t, "fire_catches_baseline"):
+                 if PACE_MIN is None:
+                     V._unmeasured(t, "FirePacePercentMin unreadable in %s" % KERNEL)
+-                stage(t, bp, pace=PACE_MIN)
++                stage(t, bp, pace=PACE_DEFAULT)
+                 base["spark"] = bp["spark"]
+                 base["pace"] = pace_read(t) if V._live(t) else PACE_MIN
+                 print("[fcr-check] baseline: firePacePercent read back %r (asked %d)" % (base["pace"], PACE_MIN), flush=True)

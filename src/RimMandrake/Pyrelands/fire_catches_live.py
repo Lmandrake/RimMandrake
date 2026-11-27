@@ -3,9 +3,13 @@
 front the player must answer; the head walks downwind faster than 0.1.0's, and it is still the walking line of line 3,
 never a flood." Owner: "The fire barely catches... I had expected faster spread."
 
-  fire_catches_and_runs  A fresh load of the registered Pyrelands site (the suite's fresh map), weather forced clear, the
-                         wind pointed east (MapComponent_BurnLine.SetWindForTest), wind carries on, Fire pace at the
-                         shipped default. The spark: one cell lit by jawa/map_fire start (FireUtility.TryStartFireIn) at
+  fire_catches_and_runs  Two passes in one chain run, one game session, no stop and no deploy between (Conductor's
+                         ruling 2026-11-27 5:28 AM PST). The baseline pass (fire_catches_baseline): Fire pace at
+                         FirePacePercentMin (PACE_MIN, read from RM_BurnKernel.cs; the 0.1.0 carry clock), read back from
+                         the game, one spark burned a day, its head kept. Then the shipped pass: the site loaded fresh
+                         again, Fire pace at the shipped default, the spark on the baseline's row. Each pass: a fresh
+                         load of the registered Pyrelands site (the suite's fresh map), weather forced clear, the
+                         wind pointed east (MapComponent_BurnLine.SetWindForTest), wind carries on. The spark: one cell lit by jawa/map_fire start (FireUtility.TryStartFireIn) at
                          fire size 0.1 on the row whose downwind corridor holds the most standing ember grass among the
                          rows whose plants (jawa/list_things group=Plant) carry a line a day's reach (fuel_walk). When
                          no such row reaches COVER_MIN, or none walks, the stage grows ember grass over the best clean
@@ -17,23 +21,27 @@ never a flood." Owner: "The fire barely catches... I had expected faster spread.
                          weather stayed clear, no pawn and no building lies in the corridor a day's front
                          can reach (DAY_REACH x 2 HALF_W). Otherwise UNMEASURED, never a verdict on the mod.
     success              the spark burns at hour 1; a front FLANK_WIDTH wide by FRONT_HOURS; the day-end head beats the
-                         0.1.0 reading (READING_010, taken once on the mod/Pyrelands/v0.1.0 tag, kept beside the row);
+                         same session's pace-PACE_MIN head from the same spark (a baseline pass that is not valid, not at
+                         PACE_MIN, or off the spark leaves the row owed, never a verdict). READING_010 (take 6 on the
+                         mod/Pyrelands/v0.1.0 tag) is only the cross-check of pace PACE_MIN against the 0.1.0 build: the
+                         manifest's cross_check records both heads and their difference; it decides nothing;
                          a blind judge reads a walking line on the captures (the manifest lists them).
     forbidden            the burning or black share of open ground over SHARE_MAX at the day end; a fire on a cell that no
                          carry reached (no chain of carry steps from the spark: unreached()); a fire the wind does not carry
-                         (burning uncarried at two hourly reads: ungoverned()); a new Player.log error line.
+                         (burning uncarried at two hourly reads: ungoverned()); a new Player.log error line in either pass.
     end                  one game day, or the head at the map edge. Reads every hour, captures at CAPTURE_HOURS.
 
 Run (the pyrelands tier, a free game, python.exe, the bridge env of that game):
     python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Pyrelands --plan src/RimMandrake/Pyrelands/northstar_plan.py --no-record --chains fire_catches_and_runs
-The 0.1.0 reading, once: deploy the mod/Pyrelands/v0.1.0 build, run the same chain with PYRE_FCR_TAKE_010=1; it writes
-READING_010 and judges nothing.
+The 0.1.0 reading (taken: take 6, 2026-11-27; no further take is made, Conductor's ruling): on the mod/Pyrelands/v0.1.0
+build the same chain with PYRE_FCR_TAKE_010=1 runs one pass, no Fire pace set, writes READING_010 and judges nothing.
 Offline: python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fire_catches.py
 """
 import datetime
 import json
 import math
 import os
+import re
 
 GRASS = "RM_FE_Plant_EmberGrass"
 BURN = "RimMandrake.Pyrelands.MapComponent_BurnLine"
@@ -65,6 +73,22 @@ HOLD_OFF = {"burnLineEnabled": True, "fireClockEnabled": False, "fireHawkSpreadE
 TAKE_ENV = "PYRE_FCR_TAKE_010"
 OUT_ENV = "RM_FCR_DIR"
 READING_010 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fire_catches_010_reading.json")
+KERNEL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source", "Kernel", "RM_BurnKernel.cs")
+
+
+def kernel_const(name, path=KERNEL):
+    """An int constant of RM_BurnKernel.cs, read from the C# (never a copied number); None when the file or name is gone."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            m = re.search(r"const int %s = (\d+);" % name, f.read())
+    except OSError:
+        return None
+    return int(m.group(1)) if m else None
+
+
+# the baseline's pace: RM_BurnKernel.FirePacePercentMin, the slider's low end, the 0.1.0 carry clock (Conductor's ruling
+# 2026-11-27 5:28 AM PST: "faster than 0.1.0's" is read on the current build at this pace, same session, same site)
+PACE_MIN = kernel_const("FirePacePercentMin")
 
 
 def kv(line):
@@ -249,8 +273,9 @@ def opportunity(corr, weathers, walk=None, need=DAY_REACH):
     return True, "%d of %d opportunity checks hold" % (len(rows), len(rows)), rows
 
 
-def verdict(hourly, spark, bearing, reading_010, judge=None):
-    """Pure. hourly: [(hour, parse_burn read)] in hour order, the last at the end (day or edge). -> rows, each with its
+def verdict(hourly, spark, bearing, baseline, judge=None):
+    """Pure. hourly: [(hour, parse_burn read)] in hour order, the last at the end (day or edge); baseline: the same
+    session's pace-PACE_MIN pass {"head", "pace" (the setting read back from the game), "spark"}. -> rows, each with its
     worst value, its limit and its case count; "ok" None is UNMEASURED (a reading the run could not have)."""
     rows = []
 
@@ -269,9 +294,15 @@ def verdict(hourly, spark, bearing, reading_010, judge=None):
         front_h, "<= %d h, width >= %d" % (FRONT_HOURS, FLANK_WIDTH), len(hourly))
     last = hourly[-1][1] if hourly else None
     hd = round(head(set(last["burned"]) | set((f[0], f[1]) for f in last["fires"]), spark, bearing), 1) if last else None
-    old = (reading_010 or {}).get("head")
-    row("the day-end head beats 0.1.0's", None if old is None or hd is None else hd > old, hd,
-        "> %s (0.1.0, %s)" % (old, READING_010 if old is not None else "not yet taken: " + TAKE_ENV + "=1 on the tag"), 1)
+    b = baseline or {}
+    old = b.get("head")
+    # the head is compared only with a baseline the game ran at PACE_MIN from this very spark; any other is no reading
+    off = ("no pace-%d pass" % PACE_MIN if not baseline else "the pace-%d pass read no head" % PACE_MIN if old is None
+           else "the pace-%d pass ran at pace %r" % (PACE_MIN, b.get("pace")) if b.get("pace") != PACE_MIN
+           else "the pace-%d pass lit %r, not %r" % (PACE_MIN, b.get("spark"), spark)
+           if tuple(b.get("spark") or ()) != tuple(spark or ()) else None)
+    row("the day-end head beats the same-session pace-%d head" % PACE_MIN, None if off or hd is None else hd > old, hd,
+        "owed: %s" % off if off else "> %s (pace %d, same session, same site, same spark)" % (old, PACE_MIN), 1)
     worst_share = max([share(r) for _, r in hourly] or [0.0])
     row("burning or black share of open ground", bool(hourly) and worst_share <= SHARE_MAX, round(worst_share, 4),
         "<= %.2f" % SHARE_MAX, len(hourly))
@@ -281,6 +312,23 @@ def verdict(hourly, spark, bearing, reading_010, judge=None):
     row("a fire the wind does not carry", not free and bool(hourly), len(free), "== 0 (first %r)" % free[:3], len(hourly))
     row("a blind judge reads a walking line", judge, judge, "True (judge on the manifest's captures)", 1)
     return rows
+
+
+def cross_check(baseline, reading_010):
+    """Pure. The ruling's one cross-check: the current build's pace-PACE_MIN head against the 0.1.0 build's head (take 6,
+    READING_010). A record only, never a verdict row."""
+    b, r = baseline or {}, reading_010 or {}
+    pm, old = b.get("head"), r.get("head")
+    if pm is None or old is None:
+        return {"measured": False, "pace_min_head": pm, "head_010": old, "diff": None,
+                "why": "cross-check not measured: %s" % ("no pace-%d head" % PACE_MIN if pm is None else
+                                                         "no 0.1.0 reading (%s)" % READING_010)}
+    same = tuple(b.get("spark") or ()) == tuple(r.get("spark") or ())
+    return {"measured": True, "pace_min_head": pm, "head_010": old, "diff": round(pm - old, 1), "same_spark": same,
+            "spark": b.get("spark"), "spark_010": r.get("spark"),
+            "why": "pace-%d head %s on the current build, 0.1.0 head %s, difference %+.1f (%s)" % (
+                PACE_MIN, pm, old, pm - old, "same spark" if same else "spark %r against 0.1.0's %r" % (
+                    b.get("spark"), r.get("spark")))}
 
 
 def end_reached(hour, read, spark, bearing, edge):
@@ -359,116 +407,176 @@ def register(suite, V):
         a = V._ash(t, "0,0,1,1")
         return a.get("weather") if a else None
 
+    def pace_read(t):
+        """The game's own firePacePercent, read back after the set (None: unreadable)."""
+        r = t.bridge_call("jawa/mod_settings_field", typeName=V.SETTINGS, action="get", field="firePacePercent")
+        try:
+            return int(float(str((r or {}).get("value"))))
+        except (TypeError, ValueError):
+            return None
+
+    def stage(t, p, pace=None, row=None):
+        """One pass's stage into p: a fresh load of the registered site, the spark row picked (row: forced to the row the
+        baseline lit, the same site's same cell), the corridor grown if thin. pace None: the tag has no Fire pace."""
+        if V._live(t):
+            mid, why = V._load_registered_site(t)   # the contract: a fresh map
+            if mid is None:
+                V._unmeasured(t, "SITE: %s" % why)
+            V._on_site(t)
+        t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+        V._extinguish(t)
+        # one spark: the biome's other fire sources held off for the run (the fire clock's fronts and scar arc, the
+        # fire hawks' twigs, scorch fruit), as sc_fire_walks_with_wind does (wind_burn_live.SET); the burn line stays on,
+        # it is the carry (live 2026-11-27: with them on, fires 224 cells off the spark at hour 1, 3 of them uncarried)
+        V._set(t, dict(HOLD_OFF, windCarriesFireEnabled=True, **({} if pace is None else {"firePacePercent": pace})))
+        wind = call(t, BURN, "SetWindForTest", BEARING)
+        size = V._map_size(t) if V._live(t) else (250, 250)
+        reads = []
+        for z in candidate_rows(size) if row is None else [row]:
+            reads.append((z, kv(call(t, PROBE, "Corridor", "%d,%d,%d,%d,%d" % (SPARK_X, z, BEARING, DAY_REACH, HALF_W)))))
+        need = min(DAY_REACH, size[0] - 1 - SPARK_X)
+        fuel = plants(t, size) if V._live(t) else set()
+        if fuel is None:
+            V._unmeasured(t, "the corridor's plants unreadable (jawa/list_things incomplete)")
+        walks = dict((z, fuel_walk(fuel, (SPARK_X, z), BEARING, need, HALF_W)) for z, _ in reads)
+        # a row whose plants carry a line a day's reach first (live 2026-11-27: z 40, the best cover, holds a bare patch
+        # 4 cells downwind; both builds stopped at head 5 and its fuel_walk reads 5); a clean row else, planted below
+        pick = (pick_row(reads, walks, need) or pick_row(reads)) if V._live(t) else (size[1] // 2 if row is None else row, None)
+        if pick is None:
+            V._unmeasured(t, "no spark row holds a corridor clear of pawns and buildings (%d rows)" % len(reads)
+                          if row is None else "the baseline's spark row %d no longer holds a clean corridor" % row)
+        z, corr = pick
+        spark = (SPARK_X, z)
+        planted = None
+        if V._live(t) and corr and (cover(corr) < COVER_MIN or walks.get(z, -1) < need):
+            # staging: the site's own grass is too thin, or broken by a firebreak, on every clean row; grow ember grass
+            # over the corridor's plantable cells (set_plants skips the rest) so the opportunity is the contract's,
+            # then read it again
+            planted = corridor_rect(spark, size)
+            V._plants(t, GRASS, planted, growth=1.0)
+        elif V._live(t) and corr and corr.get("emberAt") != "1":   # staging: the spark cell's own blade, grown
+            planted = (SPARK_X, z, 1, 1)
+            V._plants(t, GRASS, planted, growth=1.0)
+        if planted:
+            corr = kv(call(t, PROBE, "Corridor", "%d,%d,%d,%d,%d" % (SPARK_X, z, BEARING, DAY_REACH, HALF_W)))
+            fuel = plants(t, size)
+            if fuel is None:
+                V._unmeasured(t, "the planted corridor's plants unreadable (jawa/list_things incomplete)")
+        walk = fuel_walk(fuel, spark, BEARING, need, HALF_W) if V._live(t) else None
+        print("[fcr-check] stage (pace %s): wind set %r (asked %d); spark %r; corridor %r; rows read %d; fuel_walk %r of %d "
+              "(walkable rows %d of %d)" % (pace, wind, BEARING, spark, corr, len(reads), walk, need,
+                                            sum(1 for w in walks.values() if w >= need), len(walks)), flush=True)
+        if V._live(t) and walk < need:
+            V._unmeasured(t, "a firebreak: the plants carry a line %d of %d cells from the spark %r" % (walk, need, spark))
+        # set only past every stage check: the burn lights no spark on an UNMEASURED stage
+        p.update(spark=spark, corr=corr, wind=wind, size=size, edge=int((corr or {}).get("edge") or size[0]),
+                 planted=planted, walk=walk, need=need)
+        V._note(t, "the spark row and its corridor (pace %s)" % pace,
+                {"spark": spark, "corridor": corr, "rows": len(reads), "wind": wind})
+        p["mark"] = V._log_mark(t)
+
+    def burn(t, p, shoot=True):
+        """One pass's burn: one spark lit, a read every hour to the day end or the edge, captures when shoot."""
+        if "spark" not in p:   # _comp frees the next row after an UNMEASURED stage: no spark row, nothing to light
+            V._unmeasured(t, "no spark lit: the stage set no spark row")
+        spark = p["spark"]
+        since = t.session._ticks() if V._live(t) else 0
+        # what is black before the spark is lit is not the spark's: the stage's extinguish of the site's own standing
+        # burn stamps its cells at this very tick (live 2026-11-27: 2 cells 171 along the wind read as the hour-1 head)
+        pre = parse_burn(call(t, PROBE, "Burn", since)) if V._live(t) else None
+        if pre is None:
+            V._unmeasured(t, "FireCatchesProbe.Burn unreadable before the spark")
+        print("[fcr-check] before the spark: fires %d %s, burned %d %s (set aside)" % (
+            len(pre["fires"]), pre["fires"][:4], len(pre["burned"]), sorted(pre["burned"])[:4]), flush=True)
+        if pre["fires"]:
+            V._unmeasured(t, "not one spark: %d fires burn before it is lit (%s)" % (len(pre["fires"]), pre["fires"][:4]))
+        p["pre_burned"] = pre["burned"]
+        lit = t.bridge_call("jawa/map_fire", action="start", rect=V._rs((spark[0], spark[1], 1, 1)), fireSize=SPARK_SIZE)
+        hourly, weathers, shots = [], [], []
+        p.update(hourly=hourly, weathers=weathers, shots=shots)   # kept as read: a burn cut short still leaves its hours
+        for hour in range(1, DAY // HOUR + 1):
+            V._wait(t, HOUR)
+            if not V._live(t):
+                break
+            r = parse_burn(call(t, PROBE, "Burn", since))
+            if r is None:
+                V._unmeasured(t, "FireCatchesProbe.Burn unreadable at hour %d" % hour)
+            r["burned"] -= pre["burned"]
+            hourly.append((hour, r))
+            weathers.append(weather(t))
+            print("[fcr-check] hour %d: fires %d, burned %d, head %.1f, width %d, share %.4f, unreached %d" % (
+                hour, len(r["fires"]), len(r["burned"]), head(r["burned"] | set((f[0], f[1]) for f in r["fires"]), spark,
+                                                               BEARING),
+                front_width([(f[0], f[1]) for f in r["fires"]], BEARING), share(r), len(unreached(r, spark, BEARING))),
+                flush=True)
+            cells = r["burned"] | set((f[0], f[1]) for f in r["fires"])
+            print("[fcr-check] hour %d: the head cell %s, unreached %s, tick %d" % (
+                hour, max(cells, key=lambda c: along_across(c, spark, BEARING)[0]) if cells else None,
+                unreached(r, spark, BEARING)[:4], r["tick"]), flush=True)
+            done = end_reached(hour, r, spark, BEARING, p["edge"])
+            if shoot and (hour in CAPTURE_HOURS or done):
+                rect = shot_rect(r["burned"] | set((f[0], f[1]) for f in r["fires"]), p["size"])
+                if rect:
+                    shots.append({"hour": hour, "rect": rect,
+                                  "path": t.screenshot(name="fcr_h%02d" % hour, rect=tuple(rect), ppc=shot_ppc(rect))})
+            if done:
+                p["ended"] = hour
+                break
+        p["lit"] = lit
+
     @suite.chain("fire_catches_and_runs")
     @V._teardown(fire=True, weather=True)
     def fire_catches_and_runs(t):
         state.clear()
         state["dir"] = out_dir()
         take = bool(os.environ.get(TAKE_ENV))
+        base = None
+        if not take:
+            # the baseline (Conductor's ruling 2026-11-27 5:28 AM PST): "faster than 0.1.0's" read on this build at
+            # FirePacePercentMin, the 0.1.0 carry clock, in this game session on this site, before the shipped pass;
+            # the reload between the passes puts the map back, the settings stay the game's
+            base = state["baseline"] = {"head": None, "pace": None, "spark": None, "hours": 0, "ended": None,
+                                        "valid": None, "why": "the pace-%d pass did not run" % PACE_MIN}
+            bp = state["base_pass"] = {}
+            with V._comp(t, "fire_catches_baseline"):
+                if PACE_MIN is None:
+                    V._unmeasured(t, "FirePacePercentMin unreadable in %s" % KERNEL)
+                stage(t, bp, pace=PACE_MIN)
+                base["spark"] = bp["spark"]
+                base["pace"] = pace_read(t) if V._live(t) else PACE_MIN
+                print("[fcr-check] baseline: firePacePercent read back %r (asked %d)" % (base["pace"], PACE_MIN), flush=True)
+                if base["pace"] != PACE_MIN:
+                    V._unmeasured(t, "the game reads firePacePercent %r, not the pace-%d asked: no baseline"
+                                  % (base["pace"], PACE_MIN))
+                burn(t, bp, shoot=False)
+                base["hours"], base["ended"] = len(bp["hourly"]), bp.get("ended")
+                if V._live(t):
+                    if not bp.get("ended"):
+                        V._unmeasured(t, "the pace-%d burn stopped at hour %d, before its end: no baseline"
+                                      % (PACE_MIN, len(bp["hourly"])))
+                    ok, why, _ = opportunity(bp["corr"], bp["weathers"], bp.get("walk"), bp.get("need", DAY_REACH))
+                    base["valid"], base["why"] = ok, why
+                    if not ok:
+                        V._unmeasured(t, "the pace-%d pass: %s" % (PACE_MIN, why))
+                    h1 = dict(bp["hourly"]).get(1)
+                    if not (h1 and h1["fires"]):
+                        base["why"] = "the pace-%d spark did not burn at hour 1" % PACE_MIN
+                        V._unmeasured(t, base["why"])
+                    last = bp["hourly"][-1][1]
+                    base["head"] = round(head(last["burned"] | set((f[0], f[1]) for f in last["fires"]), bp["spark"],
+                                              BEARING), 1)
+                    print("[fcr-check] baseline: pace %d head %.1f at %r, %d hours (cases 1)" % (
+                        PACE_MIN, base["head"], bp["spark"], base["hours"]), flush=True)
+            V._independent(t)
+            # the pace-PACE_MIN pass's own log window, read before the reload; the error-line row reads it with the shipped one
+            blines = (V._log_since(t, bp["mark"]) or []) if bp.get("mark") is not None else []
+            state["base_errs"], state["base_lines"] = error_lines(blines), len(blines)
         with V._comp(t, "fire_catches_stage"):
-            if V._live(t):
-                mid, why = V._load_registered_site(t)   # the contract: a fresh map
-                if mid is None:
-                    V._unmeasured(t, "SITE: %s" % why)
-                V._on_site(t)
-            t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
-            V._extinguish(t)
-            # one spark: the biome's other fire sources held off for the run (the fire clock's fronts and scar arc, the
-            # fire hawks' twigs, scorch fruit), as sc_fire_walks_with_wind does (wind_burn_live.SET); the burn line stays on,
-            # it is the carry (live 2026-11-27: with them on, fires 224 cells off the spark at hour 1, 3 of them uncarried)
-            V._set(t, dict(HOLD_OFF, **({"windCarriesFireEnabled": True} if take else    # the tag has no Fire pace setting
-                                        {"windCarriesFireEnabled": True, "firePacePercent": PACE_DEFAULT})))
-            wind = call(t, BURN, "SetWindForTest", BEARING)
-            size = V._map_size(t) if V._live(t) else (250, 250)
-            reads = []
-            for z in candidate_rows(size):
-                reads.append((z, kv(call(t, PROBE, "Corridor", "%d,%d,%d,%d,%d" % (SPARK_X, z, BEARING, DAY_REACH, HALF_W)))))
-            need = min(DAY_REACH, size[0] - 1 - SPARK_X)
-            fuel = plants(t, size) if V._live(t) else set()
-            if fuel is None:
-                V._unmeasured(t, "the corridor's plants unreadable (jawa/list_things incomplete)")
-            walks = dict((z, fuel_walk(fuel, (SPARK_X, z), BEARING, need, HALF_W)) for z, _ in reads)
-            # a row whose plants carry a line a day's reach first (live 2026-11-27: z 40, the best cover, holds a bare patch
-            # 4 cells downwind; both builds stopped at head 5 and its fuel_walk reads 5); a clean row else, planted below
-            pick = (pick_row(reads, walks, need) or pick_row(reads)) if V._live(t) else (size[1] // 2, None)
-            if pick is None:
-                V._unmeasured(t, "no spark row holds a corridor clear of pawns and buildings (%d rows)" % len(reads))
-            z, corr = pick
-            spark = (SPARK_X, z)
-            planted = None
-            if V._live(t) and corr and (cover(corr) < COVER_MIN or walks.get(z, -1) < need):
-                # staging: the site's own grass is too thin, or broken by a firebreak, on every clean row; grow ember grass
-                # over the corridor's plantable cells (set_plants skips the rest) so the opportunity is the contract's,
-                # then read it again
-                planted = corridor_rect(spark, size)
-                V._plants(t, GRASS, planted, growth=1.0)
-            elif V._live(t) and corr and corr.get("emberAt") != "1":   # staging: the spark cell's own blade, grown
-                planted = (SPARK_X, z, 1, 1)
-                V._plants(t, GRASS, planted, growth=1.0)
-            if planted:
-                corr = kv(call(t, PROBE, "Corridor", "%d,%d,%d,%d,%d" % (SPARK_X, z, BEARING, DAY_REACH, HALF_W)))
-                fuel = plants(t, size)
-                if fuel is None:
-                    V._unmeasured(t, "the planted corridor's plants unreadable (jawa/list_things incomplete)")
-            walk = fuel_walk(fuel, spark, BEARING, need, HALF_W) if V._live(t) else None
-            print("[fcr-check] stage: wind set %r (asked %d); spark %r; corridor %r; rows read %d; fuel_walk %r of %d "
-                  "(walkable rows %d of %d)" % (wind, BEARING, spark, corr, len(reads), walk, need,
-                                                sum(1 for w in walks.values() if w >= need), len(walks)), flush=True)
-            if V._live(t) and walk < need:
-                V._unmeasured(t, "a firebreak: the plants carry a line %d of %d cells from the spark %r" % (walk, need, spark))
-            # set only past every stage check: the burn lights no spark on an UNMEASURED stage
-            state.update(spark=spark, corr=corr, wind=wind, size=size, edge=int((corr or {}).get("edge") or size[0]),
-                         planted=planted, walk=walk, need=need)
-            V._note(t, "the spark row and its corridor", {"spark": spark, "corridor": corr, "rows": len(reads), "wind": wind})
-            state["mark"] = V._log_mark(t)
+            stage(t, state, pace=None if take else PACE_DEFAULT,
+                  row=(base or {}).get("spark", [None, None])[1] if (base or {}).get("spark") else None)
         V._independent(t)
         with V._comp(t, "fire_catches_burn"):
-            if "spark" not in state:   # _comp frees the next row after an UNMEASURED stage: no spark row, nothing to light
-                V._unmeasured(t, "no spark lit: the stage set no spark row")
-            spark = state["spark"]
-            since = t.session._ticks() if V._live(t) else 0
-            # what is black before the spark is lit is not the spark's: the stage's extinguish of the site's own standing
-            # burn stamps its cells at this very tick (live 2026-11-27: 2 cells 171 along the wind read as the hour-1 head)
-            pre = parse_burn(call(t, PROBE, "Burn", since)) if V._live(t) else None
-            if pre is None:
-                V._unmeasured(t, "FireCatchesProbe.Burn unreadable before the spark")
-            print("[fcr-check] before the spark: fires %d %s, burned %d %s (set aside)" % (
-                len(pre["fires"]), pre["fires"][:4], len(pre["burned"]), sorted(pre["burned"])[:4]), flush=True)
-            if pre["fires"]:
-                V._unmeasured(t, "not one spark: %d fires burn before it is lit (%s)" % (len(pre["fires"]), pre["fires"][:4]))
-            state["pre_burned"] = pre["burned"]
-            lit = t.bridge_call("jawa/map_fire", action="start", rect=V._rs((spark[0], spark[1], 1, 1)), fireSize=SPARK_SIZE)
-            hourly, weathers, shots = [], [], []
-            state.update(hourly=hourly, weathers=weathers, shots=shots)   # kept as read: a burn cut short still leaves its hours
-            for hour in range(1, DAY // HOUR + 1):
-                V._wait(t, HOUR)
-                if not V._live(t):
-                    break
-                r = parse_burn(call(t, PROBE, "Burn", since))
-                if r is None:
-                    V._unmeasured(t, "FireCatchesProbe.Burn unreadable at hour %d" % hour)
-                r["burned"] -= pre["burned"]
-                hourly.append((hour, r))
-                weathers.append(weather(t))
-                print("[fcr-check] hour %d: fires %d, burned %d, head %.1f, width %d, share %.4f, unreached %d" % (
-                    hour, len(r["fires"]), len(r["burned"]), head(r["burned"] | set((f[0], f[1]) for f in r["fires"]), spark,
-                                                                   BEARING),
-                    front_width([(f[0], f[1]) for f in r["fires"]], BEARING), share(r), len(unreached(r, spark, BEARING))),
-                    flush=True)
-                cells = r["burned"] | set((f[0], f[1]) for f in r["fires"])
-                print("[fcr-check] hour %d: the head cell %s, unreached %s, tick %d" % (
-                    hour, max(cells, key=lambda c: along_across(c, spark, BEARING)[0]) if cells else None,
-                    unreached(r, spark, BEARING)[:4], r["tick"]), flush=True)
-                done = end_reached(hour, r, spark, BEARING, state["edge"])
-                if hour in CAPTURE_HOURS or done:
-                    rect = shot_rect(r["burned"] | set((f[0], f[1]) for f in r["fires"]), state["size"])
-                    if rect:
-                        shots.append({"hour": hour, "rect": rect,
-                                      "path": t.screenshot(name="fcr_h%02d" % hour, rect=tuple(rect), ppc=shot_ppc(rect))})
-                if done:
-                    state["ended"] = hour
-                    break
-            state["lit"] = lit
+            burn(t, state)
         V._independent(t)
         with V._comp(t, "fire_catches_verdict"):
             if not V._live(t):
@@ -494,13 +602,18 @@ def register(suite, V):
                 if not ok:
                     V._unmeasured(t, "0.1.0 reading not taken: " + why)
             else:   # no return here: the error-line row runs in take mode too
-                rows = verdict(state["hourly"], spark, BEARING, load_reading())
-                man["rows"] = rows
+                rows = verdict(state["hourly"], spark, BEARING, base)
+                cc = cross_check(base, load_reading())
+                man.update(rows=rows, baseline=base, cross_check=cc)
                 state["manifest"] = write_json(os.path.join(state["dir"], "manifest.json"), man)
                 for r in orows + rows:
                     print("[fcr-check] %s: %s worst=%r limit=%s cases=%d" % (
                         r["check"], {True: "ok", False: "NOT", None: "UNMEASURED"}[r["ok"]], r["worst"], r["limit"], r["cases"]),
                         flush=True)
+                print("[fcr-check] cross-check (a record, no verdict): %s" % cc["why"], flush=True)
+                if hd is not None and base.get("head") is not None:
+                    print("[fcr-check] shipped head %.1f against the pace-%d head %.1f: margin %+.1f (limit > 0, cases 1)" % (
+                        hd, PACE_MIN, base["head"], hd - base["head"]), flush=True)
                 V._note(t, "the burn's reads, the captures, the manifest", {"manifest": state["manifest"], "why": why})
                 if not ok:
                     V._unmeasured(t, why)
@@ -513,8 +626,9 @@ def register(suite, V):
         with V._comp(t, "fire_catches_no_error_line"):
             lines = V._log_since(t, state.get("mark"))
             if V._live(t):
-                errs = error_lines(lines)
-                print("[fcr-check] error lines since the mark: %d (limit 0) of %d lines read" % (len(errs), len(lines)),
-                      flush=True)
+                errs = state.get("base_errs", []) + error_lines(lines)   # both passes' windows: the pace-100 one kept
+                print("[fcr-check] error lines since the marks: %d (limit 0) of %d lines read (pace-%s pass %d, shipped %d)"
+                      % (len(errs), state.get("base_lines", 0) + len(lines or []), PACE_MIN, state.get("base_lines", 0),
+                         len(lines or [])), flush=True)
                 if errs:
                     V._fail("%d new error line(s) in the log: %r" % (len(errs), errs[:2]))
