@@ -37,7 +37,7 @@ fake Codex meter, a fake Codex runner, a fake check and a fake launcher.
 ## DOES NOT SURVIVE
 
 - A Codex work unit killed between its check and its state write: the next tick reads the unit gone and the state
-  `sent`, and voids the try (no try spent); the scratch clone stays for the pool reaper.
+  `sent`, and voids the try (no try spent); the scratch clone stays for the pool reaper (a clone that holds staged files and sits idle an hour reads as stranded work to the pool alarm: land it or bundle it).
 - Two ticks in the same instant: `list_dispatch.py tick` holds its own lock, so this does not happen in ordinary use.
 - A Sonnet lander that dies: its own detached-helper record and the left-open route carry it.
 
@@ -61,6 +61,9 @@ fake Codex meter, a fake Codex runner, a fake check and a fake launcher.
   past them waits for a Codex slot.
 - **the codex child reads no real state**: the Codex child runs with the Maturation and Dispatcher state paths
   pinned to a sandbox folder of its job (lesson of 2026-11-17: a Codex builder reached the real Dispatcher state).
+- **the scratch clone is freed when the patch is saved**: when a work unit ends (built, failed or void), it deletes
+  its `cx-` scratch clone; the patch and the answer stay in the job folder. A path that is no `cx-` clone with a
+  `.git` is never deleted.
 - **review goes by code review brief**: a review job inlines `roles/code_review.md`, each named file and its boundary
   page, and launches one Sonnet judge on the answer.
 

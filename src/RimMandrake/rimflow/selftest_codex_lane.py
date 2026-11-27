@@ -331,20 +331,38 @@ def t_review_goes_by_code_review_brief():
     assert len(judged) == 1 and "code_review.md" in judged[0] and r["out"] in judged[0], judged
 
 
+def t_the_scratch_clone_is_freed_when_the_patch_is_saved():
+    # a clone that stays holds staged files; the pool alarm calls it stranded after an hour (seen 2026-11-27 22:10)
+    for verdict, diff in (("holds", "diff --git a/x b/x\n+fix\n"), ("fails", "diff --git a/x b/x\n+fix\n"),
+                          ("holds", "")):
+        tmp = tempfile.mkdtemp(dir=_TMP)
+        job = _job(tmp)
+        seen, wfx = _work_fx(tmp, verdict, diff=diff)
+        clone = os.path.join(tmp, "cx-a-123")
+        os.makedirs(os.path.join(clone, ".git"))
+        wfx["clone"] = lambda iid, j, c=clone: c
+        CL.work(job, wfx)
+        assert not os.path.exists(clone), ("clone kept", verdict, bool(diff))
+        if diff:
+            assert os.path.isfile(os.path.join(job, "patch.diff")), "the patch must stay"
+    # a path that is no Codex scratch clone is never deleted
+    other = os.path.join(tempfile.mkdtemp(dir=_TMP), "precious")
+    os.makedirs(other)
+    CL.free_clone(other)
+    assert os.path.isdir(other), "free_clone deleted a path that is no cx- scratch clone"
+
+
 TESTS = (t_room_short_sends_a_proven_ticket_to_codex, t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
          t_a_result_that_fails_its_check_is_not_landed, t_his_codex_share_is_left,
          t_a_passing_result_gets_one_sonnet_lander, t_one_try_per_ticket, t_the_codex_child_reads_no_real_state,
-         t_review_goes_by_code_review_brief)
+         t_review_goes_by_code_review_brief, t_the_scratch_clone_is_freed_when_the_patch_is_saved)
 
 
 def main():
     bad = 0
     saved = {k: os.environ.get(k) for k in CL.SANDBOX_KEYS}
     try:
-        for t in (t_room_short_sends_a_proven_ticket_to_codex, t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
-                  t_a_result_that_fails_its_check_is_not_landed, t_his_codex_share_is_left,
-                  t_a_passing_result_gets_one_sonnet_lander, t_one_try_per_ticket,
-                  t_the_codex_child_reads_no_real_state, t_review_goes_by_code_review_brief):
+        for t in TESTS:
             try:
                 t()
                 print("PASS %s" % t.__name__)

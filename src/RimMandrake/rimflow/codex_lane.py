@@ -20,6 +20,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import time
@@ -288,7 +289,6 @@ Title: {title}
 Its outcome check, which failed before Codex:   {check}
 The check held in Codex's clone after its change: {out}
 Codex's change, as one patch:  {patch}
-Codex's clone (read only):     {clone}
 Codex's own last words:        {answer}
 
 Steps:
@@ -319,7 +319,7 @@ def lander_brief(iid, rec, it):
                          check=res.get("effect") or (it or {}).get("effect"),
                          check_q=shlex.quote(res.get("effect") or (it or {}).get("effect") or ""),
                          out=_one(res.get("out"), 400) or "(nothing)", patch=patch, patch_q=shlex.quote(patch),
-                         clone=res.get("clone") or "-", answer=_one(res.get("answer"), 600) or "(none)")
+                         answer=_one(res.get("answer"), 600) or "(none)")
 
 
 def execute(cfg, cst, out, facts, now, fx=None):
@@ -428,6 +428,13 @@ def make_clone(iid, job):
     return path[0]
 
 
+def free_clone(clone):
+    """Delete a Codex scratch clone (a `cx-` folder under a scratch root). The patch and the answer live in the job
+    folder, so the clone is dead weight; left behind, its staged files read as stranded work to the pool alarm."""
+    if clone and os.path.basename(clone.rstrip("/")).startswith("cx-") and os.path.isdir(os.path.join(clone, ".git")):
+        shutil.rmtree(clone, ignore_errors=True)
+
+
 def make_diff(clone, path):
     """-> the patch text (also written to path): every change in the clone against its HEAD, new files included."""
     subprocess.run(["git", "-C", clone, "add", "-A", "--", ".", ":!**/__pycache__/**"], check=True,
@@ -484,6 +491,7 @@ def work(job_dir, fx=None):
         with open(os.path.join(job_dir, "result.json.tmp"), "w", encoding="utf-8") as f:
             json.dump(res, f, indent=1)
         os.replace(os.path.join(job_dir, "result.json.tmp"), os.path.join(job_dir, "result.json"))
+        (fx.get("free") or free_clone)(res.get("clone"))
         if state == "failed":
             try:
                 (fx.get("note") or note)(iid, "CODEX LANE: Codex's try is not landed: %s. The Claude lane takes the "
