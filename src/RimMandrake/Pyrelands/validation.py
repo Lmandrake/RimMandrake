@@ -7541,8 +7541,10 @@ def _register_firehawk_rewards():
     # walk_small_live.py: the two small scenes that replaced the two-week walk. It is loaded here, not by a line of its own:
     # a new module-level statement touches every check of this file (rerun_relation, 2026-11-24). grass_under_ash_live.py:
     # sc_grass_seen_under_ash (bar grass_still_seen_under_ash), loaded the same way. fire_catches_live.py:
-    # sc_fire_catches_and_runs (bar fire_catches_and_runs), loaded the same way
-    for name in ("firehawk_rewards_live", "walk_small_live", "grass_under_ash_live", "fire_catches_live"):
+    # sc_fire_catches_and_runs (bar fire_catches_and_runs), loaded the same way. roofed_grass_live.py:
+    # sc_roofed_grass_declines (bar roofed_grass_declines_visibly), loaded the same way
+    for name in ("firehawk_rewards_live", "walk_small_live", "grass_under_ash_live", "fire_catches_live",
+                 "roofed_grass_live"):
         spec = importlib.util.spec_from_file_location(
             "pyrelands_" + name, os.path.join(os.path.dirname(os.path.abspath(__file__)), name + ".py"))
         mod = importlib.util.module_from_spec(spec)
