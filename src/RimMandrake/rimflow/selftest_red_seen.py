@@ -69,6 +69,45 @@ def red_record(root):
         return {}
 
 
+def t_killed_run_restores_the_tree():
+    """RIMMANDRAKE_RESTORE_RED_SEEN_TREE_WHEN_A_TIMEOUT_KILLS_IT (FlowWorks blind cycle 5): `timeout 500 maturation.py
+    red-seen ...` was killed by SIGTERM while the deciding test ran; Python skips `finally` on a default SIGTERM, so the
+    planted fault stayed in the work tree (RM_MapComponent_Sheet.cs with plant.Kill() deleted). A killed red-seen must
+    reverse its fault and record nothing."""
+    import signal
+    import time
+    root = tempfile.mkdtemp(prefix="redseen_kill_")
+    try:
+        P = fixture(root)
+        tt = json.load(open(JC.tpath(root, MOD)))
+        tt["tests"]["T_SLOW"] = dict(tt["tests"]["T_GOOD"], command="%s -c \"import time; time.sleep(120)\"" % sys.executable)
+        with open(JC.tpath(root, MOD), "w") as f:
+            json.dump(tt, f)
+        kpath = os.path.join(root, "src/kernel.py")
+        before = open(kpath, "rb").read()
+        code = "import sys; sys.path.insert(0, %r); import judge_certificate as JC; JC.red_seen(%r, %r, 'T_SLOW', patch=%r)" % (
+            HERE, root, MOD, P["fault"])
+        for sig in (signal.SIGTERM, signal.SIGHUP):
+            child = subprocess.Popen([sys.executable, "-c", code])
+            t0 = time.time()
+            while time.time() - t0 < 60 and open(kpath, "rb").read() == before:   # wait for the fault to be planted
+                time.sleep(0.05)
+            planted = open(kpath, "rb").read() != before
+            time.sleep(0.3)
+            child.send_signal(sig)
+            try:
+                child.wait(timeout=60)   # a hang guard: the restore is one git apply -R (well under a second)
+            except subprocess.TimeoutExpired:
+                child.kill()
+            ok(planted and open(kpath, "rb").read() == before and "T_SLOW" not in red_record(root),
+               "a red-seen killed by %s mid-run reverses its planted fault and records nothing (planted %s, restored %s)"
+               % (signal.Signals(sig).name, planted, open(kpath, "rb").read() == before))
+            with open(kpath, "wb") as f:
+                f.write(before)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
 def main():
     root = tempfile.mkdtemp(prefix="redseen_")
     try:
@@ -178,6 +217,7 @@ def main():
            "--resume reruns a stamp that never ran (%s)" % s)
     finally:
         shutil.rmtree(root, ignore_errors=True)
+    t_killed_run_restores_the_tree()
     n = sum(RESULTS)
     print("%s %d/%d" % ("PASS" if n == len(RESULTS) else "FAIL", n, len(RESULTS)))
     return 0 if n == len(RESULTS) else 1

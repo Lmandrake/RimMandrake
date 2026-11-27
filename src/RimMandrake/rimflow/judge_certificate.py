@@ -362,6 +362,30 @@ def _snapshot_changes(root, before):
     return [(p, old) for p, old in before.items() if now[p] != old]
 
 
+def _hold_signals():
+    """SIGTERM and SIGHUP raise SystemExit(128 + n) until _release_signals; {} off the main thread (no handler can be set)."""
+    import signal as _sig
+
+    def _raise(n, _frame):
+        raise SystemExit(128 + n)
+    held = {}
+    for s in (_sig.SIGTERM, _sig.SIGHUP):
+        try:
+            held[s] = _sig.signal(s, _raise)
+        except (ValueError, OSError):
+            pass
+    return held
+
+
+def _release_signals(held):
+    import signal as _sig
+    for s, h in held.items():
+        try:
+            _sig.signal(s, h)
+        except (ValueError, OSError):
+            pass
+
+
 def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
     """Prove a deciding test can fail: apply the planted fault (git apply, in root), run the test's command, want a
     non-zero exit, reverse the fault and prove every file it touched is byte-identical to before. Only a red run is
@@ -408,8 +432,13 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
     watched = _watch_paths(root, t, paths)
     before = _snapshot(root, watched)
     dirty0 = _git_dirty(root)
+    # RIMMANDRAKE_RESTORE_RED_SEEN_TREE_WHEN_A_TIMEOUT_KILLS_IT: a default SIGTERM/SIGHUP ends Python without `finally`, so
+    # a `timeout`-killed red-seen left its planted fault in the work tree (FlowWorks blind cycle 5). While the fault is
+    # planted, those signals raise SystemExit instead, the finally below reverses the fault, and the exit goes on.
+    held = _hold_signals()
     a = subprocess.run(["git", "apply", os.path.abspath(patch)], cwd=root, capture_output=True, text=True, timeout=60)
     if a.returncode != 0:
+        _release_signals(held)
         return {"ok": False, "why": "did not run: the fault does not apply: %s" % a.stderr.strip()}
     try:
         try:
@@ -432,6 +461,7 @@ def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
                 with open(fp, "wb") as fh:
                     fh.write(old)
             bad.append(p)
+        _release_signals(held)
     dirty1 = _git_dirty(root) if dirty0 is not None else None
     new = sorted(dirty1 - dirty0) if dirty1 is not None else []
     if new:     # the run changed the tree outside what was watched: no bytes to restore it from, so name it
