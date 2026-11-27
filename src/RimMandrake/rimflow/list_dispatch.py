@@ -459,6 +459,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
     runs = facts.get("runs") or {}
     live_total = own_live(facts)
     placed = {}     # this tick's launches per host
+    games_taken = set()     # the games this tick's judge launches took: a second judge never takes the same one
     paused, pool = facts.get("paused"), facts.get("pool")
     recent = facts.get("recent")
     max_runs = int(cfg.get("max_runs_per_item", 2))
@@ -684,10 +685,11 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 put("blind", "the judge needs in-game captures and whether a game is free could not be read (%s); "
                              "nothing launches it" % (getattr(games, "cause", None) or "no reading"))
                 continue
-            free = [g for g in games if g.get("state") == "FREE"]
+            free = [g for g in games if g.get("state") == "FREE" and g.get("game") not in games_taken]
             if not free:
                 put("judge_waits_game", "the judge needs in-game captures and no game is free: %s"
-                    % ("; ".join(str(g.get("line") or g.get("game")) for g in games) or "no game on this machine"))
+                    % ("; ".join("%s (taken by a judge launch of this tick)" % g.get("game") if g.get("game") in games_taken
+                                 else str(g.get("line") or g.get("game")) for g in games) or "no game on this machine"))
                 continue
             game = free[0]["game"]
         if not account[0]:
@@ -747,6 +749,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
         else:
             live_total += 1
         if judge:
+            if game:
+                games_taken.add(game)
             row.update(model=model, cap=cap, run_n=len(work) + 1, kind="judge", **({"game": game} if game else {}))
             put("judge", "judge run %d: %s (%s); the ask: %s%s" % (
                 len(work) + 1, model, mwhy, _one((it.get("route") or {}).get("ask"), 160),
@@ -1577,7 +1581,9 @@ def gather(st, now=None, root=None, load_lag_s=None):
         if cnl:
             d["off_unreadable"] = cnl
         mwd = d.get("mod_work") or {}
-        if (not (d.get("effect") or d.get("shape_due")) or paused or d["off"] or cnl   # no check runs where the lane may not act
+        # the gate facts below are read for each row that may launch: a check, due for Shape, or a judge route (whose
+        # launch passes every gate too, the owner's hold and the chain depth included); no check runs where the lane may not act
+        if (not (d.get("effect") or d.get("shape_due") or d.get("judge")) or paused or d["off"] or cnl
                 or mwd.get("mod") or mwd.get("unreadable")):
             continue
         if d.get("effect"):

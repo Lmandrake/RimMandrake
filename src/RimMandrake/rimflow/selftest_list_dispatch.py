@@ -1227,6 +1227,43 @@ def t_a_judge_route_launches_one_fresh_judge_run():
     rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=live)}, games=free, cfg=hcfg, hosts=room)
     chk(lambda: rows["A"]["decision"] == "judge" and rows["A"].get("game") == "ArchBig" and not rows["A"].get("host"),
         "a live judge takes the free game, on Archmagi (%s)" % rows["A"])
+    # two live judges in one tick: the second never takes the game that the first took this tick
+    both = [dict(held[0], state="FREE", line="ArchBig: FREE"), dict(held[1], state="FREE", line="ArchSmall: FREE")]
+    two = {"A": it(effect=None, verdict=None, route=jr, judge=live), "B": it(effect=None, verdict=None, route=jr, judge=live)}
+    rows, launches, _ = run(two, games=both, cfg=dict(CFG, max_live=3))
+    chk(lambda: launches == ["A", "B"] and rows["A"].get("game") == "ArchBig" and rows["B"].get("game") == "ArchSmall",
+        "two live judges in one tick take two free games, not one (%s, %s)" % (rows["A"].get("game"), rows["B"].get("game")))
+    rows, launches, _ = run(two, games=free, cfg=dict(CFG, max_live=3))
+    chk(lambda: launches == ["A"] and rows["B"]["decision"] == "judge_waits_game" and "ArchBig" in rows["B"]["why"],
+        "a second live judge waits when the one free game went to the first this tick (%s: %s)"
+        % (rows["B"]["decision"], rows["B"].get("why")))
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=live, held="HELD BY OWNER: X"),
+                             "B": it(effect=None, verdict=None, route=jr, judge=live)}, games=free, cfg=dict(CFG, max_live=3))
+    chk(lambda: rows["A"]["decision"] == "held" and rows["B"].get("game") == "ArchBig",
+        "a judge row that a gate stops takes no game (%s, %s)" % (rows["A"]["decision"], rows["B"].get("game")))
+    # gather: a judge ticket with no check still reads the owner's mod hold and its chain depth (every gate of a launch)
+    import contextlib
+    import list_effect as LE
+    import model as LM
+    ld, _ids, _cfg, pats = _lag_world()
+    jid = "RIMMANDRAKE_JUDGE_STILLSAND_DUNE_ART"
+    evs = [{"seat": "BENCH", "ts": "2026-11-22T00:00:00Z", "tsn": 1, "event": "file", "id": jid, "for": "BENCH",
+            "kind": "task", "title": "judge the Stillsand dune art"},
+           {"seat": "BENCH", "ts": "2026-11-22T01:00:00Z", "tsn": 2, "event": "shape", "id": jid,
+            "parts": [{"name": "rule", "route": {"who": "judge", "ask": "rule the dune art", "resumes": "a KEEP"}}]}]
+    with tempfile.TemporaryDirectory(prefix="ld_judge_held_") as d, patch.dict(os.environ, RM_DISPATCHER_STATE=d), \
+            contextlib.ExitStack() as es:
+        for p in pats[1:]:
+            es.enter_context(p)
+        es.enter_context(patch.object(LE, "_world", lambda observe=None: LM.replay(evs, observe=observe)))
+        es.enter_context(patch.object(ld, "_mods", return_value=["Stillsand"]))
+        es.enter_context(patch.object(ld, "_held", lambda m: "HELD BY OWNER: %s" % m if m == "Stillsand" else None))
+        g = ld.gather({}, NOW, load_lag_s=90)
+    gi = (g.get("items") or {}).get(jid) or {}
+    rows, launches, _ = run({jid: gi}, games=[])
+    chk(lambda: gi.get("held") and "depth" in gi and rows[jid]["decision"] == "held" and launches == [],
+        "gather reads the owner's hold and the chain depth of a judge ticket with no check, so it is not launched "
+        "(held=%s, depth=%s, %s)" % (gi.get("held"), gi.get("depth"), rows[jid]["decision"]))
     rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=off)}, account=(False, "drain"))
     chk(lambda: rows["A"]["decision"] == "account_hold" and launches == [], "the account gate holds a judge launch")
     rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=off), "B": it()},
