@@ -14,11 +14,19 @@ His words (ledger, owner-said on `RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_
 throttle down game development to a single advancing mod. Refocus on pipeline ticket cleanup."* The blocks below stay
 in force after this block.
 
-1. **Pipeline tickets are cleaned up**, week of 2026-11-23: `RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY`
-   sweeps the open pipeline and machine tickets; pipeline and machine tickets go first for each run slot.
+His words of about 9:57 AM PST the same day (owner-said on
+`RIMMANDRAKE_READY_ALL_SCHEDULED_INFRASTRUCTURE_HE_SAID_MAX_SPEED`): *"We need to complete all currently scheduled
+infrastructure at max speed to that we can truly test the system as intended. Do not lose any work. Park only at natural
+pipeline breakpoints."* A mod parks only at a stage exit or at the end of a run; a stopped run's work is kept.
+
+1. **All scheduled infrastructure is built, at full speed**, week of 2026-11-23:
+   `RIMMANDRAKE_READY_ALL_SCHEDULED_INFRASTRUCTURE_HE_SAID_MAX_SPEED` makes each piece a ticket that the ticket lane
+   launches; `RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY` sweeps the open pipeline and machine tickets;
+   pipeline and machine tickets go first for each run slot.
 2. **One mod advances: FlowWorks**, week of 2026-11-23. The Conductor chose FlowWorks as a delegated call: his recorded
-   order puts FlowWorks first, and FlowWorks 0.1.0 has not passed. Pyrelands and Wrecked Machines are switched off at an
-   easy spot (`./pipe on <Mod>` lifts each switch). The game art items that were due start no new run
+   order puts FlowWorks first, and FlowWorks 0.1.0 has not passed. Pyrelands is parked at the start of its blind challenge
+   (`./pipe on Pyrelands` lifts the switch). Wrecked Machines builds on to its Stage 3 exit and parks there
+   (`RIMMANDRAKE_PARK_WRECKED_MACHINES_AT_STAGE_THREE_EXIT_HE_SAID_BREAKPOINTS`). The game art items that were due start no new run
    (`./pipe show` lists each switch).
 
 ## From Wed 2026-11-25, about 1:20 AM PST: get the machine in order; mod work is second until this is done (block 11)
