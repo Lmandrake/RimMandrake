@@ -1099,7 +1099,9 @@ def write_delegated(recs: list):
         (d / f"{spec_key(r)}.json").write_text(json.dumps({
             "judge_model": r["models"], "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
             "subject": r["subject"], "decision": r["decision"], "reasons": r["reasons"],
-            "prompt_versions": r["prompt_versions"], "image_sha256": r["image_sha256"]}, indent=1))
+            "prompt_versions": r["prompt_versions"], "image_sha256": r["image_sha256"],
+            # the judged pictures' own bytes (the card images are processed copies): what a guard checks an install by
+            "source_sha256": r.get("source_sha256") or {}}, indent=1))
 
 
 def summary(recs: list, run_id: str, test: bool) -> str:

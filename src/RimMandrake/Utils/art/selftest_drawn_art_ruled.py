@@ -21,7 +21,7 @@ Known debts are listed in drawn_art_ruled_baseline.json (a ratchet: a NEW violat
 from the baseline). Limitation: alternateGraphics added by a Patch are not seen.
 
 A judge agent's KEEP in a committed verdict file (infrastructure/state/delegated/<date>/*.json, the picture's sha256)
-rules the picture too (delegated_keeps). With no primary PNG on disk (a slim clone) the look is blind: exit 2,
+rules the picture too (delegated_keeps), and so does an art_eval runner ACCEPT (its file's source_sha256). With no primary PNG on disk (a slim clone) the look is blind: exit 2,
 UNMEASURED.
 
 Usage: python3 selftest_drawn_art_ruled.py [--report] [--write-baseline]     exit 0 PASS, 1 FAIL, 2 UNMEASURED
@@ -101,6 +101,14 @@ def delegated_keeps(root: Path = DELEGATED) -> set:
         try:
             d = json.loads(f.read_text())
         except (OSError, ValueError):
+            continue
+        if isinstance(d, dict) and d.get("judge_model") and isinstance(d.get("source_sha256"), dict):
+            # the art_eval runner's own verdict file (runner.write_delegated): its ACCEPT keeps the source pictures it
+            # judged (image_sha256 holds the card's processed copies, never the installed bytes); any other decision
+            # names them not-kept
+            shas = {v for k, v in d["source_sha256"].items()        # the judged facings only: a sibling or
+                    if k in FACINGS + ("single",) and isinstance(v, str) and len(v) == 64}   # scale panel is not judged
+            (keep if str(d.get("decision") or "").upper() == "ACCEPT" else other).update(shas)
             continue
         if not isinstance(d, dict) or not str(d.get("judge") or "").strip() or not isinstance(d.get("verdicts"), list):
             continue
@@ -205,6 +213,22 @@ def fixture_check(L) -> list[str]:
             {"picture_sha256": sh["south"], "verdict": "REDO"}]}))
         if sh["south"] in delegated_keeps(Path(td) / "delegated"):
             fails.append("fixture: a sha one judge named REDO must not count as a delegated KEEP")
+        # the art_eval runner's verdict file (runner.write_delegated): an ACCEPT keeps its SOURCE pictures (the card's
+        # copies are processed, so image_sha256 is not the installed bytes); a REGEN keeps nothing and vetoes them
+        rd = Path(td) / "rdeleg" / "2026-01-02"
+        rd.mkdir(parents=True)
+        (rd / "X__variant__r1.json").write_text(json.dumps({
+            "judge_model": {"opus": []}, "subject": "X__variant", "decision": "ACCEPT",
+            "image_sha256": {"east.png": "c" * 64}, "source_sha256": {"east": sh["east"], "south": sh["south"]}}))
+        (rd / "Y__variant__r1.json").write_text(json.dumps({
+            "judge_model": {"opus": []}, "subject": "Y__variant", "decision": "REGEN",
+            "source_sha256": {"north": sh["north"], "siblings_Y_south": sh["south"]}}))
+        (rd / "Z__variant__r1.json").write_text(json.dumps({"subject": "Z", "decision": "ACCEPT",
+                                                            "source_sha256": {"north": sh["north"]}}))
+        rk = delegated_keeps(Path(td) / "rdeleg")
+        if rk != {sh["east"], sh["south"]}:
+            fails.append(f"fixture: a runner ACCEPT keeps its source pictures only (not a REGEN's, not a judgeless "
+                         f"file's, not the card copies; a REGEN's sibling panel vetoes nothing), got {len(rk)}")
         if pictures_seen(scan_kinds(Path(td))) != 1:
             fails.append("fixture: the primary pictures on disk should be seen")
         for f in (mod / "Textures" / "X").glob("*.png"):
