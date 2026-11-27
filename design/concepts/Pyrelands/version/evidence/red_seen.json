@@ -25,6 +25,19 @@
   "rc": 1,
   "test_blob": "3edda7da214c160278d10f9cc0349a875413d09e"
  },
+ "T_CRESTFEATHER_OWN_ART_OFFLINE": {
+  "at": "2026-11-27T03:03:27Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_crestfeather_own_art.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_crestfeather_own_art.py",
+  "last": "T_CRESTFEATHER_OWN_ART_OFFLINE: FAIL: 3 of 9 checks failed (worst: texPath is the def's own path)",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml\t2026-11-26 18:57:58.762706600 -0800\n+++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml\t2026-11-26 18:57:58.798354900 -0800\n@@ -44,7 +44,7 @@\n     <stackLimit>5</stackLimit>\n     <graphicData>\n       <!-- our own judged picture; no colour line (see the header) -->\n-      <texPath>Things/Item/Special/RM_PristineFirehawkCrestfeather/RM_PristineFirehawkCrestfeather</texPath>\n+      <texPath>Things/Item/Special/ThrumboHorn</texPath>\n       <graphicClass>Graphic_Single</graphicClass>\n     </graphicData>\n     <statBases>\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml"
+  ],
+  "patch_sha": "44e31a8220bb0bfe",
+  "rc": 1,
+  "test_blob": "f09dda7a7a2744a9c4714e403a9051cad7c97cdf"
+ },
  "T_CUT_STAYS_CUT": {
   "at": "2026-11-23T00:06:14Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py",

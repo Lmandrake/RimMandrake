@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml	2026-11-26 18:57:58.762706600 -0800
++++ b/src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml	2026-11-26 18:57:58.798354900 -0800
+@@ -44,7 +44,7 @@
+     <stackLimit>5</stackLimit>
+     <graphicData>
+       <!-- our own judged picture; no colour line (see the header) -->
+-      <texPath>Things/Item/Special/RM_PristineFirehawkCrestfeather/RM_PristineFirehawkCrestfeather</texPath>
++      <texPath>Things/Item/Special/ThrumboHorn</texPath>
+       <graphicClass>Graphic_Single</graphicClass>
+     </graphicData>
+     <statBases>
