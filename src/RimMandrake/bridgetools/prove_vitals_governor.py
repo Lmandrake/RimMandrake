@@ -35,6 +35,28 @@ def rec3(case, result, **ev):
     OUT[case] = {"result": result, **ev}
     print(result + " " + case + "  " + json.dumps(ev, default=str)[:600], flush=True)
 
+def finish():
+    """Write every row measured so far and exit by the contract: 1 = a row FAILED; 3 = no row failed but a row could
+    not look (UNMEASURED) or no row ran; 0 = every row PASS."""
+    name = os.path.join(rm_win("scratch", "vitals"), "proof_" + "_".join(which)) + "_" + time.strftime("%Y%m%dT%H%M%S") + ".json"
+    os.makedirs(os.path.dirname(name), exist_ok=True)
+    with open(name, "w") as f: json.dump(OUT, f, indent=1, default=str)
+    print("wrote", name)
+    # VITALSPROOF_FIX_EXIT0_AND_MIRROR_IMPORT: the old script exited 0 whatever rec() recorded.
+    failed = [k for k, v in OUT.items() if v["result"] == "FAIL"]
+    blind_rows = [k for k, v in OUT.items() if v["result"] not in ("PASS", "FAIL")]
+    print("%d/%d passed%s%s" % (len(OUT) - len(failed) - len(blind_rows), len(OUT),
+                                ("; FAILED: " + ", ".join(failed)) if failed else "",
+                                ("; UNMEASURED: " + ", ".join(blind_rows)) if blind_rows else ""))
+    sys.exit(1 if failed else 3 if blind_rows or not OUT else 0)
+
+def blind(cause):
+    """A case that cannot look stops the run: record it UNMEASURED with its cause, keep the rows already measured, and
+    exit 3 (a bare SystemExit("...") exited 1, which reads as FAILED, and wrote no rows)."""
+    print("UNMEASURED: " + cause, flush=True)
+    rec3("run_stopped_could_not_look", "UNMEASURED", cause=cause)
+    finish()
+
 # RimPulse reads alarms from the store's FIRST game only (telemetry/analysis.py: a lane game's live view alarms nothing),
 # so a red-alarm row is measured on ArchBig (RM_GAME_INSTANCE a or unset) and is UNMEASURED on any other game.
 PULSE_WAIT_S = 120   # hang guard: telemetryd down or blind. Need: alerts.json is rewritten every few s (6 s old, measured
@@ -70,7 +92,7 @@ def ticks():
     # BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP: a failed read was None == None, so "no tick ran" passed blind
     t = call("jawa/time_clock").get("ticksGame")
     if not isinstance(t, int):
-        raise SystemExit("UNMEASURED: jawa/time_clock gave no ticksGame, so a refusal cannot be shown to have run no tick")
+        blind("jawa/time_clock gave no ticksGame, so a refusal cannot be shown to have run no tick")
     return t
 
 def fresh_map():
@@ -81,7 +103,7 @@ def fresh_map():
     if not await_lifecycle(call, "menu", 60): print("UNMEASURED: main menu not reached")
     call("rimworld/start_debug_game_ready", timeoutMs=280000, readiness="mapData", pauseIfNeeded=True)
     lc = await_lifecycle(call, "map_ready", 120)
-    if not lc.ok: raise SystemExit("UNMEASURED: no map after start: %s" % lc.reason)
+    if not lc.ok: blind("no map after start: %s" % lc.reason)
     time.sleep(3)
     # A quicktest map can roll a dormant insect hive (live 2026-11-27, ArchSmall: "Hive (Sorne Geneline, spawner,
     # dormant)"), which the monitor rightly latches as an open threat, so every row read UNMEASURED. Each case wants a
@@ -89,19 +111,19 @@ def fresh_map():
     # read back that none is left.
     q = call("jawa/quiet_site", action="apply", clearThreats=True)
     if not q.get("success") or q.get("threatsAfter") != 0:
-        raise SystemExit("UNMEASURED: the map's hostile threat structures were not cleared before arm: %s"
+        blind("the map's hostile threat structures were not cleared before arm: %s"
                          % json.dumps(q, default=str)[:300])
     ps = call("jawa/list_pawns", faction="player").get("pawns") or []
     return [p["id"] for p in ps if p.get("def") == "Human" and not p.get("dead")]
 
 def far_cell(from_id):
     """A standable cell far from pawn `from_id`: the cell of the non-player pawn farthest from it (pawns stand only on
-    standable cells). -> (x, z) or SystemExit UNMEASURED."""
+    standable cells). -> (x, z), or the run stops UNMEASURED (blind)."""
     me = [p for p in call("jawa/list_pawns", faction="player").get("pawns") or [] if p.get("id") == from_id]
     others = [p for p in call("jawa/list_pawns", faction="nonplayer").get("pawns") or []
               if not p.get("dead") and isinstance(p.get("x"), int) and isinstance(p.get("z"), int)]
     if not me or not others:
-        raise SystemExit("UNMEASURED: no far standable cell (colonist seen %s, other pawns %d)" % (bool(me), len(others)))
+        blind("no far standable cell (colonist seen %s, other pawns %d)" % (bool(me), len(others)))
     mx, mz = me[0]["x"], me[0]["z"]
     far = max(others, key=lambda p: (p["x"] - mx) ** 2 + (p["z"] - mz) ** 2)
     return far["x"], far["z"]
@@ -111,7 +133,7 @@ def events():
     # trigger would let G.judge read PASS on a list missing what disqualifies it
     r = call("jawa/vitals", action="events", limit=512)
     if not isinstance(r.get("triggers"), list) or r.get("truncated") or r.get("overflow"):
-        raise SystemExit("UNMEASURED: jawa/vitals events incomplete (truncated=%r overflow=%r): %s"
+        blind("jawa/vitals events incomplete (truncated=%r overflow=%r): %s"
                          % (r.get("truncated"), r.get("overflow"), json.dumps(r, default=str)[:300]))
     return r
 
@@ -120,7 +142,8 @@ def arm(row, critical=None, **kw):
     if critical: p["critical"] = critical
     p.update(kw)
     r = call("jawa/vitals", **p)
-    assert r.get("armed"), r
+    if not r.get("armed"):
+        blind("jawa/vitals would not arm row %s: %s" % (row, json.dumps(r, default=str)[:300]))
     return r
 
 which = sys.argv[1:] or ["clock", "modal", "cluster", "raid", "downed", "death", "specimen", "hostile", "colonyloss"]
@@ -310,14 +333,4 @@ if "colonyloss" in which:
     cl2 = [t for t in events().get("triggers", []) if t["kind"] == "colony_loss" and "GameEnded letter" in (t.get("detail") or "")]
     rec("colony_loss_letter_detected_while_paused", bool(cl2), sent=sl.get("success"), trigger=cl2[:1])
 
-name = os.path.join(rm_win("scratch", "vitals"), "proof_" + "_".join(which)) + "_" + time.strftime("%Y%m%dT%H%M%S") + ".json"
-os.makedirs(os.path.dirname(name), exist_ok=True)
-with open(name, "w") as f: json.dump(OUT, f, indent=1, default=str)
-print("wrote", name)
-# VITALSPROOF_FIX_EXIT0_AND_MIRROR_IMPORT: the old script exited 0 whatever rec() recorded.
-failed = [k for k, v in OUT.items() if v["result"] == "FAIL"]
-blind = [k for k, v in OUT.items() if v["result"] not in ("PASS", "FAIL")]
-print("%d/%d passed%s%s" % (len(OUT) - len(failed) - len(blind), len(OUT), ("; FAILED: " + ", ".join(failed)) if failed else "",
-                            ("; UNMEASURED: " + ", ".join(blind)) if blind else ""))
-# exit 1 = a row FAILED; 3 = no row failed but a row could not look (UNMEASURED) or no row ran
-sys.exit(1 if failed else 3 if blind or not OUT else 0)
+finish()
