@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# now: one screen of state in place of the poll round: game locks, the pipe, accounts left, live detached runs with
+# their age and the head of the Conductor queue, each line with the local time of its reading. It only prints.
+# See src/RimMandrake/rimflow/now.py (page design/specs/2026-11-27-now/boundary.md).
+exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/rimflow/now.py" "$@"
