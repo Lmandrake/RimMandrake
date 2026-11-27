@@ -481,6 +481,39 @@ def t_a_named_game_gets_the_registered_site_saves_it_lacks(X):
         "site saves: ArchBig is the source and is never written")
 
 
+def t_a_named_game_reads_archbigs_def_removal_settings(X):
+    import game_instance as GI
+    name = "Mod_3521312241_Mod_CherryPicker.xml"
+    chk(lambda: name in getattr(GI, "DEF_SHAPING_SETTINGS", ()), "def settings: Cherry Picker's file is named")
+    src = os.path.join(X.top, "a_config")
+    os.makedirs(src, exist_ok=True)
+    with open(os.path.join(src, name), "w") as f:
+        f.write("a's removal list")
+    with open(os.path.join(src, "Mod_Other_Mod.xml"), "w") as f:
+        f.write("a's other setting")
+    bcfg = os.path.join(GI.data_dir("b"), "Config")
+    os.makedirs(bcfg, exist_ok=True)
+    with open(os.path.join(bcfg, "Mod_Other_Mod.xml"), "w") as f:
+        f.write("b's own")
+    seed = getattr(GI, "seed_def_settings", None)
+    done = _safe(lambda: seed("b", source=src), None)
+    chk(lambda: done == [name], "def settings: b gets a's Cherry Picker file it lacks (%r)" % (done,))
+    chk(lambda: open(os.path.join(bcfg, name)).read() == "a's removal list", "def settings: the copy is a's file")
+    chk(lambda: open(os.path.join(bcfg, "Mod_Other_Mod.xml")).read() == "b's own",
+        "def settings: a setting that shapes no def stays b's own")
+    with open(os.path.join(bcfg, name), "w") as f:
+        f.write("b's stale list")
+    again = _safe(lambda: seed("b", source=src), None)
+    chk(lambda: again == [name] and open(os.path.join(bcfg, name)).read() == "a's removal list",
+        "def settings: a copy that differs from a's is replaced (%r)" % (again,))
+    chk(lambda: _safe(lambda: seed("b", source=src), None) == [], "def settings: a copy that matches is left alone")
+    empty = os.path.join(X.top, "a_config_empty")
+    os.makedirs(empty, exist_ok=True)
+    chk(lambda: _safe(lambda: seed("b", source=empty), None) == [] and os.path.exists(os.path.join(bcfg, name)),
+        "def settings: a file ArchBig lacks is not invented and b's is not deleted")
+    chk(lambda: _safe(lambda: seed("a", source=src), None) == [], "def settings: ArchBig is the source and is never written")
+
+
 def main():
     top = tempfile.mkdtemp(prefix="game_hold_split_")
     a_dir, b_dir = fake_install(top)
@@ -511,7 +544,8 @@ def main():
                   t_install_writes_only_under_the_named_game,
                   t_a_named_games_list_swap_is_its_own,
                   t_game_bs_brief_names_its_own_install_and_its_unmeasured_full_list_checks,
-                  t_a_named_game_gets_the_registered_site_saves_it_lacks):
+                  t_a_named_game_gets_the_registered_site_saves_it_lacks,
+                  t_a_named_game_reads_archbigs_def_removal_settings):
             try:
                 t(X)
             except Exception as e:  # noqa: BLE001

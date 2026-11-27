@@ -129,6 +129,10 @@ PREFS_TEMPLATE = os.path.join(REPO, "infrastructure", "stevedesktop", "Prefs.tem
 RIMFLOW_CLI = os.path.join(REPO, "src", "RimMandrake", "rimflow", "cli.py")
 MINIMAL_LIST = os.path.join(REPO, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml")
 SITE_REGISTRY = os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck", "test_site_saves.json")
+# Mod settings that decide which defs exist, so one mod list loads one def set on every game. Cherry Picker's file is the
+# campaign's removal list: ArchSmall had none, so its saves kept 66 research projects ArchBig removes and loaded on ArchBig
+# with 132 errors (2026-11-27, RIMMANDRAKE_CLASS_SUN_SAVE_LOAD_ERRORS_DLC_WAS_LOADED).
+DEF_SHAPING_SETTINGS = ("Mod_3521312241_Mod_CherryPicker.xml",)
 INSTALL_SUB = "game"                # <root>/<letter>/game: a named game's own install
 # What a named game's install copies from game a's (MEASURED 2026-11-20 on Archmagi: about 2.5 GB with Mods). Anything
 # else in game a's folder (ModsRetired, _ModsAside, Source, Transient, crash dumps) is not the game's to load.
@@ -719,6 +723,39 @@ def seed_site_saves(name=None, source=None, registry=SITE_REGISTRY):
     return done
 
 
+def a_config_dir():
+    """ArchBig's own Config folder (LocalLow), whatever game this shell names."""
+    import game_paths
+    return game_paths.resolve(os.path.join(game_paths._DEF_LOW_WIN, "Config"), os.path.join(game_paths._DEF_LOW_WSL, "Config"))
+
+
+def seed_def_settings(name=None, source=None):
+    """-> the names copied. Each DEF_SHAPING_SETTINGS file of ArchBig's Config goes into the named game's Config when the
+    named game lacks it or holds a different one: ArchBig's is the curated copy. Never copies a file ArchBig lacks, never
+    deletes, never writes ArchBig's folder; every other mod setting stays the named game's own."""
+    name = check_name(name or current())
+    if name == DEFAULT:
+        return []
+    src, dst = source or a_config_dir(), os.path.join(data_dir(name), "Config")
+    os.makedirs(dst, exist_ok=True)
+    done = []
+    for n in DEF_SHAPING_SETTINGS:
+        s, d = os.path.join(src, n), os.path.join(dst, n)
+        if not os.path.isfile(s):
+            continue
+        with open(s, "rb") as f:
+            want = f.read()
+        if os.path.isfile(d):
+            with open(d, "rb") as f:
+                if f.read() == want:
+                    continue
+        with open(d + ".part", "wb") as f:
+            f.write(want)
+        os.replace(d + ".part", d)
+        done.append(n)
+    return done
+
+
 def prepare(name=None):
     """Seed the folder a named instance needs. It reads no other game's state, so it works while A runs; it refuses while
     its own game runs and the folder is not seeded yet: that game rewrites Prefs from memory on exit. A running game whose
@@ -743,6 +780,10 @@ def prepare(name=None):
         install(name)
         ensure_token(name)
         seed_prefs(os.path.join(d, "Config", "Prefs.xml"))
+        try:
+            seed_def_settings(name)
+        except (OSError, ValueError) as e:  # the game still starts; its def set then differs from ArchBig's, said here
+            sys.stderr.write("game_instance: could not copy ArchBig's def-shaping mod settings to %s: %s\n" % (_n(name), e))
         mods = os.path.join(d, "Config", "ModsConfig.xml")
         if not os.path.exists(mods):
             shutil.copyfile(MINIMAL_LIST, mods)
