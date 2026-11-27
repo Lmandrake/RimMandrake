@@ -406,8 +406,12 @@ def t_a_test_worker_never_writes_this_machines_real_list(r):
     t_told = r.py(tier, TESTQ_CMD_TIERSWAP="echo swap", RM_GAME_INSTANCE="b")
     t_real = r.py(tier, TESTQ_CMD_TIERSWAP=None, TESTQ_SKIP_PULL=None)
     check(isinstance(t_test, list) and t_test[:3] == [False, "INVALID", "LOAD"] and "TESTQ_CMD_TIERSWAP" in t_test[3]
-          and not any("modset_builder" in c for c in t_test[4]),
-          "%s: a test's tier job runs no real swap and ends INVALID/LOAD naming TESTQ_CMD_TIERSWAP (%s)" % (name, t_test))
+          and not any("modset_builder" in c for c in t_test[4]) and "true" not in t_test[4],
+          "%s: a test's tier job runs no real swap, takes no game down, and ends INVALID/LOAD naming "
+          "TESTQ_CMD_TIERSWAP (%s)" % (name, t_test))
+    check(isinstance(t_real, list) and t_real[0] is True and "true" in t_real[4]
+          and t_real[4].index("true") < next((i for i, c in enumerate(t_real[4]) if "modset_builder" in c), -1),
+          "%s: the lane's tier_load still takes the game down before its swap (%s)" % (name, t_real))
     check(isinstance(t_told, list) and t_told[0] is True and "echo swap minimal" in t_told[4]
           and not any("modset_builder" in c for c in t_told[4]),
           "%s: a test's own tier-swap command runs in tier_load (%s)" % (name, t_told))

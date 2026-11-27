@@ -1745,16 +1745,16 @@ class Attempt:
             self.res["tier"] = self.tier_reading(tier)
             return True
         self.say("tier %s: the running load is not it (%s): whole-list swap" % (tier, (r.get("why") or "")[:160]))
+        swap = real_list_cmd("TESTQ_CMD_TIERSWAP", TIER_SWAP % shlex.quote(
+            "testq %s on SteveDesktop: the worker holds this machine's game guard" % self.aid))
+        if swap is None:    # before the game down: a test's worker that may not swap leaves the game as it found it
+            return self.fail("INVALID", "LOAD",
+                             "a test's worker never swaps this machine's real list: set TESTQ_CMD_TIERSWAP")
         # budget: danger=a hung game stop (taskkill over WSL interop) holds the attempt, and so one game of the lane; never
         # budget: reached in the 14 days to 2026-11-24; no record of its run
         rc, tail = self.sh(self.cmd_down(), timeout=300)
         if rc != 0:
             return self.fail("INVALID", "LOAD", "game down before the tier swap failed: " + tail)
-        swap = real_list_cmd("TESTQ_CMD_TIERSWAP", TIER_SWAP % shlex.quote(
-            "testq %s on SteveDesktop: the worker holds this machine's game guard" % self.aid))
-        if swap is None:
-            return self.fail("INVALID", "LOAD",
-                             "a test's worker never swaps this machine's real list: set TESTQ_CMD_TIERSWAP")
         rc, tail = self.sh(swap + " " + shlex.quote(tier), log_name="tier_swap.log", timeout=10800)  # budget: class=deploy
         if rc != 0:
             return self.fail("INVALID", "LOAD", "modset_builder --tier %s --apply failed: %s" % (tier, tail[-300:]))
