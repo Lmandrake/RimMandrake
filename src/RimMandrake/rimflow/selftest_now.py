@@ -5,7 +5,10 @@ name). Offline: fake readers, fake run records, a fake ledger world. Written bef
 
     python3 src/RimMandrake/rimflow/selftest_now.py
 """
+import contextlib
+import io
 import os
+import re
 import subprocess
 import sys
 import time
@@ -103,9 +106,29 @@ def t_queue_head_listed():
     ids = [ln.split()[0] for ln in out if ln.startswith("ITEM_")]
     assert ids == ["ITEM_00", "ITEM_01", "ITEM_02", "ITEM_03", "ITEM_04"], "not the head in rank order: %s" % ids
     assert "title 0" in text and "ready" in text, text
-    assert "4 more" in text and "cli.py queue BENCH" in text, "the rest is not counted with its command:\n%s" % text
+    assert "4 more" in text, "the rest is not counted:\n%s" % text
     assert "rimflow next" not in text, "the line sends the reader to `rimflow next`, which reserves a lease"
     assert N.queue_head(load=load, rank=lambda w, seat: [], n=5) == [], "an empty queue is not an empty answer"
+    # the named command lists the rest: run it. (`cli.py queue BENCH` is a compact view: on 2026-11-27 it held 15
+    # of the 37 ranked items, so a line that named it sent the reader to a list without them.)
+    more = [ln for ln in out if ln.startswith("...")]
+    assert more and "(./now --queue lists them)" in more[0], "the line names no command that this test can run: %s" % more
+    real = (N._load, N._rank)
+    N._load, N._rank = load, (lambda w, seat: items)
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            rc = N.main(["--queue"])
+    finally:
+        N._load, N._rank = real
+    listed = re.findall(r"\] queue: (ITEM_\d+) ", buf.getvalue())
+    assert rc == 0 and listed == [i.id for i in items], "./now --queue does not list the whole queue in rank order " \
+        "(rc %s): %s\n%s" % (rc, listed, buf.getvalue())
+    assert "more (" not in buf.getvalue() and "rimflow next" not in buf.getvalue(), buf.getvalue()
+    err = io.StringIO()
+    with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+        rc = N.main(["--bogus"])
+    assert rc == 2 and "--queue" in err.getvalue(), "an unknown argument does not exit 2 with its usage (%s)" % rc
 
 
 def main():

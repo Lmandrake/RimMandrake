@@ -35,8 +35,9 @@ wake's own readers and the block keep their promises on `design/specs/2026-11-23
 - **live-runs-listed-with-age.** Each run whose record reads launching or running has one line: unit, item, model, state
   and age. A run whose unit is gone reads DEAD, with the command that finishes it. A finished run has no line.
 - **queue-head-listed.** The first five items of the Conductor's queue, in rank order, each with its state and title.
-  One line counts the rest and names the command that lists them. The screen never sends the reader to
-  `rimflow next`, because `rimflow next` reserves a lease.
+  One line counts the rest and names the command that lists them: `./now --queue`, the same reader with no cut, in the
+  same order. (`cli.py queue BENCH` is a compact view that leaves ranked items out.) The screen never sends the reader
+  to `rimflow next`, because `rimflow next` reserves a lease.
 
 ## LIMITS
 
@@ -49,5 +50,7 @@ wake's own readers and the block keep their promises on `design/specs/2026-11-23
 
 - **a Conductor look:** `./now` → `now.screen()` → `run_end_wake.state_block(readers)` → each reader in its own thread
   → one printed block.
+- **a whole-queue look:** `./now --queue` → the `queue` reader with no cut → one printed block of every ranked item.
+- **an unknown argument:** `./now <other>` prints its usage on stderr and exits 2. It prints no screen.
 
 Later lists beside this page: `polish.md` (none yet).

@@ -13,7 +13,8 @@ A reader that raises, returns None or does not answer before the deadline reads 
 an empty answer reads none (looked) (`run_end_wake.state_block`). It only prints: it reserves no lease (`rimflow next`
 does), renders no view and writes no file. Page: design/specs/2026-11-27-now/boundary.md.
 
-    ./now
+    ./now              the screen
+    ./now --queue      the whole queue of seat BENCH in rank order (the screen shows its head)
 """
 import os
 import sys
@@ -70,14 +71,16 @@ def _rank(world, seat):
 
 def queue_head(load=None, rank=None, n=QUEUE_HEAD_N, seat=SEAT):
     """-> the first `n` items of the seat's queue in `priority.rank()` order (id, state, title), and one line that counts
-    the rest with the command that lists them. [] when the queue is empty. Reads the ledger only."""
+    the rest with the command that lists them (`./now --queue`: the same reader with no cut; `cli.py queue BENCH` is a
+    compact view that leaves ranked items out). n=None: every item, no count line. [] when the queue is empty. Reads the
+    ledger only."""
     _, world = (load or _load)()
     ranked = list((rank or _rank)(world, seat))
     import fulltext
     out = ["%s  %s  %s" % (i.id, i.state, fulltext.clip(" ".join((i.title or "").split()), TITLE_N,
                                                         "rimflow show %s" % i.id)) for i in ranked[:n]]
-    if len(ranked) > n:
-        out.append("... %d more (python3 src/RimMandrake/rimflow/cli.py queue %s lists them)" % (len(ranked) - n, seat))
+    if n is not None and len(ranked) > n:
+        out.append("... %d more (./now --queue lists them)" % (len(ranked) - n))
     return out
 
 
@@ -98,6 +101,13 @@ def main(argv=None):
     if argv and argv[0] in ("-h", "--help"):
         print(__doc__.strip())
         return 0
+    if argv and argv[0] == "--queue":      # the whole queue, in rank order: the command the screen's count line names
+        print(screen({"queue": lambda: queue_head(n=None)}))
+        sys.stdout.flush()
+        return 0
+    if argv:
+        print("now: unknown argument %r (./now, ./now --queue or ./now --help)" % argv[0], file=sys.stderr)
+        return 2
     print(screen())
     sys.stdout.flush()
     return 0
