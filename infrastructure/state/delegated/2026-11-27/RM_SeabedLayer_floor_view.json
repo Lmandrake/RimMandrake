@@ -1,0 +1,38 @@
+{
+ "item": "SEABED_LAYER_DESIGN_ITS_OWN_SEA_FLOOR",
+ "judge": "rm-detached-bench-seabed-layer-design-its-own-sea-floor-1795766493 (judge run 1, ticket lane; did not make c20b334417)",
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RM_SeabedLayer floor view (RM_WorldLook seabed shading) + UI/Commands/RM_ViewSeaFloor",
+ "work_sha": "c20b334417",
+ "verdict": "PASS",
+ "how_seen": "ArchBig, live, 2026-11-27 about 00:07-00:12 PST. Small list with mandrake.rm.biomes active; deployed RimMandrake.Biomes.dll md5 6ff6fd86 = the dll at c20b334417; deployed RM_ViewSeaFloor.png md5 2242238a = c20b334417. World Ash'karr, 3 layers (Surface, Orbit, RM_SeabedLayer 119904 tiles). Floor view entered by clicking the in-game 'View sea floor' gizmo (rimworld/click_ui_target), not by code. RM_WorldLook.Info after entry: 'seabed: 58584 basin tiles, 61320 under land blend: 6629 overlays on 6629 border tiles' (soft); with worldBorderBlend=false: 'seabed: 58584 basin tiles, 61320 under land' and no blend (hard). Captures at altitude 1100 (far), 550 (mid), 250 (close), soft and hard each; full-size PNGs in D:\\ClaudeWork\\rimmandrake\\scratch\\seabed_judge_2026-11-27, half-size copies beside this file. Setting restored to soft and the game returned to the planet layer and the colony map; bridge released.",
+ "questions": [
+  {"q": "Do basins read deeper away from the coasts above?",
+   "answer": "yes",
+   "seen": "At all three zooms a pale tan shelf rims every coast and the floor darkens smoothly into slate-dark basins away from it (sbj_floor_550_soft_half.jpg: the open floor left of the northern land mass and the channel east of it; sbj_floor_250_*: the gradient from rim to basin is continuous, no banding). At far zoom (1100) the globe reads as dark basins with bright continental shelves."},
+  {"q": "Do the dimmed continents read as shapes rather than bedrock noise?",
+   "answer": "yes",
+   "seen": "Every continent above is one flat dim mass bounded by the shelf rim: the southern continent near-black, the northern one dark olive (different floor face under it, same 0.55 mask). No bedrock texture or speckle shows through at any zoom; at far zoom the coastline silhouettes of the surface are legible on the floor globe."},
+  {"q": "Does UI/Commands/RM_ViewSeaFloor read at gizmo size beside vanilla ViewPlanet/ViewOrbit?",
+   "answer": "yes",
+   "seen": "gizmo_bar_surface_1x.png (75 px gizmo, 1:1): a disc with a pale wave line, water darkening downward, a dark rock floor and a white down arrow; reads as 'go down to the sea floor' at a glance, same disc-icon idiom and value range as vanilla View orbit beside it and View planet on the floor view (gizmo_bar_floor_2x.png). placeholder_detect.py file: REAL."}
+ ],
+ "verdicts": [
+  {"picture": "sbj_floor_{1100,550,250}_{soft,hard}_half.jpg", "facing": "n/a (world view)", "verdict": "KEEP",
+   "notes": "B2 (legible: rim, basin and continent are three clearly separate values); D (no overflow; world layer, no canvas); E2 not a stand-in. Soft vs hard differ only at floor-face borders (6629 overlays), both read."},
+  {"picture": "src/RimMandrake/DivingInteraction/Textures/UI/Commands/RM_ViewSeaFloor.png (md5 2242238a)", "facing": "n/a (UI icon)", "verdict": "KEEP",
+   "notes": "B2 legible at 75 px; E1 our own (not donor); E2 placeholder_detect REAL, and a flat command icon in vanilla's idiom is the final form of a UI command icon, not a stand-in for a sprite. A1-A5, C, F do not apply (no canon entry, no facings, no pawn)."}
+ ],
+ "proposals": [
+  "polish: the continent-above mask and the deepest basin both read as 'darker'; at mid zoom the near-black southern continent is the darkest thing on the floor, so a cold reader could take it for the deepest trench. A faint tint on the land mask (not black) would separate 'land above' from 'deep floor'. No constraint states this; it blocks nothing.",
+  "polish: the land mask keeps hard hex steps at the coast with soft borders on (the mask is per tile; the blend acts only between floor faces). Rounding the mask edge would match the soft look. Blocks nothing."
+ ],
+ "contract": {"item": "SEABED_LAYER_DESIGN_ITS_OWN_SEA_FLOOR", "family": "art_judge_brief", "sha": "c20b334417",
+  "passed": [
+   {"clause": "B2", "evidence": ["sbj_floor_550_soft_half.jpg", "sbj_floor_250_soft_half.jpg", "sbj_floor_1100_soft_half.jpg", "gizmo_bar_surface_1x.png"]},
+   {"clause": "E1", "evidence": ["gizmo_bar_surface_1x.png"]},
+   {"clause": "E2", "evidence": ["gizmo_bar_surface_1x.png"]}
+  ],
+  "refusals": []}
+}
