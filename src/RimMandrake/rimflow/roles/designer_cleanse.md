@@ -259,7 +259,9 @@ Each model's entry gives these parts:
   check.
 
 Put the model you would build first at the top. Every mod gets at least the generator of situations and the whole-mod
-model. Skip them only for a mod that you can show is too small.
+model. Skip them only for a mod that you can show is too small. That showing is the mod's "no" to the question
+"offline simulation: yes or no, and why" (`standing_rulings.md` §Each design answers "offline simulation: yes or no,
+and why"): write it in `models.md` in one line, with the reason.
 
 ## Procedure
 

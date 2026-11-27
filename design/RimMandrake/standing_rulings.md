@@ -1700,6 +1700,55 @@ free. The same night, for work bundles, he decided that the live proof runs insi
 Item: `RIMMANDRAKE_RUN_LIVE_CHECKS_IN_BUILDER_RUN_WHEN_GAME_FREE`. Page:
 `design/specs/2026-11-24-live-checks-in-builder-run/boundary.md`.
 
+## Each design answers "offline simulation: yes or no, and why" — owner, by card 2026-11-26
+
+He decided by card. The card was answered 2026-11-27T02:15:26Z (6:15 PM PST 2026-11-26). The ledger event is the
+`file` of `RIMMANDRAKE_CENSUS_SIMULATIONS_ASK_AT_DESIGN_FIRE_HAS_ONE`, 2026-11-27T02:18:40Z (OWNER tsn
+1795745920137747525). His typed words that led to the card are not on the ledger; the card is the record. The card,
+word for word:
+
+> Question: You want offline simulation used wherever it helps: for pipeline scripts and for every live or soon-live
+> mod. What exists by file name: a fire simulation for Pyrelands and six simulations of our own process; others may
+> exist under other names. My pushback: a simulation pays where the logic is a state machine or physics with many
+> cases and the live test is slow. A simulation written as a second copy of the logic can drift from the real code, so
+> the better form runs the real code against a fake clock or a fake game. How should we apply the simulation principle?
+> Picked: Census now, plus a design rule (Recommended)
+> Its description: Why: the census covers what exists; the rule covers what comes. One worker lists each mod and each
+> pipeline state machine: has one, would benefit, or would not, with the reason. From now, each design answers
+> 'offline simulation: yes or no, why'. Cost: one study run and one rule. Recommended: nothing is built on a guess.
+> Other options: Census only, then you pick · Design rule only · Build the obvious ones now
+
+Earlier words of his on the same subject (owner, 2026-11-16 10:28 PM PST, OWNER event 2026-11-17T06:28:52Z, item
+`RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED`): *"AND I WANT YOU TO SUGGEST OFFLINE SIMULATIONS,
+GEOMETRY, OR OTHER MODELING THAT MIGHT BE USEFUL TO DEBUG AND UNDERSTAND THE MOD. We always end up building these, so
+just spec them out ahead of time please! They don't have to be built, but they'll be defined, and that makes everyone
+see them and think about them when they're needed."* The cleanse pass carries them
+(`src/RimMandrake/rimflow/roles/designer_cleanse.md` §The models). The builder's side is §Every mod builder builds the
+offline model from the first build.
+
+- **What it says:**
+  - Each design of a new mod answers one question in writing: "offline simulation: yes or no, and why". The Designer
+    writes the answer in the concept's `plan.md` under `## offline simulation`.
+  - Each scope proposal page of a next version (`design/concepts/<Mod>/version/next_version/scope_proposal_<version>.md`)
+    answers the same question for the scope that it proposes.
+  - The boundary page of new pipeline machinery that is a state machine answers the same question, in a section
+    `## OFFLINE SIMULATION` (§A boundary page before pipeline code). Pipeline machinery is a state machine when it keeps
+    a state between calls and moves it on a clock or on events.
+  - A yes names what the simulation covers (the states, inputs and range that it varies) and its form: the real code
+    against a fake clock, a fake machine or a fake game, or a copy of the logic. A no gives the reason.
+  - The answer moves no bar of a current Design Version. A mod in the pipeline answers the question at its next
+    version, on its scope proposal page.
+- **The Conductor's reading, not his words** (brief of 2026-11-26). The reading guides the answer:
+  - A simulation pays when the logic is a state machine or physics with many cases, and the live test is slow.
+  - A simulation does not pay for art, for a def with no logic, or for a thing that one cheap live look decides.
+  - The best form runs the real code against a fake clock, a fake machine or a fake game. A second copy of the logic in
+    another language can drift from the real code. Such a copy needs a check against live readings.
+- **What it does not change:** it builds nothing and it opens no ticket. It moves no bar, stage or judge.
+  `GUIDING_PRINCIPLES.md` is not changed: the rule is about how we build, not about the game.
+- **The census of 2026-11-26** (what exists, and where a simulation would pay): `design/specs/2026-11-26-simulation-census/one_page.md`.
+
+Item: `RIMMANDRAKE_CENSUS_SIMULATIONS_ASK_AT_DESIGN_FIRE_HAS_ONE`.
+
 ## Live tests have three kinds — owner, 2026-11-23
 
 Item `RIMMANDRAKE_ENACT_THREE_TEST_KINDS_FORCED_COUNTED_HUNTED_NOT_STARS_ALIGNED`. He approved this text on 2026-11-23
@@ -2882,7 +2931,8 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   it does not handle, and what it promises. Each promise gets a test. A reviewer can only report a broken promise."*
   - The page is `design/specs/<component>/boundary.md`. The page always has the parts ACCEPTS, DOES NOT SURVIVE and
     PROMISES. The page has LIFE CYCLES when the component keeps state between calls. The page has LIMITS when the
-    component enforces any limit.
+    component enforces any limit. The page of a new state machine has OFFLINE SIMULATION: yes or no, and why (§Each
+    design answers "offline simulation: yes or no, and why").
   - LIMITS lists each limit that the component enforces (a cap, pause, timeout, retry bound or text cut). Beside each
     limit is the danger that the limit guards, and the evidence that the danger happens.
   - Remove a limit that cannot name both. Do not tune it. (Owner 2026-11-16, the guard test in §No limit without the

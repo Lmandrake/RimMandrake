@@ -659,6 +659,19 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - If the live test did not run because no game could take it, record it as UNRUN, with its command.
 - Full text: `design/RimMandrake/standing_rulings.md` §The test is built with the item.
 
+## Each design answers "offline simulation: yes or no, and why"
+
+- Each design of a new mod answers this question in writing. The Designer writes the answer in the concept's
+  `plan.md`.
+- Each scope proposal page of a next version answers the same question.
+- The boundary page of new pipeline machinery that is a state machine answers the same question.
+- A yes names what the simulation covers and its form. A no gives the reason.
+- Prefer the real code against a fake clock, a fake machine or a fake game. A copy of the logic needs a check against
+  live readings.
+- The answer moves no bar of a current Design Version. A mod in the pipeline answers at its next version.
+- Full text: `design/RimMandrake/standing_rulings.md` §Each design answers "offline simulation: yes or no, and why".
+  The census of what exists: `design/specs/2026-11-26-simulation-census/one_page.md`.
+
 ## A live test declares its kind
 
 - A scene is one staged live test. A run is one play of a scene. A scene with no tag is kind A. Before its first run, a

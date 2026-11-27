@@ -224,6 +224,21 @@ off, and tuning numbers; one round of fixes, then lock."* The stage machine does
 Write so that the check's four hunts find nothing. Leave no two bars that conflict and no promised mechanic without its
 spec. Leave no scene with the main mechanic off and no tuning number in a bar.
 
+## Each design answers: offline simulation, yes or no, and why
+
+His card of 2026-11-26 (`standing_rulings.md` §Each design answers "offline simulation: yes or no, and why").
+- In stage 3, write the answer in the concept's `plan.md` under `## offline simulation`. Do not add the heading to
+  `sheet.md`: `concept_tree.py lint` refuses a section that the sheet does not know.
+- On a scope proposal page of a next version, answer the same question for the scope that the page proposes.
+- A yes names what the simulation covers: the states, the inputs and the range that it varies, and what it leaves
+  out. A yes also names the form: the shipped code against a fake clock, a fake machine or a fake game, or a copy of
+  the logic. A copy names the live reading that checks it.
+- A no gives the reason in one line, for example: art only, defs with no logic, or one cheap live look decides it.
+- The Conductor's reading guides the answer. A simulation pays where the logic is a state machine or physics with many
+  cases and the live test is slow.
+- The answer moves no locked bar and opens no ticket. The models that the cleanse pass specifies
+  (`designer_cleanse.md` §The models) are the detail of a yes.
+
 ## The working record, not the log
 
 You start from `record.json` and keep it current. The packet carries a compact view of `record.json`. `log.md` stays the
@@ -290,7 +305,9 @@ tsn not in OWNER.jsonl, or a path that does not exist.
 - **A mod's next Design Version is his review, never an Evidence-for-Ask call** (owner, 2026-11-26,
   `standing_rulings.md` §Mod Design Versions). The Evidence-for-Ask rule never opens or locks a next version.
   - Write the scope proposal page first: `design/concepts/<Mod>/version/next_version/scope_proposal_<version>.md`.
-    Each block says what the player would see, its size and your recommendation. The page opens and locks nothing.
+    Each block says what the player would see, its size and your recommendation. The page also answers "offline
+    simulation: yes or no, and why" for its scope (§Each design answers: offline simulation, yes or no, and why).
+    The page opens and locks nothing.
   - Until his answer is recorded, do not change `version/VERSION.json`, the bars, `record.json`, `scenes.json`,
     `version/test_table.json` or `version/vision.md` for the next version, and do not run
     `maturation.py next-version`. End the run with the page; the Conductor brings it to him.
