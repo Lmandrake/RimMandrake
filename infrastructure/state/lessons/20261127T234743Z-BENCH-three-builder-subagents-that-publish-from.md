@@ -1,0 +1,3 @@
+Three builder subagents that publish from one clone at the same time block each other at ./publish: one builder's red tree check refuses the others' landings, and their commits conflict. In bundle WB-cause-RIMMANDRAKE-BUILD-LANE-SWEEP-NO-STATE-THAT-NOTHING-ENDS-20261127-185008 all three then landed with land.sh, which skips the tree checks. 87693986ee landed lane_sweep.py with two untagged time budgets, and the whole-tree time-budget lint then refused every publisher until a peer fixed it (4206877ef1). Give each parallel builder its own scratch clone (scratch_clone.py). Never land with land.sh past a red tree check that your own files cause.
+item: RIMMANDRAKE_BUILD_LANE_BUNDLE_SWEEP_FIVE_STUCK_STATES_SEEN
+home: skills/clone-landing-commits/SKILL.md
