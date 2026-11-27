@@ -9,6 +9,7 @@ the test (children too: they inherit both) appends, once per path, what it reads
     X <why>     a read the hook cannot see: a Python child that drops the hook
 Without RM_DOOR_READS this file does nothing. It never raises into the test.
 """
+import _thread
 import json
 import os
 import sys
@@ -27,7 +28,9 @@ def _install():
     except OSError:
         return
     seen = set()
-    busy = [False]
+    busy = set()        # the threads inside the hook now: a read the hook itself makes is not recorded, and a read in
+    #                     another thread at the same moment is (one flag for the process lost 361 of 400 reads in
+    #                     8 threads, 2026-11-26)
 
     def put(kind, text):
         key = (kind, text)
@@ -94,9 +97,12 @@ def _install():
                        "os.exec", "os.spawn", "os.system"))
 
     def hook(event, args):
-        if event not in WATCH or busy[0]:
+        if event not in WATCH:
             return
-        busy[0] = True
+        me = _thread.get_ident()
+        if me in busy:
+            return
+        busy.add(me)
         try:
             if event == "open":
                 r = inside(args[0])
@@ -130,7 +136,7 @@ def _install():
         except Exception:  # noqa: BLE001  the hook never breaks the test it watches
             pass
         finally:
-            busy[0] = False
+            busy.discard(me)
 
     sys.addaudithook(hook)
 

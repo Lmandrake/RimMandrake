@@ -103,6 +103,18 @@ def t_records_what_a_test_reads(tmp):
     q = subprocess.run([sys.executable, "-c", "open('data/a.txt').read()"], cwd=r, capture_output=True, text=True,
                        env=dict(os.environ, PYTHONPATH=DR.HOOK_DIR), timeout=time_budget.CALL_S)
     check(q.returncode == 0 and q.stderr == "", "records-what-a-test-reads: without RM_DOOR_READS the hook does nothing")
+    # threads: the hook's re-entry guard was one flag for the process, so a read in one thread while another thread was
+    # inside the hook went unrecorded (measured 2026-11-26: 8 threads, 361 of 400 reads lost; 1 thread, 0)
+    for i in range(200):
+        write(r, "many/f%d.txt" % i, "x\n")
+    write(r, "threads.py", "import concurrent.futures\n"
+          "def rd(i):\n    with open('many/f%d.txt' % i) as f:\n        f.read()\n"
+          "with concurrent.futures.ThreadPoolExecutor(8) as ex:\n    list(ex.map(rd, range(200)))\n")
+    trec = os.path.join(tmp, "trec")
+    p = hooked(r, "threads.py", trec)
+    lost = [i for i in range(200) if "many/f%d.txt" % i not in DR.parse(trec)["files"]]
+    check(p.returncode == 0 and not lost, "records-what-a-test-reads: reads in 8 threads at once are each recorded "
+          "(%d of 200 lost; %s)" % (len(lost), p.stderr.strip()[-200:]))
 
 
 def t_a_read_the_hook_cannot_see_is_unknown(tmp):

@@ -33,13 +33,19 @@ most pipeline files, so the time falls less than the count.
   would shadow one the test imports from a later `sys.path` folder is not seen.
 - **a-reader-that-is-not-python.** A non-Python child aimed at the tree (other than `git` with named paths, and a
   short list of programs that read no file) makes the record "unknown": the door keeps the import closure for it.
+- **a-read-by-stat-only.** A test that only asks whether a repo file exists (`os.path.exists`, `os.stat`) and never
+  opens it or lists its folder does not record that file. A change that adds or deletes only that file leaves the
+  test out. No pipeline test was seen to do this (a census of `exists`/`isfile`/`stat` on repo paths, 2026-11-26).
+- **a-record-on-a-shared-network-folder.** The record file takes one append per line from each process. On a folder
+  whose appends interleave (`/mnt/d`, measured 2026-11-26), two lines can join into one false path, and both reads are
+  lost. `publish.py` writes the record under its own `TMPDIR`, a local disk.
 - **cost.** The hook adds about 7% to a test's time (`selftest_dispatch_pilot_holder.py`: 17.4 s to 18.7 s and
   13.4 s to 14.2 s, alternated, 2026-11-26, load 17).
 
 ## PROMISES (each one is owed a test of the same name)
 
 - **records-what-a-test-reads.** Under the hook, a test's record holds the repo files that its Python processes
-  open or import (a hooked child's too, and `git show <rev>:<path>`), and the folders that they list. Without
+  open or import, in any thread (a hooked child's too, and `git show <rev>:<path>`), and the folders that they list. Without
   `RM_DOOR_READS` the hook does nothing.
 - **a-read-the-hook-cannot-see-is-unknown.** A Python child that drops or skips the hook, a git child that reads the
   tree as a whole (`ls-files`, `status`, `clone`), and any other child aimed at the tree make the record answer
