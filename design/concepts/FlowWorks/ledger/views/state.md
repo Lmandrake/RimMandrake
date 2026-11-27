@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":89564,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":13543,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=5e11212bfbc51104d88f18287056981b56b423337bad7dd35534af104009539c -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":89564,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":22971,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=912db95e52c0660c9371f140a73cb2453b11849756e5b547ce0af86cf34150ca -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1776 events in 46 shards · reducer 1
-holder lease run-1795693138, token 61, last active 2026-11-26T18:49:21Z
+version 0.1.0 · stage offline_build · 1805 events in 46 shards · reducer 1
+holder lease run-1795693138, token 61, last active 2026-11-27T04:01:01Z
 holder session d663ac98-3664-4cdc-9376-afa355ba506f, context 290501 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795693138, 2026-11-26T18:48:02Z)
-- done: restart 3: 22 members given outcomes (closes: LAKE_FLOORS, shooting row, vv reds, books under liquid, solver hardening, four look questions; drops of stale/done; 0.2.0 refusals); BRIM_POUR left open for a game
-- next: Work RIMMANDRAKE_REFRESH_LABEL_FADE_AFTER_SET_LEVEL_SEVEN_BRIGHT on a free game, then SLOW_RAIN_FILL from the bundle notes
-- ruled out: mod faults behind shooting_rule_off and the vv matrix reds; book draw bypass (fixed live)
+## Last checkpoint (HOLDER.run-1795693138, 2026-11-27T04:01:01Z)
+- done: restart 4: CLASS_SEVEN_THIRST closed, REFRESH_LABEL_FADE dropped stale, SLOW_RAIN_FILL closed (a0d0227542, 3bfb4cb53f), SCENARIOS_MAP_FIX_PIPE_LONG_RUN_HOMELESS dropped done (cb5dd12686)
+- next: Stage and judge the Scrapper pipe long run for SCRAPPER_PIPE_REDRAW_BLURRY_AT_ZOOM on a free game
+- ruled out: Ensure-missing SyncParams; label fade defect after SetLevel
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 125 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -502,6 +502,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1776 events (views/history.md; never read whole)
+- the full history: 1805 events (views/history.md; never read whole)
 
-cursor: t=2026-11-26T18:49:21Z.1795718961606266241 (modledger.py since --mod FlowWorks t=2026-11-26T18:49:21Z.1795718961606266241 prints what changed after this packet)
+cursor: t=2026-11-27T04:01:01Z.1795752061366273147 (modledger.py since --mod FlowWorks t=2026-11-27T04:01:01Z.1795752061366273147 prints what changed after this packet)
