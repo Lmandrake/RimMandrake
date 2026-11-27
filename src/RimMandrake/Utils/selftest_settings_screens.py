@@ -289,7 +289,6 @@ MODS = {
         "Ancient machines": "Now",
         "Research and material costs": "Now",
         "Level ratios": "Now",
-        "The alloy forge": "Now",
         "Salvage": "Now",
     }, ("machineLines",)),   # one switch for each row of the onboarding table, saved as a dictionary (Scribe_Collections)
     "Webwork": ("RM_WebworkMod.cs", "RM_Webwork.csproj", {

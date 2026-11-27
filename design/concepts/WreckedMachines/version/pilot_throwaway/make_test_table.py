@@ -153,9 +153,6 @@ UNLISTED = {
     "src/RimMandrake/bridgetools/selftest_wreck_reads.py": "the generic bridge reads that the scenes use (thing_set_sample, "
                                                            "install_blueprint, study record, processor_fill, reach_edge, caravan "
                                                            "reads), with planted faults; a test of the bridge, not of the mod",
-    WM + "/prove_alloy_forge_offline.py": "the offline proof of the alloy forge's gates (--vfef <VFE Factory mod dir>): the gates "
-                                          "leave the mod when the forge is onboarded (plan.md); its patch interpreter is what "
-                                          "T_ONBOARDING_TABLE_OFFLINE is to reuse (tree check C_onboarding_table_offline)",
 }
 
 # ---- why the game is needed, from plan.md "offline simulation" (the one place the locked files give the reason) ----

@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedSmelter",
+ "line": "smelter",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Kludged/AutomatedSmelter_east.png",
+   "sha": "7281de4a10a7637e9bf465b8418b3bebcd53e0e308daa70cecb944874f3925b3",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Kludged/AutomatedSmelter_north.png",
+   "sha": "54386e04006cc314c0081743f1e99ae119d936cbbd57b74dfa8b8fd6e210a1fd",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Kludged/AutomatedSmelter_south.png",
+   "sha": "8d7376d0bd0f6d94612938246ecfb2a2d88aec0186dbb72bd9cbd0abbc391b53",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Kludged/AutomatedSmelter_west.png",
+   "sha": "45f0e27974935f98c5d8c0eff5b0e5dbe4829d130a71ae4b7325ccf4ab4018ce",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Wrecked/AutomatedSmelter_east.png",
+   "sha": "9f0fc837e2dd8d5ed7ae099cd0d5b3fab24a822abdefac2ce0b004405def17b4",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Wrecked/AutomatedSmelter_north.png",
+   "sha": "93c7307788816206f15591057941c7d1dbfdeaec14f754f3f91b516f36a21443",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Wrecked/AutomatedSmelter_south.png",
+   "sha": "ffb1e8f3babc7306f48e573630f05806f479cf1f02b0884064347e1e9dd8a070",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter/Wrecked/AutomatedSmelter_west.png",
+   "sha": "81844bd56b993f00de274e6c9066abd795d8e62df1d06350c6996ffd6128ee5e",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T16:57:38Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "These eight pictures are the owner's kept art (he looked at them and corrected them on 2026-08-12), so under E3 every verdict is KEEP and concerns go in notes only. All eight keep the donor's domed furnace, plinth, triangular cap, heat ring, intake belt and three output belts, painted in a weathered, rust-streaked register with no drawn keyline. Wrecked reads as dead and holed, nothing lit. Kludged reads as patched and running: belts clear on every facing and the dome closed under patch plates, per his two corrections. The four facings agree in size and palette, and at 32 px/cell each reads as a grey dome on a dark plinth, apart from the sandy ground. The concerns noted below are small and refuse nothing.",
+ "notes": []
+}

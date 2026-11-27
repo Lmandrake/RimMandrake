@@ -65,7 +65,7 @@ that yes.
   `C_onboarded_set`, `C_onboarding_complete` and `C_onboarding_table_offline`; the meetings `onboarding_table` and
   `forge_processes`.
 - **Form.** An offline read of data: the mod's shipped XML and patches applied to the factory mod's real defs with
-  the patch interpreter that `src/RimMandrake/WreckedMachines/prove_alloy_forge_offline.py` already holds.
+  the patch interpreter that `src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py` holds.
 - **Inputs and range.** The factory mod's defs as installed (workshop folder 3686924415, 1.6), with and without
   Vanilla Cooking Expanded; all 20 rows; the processes that load only with another mod.
 - **Left out.** Whether a Kludged part is useful to a colony: a judgment, read by the bar. What the C# changes at

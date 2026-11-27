@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedAlloyForge",
+ "line": "alloyforge",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Kludged/AutomatedAlloyForge_east.png",
+   "sha": "65bc6b3c3880af13f681acafde1386a23bd2b62d5a4b8f943aad36452aba0e0c",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Kludged/AutomatedAlloyForge_north.png",
+   "sha": "c8c07bdb275aee995a617b485e0c4e9fa756b04929d12d8134a71bd521e55283",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Kludged/AutomatedAlloyForge_south.png",
+   "sha": "77c16ac44ecf63645fef71e84aaaba9c5c2ba15ee21bb26c8c640d12c5bc2e6f",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Kludged/AutomatedAlloyForge_west.png",
+   "sha": "bfd622ee62dbc032ccb78f3825d5d6c12c5b6b9bdc844478fce6dc7e5c6d631a",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Wrecked/AutomatedAlloyForge_east.png",
+   "sha": "fde22a961c35e75bff2785e33f12c466c74329244e9db2adccc9089ee122f3e2",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Wrecked/AutomatedAlloyForge_north.png",
+   "sha": "835326ba185bf8ad93c5fc99c976a2854eebcde389ca74743437eb78f77acf20",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Wrecked/AutomatedAlloyForge_south.png",
+   "sha": "8ef18800463d47c7117ee31e3c6948c3b76d64da3b0033f0bfa48454aa29e9e8",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedAlloyForge/Wrecked/AutomatedAlloyForge_west.png",
+   "sha": "d69e3cdaacbcf605df5113fb7bab425f334d99f24e5ff3ed861a656971e4005f",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T17:25:00Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's outline and facing and its main parts (two round crucibles, one with a barred heat core and one under a three-spoke fan cover, the control box and pipe between them, side vents, hoppers and tubes, and the belts on the same edges), redrawn in the painted, weathered register of the smelter set with no drawn keyline. Wrecked reads as dead: cracked crucibles, torn plating, black breaches, loose wires, no glow anywhere. Kludged reads as patched and running: dense riveted patch plates, spliced cable runs, one strapped-on box per facing, small amber lamps and a glowing heat core or vent, belts clear, and no open breach full of fire, so both of the owner's smelter corrections are kept. The facings agree on size, palette and parts, and at 32 and 18 px per cell each picture reads as two big round crucibles and belt blocks in rust and steel, clearly apart from the tan floor. The east and west top crucible and the side belts pass a little beyond the 5x5 footprint box, as the donor's own picture (drawSize 6x6) does.",
+ "notes": []
+}

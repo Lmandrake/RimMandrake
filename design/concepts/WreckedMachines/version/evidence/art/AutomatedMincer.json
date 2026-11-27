@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedMincer",
+ "line": "mincer",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Kludged/AutomatedMincer_east.png",
+   "sha": "6d503d69e3c174d50d130e08a6f6cf431077b2581c13ec4d8c19917cbe5f360f",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Kludged/AutomatedMincer_north.png",
+   "sha": "9713e23bb0095941c767ba0184931b0d7758d5f0b99a05ba77c55828ff307251",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Kludged/AutomatedMincer_south.png",
+   "sha": "5466ec3400669df723af26063081f31f81b9b11bdf9d11097d5859f259b48c03",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Kludged/AutomatedMincer_west.png",
+   "sha": "14f6b3da76d61d8194ad2cd9b802b8a242ae6681885bb099ab39f539d791c54d",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Wrecked/AutomatedMincer_east.png",
+   "sha": "7b46103037a34f6e47b2518861abcc78e62a1165cd7714746da707f1111d524d",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Wrecked/AutomatedMincer_north.png",
+   "sha": "b9173692017606cbd8c103eb6df05b2f5a0b4182d2541f07092f8ef673163adf",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Wrecked/AutomatedMincer_south.png",
+   "sha": "37d20c65b2cf0907e8cc5629f8c25d063807a94c72b4e9974fa97ba780a6aff0",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMincer/Wrecked/AutomatedMincer_west.png",
+   "sha": "b28319588aa026afd9b45b55dde2497be9fd86e5756526b659a2b1302940754e",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T17:10:00Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's outline, facing and parts (housing, two dark-red rollers, three-slot grinder plate on north/south, three saw blades on east/west, belts in and out) and redraw them in the painted, weathered register of the smelter set, with no drawn keyline. Wrecked reads as dead: torn plating, black breaches with loose cable, no lamp lit. Kludged reads as patched and running: riveted patch plates, spliced cable runs, one strapped-on control box per facing, a few small amber, red or green lamps, belts clear and no open breach or fire, so both of the owner's smelter corrections are kept. The four facings agree on size, palette and parts, and at 32 px per cell and 18 px per cell each picture reads as a few bold shapes, its rust-and-steel body clearly apart from the tan floor. The belt ends pass a little beyond the 3x3 footprint box, exactly as the donor's own picture does (drawSize 4x4), so the machine body itself sits in its footprint.",
+ "notes": []
+}

@@ -4,11 +4,10 @@
   (refurbishment). The first needs the wrecked machine studied (requiredAnalyzed) and opens the kludge order; the second needs the
   kludged machine studied and the first project, and opens the refurbish order. The row of each machine is in
   Defs/MachineLines/MachineLines_WreckedMachines.xml; the second project keeps the defName its neighbours already read
-  (the alloy forge below, Cold Storage, the Cuisine mod, ResearchRetag).
+  (Cold Storage, the Cuisine mod, ResearchRetag).
 
   baseCost: the second project keeps the cost it had; the first is half of it (rounded to the same step). Both are provisional.
   techLevel is kept from before: Industrial for the smelter, Spacer for the two archotech machines.
-  The two alloy forge projects at the end of this file are untouched: the forge still follows the smelter's second project.
 
   No techprint gate: no design doc maps the campaign factions to a tech domain (TECHPRINT_FACTION_GATING_1), so none is invented.
 -->
@@ -135,68 +134,6 @@
     </requiredAnalyzed>
     <researchViewX>1</researchViewX>
     <researchViewY>2</researchViewY>
-  </ResearchProjectDef>
-
-  <!-- THE ALLOY FORGE ABOARD, SHIP_ALLOY_FORGE_1 (owner 2026-10-09, typed:
-       "Yes, I think we will need an alloy forge. Maybe even earlier, but the
-       recipies will unlock later in the game for more difficult alloys.
-       Durasteel earlier, plasteel later..."). Spec:
-       design/RimMandrake/canon_materials_design_2026-10-09.md §3.4.
-
-       The building is VFE Factory's VFEFactory_AutomatedAlloyForge. Its stock
-       gate (VFE_ComplexFactories, after Fabrication) is replaced by the early
-       project below, which follows the smelter restoration: the forge comes
-       right after the smelter. Its first alloy (durasteel, added by the
-       RimStarWars Armoury, mandrake.rsw.armoury) needs nothing more than the
-       forge. Plasteel needs the late project below.
-       Patch: Patches/WreckedMachines_AlloyForgeGates.xml. Toggles:
-       WreckedMachinesSettings.alloyForgeProgressiveGate / plasteelAlloyEnabled.
-
-       ⚠️ PROVISIONAL numbers (no calibration, no ruling): both baseCosts and the
-       late project's AdvancedFabrication prerequisite. -->
-  <ResearchProjectDef>
-    <defName>RM_WM_AlloyForgeRestoration</defName>
-    <label>alloy forge restoration</label>
-    <description>Bring an ancient alloy forge back to heat. Once the smelter runs, the forge is the next furnace down the line: it bonds refined metal with a hardening mineral into tougher alloys.\n\nRestoring it unlocks the forge and its first, easiest alloys. Harder alloys need further study.</description>
-    <baseCost>1500</baseCost>
-    <techLevel>Industrial</techLevel>
-    <prerequisites>
-      <li>RM_WM_AutomatedSmelterRestoration</li>
-    </prerequisites>
-    <tags>
-      <li>ShipRelated</li>
-    </tags>
-    <researchViewX>27</researchViewX>
-    <researchViewY>12</researchViewY>
-    <generalRules>
-      <rulesStrings>
-        <li>subject->the alloy forge's cold crucibles</li>
-        <li>subject_gerund->restoring an ancient alloy forge</li>
-      </rulesStrings>
-    </generalRules>
-  </ResearchProjectDef>
-
-  <ResearchProjectDef>
-    <defName>RM_WM_PlasteelAlloying</defName>
-    <label>plasteel alloying</label>
-    <description>Learn to drive the restored alloy forge hard enough to fuse plasteel: steel, chemfuel and a trace of gold under heat and pressure the forge was built for and has not reached in a lifetime.\n\nUnlocks the forge's plasteel recipe, the only way the colony can make plasteel itself.</description>
-    <baseCost>4000</baseCost>
-    <techLevel>Spacer</techLevel>
-    <prerequisites>
-      <li>RM_WM_AlloyForgeRestoration</li>
-      <li>AdvancedFabrication</li>
-    </prerequisites>
-    <tags>
-      <li>ShipRelated</li>
-    </tags>
-    <researchViewX>28</researchViewX>
-    <researchViewY>12</researchViewY>
-    <generalRules>
-      <rulesStrings>
-        <li>subject->plasteel fusion</li>
-        <li>subject_gerund->alloying plasteel</li>
-      </rulesStrings>
-    </generalRules>
   </ResearchProjectDef>
 
 </Defs>

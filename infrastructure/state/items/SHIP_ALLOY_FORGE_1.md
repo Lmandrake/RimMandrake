@@ -53,8 +53,9 @@ Whittle round 2026-11-11 (CLAUDE_STEVEDESKTOP_OFFLINE5, published e08969370e):
 - **Research tab:** `RM_WM_AlloyForgeRestoration` / `RM_WM_PlasteelAlloying` sat alone on Main while the smelter
   restoration and `AdvancedFabrication` were on `RUT_Tree_Workshop`; `RUT_ResearchTabAssign.xml` now moves both.
 - **Plasteel toggle:** re-enabling put plasteel at index 0, ahead of durasteel; it now returns before its loaded neighbour.
-- Offline proof: `src/RimMandrake/WreckedMachines/prove_alloy_forge_offline.py` (lxml; `--vfef <VFE Factory dir>
-  --capture <DefDump capture>`). Live rows added to `alloy_forge_gated`. L5 (live minimal-list load) still owed.
+- Offline proof: its script and the live chain `alloy_forge_gated` were deleted on 2026-11-27 with the gates (the forge
+  became an ancient machine of Wrecked Machines; `design/concepts/WreckedMachines/plan.md`, "Leaves the mod when the forge
+  is onboarded"). The durasteel patch is read offline by `src/RimStarWars/Armoury/validation.py`. L5 (live minimal-list load) still owed.
 
 ## criteria
 - L1 L4: zersium's home biome is The Forge (ruled 2026-10-09)

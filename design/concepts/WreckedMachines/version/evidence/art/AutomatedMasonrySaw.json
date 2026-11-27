@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedMasonrySaw",
+ "line": "masonrysaw",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Kludged/AutomatedMasonrySaw_east.png",
+   "sha": "5d40d1fd4e75e6629dbf3d9f1e056116948ebd4d54a040f7d8321caa4b6bfe5e",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Kludged/AutomatedMasonrySaw_north.png",
+   "sha": "23910167614761c5809143199f207a90f71342576eac82fd8d7f8556f954b22b",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Kludged/AutomatedMasonrySaw_south.png",
+   "sha": "da9abe06d3f2fd056c8c646ffea3436de8c0269491f4b82953d425e34f7c2fbc",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Kludged/AutomatedMasonrySaw_west.png",
+   "sha": "cc8b40e38b2cb746d9446dfb56cf876bb0db365d4eac685b4e88e474bd6f7524",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Wrecked/AutomatedMasonrySaw_east.png",
+   "sha": "37ba552d456ec3eee155d997a48a1af698ebd13a4e7ff1e1c054c86f82bb435a",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Wrecked/AutomatedMasonrySaw_north.png",
+   "sha": "b4905d21a129fb0414efcf256db2844422b37d0c13728e06d721c8f19a3a2a02",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Wrecked/AutomatedMasonrySaw_south.png",
+   "sha": "af6a27556dd83719271e0e7e3f65f677b7e38261b1ec95146e1971d445f7c25d",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedMasonrySaw/Wrecked/AutomatedMasonrySaw_west.png",
+   "sha": "77876cc1acaa4c44ec584d0d823b5b629babfb04730d112c4f3cd0f3b97a5d3b",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T16:35:45Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's outline, facing and parts (grid cage, angled clamp towers, block piles, through belts) and redraw them in the painted, weathered register of the smelter set with no drawn keyline. Wrecked is torn open with nothing lit; Kludged carries patch plates, spliced cables, one strapped-on box and a few lamps, with every belt clear and no open fiery breach, so both owner notes hold. The four facings agree on size and palette, and at 32 px/cell each reads as a few bold shapes clearly darker than the ground beside the human. Alpha is clean with no shadow or scenery. The belt ends overhang the 3x3 footprint box by the same amount as the donor's own art at drawSize 4x4, which is the donor outline the pictures were asked to keep, so I do not refuse it under D3.",
+ "notes": []
+}

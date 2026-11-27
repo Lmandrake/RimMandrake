@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedCannery",
+ "line": "cannery",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Kludged/AutomatedCannery_east.png",
+   "sha": "2835932cccfa6bbaae0001066661a34757ee0024cf9159721fa093035b7f5741",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Kludged/AutomatedCannery_north.png",
+   "sha": "fcd73820277ed54831a9d2ab7ad7c017c6d5de226b0eb9309f63e4cc85600fe8",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Kludged/AutomatedCannery_south.png",
+   "sha": "92f01cbc44982930b578ad01172313927f89c8662c3d95cd0312026f964f0550",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Kludged/AutomatedCannery_west.png",
+   "sha": "cd569008aed7df80d5a973954db5f62dabf034968c991e97fb297aa21cef1271",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Wrecked/AutomatedCannery_east.png",
+   "sha": "2d6473d1e7914f3f583a8cbe9dd02aa51918e6d650d089e7af10bae3b9791b5f",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Wrecked/AutomatedCannery_north.png",
+   "sha": "0f56d68ccbca1c80800e732354d15e2a6dee17a62c298917a209f5a90e73ba1f",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Wrecked/AutomatedCannery_south.png",
+   "sha": "ee8ab0df799826180dad27dd33ac3854103cf3e68c890f512c8fdc69ab484a9a",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedCannery/Wrecked/AutomatedCannery_west.png",
+   "sha": "258892a8e94516e676335ca9b25105eec1e6b888fc3979a204c2a15014bd80ea",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T16:36:46Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's layout on each facing: the jar rack between the chain loops and spring columns, the big disc gear, the gears, the control box, and the belts in and out where the donor has them. They are painted and weathered in the smelter set's register with no drawn keyline. Wrecked is holed and unlit with the rack emptied; Kludged is patched and cabled, with one strapped-on bodge, a few lamps and jars back on the rack, every belt clear and no fiery breach, so both owner notes hold. The four facings agree on size and palette; at true scale the 3x5 machine is correctly large beside the human, and at 32 px/cell the dark brown body reads as clear bold shapes against the sand ground. Belt ends overhang the footprint box only as the donor's own drawSize 4x6 art does.",
+ "notes": []
+}

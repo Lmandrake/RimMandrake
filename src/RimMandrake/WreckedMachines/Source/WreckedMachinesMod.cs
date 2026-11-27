@@ -59,18 +59,6 @@ namespace RimMandrake.WreckedMachines
         // Shipped default: ON. Salvaged psychic emanators soothe nearby pawns.
         public static bool enableSalvagedEmanators = true;
 
-        // ── The alloy forge aboard, SHIP_ALLOY_FORGE_1 (Patches/
-        // WreckedMachines_AlloyForgeGates.xml). Shipped default: ON. The forge
-        // needs Alloy Forge Restoration (early), costs industrial components in
-        // place of VFE's 4 advanced ones (set at startup; those need plasteel and
-        // AdvancedFabrication, so the stock cost made the early forge a late one), and its plasteel recipe
-        // needs Plasteel Alloying (late). Off: VFE Factory's stock gates and cost.
-        public static bool alloyForgeProgressiveGate = true;
-
-        // Shipped default: ON. The forge's plasteel recipe exists. Off: the
-        // forge cannot make plasteel at all.
-        public static bool plasteelAlloyEnabled = true;
-
         // ── The one salvage rule, SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY
         // (WreckedMachinesSalvage.cs). Shipped default: ON. Automated smelters
         // pay what the vanilla smelter pays. Off: VFE Factory's own rule.
@@ -101,8 +89,6 @@ namespace RimMandrake.WreckedMachines
             Scribe_Values.Look(ref refurbishedRatio, "refurbishedRatio", 0.75f, true);
             Scribe_Values.Look(ref requireLowerGradeUnderneath, "requireLowerGradeUnderneath", true, true);
             Scribe_Values.Look(ref enableSalvagedEmanators, "enableSalvagedEmanators", true, true);
-            Scribe_Values.Look(ref alloyForgeProgressiveGate, "alloyForgeProgressiveGate", true, true);
-            Scribe_Values.Look(ref plasteelAlloyEnabled, "plasteelAlloyEnabled", true, true);
             Scribe_Values.Look(ref smeltersFollowSalvageRule, "smeltersFollowSalvageRule", true, true);
             Scribe_Values.Look(ref cremateWithoutStripping, "cremateWithoutStripping", true, true);
             Scribe_Collections.Look(ref machineLines, "machineLines", LookMode.Value, LookMode.Value);
@@ -281,26 +267,6 @@ namespace RimMandrake.WreckedMachines
                 list.GapLine();
             }
 
-            if (Group(list, "The alloy forge", RimMandrake.Shared.SettingScope.Now, new[] { "alloyForgeProgressiveGate", "plasteelAlloyEnabled" }))
-            {
-                list.CheckboxLabeled(
-                    "Alloy forge unlocks step by step",
-                    ref alloyForgeProgressiveGate,
-                    "On (shipped default): the alloy forge needs Alloy Forge Restoration, "
-                    + "an early project right after the smelter, costs industrial components "
-                    + "only (no advanced ones), and its plasteel recipe needs Plasteel "
-                    + "Alloying, a late one. Off: the forge and its plasteel recipe use "
-                    + "VFE Factory's own research gates and cost. The research gates change "
-                    + "at once; the cost changes at the next game start.");
-                list.CheckboxLabeled(
-                    "Alloy forge can make plasteel",
-                    ref plasteelAlloyEnabled,
-                    "On (shipped default): the forge's plasteel recipe exists. Off: the "
-                    + "forge cannot make plasteel, so it comes only from salvage and trade. "
-                    + "Machines already built pick this up after your next game load.");
-                list.GapLine();
-            }
-
             if (Group(list, "Salvage", RimMandrake.Shared.SettingScope.Now, new[] { "smeltersFollowSalvageRule", "cremateWithoutStripping" }))
             {
                 list.Label("One rule for what a finished item gives back: a quarter of each "
@@ -383,48 +349,6 @@ namespace RimMandrake.WreckedMachines
         private static readonly MethodInfo ResolveDesignators =
             HarmonyLib.AccessTools.Method(typeof(DesignationCategoryDef), "ResolveDesignators");
 
-        // ── Alloy forge (SHIP_ALLOY_FORGE_1). PipeSystem types are VFE's and
-        // this assembly does not reference them, so the process def and the
-        // processor comp's list are reached by reflection on their XML field
-        // names (researchPrerequisites, processes). ──
-        private static readonly ThingDef AlloyForge =
-            DefDatabase<ThingDef>.GetNamedSilentFail("VFEFactory_AutomatedAlloyForge");
-
-        private static readonly ResearchProjectDef StockForgeResearch =
-            DefDatabase<ResearchProjectDef>.GetNamedSilentFail("VFE_ComplexFactories");
-
-        private static readonly ResearchProjectDef PlasteelResearch =
-            DefDatabase<ResearchProjectDef>.GetNamedSilentFail("RM_WM_PlasteelAlloying");
-
-        private static readonly Def PlasteelProcess = AlloyForgeReflection.ProcessDef("VFEFactory_AlloyPlasteel");
-
-        private static readonly List<ResearchProjectDef> ForgeResearchPrereq =
-            AlloyForge != null && AlloyForge.researchPrerequisites != null
-                ? new List<ResearchProjectDef>(AlloyForge.researchPrerequisites)
-                : null;
-
-        private static readonly List<ResearchProjectDef> PlasteelProcessPrereq =
-            AlloyForgeReflection.ResearchPrereqs(PlasteelProcess);
-
-        // The process that FOLLOWS plasteel on the forge as loaded (VFE's gravlite). Plasteel sits
-        // after the Armoury's durasteel process, which is prepended so it is the forge's first
-        // recipe. Re-enabling the plasteel toggle puts it back just before this neighbour (or last),
-        // never at 0 and never by a stored index, which the Armoury's own startup removal of
-        // durasteel (its toggle off; the two static ctors run in no fixed order) would shift.
-        private static readonly Def PlasteelProcessNext =
-            AlloyForgeReflection.Following(AlloyForge, PlasteelProcess);
-
-        // The forge's cost as loaded (VFE Factory's: 460 steel, 14 industrial + 4 SPACER components). Spacer
-        // components are made from plasteel behind AdvancedFabrication, the very gate the late plasteel recipe
-        // sits behind, so with the stock cost the "early" durasteel forge could not be built until late game.
-        // Gated, each spacer component is swapped for an industrial one; off, the stock list comes back.
-        private static bool forgeCostApplied;
-
-        private static readonly List<ThingDefCountClass> StockForgeCost =
-            AlloyForge != null && AlloyForge.costList != null
-                ? AlloyForge.costList.Select(e => new ThingDefCountClass(e.thingDef, e.count)).ToList()
-                : null;
-
         private static readonly Dictionary<ThingDef, List<ThingDefCountClass>> BaseCosts =
             new Dictionary<ThingDef, List<ThingDefCountClass>>();
 
@@ -458,7 +382,6 @@ namespace RimMandrake.WreckedMachines
             foreach (ThingDef def in BaseCosts.Keys.ToList())
                 RescaleCost(def);
             LadderPatcher.Apply();
-            ApplyAlloyForge();
             RM_ProcessLists.Apply();
         }
 
@@ -491,51 +414,6 @@ namespace RimMandrake.WreckedMachines
             }
         }
 
-        private static void ApplyAlloyForge()
-        {
-            bool gated = WreckedMachinesSettings.alloyForgeProgressiveGate;
-            if (AlloyForge != null && ForgeResearchPrereq != null)
-            {
-                AlloyForge.researchPrerequisites = gated || StockForgeResearch == null
-                    ? new List<ResearchProjectDef>(ForgeResearchPrereq)
-                    : new List<ResearchProjectDef> { StockForgeResearch };
-            }
-
-            // The cost is set ONCE, at startup: a live change would alter what a standing forge refunds
-            // on deconstruction (build cheap, flip the gate, deconstruct for spacer components) and
-            // what a half-built frame still wants. The settings window says so.
-            if (!forgeCostApplied && AlloyForge != null && StockForgeCost != null)
-            {
-                forgeCostApplied = true;
-                if (gated) AlloyForge.costList = EarlyForgeCost(StockForgeCost);
-            }
-
-            if (PlasteelProcess != null && PlasteelProcessPrereq != null)
-            {
-                var prereqs = new List<ResearchProjectDef>(PlasteelProcessPrereq);
-                if (!gated) prereqs.Remove(PlasteelResearch);
-                AlloyForgeReflection.SetResearchPrereqs(PlasteelProcess, prereqs);
-            }
-
-            AlloyForgeReflection.SetProcessPresent(AlloyForge, PlasteelProcess,
-                WreckedMachinesSettings.plasteelAlloyEnabled, PlasteelProcessNext);
-        }
-
-        /// <summary>The stock forge cost with every spacer component counted as an industrial one (merged into the
-        /// existing industrial entry), so the forge is buildable before AdvancedFabrication.</summary>
-        public static List<ThingDefCountClass> EarlyForgeCost(List<ThingDefCountClass> stock)
-        {
-            var spacer = ThingDefOf.ComponentSpacer;
-            var industrial = ThingDefOf.ComponentIndustrial;
-            int moved = stock.Where(e => e.thingDef == spacer).Sum(e => e.count);
-            var cost = stock.Where(e => e.thingDef != spacer).Select(e => new ThingDefCountClass(e.thingDef, e.count)).ToList();
-            if (moved == 0) return cost;
-            var ind = cost.FirstOrDefault(e => e.thingDef == industrial);
-            if (ind != null) ind.count += moved;
-            else cost.Add(new ThingDefCountClass(industrial, moved));
-            return cost;
-        }
-
         private static void RescaleCost(ThingDef def)
         {
             if (def == null || !BaseCosts.TryGetValue(def, out var baseline)) return;
@@ -561,75 +439,6 @@ namespace RimMandrake.WreckedMachines
         {
             if (__result == null || !RM_MachineLines.AnyOff()) return;
             __result.RemoveAll(p => RM_MachineLines.ProjectOfOffLine(p) && !Find.ResearchManager.IsCurrentProject(p));
-        }
-    }
-
-    /// <summary>Reflection over VFE's PipeSystem.ProcessDef and its processor comp, by XML field name.</summary>
-    public static class AlloyForgeReflection
-    {
-        private static readonly System.Type ProcessDefType =
-            GenTypes.GetTypeInAnyAssembly("PipeSystem.ProcessDef");
-
-        public static Def ProcessDef(string defName)
-        {
-            if (ProcessDefType == null) return null;
-            return GenDefDatabase.GetDefSilentFail(ProcessDefType, defName, false);
-        }
-
-        private static System.Reflection.FieldInfo Field(object o, string name)
-        {
-            return o == null ? null : o.GetType().GetField(name,
-                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public
-                | System.Reflection.BindingFlags.NonPublic);
-        }
-
-        public static List<ResearchProjectDef> ResearchPrereqs(Def process)
-        {
-            var f = Field(process, "researchPrerequisites");
-            if (f == null) return null;
-            var list = f.GetValue(process) as List<ResearchProjectDef>;
-            return list != null ? new List<ResearchProjectDef>(list) : new List<ResearchProjectDef>();
-        }
-
-        public static void SetResearchPrereqs(Def process, List<ResearchProjectDef> prereqs)
-        {
-            var f = Field(process, "researchPrerequisites");
-            if (f != null) f.SetValue(process, prereqs.Count == 0 ? null : prereqs);
-        }
-
-        /// <summary>The processor comp's `processes` list on a factory building, or null.</summary>
-        public static System.Collections.IList Processes(ThingDef building)
-        {
-            if (building == null || building.comps == null) return null;
-            foreach (var props in building.comps)
-            {
-                var f = Field(props, "processes");
-                if (f != null) return f.GetValue(props) as System.Collections.IList;
-            }
-            return null;
-        }
-
-        /// <summary>The process right after `process` on the building's processor as loaded, or null (last, or absent).</summary>
-        public static Def Following(ThingDef building, Def process)
-        {
-            var list = Processes(building);
-            if (list == null || process == null) return null;
-            int i = list.IndexOf(process);
-            return i >= 0 && i + 1 < list.Count ? list[i + 1] as Def : null;
-        }
-
-        /// <summary>Adds (just before `before` when it is on the list, else last) or removes one process.</summary>
-        public static void SetProcessPresent(ThingDef building, Def process, bool present, Def before)
-        {
-            var list = Processes(building);
-            if (list == null || process == null) return;
-            bool has = list.Contains(process);
-            if (present && !has)
-            {
-                int at = before == null ? -1 : list.IndexOf(before);
-                if (at >= 0) list.Insert(at, process); else list.Add(process);
-            }
-            else if (!present && has) list.Remove(process);
         }
     }
 }

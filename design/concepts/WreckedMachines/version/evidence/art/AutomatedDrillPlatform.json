@@ -1,0 +1,95 @@
+{
+ "subject": "AutomatedDrillPlatform",
+ "line": "drill",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Kludged/AutomatedDrillPlatform_east.png",
+   "sha": "f1c4926f3fa8b6735436e777a53c0d9fc3e20563ef7b12c8fca9d4b1fe9bbac0",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Kludged/AutomatedDrillPlatform_north.png",
+   "sha": "9227f3fee7e4e3900defde9e7282ecd22ae9557bc071a47e7e2b816716990d32",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Kludged/AutomatedDrillPlatform_south.png",
+   "sha": "544f6e0c3ed4cf1325cffaa206d1915b6868a1bba46f7a9d96a885207f3abeda",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Kludged/AutomatedDrillPlatform_west.png",
+   "sha": "1cbb2ec39fa3830db0d3a357abbbe1f8090d42f42e28b2ee7772eafedc4d3a39",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Wrecked/AutomatedDrillPlatform_east.png",
+   "sha": "d2728200911877083713c9f8098470c948274fd65859516868a088517c8ae60f",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Wrecked/AutomatedDrillPlatform_north.png",
+   "sha": "cd98114ac0635e731e875aea24d04971c1f4d77249fea0445e5316408077acd3",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Wrecked/AutomatedDrillPlatform_south.png",
+   "sha": "ff30a605df2f6f738753d6d4e22fb0fc4657160dbca540c768e2ad3ea158e2e5",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedDrillPlatform/Wrecked/AutomatedDrillPlatform_west.png",
+   "sha": "ce0b605896d82ff41b47e4c966d0652bd19f77903924b8e34234c762858c6bfd",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T16:36:16Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's girder frame with its four bolted corner posts, the central drill head on its octagonal base, the dark square pad and each facing's belt or chute where the donor puts it. They are painted and weathered with no drawn keyline and sit in the same register as the smelter set. Wrecked is holed, sagging and unlit; Kludged is patched, cabled, carries one strapped-on box or tank and a few lamps, with every belt clear and no fiery breach, so both owner notes hold. The four facings agree on size and palette, and at 32 px/cell the dark rusty body reads clearly apart from the sand ground with the frame and drill head as bold shapes. The frame top overhangs the pad by the same amount as the donor's own art at drawSize 4x4, so I judged the outline against the donor and do not refuse it under D3.",
+ "notes": []
+}

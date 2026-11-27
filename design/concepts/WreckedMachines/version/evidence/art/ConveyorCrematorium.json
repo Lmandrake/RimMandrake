@@ -1,0 +1,95 @@
+{
+ "subject": "ConveyorCrematorium",
+ "line": "crematorium",
+ "verdict": "keep",
+ "slots": [
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Kludged/ConveyorCrematorium_east.png",
+   "sha": "ad2d3cfc6770fe87e1c0ce5163ea310e7e8ce7d9966b084d58c544c3b7b129f6",
+   "tier": "kludged",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Kludged/ConveyorCrematorium_north.png",
+   "sha": "16fb61b28ed3b91c55d76566e25c34591e9980980f909582a0134a85791e19bc",
+   "tier": "kludged",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Kludged/ConveyorCrematorium_south.png",
+   "sha": "a62951f568b0edbeb74d978d1f525c88abb58505115346fac240d4ce86f229da",
+   "tier": "kludged",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Kludged/ConveyorCrematorium_west.png",
+   "sha": "419a4c4518bd62746df99fda886996bde7fae2d3363d40a7acdc04c49000c825",
+   "tier": "kludged",
+   "facing": "west",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Wrecked/ConveyorCrematorium_east.png",
+   "sha": "893109a680bd20bce9bf91d91bf7ee81bb971b66a5243d43aebd31ac21d6e854",
+   "tier": "wrecked",
+   "facing": "east",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Wrecked/ConveyorCrematorium_north.png",
+   "sha": "caa35b1436b7f5968da0a381dcdac89ed31f871dd620f340b7a25604baa671f0",
+   "tier": "wrecked",
+   "facing": "north",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Wrecked/ConveyorCrematorium_south.png",
+   "sha": "ad833103db0bb78d5e6f346873e38e8c173ade790317b2534cca8034b74d2681",
+   "tier": "wrecked",
+   "facing": "south",
+   "filled_from": null
+  },
+  {
+   "slot": "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/ConveyorCrematorium/Wrecked/ConveyorCrematorium_west.png",
+   "sha": "b66496ab0a0c31873f2d57bffa0403741e0d97f2025c65d8c8b7228057e16048",
+   "tier": "wrecked",
+   "facing": "west",
+   "filled_from": null
+  }
+ ],
+ "not_kept": [],
+ "judge": {
+  "agent": "rm-judge/opus",
+  "brief": "design/RimMandrake/art_judge_brief.md",
+  "made_it": false,
+  "judged_at": "2026-11-27T16:57:07Z"
+ },
+ "maker": {
+  "agent": "rm-builder/opus with the Codex image door",
+  "tool": "src/RimMandrake/WreckedMachines/Source/facing.py"
+ },
+ "constraints": [
+  "B1",
+  "B1a",
+  "B2",
+  "B3",
+  "B4",
+  "B5",
+  "C2",
+  "C3",
+  "C6",
+  "D1",
+  "D2",
+  "D3",
+  "D4",
+  "E1",
+  "E2",
+  "E3",
+  "E4"
+ ],
+ "reasons": "All eight pictures keep the donor's outline, facing and parts (hull with double door, control box, intake belt with its arrow, grille, base plate) and are drawn in the painted, rust-weathered register of the smelter sibling, with no drawn keyline. Wrecked reads as dead: doors torn open, holes punched through panels and belt, nothing lit. Kludged reads as patched back into service: riveted patch plates, spliced cables, one strapped-on motor or canister per facing, a few small lamps, doors closed and sealed, belts clear on every facing, so both of the owner's smelter corrections (E4) are met; the orange glow is a thin seam line, not an open breach of fire. At 32 px/cell every picture reads as a dark rust-brown block with a clear door, belt and grille, well apart from the sandy ground (B2), and the four facings agree in size. The conveyor lip pokes about 0.1 cell past the 3x3 footprint on every facing, exactly where the donor's own belt does; it is the donor's outline that the pictures were asked to keep, so it is not counted as a D3 overflow.",
+ "notes": []
+}

@@ -7,9 +7,13 @@
   "Durasteel earlier, plasteel later"). Spec:
   design/RimMandrake/canon_materials_design_2026-10-09.md §3.2, §3.4.
 
-  The forge is VFE Factory's VFEFactory_AutomatedAlloyForge; its early gate
-  (RM_WM_AlloyForgeRestoration) and the late plasteel gate are WreckedMachines'
-  (mandrake.rm.wreckedmachines, Patches/WreckedMachines_AlloyForgeGates.xml).
+  The forge is VFE Factory's VFEFactory_AutomatedAlloyForge. In Wrecked Machines
+  (mandrake.rm.wreckedmachines) it is an ancient machine like the others, found
+  wrecked and repaired through its levels RM_WM_AutomatedAlloyForge_Kludged and
+  RM_WM_AutomatedAlloyForge_Refurbished; there plasteel and gravlite are processes
+  of the Refurbished level alone. This process goes on the donor forge and on both
+  levels (rule R_neighbour_names), each level op Conditional on its def, so a game
+  without Wrecked Machines adds it to the donor only and logs nothing.
   This process carries no research of its own: building the forge is the unlock.
 
   🔴 DEPENDS ON RSW_Durasteel, which CANON_MATERIALS_BUILD_1 defines and which
@@ -19,7 +23,8 @@
   (Defs/ThingDefs/RSW_Zersium.xml). Do not define RSW_Durasteel here.
 
   Toggle: RSW_ArmourySettings.durasteelAlloyEnabled (default on) drops the
-  process from the forge at startup (Source/AlloyForge/RSW_AlloyForgeDurasteel.cs).
+  process from the donor forge at startup (Source/AlloyForge/RSW_AlloyForgeDurasteel.cs);
+  that code does not yet read the Wrecked Machines levels.
 
   ⚠️ PROVISIONAL numbers (no calibration, no ruling): 10 steel + 2 zersium ->
   10 durasteel, 9000 ticks. Zersium supply is ~660 per Forge map
@@ -85,6 +90,28 @@
             <value>
               <li>RSW_AlloyDurasteel</li>
             </value>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedAlloyForge_Kludged"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedAlloyForge_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <order>Prepend</order>
+              <value>
+                <li>RSW_AlloyDurasteel</li>
+              </value>
+            </match>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedAlloyForge_Refurbished"]</xpath>
+            <match Class="PatchOperationAdd">
+              <success>Always</success>
+              <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedAlloyForge_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+              <order>Prepend</order>
+              <value>
+                <li>RSW_AlloyDurasteel</li>
+              </value>
+            </match>
           </li>
         </operations>
       </match>
