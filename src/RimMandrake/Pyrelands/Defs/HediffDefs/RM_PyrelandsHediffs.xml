@@ -48,4 +48,79 @@
     </stages>
   </HediffDef>
 
+  <!-- ========================================================================
+       RM_FE_SmokeChoke — the sign of the choking smoke weather (owner
+       2026-11-13: "the choking smoke that sometimes come as its own weather";
+       bar pyre_smoke_weather_chokes). Given only by
+       Source/PyrelandsSmokeWeather.cs to a breathing pawn under open sky while
+       RM_FE_Weather_Smoke is the weather; never under a roof.
+       Rates (they live in RM_FireEcoKernel.SmokeGainPerCheck and here):
+       +0.02 a check every 250 ticks = +0.20 a game hour in the open, against
+       the -2.4 a day (-0.10 an hour) below, so +0.10 an hour net outdoors:
+       "coughing" at once, "choking" after ~3.5 h, "gasping" after ~7 h.
+       Under a roof it only falls, 0.10 an hour: gone in at most 10 h.
+       Not lethal (maxSeverity 1, no lethalSeverity): it hampers, it does not kill.
+       ======================================================================== -->
+  <HediffDef>
+    <defName>RM_FE_SmokeChoke</defName>
+    <label>smoke in the lungs</label>
+    <description>Smoke breathed in under an open, smoke-filled sky. It makes breathing hard and slows the body down. It wears off under a roof or once the smoke clears.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.80, 0.68, 0.48)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>0.02</initialSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-2.4</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>coughing</label>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.10</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>choking</label>
+        <minSeverity>0.35</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.20</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>gasping</label>
+        <minSeverity>0.7</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.35</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
 </Defs>

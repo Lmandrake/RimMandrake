@@ -47,6 +47,9 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
   fire_pace        the Fire pace setting (bar fire_catches_and_runs) ships RM_BurnKernel.FirePacePercentDefault, faster than
                    0.1.0; its slider runs FirePacePercentMin (0.1.0's pace) to FirePacePercentMax; and the wind-carry tick
                    passes the setting, not a constant, to both RM_BurnKernel.CarryTicks and RM_BurnKernel.CarryAge
+  smoke_weather    the choking smoke weather (bar pyre_smoke_weather_chokes): ApplySettings writes its biome-table weight as
+                   RM_FireEcoKernel.SmokeTableWeight(its XML weight, smokeWeatherEnabled, the gate, smokeWeatherFrequency); the
+                   frequency ships 1 (the shipped weight) on a slider; the choke tick opens with `if (!gate || !smoke) return;`
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -72,7 +75,9 @@ GATED = {"ashDustingEnabled", "scorchFruitEnabled", "ashfallAccumulationEnabled"
          "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled", "burrowOnFireEnabled", "ashWaterFertilityEnabled",
          "blackRainDousingEnabled",
          # the plain default-on switches bar mechanics_switch_plain_no_biome added (vision.md 0.2.0)
-         "herdThirstEnabled", "fireSenseEnabled", "mealBeforeFireDutyEnabled"}
+         "herdThirstEnabled", "fireSenseEnabled", "mealBeforeFireDutyEnabled",
+         # the choking smoke weather (bar pyre_smoke_weather_chokes, owner 2026-11-13)
+         "smokeWeatherEnabled"}
 
 
 def _strip(s):
@@ -343,7 +348,30 @@ def facts(mod):
             bad.append("RM_JobDriver_Burrow leaves its protection in place when the wait toil ends")
     fact("job_ends_off", bad, "%d job(s) in flight end when their switch or the gate goes off" % len(JOB_GUARDS))
     fact("fire_pace", _pace_failures(ms, fields, sliders, consts, code), "the slider is the kernel's range and the tick reads it")
+    fact("smoke_weather", _smoke_failures(ms, fields, sliders, code),
+         "the table weight follows the on/off, the gate and the frequency; the choke tick opens on both switches")
     return out
+
+
+def _smoke_failures(ms, fields, sliders, code):
+    """The choking smoke weather's two settings reach the game (bar pyre_smoke_weather_chokes)."""
+    bad = []
+    if fields.get("smokeWeatherFrequency", (None, None))[1] != 1.0:
+        bad.append("smokeWeatherFrequency ships %r, not 1 (the shipped table weight)" % (fields.get("smokeWeatherFrequency", (None, None))[1],))
+    if "smokeWeatherFrequency" not in [s[0] for s in sliders]:
+        bad.append("smokeWeatherFrequency has no slider")
+    apply = _method_body(code.get("PyrelandsAshField.cs", ""), "PyrelandsAshFieldPatches", "ApplySettings") or ""
+    if "bool gateOn = PyrelandsMechanicsGate.On;" not in apply:
+        bad.append("ApplySettings does not read the effective gate")
+    if not re.search(r"if \(smokeWeightXml < 0f\) smokeWeightXml = r\.commonality;\s*r\.commonality = RM_FireEcoKernel\.SmokeTableWeight\("
+                     r"smokeWeightXml, RM_PyrelandsSettings\.smokeWeatherEnabled, gateOn,\s*RM_PyrelandsSettings\.smokeWeatherFrequency\);", apply):
+        bad.append("ApplySettings does not write the smoke weight from its XML weight, its on/off, the gate and its frequency")
+    tick = _method_body(code.get("PyrelandsSmokeWeather.cs", ""), "MapComponent_RM_SmokeWeather", "MapComponentTick") or ""
+    if not re.search(r"if \(!PyrelandsMechanicsGate\.On \|\| !RM_PyrelandsSettings\.smokeWeatherEnabled\) return;", tick):
+        bad.append("the choke tick does not stop on the gate and the smoke switch")
+    if not re.search(r"SmokeSeverityGain\(PyrelandsMechanicsGate\.On, RM_PyrelandsSettings\.smokeWeatherEnabled,", tick):
+        bad.append("the choke tick does not hand the gain both switches")
+    return bad
 
 
 PACE_FIELD = "firePacePercent"
@@ -389,7 +417,7 @@ KERNEL_GATES = [
 ]
 # (kernel gate predicate, index of its gate argument at the call)
 GATE_ARGS = [("BurnStampMay", 0), ("FireTickMayRoll", 0), ("BlackRainDouseAmount", 0), ("RainBecomesBlackRain", 2),
-             ("DomeOnHeatHit", 2), ("TryClaimSighting", 2)]
+             ("DomeOnHeatHit", 2), ("TryClaimSighting", 2), ("SmokeSeverityGain", 0)]
 
 
 def _return_expr(s, meth):
@@ -576,6 +604,16 @@ MUTANTS = [
     ("fire pace shipped at 0.1.0's", S + "Kernel/RM_BurnKernel.cs", "public const int FirePacePercentDefault = 200;", "public const int FirePacePercentDefault = 100;"),
     ("carry age ignores the fire pace", S + "FireEcologyHook.cs", "?.HitPoints ?? 0, pace);", "?.HitPoints ?? 0, RM_BurnKernel.FirePacePercentDefault);"),
     ("carry wait ignores the fire pace", S + "FireEcologyHook.cs", "RM_BurnKernel.CarryTicks(pace)) return;", "RM_BurnKernel.WindCarryTicks) return;"),
+    # bar pyre_smoke_weather_chokes
+    ("smoke switch not under the master", S + SETTINGS, ', "smokeWeatherEnabled")\n', ")\n"),
+    ("smoke weight ignores its switch", S + "PyrelandsAshField.cs", "RM_PyrelandsSettings.smokeWeatherEnabled, gateOn,", "true, gateOn,"),
+    ("smoke weight ignores the gate", S + "PyrelandsAshField.cs", "RM_PyrelandsSettings.smokeWeatherEnabled, gateOn,", "RM_PyrelandsSettings.smokeWeatherEnabled, true,"),
+    ("smoke weight ignores the frequency", S + "PyrelandsAshField.cs", "RM_PyrelandsSettings.smokeWeatherFrequency);", "1f);"),
+    ("smoke chokes with its switch off", S + "PyrelandsSmokeWeather.cs", " || !RM_PyrelandsSettings.smokeWeatherEnabled) return;", ") return;"),
+    ("smoke chokes with the gate off", S + "PyrelandsSmokeWeather.cs", "SmokeSeverityGain(PyrelandsMechanicsGate.On,", "SmokeSeverityGain(true,"),
+    ("smoke gain ignores the gate", S + "Kernel/RM_FireEcoKernel.cs", "if (!gateOn || !smokeOn || !breathes", "if (!smokeOn || !breathes"),
+    ("smoke frequency ships doubled", S + SETTINGS, "public const float SmokeWeatherFrequencyDefault = 1f;", "public const float SmokeWeatherFrequencyDefault = 2f;"),
+    ("smoke slider excludes the default", S + SETTINGS, "list.Slider(smokeWeatherFrequency, 0.25f, 3f)", "list.Slider(smokeWeatherFrequency, 1.5f, 3f)"),
 ]
 
 

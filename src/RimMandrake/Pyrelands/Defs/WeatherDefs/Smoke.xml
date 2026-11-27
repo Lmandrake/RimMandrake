@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Choking smoke — "the choking smoke that sometimes come as its own
+    weather" (owner, 2026-11-13; vision.md 0.2.0, bar pyre_smoke_weather_chokes).
+
+    WHAT IT IS. A dry weather of its own: no flakes (that is ash fall), no
+    ember glow (that is cinderfall), no streaks (that is black rain). One
+    vanilla fog layer tinted a dirty ochre by the sky `overlay` colour
+    (Verse/SkyManager.cs tints every SkyOverlay that declares no forced
+    colour with curSky.colors.overlay), under a low brown-yellow sky. Its
+    sound is ash fall's own wind (Ambient_Wind_Fog), reused.
+
+    WHAT IT DOES. Source/PyrelandsSmokeWeather.cs: a pawn that breathes and
+    stands under open sky while this weather is on gains RM_FE_SmokeChoke
+    (Defs/HediffDefs/RM_PyrelandsHediffs.xml: Breathing and Moving down).
+    Under any roof it gains none and the hediff wears off. The effect keys
+    on the map's weather, never on the biome, so a forced smoke on any map
+    chokes the same way.
+
+    🔑 rainRate, snowRate and sandRate STAY 0.
+      rainRate: anything above 0.1 puts out fires (Fire.TickInterval reads
+        map.weatherManager.RainRate) and black rain must stay the only rain.
+      sandRate: any non-ash weather with sand would lay foreign sand on the
+        ash map (PyrelandsAshSand.GridFreeOfForeignSand).
+    maxGlow 0.75: the smoke dims the day, but stays above the 0.51 glow that
+    crops need to grow and the 0.5 line under which a cell reads as dark.
+    Favorability Bad: WeatherDecider holds Bad weather back for the first 8
+    days (WeatherDecider.cs:159); a weather that hurts accepts that gate.
+    Weight 3 in the biome table ("sometimes", black rain's own weight); the
+    Mod Settings frequency multiplies it and the on/off sets it to 0
+    (PyrelandsAshField.ApplySettings).
+  -->
+
+  <WeatherDef>
+    <defName>RM_FE_Weather_Smoke</defName>
+    <label>choking smoke</label>
+    <description>Thick brown smoke rolling in from a burn somewhere beyond the map. It dims the sun, hides the far side of the map and catches in the throat: anyone who breathes it in the open for long starts to cough and slow down. A roof keeps it out. It carries no water and puts out no fire.</description>
+    <durationRange>10000~30000</durationRange>
+    <favorability>Bad</favorability>
+    <isBad>true</isBad>
+    <perceivePriority>2</perceivePriority>
+    <accuracyMultiplier>0.7</accuracyMultiplier>
+    <moveSpeedMultiplier>1</moveSpeedMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <windSpeedFactor>0.6</windSpeedFactor>
+    <maxGlow>0.75</maxGlow>
+    <preventSkygaze>true</preventSkygaze>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <!-- `overlay` is the smoke colour itself. `saturation` must never be 0
+         or WeatherDef.ConfigErrors complains. -->
+    <skyColorsDay>
+      <sky>(0.78,0.64,0.46)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.66,0.54,0.36)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.80,0.55,0.38)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.56,0.44,0.30)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.36,0.32,0.28)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.42,0.36,0.28)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.34,0.30,0.26)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.40,0.34,0.26)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

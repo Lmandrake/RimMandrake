@@ -59,6 +59,7 @@
     <Compile Include="PyrelandsWetRoots.cs" />
     <Compile Include="PyrelandsNoOrdinaryRain.cs" />
     <Compile Include="PyrelandsWeatherOverlays.cs" />
+    <Compile Include="PyrelandsSmokeWeather.cs" />
     <Compile Include="PyrelandsAshCover.cs" />
     <Compile Include="PyrelandsAshDust.cs" />
     <Compile Include="PyrelandsAshSand.cs" />

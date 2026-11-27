@@ -74,6 +74,12 @@ namespace RimMandrake.Pyrelands
         public static bool blackRainDousingEnabled = true;
         public const float BlackRainDousingDefault = 40f; // the literal the settings sweep parses; equals RM_FireEcoKernel.BlackRainDousingDefault (the fuzz model)
         public static float blackRainDousing = BlackRainDousingDefault;
+        // bar pyre_smoke_weather_chokes (owner 2026-11-13: "the choking smoke that sometimes come as its own weather"): the smoke
+        // weather's on/off and its frequency, a multiple of its shipped biome-table weight (RM_FireEcoKernel.SmokeTableWeightDefault).
+        // PyrelandsAshField.ApplySettings writes the weight (0 when off); MapComponent_RM_SmokeWeather reads the on/off for the effect.
+        public static bool smokeWeatherEnabled = true;
+        public const float SmokeWeatherFrequencyDefault = 1f; // the literal the settings sweep parses: 1 = the shipped weight
+        public static float smokeWeatherFrequency = SmokeWeatherFrequencyDefault;
 
         // Ships OFF, labelled unsupported (owner card 2026-11-13: "ship biomeGenerationEnabled OFF, labelled
         // unsupported"): players receive the frozen world and never generate one, so this switch is untested.
@@ -200,6 +206,8 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref windCarriesFireEnabled, "windCarriesFireEnabled", true);
             Scribe_Values.Look(ref firePacePercent, "firePacePercent", 200);
             Scribe_Values.Look(ref blackRainDousing, "blackRainDousing", BlackRainDousingDefault);
+            Scribe_Values.Look(ref smokeWeatherEnabled, "smokeWeatherEnabled", true);
+            Scribe_Values.Look(ref smokeWeatherFrequency, "smokeWeatherFrequency", SmokeWeatherFrequencyDefault);
             Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
             Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
             Scribe_Values.Look(ref ambientAshHeavy, "ambientAshHeavy", false);
@@ -220,8 +228,9 @@ namespace RimMandrake.Pyrelands
                      "ambientAshEnabled", "plantGrowthStagesEnabled", "wildPlantAllowlistEnabled", "scorchedRuinsEnabled", "burnLineEnabled",
                      "fireHawkSpreadEnabled", "furnaceThermalEnabled", "fireClockEnabled",
                      "burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled",
-                     "herdThirstEnabled", "fireSenseEnabled", "mealBeforeFireDutyEnabled")
+                     "herdThirstEnabled", "fireSenseEnabled", "mealBeforeFireDutyEnabled", "smokeWeatherEnabled")
             .Declare("blackRainDousingEnabled", "blackRainDousing")
+            .Declare("smokeWeatherEnabled", "smokeWeatherFrequency")
             .Declare("ashDustingEnabled", "ashDustingChance")
             .Declare("scorchFruitEnabled", "scorchFruitChance", "scorchFruitMapCap")
             .Declare("ashfallAccumulationEnabled", "ashfallRateMultiplier")
@@ -246,7 +255,8 @@ namespace RimMandrake.Pyrelands
             .Name("sprayerFoamsPathEnabled", "Sprayer carriers foam the fire in their way")
             .Name("herdThirstEnabled", "Herds reach the water one at a time")
             .Name("fireSenseEnabled", "People step away from fire")
-            .Name("mealBeforeFireDutyEnabled", "A hungry colonist eats before fire duty");
+            .Name("mealBeforeFireDutyEnabled", "A hungry colonist eats before fire duty")
+            .Name("smokeWeatherEnabled", "Choking smoke comes as its own weather");
 
         private static object GetField(string n) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
         private static void SetField(string n, object v) => typeof(RM_PyrelandsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static)?.SetValue(null, v);
@@ -376,6 +386,24 @@ namespace RimMandrake.Pyrelands
                 {
                     list.Label("Extra dousing: " + blackRainDousing.ToString("0") + " per 150 ticks (vanilla rain 10; default " + BlackRainDousingDefault.ToString("0") + ")");
                     blackRainDousing = list.Slider(blackRainDousing, 0f, 100f);
+                }
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Choking smoke weather", RimMandrake.Shared.SettingScope.Now, new[] { "smokeWeatherEnabled", "smokeWeatherFrequency" }))
+            {
+                using (Dependent(list, "smokeWeatherEnabled", "smokeWeatherFrequency"))
+                {
+                list.CheckboxLabeled("Choking smoke comes as its own weather", ref smokeWeatherEnabled,
+                    "Now and then a brown smoke rolls over the map as its own weather. Anyone who breathes it under open sky gets smoke in "
+                  + "the lungs (breathing and moving down, worse the longer they stay out); a roof keeps it out, and it wears off. It puts "
+                  + "out no fire. Off: the smoke never comes and a smoke forced by an event does nothing to anyone.");
+                using (Dependent(list, "smokeWeatherFrequency"))
+                {
+                    list.Label("Smoke frequency: " + (smokeWeatherFrequency * 100f).ToString("0") + "% of the shipped weight (default "
+                        + (SmokeWeatherFrequencyDefault * 100f).ToString("0") + "%)");
+                    smokeWeatherFrequency = list.Slider(smokeWeatherFrequency, 0.25f, 3f);
                 }
                 }
                 list.GapLine();

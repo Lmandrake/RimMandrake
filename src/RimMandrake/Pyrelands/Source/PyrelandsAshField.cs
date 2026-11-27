@@ -595,6 +595,7 @@ namespace RimMandrake.Pyrelands
         }
 
         private static float clearWeightXml = -1f;
+        private static float smokeWeightXml = -1f;
         private static bool? lastWeatherGate;
 
         internal static void RefreshWeatherIfGateChanged()
@@ -605,7 +606,7 @@ namespace RimMandrake.Pyrelands
         /// <summary>Settings written into defs (design §5, §5a): deep ash's XML fertility = ashDryFertility, so vanilla readers agree;
         /// the biome's old Clear weight split between AshDrift and Clear; the heavy sheet layered on AshDrift. Run at startup and
         /// again on map load, when this mod writes settings, or when a running map observes a gate change (the weather overlay
-        /// itself is fixed once a game has built its weather worker).</summary>
+        /// itself is fixed once a game has built its weather worker); the smoke weather's weight from its on/off and frequency.</summary>
         public static void ApplySettings()
         {
             try
@@ -642,6 +643,19 @@ namespace RimMandrake.Pyrelands
                             RM_PyrelandsSettings.ambientAshShare, out float d, out float cl);
                         driftRec.commonality = d;
                         clearRec.commonality = cl;
+                        lastWeatherGate = gateOn;
+                    }
+                }
+                // bar pyre_smoke_weather_chokes: the smoke's weight = its XML weight x the frequency setting, 0 when off.
+                WeatherDef smoke = DefDatabase<WeatherDef>.GetNamedSilentFail(RM_FireEcoKernel.SmokeWeatherDefName);
+                if (biome != null && smoke != null)
+                {
+                    foreach (WeatherCommonalityRecord r in biome.baseWeatherCommonalities)
+                    {
+                        if (r.weather != smoke) continue;
+                        if (smokeWeightXml < 0f) smokeWeightXml = r.commonality;
+                        r.commonality = RM_FireEcoKernel.SmokeTableWeight(smokeWeightXml, RM_PyrelandsSettings.smokeWeatherEnabled, gateOn,
+                            RM_PyrelandsSettings.smokeWeatherFrequency);
                         lastWeatherGate = gateOn;
                     }
                 }

@@ -749,6 +749,8 @@ namespace RimMandrake.Pyrelands.Fuzz
         // ════════════════════════ furnace ════════════════════════
         public static long ChargeUps, ChargeDowns, ChargeHolds, RestsRolled, RestsShort, BedZeroCells;
         public static double ChargeDaysAt40, ChargeDaysAt60;
+        // bar pyre_smoke_weather_chokes: cases read, the worst |gain - formula|, the outdoor tick of 'choking', the roofed pawn's worst severity
+        public static long SmokeCases, SmokeChoking, SmokeClear; public static double SmokeWorstErr, SmokeRoofWorst; public static int SmokeChokingAt = -1;
 
         private static float StepOf(float ambient, bool nearFire)
         {
@@ -1064,6 +1066,44 @@ namespace RimMandrake.Pyrelands.Fuzz
                               && RM_FireEcoKernel.BlackRainShare(true, true, sh) == 1f && RM_FireEcoKernel.BlackRainShare(false, false, sh) == 0f, "BlackRainShare blend");
                         Check(RM_FireEcoKernel.FireExposedToRain(false, false, false) && !RM_FireEcoKernel.FireExposedToRain(true, true, true)
                               && !RM_FireEcoKernel.FireExposedToRain(true, false, false) && RM_FireEcoKernel.FireExposedToRain(true, false, true), "FireExposedToRain is vanilla's VulnerableToRain");
+                    }
+                    {   // bar pyre_smoke_weather_chokes: the smoke chokes only a breathing pawn under open sky, scaled by the sky's share and
+                        // (1 - resistance); never under a roof, never switched off. The table weight is the XML weight x frequency, 0 off.
+                        bool g = r.Next(2) == 0, on = r.Next(2) == 0;
+                        for (int k = 0; k < 25; k++)  // 25 pawns a draw: the draw's own switches on even pawns, both open on odd ones
+                        {
+                        float sh = (float)r.NextDouble() * 1.4f - 0.2f, res = (float)r.NextDouble() * 1.4f - 0.2f;
+                        bool br = r.Next(2) == 0, roof = r.Next(2) == 0;
+                        bool kg = k % 2 == 0 ? g : true, kon = k % 2 == 0 ? on : true;
+                        float gain = RM_FireEcoKernel.SmokeSeverityGain(kg, kon, sh, br, roof, res);
+                        float shc = sh < 0f ? 0f : (sh > 1f ? 1f : sh), rc = res < 0f ? 0f : (res > 1f ? 1f : res);
+                        float want = (kg && kon && br && !roof && sh > 0f) ? RM_FireEcoKernel.SmokeGainPerCheck * shc * (1f - rc) : 0f;
+                        SmokeCases++; if (gain > 0f) SmokeChoking++; else SmokeClear++;
+                        SmokeWorstErr = Math.Max(SmokeWorstErr, Math.Abs(gain - want));
+                        Check(Math.Abs(gain - want) < 1e-6f, $"SmokeSeverityGain({kg},{kon},{sh},{br},{roof},{res}) = {gain}, want {want}");
+                        Check(gain >= 0f && gain <= RM_FireEcoKernel.SmokeGainPerCheck, "SmokeSeverityGain outside 0..SmokeGainPerCheck: " + gain);
+                        }
+                        Check(RM_FireEcoKernel.SmokeSeverityGain(true, true, 1f, true, true, 0f) == 0f, "the smoke choked a pawn under a roof");
+                        Check(RM_FireEcoKernel.SmokeSeverityGain(true, true, 1f, true, false, 0f) == RM_FireEcoKernel.SmokeGainPerCheck, "a full smoke sky did not choke an outdoor pawn by the full beat");
+                        // The sign's clock: a full sky, no resistance, beats of SmokeCheckIntervalTicks against the def's recovery. The
+                        // outdoor pawn must read "choking" (0.35) inside 4 game hours (10,000 ticks, the smoke's shortest duration) and the
+                        // roofed one must read 0 throughout.
+                        float outSev = 0f, inSev = 0f; int chokingAt = -1;
+                        float recPerBeat = RM_FireEcoKernel.SmokeRecoveryPerDay * RM_FireEcoKernel.SmokeCheckIntervalTicks / 60000f;
+                        for (int t = RM_FireEcoKernel.SmokeCheckIntervalTicks; t <= 10000; t += RM_FireEcoKernel.SmokeCheckIntervalTicks)
+                        {
+                            outSev = Math.Max(0f, Math.Min(1f, outSev + RM_FireEcoKernel.SmokeSeverityGain(true, true, 1f, true, false, 0f) - recPerBeat));
+                            inSev = Math.Max(0f, Math.Min(1f, inSev + RM_FireEcoKernel.SmokeSeverityGain(true, true, 1f, true, true, 0f) - recPerBeat));
+                            if (outSev >= 0.35f && chokingAt < 0) chokingAt = t;
+                        }
+                        Check(chokingAt > 0 && chokingAt <= 10000, "an outdoor pawn under full smoke does not reach 'choking' (0.35) within 10,000 ticks: " + chokingAt);
+                        Check(inSev == 0f, "a roofed pawn's smoke severity rose: " + inSev);
+                        SmokeChokingAt = chokingAt; SmokeRoofWorst = Math.Max(SmokeRoofWorst, inSev);
+                        float xw = (float)r.NextDouble() * 10f, fq = (float)r.NextDouble() * 4f - 0.5f;
+                        float tw = RM_FireEcoKernel.SmokeTableWeight(xw, on, g, fq);
+                        Check(Math.Abs(tw - ((on && g && xw > 0f && fq > 0f) ? xw * fq : 0f)) < 1e-5f, $"SmokeTableWeight({xw},{on},{g},{fq}) = {tw}");
+                        Check(RM_FireEcoKernel.SmokeTableWeight(RM_FireEcoKernel.SmokeTableWeightDefault, true, true, 1f) == RM_FireEcoKernel.SmokeTableWeightDefault,
+                              "the shipped settings do not give the shipped table weight");
                     }
                     Check(RM_FireEcoKernel.WateredExpiredWithin(3900, 4000, 250) && RM_FireEcoKernel.WateredExpiredWithin(4000, 4000, 250)
                           && !RM_FireEcoKernel.WateredExpiredWithin(3750, 4000, 250) && !RM_FireEcoKernel.WateredExpiredWithin(4001, 4000, 250)
@@ -1812,11 +1852,13 @@ namespace RimMandrake.Pyrelands.Fuzz
             Console.WriteLine($"burn front line: the old truncated construction lit {LegacyWidths - LegacyCellsLost} of {LegacyWidths} requested cells ({100.0 * (LegacyWidths - LegacyCellsLost) / Math.Max(1, LegacyWidths):F1}%); the kernel line is exact");
             Console.WriteLine($"furnace: charge ups {ChargeUps} / downs {ChargeDowns} / holds {ChargeHolds}, rests rolled {RestsRolled} / too short {RestsShort}, small beasts with zero bed cells {BedZeroCells}; empty-to-full at 40 C = {ChargeDaysAt40:F1} days, at 60 C = {ChargeDaysAt60:F1} days");
             Console.WriteLine($"eco: mixed patches supplied {MixedSupplied}; scores in band {ScoresInBand} / outside {ScoresOutside} / off {ScoresOff}, zero-rate skips {AshSkips}, ash attempts {AshAttemptsTotal}, once-hits {OnceHits}, set clears {OnceClears}");
+            Console.WriteLine($"smoke: {SmokeCases} cases ({SmokeChoking} choked, {SmokeClear} spared), worst |gain - formula| {SmokeWorstErr:G3} (limit 1e-6); 'choking' outdoors at tick {SmokeChokingAt} (limit 10000, the smoke's shortest spell); roofed worst severity {SmokeRoofWorst:G3} (limit 0)");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 var blind = new List<string>();
                 if (Measures == 0 || DebtRises == 0 || DebtDecays == 0 || ReseedAttempts == 0 || ReseedSuccess == 0 || FrontsFired == 0 || FrontsArmed == 0 || HistorySamples == 0 || RaidsFired == 0 || RaidInsults == 0 || RaidGated == 0 || LivenessChecks == 0 || HarvestsAllowed == 0 || HarvestsRefused == 0) blind.Add("burn never measured/accrued/decayed/reseeded/fired a front/recorded history/raided/insulted/gated/proved liveness/allowed or refused a harvest");
                 if (ChargeUps == 0 || ChargeDowns == 0 || ChargeHolds == 0 || RestsRolled == 0 || RestsShort == 0) blind.Add("furnace never charged/bled/held/rolled a rest/skipped a short rest");
+                if (SmokeCases == 0 || SmokeChoking == 0 || SmokeClear == 0 || SmokeChokingAt < 0) blind.Add("smoke never choked, never spared, or never ran its clock");
                 if (ScoresInBand == 0 || ScoresOutside == 0 || ScoresOff == 0 || AshSkips == 0 || AshAttemptsTotal == 0 || OnceClears == 0) blind.Add("eco never scored in/out of band/off, skipped a zero rate, deposited ash, or cleared its roll set");
                 foreach (var b in blind) { Console.WriteLine("FAIL fuzz is blind: " + b); ok = false; }
             }

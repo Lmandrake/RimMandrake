@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
++++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs
+@@ -391,7 +391,7 @@
+                 list.GapLine();
+             }
+ 
+-            if (Group(list, "Choking smoke weather", RimMandrake.Shared.SettingScope.Now, new[] { "smokeWeatherEnabled", "smokeWeatherFrequency" }))
++            if (Group(list, "Choking smoke weather", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "smokeWeatherEnabled", "smokeWeatherFrequency" }))
+             {
+                 using (Dependent(list, "smokeWeatherEnabled", "smokeWeatherFrequency"))
+                 {

@@ -211,6 +211,7 @@ MODS = {
         "Mod enabled": "Now",
         "Fire's ash and scorch-fruit": "Now",
         "Black rain puts fires out": "Now",   # Patch_FireTick_BlackRainDouses reads both on each fire's 150-tick beat
+        "Choking smoke weather": "Now",       # MapComponent_RM_SmokeWeather reads the on/off each 250-tick beat; WriteSettings re-runs ApplySettings, which rewrites the table weight
         "Ash accumulation (Ash Fall / Cinderfall weather)": "Now",
         "Plant art and wild flora": "Now",
         "Scorched ruins (new maps)": "NewMapsOnly",

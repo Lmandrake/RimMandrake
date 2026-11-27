@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/Defs/WeatherDefs/Smoke.xml
++++ b/src/RimMandrake/Pyrelands/Defs/WeatherDefs/Smoke.xml
+@@ -43,7 +43,7 @@
+     <perceivePriority>2</perceivePriority>
+     <accuracyMultiplier>0.7</accuracyMultiplier>
+     <moveSpeedMultiplier>1</moveSpeedMultiplier>
+-    <rainRate>0</rainRate>
++    <rainRate>1</rainRate>
+     <snowRate>0</snowRate>
+     <sandRate>0</sandRate>
+     <windSpeedFactor>0.6</windSpeedFactor>

@@ -226,6 +226,40 @@ namespace RimMandrake.Pyrelands
             return !hasRoof || (!thickRoof && edificeHoldsRoof);
         }
 
+        /// <summary>The choking smoke weather (owner 2026-11-13: "the choking smoke that sometimes come as its own weather"; bar
+        /// pyre_smoke_weather_chokes; Defs/WeatherDefs/Smoke.xml) and its sign (Defs/HediffDefs/RM_PyrelandsHediffs.xml).</summary>
+        public const string SmokeWeatherDefName = "RM_FE_Weather_Smoke";
+        public const string SmokeChokeHediffDefName = "RM_FE_SmokeChoke";
+        /// <summary>MapComponent_RM_SmokeWeather's beat. 250 = vanilla's rare tick: a pawn's sign moves 10 times a game hour.</summary>
+        public const int SmokeCheckIntervalTicks = 250;
+        /// <summary>Severity a beat in the open under a full smoke sky, before resistance: 0.20 a game hour against the hediff's
+        /// -2.4 a day (-0.10 an hour, HediffCompProperties_SeverityPerDay in the def), so +0.10 an hour net: "choking" (0.35)
+        /// after ~3.5 h, "gasping" (0.7) after ~7 h, inside the smoke's 10,000~30,000-tick (4~12 h) duration.</summary>
+        public const float SmokeGainPerCheck = 0.02f;
+        /// <summary>The hediff's own recovery, a day (the def's severityPerDay, kept equal by the fuzz model below).</summary>
+        public const float SmokeRecoveryPerDay = 2.4f;
+        /// <summary>The shipped table weight (Defs/BiomeDefs/Pyrelands.xml, black rain's own 3: "sometimes").</summary>
+        public const float SmokeTableWeightDefault = 3f;
+
+        /// <summary>One beat's smoke severity for a pawn: 0 with the mod or the smoke switched off, for a pawn that does not breathe
+        /// (not flesh, or a kind immune to weather effects), under any roof, or under a sky with no smoke; else the beat's gain times
+        /// the sky's smoke share times (1 - the pawn's ToxicEnvironmentResistance, a gas mask's stat, clamped 0..1).</summary>
+        public static float SmokeSeverityGain(bool gateOn, bool smokeOn, float share, bool breathes, bool roofed, float envResistance)
+        {
+            if (!gateOn || !smokeOn || !breathes || roofed || !(share > 0f)) return 0f;
+            float s = share > 1f ? 1f : share;
+            float res = envResistance < 0f ? 0f : (envResistance > 1f ? 1f : envResistance);
+            return SmokeGainPerCheck * s * (1f - res);
+        }
+
+        /// <summary>The smoke's biome-table weight under the settings: the XML weight times the frequency; 0 with the smoke or the
+        /// mod switched off (PyrelandsAshField.ApplySettings writes it).</summary>
+        public static float SmokeTableWeight(float xmlWeight, bool enabled, bool gateOn, float frequency)
+        {
+            if (!enabled || !gateOn || !(xmlWeight > 0f) || !(frequency > 0f)) return 0f;
+            return xmlWeight * frequency;
+        }
+
         /// <summary>Black rain's extra Extinguish, dealt on vanilla's own 150-tick beat (the fire's DoComplexCalcs hash interval), scaled
         /// by the sky's black-rain share. 0 when off or sheltered.</summary>
         public static float BlackRainDouseAmount(bool gateOn, bool enabled, float dousePer150, float share, bool exposed)

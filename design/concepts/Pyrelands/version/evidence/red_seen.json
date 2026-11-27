@@ -171,30 +171,30 @@
   "test_blob": "e6944721861b142773dbe8eaf09cca211a8a14ca"
  },
  "T_SETTINGS_SCREENS": {
-  "at": "2026-11-27T04:25:00Z",
+  "at": "2026-11-27T10:54:41Z",
   "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py --mod Pyrelands",
   "file": "src/RimMandrake/Utils/selftest_settings_screens.py",
   "last": "settings screens selftest: 13/14 ok (mods: Pyrelands)",
-  "patch": "--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -597,7 +597,7 @@\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"People, herds and fire\", RimMandrake.Shared.SettingScope.Now, new[] { \"fireSenseEnabled\", \"mealBeforeFireDutyEnabled\", \"herdThirstEnabled\" }))\n+            if (Group(list, \"People and fire\", RimMandrake.Shared.SettingScope.Now, new[] { \"fireSenseEnabled\", \"mealBeforeFireDutyEnabled\", \"herdThirstEnabled\" }))\n             {\n                 using (Dependent(list, \"fireSenseEnabled\", \"mealBeforeFireDutyEnabled\", \"herdThirstEnabled\"))\n                 {\n",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -391,7 +391,7 @@\n                 list.GapLine();\n             }\n \n-            if (Group(list, \"Choking smoke weather\", RimMandrake.Shared.SettingScope.Now, new[] { \"smokeWeatherEnabled\", \"smokeWeatherFrequency\" }))\n+            if (Group(list, \"Choking smoke weather\", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { \"smokeWeatherEnabled\", \"smokeWeatherFrequency\" }))\n             {\n                 using (Dependent(list, \"smokeWeatherEnabled\", \"smokeWeatherFrequency\"))\n                 {\n",
   "patch_files": [
    "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
   ],
-  "patch_sha": "165686587b7038d8",
+  "patch_sha": "c11f948ae6047c4c",
   "rc": 1,
-  "test_blob": "e79cc7d17295196ddf3d13fd165a62d243c2f438"
+  "test_blob": "ac99b7208f3c72b69762ed40175ae8b9dd92fd17"
  },
  "T_SETTINGS_SWEEP_OFFLINE": {
-  "at": "2026-11-27T06:51:13Z",
+  "at": "2026-11-27T10:54:34Z",
   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
   "last": "FAIL: the unchanged copy is not green",
-  "patch": "--- a/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs\n+++ b/src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs\n@@ -328,7 +328,7 @@\n                 bool carried = burn.WasCarried(__instance);\n                 IntVec3 at = __instance.Position;\n                 int age = carried ? 0 : RM_BurnKernel.CarryAge(at.x, at.z, WindCarriedFire.GroundSeed(__instance.Map),\n-                    at.GetPlant(__instance.Map)?.HitPoints ?? 0, pace);\n+                    at.GetPlant(__instance.Map)?.HitPoints ?? 0, RM_BurnKernel.FirePacePercentDefault);\n                 if (RM_BurnKernel.WindCarryDue(true, true, true, carried, __instance.TicksSinceSpawn, age))\n                 {\n                     WindCarriedFire.Carry(__instance, burn);\n",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Source/PyrelandsSmokeWeather.cs\n+++ b/src/RimMandrake/Pyrelands/Source/PyrelandsSmokeWeather.cs\n@@ -53,7 +53,7 @@\n         public override void MapComponentTick()\n         {\n             if ((Find.TickManager.TicksGame + map.uniqueID) % RM_FireEcoKernel.SmokeCheckIntervalTicks != 0) return;\n-            if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.smokeWeatherEnabled) return;\n+            if (!PyrelandsMechanicsGate.On) return;\n             try\n             {\n                 float share = SmokeShare(map);\n",
   "patch_files": [
-   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs"
+   "src/RimMandrake/Pyrelands/Source/PyrelandsSmokeWeather.cs"
   ],
-  "patch_sha": "d6347ee5249829f0",
+  "patch_sha": "7ca57a84fdd73e28",
   "rc": 1,
-  "test_blob": "ec6c98005d200b738e32832e478ae12e722b9c80"
+  "test_blob": "47b0f48cc1864ee11393ed1d4388615108e0f504"
  },
  "T_SITE": {
   "at": "2026-11-27T04:25:38Z",
@@ -208,6 +208,19 @@
   "patch_sha": "6fb8ba5d6b9a144f",
   "rc": 1,
   "test_blob": "8896e79600db39f8d16760e8871b60469cb43a70"
+ },
+ "T_SMOKE_WEATHER_ACCEPT": {
+  "at": "2026-11-27T10:54:15Z",
+  "command": "python3 src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py",
+  "file": "src/RimMandrake/rimflow/acceptance/pyre_smoke_weather_accept.py",
+  "last": "PASS 4/6 failed: smoke_not_rain_rated, black_rain_only_rain",
+  "patch": "--- a/src/RimMandrake/Pyrelands/Defs/WeatherDefs/Smoke.xml\n+++ b/src/RimMandrake/Pyrelands/Defs/WeatherDefs/Smoke.xml\n@@ -43,7 +43,7 @@\n     <perceivePriority>2</perceivePriority>\n     <accuracyMultiplier>0.7</accuracyMultiplier>\n     <moveSpeedMultiplier>1</moveSpeedMultiplier>\n-    <rainRate>0</rainRate>\n+    <rainRate>1</rainRate>\n     <snowRate>0</snowRate>\n     <sandRate>0</sandRate>\n     <windSpeedFactor>0.6</windSpeedFactor>\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Defs/WeatherDefs/Smoke.xml"
+  ],
+  "patch_sha": "6ed45894fc28aea4",
+  "rc": 1,
+  "test_blob": "e270479f835d3060b681dddbb64fca2b49c22e82"
  },
  "T_VENOM_STAGING": {
   "at": "2026-11-23T10:09:23Z",

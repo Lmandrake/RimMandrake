@@ -69,6 +69,11 @@ MUTATIONS = [
     ('RM_FireEcoKernel.cs', 'if (v > cap)', 'if (false)', 'ash fertility is uncapped'),
     ('RM_FireEcoKernel.cs', 'return pyrelandsEnabled && bonusOn && spawned && !attachedToPawn && scorchable;', 'return pyrelandsEnabled && spawned && !attachedToPawn && scorchable;', 'the burn stamp ignores its toggle'),
     ('RM_FireEcoKernel.cs', 'return fireEcologyOn && IsScorchableGround(terrainDefName);', 'return IsScorchableGround(terrainDefName);', 'the fire-tick hook ignores the fire-ecology switches'),
+    # bar pyre_smoke_weather_chokes: the choking smoke
+    ('RM_FireEcoKernel.cs', 'if (!gateOn || !smokeOn || !breathes || roofed || !(share > 0f)) return 0f;', 'if (!gateOn || !smokeOn || !breathes || !(share > 0f)) return 0f;', 'the smoke chokes a pawn under a roof'),
+    ('RM_FireEcoKernel.cs', 'return SmokeGainPerCheck * s * (1f - res);', 'return SmokeGainPerCheck * s;', 'a gas mask does nothing against the smoke'),
+    ('RM_FireEcoKernel.cs', 'public const float SmokeGainPerCheck = 0.02f;', 'public const float SmokeGainPerCheck = 0.01f;', 'the smoke is too thin to show its sign inside its shortest spell'),
+    ('RM_FireEcoKernel.cs', 'if (!enabled || !gateOn || !(xmlWeight > 0f) || !(frequency > 0f)) return 0f;', 'if (!gateOn || !(xmlWeight > 0f) || !(frequency > 0f)) return 0f;', 'the smoke still comes with its switch off'),
 ]
 
 

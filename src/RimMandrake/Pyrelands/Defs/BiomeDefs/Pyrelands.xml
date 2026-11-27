@@ -293,6 +293,9 @@
       <RM_FE_Weather_AshFall>14</RM_FE_Weather_AshFall>
       <RM_FE_Weather_Cinderfall>4</RM_FE_Weather_Cinderfall>
       <RM_FE_BlackRain>3</RM_FE_BlackRain>
+      <!-- Owner 2026-11-13: "the choking smoke that sometimes come as its own weather" (WeatherDefs/Smoke.xml). 3 = black rain's
+           weight, the table's other occasional weather. Settings smokeWeatherEnabled / smokeWeatherFrequency rewrite it at startup. -->
+      <RM_FE_Weather_Smoke>3</RM_FE_Weather_Smoke>
       <Fog>2</Fog>
       <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
       <Windy MayRequire="Ludeon.RimWorld.Odyssey">2</Windy>
