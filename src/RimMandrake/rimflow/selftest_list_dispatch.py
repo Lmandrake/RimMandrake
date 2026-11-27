@@ -1075,6 +1075,123 @@ def t_each_row_says_since_when_it_took_its_decision():
     os.remove(p)
 
 
+def t_a_block_with_no_end_ages_whatever_its_needs():
+    """block_end names what lifts a block; a block with none, idle block_idle_days, is stale whatever its needs, on an
+    open route (the Conductor, 2026-11-26, design/specs/2026-11-26-testless-tickets/conductor_decisions.md question 2)."""
+    import types
+    import model as LM
+    L = LD()
+    day = 86400.0
+    cfg = dict(CFG, block_idle_days=3, block_window_min=2, onboard_classes={"pipeline": "on", "game": "off", "mod": "on"},
+               no_home_shape_from="2027-06-01T08:00:00Z")
+
+    def b(kind=None, needs="offline", reason="r", lift=None):
+        return types.SimpleNamespace(id="LD_ENDLESS", blocked=True, blocked_kind=kind, blocked_reason=reason,
+                                     blocked_lift_at=lift, needs=needs)
+    for x, has in ((b("owner"), True), (b("time", lift="2027-01-01"), True), (b("external"), True),
+                   (b("live", needs="game-up"), True), (b(None), False), (b(""), False), (b("other"), False),
+                   (b("item"), False), (b("judge"), False), (b("time"), False), (b("external", reason=None), False),
+                   (b("live", needs="offline"), False)):
+        chk(lambda x=x, has=has: bool(L.block_end(x)) == has,
+            "block_end: kind %r needs %s lift %s reason %s -> %s" % (x.blocked_kind, x.needs, x.blocked_lift_at,
+                                                                     x.blocked_reason, "an end" if has else "no end"))
+
+    def ts(t):
+        import datetime as dt
+        return dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    def age(block_at, kind=None, needs="offline", system="pipeline:bridge", now=NOW, extra=()):
+        evs = [{"seat": "BENCH", "ts": ts(block_at - 60), "tsn": 1, "event": "file", "id": "LD_ENDLESS", "title": "t",
+                "kind": "task", "needs": needs, "for": "BENCH"},
+               dict({"seat": "BENCH", "ts": ts(block_at), "tsn": 2, "event": "block", "id": "LD_ENDLESS",
+                     "reason": "waits for something"}, **({"kind": kind} if kind else {}))]
+        evs += [dict({"seat": "BENCH", "ts": ts(t), "tsn": 3 + n}, **k) for n, (t, k) in enumerate(extra)]
+        op = L.Openings()
+        w = LM.replay(evs, observe=op.observe)
+        return L.block_age(w.items["LD_ENDLESS"], op, now, cfg, system=system)
+    old = NOW - 5 * day
+    due, why = age(old)
+    chk(lambda: due and "no end" in why and "--kind" in why and "unblock" in why and "drop" in why,
+        "no kind, needs offline, idle 5 d: due; the why asks to drop a stale ticket, type or lift the block (%s)" % why)
+    for needs in ("offline", "deploy", "harvest", "owner", "bridge", "game-up"):
+        chk(lambda needs=needs: age(old, needs=needs)[0], "needs %s: a block with no end ages all the same" % needs)
+    chk(lambda: age(old, kind="other")[0], "kind other: no end, due (the ledger refuses a time block with no date)")
+    chk(lambda: not age(NOW - 2 * day)[0], "idle 2 days: not due yet")
+    note = (old + 4 * day, {"event": "note", "id": "LD_ENDLESS", "text": "still blocked"})
+    chk(lambda: not age(old, extra=[note])[0], "a later event of its own restarts the idle clock")
+    chk(lambda: not age(old, kind="owner")[0], "a block of kind owner never ages: his act lifts it")
+    off, why_off = age(old, system="game:flight")
+    chk(lambda: not off and "off" in why_off, "its home class is off: it waits for its class (%s)" % why_off)
+    m, why_m = age(old, system="mod:FlowWorks")
+    chk(lambda: not m and "mod_members" in why_m, "one mod's ticket: its mod's bundle settles it (%s)" % why_m)
+    early, why_e = age(old, system="item:LD_ENDLESS")
+    chk(lambda: not early and "2027-06-01" in why_e, "no home, before no_home_shape_from: waits for that date (%s)" % why_e)
+    chk(lambda: age(L._epoch_of("2027-06-02T00:00:00Z") - 5 * day, system="cause:P",
+                    now=L._epoch_of("2027-06-02T00:00:00Z"))[0], "no home, after that date: due")
+
+
+def t_old_no_home_tickets_are_placed_then_named_for_shape():
+    """The applied full tick writes the rule homes, then names for Shape at most no_home_shape_per_day in 24 h of the
+    old tickets no rule places, oldest first, from no_home_shape_from (the Conductor, 2026-11-26, question 1)."""
+    L = LD()
+    frm = NOW - 86400
+    cfg = dict(CFG, no_home_shape_from=frm, no_home_shape_per_day=2)
+    cands = {"C3": 30.0, "C1": 10.0, "C2": 20.0}
+    got, why = L.no_home_names(cands, cfg, {}, NOW)
+    chk(lambda: got == ["C1", "C2"], "two a day, oldest first (%s: %s)" % (got, why))
+    got, _ = L.no_home_names(cands, cfg, {"X": NOW - 3600}, NOW)
+    chk(lambda: got == ["C1"], "a name in the last 24 h counts against the pace (%s)" % got)
+    got, _ = L.no_home_names(cands, cfg, {"X": NOW - 90000, "Y": NOW - 90000}, NOW)
+    chk(lambda: got == ["C1", "C2"], "names older than 24 h do not count (%s)" % got)
+    got, why = L.no_home_names(cands, dict(cfg, no_home_shape_from=NOW + 60), {}, NOW)
+    chk(lambda: got == [] and "from" in why, "before no_home_shape_from: none (%s)" % why)
+    got, why = L.no_home_names(cands, dict(cfg, no_home_shape_from=None), {}, NOW)
+    chk(lambda: got == [], "no date set: none (%s)" % why)
+    import types
+
+    def x(iid, **k):
+        d = dict(id=iid, state="proposed", effect=None, shape=None, shape_named=None, created_at="2026-11-01T00:00:00Z",
+                 home=None, title="t", wait_until=None, blocked=False, lease=None, owner=None)
+        d.update(k)
+        return types.SimpleNamespace(**d)
+    items = {"OK": x("OK"), "OLDER": x("OLDER", created_at="2026-10-01T00:00:00Z"), "NAMED": x("NAMED", shape_named="2026-11-20T00:00:00Z"),
+             "NEW": x("NEW", created_at="2026-11-25T00:00:00Z"), "TESTED": x("TESTED", effect="cmd:false"),
+             "MOD": x("MOD"), "PARKED": x("PARKED"), "OFF": x("OFF"), "HELD": x("HELD"), "LEASED": x("LEASED"),
+             "PLACED": x("PLACED"), "HOMED": x("HOMED"), "SHUT": x("SHUT", state="done")}
+    c = L.no_home_cands(items, NOW, {"shape_from": "2026-11-23T14:00:00Z"},
+                        system=lambda i: "pipeline:bridge" if i == "HOMED" else "mod:FlowWorks" if i == "MOD" else "item:%s" % i,
+                        parked=lambda i: i == "PARKED", off=lambda i: "off" if i == "OFF" else None,
+                        held=lambda i: "held" if i == "HELD" else None, leased=lambda i: i == "LEASED",
+                        placed={"PLACED"})
+    chk(lambda: sorted(c) == ["OK", "OLDER"] and c["OLDER"] < c["OK"],
+        "the candidates: open, no test, never named, old, no home, no rule home, not parked, off, held or leased (%s)" % c)
+    d = tempfile.mkdtemp(prefix="ld_nohome_")
+    os.environ["RM_LIST_DISPATCH_DIR"] = d
+    acts = []
+    base = {"items": {}, "runs": {}, "other_live": 0,
+            "old": {"homes": [("H1", {"home": "pipeline:bridge", "group": "by-rule-cause", "flag": "CANNOT TELL",
+                                      "reason": "by rule"})], "cands": dict(cands)}}
+    fx = {"facts": lambda st: json.loads(json.dumps(base)), "account": lambda: (True, ""),
+          "home": lambda rows: acts.append(("home", [r[0] for r in rows])) or (0, "home: 1 written"),
+          "name": lambda iid, why: acts.append(("name", iid)) or (0, "")}
+    rd = L.tick(dict(cfg), apply=False, fx=fx, now=NOW)
+    chk(lambda: acts == [] and "would" in json.dumps(rd.get("old")), "a dry tick writes no home and names none (%s)" % rd.get("old"))
+    L.tick(dict(cfg), apply=True, fx=fx, now=NOW, only=["C1"])
+    chk(lambda: acts == [], "a run-now tick writes no home and names none (%s)" % acts)
+    rd = L.tick(dict(cfg), apply=True, fx=fx, now=NOW)
+    chk(lambda: acts == [("home", ["H1"]), ("name", "C1"), ("name", "C2")] and rd["old"]["named"] == ["C1", "C2"],
+        "an applied tick writes the homes, then names two, oldest first (%s, %s)" % (acts, rd.get("old")))
+    st = json.load(open(os.path.join(d, "state.json")))
+    chk(lambda: sorted(st.get("no_home_named") or {}) == ["C1", "C2"], "the names are kept in the state")
+    del acts[:]
+    L.tick(dict(cfg), apply=True, fx=fx, now=NOW + 60)
+    chk(lambda: ("name", "C3") not in acts, "the next tick inside 24 h names none past the pace (%s)" % acts)
+    base["old"] = {"could_not_look": "the ledger could not be read"}
+    del acts[:]
+    rd = L.tick(dict(cfg), apply=True, fx=fx, now=NOW + 120)
+    chk(lambda: acts == [] and "could not look" in json.dumps(rd.get("old")), "could not look: nothing written, and said")
+
+
 def main():
     for t in (t_decide_is_pure_and_says_why_on_every_row,
               t_the_check_runs_before_every_attempt,
@@ -1107,6 +1224,8 @@ def main():
               t_a_mod_ticket_is_not_the_list_pipelines,
               t_each_limit_names_its_danger,
               t_blocked_idle_window_open_is_due,
+              t_a_block_with_no_end_ages_whatever_its_needs,
+              t_old_no_home_tickets_are_placed_then_named_for_shape,
               t_each_row_says_since_when_it_took_its_decision):
         try:
             t()

@@ -29,7 +29,8 @@ oldest item that another waits on, then oldest filing, one decision:
                   item with no check whose wait passed reads shape. A lane item (named, or filed after shape_from) whose
                   wait passed gets one second look: a Work run, opus, inside max_runs_per_item. The age line: a block
                   idle past block_idle_days whose `needs` window (game UP, a bridge free) opened block_window_min times
-                  since is stale; it does not stop the lane, and an item with no check it makes due for Shape
+                  since is stale; it does not stop the lane, and an item with no check it makes due for Shape. A block
+                  with no end (block_end) is stale after block_idle_days whatever its needs, where its route is open
   mod_work        its home is mod:<folder>, or every repo path it names is inside one mod's folder (mod_work.of): it
                   waits for that mod's Maturation Pipeline run; no check runs, nothing is adopted, closed or launched.
                   A home that cannot be read reads blind ("could not look")
@@ -58,6 +59,9 @@ oldest item that another waits on, then oldest filing, one decision:
                   home's bundle takes them; else the home's first Shape row leads it; else it takes room as a launch
                   does, SteveDesktop first. The row names the homes started, those not started and why, and each
                   left-out ticket with its reason. Could not look: one blind row, nothing starts
+The no-home step (reading.json `old`; old_step): an applied full tick writes the rule homes of the old tickets with no
+test and no home (list_home.rule_home), then names for Shape the oldest that no rule places, no_home_shape_per_day in
+any 24 h, from no_home_shape_from.
 A run's end is read from the item: closed (done), a wait (Waiting), a `LEFT OPEN:` note (its next act: one more run),
 nothing (stopped). The tick files no item.
 Runs on rm-list-dispatch.timer from the dispatch clone. Reading: <RM_DISPATCHER_STATE>/list_dispatch/reading.json
@@ -1041,11 +1045,92 @@ class Openings(object):
                 self.opened[k].append(t)
 
 
-def block_age(x, op, now, cfg):
+def _epoch_of(v):
+    """An epoch, or an ISO time -> epoch; None when it cannot be read."""
+    if isinstance(v, (int, float)) and not isinstance(v, bool):
+        return float(v)
+    import model as LM
+    return LM.epoch(v) if v else None      # model.epoch reads an unreadable date as None; callers say so
+
+
+def block_end(x):
+    """-> the event that lifts a block that holds with no open predecessor, or None when it has none: the owner's act
+    (kind owner), its date (kind time with a lift date), an outside event (kind external with a reason), a `needs`
+    window that a ledger event opens (kind live, needs game-up or bridge). No kind (or other), item or judge with no
+    open predecessor, time with no date, external with no reason and live with no window have no end."""
+    kind = (getattr(x, "blocked_kind", None) or "").strip()
+    if kind == "owner":
+        return "the owner's act (`rimflow unblock`)"
+    if kind == "time":
+        lift = getattr(x, "blocked_lift_at", None)
+        return ("its date %s" % lift) if lift else None
+    if kind == "external":
+        return "an outside event, lifted by `rimflow unblock`" if getattr(x, "blocked_reason", None) else None
+    if kind == "live":
+        w = WINDOW_EVENTS.get(getattr(x, "needs", None))
+        return ("the age line, once %s often enough" % w[2]) if w else None
+    return None
+
+
+ENDLESS_END = ("its block has no end, so after %g idle days the age line takes it past the block: a lane Shape run "
+               "(list_dispatch.block_age), or its mod's bundle for a mod's ticket (work_bundle.mod_members); that run "
+               "types the block or lifts it")
+
+
+def endless_stale(x, since, now, cfg):
+    """-> why the block of `x` has no end (block_end) and sat idle block_idle_days since `since` (its last own event),
+    or None. A program reads it, never a hand: list_dispatch.block_age and work_bundle.mod_members."""
+    if not getattr(x, "blocked", None) or block_end(x) is not None or since is None:
+        return None
+    idle = (now - since) / 86400.0
+    if idle < float(cfg.get("block_idle_days", 3)):
+        return None
+    return "its block has no end (kind %s, no `--on`, no lift date) and is idle %.1f d" % (
+        getattr(x, "blocked_kind", None) or "none", idle)
+
+
+def endless_route_shut(system, cfg, now):
+    """-> why the route of a ticket of `system` does not take it now, or None. A mod's ticket goes to its mod's bundle,
+    never a lane Shape run; a home whose class is off waits for its class; a ticket with no home waits for
+    no_home_shape_from (the date the Conductor gave the lane's no-home step)."""
+    kind = str(system or "").partition(":")[0]
+    if kind == "mod":
+        return ("one mod's work: its mod's own bundle takes it past this block (work_bundle.mod_members), never a lane "
+                "Shape run")
+    if kind in ("item", "cause"):
+        t = _epoch_of(cfg.get("no_home_shape_from"))
+        if t is None or now < t:
+            return "it has no home: the lane takes such a ticket from %s (no_home_shape_from)" % (
+                cfg.get("no_home_shape_from") or "a date not set yet")
+        return None
+    if kind and (cfg.get("onboard_classes") or {}).get(kind) == "off":
+        return "its home class %s: is off in list_dispatch.json onboard_classes, so it waits for its class" % kind
+    return None
+
+
+def block_age(x, op, now, cfg, system=None):
     """-> (due, why). Due for Shape: a block idle past block_idle_days (since the item's last own event) whose `needs`
-    window opened block_window_min times or more since. Pure over (x, op, now, cfg)."""
+    window opened block_window_min times or more since; or a block with no end (block_end) idle past block_idle_days,
+    whatever its needs, when the route of its system is open (endless_route_shut). Pure over (x, op, now, cfg, system)."""
     if not getattr(x, "blocked", None):
         return False, "not blocked"
+    if block_end(x) is None:
+        since = op.last.get(x.id)
+        if since is None:
+            return False, "its last own event could not be read"
+        why = endless_stale(x, since, now, cfg)
+        if not why:
+            return False, "its block has no end; idle %.1f d of %g" % ((now - since) / 86400.0,
+                                                                       float(cfg.get("block_idle_days", 3)))
+        shut = endless_route_shut(system, cfg, now)
+        if shut:
+            return False, "%s; %s" % (why, shut)
+        return True, ("%s (%s). First read the ticket against now: drop it with its reason when it is stale or wrong "
+                      "(`rimflow drop %s --reason ...`). Else type the block (`rimflow block %s --kind "
+                      "<owner|time|external|live> ...`, with its lift) or lift it when its reason is gone (`rimflow "
+                      "unblock %s --reason ...`). When it is one mod's work, give it that mod's home (`rimflow home %s "
+                      "--home mod:<folder> --reason ...`) and stop: the Maturation Pipeline works a mod"
+                      % (why, _one(getattr(x, "blocked_reason", None) or "no reason given", 120), x.id, x.id, x.id, x.id))
     kind = getattr(x, "blocked_kind", None)
     if kind in ("owner", "time"):       # his word, or its own date, lifts it; a game window is never its lift event
         return False, "a block of kind %s lifts on its own event, not on a needs window" % kind
@@ -1067,6 +1152,153 @@ def block_age(x, op, now, cfg):
                   "mod:<folder> --reason ...`) and stop: the Maturation Pipeline works a mod"
                   % (reason, idle, w[2], n, x.id, x.id))
 
+
+# ---- the no-home step: old tickets with no test and no home (the Conductor, 2026-11-26, question 1 of
+# design/specs/2026-11-26-testless-tickets/conductor_decisions.md). The applied full tick writes the rule homes
+# (list_home.rule_home), then names for Shape the oldest of the tickets that no rule places, no_home_shape_per_day in
+# any 24 h, from no_home_shape_from. Before this, nothing ended such a ticket: Shape takes an old ticket only when
+# someone names it, and onboarding never starts an item: or cause: home (266 tickets, measured 2026-11-26).
+
+def no_home_names(cands, cfg, named, now):
+    """-> ([ids to name now], why). cands {id: filed epoch}; named {id: epoch the lane named it}. Pure."""
+    frm = cfg.get("no_home_shape_from")
+    if not frm:
+        return [], "no_home_shape_from is not set: the lane names no old ticket with no home"
+    t = _epoch_of(frm)
+    if t is None:
+        return [], "no_home_shape_from %r cannot be read: the lane names none" % (frm,)
+    if now < t:
+        return [], "the lane names old tickets with no home for Shape from %s (no_home_shape_from)" % pac(t)
+    per = int(cfg.get("no_home_shape_per_day", 5))
+    recent = sum(1 for v in (named or {}).values() if isinstance(v, (int, float)) and 0 <= now - v < 86400)
+    order = sorted(cands, key=lambda i: (cands[i], i))
+    pick = order[:max(0, per - recent)]
+    return pick, "%d named in the last 24 h of %d a day; %d old ticket(s) with no home wait, oldest first" % (
+        recent, per, len(order))
+
+
+def no_home_cands(items, now, cfg, system, parked, off, held, leased, placed):
+    """-> {id: filed epoch} of the old tickets that the lane may name for Shape: open, no test, no route, no split
+    (list_shape.needs_shape_run), never named, filed before shape_from, of an item: or cause: system (no home, not one
+    mod's work), not given a rule home this tick (`placed`), not parked, off, held or under a live lease. A fact that
+    cannot be read keeps the ticket out. Pure over its inputs."""
+    import list_shape as LS
+    frm = _epoch_of(cfg.get("shape_from"))
+    if frm is None:
+        return {}
+    out = {}
+    for i in sorted(items):
+        x = items[i]
+        try:
+            if getattr(x, "state", None) in CLOSED or i in placed:
+                continue
+            sf = LS.facts(x)
+            if not LS.needs_shape_run(sf) or sf.get("named") or sf.get("filed") is None or sf["filed"] >= frm:
+                continue
+            s = system(i)
+            if not s or not str(s).startswith(("item:", "cause:")):
+                continue
+            if parked(i) or off(i) or held(i) or leased(i):
+                continue
+        except Exception:  # noqa: BLE001 - a fact that cannot be read keeps this ticket out
+            continue
+        out[i] = sf["filed"]
+    return out
+
+
+def old_facts(w, open_, now, cfg, mw_mods, mw_cause, mods):
+    """-> {"homes": list_home.place_rows, "cands": no_home_cands}. Raises when it could not look."""
+    import list_home as LH
+    import model as LM
+    import mod_work as MW
+    import work_bundle as WB
+    if mw_mods is None:
+        raise RuntimeError(mw_cause or "the mod folders could not be read")
+    before = _epoch_of(cfg.get("shape_from"))
+    if before is None:
+        return {"homes": [], "cands": {}}
+    cache = {}
+
+    def reading(it):
+        k = getattr(it, "id", None)
+        if k not in cache:
+            cache[k] = MW.reading(it, mw_mods, LM.ITEMS)
+        return cache[k]
+    homes = LH.place_rows(open_, reading, mods, before)
+    placed = set(i for i, _f in homes)
+
+    def parked(i):
+        x = open_[i]
+        if x.wait_until:
+            t = LM.epoch(x.wait_until)
+            if t is None or t > now:
+                return True
+        waits, blocked = block_facts(w, x, now)
+        return bool(waits or blocked)
+
+    def off(i):
+        o, cnl = _off(i, mod_of(i, open_[i].title, mods))
+        return o or cnl
+    cands = no_home_cands(open_, now, cfg, system=lambda i: WB.system_of(open_[i], reading, w.items), parked=parked,
+                          off=off, held=lambda i: _held(mod_of(i, open_[i].title, mods)),
+                          leased=lambda i: open_[i].state == "doing" and LM.lease_status(open_[i], now) == "live",
+                          placed=placed)
+    return {"homes": homes, "cands": cands}
+
+
+NO_HOME_WHY = ("pipeline act (list_dispatch tick): an old ticket with no test that no rule gives a home, named for Shape "
+               "(the Conductor's decision of 2026-11-26, design/specs/2026-11-26-testless-tickets/conductor_decisions.md "
+               "question 1)")
+
+
+def write_homes(rows):
+    import list_home as LH
+    return LH.write_rows(rows, LH.PLACE_WHY + " (list_dispatch tick)")
+
+
+def name_for_shape(iid, why):
+    """`rimflow shape <iid> --enter --publish` as the pipeline's act. -> (rc, output)."""
+    argv = [sys.executable, os.path.join(HERE, "cli.py"), "shape", iid, "--enter", "--seat", "BENCH", "--why", why,
+            "--publish"]
+    env = dict(os.environ, RM_ROLE_UNIT=os.environ.get("RM_ROLE_UNIT") or UNIT, RIMFLOW_SEAT="BENCH")
+    for k in ("CLAUDE_SESSION_ID", "CLAUDE_CODE_SESSION_ID"):
+        env.pop(k, None)
+    try:
+        r = subprocess.run(argv, cwd=REPO, env=env, capture_output=True, text=True, timeout=EFFECT_TIMEOUT_S,
+                           stdin=subprocess.DEVNULL, errors="replace")
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return 99, "%s: %s" % (type(e).__name__, e)
+    return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+
+
+def old_step(cfg, st, old, now, fx=None, write=False):
+    """The no-home step of one tick. -> its reading. write=False (a dry tick, a run-now tick): what it would do."""
+    fx = fx or {}
+    if not isinstance(old, dict):
+        return None
+    if old.get("could_not_look"):
+        return {"could_not_look": "could not look: %s" % _one(old["could_not_look"], 300), "homed": 0, "named": []}
+    homes = old.get("homes") or []
+    log = dict(st.get("no_home_named") or {})
+    names, why = no_home_names(old.get("cands") or {}, cfg, log, now)
+    if not write:
+        return {"would_home": len(homes), "would_name": names, "why": why}
+    out = {"homed": 0, "named": [], "why": why}
+    if homes:
+        rc, said = fx.get("home", write_homes)(homes)
+        if rc in (0, WRITTEN_NOT_LANDED):
+            out["homed"] = len(homes)
+        else:
+            out["home_failed"] = _one(said, 300)
+    for i in names:
+        rc, said = fx.get("name", name_for_shape)(i, NO_HOME_WHY)
+        if rc in (0, WRITTEN_NOT_LANDED):
+            log[i] = now
+            out["named"].append(i)
+        else:
+            out.setdefault("name_failed", {})[i] = _one(said, 200)
+    st["no_home_named"] = {i: v for i, v in log.items() if isinstance(v, (int, float)) and now - v < 30 * 86400}
+    return out
 
 def join_candidates(cands, now, want, system, facts, lease, off, held, refused):
     """-> {ticket: system} of the open tickets that have no lane row (no check) and may join their system's bundle this
@@ -1198,7 +1430,10 @@ def gather(st, now=None, root=None, load_lag_s=None):
         sdue, swhy = LS.due(sf, cfg, now)
         stale = None
         if x.blocked and block_facts(w, x, now) == ([], True):     # a block that holds, with no open predecessor
-            bdue, bwhy = block_age(x, op, now, cfg)
+            bmw = ({"mod": None, "why": mw_cause, "unreadable": mw_cause} if mw_mods is None else
+                   MW.reading(x, mw_mods, LM.ITEMS))
+            import work_bundle as WB
+            bdue, bwhy = block_age(x, op, now, cfg, system=WB.system_of(x, lambda it, m=bmw: m, w.items))
             if bdue:
                 stale = bwhy
                 if LS.needs_shape_run(sf):     # no check, no route, no split: the age line makes it due, and an item
@@ -1315,8 +1550,9 @@ def gather(st, now=None, root=None, load_lag_s=None):
         d["clone_exists"] = _clone_exists(iid)
     live = None if runs is None else sum(len(r["live"]) for r in runs.values())
     load = load_now()
+    old = onboard_facts_safe(lambda: old_facts(w, open_, now, cfg, mw_mods, mw_cause, mods))
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
-            "bundles_live": bundles_live, "join": join, "onboard": onboard,
+            "bundles_live": bundles_live, "join": join, "onboard": onboard, "old": old,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "cores": os.cpu_count(),
             "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old}
@@ -1592,6 +1828,10 @@ def tick(cfg, apply, fx=None, now=None, only=None):
             gone = [i for i in only if i not in facts["items"]]
             facts = dict(facts, lane_items=facts["items"], items={i: facts["items"][i] for i in only if i in facts["items"]})
         rows, launches = decide(cfg, st, facts, now, account)
+        try:
+            old = old_step(cfg, st, facts.get("old"), now, fx, write=apply and not only)
+        except Exception as e:  # noqa: BLE001 - the no-home step never stops the lane's own rows; the reading says it
+            old = {"could_not_look": "could not look: the no-home step raised %s: %s" % (type(e).__name__, _one(e, 300))}
         rows += [{"item": i, "decision": "not_found",
                   "why": "not an open item with an outcome check, an acceptance script, a route, or due for Shape"}
                  for i in gone]
@@ -1620,6 +1860,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         if apply and not only:
             st["blind_hold"] = bh
         rd = {"schema": 1, "blind_hold": bh, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
+              "old": old,
               "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],

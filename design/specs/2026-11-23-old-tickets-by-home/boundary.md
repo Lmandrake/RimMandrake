@@ -41,8 +41,20 @@ and nothing closes or drops a ticket.
   not 0, and the message names the fault. One bad row in a rows file stops the whole file.
 - **a-rows-file-may-run-again.** A row that the ledger already carries is skipped. A row of a closed item is skipped and
   said.
-- **a-ticket-with-no-home-is-named.** Each open list ticket with no home is counted and named. It is never put in a home
-  by the program.
+- **a-ticket-with-no-home-is-named.** Each open list ticket with no home is counted and named. A program puts it in a
+  home only by a rule of `rule_home` (the next promise), never by a reading of its prose.
+- **an-old-ticket-takes-a-home-by-rule.** `rule_home` gives an old ticket with no test and no home of its own (filed
+  before `shape_from`, not one mod's work) a real home by the first rule that places it, with no model run: (1) the
+  home of the nearest ancestor in its chain of causes that has one (its mod by `mod_work`, or its own home that is not
+  `unplaced`); (2) else the mod that its id or title names (`list_dispatch.mod_of`, the word rule of the lane's switches
+  and holds). The group names the rule (`by-rule-cause`, `by-rule-name`), the flag is `CANNOT TELL` (nobody read the
+  prose), and the reason names the ancestor or the mod. A ticket that no rule places gets no home: the lane names it for
+  Shape (`list_dispatch.no_home_names`). Why: the pass of 2026-11-23 took its set from the page's word rule, which
+  calls such a ticket mod work, while `mod_work` calls a mod named by a word alone list work; so neither placed 266
+  old tickets (measured 2026-11-26, `design/specs/2026-11-26-testless-tickets/holes_check.py`).
+- **place-writes-only-rule-homes.** `list_home.py place` prints the rows that `rule_home` makes; `--apply` writes them
+  in one `rimflow home --from` act. A ticket with a home of its own (`unplaced` included), a test, a mod reading, or a
+  filing at or after `shape_from` is never a row. A second run writes nothing new.
 - **the-list-is-by-home-and-group-with-counts.** The list prints each home, its count, its groups with their counts, and
   the count of each flag. The counts sum to the count of open list tickets.
 - **a-closed-ticket-leaves-the-list.** An item that is done, dropped or superseded is not in the list.

@@ -1527,6 +1527,35 @@ def t_the_mods_own_bundle_onboards_its_old_tickets():
         "holder_note: an old member is sent through the onboarding role (%s)" % note[-400:])
 
 
+def t_a_mod_bundle_takes_an_old_ticket_past_a_block_with_no_end():
+    """With mod on, an old ticket of the mod whose block has no end and is idle block_idle_days joins the mod's bundle;
+    any other block still keeps it out; the holder's note asks the run to settle the block first (the Conductor,
+    2026-11-26, design/specs/2026-11-26-testless-tickets/conductor_decisions.md question 2)."""
+    W = WB()
+    items = {"MB_STALE": old("MB_STALE", "mod:FlowWorks", blocked=True, blocked_reason="r"),
+             "MB_FRESH": old("MB_FRESH", "mod:FlowWorks", blocked=True, blocked_reason="r"),
+             "MB_OWNER": old("MB_OWNER", "mod:FlowWorks", blocked=True, blocked_reason="his word", blocked_kind="owner")}
+
+    def reading(it):
+        h = (it.home or {}).get("home", "")
+        return {"mod": h[4:] if h.startswith("mod:") else None}
+    stale = {"MB_STALE": "its block has no end and is idle 5.0 d"}
+    kw = dict(items=items, reading=reading, prose_of=lambda i: "", refused={}, leased=lambda it: False)
+    got = W.mod_members("FlowWorks", set(), NOW, onboard=True, stale=lambda it: stale.get(it.id), **kw)
+    chk(lambda: got == ["MB_STALE"], "mod_members: a block with no end, idle, does not keep an old ticket out; a fresh one "
+        "and a block with an end do (%s)" % got)
+    plain = W.mod_members("FlowWorks", set(), NOW, onboard=True, **kw)
+    chk(lambda: plain == [], "mod_members: with no stale reader every block keeps its ticket out (%s)" % plain)
+    ready, out = W.ready_split(["MB_STALE", "MB_OWNER"], items, NOW, refused=lambda i: None, held=lambda i: None,
+                               leased=lambda it: False, stale=lambda it: stale.get(it.id))
+    chk(lambda: ready == ["MB_STALE"] and "MB_OWNER" in out, "ready_split: stale lets only the endless block through (%s %s)"
+        % (ready, out))
+    rec = W.new_record("mod:FlowWorks", ["ROAD", "MB_STALE"], "why", "maturation", NOW)
+    note = W.holder_note(rec, items, {"MB_STALE": None})
+    chk(lambda: "MB_STALE" in note and "--kind" in note and "unblock" in note and "drop" in note,
+        "holder_note: a blocked member is told to drop a stale ticket, or type or lift its block, first (%s)" % note[-500:])
+
+
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
@@ -1550,7 +1579,8 @@ def main():
               t_one_onboarding_beside_no_live_bundle, t_an_onboarding_that_could_not_look_starts_nothing,
               t_a_home_lead_takes_its_old_tickets, t_the_onboarding_brief_sorts_before_it_checks,
               t_a_routed_member_has_an_outcome, t_an_onboarding_on_a_host_keeps_its_old_tickets,
-              t_the_page_shows_each_onboarding_run, t_the_mods_own_bundle_onboards_its_old_tickets]:
+              t_the_page_shows_each_onboarding_run, t_the_mods_own_bundle_onboards_its_old_tickets,
+              t_a_mod_bundle_takes_an_old_ticket_past_a_block_with_no_end]:
         print("-- %s" % t.__name__)
         try:
             t()

@@ -6,6 +6,9 @@ Read-only: it changes no ticket, launches nothing. "No test" is list_shape.needs
 
 The routes that give a ticket a test with no hand (code, not titles):
   Shape stage   list_shape.due: a non-mod ticket named for Shape, or filed at or after shape_from (it waits shape_grace_h)
+  no-home step  list_dispatch.no_home_names: an old ticket with no home that no rule places is named for Shape, from
+                no_home_shape_from (rule homes: list_home.rule_home, written by the same tick)
+  age line      list_dispatch.block_age / work_bundle.ready_split(stale): a block with no end, idle, is taken past
   onboarding    list_dispatch.onboard_step: one run per `pipeline:`, `machine:` or `game:` home of an `on` class
   mod bundle    maturation_dispatch.pilot_holders -> road_back_holder -> work_bundle.mod_members: the holder run of a ledger
                 pilot mod with open road-back items takes that mod's old tickets (onboard_classes mod: on)
@@ -36,9 +39,10 @@ def verdict(st, why, route=None, hole=False, then=None):
     return {"state": st, "why": why, "route": route, "hole": hole, "then": then}
 
 
-def park_of(x, waits, blocked, now, epoch):
+def park_of(x, waits, blocked, now, epoch, end=None):
     """-> (kind, end condition or None) of a park that holds `x` now, or None when none holds. waits: the open items its
-    block waits on (list_dispatch.block_facts); blocked: a block with no open predecessor still holds."""
+    block waits on (list_dispatch.block_facts); blocked: a block with no open predecessor still holds. end(x) -> the
+    lane's own end of that block (lane_block_end), or None; without it, the kinds below decide alone."""
     if x.wait_until:
         t = epoch(x.wait_until)
         if t is None or t > now:
@@ -47,6 +51,8 @@ def park_of(x, waits, blocked, now, epoch):
         return "block on an open item", "the blocker %s closes" % ", ".join(waits)
     if blocked:
         kind = x.blocked_kind or "other"
+        if end is not None:
+            return "block: %s" % kind, end(x)
         if kind == "time":
             return "block: time", ("its date %s" % x.blocked_lift_at) if x.blocked_lift_at else None
         if kind == "owner":
@@ -117,6 +123,9 @@ def _non_mod(x, s, env):
     if due:
         return verdict("ON A ROUTE", "the Shape stage: %s" % due, route="Shape stage")
     if s.startswith(("item:", "cause:")):
+        r = env.get("no_home_route", lambda x: None)(x)
+        if r:
+            return verdict("ON A ROUTE", "no home of its own (%s): %s" % (s, r), route="no-home step")
         return verdict("NO HOME", "no home of its own (%s), and it was filed before Shape went live and never named" % s,
                        hole=True)
     kind = s.partition(":")[0]
@@ -126,6 +135,47 @@ def _non_mod(x, s, env):
     if cls != "on":
         return verdict("NO ROUTE", "onboard_classes has no setting for %s" % kind, hole=True)
     return verdict("ON A ROUTE", "the onboarding run of %s" % s, route="onboarding")
+
+
+FAR_DAYS = 400      # "ever": a time past every date of the lane's settings, for asking its code whether a route exists
+
+
+def lane_block_end(x, system, cfg, now):
+    """The lane's own answer for a block of `x` that holds with no open predecessor: its end (list_dispatch.block_end),
+    else whether the age line ever takes it past the block, asked of the lane's code with its last own event long ago
+    and every date passed: block_age for a lane ticket (its class taken as on: a class off is the next state, not this
+    park), ready_split with endless_stale for a mod's ticket. -> the end text, or None (a hole)."""
+    import list_dispatch as LD
+    import work_bundle as WB
+    e = LD.block_end(x)
+    if e:
+        return e
+    far = max(now, LD._epoch_of(cfg.get("no_home_shape_from")) or 0) + FAR_DAYS * 86400
+
+    class Op(object):
+        last, opened = {x.id: 0.0}, {}
+    s = system(x)
+    days = float(cfg.get("block_idle_days", 3))
+    if str(s or "").startswith("mod:"):
+        ready, _out = WB.ready_split([x.id], {x.id: x}, far, refused=lambda i: None, held=lambda i: None,
+                                     leased=lambda it: False, stale=lambda it: LD.endless_stale(it, 0.0, far, cfg))
+        return (LD.ENDLESS_END % days) if ready else None
+    kind = str(s or "").partition(":")[0]
+    c2 = dict(cfg, onboard_classes=dict(cfg.get("onboard_classes") or {}, **({kind: "on"} if kind else {})))
+    due, _why = LD.block_age(x, Op(), far, c2, system=s)
+    return (LD.ENDLESS_END % days) if due else None
+
+
+def lane_no_home_route(x, cfg, now):
+    """The lane's own answer for an old ticket with no home: does its no-home step ever name it (list_dispatch.
+    no_home_names, with every date passed)? -> the route's words, or None."""
+    import list_dispatch as LD
+    far = max(now, LD._epoch_of(cfg.get("no_home_shape_from")) or 0) + FAR_DAYS * 86400
+    got, _why = LD.no_home_names({x.id: 0.0}, cfg, {}, far)
+    if x.id not in got:
+        return None
+    return ("the lane's no-home step names it for Shape from %s, %s a day, oldest first (list_dispatch.no_home_names)"
+            % (cfg.get("no_home_shape_from"), cfg.get("no_home_shape_per_day", 5)))
 
 
 def gather(now=None):
@@ -171,7 +221,7 @@ def gather(now=None):
 
     def park(x):
         waits, blocked = LD.block_facts(w, x, now)
-        return park_of(x, waits, blocked, now, LM.epoch)
+        return park_of(x, waits, blocked, now, LM.epoch, end=lambda y: lane_block_end(y, system, cfg, now))
 
     def shape_due(x):
         sf = LS.facts(x)
@@ -197,6 +247,7 @@ def gather(now=None):
 
     env = {"system": system, "park": park, "shape_due": shape_due, "off": off, "on": on, "admitted": admitted,
            "pilots": pilots, "road_back": road_back, "rests": set(CS.rests()), "classes": cfg.get("onboard_classes") or {},
+           "no_home_route": lambda x: lane_no_home_route(x, cfg, now),
            "held": lambda mod: LD._held(mod) if MOH.held(mod) else None,
            "refusal": lambda x: ("refused by a bundle", "a new ledger event on it (the refusal reads since its last other event)")
            if ref.get(x.id) else None}

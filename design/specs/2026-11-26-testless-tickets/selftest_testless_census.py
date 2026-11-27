@@ -40,6 +40,40 @@ def st(x, **kw):
     return v["state"], v["hole"]
 
 
+def lane_routes():
+    """The two new routes, read from the lane's own code (item RIMMANDRAKE_CLOSE_TESTLESS_HOLES_HOMES_NOT_248_SHAPE_RUNS):
+    the no-home step (list_dispatch.no_home_names) and the age line of a block with no end (block_age; ready_split with
+    endless_stale). Each case is also run against a planted fault in the lane, where it must read a hole."""
+    from unittest import mock
+    rf = os.path.abspath(os.path.join(HERE, "..", "..", "..", "src", "RimMandrake", "rimflow"))
+    for p in (rf, os.path.join(os.path.dirname(rf), "Utils")):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    import list_dispatch as LD
+    now = 1795700000.0
+    cfg = {"no_home_shape_from": "2026-12-02T08:00:00Z", "no_home_shape_per_day": 5, "block_idle_days": 3,
+           "onboard_classes": {"pipeline": "on", "game": "off", "mod": "on"}}
+    x = X("A_B_C")
+    chk(st(x, system=lambda y: "item:A_B_C", no_home_route=lambda y: T.lane_no_home_route(y, cfg, now))
+        == ("ON A ROUTE", False), "no home: the lane's no-home step names it, so it is on a route")
+    chk(T.lane_no_home_route(x, dict(cfg, no_home_shape_from=None), now) is None, "no date set: the step never names it")
+    with mock.patch.object(LD, "no_home_names", lambda *a, **k: ([], "planted: names none")):
+        chk(st(x, system=lambda y: "item:A_B_C", no_home_route=lambda y: T.lane_no_home_route(y, cfg, now))
+            == ("NO HOME", True), "planted fault: a no-home step that names none leaves the hole")
+    b = X("A_B_C", blocked=True, needs="offline", blocked_reason="r")
+    for s in ("pipeline:ops", "game:art", "item:A_B_C", "mod:FlowWorks"):
+        end = T.lane_block_end(b, lambda y, s=s: s, cfg, now)
+        chk(bool(end) and "age line" in end, "a block with no end on %s: the lane's age line takes it (%s)" % (s, end))
+        with mock.patch.object(LD, "endless_stale", lambda *a, **k: None):
+            chk(T.lane_block_end(b, lambda y, s=s: s, cfg, now) is None,
+                "planted fault: an age line that never fires leaves %s a hole" % s)
+    v = T.classify(b, env(park=lambda y: T.park_of(y, [], True, now, float,
+                                                     end=lambda z: T.lane_block_end(z, lambda q: "pipeline:ops", cfg, now))))
+    chk(v["state"] == "PARKED" and not v["hole"], "the census reads the end from the lane: PARKED, no hole")
+    chk(T.lane_block_end(X("A_B_C", blocked=True, needs="offline", blocked_kind="owner"), lambda y: "pipeline:ops", cfg, now)
+        == LD.block_end(X("A_B_C", blocked_kind="owner")), "an owner block's end is the lane's block_end")
+
+
 def main():
     chk(st(X("A_B_C", "owed")) == ("NOT WORK", False), "a ticket of kind owed is not work, not a hole")
     chk(st(X("A_B_C")) == ("ON A ROUTE", False), "a pipeline ticket of an on class is on the onboarding route")
@@ -76,6 +110,7 @@ def main():
     chk(T.park_of(X("A", blocked_kind="external"), [], True, now, ep)[1] is None, "park_of: external with no reason has no end")
     chk(T.park_of(X("A"), [], True, now, ep) == ("block: other", None), "park_of: a block of no kind has no end")
     chk(T.park_of(X("A"), [], False, now, ep) is None, "park_of: no block, no wait: no park")
+    lane_routes()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

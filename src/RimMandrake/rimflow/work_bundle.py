@@ -464,9 +464,11 @@ def new_record(system, members, why, pipeline, now, launched_by=None, onboard=Fa
     return rec
 
 
-def ready_split(ids, items, now, refused, held, leased):
+def ready_split(ids, items, now, refused, held, leased, stale=None):
     """-> ([ready ids], {left-out id: reason}). refused(id) -> the refusal text since its last other event or None;
-    held(id) -> the owner's hold text or None; leased(item) -> True under another live lease."""
+    held(id) -> the owner's hold text or None; leased(item) -> True under another live lease. stale(item) -> why its
+    block has no end and is idle past the age line (list_dispatch.endless_stale), or None: such a block does not keep
+    the ticket out; the run settles it first (mod_members)."""
     ready, out = [], {}
     for i in ids:
         it = items[i]
@@ -478,7 +480,8 @@ def ready_split(ids, items, now, refused, held, leased):
             continue
         why = (("it is under another live lease (%s)" % _g(it, "owner")) if leased(it) else
                ("it waits until %s: %s" % (wu, _g(it, "wait_reason") or "no reason given")) if ahead else
-               ("it is blocked: %s" % (_g(it, "blocked_reason") or "no reason given")) if _g(it, "blocked") else
+               ("it is blocked: %s" % (_g(it, "blocked_reason") or "no reason given"))
+               if _g(it, "blocked") and not (stale and stale(it)) else
                refused(i) or held(i))
         if why:
             out[i] = why
@@ -1404,11 +1407,14 @@ def cmd_live(o):
 
 # ---- part 6: the Maturation Pipeline's road back is one bundle ------------------------------------------------------
 
-def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refused=None, leased=None, onboard=None):
+def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refused=None, leased=None, onboard=None,
+                stale=None):
     """-> the ready open tickets of `mod` (mod_work's one rule) that carry a test, not in `exclude`, in id order: they
     join the mod's bundle. onboard (None: read `onboard_classes` of list_dispatch.json for `mod`): an old ticket of the
     mod (is_old: no test, no route) joins too, and the holder's note sends it through roles/list_onboard.md (part 8).
-    Off, a ticket with no test stays out (66 of 67 FlowWorks tickets had none on 2026-11-24)."""
+    Off, a ticket with no test stays out (66 of 67 FlowWorks tickets had none on 2026-11-24). With onboard, stale(item)
+    (None with `items` given: no reader; else list_dispatch.endless_stale over the ledger) lets an old ticket whose
+    block has no end and is idle past the age line join; the holder's note asks the run to settle that block first."""
     grace = None
     if onboard is None:
         cfg = _lane_cfg()
@@ -1417,12 +1423,18 @@ def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refu
         grace = float(_lane_cfg().get("shape_grace_h", 24)) * 3600
     if items is None:
         import model as LM
-        w = world()
+        import list_dispatch as LD
+        import list_effect as LE
+        op = LD.Openings()
+        w = LE._world(observe=op.observe)
         items = w.items
         _m, reading = mod_reader()
         prose_of = prose_reader()
         refused = refusals(LM.read())
         leased = lambda it: _g(it, "state") == "doing" and LM.lease_status(it, now) == "live"  # noqa: E731
+        if onboard and stale is None:
+            cfg = _lane_cfg()
+            stale = lambda it: LD.endless_stale(it, op.last.get(_g(it, "id")), now, cfg)  # noqa: E731
     out = []
     for i in sorted(items):
         it = items[i]
@@ -1433,7 +1445,8 @@ def mod_members(mod, exclude, now, items=None, reading=None, prose_of=None, refu
             continue
         if not test_of(it, prose_of(i)) and not (onboard and is_old(it, now, grace)):
             continue
-        ready, _out = ready_split([i], items, now, refused=(refused or {}).get, held=lambda x: None, leased=leased)
+        ready, _out = ready_split([i], items, now, refused=(refused or {}).get, held=lambda x: None, leased=leased,
+                                  stale=(stale if onboard and is_old(it, now, grace) else None))
         if ready:
             out.append(i)
     return out
@@ -1474,6 +1487,13 @@ def holder_note(rec, items, tests, root=REPO):
     if [m for m in joined if not tests.get(m)]:
         lines.append("Each ticket above whose test reads none is an old ticket: take it through steps A and B of %s (the "
                      "reality sort before any check, then its check seen red today) before you work it." % ONBOARD_ROLE)
+    blocked = [m for m in rec["members"] if _g(items.get(m), "blocked")]
+    if blocked:
+        lines.append("These members are under a block with no end that sat idle past the age line: %s. Settle each block "
+                     "first: read the ticket against now and drop it with its reason when it is stale or wrong (`rimflow "
+                     "drop <ID> --reason ...`); else type the block (`rimflow block <ID> --kind <owner|time|external|"
+                     "live> ...` with its lift) or lift it when its reason is gone (`rimflow unblock <ID> --reason ...`). "
+                     "Work a member only after its block is settled." % ", ".join(blocked))
     del road
     lines.append(polish_text(rec["system"], root))
     return "\n".join(lines) + "\n"

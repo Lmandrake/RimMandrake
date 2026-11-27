@@ -96,6 +96,23 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   fires on them. A block of kind `owner` (he decides) or `time` (its own date) is never stale by a `needs` window: a
   window is not its lift event. Measured 2026-11-24: 30 items blocked past 3 days, 18 with a window that had opened
   since, and no program looked at one.
+- **a-block-with-no-end-ages-whatever-its-needs.** `block_end` names the event that lifts a block that holds with no open
+  predecessor: the owner's act (kind `owner`), its date (kind `time` with a lift date), an outside event (kind
+  `external` with a reason) or a `needs` window (kind `live` with `needs` `game-up` or `bridge`). Any other block has no
+  end: no kind (or `other`), `item` or `judge` with no open predecessor, `time` with no date, `external` with no reason,
+  `live` with no window. A block with no end, idle `block_idle_days` since the item's last own event, is stale whatever
+  its `needs`, and the Shape run's why asks it to drop a stale or wrong ticket first, then type the block (`rimflow
+  block --kind`) or lift it. Its route must be open: a `mod:` ticket is its mod's (the next promise of the work bundles
+  page), a ticket whose home class is off in `onboard_classes` waits for its class, and a ticket with no home waits for
+  `no_home_shape_from`. Decision: the Conductor, 2026-11-26 (`design/specs/2026-11-26-testless-tickets/conductor_decisions.md`,
+  question 2). Measured 2026-11-26: 66 open tickets with no test sat under such a block, and 49 of them need `offline`,
+  which no window opens.
+- **old-no-home-tickets-are-placed-then-named-for-shape.** Each applied full tick first writes the homes that
+  `list_home.rule_home` gives (one `rimflow home --from` act). Then, from `no_home_shape_from`, it names for Shape
+  (`rimflow shape <ID> --enter`) at most `no_home_shape_per_day` in any 24 hours of the old tickets that no rule places:
+  open, no test, never named, filed before `shape_from`, not one mod's work, not parked, not off, not held, not under a
+  live lease; oldest first. Its names are kept in the state (`no_home_named`) and counted from there. A dry tick and a
+  run-now (`--only`) tick write none. Decision: the Conductor, 2026-11-26 (question 1 of the same page).
 - **a-passed-wait-gets-one-second-look.** A lane item with a check (named for the lane, or filed at or after `shape_from`)
   whose dated wait passed and whose check still fails gets one Work run (opus) after that date, whose brief names what the
   wait was for and asks first if the work is still worth the touch. It counts as a Work run: after `max_runs_per_item` the
@@ -188,7 +205,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   it is not landed yet; it is never recorded as a refusal. Measured 2026-11-23: two of the first ticks' writes exited
   4 and landed on origin minutes later.
 - **the-tick-files-nothing.** A tick writes no `file` or `spawn` event. It writes `close` for a check that holds,
-  `effect` for an adopted acceptance script, or the one shared note when a required live line is missing or fails.
+  `effect` for an adopted acceptance script, the one shared note when a required live line is missing or fails, and the
+  rule homes and Shape names of the promise old-no-home-tickets-are-placed-then-named-for-shape.
 - **a-dry-tick-writes-nothing.** A tick without `--apply` launches nothing, closes nothing, attaches nothing and writes no
   state.
 - **only-narrows-the-items-never-the-gates.** `tick --only ID...` (the Conductor's run-now) decides only the named

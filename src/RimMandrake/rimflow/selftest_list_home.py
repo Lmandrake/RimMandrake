@@ -203,6 +203,81 @@ def t_a_parked_ticket_is_not_offered():
     chk(lambda: "parked, not offered" in text and owner in text and waited in text, "the offer lines name the parked")
 
 
+def _old(iid, home=None, caused_by=None, title=None, **kw):
+    import types
+    x = types.SimpleNamespace(id=iid, state="proposed", title=title or ("t " + iid), caused_by=caused_by, effect=None,
+                              shape=None, shape_named=None, created_at="2026-11-01T00:00:00Z",
+                              home={"home": home, "group": "g", "flag": "LOOKS CURRENT"} if home else None)
+    for k, v in kw.items():
+        setattr(x, k, v)
+    return x
+
+
+WORDS = ["LeaningScrub", "FeverWood"]
+BEFORE = 1795500000.0      # 2026-11-17: the fakes above were filed before it
+
+
+def t_an_old_ticket_takes_a_home_by_rule():
+    """The nearest ancestor with a real home first (its mod by mod_work, or its own home that is not unplaced), then the
+    mod that its id or title names, else no home: with the group of the rule, CANNOT TELL, and a reason that names it."""
+    items = {"P0": _old("P0", "pipeline:bridge"), "P1": _old("P1", caused_by="P0"), "C": _old("C", caused_by="P1"),
+             "MP": _old("MP"), "MC": _old("MC", caused_by="MP"),
+             "U": _old("U", "unplaced", caused_by="P0"), "CU": _old("CU", caused_by="U"),
+             "A": _old("A", caused_by="B"), "B": _old("B", caused_by="A"),
+             "LEANINGSCRUB_FIX_X": _old("LEANINGSCRUB_FIX_X"),
+             "AGARILUX_FIX_Y": _old("AGARILUX_FIX_Y", title="Plant NRE in FeverWood after load"),
+             "FEVERWOOD_Z": _old("FEVERWOOD_Z", caused_by="P0"), "N": _old("N", caused_by="GONE")}
+
+    def reading(it):
+        return {"mod": "FlowWorks"} if it.id == "MP" else {"mod": None}
+    rh = lambda i: LH().rule_home(items[i], items, reading, WORDS)      # noqa: E731
+    got = rh("C")
+    chk(lambda: got and got[0] == "pipeline:bridge" and got[1] == "by-rule-cause" and "P0" in got[2] and "2 hop" in got[2],
+        "the nearest ancestor with a home, two hops up, names that ancestor (%s)" % (got,))
+    chk(lambda: rh("MC")[:2] == ("mod:FlowWorks", "by-rule-cause"), "an ancestor that is one mod's work gives that mod")
+    chk(lambda: rh("CU")[0] == "pipeline:bridge", "an unplaced ancestor is no home: the walk goes on past it")
+    chk(lambda: rh("A") is None and rh("B") is None, "a loop in the chain ends, with no home")
+    chk(lambda: rh("LEANINGSCRUB_FIX_X")[:2] == ("mod:LeaningScrub", "by-rule-name"), "the mod its id names")
+    w = rh("AGARILUX_FIX_Y")
+    chk(lambda: w[0] == "mod:FeverWood" and "list_dispatch.mod_of" in w[2], "the mod its title names (%s)" % (w,))
+    chk(lambda: rh("FEVERWOOD_Z")[0] == "pipeline:bridge", "the chain comes before the name")
+    chk(lambda: rh("N") is None, "no ancestor in the ledger and no mod named: no home (the lane names it for Shape)")
+    for i in ("C", "MC", "LEANINGSCRUB_FIX_X"):
+        h, g, r = rh(i)
+        chk(lambda h=h, g=g, r=r: LH().fields(h, g, "CANNOT TELL", r)[0] is not None, "%s: the row is a valid home" % i)
+
+
+def t_place_writes_only_rule_homes():
+    items = {"P0": _old("P0", "pipeline:bridge"), "OK": _old("OK", caused_by="P0"),
+             "OWN": _old("OWN", "game:flight", caused_by="P0"), "UNP": _old("UNP", "unplaced", caused_by="P0"),
+             "TESTED": _old("TESTED", caused_by="P0", effect="cmd:false"), "MODW": _old("MODW", caused_by="P0"),
+             "NEW": _old("NEW", caused_by="P0", created_at="2026-11-25T00:00:00Z"),
+             "SHUT": _old("SHUT", caused_by="P0", state="done"), "NONE": _old("NONE"),
+             "BLIND": _old("BLIND", caused_by="P0")}
+
+    def reading(it):
+        return {"mod": "FlowWorks"} if it.id == "MODW" else {"unreadable": "x"} if it.id == "BLIND" else {"mod": None}
+    rows = LH().place_rows(items, reading, WORDS, BEFORE)
+    chk(lambda: [i for i, _f in rows] == ["OK"] and rows[0][1]["flag"] == "CANNOT TELL"
+        and rows[0][1]["group"] == "by-rule-cause", "only an old open ticket with no home, no test and no mod reading is "
+        "a row (%s)" % rows)
+    # the write, on the throwaway ledger: one act, and a second run writes nothing new
+    p0 = fil("RIMMANDRAKE_TEST_HOME_PLACE_PARENT")
+    cli("home", p0, "--home", "pipeline:bridge", "--group", "g", "--flag", "LOOKS CURRENT", "--why", "t")
+    rc, out = cli("file", "RIMMANDRAKE_TEST_HOME_PLACE_CHILD", "--for", "BENCH", "--title", "t", "--caused-by", p0,
+                  "--why", "selftest")
+    late = 4102444800.0     # 2100: every ticket of this ledger is old
+    n1 = LH().place_main(apply=True, before=late, words=WORDS, reading=lambda it: {"mod": None}, publish=False)
+    child = world().items["RIMMANDRAKE_TEST_HOME_PLACE_CHILD"]
+    chk(lambda: rc == 0 and child.home and child.home["home"] == "pipeline:bridge" and child.home["group"] == "by-rule-cause",
+        "place --apply writes the rule home (%s; %s)" % (child.home, out[-200:]))
+    before = len(events())
+    n2 = LH().place_main(apply=True, before=late, words=WORDS, reading=lambda it: {"mod": None}, publish=False)
+    chk(lambda: n1 >= 1 and n2 == 0 and len(events()) == before, "a second run writes nothing new (%s, %s)" % (n1, n2))
+    dry_n = LH().place_main(apply=False, before=late, words=WORDS, reading=lambda it: {"mod": None}, publish=False)
+    chk(lambda: dry_n == 0 and len(events()) == before, "a dry run writes nothing")
+
+
 def main():
     top = X["top"] = tempfile.mkdtemp(prefix="selftest_list_home_")
     env = dict(RIMFLOW_LEDGER=os.path.join(top, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(top, "items"),
@@ -220,7 +295,9 @@ def main():
                   t_a_closed_ticket_leaves_the_list,
                   t_could_not_look_is_not_an_empty_list,
                   t_a_home_never_launches_or_closes,
-                  t_a_parked_ticket_is_not_offered):
+                  t_a_parked_ticket_is_not_offered,
+                  t_an_old_ticket_takes_a_home_by_rule,
+                  t_place_writes_only_rule_homes):
             try:
                 t()
             except Exception as e:  # noqa: BLE001

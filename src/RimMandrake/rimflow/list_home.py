@@ -13,6 +13,9 @@ the old tickets grouped by mod, pipeline repair and other kinds once, and the li
                                                                     to Codex: not parked (a block that holds, a dated
                                                                     wait ahead) and not one mod's work (mod_work.of); the
                                                                     rest are counted by mod (--by-mod: and listed)
+    python3 src/RimMandrake/rimflow/list_home.py place [--apply]   the rule homes of the old tickets with no test and no
+                                                                    home (rule_home); --apply writes them in one act
+                                                                    (the lane's tick writes them too: list_dispatch)
     exit 0 read; 2 could not look (the ledger or the page's ticket set could not be read)
 
 The write is `rimflow home <ID> --home H --group G --flag F [--reason R]`, or `rimflow home --from <rows.tsv>` (ID, HOME,
@@ -87,6 +90,133 @@ def read_rows(text, known):
 def same(cur, new):
     return bool(cur) and all(cur.get(k) == new[k] for k in ("home", "group", "flag", "reason"))
 
+
+
+# ---- homes by rule (the Conductor, 2026-11-26: design/specs/2026-11-26-testless-tickets/conductor_decisions.md, Q1) ----
+
+RULE_FLAG = "CANNOT TELL"       # a rule placed it; nobody read the prose
+
+
+def _own_home(it):
+    h = (getattr(it, "home", None) or {}).get("home") if getattr(it, "home", None) else None
+    return h if h and h != UNPLACED else None
+
+
+def rule_home(it, items, reading, words):
+    """-> (home, group, reason) of a ticket with no home of its own, by the first rule that places it, or None.
+    (1) the nearest ancestor in its chain of causes (caused_by) that has a real home: its mod by mod_work (reading),
+    else its own home that is not unplaced; (2) the mod that its id or title names (list_dispatch.mod_of over `words`,
+    the word rule of the lane's switches and holds). Pure over its inputs; a loop in the chain ends the walk."""
+    seen = {getattr(it, "id", None)}
+    pid, n = getattr(it, "caused_by", None), 0
+    while pid and pid not in seen and pid in items:
+        seen.add(pid)
+        n += 1
+        p = items[pid]
+        r = reading(p)
+        h = ("mod:%s" % r["mod"]) if isinstance(r, dict) and r.get("mod") else _own_home(p)
+        if h:
+            return h, "by-rule-cause", "by rule: the home of its cause %s, %d hop(s) up its chain of causes" % (pid, n)
+        pid = getattr(p, "caused_by", None)
+    import list_dispatch as LD
+    m = LD.mod_of(getattr(it, "id", None), getattr(it, "title", None), words)
+    if m:
+        return ("mod:%s" % m, "by-rule-name", "by rule: its id or title names the mod %s (list_dispatch.mod_of, the word "
+                "rule of the lane's switches and holds)" % m)
+    return None
+
+
+def place_rows(items, reading, words, before):
+    """-> [(id, fields)] of the rule homes: each open ticket with no home of its own (unplaced counts as one), no test
+    (list_shape.needs_shape_run), filed before `before` (shape_from, an epoch), and not one mod's work, that rule_home
+    places. A ticket whose mod reading could not be made is never a row."""
+    import list_shape as LS
+    out = []
+    for i in sorted(items):
+        x = items[i]
+        if getattr(x, "state", None) in CLOSED or getattr(x, "home", None):
+            continue
+        sf = LS.facts(x)
+        if not LS.needs_shape_run(sf) or sf.get("filed") is None or sf["filed"] >= before:
+            continue
+        r = reading(x)
+        if not isinstance(r, dict) or r.get("unreadable") or r.get("mod"):
+            continue
+        got = rule_home(x, items, reading, words)
+        if got:
+            f, _why = fields(got[0], got[1], RULE_FLAG, got[2])
+            if f:
+                out.append((i, f))
+    return out
+
+
+def write_rows(rows, why, publish=True, tmpdir=None, runner=None):
+    """Write `rows` ([(id, fields)]) in one `rimflow home --from` act. -> (rc, output); rc 0 written, 4 written and not
+    landed yet (ledger_landing), else refused."""
+    import subprocess
+    import tempfile
+    if not rows:
+        return 0, "home: no row"
+    if tmpdir is None:
+        import list_dispatch as LD
+        tmpdir = LD.sdir()
+    fd, path = tempfile.mkstemp(prefix="rule_homes_", suffix=".tsv", dir=tmpdir)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        for i, h in rows:
+            f.write("\t".join([i, h["home"], h["group"], h["flag"], h.get("reason") or ""]) + "\n")
+    argv = [sys.executable, os.path.join(HERE, "cli.py"), "home", "--from", path, "--seat", "BENCH", "--why", why]
+    if publish:
+        argv.append("--publish")
+    env = dict(os.environ, RIMFLOW_SEAT="BENCH")
+    for k in ("CLAUDE_SESSION_ID", "CLAUDE_CODE_SESSION_ID"):
+        env.pop(k, None)
+    try:
+        import time_budget
+        r = (runner or subprocess.run)(argv, cwd=REPO, env=env, capture_output=True, text=True,
+                                       timeout=time_budget.RIMFLOW_S, stdin=subprocess.DEVNULL, errors="replace")
+        return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return 99, "%s: %s" % (type(e).__name__, e)
+    finally:
+        try:
+            os.remove(path)
+        except OSError:
+            pass
+
+
+PLACE_WHY = ("pipeline act: homes by rule for old tickets with no test and no home (the Conductor's decision of "
+             "2026-11-26, design/specs/2026-11-26-testless-tickets/conductor_decisions.md question 1; list_home.rule_home)")
+
+
+def place_main(apply=False, before=None, words=None, reading=None, publish=True):
+    """-> the count of homes written (0 for a dry run). Prints each row."""
+    import model as LM
+    import list_dispatch as LD
+    import list_shape as LS
+    if before is None:
+        frm = LD.load_cfg().get("shape_from")
+        if not frm:
+            print("no shape_from in list_dispatch.json: no ticket is old, so none is placed")
+            return 0
+        before = LS._epoch(frm)
+    if words is None:
+        words = LD._mods()
+    if reading is None:
+        import mod_work as MW
+        modset = MW.mods()
+        reading = lambda it: MW.reading(it, modset, LM.ITEMS)  # noqa: E731
+    w = LM.replay()
+    rows = place_rows(w.items, reading, words, before)
+    for i, h in rows:
+        print("%s\t%s\t%s" % (i, h["home"], h["reason"]))
+    print("place: %d rule home(s)%s" % (len(rows), "" if apply else " (dry run: --apply writes them)"))
+    if not apply or not rows:
+        return 0
+    rc, out = write_rows(rows, PLACE_WHY, publish=publish)
+    print(out)
+    if rc not in (0, 4):
+        raise RuntimeError("rimflow home --from refused (exit %d): %s" % (rc, out))
+    return len(rows)
 
 # ---- the view -------------------------------------------------------------------------------------------------------
 
@@ -237,7 +367,16 @@ def main(argv=None, read=read):
     sub.add_parser("json")
     s = sub.add_parser("offer")
     s.add_argument("--by-mod", action="store_true", help="list the kept-off tickets under each mod")
+    s = sub.add_parser("place")
+    s.add_argument("--apply", action="store_true", help="write the rule homes (one rimflow home --from act, published)")
     o = ap.parse_args(argv)
+    if o.cmd == "place":
+        try:
+            place_main(apply=o.apply)
+        except Exception as e:  # noqa: BLE001 - could not look is never "nothing to place"
+            print("UNMEASURED: the rule homes could not be made or written (%s: %s)" % (type(e).__name__, e))
+            return 2
+        return 0
     try:
         homes, items = read()
     except Exception as e:  # noqa: BLE001 - could not look is never an empty list

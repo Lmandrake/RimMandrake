@@ -227,6 +227,12 @@ onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_d
 - **the-mods-own-bundle-onboards-its-old-tickets.** `mod_members` with `mod` on takes each ready old ticket of the mod
   (no test) into the mod's bundle, and the holder's note sends those members through `roles/list_onboard.md`. With
   `mod` off, a ticket with no test stays out.
+- **a-mod-bundle-takes-an-old-ticket-past-a-block-with-no-end.** With `mod` on, an old ticket of the mod whose block has
+  no end (`list_dispatch.block_end`) and is idle `block_idle_days` joins the mod's bundle (`ready_split` with `stale`);
+  any other block still keeps a ticket out. The holder's note names each such member and asks the run to drop a stale or
+  wrong ticket first, then type its block (`rimflow block --kind`) or lift it. Decision: the Conductor, 2026-11-26
+  (`design/specs/2026-11-26-testless-tickets/conductor_decisions.md`, question 2): a mod's ticket never goes to a lane
+  Shape run, so its own route settles the block.
 
 ## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
 
