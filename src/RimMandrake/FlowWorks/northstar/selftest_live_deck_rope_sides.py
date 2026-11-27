@@ -95,6 +95,14 @@ got = L.rope_sides_summary(kept, ["ew2", "ew4", "ns4"]) if hasattr(L, "rope_side
 check("the summary reads each bridge's kept verdict (PASS, FAIL, none read)",
       got == (1, [("ew4", "FAIL"), ("ns4", "UNMEASURED")]), got)
 
+# the yard is cleared of an earlier run's pawns (a reused map left a colonist under the deck): a failed read is not "none"
+check("yard_pawns lists ids, corpses included", L.yard_pawns({"success": True, "pawns": [{"id": "Human1"}, {"id": "Human2", "dead": True}]})
+      == ["Human1", "Human2"])
+check("yard_pawns of an empty yard is []", L.yard_pawns({"success": True, "pawns": []}) == [])
+check("yard_pawns of a failed or cut read is None",
+      L.yard_pawns({"success": False}) is None and L.yard_pawns({"success": True, "pawns": [], "truncated": 3}) is None
+      and L.yard_pawns(None) is None)
+
 for f in fails:
     print("  FAIL " + f)
 print("selftest_live_deck_rope_sides: %s (%d faults)" % ("FAIL" if fails else "PASS", len(fails)))

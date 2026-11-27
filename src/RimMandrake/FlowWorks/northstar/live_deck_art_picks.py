@@ -166,6 +166,34 @@ def deckart_ok(txt):
     return True, "Scrapper heavy strip, complete=True"
 
 
+def yard_pawns(reply):
+    """The ids of the pawns a jawa/list_pawns reply lists (corpses too), or None when the read did not work (never 'none
+    there') -- pure."""
+    if not isinstance(reply, dict) or reply.get("success") is False or not isinstance(reply.get("pawns"), list) \
+            or (reply.get("truncated") or 0) > 0:
+        return None
+    return [q.get("id") for q in reply["pawns"] if q.get("id")]
+
+
+def clear_yard_pawns(w, yard):
+    """Vanish every pawn in the yard before the colonists are placed. HARNESS (SteveDesktop J20261127T145208Z-a8ba58): the lane
+    reused the map of the run before, whose colonist lay in the pit under a deck; the deck's see-through redraw over a pawn
+    beneath (drawn above pawns) then veiled the new colonist standing on it, and every capture showed two. -> (vanished, why
+    not all) -- the caller writes both on the record."""
+    x, z, wd, ht = yard
+    ids = yard_pawns(w.call("jawa/list_pawns", limit=5000, includeCorpses=True, rect="%d,%d,%d,%d" % (x, z, wd, ht)))
+    if ids is None:
+        return 0, "UNMEASURED: list_pawns over the yard did not answer"
+    gone, left = 0, []
+    for pid in ids:
+        v = w.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish") or {}
+        if v.get("destroyedAfter") is True:
+            gone += 1
+        else:
+            left.append(pid)
+    return gone, ("not vanished: %s" % left) if left else None
+
+
 def heavy_scrapper_look(w, out, stations, readings):
     """Per bridge: a drafted colonist mid-span, captured bare and in a hat on the deck middle, then each end framed on its
     anchor and post. Returns [(bridge, capture name, path or UNMEASURED reason)]."""
@@ -411,6 +439,9 @@ def main(argv=None):
             bad += not ok
             w.say("CHECK %s: %s (%s)" % (name, "OK" if ok else "BAD", why))
         w.say("CHECK heavy Scrapper DECKART: %d bad of %d read (limit 0)" % (bad, len(stations)))
+        gone, why = clear_yard_pawns(w, yard)
+        readings["_yard_pawns_vanished"] = dict(count=gone, problem=why)
+        w.say("YARD pawns vanished before the colonists: %d%s" % (gone, "" if not why else " (%s)" % why))
         readings["_look"] = [list(t) for t in heavy_scrapper_look(w, a.out, stations, readings)]
         if a.draw_order:
             draw_order(w, a.out, stations, readings, a.queue_experiment)
