@@ -1,0 +1,642 @@
+[
+ {
+  "id": "arteval_RM_Aveluthia__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Aveluthia__variant",
+  "prompt": "A single tall, ponderous pack beast for a RimWorld mod, painterly vanilla RimWorld style, realistic, on a transparent background. It stands on four thick pillar legs that end in broad splayed toes, made for loose obsidian scree. Its body hangs in thick wrinkled folds of heavy flesh. The base flesh colour is a deep reddish-brown. Cool blue-grey marbling and banding runs over it, and the same cool grey mottling palette covers the whole animal in every facing: shoulders, flanks, back, rump and dorsal ridge. The cool grey keeps the same hue, value and saturation in each view, and each pattern sits in the same place on the body in every view. The long head ends in a heavy drooping snout, with the nose hanging low and blunt. Above the snout, four yellow eyes glow softly in a row. The pose is a calm, heavy standing stance with the head slightly lowered. The front view shows the face, with the eyes toward the viewer. The side view shows the long profile of the head, the folds and the back marbling. The north view is the rear view, seen from behind: it shows the back, the rump, the dorsal ridge, the tail and the haunches, with the eyes hidden. It carries the same blue-grey marbling over reddish-brown that the south and east views show. Soft painted edges; value and colour contrast against the ground carry the silhouette. The whole body stays centred and fully inside the frame, with consistent lighting from the upper left.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaVariant"
+ },
+ {
+  "id": "arteval_RM_Bozzuga__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Bozzuga__young",
+  "prompt": "RimWorld creature sprite, a young bozzuga, a small alien swamp ambusher. Painterly vanilla RimWorld style, realistic, on a transparent background. Soft painted edges; value and colour contrast carry the silhouette against the ground. Body plan: a squat, flattened, wedge-shaped crouched body, wide and low, the colour of wet silt (deep black-brown) mottled with cream and salt-white warts, with a faint oily iridescent sheen on the dark skin. The entire head is one mouth: the front half of the body is a single wide, continuous mouth slit, and the mouth's rim is the head's outline from every facing. The rim is a soft rounded lip edge lined with short pale fang nubs. Two small eye nubs sit on the upper rim of the mouth. The skin above the mouth flows straight into the back. The young carries the adult's features in juvenile form: a low budding crest of small soft spines along the head and back, small clusters of pale ringed barnacle-like nodules on the flanks and back, and cream mottling over the dark silt skin, so it reads as a smaller, softer version of the adult. The limbs are short, thick, stubby props with blunt pale-tipped digits, tucked under the low body. The pose is one crouched pose at one size for every facing; the body has the same height and width in each view. Front view (south): eyes toward the viewer, a wide scalloped oval mouth rim fills the front, fang nubs along its edge, the crest rising over the top. Side view (east): one long mouth slit runs along the front of the body, the lip edge rounded, eyes on the upper rim, the crest running along the back, nodules on the flank. Rear view (north), seen from behind: the low flat haunches, the budding crest down the spine, nodule clusters and cream warts across the back, the eyes hidden, at the same body height and width as the front view. Single creature, centred, full body visible.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.2,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Bozzuga/RM_BozzugaYoung"
+ },
+ {
+  "id": "arteval_RM_Chatrak__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chatrak__young",
+  "prompt": "A young chatrak, a low plated grazer, for a RimWorld sprite on a transparent background, in the painterly vanilla RimWorld style, realistic. The animal stands on four short sturdy legs with its head held low in a grazing posture, calm and unbothered. Its back carries plates stacked in tiers like an earthwork. The plates are blue-grey weathered steel, each tier edged in rust-orange, and they are pocked with bullet ricochet dents and bright scuffs. The skin between the plates is pale mottled hide in cream, grey and faint tan. The head is long, angular and low-slung, armoured with plates in the same blue-grey steel with rust edges as the back, with a plated brow and a plated muzzle. This is a young animal: the head is larger relative to the body, the legs are shorter, the body is compact, the plate tiers are smaller and fewer than an adult's, and small budding plate edges show where the adult's ridges will grow. The painting uses flat painted plate bands with angular plate shapes and distinct value groups: the steel plates, the rust edges and the pale hide read as three separate masses. The surface is hand-painted with visible brush strokes, dry-brush texture on the hide, and naturally irregular plate edges, with a matte painted finish. The edges are soft and painted; value and colour contrast against the ground carry the silhouette. All three views show the same animal at one shared scale, with the same shoulder-to-foot height, back height, leg length and plate-tier count. The south view is the front, with eyes toward the viewer and the low armoured head between the front legs. The north view is the rear, seen from behind, showing the stacked plate tiers, the haunches and the tail, with the head hidden behind the plated back. The east view is a side profile with the head to the right. In it the animal stands as tall as in the front and rear views, and its body length fills the canvas width. The whole muzzle, head, body and tail sit inside the canvas, with a clear transparent margin all around.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP, STYLE_OFF, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP, STYLE_OFF, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.2,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Chatrak/RM_ChatrakYoung"
+ },
+ {
+  "id": "arteval_RM_ColossalAerofleet__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ColossalAerofleet__variant",
+  "prompt": "A greater bulloo, a bulloo grown to enormous size, drifting, with a small escort of smaller bulloos around it. Realistic painterly vanilla RimWorld sprite on a transparent background, soft painted edges, value and colour contrast against the ground carry the silhouette. The whole coat is one colour variant, the same on every facing: warm chestnut-brown base hue with large rounded dark chocolate-brown blotches of varied size, spread across the body lobes and continuing across the same lobes in the same places as the animal turns. This coat is clearly different from the pale cream adult. The smaller escort bulloos wear the same warm brown coat with chocolate blotches, at small scale. The body sheds a great deal of thick gel, as heavy hanging sacs and long slow drips. The gel is one translucent pale amber on every facing, with local darker shading in the folds and soft white highlights on the wet surfaces. Facing views are one animal seen from different sides: the front view has the face and eyes toward the viewer; the side view shows the profile with the same coat and blotches; the rear view, seen from behind, shows the back and rear lobes with the eyes hidden. All three views match the front view's colours exactly: same warm brown, same chocolate blotches, same pale amber gel. Body proportions, lobes, gel sacs and the escort follow the front view.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_BellVariant"
+ },
+ {
+  "id": "arteval_RM_Excretor__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Excretor__young",
+  "prompt": "A young excretor calf: a juvenile of an alien, heavy-set, three-horned grazer that browses ruined ground and concentrates metals and salts in its body. Show three standing views of the same calf at one shared scale, on a transparent background: a front view with the eyes toward the viewer, a side view with the head toward the right of the image, and a rear view seen from behind with the face hidden. All three views stand on the same ground line, with the shoulder and the top of the back at the same height. The body has the same bulk and volume in each view. The side view shows the full barrel body at the same height as the front and rear views. The hide is grey-blue, the same as the adult excretor. A bony face-shield begins to form across the brow and snout. Short pale crusted mineral plates start along the spine and shoulders, overlapping in a small, sparse pattern. Small orange gland nodules sit in a row along each flank. The head carries three budding horns: a short central nasal horn and two short lateral horns that curve outward from the sides of the head. The body is low-slung and heavy-set, with thick pillar legs and a broad, blunt muzzle for browsing along the ground. The ears are small and tucked behind the face-shield. Juvenile proportions: a large head, shorter legs, a rounded belly, softer and smaller plates and horns than the adult. The same grey-blue, plates, orange flank glands and three-horn layout read as the adult's species at calf size. Painterly vanilla RimWorld style, realistic, with soft painted edges. Value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, SIBLING_MISMATCH, OWNER_NOTE_IGNORED, F_SIZE_JUMP, STYLE_EARTHLY, SIBLING_MISMATCH, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.75,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Excretor/RM_ExcretorYoung"
+ },
+ {
+  "id": "arteval_RM_Gennok__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Gennok__variant",
+  "prompt": "A gennok, a heavy, thick-hided, four-legged plodding animal with a broad barrel body, thick pillar legs and a low-slung head, built for endurance. Broad parasol-shaped growths rise from its back like a cluster of wide mushroom caps on short stalks, and they shade its body. This is the variant colouring, and it is identical on every facing. The thick hide is a cool grey-green. Bold dark charcoal tiger blotches mark the flanks, haunches, shoulders and upper legs in the same layout on every view. The parasol caps are tan, with dark brown radial stripes across their tops and a darker tan underside. No part of the animal is warm brown, and no cap is red or pink, so it stands apart from the brown, red-capped adult. Front view: eyes toward the viewer, the grey-green chest and face with the striped tan caps rising behind the head. Side view: the grey-green blotched flank and legs in profile, with the striped tan caps rising along the back. Rear view, seen from behind: the blotched grey-green haunches and tail, with the striped tan caps above, eyes hidden. Same hide, same blotches and same cap colouring on every view. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 3.9,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Gennok/RM_GennokVariant"
+ },
+ {
+  "id": "arteval_RM_Grellik__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Grellik__young",
+  "prompt": "A young weevil, a juvenile of a fat, slow fungus-carrying beetle, for a RimWorld creature sprite, walker pose, drawn from above at a slight angle. The shell is glossy black chitin made of segmented plates, with a soft sheen along the plate edges. The belly underside is pale and ridged. The six legs are articulated black segments with pink joints, shorter and slightly thicker than an adult's. The head is large for the body, with a long downward rostrum, jointed antennae and defined weevil head plates. The eyes are small, dark compound beetle eyes set low on the side of the head, beside the base of the rostrum, and only slightly larger than an adult's. A few small white-to-lilac mushroom caps grow out of the shell plates, with small pink spore beads and fine white mycelium strands trailing across the black chitin. The fungus is sparse and young, and shows that the beetle and the fungus live as partners. Its look is harmless, slow and revolting. Value and colour contrast between the glossy black shell, the pale lilac-white caps and the pink accents carry the silhouette. Realistic painterly vanilla RimWorld style, soft painted edges. Transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, STYLE_CARTOON, SIBLING_MISMATCH, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.4,
+  "module": "walker",
+  "target_texpath": "RM_TheRot/Fauna/Redrawn/Grellik/GrellikYoung"
+ },
+ {
+  "id": "arteval_RM_Ivvol__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ivvol__young",
+  "prompt": "A young ivvol, a small flat bottom-dwelling creature for a RimWorld sprite, drawn as a smaller, slightly thicker version of the adult ivvol. The body is a flat, legless, doormat-low disc of maroon-red tissue with a tan wavy rim and fine radiating veins across the mantle, lying flat against the floor. A single raised dorsal ridge runs along the centre of the back, and it carries a short row of proportionally large yellow-orange eyes; this ridge is the only part that stands above the flat mantle, and the eyes along it are the only eyes on the body. The mantle is one unbroken pad of tissue: its edge is a smooth, limbless rim that rests on the ground, and the head, face and limbs are absent, so the whole animal reads as a living floor-mat that watches. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast between the maroon mantle, tan rim and yellow-orange eyes carry the silhouette. Small creature, drawn at a size of about 0.8 tiles across.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, STYLE_EARTHLY, DESC_MISS; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 0.825,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Ivvol/RM_IvvolYoung"
+ },
+ {
+  "id": "arteval_RM_Moravatha__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Moravatha__variant",
+  "prompt": "A huge, slow, many-legged grazer for RimWorld, the moravatha in its variant colouring. Body plan: a blunt head carrying four glowing yellow eyes, many legs under a high domed carapace built of overlapping separate plates, each plate as long as a cart; the plates overlap like roof tiles and are not a fused shell. The head and the legs are dull dark grey-violet hide. Colouring, identical on every view: every carapace plate is deep slate-violet (dark blue-purple, low value) with warm ochre mottling in small irregular patches along the plate centres. The hue, value and mottling pattern are the same on the front view, the side view and the rear view. This violet-and-ochre look is clearly different from the adult's blood-red. Surface: glossy, dark and saturated on every view, with a wet-looking sheen, bright specular highlights along the curved ridge of each plate and deep violet shadows in the gaps between plates. The front plates are as glossy and dark as the side and rear plates. Views: the front view shows the blunt face with all four yellow eyes toward the viewer; the side view shows the profile with the full row of legs and the plate dome; the rear view is seen from behind and shows the carapace, plates and rear legs with the eyes hidden. Keep the adult's exact anatomy, proportions and silhouette on every view and change only the plate colouring. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 4.1,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaVariant"
+ },
+ {
+  "id": "arteval_RM_Murrol__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrol__young",
+  "prompt": "A young murrol, a thick, blunt, near-blind eel that rides the channel banks with its mouth open and feeds on nutrient-rich silt. It is a small, soft, juvenile version of the adult murrol: the same fish, younger. The body is thick, stout and blunt, with a rounded cross-section that stays thick along most of its length and tapers only at the tail tip. The head is large for the body and wide and blunt, with a rounded snout, an open mouth, and tiny dull eyes set in soft features. The skin is olive green and khaki on the back with fine gold reticulated mottling, and a pale cream belly. Small rounded pectoral fins sit low on the sides of the body. A soft, budding dorsal fin runs as a low ridge along the centre of the back, and a small tail fin spreads at the end of the tail, both edged in gold. The surface is finely scaled, painted in matte, painterly earth tones with brushed value shading, in the same scale texture and top-left lighting as the adult murrol. Edges are soft and painted, and value and colour contrast carry the silhouette. Painterly vanilla RimWorld style, realistic, on a transparent background. Facings share one body size, one thickness and one length. East view: side profile, head to the right, showing the thick body, the dorsal ridge, the pectoral fin and the tapering tail with its tail fin. South view: front view, head-on, with the open mouth and the dull eyes toward the viewer; the wide blunt face is as wide as the east profile's body is thick. North view: rear view, seen from behind, showing the same smooth, thick eel body with a rounded back and the dorsal ridge running down the centre, tapering to the tail tip with the tail fin spread, and the head hidden. The body is one smooth continuous form in every facing.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_INCONSISTENT, F_SIZE_JUMP, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 0.6,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Murrol/RM_MurrolYoung"
+ },
+ {
+  "id": "arteval_RM_Olumetha__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Olumetha__young",
+  "prompt": "A young olumetha, the juvenile of a broad, low alien grazer, shown as a single creature on a transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast carry the silhouette. The body is inky black, broad and low to the ground, long in the back, with sturdy short legs and a smooth hide that has only a few light, soft juvenile skin folds at the neck and shoulder. The head is held low and is large for the body, as on a young animal. It is a smaller, softer version of the adult's tapered wedge of fused plates: dark overlapping carapace plates with cool blue-grey edges cover the upper head and form a heavy brow, and the muzzle sits mostly beneath them. Four glowing yellow eyes sit in two pairs on the flanks of the wedge, one pair on each side, one eye above the other. Below the brow the lower head is a short, leathery, recessed grazing snout with a small low mouth and plain nostril slits. A row of small budding plates, dark with cool blue-grey edges, runs along the spine from the neck to the haunches, smaller and fewer than the adult's. The short tail and the haunches are inky black with a few small plates. Facings: the south view is a front view, with the plated wedge and both eye pairs toward the viewer. The east view is a true right-facing side profile, with body, neck, head, wedge, near eye pair and snout all pointing right and in one line, the far eye pair hidden behind the wedge. The north view is a rear view, seen from behind, showing the budding back plates, haunches and tail, with the eyes hidden. Lighting is soft and even. The colours are inky black with cool blue-grey plate edges and glowing yellow eyes.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, STYLE_EARTHLY, OWNER_NOTE_IGNORED, STYLE_EARTHLY, F_EAST_NOT_PROFILE",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.7,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_OlumethaYoung"
+ },
+ {
+  "id": "arteval_RM_Pallbearer__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Pallbearer__young",
+  "prompt": "Young pallbearer, a juvenile of a heavy armor-plated graveyard scavenger, as a single RimWorld animal sprite on a transparent background. Painterly vanilla RimWorld style, realistic, seen from slightly above as in the game. It has the adult's dark rust-brown armor plates with saturated rust tones. The plates are angular and strongly separated, with value steps between neighbours and dark rust shadows in the seams. The body is long and low-slung, covered in overlapping rust-brown plates. The face is a small pale bone-white skull-mask plate on an elongated muzzle, with the eyes set in it. A short fringed tail stub sits at the rump. The legs are short and sturdy, the feet broad and heavy. Juvenile proportions: a proportionally larger head, shorter legs, softer developing plate edges, a smaller body overall. It stands calm and unhurried, head low, as if methodically working the ground. Soft painted edges; value and colour contrast against the ground carry the silhouette. Front view: eyes toward the viewer, skull-mask face centred, the plates of the chest and shoulders visible. Side view: full length of the long armored body, skull-mask muzzle, legs and tail stub in profile. Rear view, seen from behind: back plates, tail stub and haunches, with the face hidden. The animal is one size in every view. Body height, foot size, leg thickness and head-plate size are the same in the front, side and rear views, and the front view's stance matches the side view's body width.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP, F_INCONSISTENT, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.6,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Pallbearer/RM_PallbearerYoung"
+ },
+ {
+  "id": "arteval_RM_Shoal__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shoal__variant",
+  "prompt": "A shoal variant creature for RimWorld, painterly vanilla RimWorld style, realistic, on a transparent background. Eight to fifteen small lozenge-shaped bodies, each a soft elongated oval, are strung on one single glowing warm-yellow thread. The bodies hang along the thread as one loose net, with the thread looping and crossing between them, and the whole group moves as one connected web. This is the variant colouring of the species, shown in one palette on every facing: each lozenge body is a warm deep brown-mauve with soft pink-purple mottled centres and a slightly paler mauve underside. It is clearly darker and warmer than the adult shoal's pale cream bodies. The glowing yellow thread keeps the same warm yellow glow on every facing, and the bodies keep the same brown-mauve skin with the same pink-purple mottling. The colours belong to the animal and stay the same when it turns. South view: front view, the net seen facing the viewer, lozenges spread in a loose web. East view: side view in profile, the same brown-mauve mottled lozenges strung along the same glowing thread, the net stretched out horizontally. North view: rear view, seen from behind, the same brown-mauve mottled lozenges and the same glowing yellow thread, lit from the same side as south and east. Soft painted edges; value and colour contrast against the ground carry the silhouette: the dark brown-mauve bodies and bright yellow thread stand out clearly. Compact framing so the whole net fits a small square sprite, with a little empty space around it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 0.7,
+  "module": "swimmer",
+  "target_texpath": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/ShoalVariant"
+ },
+ {
+  "id": "arteval_RM_Sulleth__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sulleth__young",
+  "prompt": "A young sulleth, a juvenile grazing herd animal for RimWorld, shown as a front view, a rear view and a side view on a transparent background. All three views are at one shared scale, with the same shoulder height, and the front and rear views are the same height as the side view. Painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. The body is long and low-slung: the torso is elongated, with a clearly longer back between shoulder and hip than a deer fawn has, about twice as long as it is deep, and it is carried low on slender, quick, straight legs. The chest is narrow, so the front and rear views are narrow, with a torso width equal to the side view's body depth. The neck is held forward, level with the back, and the nose is down toward the next mouthful. The head is slightly large for the body, with a short soft muzzle, as is right for a juvenile. The hide is sleek, short and smooth. It is dusky violet on the back and flanks and shades to a pale violet-grey belly. Lime-green bars run transversely across the flanks and wrap up over the back; the front view shows them curving down the shoulders, and the rear view shows them curving down the haunches. The lower legs are olive green, matching the adult sulleth. The front view shows the head and eyes toward the viewer. The rear view shows the back, haunches and a short tail, with the eyes hidden. The side view shows the animal facing right in profile. The young is a smaller, softer version of the lean, long-limbed adult, and it reads as the same species and the same rendering hand.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, OWNER_NOTE_IGNORED, DEPARTURE_MISSING, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.3,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Sulleth/RM_SullethYoung"
+ },
+ {
+  "id": "arteval_RM_Tirbak__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Tirbak__young",
+  "prompt": "A young tirbak, a placid alien pack beast of a desert oasis caravan, shown as three views on a transparent background: front view with the eyes toward the viewer, rear view seen from behind, and side profile facing right. All three views are drawn at the same scale and stand on the same ground line, so the body height, the leg length and the height of the fin tops are identical in every view. The body is a large round-backed dome with a long low torso, thick pillar legs and broad flat padded feet. The hide is warm sandy beige with soft tan spotting, smooth with a few gentle folds, matching the adult tirbak. The head is long and low with a long, drooping, flexible tapir-like snout hanging below the mouth, small eyes set high, and broad soft ears. A short tail with a small tuft sits at the rear. Along the spine runs a row of small budding rain-fins, each shaped like a ship's ventilation cowl: a curved hood with a wide open mouth that turns into the breeze, the hollow inside shaded darker, a flexible intake and not a solid spine or sail. The rear view shows the back, the tail, the haunches and the backs of the hoods, with the eyes hidden. The side profile shows the full row of cowls, the drooping snout and the tail in one clear silhouette. Painterly, realistic, vanilla RimWorld sprite style with soft painted edges; value and colour contrast against the ground carry the silhouette. Calm, patient and sturdy, with the same palette and the same artist's hand as the adult.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, SIBLING_MISMATCH, STYLE_EARTHLY, F_SIZE_JUMP, SIBLING_MISMATCH, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.4,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Tirbak/RM_TirbakYoung"
+ },
+ {
+  "id": "arteval_RM_Zhissa__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Zhissa__variant",
+  "prompt": "Painterly vanilla RimWorld creature sprite, realistic, transparent background, soft painted edges; value and colour contrast against the ground carry the silhouette. The zhissa is a heavy-bodied four-legged grazer of the ice sheets, with a plated head, thick shoulder fur and sturdy legs. Its mottled slate-charcoal colouring runs dark charcoal on the head plates and shoulder fur, slate-grey on the flanks and haunches, and dark slate on the legs. Thin pale-blue static veins run along the same regions of the body, a crackling discharge that reads as stored electricity under the coat. Six eyes sit on the head in two rows. Each eye is a broad, milky white-blue orb, pale and icy, set in a darker charcoal socket, so the eyes stand out as the lightest spots on the dark head. The animal is calm and grazing-posed, size about 2.5 tiles, drawn at game scale with clear readable shapes.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Zhissa/RM_ZhissaVariant"
+ },
+ {
+  "id": "arteval_RSW_BloodletterPetrel__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_BloodletterPetrel__variant",
+  "prompt": "A single wild bloodletter petrel for RimWorld, drawn as a walking sea-bird of polluted wastelands, standing on both feet. Painterly vanilla RimWorld style, realistic feather texture, soft painted edges, value and colour contrast against the ground carry the silhouette. Transparent background, one creature centred in the frame, 1.2 tiles wide.\n\nBody: a compact, stout petrel with a rounded chest, long folded wings resting along the back, a short wedge tail and short strong pinkish-grey legs with webbed feet. The beak is a slender, sharply hooked tube-nosed bill in dark horn, its tip stained blood-red, built for piercing prey and drinking blood. The eye is small, dark and alert.\n\nColouring, identical on every facing: the crown, nape, back, wings and tail are deep charcoal-grey with fine paler feather edges. The face, throat and breast are pale cream. The belly is a lighter cream-grey. The same charcoal cap over the crown and nape sits above the same cream face in every view, and the cream-to-charcoal boundary falls at the eye line.\n\nFront view, eyes toward the viewer: the charcoal crown above the cream face, cream throat and cream breast, with charcoal wing edges at both sides and the red-tipped beak pointing at the viewer.\nSide view, seen in profile: the charcoal crown and nape, the cream face patch around the eye and beak base, the cream breast edge, and the charcoal back, wing and tail running to the rear.\nRear view, seen from behind: the charcoal crown, nape, back, folded wings and tail, with a thin cream edge of belly showing at the flanks, and the eyes and beak hidden.\n\nThe same bird, the same plumage and the same palette in every view; only the angle changes.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.2,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrelVariant"
+ },
+ {
+  "id": "arteval_RSW_ColoClawFish__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_ColoClawFish__young",
+  "prompt": "A juvenile colo claw fish, a pale cave eel from the Naboo underworld, for a RimWorld creature sprite. The body is a long, slim, ribbon-like torpedo, one slim trunk of even thickness from head to tail, in cool off-white pale skin with faint grey-blue shading. The head is shallow and narrow, only a little wider than the trunk, with a long narrow jaw and small dull dark eyes. A pair of small clawed forelimbs sits just behind the head, with dark pale-tipped claws held forward. Two or more thin, pale whisker-like lure barbels grow from the sides of the snout and trail back past the jaw, each ending in a tiny glowing teal tip; they are clearly visible in every view. A slender, soft-glowing cyan line runs along the edge between the pale back and the pale belly, from the head to the tail. A row of small, round, glossy, budding teal nodules runs down the spine, with a few more along the flanks. The tail tapers to a stalk and ends in a small, flat, spotted paddle fin, a budding version of the adult's large paddle; the paddle is wider than the stalk. Facings, all at one shared scale with the same slim body thickness and the same head size: the side view shows the whole long eel in profile, head, clawed forelimbs, trunk, tail and paddle, with the barbels trailing back from the snout; the front view is seen head-on, eyes toward the viewer, with a narrow head, a slim trunk foreshortened behind it, the barbels spread to both sides of the snout, and part of the long body curving to one side so its length reads; the rear view is seen from behind, showing the paddle fin and the tail and the slim trunk with the spine nodules, eyes hidden, and the barbel tips showing past the head. Transparent background. Painterly, realistic vanilla RimWorld style with soft painted edges; value and colour contrast carry the silhouette. No outlines.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING, CANON_MISS, CANON_MISS, F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING, CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.63,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/SeaBeasts/ColoClawFish/ColoClawFishYoung"
+ },
+ {
+  "id": "arteval_RSW_Falumpaset__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Falumpaset__young",
+  "prompt": "A young falumpaset, a huge long-legged herbivore of Naboo, with long straight legs fully extended beneath the torso, a deep rounded torso, and a heavy rump that is the highest and widest mass of the body. The hide is wrinkled, in a single consistent colour, marked with darker spots in one steady pattern. The low-hung head is carried forward and below the line of the back, leaving the back and rump high. Juvenile proportions give a softer, rounder body and a slightly larger head. The feet rest on a common ground line, and the rump top rises to a fixed height above it. Painterly vanilla RimWorld style, realistic, with soft painted edges; strong value and colour contrast against the ground carries the silhouette. Transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Falumpaset/FalumpasetYoung"
+ },
+ {
+  "id": "arteval_RSW_FeralNerf__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FeralNerf__young",
+  "prompt": "Painterly, realistic vanilla RimWorld style creature sprite on a transparent background: a feral nerf calf, shown in three views (front view with the eyes toward the viewer, side view, and rear view seen from behind with the face hidden). The calf is the juvenile of an alien grazing herd animal. It is stocky, with a raised humped shoulder line, a sloping back, and a long thin tail with a tufted tip. Its coat is the same deep reddish-brown as the adult: coarse, gritty fur built from strongly separated clumps, in dark red-brown, mid red-brown and a few warm highlights, with dark shadow gaps between clumps and high painted contrast. The head is low and heavy, with a broad, flat, squared grazing snout and wide nostrils. The eyes sit visible under a coarse brow ridge. A heavy low-slung shaggy mane drapes over the hump and shoulders. On the crown sit two small budding antler knobs, each a short single spike angled up and back, which clearly prefigure the adult's full headgear. Younger proportions: slightly shorter legs and a slightly larger head than the adult, with the same hump, the same mane and the same tail. All three views show one calf at one body scale: identical head size, torso volume, limb length and shoulder height on every view; in the side view the head hangs low at the same size as in the front view. Soft painted edges; value and colour contrast carry the silhouette against any ground.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP, STYLE_EARTHLY, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.75,
+  "module": "walker",
+  "target_texpath": "swanimals/FeralNerf/FeralNerfYoung"
+ },
+ {
+  "id": "arteval_RSW_Grank__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Grank__young",
+  "prompt": "A young Grank, a low-slung predator and scavenger from Naboo, painted in the same painterly vanilla RimWorld style as its adult, with broad flat colour blocks, simple stepped shading and realistic animal proportions, on a transparent background. Body: a low, long, heavy-set quadruped with the belly close to the ground, a broad wedge-shaped head, a short thick neck and short stout legs with broad paws. As a young animal it has a slightly larger head and a shorter body than the adult, with the same body plan. Colour: deep maroon-brown back, flanks and upper legs, with the throat, chest, belly and inner legs as distinct patches of light tan-cream with clear edges against the maroon, the same maroon-to-cream colour blocking as the adult. Features: the strong jaw is slightly open and shows saw-like serrated teeth, and the eyes are set in the broad head. Short stiff sensory hairs, rendered as a few bristle strokes, rise from the back, flanks and legs. Rendering: the hide is painted as a few large planes with simple stepped shading and short bristle strokes, with soft painted edges, and the value and colour contrast between maroon and cream carries the silhouette. The animal has one consistent anatomical scale throughout: sturdy legs of the same length and thickness, broad paws of the same size, a heavy chest mass and a large head, and it fills the frame.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, SIBLING_MISMATCH, F_SIZE_JUMP, SIBLING_MISMATCH; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.25,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Grank/GrankYoung"
+ },
+ {
+  "id": "arteval_RSW_IridonianReek__female_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_IridonianReek__female",
+  "prompt": "A massive, territorial female iridonian reek, a heavy four-legged herbivore, for RimWorld. Painterly vanilla RimWorld style, realistic, on a transparent background. Soft painted edges; value and colour contrast carry the silhouette against the ground. The same animal at one fixed anatomical scale in every facing: front view with the eyes toward the viewer, side view (east), and rear view seen from behind. The toes, lower legs, body girth and head are the same size in every view. The side view fills its frame at full body scale, matching the front view's leg thickness and toe width (toes about 70 px wide). Only the projected height and length change with the facing.\n\nHide: crisp, grainy leather texture covering the whole body in rows of small, evenly sized rounded knobs. The knobs have sharp painted edges and fine surface grain. The body is a rich brown. The head and shoulders are a saturated blood-red, a clear contrast against the brown body.\n\nHorns: one tall central horn rises from the nose and brow ridge in front of the eyes. It is slightly back-curved, about as long as the head, and clearly tall. It is a little shorter and slimmer than a male's horn. Two smaller cheek horns curve forward on either side of the face, below and beside the central horn. In the side view the central horn rises from the front of the skull above the muzzle, ahead of the eye. In the front view it stands in the middle of the face between and in front of the eyes. In the rear view the head shows its horn tips above the red shoulders and the eyes are hidden.\n\nBody: broad, heavy, low-slung female frame with thick pillar legs and wide toes, a powerful shoulder mass in red, and a brown knobbly back and haunches. Calm but wary posture, head carried level. One animal, centered, full body in frame.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, SIBLING_MISMATCH, CANON_MISS, F_SIZE_JUMP, SIBLING_MISMATCH, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/IridonianReek/IridonianReekFemale"
+ },
+ {
+  "id": "arteval_RSW_Kinrath__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Kinrath__variant",
+  "prompt": "A single creature sprite for RimWorld: a kinrath, a large, blind, non-sentient arachnoid. The body is a heavy, low-slung, oval carapace of dark brown-violet chitin with a paler mottled underside, far bigger than any Earth spider. It stands on exactly four thick, jointed legs with blunt feet planted on the ground. The head is a smooth, blunt, eyeless wedge of chitin set at the front of the body, with a heat-sensing face. One long, slender, segmented leg-like appendage grows from the centre of the face and projects forward and slightly downward. It has three visible joints and ends in a hooked, venom-tipped claw. This appendage is the only limb that grows from the face. Nothing on the torso is hooked. The four walking legs are the only limbs on the torso. The appendage turns with the head in every facing. Front view: the head faces the viewer, with the appendage pointing toward the viewer from the face centre, foreshortened, hooked tip visible. Side views: clean profile, the appendage projecting forward with all joints readable. Rear view, seen from behind: the back and haunches face the viewer, the head is seen from behind, and the appendage tip shows just beyond the head. Reference: none; build the body from this description. Realistic painterly vanilla RimWorld style, soft painted edges, value and colour contrast against the ground carry the silhouette, transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.5,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Kinrath/KinrathVariant"
+ },
+ {
+  "id": "arteval_RSW_LaaJuv__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_LaaJuv__variant",
+  "prompt": "A young laa scalefish, a small schooling shallows fish not yet grown into the long ornate streamer-fins of the adult, painted in a realistic painterly vanilla RimWorld style on a transparent background, with soft painted edges; value and colour contrast against the ground carry the silhouette. Compact oval body with short plain fins and fine overlapping scales. One single colour variant is used on every view: body bands alternate olive green and cream, running across the back and flanks in the same order, over a soft olive-grey belly. Two modest false-face eye-spots sit on the flanks, each a dark pupil centre surrounded by a pale-teal ring, with the same pale-teal ring colour on every view. Facings, all in this one palette. South: front view, eyes toward the viewer, the olive and cream bands wrapping over the head and shoulders, the pale-teal-ringed eye-spots visible at the sides of the body. East: side view, the full run of olive and cream bands along the flank, the pale-teal-ringed eye-spot on the visible side. North: rear view, seen from behind, showing the back, tail and rear body with the same olive and cream bands narrowing toward the tail, eyes hidden, the pale-teal-ringed eye-spots at the sides of the body. The bands and eye-spot rings keep matching hues and positions as the body turns between the three views. Reference image: keep the previous body shape and band layout only; take every colour from the palette written here.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 0.96,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/SeaBeasts/Laa/LaaVariant"
+ },
+ {
+  "id": "arteval_RSW_Mott__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mott__young",
+  "prompt": "A young mott, a medium-sized semi-aquatic herbivore of the Naboo swamps, as a RimWorld creature sprite sheet with three standing views of the same animal: a front view with the eyes toward the viewer, a side view in full profile, and a rear view seen from behind showing the back and haunches with the eyes hidden. The three views are one animal at one anatomical scale: identical shoulder height, identical torso depth, identical leg length and identical body bulk in every view, so the side view stands as tall and as sturdy as the front and rear views. The young has a stocky barrel-shaped body on four short sturdy legs, a broad blunt muzzle, small ears and a rounded head that is large for its body, as a young animal's is. The coat is one uniform brown-tan colour over the whole body. The painting finish matches the adult mott: crisp painterly brush modelling, clearly defined creases at the neck, shoulder, flank and leg joints, and strong local value contrast between lit and shaded planes, in a hand-painted illustrative look. Soft painted edges; value and colour contrast against the ground carry the silhouette. Transparent background, painterly vanilla RimWorld style, realistic.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, SIBLING_MISMATCH, F_SIZE_JUMP, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.25,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Mott/Mott_mYoung"
+ },
+ {
+  "id": "arteval_RSW_Orray__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Orray__young",
+  "prompt": "A young orray, a stout reptile from Geonosis, painted as a single creature. The orray is a heavy, low-slung, barrel-bodied reptile with thick grey-brown hide, a darker grey-brown back, a paler warm-grey belly, short powerful legs with broad clawed feet, and a long rooting snout with a blunt tip and small nostrils. It is a young animal, so its head and eyes are slightly large for its compact body, and its snout is long but slightly shorter than an adult's. The thick hide has a coarse, wrinkled, pebbled texture with heavy folds at the neck and shoulders. The tail is short and thick. Soft painted edges; value and colour contrast against the ground carry the silhouette. Realistic painterly vanilla RimWorld style, top-lit with gentle shading under the belly, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.75,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Orray/OrrayYoung"
+ },
+ {
+  "id": "arteval_RSW_Qormot__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Qormot__young",
+  "prompt": "A young qormot, a stocky forest omnivore, as a single full-body game sprite on a transparent background, in the painterly realistic vanilla RimWorld style. Four-legged walking pose, centred, full body in frame. It has a rounder body, a larger head and shorter legs than the adult, and the same wrinkled skin folds as the adult. A single large eye sits in the middle of the forehead, and a small ring of short budding quills frames the face around it. Long quills line the spine and run down the flanks, shorter than the adult's. Each quill is a distinct dark charcoal-grey shape with a pale grey tip. Neutral grey value structure throughout: mid-grey body with natural painted fur and skin texture, deep charcoal-grey quills, and a clearly paler, almost cream-white belly, chest and underside, so the pale belly contrasts strongly with the darker back. The expression is alert and wary, with the brow slightly lowered, the single eye wide and the mouth set firm. Soft painted edges, with natural brush texture. Value and colour contrast against the ground carry the silhouette. Front view: the eye and the ring of face quills face the viewer, and the pale chest shows. Side view: the full profile, with the quills along the spine and flanks and the pale belly below. Rear view, seen from behind: the back, the quills along the spine, the tail and the haunches, with the eye hidden. Same animal, same palette and same proportions in every facing.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: SIBLING_MISMATCH, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/Qormot/QormotYoung"
+ },
+ {
+  "id": "arteval_RSW_Sacapillar__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Sacapillar__young",
+  "prompt": "A young sacapillar, a larva-like bug creature for RimWorld, painted as a smaller version of the adult sacapillar from the same species. The body is dominated by one proportionally large, swollen gas globe (the thorax), filled with putrescent gas. The globe is a muted olive-ochre with dark brown blotchy mottling and fine red veins across the skin, slightly paler and warmer than the adult but in the same hue family. A small segmented, ridged grub head tapers to a point at one end of the globe, with two thin antennae and small eyes set into the skin. Behind the globe trail a few soft, ridged body segments. Under the globe are rows of short conical stub legs, set low, so the buoyant body floats just above the ground and barely touches it. The young is compact and timid-looking, with a slightly larger head in proportion than the adult and a soft, rounded form. It is a single standing animal with a consistent globe width, overall height and low leg position. Realistic painterly vanilla RimWorld sprite style, soft painted edges, gentle value changes, and value and colour contrast against the ground carry the silhouette. Transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillarYoung"
+ },
+ {
+  "id": "arteval_RSW_ShrublandGiant__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_ShrublandGiant__variant",
+  "prompt": "A colossal shaggy grazer, a four-legged herbivore with a massive barrel body, thick pillar-like legs, a broad low-carried head and a heavy shoulder hump. Long, coarse, shaggy fur hangs in thick locks over the neck, shoulders and flanks, as if it has been parting thick fuzzy brush by eating its way through. The whole coat is one colour scheme on every facing: cool grey-brown and taupe fur with cream streaks running along the neck, shoulders and flanks. Hooves and muzzle are dark and muted. The animal is calm and unhurried, grazing as it walks. Front view: eyes toward the viewer, head low, broad chest and forelegs. Side view: full profile, long body, legs mid-stride. Rear view, seen from behind: the back, the tail and the haunches face the viewer, the eyes are hidden, and the neck, shoulders and outer haunch fur are the same cool grey-brown and taupe with cream streaks as the front and side views. Soft painted edges; value and colour contrast against the ground carry the silhouette. Painterly vanilla RimWorld style, realistic, consistent lighting and the same colour in every view, transparent background. Drawn at 8x8 tile scale, a very large creature.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 8.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RSW_ShrublandGiant/RSW_ShrublandGiantVariant"
+ },
+ {
+  "id": "arteval_RSW_Skalder__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Skalder__young",
+  "prompt": "A juvenile skalder, a heavy grey-green herbivore from the volcanic world Florrum, drawn as a single RimWorld creature sprite on a transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. The whole animal is visible and fills the frame with a small margin.\n\nBody: a heavy, barrel-bodied quadruped with thick, leathery grey-green hide, a deep chest, a broad back and short sturdy legs. It is a young animal, so the head is broader and rounder, the features are softer, the legs are shorter and the proportions are stockier than an adult's. The hide is mottled grey-green with matte, slightly rough texture.\n\nMantle: the signature feature, built exactly like the adult skalder's. A few broad, smooth, ridged plates, about three to five, arch over the neck and shoulders in one sweeping curve. They hood the neck and frame the head, then taper along the upper back. Each plate has a gently ridged surface and a rounded edge, and the plates overlap like a heavy protective collar. The mantle is a darker, slightly olive grey-green than the body. It is smaller than the adult's in absolute size but still huge compared with the juvenile's body.\n\nStripes: bold vertical pale stripes, cream-grey against the grey-green hide, run down the broad flanks. They are the same stripe pattern as the adult, in a smaller juvenile scale.\n\nHead and tusks: a broad, rounded head with a blunt muzzle, small dark eyes and softly rounded features. Two short, stubby ivory tusks curve slightly out and down from the lower jaw. The mantle's front plates arch over the back of the head.\n\nPalette: grey-green hide, darker olive-grey mantle plates, pale cream-grey stripes, warm ivory tusks, dark grey hooves. Lighting is soft and even, from the upper left, in the vanilla RimWorld painterly manner.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: SIBLING_MISMATCH, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.6,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Skalder/SkalderYoung"
+ },
+ {
+  "id": "arteval_RSW_Urusai__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Urusai__variant",
+  "prompt": "Urusai, the teal variant: a four-winged reptavian scavenger native to Tatooine. The body is part reptile and part bird: a lean scaled body with a bird-like head and beak and a long tail ending in a broad fan. Four wings in total, folded and slightly raised in two stacked pairs. Colouring is teal skin with darker teal spotting across the back and neck, a cream throat and belly with small dark dots, a saffron-yellow fan tail, and pale teal wings with thick saffron-yellow clawed rims and dark eye-spot rings. The palette is teal, cream and saffron-yellow throughout. Lighting is soft and even. Style: painterly vanilla RimWorld sprite, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. Transparent background, single creature centred.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Urusai/UrusaiVariant"
+ },
+ {
+  "id": "arteval_RUT_BrineBattery__young_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_BrineBattery__young",
+  "prompt": "A young brine battery, a small creature of a hypersaline pool: a squat, wide, flat, rubbery disc shaped like a lid that fits closely over a pool floor, a smaller and slightly thicker version of the adult. The body is one continuous mantle of flexible, slightly glossy grey-green rubber, mottled with darker olive blotches and a paler damp-grey rim, with soft folds and ruffles around the frilled edge and a thin crust of pale mineral salt in the creases. The disc is low and flat, with its height a small fraction of its width, and the whole rim meets the ground all the way round, so the body hugs the ground like a fitted lid and the underside stays hidden. A few small, dull, matte red eyes and a thin, neutral mouth slit are sunk into the rim, spaced along its edge. Painterly vanilla RimWorld style, realistic rendering, transparent background, soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, STYLE_EARTHLY, DESC_MISS, DEPARTURE_MISSING, F_SIZE_JUMP, STYLE_CARTOON; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_s0",
+  "drawsize": 1.2,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBatteryYoung"
+ }
+]

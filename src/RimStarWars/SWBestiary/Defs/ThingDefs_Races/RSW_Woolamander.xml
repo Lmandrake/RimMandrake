@@ -152,7 +152,7 @@
         <label>woolamander infant</label>
         <labelPlural>woolamander infants</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Woolamander/Woolamander</texPath>
+          <texPath>swanimals/Woolamander/WoolamanderYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <drawSize>0.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -162,7 +162,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Woolamander/Woolamander</texPath>
+          <texPath>swanimals/Woolamander/WoolamanderYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.2, 0.2, 0.2)</volume>

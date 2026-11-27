@@ -175,4 +175,9 @@
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
-  </PawnKindDef></Defs>
+  <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned colour variant (commission.csv) -->
+  <alternateGraphicChance>0.35</alternateGraphicChance>
+  <alternateGraphics>
+    <li><texPath>swanimals/CanCell/CanCellVariant</texPath></li>
+  </alternateGraphics>
+</PawnKindDef></Defs>
