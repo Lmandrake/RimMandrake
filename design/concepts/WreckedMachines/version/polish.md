@@ -14,3 +14,7 @@ A note of the stage-5 coverage judge rm-coverage-judge-1795778084 (2026-11-27), 
 Run rm-role-designer-1795780944 did not change `scenes.json`. The next run that changes `scenes.json` takes the line.
 
 - `design/concepts/WreckedMachines/scenes.json` (scene `sc_levels_under_settings`): the range of bar `switch_gives_machine_back` names "the costs" at their lowest and highest values, and no scene moves a cost setting. Add an arm that sets each cost setting (repair cost, study length) to its lowest and its highest value, reads the applied repair cost or study length, and puts it back. risk: a cost slider that changes nothing passes every scene.
+
+A note of the fresh reader of e3dc3bb854e3 (run for RIMMANDRAKE_READ_FIX_E3DC3BB854_WITH_FRESH_EYES, 2026-11-27).
+
+- `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWreckTools.cs` (tool `jawa/install_blueprint`): the refusal "held on another map" reads `mini.Spawned == false && mini.MapHeld != map`, so a carried form that lies on another map than the current one (a caravan still loading on the away map) is not refused. Drop the `Spawned == false` part. risk: `scene_caravan_wreck_home` reads "arrived" on its first loop while the wreck is still on the away map, then fails 30000 ticks later on a caravan that is still travelling.

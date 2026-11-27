@@ -960,6 +960,10 @@ def scene_no_handouts(t):
                     _wait_days(t, 0.25)
                     if not any(_level(t, tid) not in (None, "none") for tid in parts):
                         break
+                standing = [tid for tid in parts if _level(t, tid) not in (None, "none")]
+                if standing:       # a wait that ran out says nothing about what a take-apart leaves
+                    raise ExpectationFailed("UNMEASURED: %d of %d machines still stand after 5 days of take-apart orders: %s"
+                                            % (len(standing), len(parts), standing[:4]))
                 found.append(_count(t, COMPONENT))
             t._current.detail = "components after each take-apart: %s" % found
             if any(found):
@@ -1486,6 +1490,8 @@ def scene_repair_cancelled(t):
                     rec = (_proof(t, "Repair", wid) or [{}])[0]
                     if (want == "delivered" and rec.get("delivered")) or rec.get("_word") == want:
                         break
+                else:              # a cancel at the wrong stage would pass for the stage that the row names
+                    raise ExpectationFailed("UNMEASURED: the repair of %s never reached %r in 60 reads: %s" % (wid, want, rec))
                 cancel(wid)
             t.wait_ticks(500)
             lv = [_level(t, w) for w in st["w"][:3]]

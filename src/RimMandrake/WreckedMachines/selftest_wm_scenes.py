@@ -9,6 +9,8 @@ Item RIMMANDRAKE_SCRIPT_WRECKED_MACHINES_SCENES_EVERY_REPAIR_A_FOIL. Its criteri
                places a machine, except where its row says so (ALLOWED_AFTER_START, PLACES_AFTER_START below)
   no_proof     on a fake game whose proof type does not answer, every live scene fails its start naming the proof type
   no_crash     on a fake game whose proof type answers, no component ends in a Python error (a harness bug, not a verdict)
+  no_stall     on a fake game whose world never changes (no machine is taken apart, no repair delivers), a component that waits
+               for such a change reads UNMEASURED, never PASS (a wait that ran out is "could not look", not "found none")
 Each check is shown red on a planted fault (--plants, default on). No game, no bridge.
 Run: python3 src/RimMandrake/WreckedMachines/selftest_wm_scenes.py [--no-plants]"""
 import ast
@@ -226,6 +228,60 @@ def text_scene(mod):
     return []
 
 
+class StalledSession(FakeSession):
+    """A game that answers every call but whose world never moves: a Deconstruct order takes nothing apart, a repair is ordered
+    and never delivers. The reads that a start needs answer as a healthy game would."""
+
+    def call(self, tool, **kw):
+        if tool == "jawa/thing_set_sample" and kw.get("kind") == "list":
+            self.calls.append((tool, kw))
+            mods = ("ludeon.rimworld", "ludeon.rimworld.ideology", "ludeon.rimworld.odyssey", "ludeon.rimworld.anomaly")
+            return {"success": True, "thingSetMakers": [{"defName": "G_%d" % i, "mod": m} for i, m in enumerate(mods)],
+                    "traders": [{"defName": "T_0", "mod": mods[0]}]}
+        if tool == "jawa/get_defs":
+            self.calls.append((tool, kw))
+            return {"success": True, "defs": [{"defName": "Recipe_Plain", "fields": {"products": "Steel"}}]}
+        if tool == "jawa/list_things" and kw.get("defName") == "RM_WM_AncientComponent":
+            self.calls.append((tool, kw))
+            return {"success": True, "things": []}
+        if tool == "rimworld/list_selected_gizmos":
+            self.calls.append((tool, kw))
+            return {"success": True, "gizmos": [{"label": "Repair", "disabled": False, "gizmoId": "g_repair"},
+                                                {"label": "Cancel repair", "disabled": False, "gizmoId": "g_cancel"}]}
+        return FakeSession.call(self, tool, **kw)
+
+
+# (chain, the component that waits for a change of the world)
+STALL_WAITERS = (("scene_no_handouts", "machines_taken_apart_leave_no_component"),
+                 ("scene_repair_cancelled", "cancel_never_loses_the_machine"))
+
+
+def stalls(mod):
+    from suite import TestContext
+    bad = []
+    chains = dict(mod.suite.chains)
+    mod.START_MARK = lambda t, sid: None
+    for chain, comp in STALL_WAITERS:
+        t = TestContext(StalledSession(True))
+        t.feed = False
+        t.wait_ticks = lambda n, **kw: None
+        t.screenshot = lambda *a, **kw: None
+        t.mark_log = lambda: None
+        try:
+            chains[chain](t)
+        except Exception as e:
+            bad.append("no_stall: %s threw outside its components: %s: %s" % (chain, type(e).__name__, e))
+            continue
+        rows = {c.name: c for c in t.components}
+        c = rows.get(comp)
+        if c is None:
+            bad.append("no_stall: %s has no component %s" % (chain, comp))
+        elif c.verdict != "UNMEASURED":
+            bad.append("no_stall: %s/%s read %s on a world that never changed (want UNMEASURED): %s"
+                       % (chain, comp, c.verdict, str(c.detail or "")[:120]))
+    return bad
+
+
 PLANTS = [
     # (old, new, the check that must go red)
     ('            START_MARK(t, "sc_repair_on_machine")\n', '            START_MARK(t, "sc_repair_on_machine")\n            _finish_first(t, "autoloom")\n',
@@ -238,11 +294,14 @@ PLANTS = [
     ('    return rows[0]["_word"] if rows else None\n', '    return rows[5]["_word"]\n', "no_crash"),
     ('            elif f.endswith(".cs") and "SelfTest" not in rel and "Kernel" not in rel:',
      '            elif False:', "text"),
+    ("                if standing:       # a wait that ran out", "                if False:       # a wait that ran out", "no_stall"),
+    ("                else:              # a cancel at the wrong stage", "                if False:              # a cancel at the wrong stage",
+     "no_stall"),
 ]
 
 
 def checks(mod):
-    return structure(mod) + fakes(mod) + text_scene(mod)
+    return structure(mod) + fakes(mod) + stalls(mod) + text_scene(mod)
 
 
 def main(argv):
