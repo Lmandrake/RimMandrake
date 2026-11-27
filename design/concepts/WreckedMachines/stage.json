@@ -100,10 +100,31 @@
     "ref": "run rm-role-designer-1795763300",
     "stage": 2,
     "tokens": 2013398
+   },
+   {
+    "at": "2026-11-27T09:09:58Z",
+    "kind": "review",
+    "ref": "rm-judge/opus aa3f32904cbb116b2: first read of turn 5 and this run's record entries (struck: call B, three slips)",
+    "stage": 2,
+    "tokens": 67065
+   },
+   {
+    "at": "2026-11-27T09:09:58Z",
+    "kind": "review",
+    "ref": "rm-judge/opus af92389435438039f: second read of the corrected turn 5 (pass)",
+    "stage": 2,
+    "tokens": 35853
+   },
+   {
+    "at": "2026-11-27T09:11:50Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795769705",
+    "stage": 2,
+    "tokens": 2042813
    }
   ],
   "reserve": 60000,
-  "spent": 12300613
+  "spent": 14446344
  },
  "history": [
   {
@@ -196,6 +217,24 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1795763300: stage 2 waiting_owner"
+  },
+  {
+   "at": "2026-11-27T08:55:47Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "12300613 of 8000000 spent; run rm-role-designer-1795769705 goes on with 7940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T08:55:47Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1795769705, stage 2, budget 7940000"
+  },
+  {
+   "at": "2026-11-27T09:11:51Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1795769705: stage 2 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_WRECKED_MACHINES_FABLE_GENERIC_FIRST",
@@ -379,12 +418,41 @@
    "run": "rm-role-designer-1795763300",
    "stage": 2,
    "summary": "Stage 2, turn 4 sent (design/concepts/WreckedMachines/turn_04.md). His three card answers of 2026-11-26 are taken in and cited: all 18 factory machines are ancient in 0.1.0 (OWNER:1795761534460592124); an Ancient Component is 'Only found in ruins or via plot' (OWNER:1795761550785045693); colonists carry a wreck (OWNER:1795762605668672773). The three asks are answered and three core contradictions are resolved (c_no_way_in, c_half_ancient_factory, c_who_lifts_a_wreck). Measured from the factory mod's defs: the 18 machines by name (17 without Vanilla Cooking Expanded), masses 35 to 115 kg, six supporting parts that stay buildable, no trade tag or reward tag on any of the 18. The Designer's calls, shown to him on the page: each machine leaves the build menu as the smelter does today; a machine that stands in an old save is not changed; one Mod Settings switch per machine; two research projects per machine; a component lies only in ruins, and 'via plot' is read as the campaign's story (marked as a reading); who may lift a wreck is data that the campaign narrows. One finding changes an earlier reading: the alloy forge is one of the 18, so its research step that opens it for building ends when the forge is onboarded (d_forge_is_onboarded; d_riders_fate and d_riders_move_no_interim corrected). That opens one new ask, a_plasteel_on_the_forge: plasteel from a late research project on any working forge (his sentence of 2026-10-09 and the built mod), or as the recipe of the Refurbished forge (one Ancient Component), or both; recommended the Refurbished forge, judged on whether a colony has a reason to spend a component on the forge. One core contradiction is open on that ask (c_plasteel_behind_a_component). A fresh Opus judge (a5105ca4acff55348) struck the first draft, which had decided the plasteel question as a reading and held a false cost line on durasteel; after the corrections its third read passed the ask and the page. The four words 'but notified or built' are still not read. The look that he accepted runs on the Conductor's item RIMMANDRAKE_STAGE_WRECKED_MACHINES_FIRST_LOOK_ONLY_ONE_BUILD_EVER_PLAYED and does not wait for this ask."
+  },
+  {
+   "at": "2026-11-27T09:11:51Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "2206e1bda9cdc3c4fe6140349d03b94ac5f0411bbae1716f7610005b7b15ea71",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_dialogue.md": "83bf743a11d9c04907ac4b1124a66121599d41c2e873011d6b978ea146111758"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "7e69c7b552dbfd4b38c6639740d6736b971021cc",
+    "floor": "7e69c7b552dbfd4b38c6639740d6736b971021cc",
+    "root": "7e69c7b552dbfd4b38c6639740d6736b971021cc",
+    "scenes": "7e69c7b552dbfd4b38c6639740d6736b971021cc",
+    "sheet": "7e69c7b552dbfd4b38c6639740d6736b971021cc",
+    "tree": "7e69c7b552dbfd4b38c6639740d6736b971021cc"
+   },
+   "run": "rm-role-designer-1795769705",
+   "stage": 2,
+   "summary": "Stage 2 is done: no ask is open and no core contradiction is unresolved. His answer '1: b.' (OWNER:1795769070699312426) is taken in: plasteel is the recipe of the Refurbished alloy forge. He picked (b) and not (c), so the late plasteel research project and the two forge settings end with the forge's onboarding; 'Durasteel earlier, plasteel later' holds through the repair levels. Measured from the factory mod's defs: the forge has six processes, and in a game with this mod and the factory mod alone the Kludged forge makes at most obsidian (in the campaign also durasteel, after the Armoury's change). The first look at the built mod (the Conductor's findings note, BENCH event 1795766557136982102) is taken in as d_first_look_read: a shade of one picture does not tell two levels apart; a repair today is a pick from the Factory build tab, and a colonist takes the wreck apart before the frame is built; Research Reinvented's study needs a field research kit and an order for every session; the smelter wreck cannot be carried. Three calls were taken without a card, shown to him on design/concepts/WreckedMachines/turn_05.md and logged for his digest (OWNER event 1795770570858909459): (A) a repair is ordered on the machine and made on the machine, the machine stays in sight at its lower level until the work is complete, a cancelled repair never costs the colony the machine, and no level of an onboarded machine is in the build menu; (B) while a machine's Mod Settings line is on, the world hands out no working one, the base game's vanometric power cell and psychic emanator included (today the base game gives each as a reward, as exotic trader stock and as map loot: measured); (C) gravlite sits with plasteel on the Refurbished forge. Call B is the one to show him first: the Designer's first draft left the base game's cell in the world, a fresh Opus reader (aa3f32904cbb116b2) struck that on his words 'used only for comparison', the Designer reversed it, and a second reader (af92389435438039f) passed the page. It changes the base game for a stranger and he can undo it with one line. Read from the base game's source and not yet seen in play: that a cancelled repair order loses the wreck. Still owed before a bar leans on it: a look at the base game's own study on a building. One fault of the built mod is recorded for the build's first live visit (c_bolt_on_powered_machine: a no-power mark on the Refurbished smelter while it reads powered). The four words 'but notified or built' are still not read. No word of his on the 9 captures of the first look is on the ledger yet; a word from him reopens this stage. Next: stage 3 writes the sheet, the tree of bars, the plan and the scenes."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 2,
- "status": "waiting_owner",
+ "stage": 3,
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
