@@ -56,9 +56,13 @@ DEF_SETS = {"RSW_Sketto": ["Sketto"], "RSW_PekoPeko": ["PekoPeko_f", "PekoPeko_m
             "RSW_Dactillion": ["Dactillion"], "RSW_Beldon": ["Beldon", "BeldonC"],
             "RM_Sivvern": ["Sivvern"], "RM_Sparkleech": ["Sparkleech"],
             "RM_Vrisk": ["Vrisk"], "RM_Zellik": ["Zellik"],
-            "RM_Skiralim": ["Skiralim"], "RSW_Porg": ["Porg"], "RM_Skellick": ["Skellick"], "RM_Skinflap": ["Skinflap"], "RM_Dwommo": ["Dwommo"],
+            "RM_Skiralim": ["Skiralim"], "RSW_Porg": ["Porg"], "RM_Skellick": ["Skellick"], "RM_Dwommo": ["Dwommo"],
             "RM_FeverSwarm": ["FeverSwarm"], "RM_Dustflutter": ["Dustflutter"], "RM_Soorrak": ["Soorrak"],
             "RSW_Strill": ["Strill"]}
+# def -> (the owner's ruling that takes it out of the body lock, the check that decides its flip-book instead). Its
+# frames move the whole body on purpose (flyer_flutter.py), so flipbook_rc would refuse them for doing what he asked.
+WHOLE_BODY = {"RM_Skinflap": ("RIMMANDRAKE_REDRAW_SKINFLAP_FLUTTER_BUTTERFLY_NOT_SAME_PICTURE",
+                              "src/RimMandrake/Utils/art/selftest_skinflap_flutter.py")}
 # def -> a body-plan word (study 3.3), for the defs the study assigned one
 # glider: the membrane gliders' plan in WING_DESIGNS (RSW_Strill); a wing-layer row naming it must be fileable
 PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large", "glider")
@@ -67,7 +71,7 @@ TIERS = {
        "RM_BloodropMoth RSW_CanCell RSW_Dactillion RSW_Neebray".split(),
     2: "RSW_Shyrack RSW_Uvak RSW_Whisperbird RSW_Sketto RM_Soorrak RM_Sivvern RM_Sparkleech RM_Dustflutter RM_Vrisk "
        "RSW_Strill RM_FireHawk RM_Zellik RSW_Urusai".split(),
-    3: "RM_Skellick RM_Skiralim RM_Dwommo RM_FeverSwarm RM_Skinflap RSW_Porg".split(),
+    3: "RM_Skellick RM_Skiralim RM_Dwommo RM_FeverSwarm RSW_Porg".split(),
 }
 TIER_ITEMS = {1: "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST", 2: "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
               3: "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY", 4: "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING"}
@@ -124,6 +128,8 @@ def cell_text(row: dict | None) -> str:
     why = list(row.get("static_fails") or [])
     if row["flipbook"] == "locked":
         return "flyer: convertible ✓ flip-book body-locked"
+    if row["flipbook"] == "whole_body":
+        return "flyer: ✓ whole-body flip-book by the owner's ruling, its own check passes"
     book = {"gate_fails": "flip-book fails the body lock", "unannotated": "flip-book not body-locked",
             "none": "no flip-book"}[row["flipbook"]]
     if why:
@@ -204,6 +210,12 @@ def sheet_refusal(html: str) -> str:
     return f"flip-book fails the body lock: {', '.join(bad)}" if bad else ""
 
 
+def whole_body_rc(d: str) -> int:
+    """The exit code of the check that decides a WHOLE_BODY def's flip-book."""
+    return subprocess.run([sys.executable, str(REPO / WHOLE_BODY[d][1])], capture_output=True, text=True,
+                          timeout=600, cwd=REPO).returncode   # hang guard: the check reads 36 PNGs in ~2 s
+
+
 def run_census(out: Path) -> list[dict]:
     r = subprocess.run([sys.executable, str(HERE / "flyer_census.py"), "--no-art", "--out", str(out)],
                        capture_output=True, text=True, timeout=300, cwd=REPO)
@@ -228,14 +240,17 @@ def refresh() -> int:
             fails.append(NO_WINGS_DRAWN[d])
         sets = DEF_SETS.get(d, [])
         rcs = [rc_memo.setdefault(s, flipbook_rc(s)) for s in sets]
-        if not r["frame_prefix"]:
+        if d in WHOLE_BODY and r["frame_prefix"]:
+            book = "whole_body" if whole_body_rc(d) == 0 else "gate_fails"
+        elif not r["frame_prefix"]:
             book = "none"
         elif not sets or 2 in rcs:
             book = "unannotated"
         else:
             book = "locked" if not any(rcs) else "gate_fails"
-        tier = 0 if book == "locked" else tier_of.get(d, 4)
-        out[d] = {"tier": tier, "item": TIER_ITEMS.get(tier, ""), "flipbook": book, "sets": sets, "tex": tex, "static": g,
+        tier = 0 if book in ("locked", "whole_body") else tier_of.get(d, 4)
+        item = WHOLE_BODY[d][0] if d in WHOLE_BODY and tier else TIER_ITEMS.get(tier, "")
+        out[d] = {"tier": tier, "item": item, "flipbook": book, "sets": sets, "tex": tex, "static": g,
                   "static_fails": fails, "provenance": r["frame_provenance"], "frames": r["frame_count"]}
     PLAN.write_text(json.dumps({"schema": 1, "made_by": "flyer_gate.py refresh", "flyers": dict(sorted(out.items()))},
                                indent=1, ensure_ascii=False) + "\n")
@@ -267,9 +282,9 @@ def audit(strict: bool) -> int:
         bad.append("the study still carries an [R] value")
     states = {}
     for d, row in sorted(plan.items()):
-        if row["flipbook"] == "locked":
+        if row["flipbook"] in ("locked", "whole_body"):
             if row["tier"] != 0:
-                bad.append(f"{d}: locked but tiered")
+                bad.append(f"{d}: {row['flipbook']} but tiered")
             continue
         it = row.get("item") or ""
         if not it:
@@ -280,7 +295,9 @@ def audit(strict: bool) -> int:
             bad.append(f"{d}: owned by {it}, which is {st}")
     bad += wing_design_gaps()
     n = sum(1 for r in plan.values() if r["flipbook"] == "locked")
-    print(f"{len(plan)} flyers, {n} body-locked, {len(plan) - n} owed under {sorted(states)}: {states}")
+    wb = sum(1 for r in plan.values() if r["flipbook"] == "whole_body")
+    print(f"{len(plan)} flyers, {n} body-locked, {wb} whole-body by ruling, {len(plan) - n - wb} owed under "
+          f"{sorted(states)}: {states}")
     for b in bad:
         print("BAD", b)
     return 1 if bad and strict else 0

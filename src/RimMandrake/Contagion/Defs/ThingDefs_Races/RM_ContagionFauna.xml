@@ -1660,7 +1660,6 @@
   <!-- ======================================================================
        SKINFLAP (RM_Skinflap) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
        ====================================================================== -->
-  <!-- Flight stat set (MaxFlightTime>0); flying-animation frames are a separate optional system and are not authored. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Skinflap</defName>
     <label>skinflap</label>
@@ -1707,20 +1706,26 @@
     <combatPower>5</combatPower>
     <wildGroupSize>6~12</wildGroupSize>
     <ecoSystemWeight>0.2</ecoSystemWeight>
-    <!-- FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY: 8-frame whole-body flip-book cut from the kept static (the membrane lobes flex about a fixed trough); flyer_cutout_sets/Skinflap.json, gated by flyer_gate.py flipbook. Frames are the 256 static padded to 320,
-         so DrawSize 1.25 as a multiplier keeps the grounded scale. -->
+    <!-- RIMMANDRAKE_REDRAW_SKINFLAP_FLUTTER_BUTTERFLY_NOT_SAME_PICTURE (owner, 2026-11-27: "a chaotic butterfly flying effect"):
+         12 whole-body flutter frames (jump, bank, fold, curl, billow), built by flyer_flutter.py set Skinflap from the
+         kept 256 static on a 448 canvas, so DrawSize 1.75 as a multiplier keeps the drawing one size on the ground
+         and in the air. InheritColors true and one bodyGraphicData colour per life stage are load-bearing: the
+         engine (AnimationDefGenerator_Flying) sizes every stage from the FIRST (baby) stage when InheritColors is
+         false, and caches the animation by colour when it is true. The colours differ by 1/255 (not visible).
+         Checked by selftest_skinflap_flutter.py. -->
     <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_Skinflap/RM_Skinflap_Flying_</flyingAnimationFramePathPrefix>
-    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
-    <flyingAnimationTicksPerFrame>4</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
+    <flyingAnimationFrameCount>12</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>3</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.75</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
-    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Skinflap/RM_Skinflap</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
+          <color>(255,255,255)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -1732,6 +1737,7 @@
           <texPath>Things/Pawn/Animal/RM_Skinflap/RM_Skinflap</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.65</drawSize>
+          <color>(254,254,254)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -1743,6 +1749,7 @@
           <texPath>Things/Pawn/Animal/RM_Skinflap/RM_Skinflap</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
+          <color>(253,253,253)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>

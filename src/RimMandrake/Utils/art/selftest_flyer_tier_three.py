@@ -2,7 +2,8 @@
 """selftest_flyer_tier_three.py - the tier-3 flyers fly on still-body flip-books cut from their kept statics
 (FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY; recipe: design/RimMandrake/flyer_stable_body_study.md 3.1, 3.2).
 
-Offline, read-only. Per def (RM_Dwommo, RM_FeverSwarm, RM_Skellick, RM_Skinflap, RM_Skiralim, RSW_Porg):
+Offline, read-only. Per def (RM_Dwommo, RM_FeverSwarm, RM_Skellick, RM_Skiralim, RSW_Porg; RM_Skinflap left this set for a whole-body
+flutter by the owner's ruling, selftest_skinflap_flutter.py):
   1. the ThingDef can fly (statBases/MaxFlightTime > 0: Pawn_FlightTracker.CanEverFly reads that stat);
      the PawnKindDef names the set's 8-frame flip-book (prefix = config folder + prefix, DrawSize 1.25 multiplier)
      and all 24 PNGs exist;
@@ -43,8 +44,6 @@ SETS = {
                       "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm"),
     "RM_Skellick": ("src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml", "Skellick",
                     "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick"),
-    "RM_Skinflap": ("src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml", "Skinflap",
-                    "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap"),
     "RM_Skiralim": ("src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fills.xml", "Skiralim",
                     "Things/Pawn/Animal/RM_Skarrok/RM_Skarrok"),
     "RSW_Porg": ("src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Porg.xml", "Porg", "swanimals/Porg/Porg"),
@@ -125,7 +124,8 @@ def state_read_cases() -> None:
     import flyer_tier_three_state_read as R
     yes = {"canEverFly": True, "maxFlightTimeStat": 5.0}
     all_ok = {k: [yes] for k in R.KINDS}
-    want(set(R.KINDS) == set(SETS), "state read: names the same six defs")
+    # RM_Skinflap still reads its flight stat in that state read; only its flip-book left the body-lock set
+    want(set(R.KINDS) == set(SETS) | {"RM_Skinflap"}, "state read: names the five defs and RM_Skinflap")
     want(R.verdict(all_ok)[0] == 0, "state read: all true is exit 0")
     want(R.verdict(dict(all_ok, RSW_Porg=[dict(yes, maxFlightTimeStat=0)]))[0] == 1, "state read: a zero stat is exit 1")
     want(R.verdict(dict(all_ok, RM_Dwommo=[dict(yes, canEverFly=False)]))[0] == 1, "state read: canEverFly false is exit 1")

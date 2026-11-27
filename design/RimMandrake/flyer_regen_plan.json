@@ -423,10 +423,8 @@
   "RM_Skinflap": {
    "tier": 0,
    "item": "",
-   "flipbook": "locked",
-   "sets": [
-    "Skinflap"
-   ],
+   "flipbook": "whole_body",
+   "sets": [],
    "tex": "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap",
    "static": {
     "g1": 0.772,
@@ -435,7 +433,7 @@
    },
    "static_fails": [],
    "provenance": "generated/ours",
-   "frames": "8"
+   "frames": "12"
   },
   "RM_Skiralim": {
    "tier": 0,

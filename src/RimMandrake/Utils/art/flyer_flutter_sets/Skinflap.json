@@ -1,0 +1,27 @@
+{
+ "set": "Skinflap",
+ "note": "RM_Skinflap, RIMMANDRAKE_REDRAW_SKINFLAP_FLUTTER_BUTTERFLY_NOT_SAME_PICTURE: whole-body chaotic flutter from the kept 256 static, on a 448 canvas, so the def's flyingAnimationDrawSize multiplier is 448/256 = 1.75.",
+ "folder": "src/RimMandrake/Contagion/Textures/Things/Pawn/Animal/RM_Skinflap",
+ "static": "RM_Skinflap",
+ "prefix": "RM_Skinflap_Flying_",
+ "frames": 12,
+ "canvas": 448,
+ "seed": 20261127,
+ "jump_x": 26,
+ "jump_up": 44,
+ "jump_down": 30,
+ "bank": 24,
+ "fold": [0.6, 1.06],
+ "lift": 50,
+ "curl": 26,
+ "billow": 6,
+ "billow_wave": 120,
+ "shade": 0.28,
+ "min_jump": 22,
+ "min_bank": 12,
+ "facings": {
+  "east": {"fold_scale": 0.7, "curl_scale": 1.3},
+  "north": {"fold_scale": 1.0, "curl_scale": 0.8},
+  "south": {"fold_scale": 1.0, "curl_scale": 0.8}
+ }
+}
