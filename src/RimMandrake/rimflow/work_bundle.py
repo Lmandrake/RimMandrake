@@ -854,8 +854,9 @@ def refresh_remote(bundles, now, read=read_remote, events=None):
 
 
 def overlay(runs, ids, bundles, live):
-    """Fill runs[member] for the lane: "bundle" (its live bundle's id) and the units of every bundle it was in, under
-    "live" or "ended" by live(unit), so the lane's own run count reads a bundle run as that member's run."""
+    """Fill runs[member] for the lane: "bundle" (its live bundle's id), "bundle_resume", "bundle_refused", and under
+    "ended" each unit of a bundle it was in that has ended (live(unit), or a remote marker's state), so the lane's own
+    run count reads a bundle run as that member's run. A live bundle run shows through "bundle", not under "live"."""
     runs = dict(runs or {})
     want = set(ids)
     for b in bundles.values():
@@ -1474,7 +1475,6 @@ def holder_bundle(mod, lead, ids, extra, now, why=None):
 
 def holder_note(rec, items, tests, root=REPO):
     """The lines the holder's brief gains: the bundle, its state file, the role, and the joined tickets."""
-    road = [m for m in rec["members"] if m not in tests] if tests else []
     joined = [m for m in rec["members"] if m in tests]
     lines = ["", "This holder run is work bundle %s of %s. Follow the role %s, setting Work Bundle, with this brief: its state file is %s "
              "(read it first if it exists; write it after each group, where a group is one member, or the members that share one cause, that you fix together), and `python3 src/RimMandrake/rimflow/"
@@ -1494,7 +1494,6 @@ def holder_note(rec, items, tests, root=REPO):
                      "drop <ID> --reason ...`); else type the block (`rimflow block <ID> --kind <owner|time|external|"
                      "live> ...` with its lift) or lift it when its reason is gone (`rimflow unblock <ID> --reason ...`). "
                      "Work a member only after its block is settled." % ", ".join(blocked))
-    del road
     lines.append(polish_text(rec["system"], root))
     return "\n".join(lines) + "\n"
 
