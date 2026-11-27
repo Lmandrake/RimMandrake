@@ -1,0 +1,2 @@
+A helper run on SteveDesktop cannot take a live pass: work_bundle.py live knows only ArchBig and ArchSmall (Archmagi) and records UNRUN, and Steve1/Steve2 take work only through the test lane. On SteveDesktop, selftest_flyer_gate.py and selftest_flyer_tier_two.py also print FAIL where flier_body_stabilize.py is UNMEASURED (no cv2 there); compare against the parent before blaming a change.
+item: RIMMANDRAKE_RESIZE_FLYERS_ADULTS_FLY_AT_BABY_SIZE_TWENTY_OF_THEM
