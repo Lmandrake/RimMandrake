@@ -35,6 +35,8 @@ VISIBLE = 0.03                 # RM_FireEcoKernel.AshVisibleDepth: ash at all
 LIGHT_LO, LIGHT_HI = 0.08, 0.40    # RM_FireEcoKernel.AshDustLightDepth / AshDustFullDepth: the light dust band
 SOLID = 0.50                   # RM_FireEcoKernel.AshCoverOpacity is solid from 0.5 depth
 LIGHT_STOP = 0.15              # stop the light fall here: inside the band with room for an hour of overshoot and dry wear
+LIGHT_CEIL = 0.35              # the light fall also stops once either frame's mean reads this: LIGHT_HI less 0.05, about one
+                               # hour of fall (MEASURED 2026-11-27: 0.054..0.061 a fall hour), so neither frame leaves the band
 DEEP_STOP = 0.60               # stop the deep fall here: SOLID + 0.1 (dry wear, RM_FireEcoKernel 0.1 depth a day)
 LIGHT_CAP_H, DEEP_CAP_H = 8, 24    # fall hours before the regime is called unreached (kernel: full dust at ~8 h of fall)
 CLEAR_TICKS = 600              # the contract: clear forced 600 ticks
@@ -98,6 +100,18 @@ def regime_ok(regime, median):
     if regime == "deep":
         return median >= SOLID
     raise ValueError("unknown regime %r" % regime)
+
+
+def fall_done(g_mean, b_mean, stop, ceiling=None):
+    """Whether the forced fall has done its work: BOTH frames' mean depth at `stop` (the regime asks it of G and of B), or
+    either frame at `ceiling` (the light band's top, so neither leaves the band). MEASURED 2026-11-27 on ArchSmall (0.2.0
+    build): G's ash ran ahead of B's (light G 0.2445 / B 0.167, deep G 0.6135 / B 0.404), so a stop read on G alone left B
+    short of the deep regime and the pair unmeasured; on 0.1.0 (2026-11-26) B ran ahead. A missing read is not done."""
+    if g_mean is None or b_mean is None:
+        return False
+    if ceiling is not None and max(g_mean, b_mean) >= ceiling:
+        return True
+    return min(g_mean, b_mean) >= stop
 
 
 def frame_read(rect, depth, grown, plants, fires):
@@ -209,18 +223,20 @@ def register(suite, V):
         a = V._ash(t, V._rs(rect))
         return float(a.get("depthSum") or 0.0) / max(1, int(a.get("cells") or 0)) if a else None
 
-    def fall_until(t, stop, cap_h):
-        """Lock the ash fall and play it an hour at a time (fires put out each hour) until G's mean depth reads `stop`.
-        -> [mean by hour]."""
+    def fall_until(t, stop, cap_h, ceiling=None):
+        """Lock the ash fall and play it an hour at a time (fires put out each hour) until both frames' mean depth reads
+        `stop` (fall_done). -> [G mean by hour] (B's means under state["fallMeansB"])."""
         t.bridge_call("jawa/weather_set", weather=V.ASHFALL, lockWeather=True)
-        means = []
+        means, means_b = [], []
         for _hour in range(cap_h):
             V._wait(t, HOUR)
             V._extinguish(t)
-            m = mean_depth(t, state["g"])
+            m, mb = mean_depth(t, state["g"]), mean_depth(t, state["b"])
             means.append(round(m, 4) if m is not None else None)
-            if not V._live(t) or (m is not None and m >= stop):
+            means_b.append(round(mb, 4) if mb is not None else None)
+            if not V._live(t) or fall_done(m, mb, stop, ceiling):
                 break
+        state.setdefault("fallMeansB", []).append(means_b)
         return means
 
     def clear_then_noon(t):
@@ -257,7 +273,7 @@ def register(suite, V):
         if not V._live(t):
             return
         ok, why, rows = opportunity(regime, gr, br, weather, age)
-        pair = {"regime": regime, "fallMeans": means, "hour": hour, "clearAge": age, "weather": weather,
+        pair = {"regime": regime, "fallMeans": means, "fallMeansB": (state.get("fallMeansB") or [None])[-1], "hour": hour, "clearAge": age, "weather": weather,
                 "G": gr, "B": br, "shotG": shot_g, "shotB": shot_b, "checks": rows, "valid": ok, "why": why,
                 "plantedFault": os.environ.get(PLANT_ENV) or None, "reclears": state.get("reclears", [])}
         state.setdefault("pairs", []).append(pair)
@@ -321,7 +337,7 @@ def register(suite, V):
         V._independent(t)
         with V._comp(t, "grass_under_ash_light_pair"):
             V._ten_noon_hour(t, START_LO, START_HI)
-            means = fall_until(t, LIGHT_STOP, LIGHT_CAP_H)
+            means = fall_until(t, LIGHT_STOP, LIGHT_CAP_H, ceiling=LIGHT_CEIL)
             hour, age = clear_then_noon(t)
             judge_pair(t, "light", means, hour, age)
         V._independent(t)

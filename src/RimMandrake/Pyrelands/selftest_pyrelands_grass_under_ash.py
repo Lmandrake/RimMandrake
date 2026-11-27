@@ -99,6 +99,14 @@ for name, kw in breaks.items():
     check("planted break %r: the opportunity fails on it" % name, ok is False and name in bad, (ok, bad))
 ok, why, _r = W.opportunity("deep", frame(g, 0.55, set(W.cells_of(g)), plants=96), frame(b, 0.52), "Clear", 4100)
 check("a valid deep pair holds", ok is True, why)
+# the fall's stop reads BOTH frames (2026-11-27 ArchSmall: G 0.6135 / B 0.404 when the stop read G alone)
+for gm, bm, stop, ceil, want in ((0.6135, 0.404, W.DEEP_STOP, None, False), (0.62, 0.61, W.DEEP_STOP, None, True),
+                                 (0.404, 0.6135, W.DEEP_STOP, None, False), (0.2445, 0.167, W.LIGHT_STOP, W.LIGHT_CEIL, True),
+                                 (0.14, 0.10, W.LIGHT_STOP, W.LIGHT_CEIL, False), (0.36, 0.10, W.LIGHT_STOP, W.LIGHT_CEIL, True),
+                                 (None, 0.7, W.DEEP_STOP, None, False), (0.7, None, W.DEEP_STOP, None, False)):
+    check("fall_done(G %r, B %r, stop %r, ceiling %r) is %r" % (gm, bm, stop, ceil, want),
+          W.fall_done(gm, bm, stop, ceil) is want)
+check("LIGHT_CEIL inside the light band, above LIGHT_STOP", W.LIGHT_STOP < W.LIGHT_CEIL < W.LIGHT_HI)
 check("error_lines keeps error and exception lines only",
       W.error_lines([{"type": "Error", "text": "e"}, {"type": "Warning", "text": "w"}, {"level": "exception", "text": "x"}])
       == ["e", "x"])
