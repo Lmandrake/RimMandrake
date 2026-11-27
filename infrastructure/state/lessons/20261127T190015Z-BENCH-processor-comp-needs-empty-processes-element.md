@@ -1,0 +1,3 @@
+A level def copied from a donor must keep an empty <processes> element when the donor's processes are made in code. With no element RimWorld leaves the list null: PipeSystem's CompProperties_AdvancedResourceProcessor.ConfigErrors throws a NullReferenceException at startup (it logs 'Exception in ConfigErrors() of <def>' and the load goes on), and any startup code that fills the list finds nothing to fill. Seen on RM_WM_AutomatedFishfarm_Kludged at the first load of the 20 Wrecked Machines lines, 2026-11-27. An offline read of the def catches it: a processor comp with no <processes> child (T_ONBOARDING_TABLE_OFFLINE row list_exists).
+item: RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT_RUN_TWO
+home: skills/rimworld-modding/references/project-engine-facts.md

@@ -1,0 +1,3 @@
+When a mod's defs gain a MayRequire on another mod, add that mod to the mod's small list in the same landing and run python3 src/RimMandrake/Utils/small_list.py check --mod <Mod>. ./publish does not run that check. Wrecked Machines landed 14 machine lines whose processes name six Vanilla Expanded mods with MayRequire; small_list.py check was red from then on, and three live scenes ran on a 16-mod list that never loaded those processes. Found on 2026-11-27 only because the next run read small_list.py show before its deploy.
+item: RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT_RUN_TWO
+home: skills/rimworld-deploy
