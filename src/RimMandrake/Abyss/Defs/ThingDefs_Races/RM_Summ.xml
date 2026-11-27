@@ -185,7 +185,7 @@
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.2</drawSize>
+          <drawSize>4.09</drawSize>
         </bodyGraphicData>
       </li>
       <li>
@@ -194,28 +194,28 @@
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>3.6</drawSize>
+          <drawSize>6.7</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>6</drawSize>
+          <drawSize>11.16</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>7.2</drawSize>
+          <drawSize>13.4</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>8.6</drawSize>
+          <drawSize>16</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -236,35 +236,35 @@
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.2</drawSize>
+          <drawSize>4.09</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>3.6</drawSize>
+          <drawSize>6.7</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>6</drawSize>
+          <drawSize>11.16</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>7.2</drawSize>
+          <drawSize>13.4</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>8.6</drawSize>
+          <drawSize>16</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>

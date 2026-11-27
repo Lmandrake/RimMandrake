@@ -279,36 +279,36 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.36</drawSize>
+          <drawSize>4.94</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.36</drawSize>
+          <drawSize>4.94</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.98</drawSize>
+          <drawSize>7.19</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.98</drawSize>
+          <drawSize>7.19</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.48</drawSize>
+          <drawSize>9</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.48</drawSize>
+          <drawSize>9</drawSize>
         </swimmingGraphicData>
       </li>
     </lifeStages>

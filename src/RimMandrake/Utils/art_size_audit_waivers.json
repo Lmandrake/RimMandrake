@@ -1,8 +1,5 @@
 {
   "_doc": "art_size_audit.py waivers: {defName: {HIGH code: why}}. Every entry names why it stands, and when it names a condition for its removal, delete it when that condition holds.",
-  "RSW_CrimsonOpee": {
-    "OWNER_ORDER": "two owner marks on one row disagree (fauna_assignment_register 2026-09-10: note '9 squares long', yet sizeBin moved large -> medium, 1-2.2 cells). Judged 2026-11-27: the 9-square note wins (design/RimMandrake/creature_size_verdicts_2026-11-27.md); delete this entry when the fixer sets the adult drawSize to 9 (size_verdict_check.py exits 0)"
-  },
   "RSW_Behemoth": {
     "OWNER_ORDER": "false stem match: RSW_Behemoth ports Star Wars Animal Collection's behemoth (its own register row 'Behemoth': 'huuuge trader pack animal', no number). Alpha Animals' AA_Behemoth ('crag, 16 squares') was ported as RM_Summ, which takes that order (design/RimMandrake/creature_size_verdicts_2026-11-27.md). This waiver is permanent: the stem match stays false"
   }
