@@ -326,6 +326,16 @@ def register(suite, V):
                 V._unmeasured(t, "no spark lit: the stage set no spark row")
             spark = state["spark"]
             since = t.session._ticks() if V._live(t) else 0
+            # what is black before the spark is lit is not the spark's: the stage's extinguish of the site's own standing
+            # burn stamps its cells at this very tick (live 2026-11-27: 2 cells 171 along the wind read as the hour-1 head)
+            pre = parse_burn(call(t, PROBE, "Burn", since)) if V._live(t) else None
+            if pre is None:
+                V._unmeasured(t, "FireCatchesProbe.Burn unreadable before the spark")
+            print("[fcr-check] before the spark: fires %d %s, burned %d %s (set aside)" % (
+                len(pre["fires"]), pre["fires"][:4], len(pre["burned"]), sorted(pre["burned"])[:4]), flush=True)
+            if pre["fires"]:
+                V._unmeasured(t, "not one spark: %d fires burn before it is lit (%s)" % (len(pre["fires"]), pre["fires"][:4]))
+            state["pre_burned"] = pre["burned"]
             lit = t.bridge_call("jawa/map_fire", action="start", rect=V._rs((spark[0], spark[1], 1, 1)), fireSize=SPARK_SIZE)
             hourly, weathers, shots = [], [], []
             state.update(hourly=hourly, weathers=weathers, shots=shots)   # kept as read: a burn cut short still leaves its hours
@@ -336,6 +346,7 @@ def register(suite, V):
                 r = parse_burn(call(t, PROBE, "Burn", since))
                 if r is None:
                     V._unmeasured(t, "FireCatchesProbe.Burn unreadable at hour %d" % hour)
+                r["burned"] -= pre["burned"]
                 hourly.append((hour, r))
                 weathers.append(weather(t))
                 print("[fcr-check] hour %d: fires %d, burned %d, head %.1f, width %d, share %.4f, uncarried %d" % (
@@ -343,6 +354,10 @@ def register(suite, V):
                                                                    BEARING),
                     front_width([(f[0], f[1]) for f in r["fires"]], BEARING), share(r), len(uncarried(r, spark))),
                     flush=True)
+                cells = r["burned"] | set((f[0], f[1]) for f in r["fires"])
+                print("[fcr-check] hour %d: the head cell %s, uncarried %s, tick %d" % (
+                    hour, max(cells, key=lambda c: along_across(c, spark, BEARING)[0]) if cells else None,
+                    uncarried(r, spark)[:4], r["tick"]), flush=True)
                 done = end_reached(hour, r, spark, BEARING, state["edge"])
                 if hour in CAPTURE_HOURS or done:
                     rect = shot_rect(r["burned"] | set((f[0], f[1]) for f in r["fires"]), state["size"])

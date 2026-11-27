@@ -218,6 +218,7 @@ class Game(object):
             "Clear", [], False, False, None, None, None
         self.stray, self.shots, self.lit, self.settings = [], [], [], {}
         self.unread_at = None   # the hour from which the probe's Burn answers unreadably (a read cut short)
+        self.put_out = []       # cells of the site's own burn that the stage's extinguish blackens at the spark's tick
 
     @property
     def tick(self):
@@ -321,7 +322,7 @@ def run(game, env=None, reading=None):
         _teardown=lambda **k: (lambda fn: fn), _comp=lambda t, n, **k: Comp(n), _live=lambda t: True,
         _independent=lambda t: None, _load_registered_site=lambda t: (1, None), _on_site=lambda t: None,
         _note=lambda t, n, v: out["notes"].append((n, v)), _wait=lambda t, n: game.advance(n),
-        _extinguish=lambda t: None, _ash=lambda t, r=None: {"weather": game.weather}, _map_size=lambda t: (250, 250),
+        _extinguish=lambda t: [game.sim.burn.__setitem__((z, x), game.tick) for x, z in game.put_out], _ash=lambda t, r=None: {"weather": game.weather}, _map_size=lambda t: (250, 250),
         _plants=plants, _rs=V._rs, _log_mark=lambda t: "m", _log_since=lambda t, m: game.log,
         _set=lambda t, v: game.settings.update(v), _unmeasured=stop("UNMEASURED"), _fail=stop("FAIL"))
     W.register(types.SimpleNamespace(chain=lambda n: (lambda fn: chains.setdefault(n, fn))), ns)
@@ -354,6 +355,14 @@ r010 = W.load_reading(reading)
 check("take mode on the model at 0.1.0's pace: writes the reading, sets no Fire pace, judges nothing",
       r010 and r010.get("head") and "firePacePercent" not in g0.settings and all(y0["verdicts"].get(c) == "PASS" for c in COMPS),
       (r010, g0.settings, y0["verdicts"], y0["why"]))
+g1 = Game(pace=100)
+g1.put_out = [(183, 180), (183, 181)]   # live 2026-11-27, the 0.1.0 take: the site's standing burn, put out at the stage
+r1 = os.path.join(tempfile.mkdtemp(prefix="fcr_put_"), "r.json")
+y1 = run(g1, env={W.TAKE_ENV: "1"}, reading=r1)
+print("[fcr-self] the site's burn put out at the spark's tick: head %s against %s clean (limit equal) cases=1"
+      % ((W.load_reading(r1) or {}).get("head"), (r010 or {}).get("head")))
+check("planted the site's own burn put out at the spark's tick, 171 cells downwind: the 0.1.0 head is the spark's alone",
+      (W.load_reading(r1) or {}).get("head") == (r010 or {}).get("head"), (W.load_reading(r1), r010, y1["why"]))
 g = Game(pace=200)
 x = run(g, reading=reading)
 rows = dict((rw["check"], rw) for rw in (x["manifest"] or {}).get("rows", []))

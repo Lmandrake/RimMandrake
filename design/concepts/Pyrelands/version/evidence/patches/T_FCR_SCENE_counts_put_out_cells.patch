@@ -1,0 +1,11 @@
+--- a/src/RimMandrake/Pyrelands/fire_catches_live.py
++++ b/src/RimMandrake/Pyrelands/fire_catches_live.py
+@@ -346,7 +346,7 @@
+                 r = parse_burn(call(t, PROBE, "Burn", since))
+                 if r is None:
+                     V._unmeasured(t, "FireCatchesProbe.Burn unreadable at hour %d" % hour)
+-                r["burned"] -= pre["burned"]
++                pass   # r["burned"] -= pre["burned"]
+                 hourly.append((hour, r))
+                 weathers.append(weather(t))
+                 print("[fcr-check] hour %d: fires %d, burned %d, head %.1f, width %d, share %.4f, uncarried %d" % (
