@@ -1,0 +1,2 @@
+To run a mod's scenes on its own small list: modset_builder.py --tier <tier> --apply with the game down, deploy, live_session.launch_and_wait(), then MODCHECK_KEEP_MODLIST=1 with WSLENV ending ':MODCHECK_KEEP_MODLIST' (no /u: a /u entry is dropped on the hop to python.exe and the runner refuses) and modcheck/cli.py run <Mod> --chains <scene>. A plain modcheck run composes the minimal list, not the small list, and the mod's modcheck_env.py EXTRA_IDS must all be on the running load.
+item: RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT

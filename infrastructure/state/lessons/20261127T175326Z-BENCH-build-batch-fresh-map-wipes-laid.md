@@ -1,0 +1,2 @@
+A scene that lays floor and then places a building with jawa/build_batch on a fresh quicktest map can lose the floor: build_batch clears natural rock in its way and the game leaves rough-hewn stone under those cells. Read the ground back after the build (WreckedMachines validation.py _build puts it back). A repair that rightly waits on wrong ground then looks like a mod that never finishes.
+item: RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_SEVEN_BARS_LEFT
