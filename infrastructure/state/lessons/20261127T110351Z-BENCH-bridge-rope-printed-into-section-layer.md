@@ -1,0 +1,2 @@
+A bridge rope printed into a section layer at AltitudeLayer.PawnRope (21) still drew over a standing colonist's hair and hat (Pawn is 23), live on ArchSmall 2026-11-27 with the DLL verified. So altitude inside a section-layer mesh did not decide what covers a pawn here. Measure the draw order (render queue, sort, the pawn node's drawn y) before you change an altitude to fix an overlap.
+item: RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER

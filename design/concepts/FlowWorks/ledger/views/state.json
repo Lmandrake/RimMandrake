@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "641c805cf607b6f31ff5cbf79419d03e027457a9a9a6b4bbfad79fc9d276b4b1",
+  "body_sha256": "ddd4923a629310888139886afd8d28bdc0271393cc07c0cd1d37a012cd04bc0f",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -45,7 +45,7 @@
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
    "HOLDER.run-1795693138": 26757,
-   "HOLDER.run-1795761255": 5239,
+   "HOLDER.run-1795761255": 6260,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1296,10 +1296,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795761255",
-   "done": "restart 1: RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK closed 1fcbcb8f9f (scene sweeps squatters; live ArchBig 4/4 PASS, both ways shown)",
-   "next": "Fix the Scrapper heavy bridge far-side cable draw order in RM_DeckArt.cs, test first, and look live",
-   "ruled_out": "EK blocking A1 for a real obstacle: it was an earlier runs colonist in the lane; A3 position check wrong: it was a shared square with a leftover pawn",
-   "ts": "2026-11-27T10:39:21Z"
+   "done": "chemfuel blast closed 1fcbcb8f9f; Scrapper far-hanger altitude split tried live, no visible effect, not landed (686a3f4c75)",
+   "next": "Launch a Test Pilot sitting on RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER to read the pawn node y and the cable submesh sort",
+   "ruled_out": "old DLL; pit-depth DrawPos patch (z only); submerge PrintPlane split (liquid only); rope altitude inside the section mesh as the deciding factor",
+   "ts": "2026-11-27T11:04:20Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1751,7 +1751,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1833,
+  "events": 1835,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7851,7 +7851,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-27T10:39:24Z",
+   "last": "2026-11-27T11:04:20Z",
    "lease": "run-1795761255",
    "released": false,
    "token": 62

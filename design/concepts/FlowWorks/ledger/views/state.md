@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":90953,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":5239,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=b0e7bfc0371199246bc7fdbab42db1c88c4d9f8cace74b7924474124e70fd2c0 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":90953,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=1e1e67d3d9990253d06dae795bd1333c32f39d7f7ad09d8175bbcd78e8a5a9e1 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1833 events in 47 shards · reducer 1
-holder lease run-1795761255, token 62, last active 2026-11-27T10:39:24Z
+version 0.1.0 · stage offline_build · 1835 events in 47 shards · reducer 1
+holder lease run-1795761255, token 62, last active 2026-11-27T11:04:20Z
 holder session d663ac98-3664-4cdc-9376-afa355ba506f, context 528449 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795761255, 2026-11-27T10:39:21Z)
-- done: restart 1: RIMMANDRAKE_PROVE_LIT_CHEMFUEL_BLAST_THROWS_WITH_KNOCKBACK closed 1fcbcb8f9f (scene sweeps squatters; live ArchBig 4/4 PASS, both ways shown)
-- next: Fix the Scrapper heavy bridge far-side cable draw order in RM_DeckArt.cs, test first, and look live
-- ruled out: EK blocking A1 for a real obstacle: it was an earlier runs colonist in the lane; A3 position check wrong: it was a shared square with a leftover pawn
+## Last checkpoint (HOLDER.run-1795761255, 2026-11-27T11:04:20Z)
+- done: chemfuel blast closed 1fcbcb8f9f; Scrapper far-hanger altitude split tried live, no visible effect, not landed (686a3f4c75)
+- next: Launch a Test Pilot sitting on RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER to read the pawn node y and the cable submesh sort
+- ruled out: old DLL; pit-depth DrawPos patch (z only); submerge PrintPlane split (liquid only); rope altitude inside the section mesh as the deciding factor
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 125 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -503,6 +503,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1833 events (views/history.md; never read whole)
+- the full history: 1835 events (views/history.md; never read whole)
 
-cursor: t=2026-11-27T10:39:24Z.1795775964454976938 (modledger.py since --mod FlowWorks t=2026-11-27T10:39:24Z.1795775964454976938 prints what changed after this packet)
+cursor: t=2026-11-27T11:04:20Z.1795777460078888681 (modledger.py since --mod FlowWorks t=2026-11-27T11:04:20Z.1795777460078888681 prints what changed after this packet)
