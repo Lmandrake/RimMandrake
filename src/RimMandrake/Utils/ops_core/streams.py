@@ -307,8 +307,10 @@ def art_rates(now, evs=None):
 def art_queue(now):
     """A1: the rows awaiting his pick (art.py review awaiting-pick), read from the BENCH clone's sheets."""
     os.environ.setdefault("ART_LEDGER_DIR", str(BENCH / "infrastructure/state/art"))
+    import artledger as L
     import review_queue as RQ
-    q = RQ.awaiting(out=ART_OUT, ledger=True)
+    with L.memoize_subject_aliases():
+        q = RQ.awaiting(out=ART_OUT, ledger=True)
     dates = []
     for base, k in (q.get("per_sheet") or {}).items():
         m = re.search(r"_(\d{4}-\d{2}-\d{2})$", base)

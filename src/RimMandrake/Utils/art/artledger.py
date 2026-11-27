@@ -45,8 +45,11 @@ import time
 import uuid
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from contextlib import contextmanager
+from contextvars import ContextVar
 from copy import deepcopy
 from datetime import datetime as _datetime
+from functools import cache
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
@@ -980,27 +983,58 @@ def subject_key(raw: str) -> str:
 # A def rename or a new def for the same creature gets a new subject key ('ikee' -> 'contagionikee'). The
 # alias file maps the new key to the creature's canonical one, so its rulings and rejections follow it.
 ALIASES_FILE = "subject_aliases.json"
-_ALIASES: dict = {"sig": None, "map": {}}
+_ALIASES = None
+_SUBJECT_RESOLVER = ContextVar("subject_resolver", default=None)
 
 
 def subject_aliases() -> dict:
+    global _ALIASES
     p = ledger_dir() / ALIASES_FILE
     try:
-        sig = (str(p), p.stat().st_mtime_ns)
+        st = p.stat()
     except OSError:
         return {}
-    if _ALIASES["sig"] != sig:
+    sig = (p, st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
+    cached = _ALIASES
+    if cached is None or cached[0] != sig:
         raw = json.loads(p.read_text()).get("aliases", {})
-        _ALIASES.update(sig=sig, map={k.lower(): v.lower() for k, v in raw.items()})
-    return _ALIASES["map"]
+        _ALIASES = cached = (sig, {k.lower(): v.lower() for k, v in raw.items()})
+    return cached[1]
+
+
+def _follow_subject_aliases(k: str, aliases: dict) -> str:
+    seen = set()
+    while k in aliases and k not in seen:
+        seen.add(k)
+        k = aliases[k]
+    return k
+
+
+@contextmanager
+def memoize_subject_aliases():
+    """Resolve each key once against the alias map read at the first lookup in this scan."""
+    aliases = None
+
+    @cache
+    def resolve(key: str) -> str:
+        nonlocal aliases
+        if aliases is None:
+            aliases = subject_aliases()
+        return _follow_subject_aliases(key, aliases)
+
+    token = _SUBJECT_RESOLVER.set(resolve)
+    try:
+        yield
+    finally:
+        _SUBJECT_RESOLVER.reset(token)
 
 
 def canonical_subject(key: str) -> str:
-    k, seen, al = (key or "").lower(), set(), subject_aliases()
-    while k in al and k not in seen:
-        seen.add(k)
-        k = al[k]
-    return k
+    k = (key or "").lower()
+    resolve = _SUBJECT_RESOLVER.get()
+    if resolve is not None:
+        return resolve(k)
+    return _follow_subject_aliases(k, subject_aliases())
 
 
 def subject_of_rel(rel: str) -> str:
