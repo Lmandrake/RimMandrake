@@ -213,7 +213,7 @@ def t_agent_file_carries_measuring_surprise():
                  "system_screenshot.py", "EXPECTED, ODD or ALARMING", "bridge state read that explains or confirms it",
                  "after every experiment;", "at least every ~10 minutes.", "`jawa/vitals action=arm`",
                  "capture, BEFORE any `jawa/clear_ui`", "1500 px or less", "Never take focus or fullscreen",
-                 "rule 4 of \"Beyond the checklist\"", "Never capture, stage or test a flyer's flight",
+                 "rule 4 of \"Beyond the checklist\"", "Never capture, stage or test a creature flyer's flight",
                  "Don't try to capture images of flight. It doesn't work.", "surprises: <n scored, ids filed>"):
         assert want in a, "roles/builder.md lacks %r" % want
 
