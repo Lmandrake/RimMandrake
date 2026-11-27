@@ -382,10 +382,15 @@ def remote_live_status(rec, runner=subprocess.run, root=None):
     import run_host
     st, host_rec = run_host.remote_status(rec, runner=runner)
     if st not in ("launching", "running"):
-        keep = {k: v for k, v in (host_rec or {}).items() if k in ("status", "ended", "outcome", "cost_usd", "rc",
-                                                                   "result", "note")}
+        host_rec = host_rec or {}
+        keep = {k: v for k, v in host_rec.items() if k in ("status", "ended", "outcome", "cost_usd", "rc", "result", "note")}
+        rec = dict(rec, status=st, host_end=keep or None)
+        if st == "finished":
+            rec.update({key: host_rec.get(key, "UNMEASURED") for key in ("model_seconds", "tool_seconds")})
+            if "seconds_why" in host_rec:
+                rec["seconds_why"] = host_rec["seconds_why"]
         try:
-            write_record(dict(rec, status=st, host_end=keep or None), root)
+            write_record(rec, root)
         except OSError:
             pass
     return st
@@ -2037,6 +2042,82 @@ def _transcript_path(rec, sid):
     return None
 
 
+def _transcript_seconds(path, started, ended):
+    """Split the observed main-thread wall time, excluding the gaps at launch and exit."""
+    first = last = None
+    saw_assistant = False
+    calls, results = {}, {}
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            event = json.loads(line)
+            if not isinstance(event, dict):
+                raise ValueError("invalid transcript row")
+            kind = event.get("type")
+            if kind not in ("assistant", "user") or event.get("isSidechain"):
+                continue
+            at = _epoch(event.get("timestamp"))
+            if at is None:
+                raise ValueError("unreadable transcript timestamp")
+            if not started <= at <= ended:
+                continue  # a resumed transcript also contains earlier runs
+            message = event.get("message")
+            content = message.get("content") if isinstance(message, dict) else None
+            if not isinstance(content, (str, list)):
+                raise ValueError("unreadable transcript message")
+            first = at if first is None else min(first, at)
+            last = at if last is None else max(last, at)
+            saw_assistant = saw_assistant or kind == "assistant"
+            if isinstance(content, str):
+                continue
+            for block in content:
+                if not isinstance(block, dict):
+                    raise ValueError("invalid transcript content block")
+                if block.get("type") == "tool_use":
+                    times, tool_id = calls, block.get("id")
+                elif block.get("type") == "tool_result":
+                    times, tool_id = results, block.get("tool_use_id")
+                else:
+                    continue
+                if not isinstance(tool_id, str) or not tool_id:
+                    raise ValueError("missing transcript tool ID")
+                times[tool_id] = min(at, times.get(tool_id, at))
+    if not saw_assistant or first == last:
+        raise ValueError("no timed main-thread span in this run")
+    if calls.keys() != results.keys() or any(results[key] < at for key, at in calls.items()):
+        raise ValueError("unpaired tool call or result in this run")
+
+    # Merge overlapping calls before subtracting their time from the observed wall clock.
+    tool_seconds = 0.0
+    covered_until = first
+    for start, stop in sorted((at, results[key]) for key, at in calls.items()):
+        if stop > covered_until:
+            tool_seconds += stop - max(start, covered_until)
+            covered_until = stop
+    return round(last - first - tool_seconds, 6), round(tool_seconds, 6)
+
+
+def _run_seconds(rec, ended, result):
+    """Timing fields for the detached run record, including why a split could not be measured."""
+    result_sid = result.get("session_id") if isinstance(result, dict) else None
+    sid = next((s for s in (result_sid, rec.get("resume_session"), rec.get("session_id"), rec.get("session"))
+                if isinstance(s, str) and SESSION_RE.fullmatch(s)), None)
+    try:
+        if not sid:
+            raise ValueError("no session ID")
+        path = _transcript_path(rec, sid)
+        if not path:
+            raise ValueError("no transcript for session %s" % sid)
+        started = rec.get("at")
+        if not _num(started) or not started < ended:
+            raise ValueError("invalid run time window")
+        model_seconds, tool_seconds = _transcript_seconds(path, started, ended)
+    except (OSError, ValueError, OverflowError, RecursionError) as e:
+        return {"model_seconds": "UNMEASURED", "tool_seconds": "UNMEASURED", "seconds_why": str(e)}
+    return {"model_seconds": model_seconds, "tool_seconds": tool_seconds}
+
+
 def _turn_finals(path):
     """-> the last main-chain assistant text of each finished turn (a stop_hook_summary ends a turn), oldest first."""
     finals, last = [], None
@@ -2081,7 +2162,7 @@ def run_report(rec, res=None):
     if p:
         try:
             finals = _turn_finals(p)
-        except OSError as e:
+        except (OSError, AttributeError, TypeError, RecursionError) as e:
             why = "transcript unreadable: %s" % e
     if finals:
         return "\n\n".join(finals[-(n + 1):])
@@ -2465,7 +2546,10 @@ def mark_killed(unit, why, now=None, root=None):
         return "no record for %s (not a detached run): nothing to mark" % unit
     if rec.get("status") == "finished":
         return "already finished %s" % unit
-    rec.update(status="finished", result="killed: " + why, ended=now or time.time(), finish_owed=True)
+    ended = now or time.time()
+    result = _RL().read_result({"out": rec.get("out"), "err": rec.get("err")})
+    rec.update(status="finished", result="killed: " + why, ended=ended, finish_owed=True,
+               **_run_seconds(rec, ended, result))
     write_record(rec, root)
     return "record %s finished (killed), its finish owed" % unit
 
@@ -2481,15 +2565,18 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         return 2, "no record for %s" % unit
     if rec.get("status") == "finished" and not rec.get("finish_owed"):
         return 0, "already finished %s" % unit
+    ended = now
     st, tokens, tail = outcome(rec, env)
     if rec.get("finish_owed"):
         st = rec.get("result") or st
+        ended = rec.get("ended") or now
     usd, how = measured_cost(rec)       # read now, with the tokens, before anything else touches the file
     import role_launch as RL
-    tokens, usd, split = own_part(rec, RL.read_result({"out": rec["out"], "err": rec["err"]}), tokens, usd)
+    result = RL.read_result({"out": rec["out"], "err": rec["err"]})
+    tokens, usd, split = own_part(rec, result, tokens, usd)
     if usd is None and split.get("tokens_why"):
         how = "UNMEASURED: " + split["tokens_why"]
-    took = int(now - rec["at"])
+    took = int(ended - rec["at"])
     # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." The dollars stay in the record
     # (cost_usd) for the stage ceiling; what a person reads says weighted tokens only (weighted_v2: MODEL_PRICES,
     # run_tokens)
@@ -2500,8 +2587,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     # the result file that holds them, and a spend stop reads only "interrupted" (owner 2026-11-16: no launched agent
     # is told its spend; RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED). The Conductor log line below and
     # the record keep the cause, the tokens and the output path.
-    import role_launch as RL
-    capped = cap_stopped(RL.read_result({"out": rec["out"], "err": rec["err"]}))
+    capped = cap_stopped(result)
     import spend_talk       # the run's own words may state its spend ("$21.6 of the $30 budget", 2026-11-15)
     text = ("DETACHED run %s ended %s after %d s (model %s). Result: %s. Clone %s."
             % (unit, st, took, rec["model"], INTERRUPTED if capped else (spend_talk.strip(tail) or "-"), rec["clone"]))
@@ -2515,6 +2601,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         rec["finish_blocked"] = {"at": now, "why": steps[0]}
         write_record(rec)
         return 1, "NOT FINISHED %s: %s" % (unit, steps[0])
+    if not rec.get("finish_owed") or "model_seconds" not in rec or "tool_seconds" not in rec:
+        rec.update(_run_seconds(rec, ended, result))
     if not st.startswith("success ("):   # its last sign of life, once, for the run that carries it on (run_alive.py)
         try:
             import run_alive
@@ -2573,9 +2661,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     said = "\n".join(x for x in [owed] + refused if x)      # the wake shows each on its own line
     quiet = wake_skip(rec, said)
     steps.append(quiet or wake_conductor(unit, st, rec["out"], item, seat, waker, said))
-    import role_launch as RL
     rec.pop("finish_owed", None)
-    rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
+    rec.update(status="finished", ended=ended, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
                cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed,
                filing_refusals=refused, **split)
     write_record(rec)

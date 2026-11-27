@@ -1,0 +1,14 @@
+{"type":"user","timestamp":"2026-11-26T23:59:52.000Z","message":{"role":"user","content":"Earlier run"}}
+{"type":"assistant","timestamp":"2026-11-26T23:59:54.000Z","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_old","name":"Read","input":{}}]}}
+{"type":"user","timestamp":"2026-11-26T23:59:58.000Z","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_old","content":"Earlier result"}]}}
+{"type":"user","timestamp":"2026-11-27T00:00:02.000Z","message":{"role":"user","content":"Continue the run"}}
+{"type":"assistant","timestamp":"2026-11-27T00:00:03.000Z","isSidechain":true,"message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_child","name":"Read","input":{}}]}}
+{"type":"assistant","timestamp":"2026-11-27T00:00:04.000Z","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_a","name":"Bash","input":{}}]}}
+{"type":"assistant","timestamp":"2026-11-27T00:00:06.000Z","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_b","name":"Read","input":{}}]}}
+{"type":"user","timestamp":"2026-11-27T00:00:09.000Z","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_a","content":"Done"}]}}
+{"type":"user","timestamp":"2026-11-27T00:00:12.000Z","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_b","content":"Done"}]}}
+{"type":"assistant","timestamp":"2026-11-27T00:00:14.000Z","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_c","name":"Read","input":{}}]}}
+{"type":"user","timestamp":"2026-11-27T00:00:15.500Z","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_c","is_error":true,"content":"File not found"}]}}
+{"type":"user","timestamp":"2026-11-27T00:00:17.000Z","isSidechain":true,"message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_child","content":"Done"}]}}
+{"type":"assistant","timestamp":"2026-11-27T00:00:18.000Z","message":{"role":"assistant","content":[{"type":"text","text":"Finished"}]}}
+{"type":"system","subtype":"stop_hook_summary","timestamp":"2026-11-27T00:00:19.000Z"}
