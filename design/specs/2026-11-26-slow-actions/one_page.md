@@ -51,7 +51,7 @@ window run median 167 s over 64 runs, 6.4 h; wake of the Conductor window UNMEAS
 | 7 | Publish line: slot wait median 7 min and p90 39 min with 2 slots on 14 cores at load 22+. The slot count guards a named danger (`2026-11-24-treecheck-slots`); measure the danger before a change. Pipeline checks re-run 145 of 231 tests per publish. | L | needs the page's own measurement |
 | 8 | Metronome: done (`metronome_profile.md`); its five fixes are on that page. | | |
 | 9 | Helper runs: record model seconds and tool seconds per run (today UNMEASURED); then the 833 h can be split. | S | any run's record |
-| 10 | Load: `vmstat` read 60 to 70% CPU busy, 2.5 GB swap in use, 0.5 to 1.4 GB/s disk reads while the rm timers used about 10% of the core-hours. Find the other users before adding any slot. | M | UNMEASURED who |
+| 10 | Load: `vmstat` read 60 to 70% CPU busy, 2.5 GB swap in use, 0.5 to 1.4 GB/s disk reads while the rm timers used about 10% of the core-hours. Find the other users before adding any slot. | M | measured 2026-11-27: `load_users.md` |
 
 ## What this page cannot say
 
