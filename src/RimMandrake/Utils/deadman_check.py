@@ -281,27 +281,37 @@ def cause_id(key, items=None):
     raise RuntimeError("cause %r: 99 generations retired" % key)
 
 
+def _live_generation(base, salt, items):
+    """-> base, or while that id is dropped or superseded, its next generation base_<8 hex of salt#gen>. Pure."""
+    for gen in range(1, 100):
+        iid = base if gen == 1 else "%s_%s" % (base, hashlib.sha1(("%s#%d" % (salt, gen)).encode("utf-8"))
+                                               .hexdigest()[:8].upper())
+        it = (items or {}).get(iid)
+        if it is None or it.state not in RETIRED:
+            return iid
+    raise RuntimeError("%s: 99 generations retired" % base)
+
+
 def arm_id(arm, items=None):
     """-> the one ticket of an arm: LIVE_RESTORE_<ARM>, the same every pass. A dropped or superseded one cannot be
     written (the ledger refuses, and the refusal failed rm-deadman.service: OPS_TIMER_REPAIR_PRXC_XKGA), so its
     successor, the arm's next generation LIVE_RESTORE_<ARM>_<8 hex>, takes over, as `cause_id` does for a cause."""
-    items = items or {}
-    base = "LIVE_RESTORE_" + arm.upper()
-    for gen in range(1, 100):
-        aid = base if gen == 1 else "%s_%s" % (base, hashlib.sha1(("arm:%s#%d" % (arm, gen)).encode("utf-8"))
-                                                .hexdigest()[:8].upper())
-        it = items.get(aid)
-        if it is None or it.state not in RETIRED:
-            return aid
-    raise RuntimeError("arm %r: 99 generations retired" % arm)
+    return _live_generation("LIVE_RESTORE_" + arm.upper(), "arm:" + arm, items)
+
+
+def host_id(host, items=None):
+    """-> the one ticket of a same-subject host (shared_hosts): its fixed id, or that id's next generation while the
+    fixed id is retired (LIVE_RESTORE_RM_OPS_WATCH was dropped while 30 swept promises named its timer, 2026-11-27)."""
+    return _live_generation(host, "host:" + host, items)
 
 
 def hosts_of(rows, items=None):
     """-> {item: host}: every broken row of one pass that is part of ONE outage, mapped to that outage's one ticket.
     First the same subject (shared_hosts: one timer under many fixes), then one cause across subjects (cause_key: 24
     hooks unwired by one settings path, 2026-11-08). A subject group joins a cause group as one member, through its
-    host. A cause needs two or more members. A host never maps to itself. Pure but for cause_id's read of `items`."""
-    shared = shared_hosts(rows)
+    host. A cause needs two or more members. A host never maps to itself; a retired one gives way to its successor
+    (host_id). Pure but for the reads of `items`."""
+    shared = {i: host_id(h, items) for i, h in shared_hosts(rows).items()}
     groups = {}
     for r in rows:
         k = cause_key(r.get("line"), r.get("why"))

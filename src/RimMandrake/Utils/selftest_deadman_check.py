@@ -302,6 +302,17 @@ def t_no_filing_lands_on_a_retired_item():
              lambda line: unwired(line) if line.startswith("hook=") else ("it died" if "dead" in line else None))
     bad = [t["item"] for t in (calls[0] if calls else []) if t["item"] in every and every[t["item"]].state in DM.RETIRED]
     check(calls and not bad, "no road files onto a dropped or superseded item: %s" % bad)
+    # a same-subject host: one timer under many live fixes whose fixed id is retired (measured 2026-11-27:
+    # LIVE_RESTORE_RM_OPS_WATCH dropped while 30 swept promises name rm-ops-watch.timer; a metronome stop breaks them all)
+    sub = {"LIVE_RESTORE_RM_DEAD": It(state="dropped"), "A_FIX_1": It(live=DEAD), "C_FIX_1": It(live=DEAD)}
+    todo = filed([], sub, chk=lambda line: "it died")
+    got = [(t["item"], bool(t.get("spawn"))) for t in todo]
+    hid = got[0][0] if len(got) == 1 else None
+    check(hid and hid.startswith("LIVE_RESTORE_RM_DEAD_") and got[0][1] and not model.mint_problems(hid, set()),
+          "a retired same-subject host files its successor, spawned, an item name, members silent: %s" % got)
+    again = filed([], dict(sub, **({hid: It(state="done", live_repeats=1)} if hid else {})), chk=lambda line: "it died")
+    check([(t["item"], bool(t.get("spawn"))) for t in again] == [(hid, False)],
+          "the host's successor is that subject's ticket from then on, reopened, not spawned again: %s" % again)
 
 
 def t_cause_ids_are_item_names():
