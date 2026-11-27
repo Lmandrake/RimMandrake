@@ -6,6 +6,8 @@
 //   salvage   the one salvage rule's arithmetic: stacks keep every unit inside the limit; a retried process cycle pays nothing until its first
 //             stack lands and then pays each remaining stack once; cremation pays only for a corpse with the toggle on
 //   scale     power output (producers only, never above the original), emanator mood, material counts and research cost under their sliders
+//   process   which processes a Kludged and a Refurbished level run: the row's part, everything on the level's def as loaded (a
+//             neighbour's patch stays, whether or not the donor has that process too), nothing else, the same when applied again
 // A failing case prints `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL: ratios 0.001 / 0.2 / 0.75 are owner-ruled defaults;
 // slider ranges (wrecked 0..0.05, kludged 0.05..0.6, refurbished 0.3..0.95) are the shipped UI.
 using System;
@@ -198,6 +200,99 @@ namespace RimMandrake.WreckedMachines.SelfTest
             return fails;
         }
 
+        // The situations the game can make for a level's process list, and what is read on each:
+        //   the donor's list as loaded: 0 to 9 processes (0 = a donor with no list at all), some of them added by a neighbour mod;
+        //   the row: names its part (1 to 3 of the donor's own processes, one of them possibly from a mod that is not loaded, so it
+        //     resolves to nothing), or takes the donor's first N (N from 1 to past the end), or neither;
+        //   the Kludged def as loaded: what the stamp wrote (the row's part of the donor's own list; nothing when the donor's
+        //     processes are made in code at startup), then 0 to 3 processes that neighbours patched on. Each neighbour process is
+        //     on the donor too, or on our def only (the Armoury's durasteel is on both);
+        //   the Refurbished def as loaded: the donor's own list or nothing, then 0 to 3 neighbour processes, on the donor too or not;
+        //   nulls and repeats in a loaded list; the lists applied a second time (settings applied again).
+        // Left out: a process def removed after startup, and a mod that edits a list after our startup code (neither is seen).
+        public static long NeighbourOnBoth, MadeInCode, RowNamed, RowCounted;
+        private static List<string> Process(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            for (int c = 0; c < cases; c++)
+            {
+                int seed = seed0 + c; var r = new Random(seed); Cases++;
+                try
+                {
+                    int own = r.Next(0, 7);                                   // the donor's own processes: d0..d(own-1)
+                    var donorOwn = Enumerable.Range(0, own).Select(i => "d" + i).ToList();
+                    bool inCode = own > 0 && r.Next(4) == 0;                   // the donor's XML holds no list; the factory mod's code fills it
+                    int nn = r.Next(0, 4);                                    // neighbour processes n0..n(nn-1)
+                    var onDonor = new List<string>(); var onKludged = new List<string>(); var onRefurbished = new List<string>();
+                    for (int i = 0; i < nn; i++)
+                    {
+                        int where = r.Next(1, 8);                             // bit 1 the donor, 2 our Kludged, 4 our Refurbished
+                        if ((where & 1) != 0) onDonor.Add("n" + i);
+                        if ((where & 2) != 0) onKludged.Add("n" + i);
+                        if ((where & 4) != 0) onRefurbished.Add("n" + i);
+                    }
+                    List<string> donor = donorOwn.Concat(onDonor).ToList();
+
+                    int mode = own == 0 ? 2 : r.Next(3);                      // 0 the row names, 1 the row counts, 2 neither
+                    if (inCode && mode == 0) mode = 1;                        // onboard.py refuses a name the donor's XML does not have
+                    var named = new List<string>(); int count = 0;
+                    List<string> stamped;
+                    if (mode == 0)
+                    {
+                        named = donorOwn.OrderBy(_ => r.Next()).Take(r.Next(1, 4)).ToList();
+                        stamped = named.ToList();
+                        if (r.Next(5) == 0) named[r.Next(named.Count)] = null; // a named process of a mod that is not loaded
+                        RowNamed++;
+                    }
+                    else if (mode == 1)
+                    {
+                        count = r.Next(1, own + 3);
+                        stamped = inCode ? new List<string>() : donorOwn.Take(count).ToList();
+                        RowCounted++;
+                    }
+                    else stamped = own > 0 && r.Next(2) == 0 ? donorOwn.Take(r.Next(1, own + 1)).ToList() : new List<string>();
+                    if (inCode) MadeInCode++;
+
+                    List<string> kLoaded = stamped.Concat(onKludged).ToList();
+                    List<string> rLoaded = (inCode || r.Next(3) == 0 ? new List<string>() : donorOwn.ToList()).Concat(onRefurbished).ToList();
+                    if (r.Next(6) == 0 && kLoaded.Count > 0) kLoaded.Insert(r.Next(kLoaded.Count + 1), kLoaded[r.Next(kLoaded.Count)]);
+                    if (r.Next(6) == 0) kLoaded.Insert(r.Next(kLoaded.Count + 1), null);
+                    if (r.Next(6) == 0) rLoaded.Insert(r.Next(rLoaded.Count + 1), null);
+
+                    List<string> rowPart = mode == 0 ? named.Where(p => p != null).ToList() : mode == 1 ? donor.Take(count).ToList() : new List<string>();
+                    string what = $"donor [{string.Join(",", donor)}] row {(mode == 0 ? "names [" + string.Join(",", named.Select(p => p ?? "null")) + "]" : mode == 1 ? "counts " + count : "says nothing")} Kludged as loaded [{string.Join(",", kLoaded.Select(p => p ?? "null"))}]";
+
+                    List<string> k = RM_WreckedMachinesKernel.KludgedProcesses(donor, named, count, kLoaded);
+                    Steps++;
+                    foreach (string p in kLoaded.Where(p => p != null))
+                        Check(k.Contains(p), $"the Kludged level lost {p}, which is on its def as loaded: {what} -> [{string.Join(",", k)}]");
+                    foreach (string p in rowPart)
+                        Check(k.Contains(p), $"the Kludged level lacks {p} of the row's part: {what} -> [{string.Join(",", k)}]");
+                    bool fallback = rowPart.Count == 0 && !kLoaded.Any(p => p != null);
+                    foreach (string p in k)
+                        Check(p != null && (rowPart.Contains(p) || kLoaded.Contains(p) || (fallback && donor.Count > 0 && p == donor[0])),
+                            $"the Kludged level runs {p ?? "null"}, which neither the row nor its def gives it: {what} -> [{string.Join(",", k)}]");
+                    Check(k.Distinct().Count() == k.Count, $"a process twice on the Kludged level: {what} -> [{string.Join(",", k)}]");
+                    Check(donor.Count == 0 || k.Count > 0, $"a Kludged level with no process though the donor has some: {what}");
+                    Check(RM_WreckedMachinesKernel.KludgedProcesses(donor, named, count, k).SequenceEqual(k),
+                        $"applied a second time, the Kludged list changes: {what} -> [{string.Join(",", k)}]");
+                    if (onKludged.Any(p => onDonor.Contains(p))) NeighbourOnBoth++;
+
+                    List<string> rf = RM_WreckedMachinesKernel.RefurbishedProcesses(donor, rLoaded);
+                    Steps++;
+                    foreach (string p in donor.Concat(rLoaded.Where(p => p != null)))
+                        Check(rf.Contains(p), $"the Refurbished level lacks {p}: donor [{string.Join(",", donor)}] as loaded [{string.Join(",", rLoaded.Select(q => q ?? "null"))}] -> [{string.Join(",", rf)}]");
+                    foreach (string p in rf)
+                        Check(p != null && (donor.Contains(p) || rLoaded.Contains(p)), $"the Refurbished level runs {p ?? "null"} from nowhere");
+                    Check(rf.Distinct().Count() == rf.Count, $"a process twice on the Refurbished level: [{string.Join(",", rf)}]");
+                    Check(rf.Take(donor.Count).SequenceEqual(donor), $"the Refurbished level does not start with the donor's list in the donor's order: [{string.Join(",", rf)}]");
+                    Check(RM_WreckedMachinesKernel.RefurbishedProcesses(donor, rf).SequenceEqual(rf), "applied a second time, the Refurbished list changes");
+                }
+                catch (Exception e) { fails.Add($"process seed {seed}: {e.Message}"); }
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -211,6 +306,7 @@ namespace RimMandrake.WreckedMachines.SelfTest
                 ("emanator", () => Emanator(N(2000), S(1))),
                 ("scale", () => Scale(N(3000), S(1))),
                 ("salvage", () => Salvage(N(3000), S(1))),
+                ("process", () => Process(N(6000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -227,6 +323,8 @@ namespace RimMandrake.WreckedMachines.SelfTest
             {
                 Console.WriteLine($"reached: placements allowed {Allowed}, refused {Refused}, producers scaled {Producers}, inverted slider pairs repaired {Inverted}");
                 if (Allowed == 0 || Refused == 0 || Producers == 0 || Inverted == 0) { Console.WriteLine("FAIL wrecked-machines fuzz never reached a path (blind)"); ok = false; }
+                Console.WriteLine($"reached: process lists with a neighbour's process on the donor and on our Kludged def {NeighbourOnBoth}, a donor list made in code {MadeInCode}, a row that names {RowNamed}, a row that counts {RowCounted}");
+                if (NeighbourOnBoth == 0 || MadeInCode == 0 || RowNamed == 0 || RowCounted == 0) { Console.WriteLine("FAIL the process-list fuzz never reached a situation (blind)"); ok = false; }
             }
             Console.WriteLine($"wreckedmachines fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

@@ -1,6 +1,6 @@
 // WreckedMachines offline fuzz entry. Knobs (forwarded by selftest_wreckedmachines_fuzz.py): --fuzz-scale F (multiplies every case count;
 // a scale that runs 0 cases FAILS, a fuzz that checked nothing is not a pass), --fuzz-seed N (replay one seed of every family),
-// --fuzz-only NAME (ladder|place|emanator|scale|salvage).
+// --fuzz-only NAME (ladder|place|emanator|scale|salvage|process).
 // --walk runs the repair state walk instead (RepairWalk.cs; selftest_wreckedmachines_repair_walk.py): --walk-scale F multiplies the count
 // of random event strings, --walk-seed N replays one string, --walk-table PATH writes the table of states by events.
 using System;

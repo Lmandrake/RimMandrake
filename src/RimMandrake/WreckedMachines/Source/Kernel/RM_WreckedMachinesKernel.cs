@@ -1,6 +1,8 @@
 // Verse-free kernel of Wrecked Machines: the grade ladder's capability ratios (always ordered, never reaching the original), where an upper
-// grade may be built, which emanator grade soothes and how strongly, the power-output scaling, and the cost / research scalers.
-// LadderPatcher, WreckedMachineGrade, PlaceWorker_BuildOverLowerGrade, ThoughtWorker_SalvagedEmanatorSoothe and WreckedMachinesPatcher call
+// grade may be built, which emanator grade soothes and how strongly, the power-output scaling, the cost / research scalers, and which
+// processes a Kludged and a Refurbished level run.
+// LadderPatcher, WreckedMachineGrade, PlaceWorker_BuildOverLowerGrade, ThoughtWorker_SalvagedEmanatorSoothe, WreckedMachinesPatcher and
+// RM_ProcessLists call
 // these with the same expressions; SelfTest/WreckedFuzz.cs compiles this file alone. Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib
 // (a `using Verse;` here breaks the self-test build, which is the guard rail).
 using System;
@@ -74,6 +76,45 @@ namespace RimMandrake.WreckedMachines
         public static float EmanatorMood(float vanillaBaseMood, float ratio)
         {
             return vanillaBaseMood * ratio;
+        }
+
+        /// <summary>The process list of a Kludged level: the row's part of the donor's processes, then everything on the Kludged def's
+        /// own list as the game loaded it. <paramref name="donor"/> is the donor's list as loaded; the row names its part
+        /// (<paramref name="rowNamed"/>) or takes the donor's first <paramref name="rowCount"/>; <paramref name="asLoaded"/> holds what
+        /// the stamp wrote (the row's part again, or nothing for a donor whose processes are made in code) and what a neighbour mod
+        /// patched on. A neighbour's process stays whether or not the donor has it too (the Armoury puts durasteel on the donor forge
+        /// and on our Kludged forge). A level never ends with no process while the donor has one.</summary>
+        public static List<T> KludgedProcesses<T>(IList<T> donor, IList<T> rowNamed, int rowCount, IList<T> asLoaded) where T : class
+        {
+            var want = new List<T>();
+            AddAll(want, rowNamed, int.MaxValue);
+            if (want.Count == 0 && rowCount > 0) AddAll(want, donor, rowCount);
+            AddAll(want, asLoaded, int.MaxValue);
+            if (want.Count == 0) AddAll(want, donor, 1);
+            return want;
+        }
+
+        /// <summary>The process list of a Refurbished level: every process of the donor as loaded, then what the Refurbished def's own
+        /// loaded list adds (a neighbour's patch).</summary>
+        public static List<T> RefurbishedProcesses<T>(IList<T> donor, IList<T> asLoaded) where T : class
+        {
+            var want = new List<T>();
+            AddAll(want, donor, int.MaxValue);
+            AddAll(want, asLoaded, int.MaxValue);
+            return want;
+        }
+
+        /// <summary>Appends the first <paramref name="take"/> entries of a list that are not null and not yet there.</summary>
+        private static void AddAll<T>(List<T> to, IList<T> from, int take) where T : class
+        {
+            if (from == null) return;
+            for (int i = 0, n = 0; i < from.Count && n < take; i++)
+            {
+                T p = from[i];
+                if (p == null) continue;
+                n++;
+                if (!to.Contains(p)) to.Add(p);
+            }
         }
 
         /// <summary>Material count after the cost slider: scaled, rounded, never below one.</summary>

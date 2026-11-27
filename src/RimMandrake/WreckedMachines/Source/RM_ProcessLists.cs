@@ -22,8 +22,7 @@ namespace RimMandrake.WreckedMachines
         {
             public List<ProcessDef> donor = new List<ProcessDef>();
             public List<ProcessDef> kludgedAsLoaded = new List<ProcessDef>();
-            public List<ProcessDef> kludgedExtras = new List<ProcessDef>();
-            public List<ProcessDef> refurbishedExtras = new List<ProcessDef>();
+            public List<ProcessDef> refurbishedAsLoaded = new List<ProcessDef>();
         }
 
         private static readonly Dictionary<RM_MachineLineDef, Captured> captured = new Dictionary<RM_MachineLineDef, Captured>();
@@ -37,6 +36,8 @@ namespace RimMandrake.WreckedMachines
 
         private static List<ProcessDef> ListOf(ThingDef d) => d?.GetCompProperties<CompProperties_AdvancedResourceProcessor>()?.processes;
 
+        /// <summary>Reads each list as the game loaded it, once, before Apply changes any: the donor's, and our two levels' own (what
+        /// the stamp wrote and what a neighbour patched on).</summary>
         public static void Capture()
         {
             captured.Clear();
@@ -46,17 +47,15 @@ namespace RimMandrake.WreckedMachines
                 if (donor == null) continue;
                 var c = new Captured { donor = donor.Where(p => p != null).Distinct().ToList() };
                 List<ProcessDef> k = ListOf(l.kludged);
-                if (k != null)
-                {
-                    c.kludgedAsLoaded = k.Where(p => p != null).Distinct().ToList();
-                    c.kludgedExtras = c.kludgedAsLoaded.Where(p => !c.donor.Contains(p)).ToList();
-                }
+                if (k != null) c.kludgedAsLoaded = k.Where(p => p != null).Distinct().ToList();
                 List<ProcessDef> r = ListOf(l.refurbished);
-                if (r != null) c.refurbishedExtras = r.Where(p => p != null && !c.donor.Contains(p)).Distinct().ToList();
+                if (r != null) c.refurbishedAsLoaded = r.Where(p => p != null).Distinct().ToList();
                 captured[l] = c;
             }
         }
 
+        /// <summary>Sets both levels' lists by the kernel's two rules (RM_WreckedMachinesKernel.KludgedProcesses and
+        /// RefurbishedProcesses, read offline by the fuzz family "process").</summary>
         public static void Apply()
         {
             foreach (KeyValuePair<RM_MachineLineDef, Captured> e in captured)
@@ -65,17 +64,10 @@ namespace RimMandrake.WreckedMachines
                 Captured c = e.Value;
 
                 List<ProcessDef> r = ListOf(l.refurbished);
-                if (r != null) Set(r, c.donor.Concat(c.refurbishedExtras));
+                if (r != null) Set(r, RM_WreckedMachinesKernel.RefurbishedProcesses(c.donor, c.refurbishedAsLoaded));
 
                 List<ProcessDef> k = ListOf(l.kludged);
-                if (k == null) continue;
-                List<ProcessDef> part = l.kludgedProcessDefs != null && l.kludgedProcessDefs.Count > 0
-                    ? l.kludgedProcessDefs.ToList()
-                    : l.kludgedProcessCount > 0 ? c.donor.Take(l.kludgedProcessCount).ToList()
-                    : c.kludgedAsLoaded.Where(p => c.donor.Contains(p)).ToList();
-                List<ProcessDef> want = part.Concat(c.kludgedExtras).Distinct().ToList();
-                if (want.Count == 0 && c.donor.Count > 0) want.Add(c.donor[0]);
-                Set(k, want);
+                if (k != null) Set(k, RM_WreckedMachinesKernel.KludgedProcesses(c.donor, l.kludgedProcessDefs, l.kludgedProcessCount, c.kludgedAsLoaded));
             }
         }
 

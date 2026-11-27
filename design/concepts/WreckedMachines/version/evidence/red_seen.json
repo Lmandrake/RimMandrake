@@ -12,6 +12,19 @@
   "rc": 1,
   "test_blob": "8fc35ab495221aa2f9f5f6d16e9742fd296ddad0"
  },
+ "T_KERNEL_FUZZ": {
+  "at": "2026-11-27T18:12:32Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py",
+  "file": "src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py",
+  "last": "wreckedmachines fuzz: 21000 cases, 355610 steps, 0.69s total -> FAILED",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesKernel.cs\n+++ b/src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesKernel.cs\n@@ -89,7 +89,7 @@\n             var want = new List<T>();\n             AddAll(want, rowNamed, int.MaxValue);\n             if (want.Count == 0 && rowCount > 0) AddAll(want, donor, rowCount);\n-            AddAll(want, asLoaded, int.MaxValue);\n+            if (asLoaded != null) foreach (T p in asLoaded) if (p != null && !donor.Contains(p) && !want.Contains(p)) want.Add(p);\n             if (want.Count == 0) AddAll(want, donor, 1);\n             return want;\n         }\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesKernel.cs"
+  ],
+  "patch_sha": "d3a35db1c501ae4b",
+  "rc": 1,
+  "test_blob": "1c1eb6085d337ad0a3166420aec08c56fce607a0"
+ },
  "T_LATER_STAYS_OUT": {
   "at": "2026-11-27T14:22:01Z",
   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py",

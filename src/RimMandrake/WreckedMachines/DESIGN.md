@@ -92,7 +92,9 @@ level defs and two projects from the donor's XML and the row (dev tooling; the r
 What the game's files cannot give is set by C# at startup and whenever settings are applied, from the donor def, never from a
 copy: the Refurbished def's process list is the donor's list as loaded (the factory mod adds the autoloom's, the machining
 bay's and the fish farm's processes to its own defs in code) plus anything a neighbour patched onto ours; the Kludged list
-is the row's part of it. Work speed of a level is the donor's speed times the level's ratio (`kludgedRatio`,
+is the row's part of it plus everything on the Kludged def's own list as loaded, so a neighbour's process stays whether or
+not the donor has it too. The two rules are `KludgedProcesses` and `RefurbishedProcesses` in the kernel, read offline by the
+fuzz family `process` of `T_KERNEL_FUZZ`. Work speed of a level is the donor's speed times the level's ratio (`kludgedRatio`,
 `refurbishedRatio` in Mod Settings), applied by one Harmony postfix on `PipeSystem.CompAdvancedResourceProcessor.
 GetNotInRoomRoleFactor` (the one place the factory's process time is scaled for a building).
 
@@ -191,9 +193,6 @@ As of 2026-11-27 10:00 AM PST (the run on RIMMANDRAKE_AUTOBUILD_WRECKEDMACHINES_
   its own `texPath` and `graphicClass` and loses its `color`. The component still tints the base game's icon.
 - **In the game.** Loaded clean on tier `wreckedmachines_solo`; the repair on the machine, its cancel, the component gate and
   the uninstall during a repair pass their scenes. Not run yet: every other scene (study, levels, menu, placement, settings).
-- **Known fault, not fixed.** `RM_ProcessLists.cs` keeps on a Kludged level only the row's processes plus a neighbour's
-  processes that are not on the donor. The Armoury adds durasteel to the donor forge and to our Kludged forge, so the Kludged
-  forge loses it at startup; the same holds for the Armoury's alloys on the Kludged smelter.
 - **Not started.** Placement in ruin rooms and on ordinary maps (the three placement proof methods answer "not built yet"),
   the stop of the base game's hand-outs, the autofarmer's Kludged speed, who may lift a wreck as data (rule `R_lift`), the
   scene `sc_old_save`.

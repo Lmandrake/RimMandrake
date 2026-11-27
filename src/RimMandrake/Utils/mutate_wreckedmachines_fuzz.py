@@ -44,6 +44,25 @@ MUTATIONS = [
     ("material count rounds up", "(int)Math.Round(baseCount * factor)", "(int)Math.Ceiling(baseCount * factor)"),
     ("research cost can reach zero", "return Math.Max(1f, baseCost * factor);", "return baseCost * factor;"),
     ("research ignores the factor", "return Math.Max(1f, baseCost * factor);", "return Math.Max(1f, baseCost);"),
+    # Process lists. Equivalent mutant (not listed): a Kludged rule that ignores the row's names. The stamp writes the named
+    # processes onto the Kludged def, so its list as loaded holds them too (T_ONBOARDING_TABLE_OFFLINE row donor_fidelity).
+    ("process: a neighbour's process that the donor has is dropped from Kludged (the shipped fault of 2026-11-27)",
+     "AddAll(want, asLoaded, int.MaxValue);\n            if (want.Count == 0) AddAll(want, donor, 1);",
+     "if (asLoaded != null) foreach (T p in asLoaded) if (p != null && !donor.Contains(p) && !want.Contains(p)) want.Add(p);\n            if (want.Count == 0) AddAll(want, donor, 1);"),
+    ("process: Kludged ignores its def as loaded",
+     "AddAll(want, asLoaded, int.MaxValue);\n            if (want.Count == 0) AddAll(want, donor, 1);",
+     "if (want.Count == 0) AddAll(want, donor, 1);"),
+    ("process: Kludged takes the whole donor list", "if (want.Count == 0 && rowCount > 0) AddAll(want, donor, rowCount);",
+     "if (want.Count == 0 && rowCount > 0) AddAll(want, donor, int.MaxValue);"),
+    ("process: Kludged ignores the row's count", "if (want.Count == 0 && rowCount > 0) AddAll(want, donor, rowCount);", ""),
+    ("process: Kludged may end with no process", "            if (want.Count == 0) AddAll(want, donor, 1);\n", ""),
+    ("process: Refurbished drops a neighbour's patch", "AddAll(want, donor, int.MaxValue);\n            AddAll(want, asLoaded, int.MaxValue);\n            return want;",
+     "AddAll(want, donor, int.MaxValue);\n            return want;"),
+    ("process: Refurbished lacks the donor's list", "AddAll(want, donor, int.MaxValue);\n            AddAll(want, asLoaded, int.MaxValue);\n            return want;",
+     "AddAll(want, asLoaded, int.MaxValue);\n            return want;"),
+    ("process: a process twice on a list", "if (!to.Contains(p)) to.Add(p);", "to.Add(p);"),
+    ("process: an unloaded process stays on a list", "                if (p == null) continue;\n", ""),
+    ("process: the count takes one more", "i < from.Count && n < take", "i < from.Count && n <= take"),
 ]
 
 if __name__ == "__main__":
