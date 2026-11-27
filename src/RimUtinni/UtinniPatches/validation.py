@@ -677,6 +677,24 @@ def _wc(t, tool, **kw):
     return r if isinstance(r, dict) else {}
 
 
+WALK_CALL_S = 20     # one order_pawn wait: under the bridge client's 30 s read limit, which cut the one 180 s wait
+WALK_ROUNDS = 9      # hang guard on a colonist who cannot reach the pad: 9 x 20 s = the 180 s that prove_gravship.py's
+                     # one walk was given (its walks arrived well inside it, 2026-08-29)
+
+
+def walk_onto_pad(call, X, Z):
+    """Walk every colonist onto the 20x20 pad at (X, Z), in orders that each fit the client's read limit and end on
+    arrival. -> how many stand on the pad after the last order."""
+    ends = []
+    for _ in range(WALK_ROUNDS):
+        r = call("jawa/order_pawn", pawnId="colonists", x=X + 8, z=Z + 8, waitTicks=5000,
+                 timeoutSeconds=WALK_CALL_S, unpause=True, stopOnArrival=True)
+        ends = [row.get("end") or {} for row in (r.get("pawns") or [])]
+        if r.get("success") is True or r.get("waitEnded") == "arrived":
+            break
+    return sum(1 for e in ends if X <= e.get("x", -1) < X + 20 and Z <= e.get("z", -1) < Z + 20)
+
+
 def _fly_a_ship(t):
     """Build a minimal flyable ship at the anchor (prove_gravship.py's steps), launch it to a near tile, and stop
     the clock while it is on the globe. -> dict(origin, target, ship). Raises ExpectationFailed('UNMEASURED: ...')."""
@@ -756,9 +774,10 @@ def _fly_a_ship(t):
     if target is None:
         raise ExpectationFailed("UNMEASURED: no near tile accepts a launch: %s" % str(refusals[:4])[:300])
     # colonists left off the pad die with the origin map, and a colony with nobody left ends the game
-    walk = _wc(t, "jawa/order_pawn", pawnId="colonists", x=X + 8, z=Z + 8, waitTicks=5000, timeoutSeconds=180,
-               unpause=True)
-    t._record("colonists walked onto the pad", walk)
+    aboard = walk_onto_pad(lambda tool, **kw: _wc(t, tool, **kw), X, Z)
+    t._record("colonists standing on the pad", aboard)
+    if aboard < 1:
+        raise ExpectationFailed("UNMEASURED: no colonist reached the pad, and the launch would end the colony")
     go = _wc(t, "jawa/gravship_launch", targetTile=target, dryRun=False)
     t._record("gravship_launch %s -> %s" % (origin, target), go)
     if go.get("launched") is not True:
