@@ -64,6 +64,32 @@
   "rc": 1,
   "test_blob": "e7d05f8855bd2158827487ba0fa2d6525ae62efa"
  },
+ "T_ONBOARDED_SET": {
+  "at": "2026-11-27T18:32:23Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
+  "last": "T_ONBOARDED_SET: FAIL (4 rows, 3 not PASS)",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines_fishfarm.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines_fishfarm.xml\n@@ -7,7 +7,7 @@\n     <defName>RM_WM_Line_fishfarm</defName>\n     <key>fishfarm</key>\n     <label>automated fishfarm</label>\n-    <original>VFEFactory_AutomatedFishfarm</original>\n+    <original>VFEFactory_Autofarmer</original>\n     <wrecked>RM_WM_AutomatedFishfarm_Wrecked</wrecked>\n     <kludged>RM_WM_AutomatedFishfarm_Kludged</kludged>\n     <refurbished>RM_WM_AutomatedFishfarm_Refurbished</refurbished>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/MachineLines/MachineLines_WreckedMachines_fishfarm.xml"
+  ],
+  "patch_sha": "506b0fd38a5c62d0",
+  "rc": 1,
+  "test_blob": "242bac0b195451ba7b3f8bd5ebc8888f0a451a4f"
+ },
+ "T_ONBOARDING_COMPLETE": {
+  "at": "2026-11-27T18:32:27Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
+  "last": "T_ONBOARDING_COMPLETE: FAIL (7 rows, 2 not PASS, 20 lines)",
+  "patch": "--- a/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml\n+++ b/src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml\n@@ -265,8 +265,7 @@\n     <label>wrecked psychic emanator</label>\n     <description>An ancient psychic emanator, long dead. The field coil is fused and the casing is pitted through. Whatever it once did to the minds around it, it does nothing now.\\n\\nA researcher can study it where it stands, and what they learn opens the research to patch it back into a weak field. It can be carried. The repair itself is ordered on the machine, once the research is done.</description>\n     <graphicData>\n-      <texPath>WreckedMachines/Mobile/PsychicEmanator/Wrecked/PsychicEmanator</texPath>\n-      <graphicClass>Graphic_Single</graphicClass>\n+      <color>(105,98,90)</color>\n     </graphicData>\n     <thingCategories>\n       <li>BuildingsSpecial</li>\n",
+  "patch_files": [
+   "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml"
+  ],
+  "patch_sha": "d0439026cee6b313",
+  "rc": 1,
+  "test_blob": "5e034f27dc583dcad960ce5fbd31452e8804595e"
+ },
  "T_ONBOARDING_TABLE_OFFLINE": {
   "at": "2026-11-27T17:50:52Z",
   "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
@@ -90,6 +116,19 @@
   "rc": 1,
   "test_blob": "a20d682aedc61973a29cb90221983125b4b5911e"
  },
+ "T_SALVAGE_RULE": {
+  "at": "2026-11-27T18:32:37Z",
+  "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py",
+  "file": "src/RimMandrake/WreckedMachines/selftest_salvage_rule.py",
+  "last": "salvage rule: FAILED (fuzz salvage: 3000 cases, 8003 steps, 0.04s, 2500 FAILURES; 41 variants executed, 41 red)",
+  "patch": "--- a/src/RimMandrake/_Shared/SalvageRule/RM_SalvageRuleKernel.cs\n+++ b/src/RimMandrake/_Shared/SalvageRule/RM_SalvageRuleKernel.cs\n@@ -21,7 +21,7 @@\n         /// nothing yet: PipeSystem retries it, and paying the rest now would pay it again on the retry.</summary>\n         public static int ExtrasOwed(int planned, int placedByProcess)\n         {\n-            return placedByProcess > 0 ? Math.Max(0, planned - 1) : 0;\n+            return placedByProcess > 0 ? Math.Max(0, planned) : 0;\n         }\n \n         /// <summary>The plan may be forgotten: everything is paid, or the item yielded nothing and the process has reset.</summary>\n",
+  "patch_files": [
+   "src/RimMandrake/_Shared/SalvageRule/RM_SalvageRuleKernel.cs"
+  ],
+  "patch_sha": "c864ae460fe8bbc1",
+  "rc": 1,
+  "test_blob": "446daa21f60317bd25cbdd408151238054cadec6"
+ },
  "T_STATIC": {
   "at": "2026-11-27T17:50:53Z",
   "command": "python3 src/RimMandrake/WreckedMachines/validation.py",
@@ -104,7 +143,7 @@
   "test_blob": "db9764c3508762c9d4fb81ad70ca7e04e14eec5b"
  },
  "sc_text_names_no_setting": {
-  "at": "2026-11-27T15:23:02Z",
+  "at": "2026-11-27T18:32:38Z",
   "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\"",
   "file": "src/RimMandrake/WreckedMachines/validation.py",
   "last": "sc_text_names_no_setting: FAIL 3 components, 1 not PASS",
@@ -114,7 +153,7 @@
   ],
   "patch_sha": "33ce2284ecb76c6d",
   "rc": 1,
-  "test_blob": "9abb5b9c7a99aae40aa32a4065b03e36609f6158"
+  "test_blob": "db9764c3508762c9d4fb81ad70ca7e04e14eec5b"
  },
  "sc_wreck_link_tags": {
   "at": "2026-11-27T15:23:03Z",

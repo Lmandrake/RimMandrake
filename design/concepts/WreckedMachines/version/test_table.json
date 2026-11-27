@@ -1,7 +1,7 @@
 {
  "mod": "WreckedMachines",
  "version": "0.1.0",
- "made": "2026-11-27T09:52:12-0800",
+ "made": "2026-11-27T10:33:34-0800",
  "made_by": "design/concepts/WreckedMachines/version/pilot_throwaway/make_test_table.py (throwaway, no model), steward run RIMMANDRAKE_STEWARD_WRECKEDMACHINES_PREFLIGHT_STAGE",
  "stages": {
   "2": "preflight (a program)",
@@ -82,12 +82,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.1,
-    "last": "wreckedmachines fuzz: 15000 cases, 346003 steps, 0.63s total -> OK",
-    "at": "2026-11-27T17:51:26Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_KERNEL_FUZZ.txt",
+    "seconds": 1.97,
+    "last": "wreckedmachines fuzz: 21000 cases, 358003 steps, 0.72s total -> OK",
+    "at": "2026-11-27T18:33:36Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py"
+    "build": "99584c539a544d2cf2e4",
+    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py",
+    "margins": []
    }
   },
   "T_SALVAGE_RULE": {
@@ -104,12 +105,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.1,
+    "seconds": 3.88,
     "last": "salvage rule: OK (fuzz salvage: 3000 cases, 8003 steps, 0.04s, 0 failures; 41 variants executed, 40 red)",
-    "at": "2026-11-27T17:51:30Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_SALVAGE_RULE.txt",
+    "at": "2026-11-27T18:33:40Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py"
+    "build": "cabb57a6ab84527ec6bd",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_salvage_rule.py",
+    "margins": []
    }
   },
   "T_ONBOARDED_SET": {
@@ -126,15 +128,15 @@
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 4.4,
-    "last": "T_ONBOARDED_SET: FAIL (4 rows, 2 not PASS)",
-    "at": "2026-11-27T17:51:35Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDED_SET.txt",
-    "result": "FAIL",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py"
-   },
-   "red_today": "the onboarding table (Defs/MachineLines) does not hold a line for each of the 20 machines yet: the check is built and red first; it goes green when the last machine is onboarded (plan.md, order, step 7)"
+    "rc": 0,
+    "seconds": 4.92,
+    "last": "T_ONBOARDED_SET: PASS (4 rows, 0 not PASS)",
+    "at": "2026-11-27T18:33:45Z",
+    "result": "PASS",
+    "build": "8a5c4d9d3675721b2fa9",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py",
+    "margins": []
+   }
   },
   "T_ONBOARDING_COMPLETE": {
    "id": "T_ONBOARDING_COMPLETE",
@@ -154,15 +156,15 @@
    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 1.7,
-    "last": "T_ONBOARDING_COMPLETE: FAIL (7 rows, 2 not PASS, 17 lines)",
-    "at": "2026-11-27T17:51:36Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDING_COMPLETE.txt",
-    "result": "FAIL",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py"
-   },
-   "red_today": "a machine on the table lacks a level def, a carried form, a studied project, a picture of its own, the art judge's record or its Mod Settings line: the check is built and red first; it goes green when every machine's onboarding is whole (plan.md, order, steps 4 to 7)"
+    "rc": 0,
+    "seconds": 2.54,
+    "last": "T_ONBOARDING_COMPLETE: PASS (7 rows, 0 not PASS, 20 lines)",
+    "at": "2026-11-27T18:33:48Z",
+    "result": "PASS",
+    "build": "d37010cb602bcc31f7d2",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py",
+    "margins": []
+   }
   },
   "T_ONBOARDING_TABLE_OFFLINE": {
    "id": "T_ONBOARDING_TABLE_OFFLINE",
@@ -180,12 +182,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.8,
-    "last": "T_ONBOARDING_TABLE_OFFLINE: PASS (15 lines read)",
-    "at": "2026-11-27T17:51:37Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_ONBOARDING_TABLE_OFFLINE.txt",
+    "seconds": 1.05,
+    "last": "T_ONBOARDING_TABLE_OFFLINE: PASS (17 lines read)",
+    "at": "2026-11-27T18:33:49Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py"
+    "build": "fc8c908c4f5418c0f698",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py",
+    "margins": []
    }
   },
   "T_LEVEL_NUMBERS": {
@@ -209,12 +212,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.0,
+    "seconds": 0.03,
     "last": "T_LEVEL_NUMBERS: PASS",
-    "at": "2026-11-27T17:51:37Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LEVEL_NUMBERS.txt",
+    "at": "2026-11-27T18:33:49Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py"
+    "build": "eec08da45eb5731180f0",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py",
+    "margins": []
    }
   },
   "T_REPAIR_STATE_WALK": {
@@ -233,12 +237,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.8,
+    "seconds": 1.95,
     "last": "T_REPAIR_STATE_WALK: PASS",
-    "at": "2026-11-27T17:51:39Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_REPAIR_STATE_WALK.txt",
+    "at": "2026-11-27T18:33:51Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py"
+    "build": "311be82d9418063b8b0e",
+    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py",
+    "margins": []
    }
   },
   "T_NEIGHBOUR_NAMES": {
@@ -263,12 +268,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.7,
+    "seconds": 1.89,
     "last": "T_NEIGHBOUR_NAMES: PASS (5 rows, 0 not PASS)",
-    "at": "2026-11-27T17:51:41Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_NEIGHBOUR_NAMES.txt",
+    "at": "2026-11-27T18:33:54Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py"
+    "build": "3ad5f35c22fb06d14f50",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_neighbour_names.py",
+    "margins": []
    }
   },
   "T_FORGE_GATES_GONE": {
@@ -290,12 +296,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.0,
+    "seconds": 0.04,
     "last": "T_FORGE_GATES_GONE: PASS (5 rows, 0 not PASS)",
-    "at": "2026-11-27T17:51:41Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_FORGE_GATES_GONE.txt",
+    "at": "2026-11-27T18:33:54Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py"
+    "build": "ccb97d4f5afe5a3c3b1f",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_forge_gates_gone.py",
+    "margins": []
    }
   },
   "T_DISTILLATION_LOADS": {
@@ -317,12 +324,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.7,
+    "seconds": 0.68,
     "last": "T_DISTILLATION_LOADS: PASS (7 rows, 0 not PASS)",
-    "at": "2026-11-27T17:51:41Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_DISTILLATION_LOADS.txt",
+    "at": "2026-11-27T18:33:54Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py"
+    "build": "e9a645068abb9152b38b",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_distillation_loads.py",
+    "margins": []
    }
   },
   "sc_old_save": {
@@ -368,12 +376,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.5,
-    "last": "wreckedmachines lint (data): 51 graded defs, 17 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
-    "at": "2026-11-27T17:51:43Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_DEFS.txt",
+    "seconds": 1.54,
+    "last": "wreckedmachines lint (data): 60 graded defs, 20 lines, 2 thought stages, 3 sliders, 0 ERROR, 0 WARN",
+    "at": "2026-11-27T18:33:56Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py"
+    "build": "4ffc4bb4c6e047cc35b8",
+    "command": "python3 src/RimMandrake/Utils/lint_wreckedmachines_defs.py",
+    "margins": []
    }
   },
   "T_LINT_PLANTS": {
@@ -390,12 +399,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 28.8,
+    "seconds": 32.89,
     "last": "WreckedMachines lint planted-defect selftest: 19/19 ok",
-    "at": "2026-11-27T17:52:12Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LINT_PLANTS.txt",
+    "at": "2026-11-27T18:34:29Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py"
+    "build": "f46d819e513c5fbc2201",
+    "command": "python3 src/RimMandrake/Utils/selftest_wreckedmachines_lint.py",
+    "margins": []
    }
   },
   "T_STATIC": {
@@ -415,10 +425,11 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "STATIC: PASS (0 findings)",
-    "at": "2026-11-27T17:52:12Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_STATIC.txt",
+    "at": "2026-11-27T18:34:29Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/validation.py"
+    "build": "1073224a6a0702b3589e",
+    "command": "python3 src/RimMandrake/WreckedMachines/validation.py",
+    "margins": []
    }
   },
   "sc_menu_and_research": {
@@ -1026,12 +1037,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.3,
+    "seconds": 0.36,
     "last": "sc_text_names_no_setting: PASS 3 components, 0 not PASS",
-    "at": "2026-11-27T17:52:12Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_text_names_no_setting.txt",
+    "at": "2026-11-27T18:34:29Z",
     "result": "PASS",
-    "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\""
+    "build": "d4b36f57221cba789643",
+    "command": "python3 -c \"import sys; sys.path[:0]=['src/RimMandrake/WreckedMachines','src/RimMandrake/Utils','src/RimMandrake/Utils/modcheck']; import validation as V; from suite import TestContext; t=TestContext(None); t.session=None; dict(V.suite.chains)['scene_text_names_no_setting'](t); rows=[(c.name,c.verdict,str(c.detail)[:300]) for c in t.components]; [print(*r) for r in rows]; bad=[r for r in rows if r[1]!='PASS']; print('sc_text_names_no_setting:', 'PASS' if rows and not bad else 'FAIL', len(rows), 'components,', len(bad), 'not PASS'); sys.exit(0 if rows and not bad else 1)\"",
+    "margins": []
    }
   },
   "sc_wreck_link_tags": {
@@ -1054,12 +1066,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.4,
-    "last": "wrecked_links: 23 wrecked defs judged, 5 owe pipes, 22 owe conduit, 0 problems",
-    "at": "2026-11-27T17:52:12Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/sc_wreck_link_tags.txt",
+    "seconds": 0.55,
+    "last": "wrecked_links: 26 wrecked defs judged, 5 owe pipes, 25 owe conduit, 0 problems",
+    "at": "2026-11-27T18:34:30Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py"
+    "build": "9a59dd66964bf33ce37c",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+    "margins": []
    },
    "partial": "scenes.json kind_note: 'The script exists and is green on the smelter; the count line is new.' The count of Wrecked defs against the count of ancient machines is built with the onboarding (Stage 3)"
   },
@@ -1412,12 +1425,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.0,
+    "seconds": 0.06,
     "last": "T_LATER_STAYS_OUT: PASS",
-    "at": "2026-11-27T17:52:12Z",
-    "log": "/mnt/d/ClaudeWork/rimmandrake/scratch/wreckedmachines_preflight/runs/T_LATER_STAYS_OUT.txt",
+    "at": "2026-11-27T18:34:30Z",
     "result": "PASS",
-    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py"
+    "build": "96fc492860c09d557e18",
+    "command": "python3 src/RimMandrake/WreckedMachines/selftest_wm_later_stays_out.py",
+    "margins": []
    }
   },
   "LOOK_STAGE8": {
@@ -1515,14 +1529,11 @@
     "T_ONBOARDED_SET",
     "T_ONBOARDING_COMPLETE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_ONBOARDED_SET",
-    "T_ONBOARDING_COMPLETE"
-   ],
+   "not_runnable_today": [],
    "scope": "approved",
    "impl": "present"
   },
@@ -1687,14 +1698,11 @@
     "T_ONBOARDED_SET",
     "T_ONBOARDING_COMPLETE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_ONBOARDED_SET",
-    "T_ONBOARDING_COMPLETE"
-   ],
+   "not_runnable_today": [],
    "scope": "approved",
    "impl": "present"
   },
@@ -2021,14 +2029,11 @@
     "T_ONBOARDED_SET",
     "T_ONBOARDING_COMPLETE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_ONBOARDED_SET",
-    "T_ONBOARDING_COMPLETE"
-   ],
+   "not_runnable_today": [],
    "scope": "approved",
    "impl": "absent"
   },
@@ -2147,14 +2152,11 @@
     "T_ONBOARDED_SET",
     "T_ONBOARDING_COMPLETE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_ONBOARDED_SET",
-    "T_ONBOARDING_COMPLETE"
-   ]
+   "not_runnable_today": []
   },
   {
    "id": "repair_on_the_machine",
@@ -2192,14 +2194,11 @@
     "T_ONBOARDED_SET",
     "T_ONBOARDING_COMPLETE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_ONBOARDED_SET",
-    "T_ONBOARDING_COMPLETE"
-   ]
+   "not_runnable_today": []
   },
   {
    "id": "levels_of_function",
@@ -2241,14 +2240,11 @@
     "T_ONBOARDED_SET",
     "T_ONBOARDING_COMPLETE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_ONBOARDED_SET",
-    "T_ONBOARDING_COMPLETE"
-   ]
+   "not_runnable_today": []
   },
   {
    "id": "last_repair_needs_component",
@@ -2305,14 +2301,11 @@
     "T_ONBOARDED_SET",
     "T_ONBOARDING_COMPLETE"
    ],
-   "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "offline_green_today": true,
+   "every_decider_runnable_today": true,
    "any_decider_runnable_today": true,
    "any_test_runnable_today": true,
-   "not_runnable_today": [
-    "T_ONBOARDED_SET",
-    "T_ONBOARDING_COMPLETE"
-   ]
+   "not_runnable_today": []
   },
   {
    "id": "switch_gives_machine_back",

@@ -1,6 +1,6 @@
 # WreckedMachines 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T09:52:12-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T10:33:34-0800. A bar passes when every deciding test passes; a support adds evidence and decides nothing.
 
 ## How a pair is made
 
@@ -19,9 +19,9 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T09:52:12-0800. A bar pa
 
 - bars: 30 (locked: 30)
 - tests: 48 (16 built offline, 26 live scenes with their entry written, 1 specified for Stage 3, 4 explorations, 1 look)
-- built offline tests green today: 14, red: 2 (T_ONBOARDED_SET, T_ONBOARDING_COMPLETE)
+- built offline tests green today: 16, red: 0 (none)
 - live scenes whose tier is not defined: none
-- bars with every decider runnable today: 23 of 30
+- bars with every decider runnable today: 30 of 30
 - bars with no deciding test: 0
 
 ## Bars
@@ -29,12 +29,12 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T09:52:12-0800. A bar pa
 | bar | kind | proves at | decides | supports | runnable today | waits on |
 |---|---|---|---|---|---|---|
 | inv_grade_ladder | inventory, approved | 6 | sc_repair_on_machine, sc_levels_under_settings, sc_component_gate | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_whole_journey, T_KERNEL_FUZZ | yes | - |
-| inv_smelter_line | inventory, approved | 6 | sc_levels_do_their_work, sc_menu_and_research, sc_three_looks_rows, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey, T_ONBOARDING_TABLE_OFFLINE, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| inv_smelter_line | inventory, approved | 6 | sc_levels_do_their_work, sc_menu_and_research, sc_three_looks_rows, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_component_gate, sc_whole_journey, T_ONBOARDING_TABLE_OFFLINE, LOOK_STAGE8 | yes | - |
 | inv_power_cell_line | inventory, approved | 6 | sc_cell_and_emanator, sc_levels_under_settings, sc_carry_wreck_home, sc_switch_machine_off | - | yes | - |
 | inv_emanator_line | inventory, approved | 6 | sc_cell_and_emanator, sc_marks_agree, sc_carry_wreck_home, sc_no_handouts | sc_levels_under_settings, sc_switch_machine_off | yes | - |
 | inv_study_the_wreck | inventory, approved | 6 | sc_study_opens_first_project, sc_second_study, sc_study_without_research_reinvented | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_repair_on_machine, sc_component_gate, sc_whole_journey | yes | - |
 | inv_ancient_component | inventory, approved | 6 | sc_component_gate | sc_ruin_holds_wrecks, sc_carry_wreck_home, sc_study_opens_first_project, sc_repair_on_machine, sc_whole_journey | yes | - |
-| inv_donor_smelter_hidden | inventory, approved | 6 | sc_menu_and_research, sc_switch_machine_off, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_three_looks_rows, sc_forge_plasteel | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| inv_donor_smelter_hidden | inventory, approved | 6 | sc_menu_and_research, sc_switch_machine_off, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_three_looks_rows, sc_forge_plasteel | yes | - |
 | inv_mod_settings | inventory, approved | 6 | sc_switch_machine_off, sc_all_switches_off, sc_levels_under_settings, sc_ruin_holds_wrecks, sc_cannery_tier | sc_cell_and_emanator | yes | - |
 | inv_wrecks_draw_links | inventory, approved | 4-5 | sc_wreck_link_tags | - | yes | - |
 | inv_alloy_forge_gates | inventory, opened_by_owner | 6 | sc_forge_plasteel | sc_menu_and_research, sc_three_looks_rows, T_FORGE_GATES_GONE | yes | - |
@@ -45,15 +45,15 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T09:52:12-0800. A bar pa
 | inv_wealth_exclusion | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | yes | - |
 | inv_grade_changed_signal | inventory, approved | 6 | sc_repair_on_machine, T_REPAIR_STATE_WALK | - | yes | - |
 | inv_turret_line | inventory, later | 4-5 | T_LATER_STAYS_OUT | - | yes | - |
-| inv_more_factory_machines | inventory, approved | 6 | sc_menu_and_research, sc_three_looks_rows, sc_cannery_tier, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_forge_plasteel, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| inv_more_factory_machines | inventory, approved | 6 | sc_menu_and_research, sc_three_looks_rows, sc_cannery_tier, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | sc_forge_plasteel, LOOK_STAGE8 | yes | - |
 | only_by_repair | live | 6 | sc_menu_and_research, sc_no_handouts, sc_cannery_tier, sc_component_gate | sc_old_save | yes | - |
 | wreck_is_found | live | 6 | sc_ruin_holds_wrecks, sc_rare_wreck_ordinary_map | T_REPAIR_STATE_WALK | yes | - |
 | wreck_comes_home | live | 6 | sc_carry_wreck_home, sc_caravan_wreck_home | T_REPAIR_STATE_WALK, sc_uninstall_during_repair, sc_repair_needs_ground | yes | - |
-| study_opens_research | live | 6 | sc_study_opens_first_project, sc_second_study, sc_whole_second_order, sc_study_without_research_reinvented, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
-| repair_on_the_machine | live | 6 | sc_repair_on_machine, sc_repair_cancelled, sc_repair_needs_ground, sc_component_gate, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, sc_uninstall_during_repair | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
-| levels_of_function | live | 6 | sc_levels_do_their_work, sc_forge_plasteel, sc_cell_and_emanator, sc_levels_under_settings, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_LEVEL_NUMBERS, T_REPAIR_STATE_WALK, T_ONBOARDING_TABLE_OFFLINE, T_KERNEL_FUZZ | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| study_opens_research | live | 6 | sc_study_opens_first_project, sc_second_study, sc_whole_second_order, sc_study_without_research_reinvented, sc_every_machine_onboarded, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK | yes | - |
+| repair_on_the_machine | live | 6 | sc_repair_on_machine, sc_repair_cancelled, sc_repair_needs_ground, sc_component_gate, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, sc_uninstall_during_repair | yes | - |
+| levels_of_function | live | 6 | sc_levels_do_their_work, sc_forge_plasteel, sc_cell_and_emanator, sc_levels_under_settings, sc_every_machine_onboarded, sc_cannery_tier, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_LEVEL_NUMBERS, T_REPAIR_STATE_WALK, T_ONBOARDING_TABLE_OFFLINE, T_KERNEL_FUZZ | yes | - |
 | last_repair_needs_component | live | 6 | sc_component_gate, sc_ruin_holds_wrecks, sc_no_handouts | - | yes | - |
-| levels_told_apart | live | 6 | sc_three_looks_rows, sc_marks_agree, sc_text_names_no_setting, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, LOOK_STAGE8 | no | T_ONBOARDED_SET, T_ONBOARDING_COMPLETE |
+| levels_told_apart | live | 6 | sc_three_looks_rows, sc_marks_agree, sc_text_names_no_setting, T_ONBOARDED_SET, T_ONBOARDING_COMPLETE | T_REPAIR_STATE_WALK, LOOK_STAGE8 | yes | - |
 | switch_gives_machine_back | live | 6 | sc_switch_machine_off, sc_all_switches_off, sc_forge_plasteel | T_LEVEL_NUMBERS | yes | - |
 | no_setting_named | offline | 4-5 | sc_text_names_no_setting | T_NEIGHBOUR_NAMES | yes | - |
 | wrecks_join_lines | offline | 4-5 | sc_wreck_link_tags | - | yes | - |
@@ -65,8 +65,8 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-27T09:52:12-0800. A bar pa
 |---|---|---|---|---|
 | T_KERNEL_FUZZ | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py | PASS |
 | T_SALVAGE_RULE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_salvage_rule.py | PASS |
-| T_ONBOARDED_SET | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py | FAIL |
-| T_ONBOARDING_COMPLETE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py | FAIL |
+| T_ONBOARDED_SET | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarded_set.py | PASS |
+| T_ONBOARDING_COMPLETE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_complete.py | PASS |
 | T_ONBOARDING_TABLE_OFFLINE | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_onboarding_table.py | PASS |
 | T_LEVEL_NUMBERS | offline | 4-5 | src/RimMandrake/WreckedMachines/selftest_wm_level_numbers.py | PASS |
 | T_REPAIR_STATE_WALK | offline | 4-5 | src/RimMandrake/Utils/selftest_wreckedmachines_repair_walk.py | PASS |
