@@ -1,0 +1,5 @@
+caught relation-never-touched: FAIL an-untouched-test-is-left-out: a change to lib.py -> not touched (it read none of the changed paths (2 files, 1 folders))
+caught no-code-validity: FAIL a-record-of-other-code-decides-nothing: a .py file it ran moved on main: unknown (not touched, it read none of the changed paths (5 files, 0 fold
+caught hook-ignores-children: FAIL a-read-the-hook-cannot-see-is-unknown: git ls-files in the tree -> not touched (it read none of the changed paths (1 files, 0 folders))
+caught narrow-never-drops: FAIL the-door-runs-only-the-tests-a-change-touches: a leaf_b change runs t_b only (['t_a.py', 't_b.py']; 'pipeline checks: 2 of the 2 tests the import
+caught listing-ignored: FAIL an-untouched-test-is-left-out: a change to d/two.txt -> not touched (it read none of the changed paths (2 files, 1 folders))

@@ -1111,10 +1111,51 @@ def pipeline_checks(top, changed, gate=None):
     return _run_pipeline_checks(top, changed, cfg, base)
 
 
+DOOR_READS = "door-reads"     # under RM_ROOT: each pipeline test's record of its last green run (door_reads.py)
+
+
+def _door_reads():
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import door_reads
+    return door_reads
+
+
+def narrow_by_reads(top, sel, changed, base, cfg):
+    """-> the tests of `sel` whose last green run read a path the change touches, or that no record can decide (they keep
+    the import closure's answer). A test a record shows untouched is left out, unless an `inputs` glob of its own names
+    a changed path. Page: design/specs/2026-11-26-door-reads/boundary.md. Prints one line saying how many it left out."""
+    sha, why = base
+    if changed is None or not sel:
+        return sel
+    if not sha:
+        print("pipeline checks: the read records were not used (%s): every test the imports name runs" % why)
+        return sel
+    DR = _door_reads()
+    try:
+        blobs = DR.tree_blobs(lambda *a: run(top, *a, check=False), sha)
+    except (OSError, subprocess.SubprocessError) as e:
+        print("pipeline checks: the read records were not used (the base %s could not be read: %s)" % (sha[:10], e))
+        return sel
+    store, ch, keep, out = os.path.join(RM_ROOT, DOOR_READS), set(changed), [], []
+    for c in sel:
+        ans, _why = DR.relation(store, c["test"], ch, blobs)
+        if ans == "not touched" and not any(fnmatch.fnmatch(p, g) for p in ch for g in c.get("inputs", ())):
+            out.append(c)
+        else:
+            keep.append(c)
+    print("pipeline checks: %d of the %d tests the imports name read a changed path or have no record that decides; "
+          "%d left out (their last green run read none of it)" % (len(keep), len(sel), len(out)))
+    return keep
+
+
 def _run_pipeline_checks(top, changed, cfg, base=(None, "not asked"), committed=False):
     sel = pipeline_selection(top, changed, cfg)
     if not sel:
         print("pipeline checks: a pipeline file changed, no pipeline test reads it")
+        return 0.0
+    sel = narrow_by_reads(top, sel, changed, base, cfg)
+    if not sel:
+        print("pipeline checks: no pipeline test read a changed path")
         return 0.0
     wall = _run_tree_checks(top, {"checks": sel, "timeout_s": cfg.get("timeout_s", CHECK_CAP_S)}, what="pipeline check",
                             base=base, committed=committed)
@@ -1680,6 +1721,19 @@ def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
     limit = cfg.get("timeout_s", CHECK_CAP_S)
     env = {k: v for k, v in os.environ.items() if k not in LEDGER_IDENTITY + GAME_CHOICE}
 
+    recorded = {}                       # a tree -> its tree_blobs, read once, for the pipeline tests' read records
+
+    def keep_reads(c, tree, rec):
+        DR = _door_reads()
+        if tree not in recorded:
+            try:
+                recorded[tree] = DR.tree_blobs(lambda *a: subprocess.run(
+                    ["git", "-C", tree, *a], capture_output=True, text=True, timeout=GIT_TIMEOUT_S), "HEAD")
+            except (OSError, subprocess.SubprocessError):
+                recorded[tree] = None   # could not look: this run keeps no record, so the next door keeps the closure
+        if recorded[tree] is not None:
+            DR.keep(os.path.join(RM_ROOT, DOOR_READS), c["test"], rec, recorded[tree])
+
     def one(c, tree=top):
         t0 = time.monotonic()
         # a TMPDIR of the check's own, gone after: every publish ran selftest_alpha_biomes_census.py in ours, and its
@@ -1687,7 +1741,11 @@ def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
         tdir = tempfile.mkdtemp(prefix="publish_check_")
         try:
             argv = [sys.executable, os.path.join(tree, c["test"])] + [str(x) for x in c.get("args") or []]
-            r = progress_guard.run(argv, cwd=tree, cap_s=limit, env=dict(env, TMPDIR=tdir))
+            rec = os.path.join(tdir, "door_reads.rec") if base is not None else None
+            e = dict(env, TMPDIR=tdir)
+            r = progress_guard.run(argv, cwd=tree, cap_s=limit, env=_door_reads().hook_env(e, tree, rec) if rec else e)
+            if rec and r.returncode == 0:
+                keep_reads(c, tree, rec)
             return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
         except subprocess.TimeoutExpired as e:      # a Hung of the guard: it names which bound ended the check
             return c, None, str(e), time.monotonic() - t0

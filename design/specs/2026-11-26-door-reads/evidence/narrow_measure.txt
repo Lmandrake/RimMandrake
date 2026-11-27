@@ -1,0 +1,15 @@
+records that decide: {'unknown': 56, 'not touched': 187}
+    16 its record holds a read the hook cannot see (git ls-files reads the tree as
+     9 its record holds a read the hook cannot see (git clone reads the tree as a 
+     7 its record holds a read the hook cannot see (a systemctl child aimed at the
+     5 its record holds a read the hook cannot see (a claude-account child aimed a
+     3 no record of a green run yet
+     3 its record holds a read the hook cannot see (a sh child aimed at the tree)
+     3 its record holds a read the hook cannot see (a bash child aimed at the tree
+     2 its record holds a read the hook cannot see (a Python child without the hoo
+src/RimMandrake/Utils/publish.py                               closure 228 ( 3638 s) -> records 102 ( 2556 s)
+src/RimMandrake/rimflow/maturation.py,src/RimMandrake/rimflow/ closure 229 ( 3639 s) -> records 158 ( 3502 s)
+src/RimMandrake/Utils/testq/testq.py,design/specs/2026-11-24-l closure 228 ( 3638 s) -> records 142 ( 3452 s)
+src/RimMandrake/rimflow/maturation_dispatch.py                 closure 228 ( 3638 s) -> records 131 ( 3419 s)
+src/RimMandrake/Utils/treecheck_slots.py                       closure 228 ( 3638 s) -> records  96 ( 2542 s)
+src/RimMandrake/rimflow/list_dispatch.py                       closure 228 ( 3638 s) -> records 107 ( 3205 s)
