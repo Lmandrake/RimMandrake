@@ -1,0 +1,33 @@
+{
+  "_doc": "Judge verdicts of CREATURE_SIZES_JUDGE_THIRTY_NINE_OFF_CURVE (judge run rm-detached-bench-creature-sizes-judge-thirty-nine-off-cur-1795766883, 2026-11-27). Prose and reasons: creature_size_verdicts_2026-11-27.md beside this file. `changes` lists every PawnKindDef whose lifeStages drawSizes a fixer sets; `src/RimMandrake/Utils/size_verdict_check.py <this file>` exits 0 when every change with route=fixer is in the def, 1 when one is not, 2 when it could not look.",
+  "judge": "rm-detached-bench-creature-sizes-judge-thirty-nine-off-cur-1795766883",
+  "audit_rerun": "art_size_audit.py run 2026-11-27 over the full load set (koth.isid and kutte.stairs absent): REVIEW 36 (one SWBestiary beetle larva left the list since 2026-11-03; art_size_audit_2026-11-03.md names it)",
+  "keep": [
+    "RM_Aluun", "RM_Blisterfloat", "RM_Chittik", "RM_ContagionIkee", "RM_Gawpsack", "RM_Gripper",
+    "RM_Gristleswarm", "RM_Grusk", "RM_Haarn", "RM_Hessal", "RM_Immu", "RM_Karrud", "RM_Lunoowa", "RM_Nissik",
+    "RM_Noohm", "RM_Oomal", "RM_Oovanam", "RM_Otheska", "RM_Peeper", "RM_Sallik", "RM_Scabspinner",
+    "RM_Scaldhide", "RM_Scorchpod", "RM_ShaleGorgerJuv", "RM_Sloghog", "RM_SootGristleswarm", "RM_Sparkleech",
+    "RM_SparkleechGrub", "RM_Thollim", "RM_ThornbackColoJuv", "RM_Titanoslime", "RM_Vennick", "RM_Weloon",
+    "RSW_Taozin", "RM_MycoidColossus"
+  ],
+  "changes": [
+    {"kind": "RSW_CrimsonOpee", "file": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml",
+     "old": [1.36, 1.98, 2.48], "new": [4.94, 7.19, 9.0], "route": "fixer",
+     "why": "owner 2026-09-10 'Twilight Sea 9 squares long' outranks the coarse size bin on the same row; the opee family's own precedent (RSW_OpeeSeaKiller, owner 2026-10-17 '10 cells wide. SEE CANON.', younger stages in proportion)"},
+    {"kind": "RM_CrimsonOpee", "file": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+     "old": [1.36, 1.98, 2.48], "new": [4.94, 7.19, 9.0], "route": "fixer",
+     "why": "the franchise-free twin of RSW_CrimsonOpee (same art, SEA_BEASTS_TIER_RULING_1); the same animal takes the same order"},
+    {"kind": "RM_CrimsonOpeeJuv", "file": "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_SeaBeasts_Invented.xml",
+     "old": [0.68, 1.02], "new": [2.47, 3.7], "route": "fixer",
+     "why": "the young keep the 0.41 young-to-adult ratio that all three invented sea-beast juveniles share; at 1.02 beside a 9-cell adult it would read as another species"},
+    {"kind": "RM_Summ", "file": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+     "old": [2.2, 3.6, 6, 7.2, 8.6], "new": [4.09, 6.7, 11.16, 13.4, 16.0], "route": "fixer",
+     "why": "owner 2026-09-10 on AA_Behemoth 'crag, 16 squares'; RM_Summ replaced AA_Behemoth (its own header); the largest stage takes his number so no summ outgrows it and the brood mother stays the landscape-sized one"},
+    {"kind": "RM_Summing", "file": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Summ.xml",
+     "old": [2.2, 3.6, 6, 7.2, 8.6], "new": [4.09, 6.7, 11.16, 13.4, 16.0], "route": "fixer",
+     "why": "the young-only kind on the same race; it must draw the same stage sizes as RM_Summ"},
+    {"kind": "RM_Eyestinger", "file": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
+     "old": [1.0, 1.2, 1.3], "new": [1.54, 1.85, 2.0], "route": "Contagion polish.md (owner hold 2026-11-16)",
+     "why": "its description says 'a big segmented thing ... a heavy ambusher' and the Contagion design casts it as predator risk, yet at 1.3 it draws no taller than a colonist; at 2.0 it reads big"}
+  ]
+}
