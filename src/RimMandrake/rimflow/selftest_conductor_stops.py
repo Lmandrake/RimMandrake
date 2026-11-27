@@ -142,13 +142,16 @@ def t_the_sort_is_one_line():
     rc, line = CS().sort("G1", "lane", "a typo in a tooltip", item=item, mod="GSS", root=root,
                          runner=lambda argv: ran.append(argv) or 0)
     assert rc == 0 and ran and "fix:GSS" in " ".join(ran[0]) and "home" in ran[0], ran
-    assert "fix:GSS" in line
+    assert "fix:GSS" in line and "home G1" in line, "the line names the command it ran (%s)" % line
     ran.clear()
     rc, line = CS().sort("G1", "next", "a new feature", item=item, mod="GSS", root=root,
                          runner=lambda argv: ran.append(argv) or 0)
     p = os.path.join(root, "GSS", "version", "next_version", "tickets.md")
     assert rc == 0 and "G1" in open(p).read() and ran and "./publish" in ran[0][0], (rc, ran)
-    assert CS().sorted_ids(root, "GSS") == ["G1"]
+    assert CS().sorted_ids(root, "GSS") == ["G1"] and "./publish" in line, line
+    ran.clear()
+    rc, line = CS().sort("G1", "next", "again", item=item, mod="GSS", root=root, runner=lambda argv: ran.append(argv) or 0)
+    assert rc == 0 and not ran and "already" in line and CS().sorted_ids(root, "GSS") == ["G1"], (rc, ran, line)
     rc, line = CS().sort("G1", "next", "x", item=item, mod="NOPE", root=root, runner=lambda argv: 0)
     assert rc != 0 and "rest" in line, "a mod that does not rest is refused (%s)" % line
 

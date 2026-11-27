@@ -218,21 +218,22 @@ def sort(iid, to, why, item=None, mod=None, root=CONCEPTS, runner=None, rests_of
                 "--seat", "BENCH", "--per-ruling", "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS",
                 "--why", "conductor sort of a resting mod's ticket: %s" % why, "--publish"]
         rc = runner(argv)
-        return rc, "%s: home fix:%s, the ticket lane works it (rc %s)" % (iid, mod, rc)
+        return rc, "%s: ran `cli.py home %s --home fix:%s ...`; the ticket lane works it (rc %s)" % (iid, iid, mod, rc)
     if to == "next":
         p = sorted_path(root, mod)
-        os.makedirs(os.path.dirname(p), exist_ok=True)
-        if iid not in sorted_ids(root, mod):
-            new = not os.path.exists(p)
-            with open(p, "a", encoding="utf-8") as f:
-                if new:
-                    f.write("# Tickets the Conductor sorted to %s's next version\n\nThe version opens only on the "
-                            "owner's answer to its scope page.\n\n" % mod)
-                f.write("- %s: %s\n" % (iid, " ".join(why.split())))
         rel = os.path.relpath(p, REPO)
+        if iid in sorted_ids(root, mod):
+            return 0, "%s: already on %s; nothing changed" % (iid, rel)
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        new = not os.path.exists(p)
+        with open(p, "a", encoding="utf-8") as f:
+            if new:
+                f.write("# Tickets the Conductor sorted to %s's next version\n\nThe version opens only on the "
+                        "owner's answer to its scope page.\n\n" % mod)
+            f.write("- %s: %s\n" % (iid, " ".join(why.split())))
         rc = runner(["./publish", "-m", "RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX: %s sorted to %s's next "
                      "version" % (iid, mod), rel])
-        return rc, "%s: on %s (rc %s)" % (iid, rel, rc)
+        return rc, "%s: ran `./publish %s`; it is on the list (rc %s)" % (iid, rel, rc)
     return 2, "refused: --to is lane or next; nothing changed"
 
 
