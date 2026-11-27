@@ -13,6 +13,9 @@ temp root:
   wide6     the copy 6% wider (the fault of 2026-11-27): must fill the donor within FILL_TOLERANCE_PT of `plain`;
   wide6blk  the same on an opaque black canvas (the keyed path);
   wide15    the copy 15% wider, over the stretch limit: must be fitted with one factor and say so;
+  torn      the copy at the donor's proportions, fitted against a donor that has a pipe on top (the box about 7%
+            taller): the box differs by a part, not by proportion, so the overlap gain gate (STRETCH_MIN_GAIN) must
+            refuse the stretch and say so (the Wrecked refinery east, its top pipe torn off, 2026-11-27);
   nostretch `plain` again with --no-stretch: its bytes must equal `plain`'s (a picture with no skew is not changed),
             and with --before PATH (an older fit_sprite.py) the older fitter's bytes too.
 --fitter PATH tests another copy of fit_sprite.py (an older one must FAIL wide6).
@@ -38,6 +41,10 @@ CANVAS = 1.3           # the copy sits on a canvas this much larger than itself,
 # A point of fill (the check's share of the donor's drawn pixels) is the brief's bar for "fills the donor as well as
 # the unstretched copy does".
 FILL_TOLERANCE_PT = 1.0
+# The torn case's pipe: 7% of the donor's height puts the skew inside the stretch window (5% to 12%) with room on
+# both sides; 20 px each way of its centre is narrow, as a pipe is, so the stretch cannot raise the overlap.
+PIPE_RISE = 0.07
+PIPE_HALF_W = 20
 
 
 def load(path, tmp):
@@ -72,6 +79,19 @@ def make_copy(dst, sx, opaque):
         bg = bg.convert("RGB").convert("RGBA")
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     bg.save(dst)
+
+
+def donor_with_pipe(dst):
+    """The donor with a narrow opaque pipe drawn up from its top edge, so that its box is about 7% taller and the
+    rest of its outline is the donor's own."""
+    from PIL import Image, ImageDraw
+    im = Image.open(DONOR).convert("RGBA")
+    x0, y0, x1, y1 = im.getchannel("A").point(lambda a: 255 if a > 32 else 0).getbbox()
+    rise = round((y1 - y0) * PIPE_RISE)
+    assert y0 - rise >= 0, "the donor canvas has no room above the drawing for the pipe"
+    cx = (x0 + x1) // 2
+    ImageDraw.Draw(im).rectangle((cx - PIPE_HALF_W, y0 - rise, cx + PIPE_HALF_W, y0 + 4), fill=(120, 120, 120, 255))
+    im.save(dst)
 
 
 def fit(F, root, tier, sx, opaque, no_stretch=False):
@@ -132,6 +152,15 @@ def main():
              "stretch ratio %.4f (must be 1), output says it is over the limit: %s (limit %s)"
              % (r["aspect"], said, "%.1f%%" % ((F.STRETCH_MAX_SKEW - 1) * 100)
                 if hasattr(F, "STRETCH_MAX_SKEW") else "none"))
+        root_t = os.path.join(tmp, "root_torn")
+        os.makedirs(os.path.join(root_t, SHORT, "restored"))
+        shutil.copy(MANIFEST, os.path.join(root_t, SHORT, "MANIFEST.json"))
+        donor_with_pipe(os.path.join(root_t, SHORT, "restored", FILE))
+        r = fit(F, root_t, "torn", 1.0, False)
+        said = "not by proportion" in r["out"]
+        line(r["aspect"] == 1.0 and said, "torn",
+             "stretch ratio %.4f (must be 1), output says the box differs by a part: %s"
+             % (r["aspect"], said))
         if hasattr(F, "STRETCH_ON"):
             r = fit(F, root, "nostretch", 1.0, False, no_stretch=True)
             line(r["sha"] == plain["sha"], "nostretch",
@@ -148,7 +177,7 @@ def main():
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%s: %d failed check(s); read 1 donor, %d fitted cases"
-          % ("FAIL" if fails else "PASS", fails, 5 + (1 if a.before else 0)))
+          % ("FAIL" if fails else "PASS", fails, 6 + (1 if a.before else 0)))
     return 1 if fails else 0
 
 
