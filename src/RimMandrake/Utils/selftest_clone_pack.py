@@ -86,6 +86,12 @@ def counts(repo):
     return out
 
 
+def held_cfg(repo):
+    """-> True when the clone's own config holds the hold, as git reads it (not the reading's own word)."""
+    return (git(repo, "config", "--local", "gc.auto", check=False) == "0"
+            and git(repo, "config", "--local", "maintenance.auto", check=False) == "false")
+
+
 def t_hold_stops_auto_packing(tmp):
     before = make_repo(tmp / "before")
     held = make_repo(tmp / "held")
@@ -189,6 +195,8 @@ def t_pack_when_git_would_have(tmp):
     on_disk = json.loads((state / "reading.json").read_text())
     ok(on_disk["clones"] == reading["clones"] and all(r["held"] for r in on_disk["clones"]),
        "pack_when_git_would_have: reading.json holds each clone, each held")
+    ok(all(held_cfg(r) for r in (loose, many, tidy)),
+       "pack_when_git_would_have: run --apply writes the hold into each clone's own config")
 
 
 def t_one_failure_does_not_stop_the_rest(tmp):
@@ -201,7 +209,7 @@ def t_one_failure_does_not_stop_the_rest(tmp):
     rows = {Path(r["clone"]).name: r for r in reading["clones"]}
     ok(rows["broken"].get("failed"), "one_failure_does_not_stop_the_rest: the broken clone is reported failed (%s)"
        % rows["broken"].get("failed"))
-    ok(rows["good"]["packed"] and rows["good"]["held"] and not rows["good"].get("failed"),
+    ok(rows["good"]["packed"] and rows["good"]["held"] and held_cfg(good) and not rows["good"].get("failed"),
        "one_failure_does_not_stop_the_rest: the good clone is still held and packed")
     ok(CP.exit_code(reading) == 1, "one_failure_does_not_stop_the_rest: the command exits 1")
     ok(CP.exit_code(CP.run([], apply=False, state=tmp / "state_empty")) == 3,
