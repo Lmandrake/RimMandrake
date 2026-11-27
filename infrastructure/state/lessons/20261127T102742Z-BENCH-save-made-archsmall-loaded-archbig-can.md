@@ -1,0 +1,3 @@
+A save made on ArchSmall and loaded on ArchBig can carry defs that ArchBig's Cherry Picker removes: Cherry Picker's removal list is a mod settings file in each game's own Config, and ArchSmall had none. Before this fix, the same mod list loaded different def sets on the two games. game_instance.prepare now copies DEF_SHAPING_SETTINGS. Also: 'Could not find think node with key' on load is vanilla for any insertTag subtree job giver; compute the key as the type-name hash (ThinkTreeKeyAssigner) to name the node.
+item: RIMMANDRAKE_CLASS_SUN_SAVE_LOAD_ERRORS_DLC_WAS_LOADED
+home: skills/rimworld-modding/references/project-engine-facts.md
