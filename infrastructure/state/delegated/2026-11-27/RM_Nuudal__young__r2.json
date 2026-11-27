@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.45088860000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 26.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Nuudal__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a3178297bd4196c3228d75535b343e12e13ace3aa5bc1e3e8ce7850be0ad0031",
+  "east.png": "0de9e76c8bbf3440cb945aecc91b1ee84ddc23e2ecdcb76c8e0a25655bca099d",
+  "north.png": "1511019b6b906ea6b77d6fb47ca9d4bbd55db2f97cac4cdf6793defa316ff9ef",
+  "scale.png": "dac4c4a037f27d6d3a2c6ac3d636dec771536d0b22caa05c3cdf34e90a4eadf5",
+  "siblings.png": "40fdcfe5d8570cae77911b7ab241f07db4d18083bee9b57336dfd7f8383eea04",
+  "facings.png": "b13e99503edacb3e939f2967da4ea1aeb2a3dd1a3ee93990baf4ee41cc5f51ae"
+ },
+ "source_sha256": {
+  "south": "988e45d78334f6f69c6e20fb7f375c064e718022d6b431c0117d93fb428b77b0",
+  "east": "4133a291608c8731c9199721a7d24298a83e3043b875df70f6bb0c3b900ff695",
+  "north": "175865ee4da2429b747dfec25c40a3c978140c561d3c075e467d23a5de77b3d6",
+  "scale": "2bb9815681b03645ca397d779f900ce0e2f3fa87a1296549e1d799381fe96bd3",
+  "siblings_RM_Nuudal_south": "f450b6115341b3954586f5b1327a913a8d9af4bf5a96cf78c5c9b8f9e964e82a",
+  "siblings_RM_Nuudal_east": "d1d1bffa9d0ca04daa9f23e6c4402f010eb774649ca07b276eace318aa13a778",
+  "siblings_RM_Nuudal_north": "a75547f50306d7235e08880206a0cbdb55813b907b776dccfbd4dc31d33cf9c4"
+ }
+}

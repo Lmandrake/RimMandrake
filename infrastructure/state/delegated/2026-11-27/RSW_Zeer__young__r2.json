@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 55.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48846239999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 38.0
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1587536
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Zeer__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['STYLE_EARTHLY', 'CANON_MISS', 'SIBLING_MISMATCH', 'F_SIZE_JUMP']; polish []",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['STYLE_EARTHLY', 'CANON_MISS']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "fdaa0028e14741b9b3e58cd856b044ae1e1eb55040aa61f400b2118158cf4cec",
+  "east.png": "c664d589fea8066a3112ae4746e3ecea5c3729c833897fcbb3928d3984822616",
+  "north.png": "00574d4f1416c95453fa92cad51a7d6474be2f66a1e06d6a30990774b2708bef",
+  "scale.png": "02257ebafa113787c2b524056e55d360efd3e0f084431a6b3bc03e9e636172e5",
+  "siblings.png": "e9bccd05f2f7550916321700597d96f44af55790ef27f702ee84dfc9782bce6f",
+  "facings.png": "5face0b937a1b16403d6423b4b90796487b750975b746aa68d7b2ad87f01312c"
+ },
+ "source_sha256": {
+  "south": "fdaa0028e14741b9b3e58cd856b044ae1e1eb55040aa61f400b2118158cf4cec",
+  "east": "8c89fbb137eb68d9004fae88f95d46b754099fceab37fca4e51441ecb9744727",
+  "north": "c0c14f094763249978741a4aad1bcb8b5e9bbbd36f56c3fae8f18f42ee7d03b3",
+  "scale": "0cc0c9cc9eedc16685b19c9295d89e1d455d91da594a46f1f4045b511a695891",
+  "siblings_Zeer_south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2",
+  "siblings_Zeer_east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+  "siblings_Zeer_north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768"
+ }
+}

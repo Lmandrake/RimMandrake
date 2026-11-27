@@ -1,0 +1,242 @@
+[
+ {
+  "id": "arteval_RM_Chatrak__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Chatrak__variant",
+  "prompt": "A chatrak, a low plated grazer from RimWorld, in its brown-and-ochre variant colouring, painterly vanilla RimWorld style, realistic, with soft painted edges, on a transparent background; value and colour contrast against the ground carry the silhouette. Colouring: warm brown hide, with ochre on the plate edges and on the rust-orange lichen patches. Body: long, low and heavy-set, with a hide that turns bullets, stout legs set close under the body, and a short tail. The head is carried low in the grazing posture, with a tapered muzzle held toward the ground and small eyes. The back plates stack in tiers like an earthwork, each tier a little narrower than the one below, and the plate faces are pocked with pale bullet ricochet scars. Body height, plate-stack height and head height are fixed, and the animal stands 273 px tall.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, OWNER_NOTE_IGNORED, F_SIZE_JUMP, OWNER_NOTE_IGNORED; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Chatrak/RM_ChatrakVariant"
+ },
+ {
+  "id": "arteval_RM_Candler__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Candler__variant",
+  "prompt": "A RimWorld creature sprite set of the candler variant, three views at one shared scale, on a transparent background. Painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. The candler is a slow, compact, flat slab of dark blue flesh, legless, resting on a single broad foot. A swollen dorsal sac of warm amber runs down its spine and sits on top of the slab. Three yellow-tipped sensory stalks grow from the head end. Follow the adult candler reference for each view: the same compact contour, pose and canvas footprint, with only the colouring changed to dark blue body and amber sac. Front view: the head end faces the camera, the three yellow-tipped stalks rise from the bottom centre of the head end, the broad foot rim spreads beneath, and the amber sac crowns the top; the view is narrower than the body is long. Side view: the head end points to the right, the three stalks project forward from it, the slab lies long and low on its single foot, and the amber sac rises along the spine to the same height as in the front and rear views. Rear view: seen from behind, the blunt rear end of the slab with the broad foot at its base and the back of the amber sac above; the stalks point away and are hidden by the body; the view is as narrow as the front view. In all three views the body and sac stand at the same height, and the stalks, sac and slab turn together as one rigid body.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_NORTH_FACE, F_SOUTH_NOT_FRONT, F_INCONSISTENT, OWNER_NOTE_IGNORED, F_SIZE_JUMP, F_NORTH_FACE, F_SOUTH_NOT_FRONT, F_INCONSISTENT, OWNER_NOTE_IGNORED, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 1.8,
+  "module": "walker",
+  "target_texpath": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/CandlerVariant"
+ },
+ {
+  "id": "arteval_RM_Muddal__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Muddal__variant",
+  "prompt": "A single small creature sprite for RimWorld on a transparent background, painterly vanilla RimWorld style, realistic, soft painted edges, with value and colour contrast against the ground carrying the silhouette. The subject is a hand-long armored grazer, a small cousin of the iridesce. Its body is a compact dome of overlapping armour plates, as tall as it is wide across the plates, carried low on short spiky isopod legs that peek out under the plate rim. A heat-gloss sheen runs across every plate, like warm polished shell. Pigment bands run down its back across the plates in a fixed order from the head to the tail: orange, yellow, teal, purple, cream. Each band is a clean, saturated stripe of similar width, and the teal band is bright and clearly visible between the yellow and the purple. Warm natural lighting from above, a soft contact shadow under the body.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_INCONSISTENT, OWNER_NOTE_IGNORED, F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 0.65,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Muddal/RM_MuddalVariant"
+ },
+ {
+  "id": "arteval_RM_Aveluthia__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Aveluthia__young",
+  "prompt": "A young aveluthia, a tall, ponderous pack beast, one standing animal with a deep, heavy barrel of a torso and a hump rising on its back. Its body hangs in thick wrinkled folds of black flesh. It stands on four pillar legs of equal length and thickness, each ending in broad splayed toes made for loose obsidian scree. The long head ends in a heavy drooping snout, with a broad blunt muzzle and low-hanging flesh, and four yellow eyes glow softly above the snout. The tail is slender, about a third of a leg's width at the root, tapering to a thin tip, and hangs from the rump in a gentle curl. The head is carried low in a ponderous, burden-bearing stance. Palette: matte black flesh with deep grey-blue shadows and dull highlights in the folds, and soft yellow eye glow. Soft painted edges; value and colour contrast carry the silhouette. Transparent background, painterly vanilla RimWorld style, realistic.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 2.25,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_AveluthiaYoung"
+ },
+ {
+  "id": "arteval_RSW_Gelagrub__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gelagrub__variant",
+  "prompt": "Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. The tail end tapers to a narrow rump. Warm orange body, slightly paler underside and segment folds, darker orange on the head and mandibles.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_SIZE_JUMP, OWNER_NOTE_IGNORED; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 4.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Gelagrub/GelagrubVariant"
+ },
+ {
+  "id": "arteval_RM_Noolim__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Noolim__variant",
+  "prompt": "A RimWorld creature sprite of a shoal of the Twilight floor: a darting cloud of many dull silver slivers in a dark steel-teal colouring, matte and slightly greenish, like tarnished metal in green murk. Painterly vanilla RimWorld style, realistic, transparent background, soft painted edges; value and colour contrast against the ground carry the silhouette. The shoal is a whole school, never one individual. Every member is a smooth, slender, tapered sliver of dull silver-teal, pointed at both ends, with one continuous uninterrupted contour from tip to tip and the same narrow width along most of its length; each member is a plain blade of dull metal. Members are slender and loosely spaced, with small gaps of open background between them, so they read as separate individuals in a school. The school forms a loose, elongated band of slender slivers, tall and thin, evenly spaced with open gaps between members, widest across its middle and tapering toward its ends, with a few members trailing loosely at the edges. The shoal matches the adult noolim's member proportions and arrangement exactly; only the colouring differs, a darker steel-teal. Colour: dull silver slivers with darker steel-teal shading, a faint green cast, and subtle lighter glints along the sliver edges; no bright highlights.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, DEPARTURE_MISSING, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, DEPARTURE_MISSING; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 0.45,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Noolim/RM_NoolimVariant"
+ },
+ {
+  "id": "arteval_RSW_CanCell__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_CanCell__young",
+  "prompt": "A young can-cell, a scavenging flying insectoid of the Kashyyyk forests, as a RimWorld creature sprite on a transparent background, in the painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. The body is slender and light: a long thin upright neck lifts a small head, capped in teal, high above a narrow chest. The body stands on thin jointed legs, with insect wings folded at the back. The head is small and insectoid: a narrow pointed snout and small dark compound-eye patches on the sides of the head, under the teal cap, with a matte chitin surface. Three views of the same animal, drawn at one identical scale on one shared ground line: the side view (the accepted reference, kept as it is), the front view with the eyes toward the viewer, and the rear view seen from behind, showing the back, the folded wings and the rear of the capped head with the eyes hidden. In every view the head cap, the neck length, the legs and the wings are the same size and the same slim proportions as in the side view. The animal is a young specimen, small and light, with the palette of the side view reference.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_INCONSISTENT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "swanimals/CanCell/CanCellYoung"
+ },
+ {
+  "id": "arteval_RUT_EmperorVulture__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_EmperorVulture__young",
+  "prompt": "A young ulvassk, a living creature, painted as a RimWorld sprite on a transparent background in the painterly vanilla RimWorld style, realistic. Nothing about it is a bird. Its body is a long, flat sac with translucent skin, pale and softly veined, slung between two pairs of membrane vanes. Each pair of vanes is ribbed like a kite and stretched on hollow bone spars. The four vanes attach along the two long flanks of the sac: a forward vane and a rear vane on each side. The attachment points are the same in every view. It has no head. A ring of dark pits runs along the leading edge of the sac, tracking the heat of the ground. Below the sac hangs a cluster of jointed, hook-tipped feeding limbs, folded around a radial mouth with no beak. This is a juvenile: the same body plan as the adult, with a shorter sac, paler and softer translucent skin, slightly broad vanes for the body and short, small feeding limbs. Soft painted edges; value and colour contrast against the ground carry the silhouette. Layered painted tones show the membrane, the bone spars and the hooked limbs.\n\nFacing views, all of the same body at the same scale. Front view, seen from the front, the leading-edge pits toward the viewer: the sac fills the frame width, the two vane pairs spread out to the left and right of the sac, and the feeding limbs hang below. Side view: the near-flank pair of vanes rises from the side of the sac toward the viewer, foreshortened and overlapping the body, and the far-flank pair is partly hidden behind the sac, in the same positions along the sac as in the front view. Rear view, seen from behind, the leading-edge pits hidden: the sac is the same width and body size as in the front view, the vanes reach out as far as in the front view, and the feeding limbs hang below. The sac has the same length, width and mass in every facing.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 1.3,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVultureYoung"
+ },
+ {
+  "id": "arteval_RM_FireWasp__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp__variant",
+  "prompt": "A fire wasp variant, a heatproof, scale-plated scavenging insect that drifts above grass fires, drawn for RimWorld as a creature sprite on a transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. The reference image is the sibling adult fire wasp: copy its body plan, proportions, head, wings, leg positions and leg silhouette exactly, in every facing. The legs are short and folded close beneath the thorax and abdomen, the same length and spacing as the adult's. The abdomen is covered in overlapping scale plates, like roof tiles or fish scales, each plate partly covering the next, with the same plate shapes and arrangement as the adult; it reads as one continuous scaled surface. Surface texture matches the adult: gritty, mottled and weathered, with soot dust and fine ash flecks across every plate, and uneven grain, never smooth or glossy. Colouring is the variant's own: charcoal-black plates with ember-orange glow in the plate seams and along the plate edges, a smoldering heat tone and not crisp black-and-orange stripes. Front view shows the head and eyes toward the viewer. Side view shows the profile. Rear view is seen from behind, showing the back and abdomen with the eyes hidden. Each view is an insect in the same pose family as the adult's, hovering low.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: SIBLING_MISMATCH, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 2.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWaspVariant"
+ },
+ {
+  "id": "arteval_RSW_Zeer__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Zeer__young",
+  "prompt": "A young zeer, a calf of a tall herd browser from Naboo, as a single creature sprite on a transparent background, in painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. Standing calmly on a walker's four legs. The body plan is a tall, slender, gangly calf. A very long, thin neck rises steeply, close to upright, from a narrow chest; the neck is at least twice as long as the body is deep and is the tallest, most striking part of the silhouette. The neck carries a small head high, and the head is proportionally larger than an adult's, with a slightly oversized muzzle and large soft dark eyes that show its youth. The barrel is shallow and slim, with the belly line tucked up toward the hindquarters. The four legs are long, thin and gangly, with knobby joints, so that neck and legs together make a tall, spindly frame. The coat is warm tan crossed by a few broad, irregular dark rust-brown bands over the back and flanks. The bands fade to plain tan on the neck, legs and belly. Two small pale horns hook backward from the top of the head. The view is a clean side view with the eyes and muzzle toward the viewer's facing direction, or a front view with the narrow chest, the long neck rising behind it, the head and the two hooked horns visible. The animal is calm and alert, a young browser reaching up toward high leaves.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_EARTHLY, CANON_MISS, STYLE_EARTHLY, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "RimStarWars/SWBestiary/Zeer/ZeerYoung"
+ },
+ {
+  "id": "arteval_RM_Dhuvvox__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dhuvvox__variant",
+  "prompt": "Body: a small glazed nodule that looks like a lump of slag, a broad, low, flattened dome shell with a fused, glassy, pitted surface, as though cooled from molten ash. The shell is wide and low, much wider than it is tall. A glitter runs across the glazed surface, with small bright glints scattered over the dome and the legs. The surface reads as slag, with a glassy sheen and tiny bubbled pits. Legs: thin legs splay outward and low from the rim of the shell, spreading as widely as the adult's, so the creature has a broad, flat, spider-like footprint close to the ground. The leg tips rest on one common ground line. Colouring: a silver-grey glazed shell with orange glowing accents in the pits, on the leg joints and around the central tube. The glitter is a pale silver-white sparkle. Soft painted edges; value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, SIBLING_MISMATCH, F_SIZE_JUMP, SIBLING_MISMATCH; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 0.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Dhuvvox/RM_DhuvvoxVariant"
+ },
+ {
+  "id": "arteval_RM_Skarrin__variant_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Skarrin__variant",
+  "prompt": "A single skarrin, a forearm-long, knife-slender silver eel, painted in the vanilla RimWorld painterly realistic style on a transparent background. The body is long, narrow and muscular, with bright silver scales, a pale belly and a darker slate-grey back, and it keeps the proportions and silver palette of the reference image. A row of thin, sharp, translucent fins runs the full length of the body, held stiff and fanned out as cutting blades. The head ends in a round suction-cup mouth. The mouth is a wide, thick, pale pink fleshy disc. Around the inside of its rim stands a clearly visible ring of 10 to 14 short, sharp, pale cream-white hooked rasp teeth, each pointing inward toward a dark throat at the centre. The rasp teeth are large enough to read at full zoom, and they are bright against the dark throat and the pink rim. Front view: the head faces the viewer, eyes toward the viewer, and the open round mouth fills about a third of the head, with the whole ring of rasps showing around the dark centre. Side view: the body is in profile, and the head tip turns slightly toward the viewer so the oval mouth opening and the rasp ring show along its rim. Rear view: the tail end and the long fin row, seen from behind. Soft painted edges; value and colour contrast against the ground carry the silhouette. Transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_1",
+  "drawsize": 0.85,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Skarrin/RM_SkarrinVariant"
+ }
+]

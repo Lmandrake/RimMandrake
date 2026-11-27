@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.480943
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 21.9
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 23.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1614476
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Dhuvvox__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "98aaece7ee32f8e2868cc8315511b41792f97b1862ae9f1709215614d9fd2c73",
+  "east.png": "9bc332fdb72bf510ad4a2c5a5163c995d72ca45566f55f25ce7c9217f6233e15",
+  "north.png": "4db378bfc64766c608e8f34395387d1aefe2c49293a8f868542ece0660542f14",
+  "scale.png": "5a702b84a328d2e0a7e7a118314cfd286d396aab2bfa6f49e37a81b4ce69f937",
+  "siblings.png": "b54af51996173841a19d0cdb9b98eebc4e15d883ec696fb50ae1191de2b74859",
+  "facings.png": "843709aed2678a47e3f56bce3c7afb9f27c7fbe2df906a5f888f594f59ee27d5"
+ },
+ "source_sha256": {
+  "south": "9a65405cf6e81f5a8cfa854e3e0e5edfec319bbda9b8f859d5b705003cc84b84",
+  "east": "a9b551405e9c4db6838c6351fcb02a2910f0e326a895b30a75f70c946e1c5e02",
+  "north": "cfab3ac789449f635d1d92b48c98446ea4dfbd754a0d5945b911e6b22a61b15a",
+  "scale": "159fa352e0034fbe68b57a8679278e3ce2d37586a37399987a46771222b822de",
+  "siblings_RM_Dhuvvox_south": "3d09d47e34229535633839719b8e1e0350daebee0240a00c4d3dce5a098d70d5",
+  "siblings_RM_Dhuvvox_east": "7e77836d9e43fc3954d8c076f059fe17589711394b84b3558cb54e5fa16ee4e2",
+  "siblings_RM_Dhuvvox_north": "e65bc87a25ee498ce9595038e365ca96e58b84f1e7316159a29a6ecf1a058b7c"
+ }
+}

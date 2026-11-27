@@ -1,21 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Skarrin",
  "nearest_earth_animal": "eel",
- "earth_body_named": false,
+ "earth_body_named": true,
  "departures": [
-  "a forearm-long knife-slender silver eel",
-  "a round sucker mouth ringed with rasps",
-  "a row of thin sharp fins along its body"
+  {
+   "feature": "round suction-cup mouth ringed with rasps instead of jaws",
+   "quote": "Its round mouth is a cruel suction cup ringed with rasps"
+  },
+  {
+   "feature": "a row of thin, sharp fins running the full length of the body",
+   "quote": "A row of thin, sharp fins runs the length of its body"
+  },
+  {
+   "feature": "fins held stiff as cutting edges",
+   "quote": "flex them out stiff into cutting lines"
+  },
+  {
+   "feature": "knife-slender silver body",
+   "quote": "knife-slender silver eel"
+  }
  ],
  "body_plan": "swimmer",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "50b4722465fb"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-27T06:17:33-08:00",
  "source": "description only (no image)"
 }

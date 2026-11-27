@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.5,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4566258
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 13.6
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Zhissa__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (FileNotFoundError: [Errno 2] No such file or directory: '/tmp/rm_gametex/texindex.json.tmp' -> '/tmp/rm_gametex/texindex.json') \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['OWNER_NOTE_IGNORED']; polish ['SCALE_WRONG']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "bec4059cb98f2fb4e3290c17432efe04b99cffd84aabd1c5c6c6018402f4ffb0",
+  "east.png": "17b0817ea9d5eebf6f9fc5a94bcb6543bb09718c03d910944f09b9552043dc24",
+  "north.png": "11fc7a7074af0840631155defd3e4f9c369bf8447045c9e2c21c1958435fc2a0",
+  "scale.png": "138312d1e8f6310b1e8b22e937e70dbb85bfdf6a7c398988b36af4c6b3eb793c",
+  "siblings.png": "583f43ab6046591c4cc297aabf6c797d0a7f72d8a2b381ed6df50be3d9af98d1",
+  "facings.png": "dc0d7a5d1e7adf81ca677782a3c860be9528abb0ba25a47c597fb1db3a0f1f90"
+ },
+ "source_sha256": {
+  "south": "10aee2785a1ce7535790a36fbcd14bfdfe7a7c21049de3f831b7cea6dd3296f6",
+  "east": "000f68a877b7263ae80f514e91b8cb5de4e96e55c98b66017eaa66473ce3f484",
+  "north": "75e22f3cbe7fcb0eb89048a8a5b7e0cc003c9a724cc6f9ffa0656ad73c37ab8c",
+  "scale": "c4dc09975eacdd035fff3f7d7c00bbb7ac7c27d27f34b36683873a49055aae15",
+  "siblings_RM_Zhissa_south": "dff87fe690976185e5bb7bf954cede90767864cd0ab9a9792dd8010a38aafe79",
+  "siblings_RM_Zhissa_east": "7fe45737f5025e4487e5a936691f9b8068828505a86dc86b89b4efb16b800200",
+  "siblings_RM_Zhissa_north": "8f0a90d7a75aca1578987928b88b33b92d56656bf87f15b133802b309b4ebf40"
+ }
+}

@@ -128,7 +128,7 @@
       <li>
         <label>zhissa lamb</label>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Zhissa/RM_Zhissa</texPath>
+          <texPath>Things/Pawn/Animal/RM_Zhissa/RM_ZhissaYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
           <shadowData>
@@ -139,7 +139,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Zhissa/RM_Zhissa</texPath>
+          <texPath>Things/Pawn/Animal/RM_Zhissa/RM_ZhissaYoung</texPath>   <!-- EXTRA_LOOKS_WIRE_AS_THEY_TRICKLE_IN: the commissioned young look -->
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.9</drawSize>
           <shadowData>

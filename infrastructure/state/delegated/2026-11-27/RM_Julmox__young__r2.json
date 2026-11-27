@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 45.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4564474
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.5
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Julmox__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['SIBLING_MISMATCH', 'STYLE_EARTHLY']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "27f8c406af0e1a92a21fe1f66782a835a2ceec5ad1493ba6b01266ae057cf883",
+  "east.png": "5eb4da8ba6ffc9c18d9534a056697a2bbeb89db2c4c65a91ab13514d048ea3cd",
+  "north.png": "7bf22985f7ea5560eba801f59ff2c082f563481f38098a51b5235332128fdd0b",
+  "scale.png": "60b9ae7381f4f7c6dfb9e4e882cb8baa2f77f4e7d5855dfc1606a56b538c39ef",
+  "siblings.png": "1bc2cec576f560b9a7bb8d1e8986d0a8443632d1904919ec264bb78fd8f048e3",
+  "facings.png": "7fa3f2ac1c7f90cd429fdc50b15836b68bc7c68eccf356787b53db0487eece87"
+ },
+ "source_sha256": {
+  "south": "4a1bb5f0513330ce3d654c58d3bf7621ca886bcf092526e14c9086383f1a655e",
+  "east": "a6adbcaa6371ab8c7972a4860637f0cff8de01aef3eb7fb6b5b70d013067902a",
+  "north": "618db0dfeb5db2009f51aa5d114fd2efa8058904b526e3518922ad256d3aa2f5",
+  "scale": "47938e3b04c3dd3d30427612f44a8dbd80d345f6f88037d8a1f611bca7cc3cf8",
+  "siblings_RM_Julmox_south": "055659622b93b09c66aff32a94f0d7e64f5bc21192209cb74b3f36be2c0ba0a3",
+  "siblings_RM_Julmox_east": "c4a7597b3b5864d122386e51f3f40e1e8e260c02b1468d7776dd6ca6a4a3d29c",
+  "siblings_RM_Julmox_north": "712294cc4ae414728391320d4d0e21415c458a08ce5611251759516dfb1c949f"
+ }
+}

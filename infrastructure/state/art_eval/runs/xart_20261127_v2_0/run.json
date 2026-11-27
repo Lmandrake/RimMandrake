@@ -1,0 +1,22 @@
+{
+ "run_id": "xart_20261127_v2_0",
+ "test": false,
+ "started": "2026-11-27T06:17:58-08:00",
+ "subjects": [
+  "RM_SumpMouse__variant",
+  "RSW_Tauntaun__young",
+  "RM_Rakeshank__young",
+  "RM_Eesh__variant",
+  "RM_ScaldWalker__variant",
+  "RM_Moravatha__young",
+  "RSW_Gelagrub__young",
+  "RM_Nuudal__young",
+  "RSW_SandPillar__young",
+  "RUT_SealedSleeper__young",
+  "RM_FurnaceBeast__variant",
+  "RSW_Iriaz__variant",
+  "RM_Dhoggur__young",
+  "RM_Julmox__young"
+ ],
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v6#6f57c5+creature@v5#78b1be"
+}

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 64.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5168426
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 68.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.16202160000000002
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_FurnaceBeast__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['F_SIZE_JUMP', 'OWNER_NOTE_IGNORED', 'STYLE_CARTOON', 'ALPHA_HALO']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K4'], own blocking ['F_SIZE_JUMP', 'OWNER_NOTE_IGNORED', 'ALPHA_HALO']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "b8592cbe595ea170f05ead20f73c807fcafc8be102ff5dd8d136bf0ddd4c8394",
+  "east.png": "05275d04f4832a79de52cebac533590890429d736c94f48ee89b1c90d8d2a41c",
+  "north.png": "eb4b968c02b20e677a9e10e9dd14fb428cbc27da1bf84718729a0a01a8140ba8",
+  "scale.png": "b79d25ef8fc878c763b5887cf64d3dd2b6e631275818e7f3d9cf0125beb6b721",
+  "siblings.png": "5ec750e31026d7e637a50b51349947fd2fca001daeb3636636c5ec4fc032b3bd",
+  "facings.png": "25c7d295930c2b6f3ed2c67a2a552ccb2de3783bd42f5c81f1ceaec1275c4d58"
+ },
+ "source_sha256": {
+  "south": "51bc0003826e4601b5363a25f27ac5efbc21e7322f72bfbac38c4f1f95667402",
+  "east": "f707bfd61e7f37849742cf8d51f062d916d3daa3c21f36a0f25831dd702ee6e5",
+  "north": "5be0e3692d359ec389553a343ee3345f2d355053803d4fd42c617d800f51b5f4",
+  "scale": "04e6fd2ee4972da0843174a8b4dcecdc3a741649238e64417e3d7869646a8e84",
+  "siblings_FurnaceBeast_Giant_south": "af08268eccd96c18b19893652164e5a06c80da64775e3b06b448fc9ce198b13a",
+  "siblings_FurnaceBeast_Giant_east": "0aa7f3884e804fcc8bd5362932cb2cb85bf04ecd6c1f76b5df207872fbe7e80d",
+  "siblings_FurnaceBeast_Giant_north": "433238cccc2c6b575f73533d254b9354f19832ea2aacd9f712fcd5b564dadede"
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 58.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4902224
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 22.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1607836
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Muddal__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'F_INCONSISTENT', 'F_INCONSISTENT']; polish ['SCALE_WRONG']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "fbe70ed917500162d4a71fb4894237650f2c7cd688157ab42a92d0eb29a11877",
+  "east.png": "194d802131def04f6e5dab170c0464e9590568babb8b9d5bf1972144bd64e65e",
+  "north.png": "3864a5525f6aed07ae6476d99fca8f2ad84bfb523b1010f6aa3f59d4774ca2aa",
+  "scale.png": "9b4b50bd32b29023db9aade14cdfa21b60981d76fe3ad5e728632f813a166ad9",
+  "siblings.png": "006c9c8e9854fa50d88da7b0e5cff8a9e9a4e374bbc8c8de6d14af4abc7b12ba",
+  "facings.png": "80c8555d7d5f9b406da7eb1bd5a357ec9de05fd70784a124de8d4d7fd24d3206"
+ },
+ "source_sha256": {
+  "south": "fbe70ed917500162d4a71fb4894237650f2c7cd688157ab42a92d0eb29a11877",
+  "east": "1de62eab33c56369611c103ce925779dd5faddae38622f7d318ca651349957a8",
+  "north": "4a23ab5ddeb8a22291f1c245d168983ad713caafa99a15857b2426a87325430c",
+  "scale": "434c4cd96def452a32fd610266df43162896cf5fec7c1aeefd3c0f74caa363a3",
+  "siblings_RM_Muddal_south": "8df96b7334a52a5c0f82af258d0eb58c13b7a2be1515409eb02a7e32b6c3b4e4",
+  "siblings_RM_Muddal_east": "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
+  "siblings_RM_Muddal_north": "b1498a2d77f177c8e24576f44377cf68e12805a3ee3f22697b804b203789e539"
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 54.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48676539999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 72.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 29.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1566936
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Rakeshank__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP']; polish ['LEGIB_32']",
+  "gpt regen: unsettled [], own blocking ['ALPHA_HALO']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "d8d411ca7a04346ed95fdc904636f11ee993edc9e4bd242b3fb938c05674ad96",
+  "east.png": "1ab2e72825b8c2d3e45e328e2faa9a7422072e575266e3c844e40cbe2f5f7bcc",
+  "north.png": "3cb09516484ac16c3a88563bd3786829ec204130746a554eaa0b2a278366e3e3",
+  "scale.png": "cd741cb5f78d0bcfb978b4b1f00ced208360dc4b63bc16883fa86ff3c6f32a2b",
+  "siblings.png": "406cb30f09e9494b657f96f02427038e4256d9dd94cdd7bb7bf4ffc8b6043b23",
+  "facings.png": "cc8e6249b53dfb128f05abb373fb858d05488034250bdcae5b618f3cdc9246e7"
+ },
+ "source_sha256": {
+  "south": "c37be625d0fcad9071b41389cf11482c3d5938f5c175804ac663629a220da598",
+  "east": "1ab2e72825b8c2d3e45e328e2faa9a7422072e575266e3c844e40cbe2f5f7bcc",
+  "north": "bf94339917422f09adaffc182c1a43d256844269bc6db1ce03c47e1e2a509753",
+  "scale": "39c0d6e4b6918818a3090c0a743f95bd4f6139f9097d2b877fed5b142824394c",
+  "siblings_RM_Rakeshank_south": "971d3b318fdca1709b0f20b1fbfa2cd2591e082eb1937b18d401716ada0ed474",
+  "siblings_RM_Rakeshank_east": "267cecdc9adef26e9b8e90433f7544e5dc3e64f887693ea2d3a677a38fd278bb",
+  "siblings_RM_Rakeshank_north": "69edd78e40f4e1053b5e40c2f21509f23ee20e560d59baf500b8b0d653353743"
+ }
+}

@@ -1,0 +1,22 @@
+{
+ "run_id": "xart_20261127_v2_1",
+ "test": false,
+ "started": "2026-11-27T06:17:58-08:00",
+ "subjects": [
+  "RM_Zhissa__young",
+  "RM_Chatrak__variant",
+  "RM_Candler__variant",
+  "RM_Muddal__variant",
+  "RM_Aveluthia__young",
+  "RSW_Gelagrub__variant",
+  "RM_Noolim__variant",
+  "RSW_CanCell__young",
+  "RUT_EmperorVulture__young",
+  "RM_FireWasp__variant",
+  "RSW_Dalgo__young",
+  "RSW_Zeer__young",
+  "RM_Dhuvvox__variant",
+  "RM_Skarrin__variant"
+ ],
+ "versions_key": "departures_brief@v3#50b472+gpt_targeted_second_look@v2#4640d0+opus_first_pass@v3#d22c47+preamble@v4#815246+regen_prompt_edit@v2#209449+severity@v6#6f57c5+creature@v5#78b1be"
+}

@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 55.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.48655000000000004
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.2,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1572536
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_SandPillar__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band REALLY_BAD (model said really_bad); blocking ['STYLE_CARTOON', 'OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'DEPARTURE_MISSING']; polish ['LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4cf39857885a5b830998cad27c3b2c23d03dc007d04b9e6d9ff03b60cc8b1dc8",
+  "east.png": "86683c708f582e6bf468c6d0c5add257c1e0979d01b1dfe723c2c4c36b4cd687",
+  "north.png": "dfea2b60af08ebaf0d7b8f28f7b08ab03c350a91072bb8c0b4c9d8f5c513089a",
+  "scale.png": "ef9d0d3bcdcaa194f3a4e1e0ab9f99fdfd85b0766a8bb5219b766e26de555f6f",
+  "siblings.png": "c4a6b38c604f4e0bfd0240ac04275b84ad8c13daa1b82ad5d715d05399e8614b",
+  "facings.png": "a5b2d5f4ec2f8078f217b6306d14f371b13ad6ca23904daf1bdca5720293a1a7"
+ },
+ "source_sha256": {
+  "south": "bd3d14ed1ef6eb02342f39ac9213368be00366b43cc128338bf2d6e69a449820",
+  "east": "4607bc5f12c91b6241bb89a2be072c264b314d34c01da4eef7734b80ca3e2cde",
+  "north": "b5901db0270f145e591a1273185921b28320b5cb67ef3ed78dd974b8c81ee9a3",
+  "scale": "88013a11cffcbf0c1df3092dc28a233c8a95fb6500ce0f1ee54a2dc215779282",
+  "siblings_SandPillar_south": "77adf2e56b7a276a92efb870b941bed515ad7da8f3701e098bad54d8bb405c72",
+  "siblings_SandPillar_east": "bc6ad51af41659199083f62fe71a4d0e2ac8ca0acca05c2ac9661fcae5e8f13d",
+  "siblings_SandPillar_north": "c3cf853c655a06112072a66e16e5ec18be8424179485b3567a9a7416fb4c549d"
+ }
+}

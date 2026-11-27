@@ -249,6 +249,15 @@ def look_spec(row: dict, q: Path, kinds: dict, out: Path) -> Path:
         if p is None:
             raise SystemExit(f"{subj}: render of {j} not found (artpipe _artsrc, rescued or art store)")
         imgs[f or "single"] = str(p)
+    if {"east", "south", "north"} <= set(imgs):
+        # derived views drift in scale from their east (F_SIZE_JUMP): fit them by the facing lint's own size rule, as the
+        # facing-audit batch does (shrinks an oversize view only; a view the lint calls regenerate goes to the judge raw)
+        import facing_view_fit as FV
+        try:
+            fitted, _rep = FV.fit_new_views(dict(imgs), ["south", "north"], out / "fitted" / subj, kind=row["race"])
+            imgs.update({f: fitted[f] for f in ("south", "north")})
+        except Exception as e:                       # noqa: BLE001 — an unmeasurable set is judged as drawn
+            print(subj, "facing fit UNMEASURED:", e)
     sib = adult_files(sp)
     k = kinds.get(row["kind"])
     ds = None
@@ -570,6 +579,9 @@ def cmd_wire(a) -> int:
             new = fn(text, r["kind"], r["tex_path"])
         except ValueError as e:
             print(subj, "NOT WIRED:", e); bad += 1; continue
+        if r["slot"] == "variant" and not r["facings"] and r["kind"] in FACE_KINDS:
+            # the kind is about to turn (Graphic_Multi): a one-picture variant would then load as missing facings
+            print(subj, "waits: its kind's facings are owed, and a one-picture variant cannot follow it"); continue
         if r["slot"] == "variant" and not r["facings"]:
             body = re.search(r"<graphicClass>(\w+)</graphicClass>", text[slice(*_block(text, r["kind"]))])
             if body and body.group(1) != "Graphic_Single":

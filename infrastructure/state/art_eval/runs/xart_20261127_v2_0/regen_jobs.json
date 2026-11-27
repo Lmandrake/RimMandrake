@@ -1,0 +1,222 @@
+[
+ {
+  "id": "arteval_RM_SumpMouse__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_SumpMouse__variant",
+  "prompt": "A palm-sized sump-mouse, a variant of the lean adult sump-mouse, painted as a RimWorld creature sprite on a transparent background in the painterly vanilla RimWorld style, realistic, with soft painted edges. Body: a lean, slim scurrying mouse with a narrow torso, a small pointed head, shoulders lowered toward the ground and hindquarters slightly raised, caught mid-scurry and never standing still. Feet: oversized, hand-like, broad splayed snowshoe pads with spread toes, much larger than the head, stretched far apart in the stride and fully visible on every facing. Coat: grey with rust-orange patches on the back, flanks and haunches, built from broad painterly fur shapes (a few large soft planes with a light and a dark side) and soft painted edges. Value and colour contrast against the ground carry the silhouette. Oil: large, clear, glossy oil beads, each a distinct round droplet with a bright highlight, spaced across the back, flanks and haunches and readable at small size. They are the brightest detail on the coat. Tail: a thin tail, raised behind the body in the front view. Facings: the south view is a slim front view with the eyes toward the viewer, the body narrow, both big pads splayed at the front and the tail raised behind. The east view is a side view in a low mid-scurry lunge, with the front pads reaching far forward and the hind pads pushed far back, the belly low, and the full width of the pads showing. The north view is a rear view, seen from behind, showing the haunches, the hind pads spread wide and the tail, with the eyes hidden. Full figure centred in the canvas with the same scale and silhouette on every facing.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: OWNER_NOTE_IGNORED, SIBLING_MISMATCH, OWNER_NOTE_IGNORED, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 0.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouseVariant"
+ },
+ {
+  "id": "arteval_RSW_Tauntaun__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Tauntaun__young",
+  "prompt": "A juvenile tauntaun, the young of the omnivorous reptomammal species of the icy planet Hoth, shown as one RimWorld game sprite, painterly vanilla RimWorld style, realistic, on a transparent background, with soft painted edges; value and colour contrast against the ground carry the silhouette. Body plan: a reptile-mammal hybrid with a mammal-like body, thick insulating fur on the torso, scaled skin on the face, a long neck, a reptilian snout, small ear openings, and a long reptilian tail, standing upright and tall on two strong hind legs with natural bends at the hocks and shorter forelimbs, a pack-animal build. The juvenile has rounded, slightly softer proportions, the head carried high, the torso full in mass, the legs thick and sturdy, the back line level and held at one steady height, and the feet, forelimbs and head drawn at full size, the figure filling the full height of the frame. Palette and fur and skin texture: cold off-white and pale grey-tan fur on the torso, darker grey-brown scaled skin on the face, legs and tail, with the same colours and textures throughout the whole body. The eyes are alert and bright.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 1.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_CanonYoung"
+ },
+ {
+  "id": "arteval_RM_Rakeshank__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Rakeshank__young",
+  "prompt": "A young rakeshank, a creature of the Warscar, for RimWorld. Painterly vanilla RimWorld style, realistic, soft painted shading. Front view, eyes toward the viewer, the whole animal visible from beak to feet. A starved-looking, gangly juvenile standing on four impossibly long, thin legs, its body slung so high between them that the belly would never touch the ground. The hide is pulled tight over the frame, in a dull ash-grey brown with paler dust-grey on the lower legs; every rib, hip point and knuckle of the spine shows through the thin skin. The neck rises long and thin into a long, narrow beak, built like a pair of tongs for picking the dead out of craters, with small dark eyes set on the sides of the head above the beak base. It never fills out: lean, angular and high-stepping, with slightly oversized joints and knees that mark it as young. The image is the animal alone on a fully transparent background. Every pixel outside the animal has alpha 0: no white field, no glow, no haze, no cast shadow, no ground patch. The animal's edges are clean and antialiased, the surrounding canvas is empty transparency, and value and colour contrast against the ground carry the silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 0.85,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Rakeshank/RM_RakeshankYoung"
+ },
+ {
+  "id": "arteval_RM_Eesh__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Eesh__variant",
+  "prompt": "A single eesh variant, a finger-long slim sliver of a fish-like swimmer, for a RimWorld creature sprite. The body is a smooth, tapering sliver with bare skin and no scales. The skin is a polished heat-mirror that reflects its surroundings, painted in warm copper-gold over silver: copper-gold along the back and upper flank, silver along the belly and lower flank, with a bright reflective sheen down the length of the body. The body has no fins anywhere. A pair of short, rounded, skin-covered stubs sits low on the body, one on each side toward the tail end, in the same mirror skin with no fin rays and no webbing. These paired lower-body stubs match the adult eesh and show in every facing. Side views (east and west) show the slim sliver in profile, with the head at the front, a small dark eye, a tapering tail, and both stubs along the lower flank. The south view is the front view, seen head-on with the eyes toward the viewer, and reads as a compact teardrop with the two stubs spreading slightly left and right below it. The north view is the rear view, seen from behind, with the back, tail and lower-body stubs showing and the eyes hidden, as the same compact teardrop at the same size as the south view. The anatomy, proportions and end-on silhouettes match the adult eesh in every facing, and only the copper-gold and silver mirror colouring differs. Transparent background, painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. Small creature, drawn at 0.4 scale.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: SIBLING_MISMATCH, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 0.4,
+  "module": "swimmer",
+  "target_texpath": "Things/Pawn/Animal/RM_Eesh/RM_EeshVariant"
+ },
+ {
+  "id": "arteval_RM_ScaldWalker__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_ScaldWalker__variant",
+  "prompt": "Painterly vanilla RimWorld style, realistic, transparent background, soft painted edges; value and colour contrast against the ground carry the silhouette. Body plan, identical to the adult iridai: a long, tapered, segmented body of seven overlapping shell segments, purple with teal and silver iridescent markings, the dome of the shell glossy and sheened as if heat-polished. It walks with its head low, scraping the ground, calm and unhurried. Markings: the teal and silver patches on the shell are soft painted iridescent patches with organic, rounded, flowing edges that blend gently into the purple, as a painter's brush leaves pigment. Only the colouring, the larger size and the glossy sheen set the iridesce apart from the adult; segment count, leg count and head-to-shell proportions stay as the adult's.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, STYLE_OFF; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 4.2,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalkerVariant"
+ },
+ {
+  "id": "arteval_RM_Moravatha__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Moravatha__young",
+  "prompt": "A young moravatha, a huge, slow, many-legged grazer, drawn as a RimWorld creature sprite on a transparent background, in a painterly vanilla RimWorld style, realistic, with soft painted edges; value and colour contrast against the ground carry the silhouette. Its body is dominated by a tall, full, rounded domed carapace of overlapping blood-dark red-brown plates, each plate as long as a cart, stacked like roof tiles into a smooth mound and stepping down in size along the length of the body; the dome is the largest mass of the creature, with one steady height and volume. The head is blunt and low, with four glowing yellow eyes set in a row. Many short, thick legs (a dozen or more, well beyond four) carry the body in a staggered row beneath the dome, in a slow, calm, standing grazer stance. The palette is consistent and warm, with soft painterly shading that models the plates and the heavy body volume.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 3.2,
+  "module": "walker",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_MoravathaYoung"
+ },
+ {
+  "id": "arteval_RSW_Gelagrub__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gelagrub__young",
+  "prompt": "A young gelagrub, a large soft-bodied grub-like insectine (the Felucian ground beetle bred for neutroamine production) that keeps its larval form for life. A plump, segmented, caterpillar-shaped body of cream-tan skin with muted olive-brown banding across each segment. The skin is matte and non-luminous. Small rounded head about one fifth of the body's length, with short mandibles and small dark eyes. The body is wingless, rounded and compact, as befits a juvenile. Transparent background. Painterly vanilla RimWorld style, realistic, soft painted edges; value and colour contrast against the ground carry the silhouette. Soft shading on the segments with light from the upper left.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 3.0,
+  "module": "walker",
+  "target_texpath": "swanimals/Gelagrub/GelagrubYoung"
+ },
+ {
+  "id": "arteval_RSW_SandPillar__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_SandPillar__young",
+  "prompt": "A young luttaq for RimWorld: a long, soft-bodied crawler, a giant caterpillar that never pupates, as long as a man is tall. Painterly, realistic vanilla RimWorld style, transparent background, soft painted edges; value and colour contrast against the ground carry the silhouette. Drawn in the same hand as its adult sibling: the same dull ochre and clay-brown palette, the same matte, wrinkled, leathery skin texture and the same level of surface detail, scaled down, with a proportionally larger head and softer, budding features. The head shares the adult's silhouette, a broad crested head capsule. It is a realistic larval head: a dull ochre chitinous face with small, dark, simple eyes set in the skin and mouthparts half hidden in a crown of pale, groping tentacles that ring the mouth and taste the ground ahead. The cheeks are the same ochre and clay-brown as the body. The body is a long chain of segments with folded, creased skin, rippling forward. Along the underside run many ranks of stubby prolegs, each ending in a visible pale, round sucker pad. Each segment carries a dark ring around a large, glossy, pale-centred false eye with a dark pupil, staring at the viewer, so that the eyes seem to shift and blink as the animal moves. Naturalistic matte shading with subtle wet highlights, like a field-guide painting of a real caterpillar. Side view shows the full body length walking left to right; front view shows the tentacle-crowned head, eyes toward the viewer; rear view shows the back, tail and prolegs, head hidden.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_CARTOON, OWNER_NOTE_IGNORED, SIBLING_MISMATCH, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillarYoung"
+ },
+ {
+  "id": "arteval_RUT_SealedSleeper__young_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_SealedSleeper__young",
+  "prompt": "A young tammuq for RimWorld, a squat armor-clad burrower that spends its life motionless under cracked clay. Show three views of the same animal on a transparent background (north rear view, east side view, south front view), all at one shared scale with the feet on one common ground line. The body is a low rigid dome of overlapping clay-brown armor plates, dusty ochre at the seams, with pale cream wax in streaks and beads along the plate edges and shoulders. Short, stout, wide-set legs carry the dome, and the forelimbs are blunt digging claws. The head is small, blunt and held low under the front lip of the shell, with dull small eyes. The dome is the same size in every view: the same width, the same height and the same four-foot spacing in the front view and the rear view. The south view is the front view, with the head and eyes toward the viewer. The north view is the rear view, seen from behind: the full-width shell back with its plate pattern, the short tail stub, the haunches and the hind feet at the same spacing, with the head hidden behind the shell. The east view is the side profile: the dome's full length, head forward, legs under the body. Painterly vanilla RimWorld style, realistic, soft painted edges with value and colour contrast against the ground carrying the silhouette, even top-left lighting, and the same palette and plate detail in all three views.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeperYoung"
+ },
+ {
+  "id": "arteval_RM_FurnaceBeast__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FurnaceBeast__variant",
+  "prompt": "A furnace-beast, a giant walker whose banded mineral hide stores the heat of fires. Painterly vanilla RimWorld creature sprite, realistic, on a fully transparent background. This is the colour variant of the owner-kept adult furnace-beast. Use the kept adult as the reference for body plan, silhouette, proportions, pose and on-canvas size. Change only the colouring, giving the banded mineral hide the variant's mineral palette. The hide is made of mineral plates arranged in bands, not skin or fur. A warm glow shows in the seams between the plates. Soft painted edges; value and colour contrast against the ground carry the silhouette. The same beast stands in the same pose on every facing. Front view: eyes toward the viewer, broad chest, standing at the adult's front-view proportions. Side view: profile standing, head, banded body and legs in the adult's proportions. Rear view, seen from behind: back, haunches and a long tail that tapers steadily from a thick root to a narrow tip, made of visible mineral segments, as long as the adult's tail, eyes hidden. The crest-to-foot height is identical in the front, rear and side views, and each view fills the canvas to that same height. The canvas around the beast is fully transparent, with every pixel outside the body empty. The edge pixels of the hide and of the tail tip carry the colour of the adjacent mineral plate.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, OWNER_NOTE_IGNORED, ALPHA_HALO, F_SIZE_JUMP, OWNER_NOTE_IGNORED, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 7.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_GiantVariant"
+ },
+ {
+  "id": "arteval_RSW_Iriaz__variant_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Iriaz__variant",
+  "prompt": "A RimWorld creature sprite of an iriaz, a greenish herd grazer from Dantooine, juvenile-variant colouring on the kept adult's body plan. Slim-chested, long-necked grazing walker with a smooth green hide and two horns sweeping backward from the head. A dorsal spike row runs along the back and shoulders, as on the kept adult sibling. The thin whip tail ends in a small, visibly distinct tuft of dark hair at its tip, on every facing. Yellow-orange markings are distinct small round leopard-like spots with plain green skin between them, densest along the top of the neck, the shoulders and the back, thinning out down the flanks and fading into plain smooth green toward the belly and the legs. The east view is a side view, eyes toward the east, tail tuft visible behind. The north view shows the rear, seen from behind: back, spike row, haunches and tail with its tuft, eyes hidden. The south view is a front view, eyes toward the viewer, matching the adult sibling's south view: slim chest, oblique stance with the body turned slightly off-axis, the spike row exposed along one shoulder only, the tail curling out to one side and visible, feet placed unevenly, one forward and one back. Realistic proportions, calm grazer posture. Painterly vanilla RimWorld style on a transparent background, soft painted edges; value and colour contrast carry the silhouette against the ground. Reference image: the kept adult sibling for stance, silhouette and chest width, recoloured with the variant's green body and orange-yellow spots.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS, SIBLING_MISMATCH, DEPARTURE_MISSING, CANON_MISS, OWNER_NOTE_IGNORED, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "xart_20261127_v2_0",
+  "drawsize": 1.65,
+  "module": "walker",
+  "target_texpath": "swanimals/Iriaz/IriazVariant"
+ }
+]

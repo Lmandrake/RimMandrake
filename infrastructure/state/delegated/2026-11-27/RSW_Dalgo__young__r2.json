@@ -1,0 +1,75 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 71.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5139514
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 50.7
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Dalgo__young",
+ "decision": "ACCEPT",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'OWNER_NOTE_IGNORED']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "f938f14eae0a5b31981121aca83548062368f2a565f94c9fd0695d247a00f9f4",
+  "east.png": "9183028bde84e1b8afd06bd4a425e223fbd9655295a87894b3bcc4d36e7b430b",
+  "north.png": "4a5a55c23dea4b6765f185556814d29e15c37b1cb4c4b08ca9563f02c6d995ba",
+  "scale.png": "aa49fc210d2a8c0ddcaf4328ec56fd0980602562a6648c60e4514191da311c15",
+  "siblings.png": "a82aff5c756bb50290fa794620a52ff153161ef4c26d76b328fdee861835ae06",
+  "facings.png": "ff6f408cb70c37bbd04b9c795e047a2f7f982305c17553f451ef62c627a27ae1"
+ },
+ "source_sha256": {
+  "south": "0b0e83392702b1d74cf2e032b959a66e779f7d799927503a9a239ff4b57b778a",
+  "east": "b700a470208ac08813c95ca7797429e622577f5f205c5399783bc7a0b4638958",
+  "north": "961042e8d2ce45caf7c366044e5df6c532783b8785bfd74d0d2cb98808f43127",
+  "scale": "275c09e18f6fd363c72dc363277590c38bd9e2832b4ddcdea2117dc50b5be8e1",
+  "siblings_Dalgo_south": "bcab5562086210a7b75967ab5e14623fcb95075c1333414e17990bb8bce8a78f",
+  "siblings_Dalgo_east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5",
+  "siblings_Dalgo_north": "5a28d4a36453b50155b278315a0cd3ca28fa2705f028b28735d590bf984ed63f"
+ }
+}

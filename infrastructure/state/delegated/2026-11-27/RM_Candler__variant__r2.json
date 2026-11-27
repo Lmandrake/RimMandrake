@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 52.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.47905359999999997
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 37.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 19.4,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1660296
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Candler__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said really_bad); blocking ['F_NORTH_FACE', 'F_SOUTH_NOT_FRONT', 'F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'F_SIZE_JUMP', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['F_NORTH_FACE', 'F_SOUTH_NOT_FRONT', 'F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "a34b7b31398ca7f95e1d0f7e0cdae9d4e0d1f5dbd6fb10e296a8ca0b20954058",
+  "east.png": "d100764b57ea975562336b119dbd2e2a857a2d612a495aece4a27500d415169a",
+  "north.png": "1694269d278567775524b6e930606ac49f2d819ca68e1b138d243b68cc460acd",
+  "scale.png": "73c0bc24862eaa82a70b9131cd3704add8bd4de269fe98ae1333db517f7a7e84",
+  "siblings.png": "44bfde21230b4eeb757ed6c0582f7c7482410268ef38c0cc7bfd8bd608ef7bbb",
+  "facings.png": "fe79b1914a2a25cbd1c1990c28545e3b3b69f0f0cef127ff2c0d0d21d9d16936"
+ },
+ "source_sha256": {
+  "south": "7466ad42f014a843c8d5f601f89ddc28653887fdf83d355095135473fae53c7e",
+  "east": "aed8b86424b9ef69a54ea3b56f285ba6ccb2e2acebc64e124f9a36ffad3d4701",
+  "north": "1660a71f82611eb7a39598757933308274fae69e9cb3709d86fbcad2e7382e8f",
+  "scale": "75a7d541493c70950d2df2f59c54dca539a323f804a5d50e78cb9b89de7f6177",
+  "siblings_Candler_south": "dbfb11c458a7ee63ea13db99d299ea5898a8665108fc6170383466047222041a",
+  "siblings_Candler_east": "e8017f22ecb33d29ec72e8fbe6b9fb02ebec57b8ac0e5b9dc33afb642efa2b0c",
+  "siblings_Candler_north": "0a0fb31522e800dcf19aa451768e3708c0aa332896ef5fc97b3b1984827cb4a5"
+ }
+}

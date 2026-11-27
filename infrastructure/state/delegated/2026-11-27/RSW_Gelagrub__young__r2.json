@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.1,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4715126
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 24.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 21.0,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1575636
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Gelagrub__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP', 'SIBLING_MISMATCH']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "e49ed5c661d4e739a892944e101c84318d36330fafdc2bb72a7c7daca7eece6b",
+  "east.png": "1396c2c25168eabf59f61f288a012ba8a69067c9998d0c7f9eaae7b90f8f1e51",
+  "north.png": "1d935af373e7d9adc3e76b4a97e31730aad6afa491eba3127d56246a186776af",
+  "scale.png": "7a94409f30ad214b568cf8b7db56c4503869b02699a667716003c6fbb77bf917",
+  "siblings.png": "8f72db29691bbc98b3e68a3eabd09532ed4e8622d8fb9e278474a29abe41329a",
+  "facings.png": "2d992a878b85a9c6a1a1bfc3c489339de0ded91e3268c77efa49f69df9e04301"
+ },
+ "source_sha256": {
+  "south": "99d74f6f2f51cee288a32b6b6d703693426d6ff7a3b8f54337bcbdf551f1fcc6",
+  "east": "1396c2c25168eabf59f61f288a012ba8a69067c9998d0c7f9eaae7b90f8f1e51",
+  "north": "c947378f26f94419de6722ebe4ac019fec719b54bcb083393f23babab85d4f8a",
+  "scale": "03be97ccef265d5c6b92fbdf01a76b576ccb4fd34f0cea37a59381984e0d1de6",
+  "siblings_Gelagrub_south": "ebeaa51b8cfafcae413d3a982ce5c3970522fab4bc9f541e11fce7a18bcc3e08",
+  "siblings_Gelagrub_east": "7a5cb9489047ba6b5a31e31561cc4e7fc032a991740d86ad58a206a33cf1d03b",
+  "siblings_Gelagrub_north": "e5e3e7bc19a54fa02de908455264f2a8463cfb3eb86470a1af40aa9bdc710a59"
+ }
+}

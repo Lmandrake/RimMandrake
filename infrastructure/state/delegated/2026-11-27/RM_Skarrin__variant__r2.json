@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 50.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4570086
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 20.3
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 18.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1558736
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Skarrin__variant",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said good); blocking ['DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['DEPARTURE_MISSING']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4aaee00ebea59aa912659c0a3d99af2c2b97c0793d84ba0fa2da850af5c7af75",
+  "east.png": "2b91fd525cb30471c8a0579d816f5c3be0a8fabdf144f06930cc0b7cad972417",
+  "north.png": "7c116a902e6f0020257101c8d504f109d05a92e708797145c5fddc83c288c01a",
+  "scale.png": "39124ab607966622d3dce5ada0de42d5535086b91d562c71dd828b184a18476c",
+  "siblings.png": "a8170884aa184a1112ac2405e845a220b0834be1030b91e835dc2521d30cc83c",
+  "facings.png": "c228dc257550a2c77e3dc6720cb5822f681774c9e411c0523ec88461ee39fe0f"
+ },
+ "source_sha256": {
+  "south": "799fb8b4728a020f851e8ccd508d59988e785b1b8ae110761c0546bef90d76b2",
+  "east": "9c0ff3d06880f04815a803735b5dd89baaa2708ac4ff71a876f3aa6717436031",
+  "north": "0261b39713762ceefa4a919c949172634cc95e2f81a7c078a734183d68f2db1b",
+  "scale": "31b52cdcce5a1ece187c464b3edd2ec8a2df5910a6a23499f9af9a669ee7acbb",
+  "siblings_RM_Skarrin_south": "51d6e1b459d7282c65e1abc985777d1442d6c0035b1bc82d7ec34afa0b4731da",
+  "siblings_RM_Skarrin_east": "685ef6d307c92237bc4f55cd962e60838dbb37779df6e4e387f300651e8297af",
+  "siblings_RM_Skarrin_north": "4fc5e4a9a54a051f2f5fb09f5c92bb7b0b761a3f9d74cf054dbc9080097e4ab1"
+ }
+}

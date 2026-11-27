@@ -1,0 +1,83 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 65.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.5040836
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "UNMEASURED",
+    "seconds": 50.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 26.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1736016
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RUT_EmperorVulture__young",
+ "decision": "REGEN",
+ "reasons": [
+  "facing truth UNMEASURED (UNRESOLVED) \u2014 judged by the models alone",
+  "opus band WEAK (model said weak); blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_INCONSISTENT', 'STYLE_EARTHLY', 'F_SIZE_JUMP']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K5'], own blocking ['OWNER_NOTE_IGNORED', 'SIBLING_MISMATCH', 'F_INCONSISTENT', 'F_SIZE_JUMP']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v4",
+   "sha": "8152460bf403"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v3",
+   "sha": "d22c4731f175"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v2",
+   "sha": "4640d0366117"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v2",
+   "sha": "209449ec62fc"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v3",
+   "sha": "50b4722465fb"
+  },
+  "template": {
+   "tag": "creature@v5",
+   "sha": "78b1bec5ec52"
+  },
+  "severity": {
+   "tag": "severity@v6",
+   "sha": "6f57c598324b"
+  }
+ },
+ "image_sha256": {
+  "south.png": "275252a6ad4904331bba3e208766c90db32ed76ab1b53bd63650389dd18833cd",
+  "east.png": "5ed7b3612689f46972fa6ad11775f1873ab1ec984029fd8202c52725d6b0336b",
+  "north.png": "047dfa68e8e6e12c572656e68a429966fdca370ddf4706c0b9e1b828411717b8",
+  "scale.png": "98d72ba0baf226a19dcb2fa629445fb4794ff44acee961a7401a4f6427ce25e9",
+  "siblings.png": "04e364a42e727e0663f5eca2c151bf8491e55620e0d630bd4b8f4cd2afde3659",
+  "facings.png": "25b4d95e27ee6c2a3675e96003aa7ebe4318b77e1278e61fc998f9fb53ab88bd"
+ },
+ "source_sha256": {
+  "south": "762a05eb9197e340ae197096a5340952acad81e3f554ca3ebfb30dff328cb9c0",
+  "east": "01aeeebcdb68eeabcc7783817526c691983f0a75eee0d306cce7a6af53d84bff",
+  "north": "26d010a850dee177864fb3eed102b94176e7b42b7348a57e95105e4bb86c4962",
+  "scale": "018edee65b93f197e10d71605b906b70d4a71297ebfced5040ed7eba5a6d98e5",
+  "siblings_RUT_EmperorVulture_south": "5f63030396b0f0a31ce7be3d5c9037df7baac36d3a4695d975c3c6604ef094ae",
+  "siblings_RUT_EmperorVulture_east": "81eb20ba36c3818b00695129a973b8159c34f3cf4ed31799e0eb24260915e4ec",
+  "siblings_RUT_EmperorVulture_north": "17c45c085dcea55749a53339b048c80a5f83fc361067b4f33f76601cd6b327b4"
+ }
+}
