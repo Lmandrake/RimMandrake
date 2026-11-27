@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "1947e5eb8060a692bcf7673ea9aa7df6b7ece438075ea1d47f1ac4fb575993d2",
+  "body_sha256": "efb893d287ac377d04d7f010d327e0373c7ff11d6c8811f35eb02c4365aa575f",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -45,6 +45,7 @@
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
    "HOLDER.run-1795693138": 26757,
+   "HOLDER.run-1795761255": 3953,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1294,11 +1295,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795693138",
-   "done": "restart 5: brim pour closed e4ca2be630 (+553f36b66f fresh-reader fix); Scrapper pipe twins, sprinkler seat, timber leaf done live on ArchSmall; signs/barrels, steel cable, weir overflow dropped done; weir catch dropped not worth the touch; Swale to the next-version list",
-   "next": "End the bundle: every member named has an outcome",
-   "ruled_out": "DrainAll leaving the wet cap used; a winch needed to draw a raised timber leaf",
-   "ts": "2026-11-27T05:46:30Z"
+   "by": "HOLDER.run-1795761255",
+   "done": "Light order closed (d67a29da8b, 7d325f3abb; live 5/5); three next-version designs closed (2f57859563); black rain refused to next version; Scrapper heavy bridge strip installed + in-game judge KEEP on deck (b13ec6d84a, 5f53f935c0); chemfuel ignition blast built (9f8c5d6de9), blast live-seen",
+   "next": "Draw east-west far-side bridge cables below pawns in RM_DeckArt.cs, test first, then rerun the chemfuel throw rows on a fresh site",
+   "ruled_out": "the chemfuel blast not firing (it fires once, r 3.45); A3 as a mod fault (EK wrote no throw; the check read position)",
+   "ts": "2026-11-27T10:12:46Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1751,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1816,
+  "events": 1828,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7851,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-27T06:35:31Z",
+   "last": "2026-11-27T10:12:46Z",
    "lease": "run-1795761255",
    "released": false,
    "token": 62
@@ -7975,6 +7976,7 @@
    "HOLDER.run-1795503470",
    "HOLDER.run-1795670514",
    "HOLDER.run-1795693138",
+   "HOLDER.run-1795761255",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
