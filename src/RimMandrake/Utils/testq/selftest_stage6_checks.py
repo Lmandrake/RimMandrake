@@ -21,6 +21,7 @@ TMP = tempfile.mkdtemp(prefix="stage6_checks_")
 sys.path[:0] = [os.path.join(ROOT, "src", "RimMandrake", "Utils")]
 import selftest_steve_idle_takeable as F  # noqa: E402  (sets TESTQ_QUEUE and the other fixture env first)
 sys.path.insert(0, HERE)
+import pipeline_admit as PA  # noqa: E402
 import proof_build as PB  # noqa: E402
 import schema as S  # noqa: E402
 import stage6_checks as SC  # noqa: E402
@@ -82,9 +83,16 @@ def t_the_four_mods_are_takeable():
     for m in MODS:
         n = sum(1 for v in TABLES[m]["placed"].values() if v[0] == SC.TAKEABLE)
         have = B.blocks_of(TABLES[m]["tt"])
-        check(n > 0 and n == len(have), "the-four-mods-are-takeable: %s: %d takeable, %d blocks committed" % (m, n, len(have)))
         fits = [k for k, t in TABLES[m]["tt"]["tests"].items() if isinstance(t, dict) and str(t.get("stage")) == "6"
                 and not SC.not_the_lanes(t) and TABLES[m]["placed"][k][0] != SC.NO_LOOK]
+        if PA.standing(m, ROOT)[0] is None:
+            # back before the blind challenge (a next version in build): testq_blocks writes no block, so the blocks stay
+            # as the judge saw them, and a check added since waits for the next pass (seen 2026-11-26: Pyrelands 0.2.0
+            # at offline_build, sc_grass_seen_under_ash takeable with no block)
+            check(n > 0 and set(have) <= set(fits), "the-four-mods-are-takeable: %s (before blind): %d takeable, %d "
+                  "blocks committed, each block a check whose tier fits" % (m, n, len(have)))
+            continue
+        check(n > 0 and n == len(have), "the-four-mods-are-takeable: %s: %d takeable, %d blocks committed" % (m, n, len(have)))
         check(sorted(have) == sorted(fits), "the-four-mods-are-takeable: %s: exactly the checks whose tier fits" % m)
         bad = [k for k, b in have.items() if "check" in b and SC._rimflow("build_match") and T.tier_problem(b["check"]["tier"])]
         check(not bad, "the-four-mods-are-takeable: %s: each block's tier is a modset_builder tier %s" % (m, bad[:3]))
