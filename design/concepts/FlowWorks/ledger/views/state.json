@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "0545ae3a6a16241628b8170ec72aa7d6d3d21ef17855a25a139a306e3143f02d",
+  "body_sha256": "9d40d1f70a9f4370854080fafc57afdf7581c107ad889b0a2a1711f980027622",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -44,7 +44,7 @@
    "HOLDER.run-1795471235": 562,
    "HOLDER.run-1795503470": 1774,
    "HOLDER.run-1795670514": 9857,
-   "HOLDER.run-1795693138": 25193,
+   "HOLDER.run-1795693138": 26476,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1295,10 +1295,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795693138",
-   "done": "RIMMANDRAKE_EXPLAIN_BRIM_POUR_LITRES_WITH_NOWHERE_TO_GO closed at e4ca2be630: reply names the measured cause; OL_pour_never_no_room reads the wet cap first; live ArchSmall row PASS (1f900b93f6)",
-   "next": "Work SCRAPPER_PIPE_REDRAW_BLURRY_AT_ZOOM, then the bundle list from SIGNS_BARRELS_VERIFY_ON_REBUILT_WALK_OWED on",
-   "ruled_out": "DrainAll leaving the wet-square cap used; the 64-miss give-up",
-   "ts": "2026-11-27T04:55:31Z"
+   "done": "restart 5: brim pour closed e4ca2be630 (+553f36b66f fresh-reader fix); Scrapper pipe twins, sprinkler seat, timber leaf done live on ArchSmall; signs/barrels, steel cable, weir overflow dropped done; weir catch dropped not worth the touch; Swale to the next-version list",
+   "next": "End the bundle: every member named has an outcome",
+   "ruled_out": "DrainAll leaving the wet cap used; a winch needed to draw a raised timber leaf",
+   "ts": "2026-11-27T05:46:30Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1750,7 +1750,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1810,
+  "events": 1813,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7850,7 +7850,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-27T04:55:48Z",
+   "last": "2026-11-27T05:46:30Z",
    "lease": "run-1795693138",
    "released": false,
    "token": 61
