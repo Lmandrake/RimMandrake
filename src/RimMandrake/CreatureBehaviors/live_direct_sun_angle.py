@@ -23,8 +23,9 @@ design/specs/2026-11-26-direct-sun/boundary.md). Three rows, each Kind A (determ
                  outdoor value's own lag), and turning it off does not change the open cell's Direct Sun exposure.
   L1c the sun stands still
     claim        on a fixed-sun map E reads the same at four points across one in-game day.
-  forbidden      a red error in the log naming RM_MapComponent_ShadeGrid, RM_SunHeat or RM_AirHeat during the run.
-  end            the Forge's air heat is restored to its value at start; the weather lock is removed.
+  forbidden      a red error in the log naming RM_MapComponent_ShadeGrid, RM_SunHeat, RM_AirHeat or RM_PlanetSunGeometry
+                 during the run.
+  end            the Forge's air heat is restored to its value at start; the weather lock is removed, on every path out.
 
 What this cannot decide: "the lee is long at low E and absent at high E" needs two tiles of different E, and the
 regenerate keeps the tile; that half is the C# selftest's case "a shadow is h / tan E long" (selftest_sun_heat.py).
@@ -287,7 +288,7 @@ def log_seq(s):
 
 
 def forbidden_since(s, base):
-    """-> (errors naming a Direct Sun or air-heat type since base, lost entry count). The journal is a ring of 1,000."""
+    """-> the errors naming a Direct Sun or air-heat type since base. The journal is a ring of 1,000."""
     lg = call(s, "rimbridge/list_logs", afterSequence=base, limit=1000, minimumLevel="error")
     logs = lg.get("logs")
     if not isinstance(logs, list):
@@ -322,7 +323,6 @@ def main():
             out["planet"] = gv
             if not (str(gv.get("Loaded")).lower() == "true" and str(gv.get("FixedSun")).lower() == "true"):
                 raise CouldNotLook("the world has no fixed sun (RM_PlanetSunGeometry %s): load tier direct_sun_fixed" % gv)
-            forge_restore = None
             for b in biomes:
                 mi = regenerate(s, b)
                 conditions = hold_sky_clear(s, b)
@@ -342,12 +342,10 @@ def main():
                 if b == "RM_TheForge":
                     out["rows"]["L1b"] = air_heat_row(s, rd["cells"]["open"])
                     print("L1b %s" % json.dumps(out["rows"]["L1b"]), flush=True)
-                    forge_restore = True
             out["rows"]["L1a"] = same_numbers_row(out["biomes"], a.wall_height)
             out["rows"]["L1c"] = still_sun_row(s)
             if "L1b" not in out["rows"]:
                 out["rows"]["L1b"] = {"verdict": "UNMEASURED", "why": "RM_TheForge not in --biomes"}
-            call(s, "jawa/weather_set", unlock=True)
             out["when_ticks"] = tick(s)
             out["forbidden"] = forbidden_since(s, base)
             if out["forbidden"]:
@@ -358,6 +356,12 @@ def main():
             print("COULD NOT LOOK: %s" % e, flush=True)
             out["couldNotLook"] = str(e)
             rc = 2
+        finally:
+            # the end step runs on every path: a COULD NOT LOOK left the map's weather locked Clear
+            try:
+                call(s, "jawa/weather_set", unlock=True)
+            except Exception as ex:
+                out["notes"].append("the weather unlock failed: %s: %s" % (type(ex).__name__, ex))
     for k in ROWS:
         row = out["rows"].get(k) or {"verdict": "UNMEASURED"}
         print("%s %s %s" % (k, row.get("verdict"), "; ".join(row.get("fails") or [])), flush=True)
