@@ -1,0 +1,2 @@
+A test that puts a traceback into its FAIL line cut by characters ([-600:]) makes ./publish read a red that origin/main shares as a new red: the cut lands inside the clone's absolute path, whose length differs between the clone and the base tree, so publish._norm cannot blank it. Put whole lines (the last lines of the traceback) in a FAIL line, never a character cut. Seen 2026-11-27: selftest_steve_lane_sweep refused two publishes of RELAPSE_MATURATION_FIX_DIED_TWICE.
+item: RELAPSE_MATURATION_FIX_DIED_TWICE
