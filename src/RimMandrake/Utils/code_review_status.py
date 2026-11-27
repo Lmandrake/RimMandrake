@@ -666,11 +666,12 @@ def code_files(page):
         elif re.search(r"\.(\s|$)", part):
             break  # the sentence ends at a `.` outside backticks
     isfile = lambda rel: os.path.isfile(os.path.join(ROOT, rel))
-    full = [t for t in tokens if "/" in t and isfile(t)]
+    full = [os.path.normpath(t).replace(os.sep, "/") for t in tokens if "/" in t and isfile(t)]
+    rooted = [t for t in tokens if "/" not in t and isfile(t)]  # a file at the repo root, named bare (`now`)
     dirs = list(dict.fromkeys(os.path.dirname(t) for t in full))
     ancestors = list(dict.fromkeys(a for d in dirs for a in
                                    ("/".join(d.split("/")[:n]) for n in range(len(d.split("/")), 0, -1))))
-    out = set(full)
+    out = set(full) | set(rooted)
     for t in tokens:
         if t in out or not re.fullmatch(r"[\w./-]+\.\w+", t):
             continue

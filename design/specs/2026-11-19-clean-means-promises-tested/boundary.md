@@ -33,7 +33,8 @@ in-game decider has a PASS that no change since touched counts green. The reader
 - **a-code-line.** A page names its files in its first `Code:` or `Source:` sentence (up to the first `.` outside
   backticks that a space or the line end follows), each file in backticks: a full repo path; a path relative to an
   ancestor folder of a full path in that sentence (`rimflow/cli.py`); or a bare name in the folder of a full path in
-  that sentence (`maturation_hands.py`). A backtick token that resolves to no file is not a file and is skipped.
+  that sentence (`maturation_hands.py`); or a file at the repo root, bare or as `./name` (`now`, `./now`), kept as
+  its normalized repo path. A backtick token that resolves to no file is not a file and is skipped.
 
 - **a-mod-store.** A file under `src/RimMandrake/<Mod>/` where `design/concepts/<Mod>/` exists is a mod file. Its
   store is `version/VERSION.json`, `version/locked_bars.json` (`ids`, `version`) and `version/test_table.json`

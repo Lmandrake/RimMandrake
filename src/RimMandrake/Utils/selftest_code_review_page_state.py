@@ -180,6 +180,19 @@ def t_could_not_look_is_its_own_answer():
        (3, "UNREADABLE", True), "a page list that cannot be read: the cause is named")
 
 
+def code_line_root_files():
+    """ACCEPTS a-code-line: a file at the repo root is named bare (`now`) or as `./now`, and resolves to `now`."""
+    code = "Code: `./now`, `publish`, `nofile` and `src/pkg/one.py`"
+    r = root("rootfile", {"design/specs/p/boundary.md": "tests/t_p.py"},
+             page_text=PAGE.replace("Code: `src/pkg/one.py`", code))
+    write(r, "now", "#!/bin/sh\n")
+    write(r, "publish", "#!/bin/sh\n")
+    got = CRS.code_files(os.path.join(r, "design/specs/p/boundary.md"))
+    eq(sorted(f for f in got if "/" not in f), ["now", "publish"], "root files named bare or as ./name, normalized")
+    rc, rows = check("now")
+    eq((rc, state(rows, "now")), (0, "CLEAN"), "check now reads the page that names ./now")
+
+
 def t_a_review_record_cleans_nothing():
     r = root("record", {})
     subprocess.run(["git", "init", "-q"], cwd=r, capture_output=True)
@@ -599,6 +612,7 @@ def main():
     t_a_red_tests_file_is_dirty()
     t_no_page_is_its_own_answer()
     t_could_not_look_is_its_own_answer()
+    code_line_root_files()
     t_a_review_record_cleans_nothing()
     t_the_worst_answer_sets_the_exit()
     t_each_tests_file_runs_once()
