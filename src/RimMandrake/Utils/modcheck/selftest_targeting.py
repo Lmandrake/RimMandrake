@@ -199,6 +199,17 @@ def t_emit_verify_could_not_look_is_not_a_fail():
     ok(args(v) == ("fail", None), "verify: a FAIL row -> fail, no outcome word", v["cmd"])
     v = runner.emit_verify("X", "ToyMod", "c", summ("PASS", "PASS"), "/tmp/s", dry_run=True, seat="BENCH")
     ok(args(v) == ("pass", None), "verify: all green -> pass", v["cmd"])
+    # the fresh reader's case (2026-11-26): the screenshot judge (or the spoil-gate veto) turns all_green false while
+    # every row is PASS; the judge did look, so that is a fail, never COULD NOT LOOK
+    s2 = dict(summ("PASS", "PASS"), all_green=False, visual_all_green=False, visual=[{"pass": False}])
+    v = runner.emit_verify("X", "ToyMod", "c", s2, "/tmp/s", dry_run=True, seat="BENCH")
+    ok(args(v) == ("fail", None), "verify: every row PASS but the screenshot judge refused -> fail", v["cmd"])
+    s3 = dict(summ("PASS", "UNMEASURED"), visual_all_green=False, visual=[{"pass": False}])
+    v = runner.emit_verify("X", "ToyMod", "c", s3, "/tmp/s", dry_run=True, seat="BENCH")
+    ok(args(v) == ("fail", None), "verify: an UNMEASURED row beside a refused screenshot -> fail", v["cmd"])
+    s4 = dict(summ("PASS", "PASS"), all_green=False)
+    v = runner.emit_verify("X", "ToyMod", "c", s4, "/tmp/s", dry_run=True, seat="BENCH")
+    ok(args(v) == ("fail", None), "verify: every row PASS, not green for another reason (a veto) -> fail", v["cmd"])
 
 
 @contextlib.contextmanager
