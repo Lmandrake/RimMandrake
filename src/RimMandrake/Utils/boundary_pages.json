@@ -6,6 +6,7 @@
   "design/specs/2026-11-27-cap-for/boundary.md": "src/RimMandrake/rimflow/selftest_cap_for.py",
   "design/specs/2026-11-27-now/boundary.md": "src/RimMandrake/rimflow/selftest_now.py",
   "design/specs/2026-11-27-tick-sweep/boundary.md": "src/RimMandrake/Utils/selftest_tick_sweep.py",
+  "design/specs/2026-11-27-lane-bundle-sweep/boundary.md": "src/RimMandrake/rimflow/selftest_lane_sweep.py",
   "design/specs/2026-11-27-vitals-proof-exit-contract/boundary.md": "src/RimMandrake/Utils/selftest_vitals_proof_exit_contract.py",
   "design/specs/2026-11-27-canary-plant-only-cell/boundary.md": "src/RimMandrake/Utils/modcheck/selftest_canary.py",
   "design/specs/2026-11-27-lock-commit-is-landed/boundary.md": "src/RimMandrake/rimflow/selftest_lock_commit_is_landed.py",
