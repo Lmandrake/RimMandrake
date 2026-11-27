@@ -268,6 +268,9 @@ class Game(object):
                     p["sev"] = min(1.0, p["sev"] + 0.02)
                 if p["sev"] > 0 and (self.clock + self.hp) % 200 == 0:
                     p["sev"] = max(0.0, p["sev"] - 0.008)
+            for p in self.pawns.values():   # AutoUndrafter: drafted and waiting UNDRAFT_TICKS, the pawn goes to work
+                if p.get("drafted") and self.clock - p["draftTick"] >= 10000:
+                    p["drafted"], p["loose"] = False, True
             if self.fire_on and self.clock % 530 == 0 and self.burned < 40:
                 self.burned += 1
             if self.fault == "fire_out" and self.weather == S.SMOKE:
@@ -284,12 +287,21 @@ class Game(object):
         if self.fault == "heatstroke" and p["id"] == "O" and self.clock > 6000:
             hs.append({"def": "Heatstroke", "label": "heatstroke (minor)", "severity": 0.05})
         x, z = p["cell"]
+        if p.get("loose"):
+            x += 3
         if self.fault == "moved" and p["id"] == "O" and self.clock > 8000:
             x += 2
         return {"id": p["id"], "x": x, "z": z, "dead": False, "downed": False, "mentalState": None,
                 "health": {"hediffs": hs, "capacities": caps}}
 
     def call(self, tool, **kw):
+        if tool == "jawa/set_draft":
+            p = self.pawns.get(kw["pawnId"])
+            if p is not None and bool(kw["drafted"]) != bool(p.get("drafted")):   # Drafted's setter: a no-op unchanged
+                p["drafted"] = bool(kw["drafted"])
+                if p["drafted"]:
+                    p["draftTick"] = self.clock
+            return {"success": True}
         if tool == "jawa/weather_set":
             if self.fault != "not_smoke" or kw["weather"] != S.SMOKE:
                 self.last, self.weather, self.age = self.weather, kw["weather"], 0
@@ -479,6 +491,16 @@ finally:
 print("[swc-st] planted no zoom probe: stage %r" % v.get("smoke_weather_stage"))
 check("planted no zoom probe: the stage reads UNMEASURED (the live run's reading)",
       str(v.get("smoke_weather_stage")) == "UNMEASURED", v)
+real_redraft = S.REDRAFT
+S.REDRAFT = False   # the planted fault: the pre-repair scene, drafted once at the stage and left
+try:
+    v, _ = run(Game(), judge="smoke")
+finally:
+    S.REDRAFT = real_redraft
+print("[swc-st] planted no redraft: %r" % v)
+check("planted no redraft: the auto-undrafted colonists walk and every pawn check reads UNMEASURED (the live reading)",
+      all(v.get(c) == "UNMEASURED" for c in ("smoke_chokes_outdoors", "smoke_spares_roofed", "smoke_puts_out_no_fire")), v)
+check("the reads' waits each stay under AutoUndrafter's delay", S.HOUR < S.UNDRAFT_TICKS, (S.HOUR, S.UNDRAFT_TICKS))
 check("the probe rect lies at the middle of the sky", S.calibration_rect((10, 20, 50, 50)) == (32, 42, 6, 6))
 v, _ = run(Game(fault="things_unreadable"), judge="smoke")
 check("an unreadable geyser count: the stage reads UNMEASURED, never 'no geyser'",

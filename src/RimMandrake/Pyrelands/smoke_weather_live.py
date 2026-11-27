@@ -78,6 +78,11 @@ STRIP_W, STRIP_H = 40, 12      # the fire's strip: about 4.7 cells an hour at th
 #                                MEASURED day-one head of 113 cells), so 40 cells outlast READ_HOURS' first full-smoke hour
 FIREBREAK = 6                  # cleared ground around the scene: over the burn line's HealReach (5, RM_BurnKernel)
 GAP = 10                       # cells between the strip and the room's wall: over HealReach, so the fire cannot reach R
+UNDRAFT_TICKS = 10000          # AutoUndrafter.UndraftDelay (decompile rw16): a drafted pawn left waiting this long with no
+#                                threat is undrafted and goes to work. ArchSmall 2026-11-27: undrafted at the 3rd read, O
+#                                walked 18 cells off to the fire, R paced its room; every pawn check UNMEASURED
+REDRAFT = True                 # our own rule: both colonists are undrafted and drafted again before each hour's wait
+#                                (Notify_Drafted restarts the delay), so no wait reaches UNDRAFT_TICKS
 TAKE_TICKS = 250               # one SmokeCheckIntervalTicks: the spark's first spread before the smoke goes on
 SHOT_PX = 1500                 # a capture's long side at most (the agents' image limit)
 CAL_CELLS = 6                  # our own rule: the first capture's zoom probe, a rect this small at the sky's middle.
@@ -405,6 +410,12 @@ def register(suite, V):
                 "age": (wd or {}).get("curWeatherAge"), "O": o, "R": r,
                 "fire": V._count(t, "Fire", V._rs(g["big"])), "grass": V._count(t, GRASS, V._rs(g["strip"]))}
 
+    def redraft(t):
+        for who in ("O", "R"):
+            if state.get(who):
+                t.bridge_call("jawa/set_draft", pawnId=state[who], drafted=False)
+                t.bridge_call("jawa/set_draft", pawnId=state[who], drafted=True)
+
     def shot(t, label):
         rect = V.padded_inside(state["geo"]["sky"], V._map_size(t)) if V._live(t) else state["geo"]["sky"]
         if CAL_CELLS and not state.get("zoomProbe"):   # learns the zoom on a rect that fits; never judged, never listed
@@ -537,6 +548,8 @@ def register(suite, V):
                 V._unmeasured(t, "the stage did not finish")
             full = None
             for h in range(1, READ_HOURS + 1):
+                if REDRAFT:
+                    redraft(t)
                 V._wait(t, HOUR)
                 if not V._live(t):
                     break
