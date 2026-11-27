@@ -49,4 +49,4 @@ test on a planted fault and fails unless that fault turns it red. This page cove
 - **the-line-never-fails-a-launch.** When the line cannot be made (a broken journal folder, a raising reader), the
   launch still starts the game and its text reads `COULD NOT LOOK`.
 
-Later lists beside this page: `polish.md` (none yet).
+Later lists beside this page: `polish.md`.
