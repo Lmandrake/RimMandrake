@@ -463,7 +463,9 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
     None until the next call, so a size the window no longer has can start nothing. last_user_at: the last HUMAN input
     only (_is_human_input; peers default to every scheduled seat's names) — that is what cancels a restart. open_tool:
     the tool the last record asked for, None once its result is in. size: the byte offset where this read ended, so a
-    restart this reading starts can bind its cursor to the very bytes it judged (_snapshot_cursor)."""
+    restart this reading starts can bind its cursor to the very bytes it judged (_snapshot_cursor). end_at: the time of
+    the last ended turn (end_turn) in the tail, whatever came after it: a first turn he answers within a tick is still
+    an ended turn (OPS_RESTART_UNSTICK_BENCH_YCVY_ZEXY)."""
     if peers is None:
         peers = peer_names()
     info = {}
@@ -472,7 +474,7 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
     except (OSError, Malformed):          # fail closed: an unreadable or torn tail is no reading at all
         return None
     s = {"last_kind": None, "last_at": None, "last_user_at": None, "ctx_tokens": None, "open_tool": None,
-         "size": info.get("end")}
+         "size": info.get("end"), "end_at": None}
     for r in recs:
         q = _queued_as_user(r)
         if q is not None:                # typed mid-turn: counts as his input, does not change the turn's state
@@ -488,6 +490,8 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
         at = _ts(r.get("timestamp"))
         if t == "assistant":
             s["last_kind"] = _assistant_kind(r)
+            if s["last_kind"] == "assistant_end":
+                s["end_at"] = at
             s["api_end"] = api_ended(r)
             s["open_tool"] = _tool_name(r)
             u = (r.get("message") or {}).get("usage") or {}
@@ -1713,11 +1717,14 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 rs.update(new_session=next_[0].get("sessionId"), new_pid=next_[0].get("pid"), relaunched_at=now)
                 mine = next_[:1]
         tx = ro["tx"](seat, mine[0]) if mine else None
-        if tx and tx.get("last_kind") == "assistant_end" and (tx.get("last_at") or 0) >= rs.get("killed_at", 0):
+        # any ended turn since the kill, not only a last record: he may answer it before the next tick reads it
+        ended = tx and max((tx.get("last_at") or 0) if tx.get("last_kind") == "assistant_end" else 0,
+                           tx.get("end_at") or 0)
+        if ended and ended >= rs.get("killed_at", 0):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
             act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=takes_note(rs.get("ticket")),
                 evidence="fresh %s window %s (pid %s) ended its first turn at %s" % (
-                    seat, rs["new_session"], rs.get("new_pid"), _iso(tx["last_at"])))
+                    seat, rs["new_session"], rs.get("new_pid"), _iso(ended)))
         elif now - rs["relaunched_at"] >= cfg["arm_s"] and not (
                 tx and (tx.get("last_at") or 0) >= rs.get("killed_at", 0) and now - tx["last_at"] < cfg["arm_s"]):
             # danger guarded: a window that died or hung in its first turn. A window whose transcript moved within
