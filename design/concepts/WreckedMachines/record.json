@@ -1,0 +1,591 @@
+{
+ "mod": "WreckedMachines",
+ "packageId": "mandrake.rm.wreckedmachines",
+ "stage": 0,
+ "scope": [
+  {
+   "id": "s_pick_generic_first",
+   "speaker": "owner",
+   "source": ["OWNER:1795106694655684530", "OWNER:1795106698836718981", "OWNER:1795111483885506845"],
+   "date": "2026-11-19",
+   "text": "He picked Wrecked Machines for the all-Fable build and named its shape: a generic implementation first, then a Utinni specialization (the holy aspect of repair, woven into the god-ship), possibly extended to ship components. He calls the generic one 'a good, strong concept save for the much larger lift in terms of art generation' and says it 'Needs a LOT of work using our modern Design passes'. His open question, 'whether we even bother with the generic version', is answered by the Conductor's call d_generic_is_the_mod; this design still writes the case for and against."
+  },
+  {
+   "id": "s_go_and_brief",
+   "speaker": "owner",
+   "source": ["OWNER:1795732666170825459"],
+   "date": "2026-11-26",
+   "text": "His go for the all-Fable experiment, and the brief for this design: take the bundled tickets, 'clarify and put needed bars and tests', fan out to subagents as needed. It lifts his hold of 2026-11-19."
+  },
+  {
+   "id": "s_questions_welcome",
+   "speaker": "owner",
+   "source": ["OWNER:1795734281276221614", "OWNER:1795734271516867235"],
+   "date": "2026-11-26",
+   "text": "'Questions are welcome from the wrecked machine design phase for me in card form as needed. Let's make the design shine.' For this mod each real design choice goes to him as a card; the Conductor does not answer a Designer ask in his place."
+  },
+  {
+   "id": "s_standalone_no_setting",
+   "speaker": "owner",
+   "source": ["OWNER:1795749349214480499", "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md", "design/RimMandrake/ancient_machines_design.md"],
+   "date": "2026-09-15",
+   "text": "The mod stands alone at the RimMandrake level and knows nothing of god favour; the campaign layer requires it, never the reverse. The item's ruling 0 spells out the consequence: complete and playable in a vanilla game, no faction, no setting, and no setting word in a defName, label or description."
+  },
+  {
+   "id": "s_nothing_equals_original",
+   "speaker": "owner",
+   "source": ["OWNER:1795749411129133147", "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md"],
+   "date": "2026-09-15",
+   "text": "'There is nothing beyond or even equal to the original.' The ladder approaches the original and stops below it; the item's ruling 3 records that his earlier 'would exceed modern technology' is withdrawn, and that a repaired machine's value is that the colony has it at all, not that it is strong."
+  },
+  {
+   "id": "s_graceful_survivor",
+   "speaker": "owner",
+   "source": ["OWNER:1795749512608610645", "OWNER:1795749529567808948", "design/validation_walks/RimMandrake/WreckedMachines.md"],
+   "date": "2026-09-15",
+   "text": "The feel he wants: ancient machines that are still somewhat functional and lose capacity slowly instead of stopping ('Their batteries just slowly lose capacity over millenia yet still work'), and repair of big machines in place, which he called 'excellent'."
+  },
+  {
+   "id": "s_study_the_machine",
+   "speaker": "owner",
+   "source": ["OWNER:1795749426260848822", "OWNER:1795749555968288570", "src/RimMandrake/WreckedMachines/DESIGN.md"],
+   "date": "2026-09-15",
+   "text": "The machine in front of the pawn is the research subject: 'study the MACHINE itself as part of the research' (2026-09-15), and the wreck 'should teach them about how to fix that machine… and the associated research item it is part of, slowly' (2026-08-12)."
+  },
+  {
+   "id": "s_mobile_structures",
+   "speaker": "owner",
+   "source": ["OWNER:1795749443608988682", "OWNER:1795749459948262983"],
+   "date": "2026-09-20",
+   "text": "Machines a colony can carry are in the mod: 'turrets, batteries, psychic emitters, and other traditionally archotech sources', a list he expects to grow ('We'll undoubtedly author more as we go on')."
+  },
+  {
+   "id": "s_ancient_components",
+   "speaker": "owner",
+   "source": ["OWNER:1795749476635482102"],
+   "date": "2026-09-15",
+   "text": "Refurbishment costs Ancient Components, 'a truly scarce and valuable resource'. The same sentence ties the know-how to 'the ship' and promises ship auto-repair late; those two parts name a setting and belong to the layers above (d_utinni_separate, d_ship_parts_next)."
+  },
+  {
+   "id": "s_plain_buildings",
+   "speaker": "owner",
+   "source": ["OWNER:1795749492693617246"],
+   "date": "2026-09-20",
+   "text": "A found machine is an ordinary building, installed like any other; there is no socket or slot mechanism."
+  },
+  {
+   "id": "s_donor_smelter_hidden",
+   "speaker": "owner",
+   "source": ["OWNER:1795749543738184808", "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_HideDonorSmelter.xml"],
+   "date": "2026-09-16",
+   "text": "'remove the VFE factory, not the manual one': the donor mod's automated smelter leaves the build menu so that the wreck ladder is the road to one; vanilla's hand-run electric smelter stays."
+  },
+  {
+   "id": "s_repair_easier_than_build",
+   "speaker": "owner",
+   "source": ["OWNER:1795749568058023416", "design/Jawa/wrecked_machines_resurrection.md"],
+   "date": "2026-08-31",
+   "text": "The doctrine behind the mod, said for the campaign: to repair existing broken machinery is much easier than to build it from scratch. The sentence names the ship and the clan; the generic mod keeps only the rule that repair is the easier road."
+  },
+  {
+   "id": "s_wrecks_draw_links",
+   "speaker": "owner",
+   "source": ["OWNER:1793986102064766481"],
+   "date": "2026-11-06",
+   "text": "'For wrecked machines, they should ALL draw in the piping and conduit the same way, not only at a certain value of fixedness.' A wreck joins pipes and conduit visually like its repaired grades."
+  },
+  {
+   "id": "s_card_2026_10_03",
+   "speaker": "agent",
+   "source": ["ITEM:RAKATAN_ARCHOTECH_MACHINES_1", "infrastructure/state/ledger/events/BENCH.jsonl"],
+   "date": "2026-10-03",
+   "text": "Three rulings he took by question card on 2026-10-03, known only through the bench's note of 2026-10-04 (event 1791074563677309893; no owner event carries the card): a wrecked ancient machine can be destroyed like any building; a relic's value does not count toward colony wealth; relics are found at ancient ruin sites. Treated as his rulings; the card text itself could not be read."
+  },
+  {
+   "id": "s_forge_words",
+   "speaker": "owner",
+   "source": ["OWNER:1791563988919655563", "ITEM:SHIP_ALLOY_FORGE_1"],
+   "date": "2026-10-09",
+   "text": "'Durasteel earlier, plasteel later': the alloy forge comes early and its harder recipes unlock later. Said for the campaign's materials; the gates that carry it live in this mod's folder today (inv_alloy_forge_gates)."
+  }
+ ],
+ "decisions": [
+  {
+   "id": "d_generic_is_the_mod",
+   "kind": "call",
+   "speaker": "conductor",
+   "delegated": "evidence-for-ask",
+   "source": "CONDUCTOR:1795106988858245240",
+   "date": "2026-11-19",
+   "what": "The generic, franchise-free RM_ WreckedMachines is the mod at Design Version 0.1.0. The old design text, the code and the north-star walk are input only, never settled. The Designer still writes the case for and against a generic version."
+  },
+  {
+   "id": "d_utinni_separate",
+   "kind": "call",
+   "speaker": "conductor",
+   "delegated": "evidence-for-ask",
+   "source": "CONDUCTOR:1795106994878118341",
+   "date": "2026-11-19",
+   "what": "The Utinni specialization (holy repair, the god-ship) is a separate RimUtinni-tier design after the generic design settles (RIMMANDRAKE_DESIGN_UTINNI_HOLY_REPAIR_AFTER_GENERIC). Not in 0.1.0's bars. 0.1.0 leaves it one opening: a neutral signal when a machine changes grade."
+  },
+  {
+   "id": "d_ship_parts_next",
+   "kind": "call",
+   "speaker": "conductor",
+   "delegated": "evidence-for-ask",
+   "source": "CONDUCTOR:1795107001629015855",
+   "date": "2026-11-19",
+   "what": "Repair extended to ship components is Divergent: next version, never a 0.1.0 bar (RIMMANDRAKE_EXTEND_WRECK_REPAIR_TO_SHIP_PARTS_NEXT_VERSION)."
+  },
+  {
+   "id": "d_feasible_study_in_vanilla",
+   "kind": "finding",
+   "speaker": "agent",
+   "source": ["src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml"],
+   "date": "2026-11-26",
+   "what": "Feasibility, read from the game source through RimSage: the base game has a study mechanism that needs no other mod. A thing with CompProperties_CompAnalyzableUnlockResearch (canStudyInPlace, analysisRequiredRange, showProgress, progress and completion letters) is studied where it stands by JobDriver_StudyItem; a ResearchProjectDef that lists the thing in requiredAnalyzed stays locked until the study count is met, and the research screen says what is not yet studied. Progress is kept by analysisID in the game's AnalysisManager, so it outlives the wreck. Biotech's mechanitor chips use it on items; no vanilla building uses it, so one live look on a building is owed before a bar leans on it. It differs from Research Reinvented's Analyse: vanilla study opens a locked project, Research Reinvented's study fills the project's bar."
+  },
+  {
+   "id": "d_feasible_wreck_placement",
+   "kind": "finding",
+   "speaker": "agent",
+   "source": ["src/RimMandrake/ColdStorage/Patches/ColdStorage_AncientComplexLoot.xml", "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_PlacedSetPieces.cs", "src/RimMandrake/FlowWorks/Defs/Machinery/RM_LiquidWorksScatter.xml", "src/RimMandrake/Wreckage/About/About.xml"],
+   "date": "2026-11-26",
+   "what": "Feasibility of a wreck that is found: three routes already work in this repo for other mods' wrecked buildings, all without new C# in this mod. (1) A prefab added to Odyssey's ancient-ruin room lists, as Cold Storage does for its wrecked stasis locker: this is his 'found at ancient ruin sites'. (2) The shared set-piece scatterer of Environmental Hazards (RM_GenStep_PlacedSetPieces), as FlowWorks uses for its wrecked water works on ordinary maps. (3) A row in Wreckage's wreck field (RM_GenStep_WreckField); its 'repairable few' weight is not built. Vanilla also scatters single ancient things on maps by a plain GenStep_ScatterThings def."
+  },
+  {
+   "id": "d_feasible_wealth",
+   "kind": "finding",
+   "speaker": "agent",
+   "source": ["src/RimMandrake/WreckedMachines/Source/WreckedMachinesSalvage.cs"],
+   "date": "2026-11-26",
+   "what": "Feasibility of 'relic value does not count toward colony wealth': the game's WealthWatcher adds each player building's MarketValueIgnoreHp into building wealth, so a Harmony patch there (the mod already carries Harmony and the shared PatchApplier) can leave the mod's machines out while they keep a trade value."
+  }
+ ],
+ "asks": [
+  {
+   "id": "a_quick_look",
+   "status": "draft",
+   "author": "rm-role-designer-1795748853",
+   "source": ["src/RimMandrake/WreckedMachines/validation.py"],
+   "about": ["inv_grade_ladder", "inv_smelter_line", "inv_power_cell_line", "inv_emanator_line", "inv_study_the_wreck"],
+   "owner_cites": ["OWNER:1795749529567808948"],
+   "offers_removal": false,
+   "decision": "whether the first move is a look at what is built, before more design",
+   "text": "Much of this mod is built and almost none of it was ever played. Before more design we offer a look on the mod's small list: one save with the smelter at all four grades side by side, the power cell and the emanator at three grades each, a wreck with a colonist sent to study it, and a kludged smelter half-built over a wreck. It measures what we would otherwise ask you to predict: whether the grades can be told apart at play zoom (today the cell and the emanator use one picture for all three grades), whether building the next grade over the old one feels like repair or like a build menu, and what studying a wreck looks like. Do you want to see it in a sitting, have an agent walk it and bring you a short set of zoomed shots, or go straight to the idea?"
+  },
+  {
+   "id": "a_root",
+   "status": "draft",
+   "author": "rm-role-designer-1795748853",
+   "source": ["src/RimMandrake/WreckedMachines/About/About.xml"],
+   "about": ["inv_grade_ladder", "inv_study_the_wreck", "inv_wreck_found_in_world"],
+   "owner_cites": ["OWNER:1795106694655684530", "OWNER:1795749411129133147", "OWNER:1795749426260848822", "OWNER:1795749512608610645"],
+   "offers_removal": false,
+   "decision": "the root text of the WreckedMachines concept (stage 1 ends on his approval of it)",
+   "text": "Proposed root, in one sentence: \"Wrecked Machines puts ancient machines into any RimWorld game that died where they stood and never quite stopped: a colony finds one, learns it by studying the wreck itself, and rebuilds it grade by grade into a patched, visibly bodged machine that never equals the original but is one the colony could not otherwise have.\" Our strongest doubt: the last clause. For a vanometric cell or a psychic emanator it is true in any game. For a factory machine it is true only because the mod takes that machine out of the build menu, and a stranger with the factory mod may feel robbed, not rewarded. Is this the root, or which word would you change?"
+  },
+  {
+   "id": "a_how_found",
+   "status": "draft",
+   "author": "rm-role-designer-1795748853",
+   "source": ["ITEM:RAKATAN_ARCHOTECH_MACHINES_1"],
+   "about": ["inv_wreck_found_in_world", "inv_ancient_component_source"],
+   "owner_cites": ["OWNER:1795749476635482102"],
+   "offers_removal": false,
+   "decision": "how a player of a generic game first meets a wreck, and where Ancient Components come from",
+   "evidence_against": "Your card of 2026-10-03 says relics are found at ancient ruin sites. In a generic game those ruins exist only on map tiles that carry the ancient-ruins feature, so a colony that never settles on or travels to such a tile never meets the mod at all; and nothing in the game yields an Ancient Component today, so Refurbished cannot be reached by play.",
+   "text": "Picture a stranger's colony in an ordinary game, a year in. When does this mod first show itself? (a) Only when they travel to an ancient ruin and find a wreck in one of its rooms: rare, an expedition, as your card said. (b) Also now and then on an ordinary map, one wreck half-buried somewhere on arrival, so every colony meets one early and the ruins hold the good ones. (c) Something else you picture. And the scarce Ancient Component: do you see it pulled out of other wrecks (take one machine apart to refurbish another), found only as loot in those ruins, or both?"
+  },
+  {
+   "id": "a_how_study_feels",
+   "status": "draft",
+   "author": "rm-role-designer-1795748853",
+   "source": ["src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml"],
+   "about": ["inv_study_the_wreck"],
+   "owner_cites": ["OWNER:1795749426260848822", "OWNER:1795749555968288570"],
+   "offers_removal": false,
+   "decision": "what the player sees when a colonist studies a wreck, and so which mechanism carries it",
+   "evidence_against": "The obvious answer is the base game's own study mechanism, because it works in any game. But the item's ruling 9 names Research Reinvented as the route, and the two feel different: the base game's study is a few sessions at the wreck that open a locked project, which is then researched at a bench as usual; Research Reinvented's study fills the project's bar at the wreck and leaves the bench slow. Your 2026-08-12 words ('teach them ... slowly') fit the second.",
+   "text": "A colonist walks up to a wrecked machine and studies it. What happens next in your picture? (a) After a few sessions at the wreck a letter says they understand it, and the restoration project opens; the rest is ordinary research at a bench. This works in any game with no other mod. (b) Every hour at the wreck fills the restoration project itself, and a bench barely moves it: the wreck is the bench. This needs Research Reinvented, or a study job of our own. (c) Both: (a) in any game, and (b) on top when Research Reinvented is loaded."
+  },
+  {
+   "id": "a_riders",
+   "status": "draft",
+   "author": "rm-role-designer-1795748853",
+   "source": ["design/specs/2026-11-26-wrecked-machines-fable/tickets_bundle.md"],
+   "about": ["inv_alloy_forge_gates", "inv_one_salvage_rule", "inv_distillation_module"],
+   "owner_cites": ["OWNER:1795749349214480499", "OWNER:1791563988919655563"],
+   "offers_removal": false,
+   "decision": "whether 0.1.0's promise covers the three finished rules in this mod's folder that are not about wrecks",
+   "evidence_against": "By your first-version card they would be extras: next version, switched off. But all three are finished, on by default, and other mods lean on them today: the Armoury's durasteel needs the early forge, the salvage rule is the one rule three mods agreed on, and FlowWorks holds the distillation module for its 0.2.0. Switching them off by default changes the campaign, not only this mod.",
+   "text": "Three finished rules ride in this mod's folder and are not about finding and repairing a wreck: the alloy forge's early and late steps, the one rule for what smelting and cremation give back, and the water distillation module. A stranger who installs Wrecked Machines gets all three. What should 0.1.0 say about them? (a) They are not part of this mod's promise: 0.1.0's bars leave them alone, they go on working as today, and each moves to the mod it belongs to in a later version. (b) They are part of what this mod is: a factory-floor mod, with bars of their own in 0.1.0. (c) Different answers for different ones; tell us which."
+  }
+ ],
+ "inventory": [
+  {
+   "id": "inv_grade_ladder",
+   "what": "One ladder of grades for every treated machine: Wrecked, Kludged, Refurbished and the original. Each upper grade is built over a lower grade of the same machine in the same place (vanilla replaceTags plus a place rule that refuses open ground; a reinstall is free). Nothing reaches the original unless the player switches full restoration on; the capability ratios stay ordered and below the original whatever a config says. Other mods already ride this ladder by name: Cold Storage's stasis lockers, the Rakatan stasis skins in Cuisine, the Armoury's alloy recipes on the smelter grades, and ResearchRetag's research tabs.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines", "src/RimMandrake/WreckedMachines/Source/WreckedMachinesLadder.cs", "src/RimMandrake/WreckedMachines/Source/Kernel/RM_WreckedMachinesKernel.cs", "src/RimMandrake/ColdStorage/Source/ColdStorageStartup.cs"],
+   "proof": "stale",
+   "proof_note": "Live once, 2026-09-01 on the 587-mod list: a Kludged smelter placed over a spawned wreck was accepted and the wreck was displaced (WRECKED_MACHINES_RESURRECTION_1). The place rule, the Refurbished grade and the full-restoration cap were written after that and never run in a game. Offline today: the kernel fuzz is green (15000 cases) on the shipped kernel file.",
+   "scope": "approved",
+   "source": ["OWNER:1795749411129133147", "ITEM:WRECKED_MACHINES_RESURRECTION_1", "ITEM:RAKATAN_ARCHOTECH_MACHINES_1", "ITEM:COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS"]
+  },
+  {
+   "id": "inv_smelter_line",
+   "what": "The automated smelter, the one factory machine treated: a dead wreck (inert, no comps, can be taken apart), a kludged smelter that runs three of the donor's six recipes, breaks down twice as often and cannot be overclocked, a refurbished one with five recipes that costs an Ancient Component and the restoration research, and the original-grade one that matches the donor machine. The mod ships its own art for three states in four facings; the refurbished grade borrows the original grade's picture. Today the wreck can also be built from the Architect menu for 30 steel, which its own def calls a testing affordance to be gone before ship.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml", "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Factories/AutomatedSmelter"],
+   "proof": "stale",
+   "proof_note": "Wrecked and Kludged art seen live 2026-09-01; Kludged and the original grade resolved on a load 2026-11-04 (MODCHECK_DONOR_ENVIRONMENTS_1 A2). No smelter grade was ever seen smelting. Offline: validation.py static checks pass (process counts, overclock flag, research gate).",
+   "scope": "approved",
+   "source": ["OWNER:1795749529567808948", "ITEM:WRECKEDMACHINES_COVERAGE_GAPS_1", "ITEM:MODCHECK_DONOR_ENVIRONMENTS_1"]
+  },
+  {
+   "id": "inv_power_cell_line",
+   "what": "A salvaged vanometric power cell in three grades that can be carried and reinstalled: the wreck still trickles a faint current and glows, the kludged and refurbished grades give a growing share of the vanilla cell's output for nothing. The share follows the ratio settings and is recomputed from the vanilla def. There is no original grade for it. All three grades use the vanilla cell's picture.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml", "src/RimMandrake/WreckedMachines/Source/WreckedMachinesLadder.cs"],
+   "proof": "missing",
+   "proof_note": "The defs resolved on a load 2026-10-09; the cell was never seen giving power, being built over, or being moved. validation.py has a ratio-of-two-reads row for the wreck's trickle that has not passed live.",
+   "scope": "approved",
+   "source": ["OWNER:1795749443608988682", "OWNER:1795749459948262983", "OWNER:1795749512608610645", "ITEM:RAKATAN_ARCHOTECH_MACHINES_1"]
+  },
+  {
+   "id": "inv_emanator_line",
+   "what": "A salvaged psychic emanator in three grades that can be carried and reinstalled: the wreck does nothing, the kludged and refurbished grades soothe pawns nearby when powered, more at the higher grade, through the mod's own thought (the vanilla thought reads only the vanilla emanator). It draws power and breaks down. No original grade. All three grades use the vanilla emanator's picture.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml", "src/RimMandrake/WreckedMachines/Defs/ThoughtDefs/Thoughts_WreckedMachines.xml", "src/RimMandrake/WreckedMachines/Source/WreckedMachinesLadder.cs"],
+   "proof": "missing",
+   "proof_note": "The defs resolved on a load 2026-10-09; no pawn was ever seen soothed. The on/off row for the emanator setting is a declared UNMEASURED in validation.py.",
+   "scope": "approved",
+   "source": ["OWNER:1795749459948262983", "ITEM:RAKATAN_ARCHOTECH_MACHINES_1"]
+  },
+  {
+   "id": "inv_study_the_wreck",
+   "what": "Studying the wreck is the road to the knowledge that restores it: three restoration research projects (smelter, power cell, emanator) gate the Refurbished grades, and three study opportunities point a colonist at the wreck itself. The study half exists only as Research Reinvented defs and is skipped when that mod is absent; then the projects are ordinary bench research. The smelter's study names only the wreck, so the subject is gone once a kludged smelter is built over it.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml", "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml"],
+   "proof": "missing",
+   "proof_note": "Never run: the item that built it says the study job was not tested, and no script exercises it (walk step 8). Kludged needs no research at all.",
+   "scope": "approved",
+   "source": ["OWNER:1795749426260848822", "OWNER:1795749555968288570", "ITEM:WRECKED_MACHINES_RESURRECTION_1"]
+  },
+  {
+   "id": "inv_ancient_component",
+   "what": "The Ancient Component: an item nobody can make, the cost of every Refurbished grade. Cold Storage and the Rakatan stasis skins also charge it. It uses a tinted vanilla picture.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml"],
+   "proof": "missing",
+   "proof_note": "The def resolved on a load 2026-10-09. Nothing in the game yields one (inv_ancient_component_source).",
+   "scope": "approved",
+   "source": ["OWNER:1795749476635482102", "ITEM:RAKATAN_ARCHOTECH_MACHINES_1"]
+  },
+  {
+   "id": "inv_donor_smelter_hidden",
+   "what": "The donor mod's own automated smelter is gone from the Architect menu, so the ladder is the only road to one; the def and its recipes stay, and a setting brings the build entry back at the next game start. Vanilla's electric smelter is untouched.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Patches/WreckedMachines_HideDonorSmelter.xml", "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs", "ITEM:WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1"],
+   "proof": "missing",
+   "proof_note": "Offline patch validation only. The first version of the patch sat in a folder the game never reads; after it was moved, no load checked the Architect menu. No script row claims the walk's never_two_identical_smelters.",
+   "scope": "approved",
+   "source": ["OWNER:1795749543738184808", "ITEM:WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1"]
+  },
+  {
+   "id": "inv_mod_settings",
+   "what": "A Mod Settings screen on the shared settings kit: 14 settings in 5 groups with search, per-group reset and a note of when each change takes effect. It covers research and material cost, the three grade ratios, full restoration, the build-over rule, the emanator, the forge's two switches, the two salvage switches and the donor smelter. Defaults equal shipped behaviour, and the def edits are re-derived when the window closes.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs", "ITEM:WRECKEDMACHINES_MOD_SETTINGS_1", "ITEM:WRECKEDMACHINES_COVERAGE_GAPS_1"],
+   "proof": "stale",
+   "proof_note": "validation.py holds ten set-apply-read-restore rows with an off arm; the live readings so far were failures of the harness's list rendering (2026-10-07) and one real red, the plasteel re-enable (WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS, 2026-11-03, not re-run since the code changed). Four switches that act in play have only a declared UNMEASURED row. The settings-screen audit was green 2026-11-24.",
+   "scope": "approved",
+   "source": ["ITEM:WRECKEDMACHINES_MOD_SETTINGS_1", "ITEM:WRECKEDMACHINES_COVERAGE_GAPS_1", "src/RimMandrake/WreckedMachines/validation.py"]
+  },
+  {
+   "id": "inv_wrecks_draw_links",
+   "what": "A wreck draws pipes and conduit into itself like its repaired grades, so no gap shows between a line and the machine. The mod's part is two building tags on its wrecks; the drawing is FlowWorks' code.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml", "src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py"],
+   "proof": "missing",
+   "proof_note": "FlowWorks' offline selftest was green 2026-11-17; both live readings are still owed and now ride RIMMANDRAKE_PROVE_FLOWWORKS_NINE_LIVE_ROWS_OWED_ONE_VISIT. The kludged and higher grades of the cell and emanator carry no such tag: not looked at.",
+   "scope": "approved",
+   "source": ["OWNER:1793986102064766481", "ITEM:WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES"]
+  },
+  {
+   "id": "inv_alloy_forge_gates",
+   "what": "The donor mod's alloy forge is reachable early, right after the smelter's restoration, at a cost without advanced components, and its plasteel recipe waits for a late project; two settings turn the steps off and take plasteel off the forge. It is not a wreck and has no grades. The durasteel recipe itself is the Armoury's.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml", "src/RimMandrake/WreckedMachines/Source/WreckedMachinesMod.cs", "src/RimMandrake/WreckedMachines/prove_alloy_forge_offline.py"],
+   "proof": "stale",
+   "proof_note": "Read live once on the 565-mod list, 2026-10-10, before the cost and order changes of 2026-11-12. Since then offline only: prove_alloy_forge_offline.py passes two of its rows and leaves the live one UNMEASURED. One live row is red and open (the plasteel re-enable).",
+   "scope": "not_opened",
+   "source": ["OWNER:1791563988919655563", "ITEM:SHIP_ALLOY_FORGE_1", "ITEM:WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS"]
+  },
+  {
+   "id": "inv_one_salvage_rule",
+   "what": "One rule for what a finished item gives back: apparel and weapons smelted in an automated smelter, the donor's own included, return what the vanilla electric smelter returns, and cremating a corpse returns the same for what it wore, held and carried. Two settings. It acts on every smelter and crematorium, wreck or not.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Source/WreckedMachinesSalvage.cs", "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_SalvageRule.xml", "src/RimMandrake/WreckedMachines/selftest_salvage_rule.py"],
+   "proof": "missing",
+   "proof_note": "Never loaded in a game (SALVAGE_RULE_PROVE_ON_A_REAL_FURNACE). Offline it is the best-tested part of the mod: the shipped source compiled against a fake engine, 41 variants with 40 planted faults red, green today.",
+   "scope": "not_opened",
+   "source": ["ITEM:SALVAGE_RULE_PROVE_ON_A_REAL_FURNACE", "design/RimMandrake/salvage_lift_policy_2026-11-01.md"]
+  },
+  {
+   "id": "inv_distillation_module",
+   "what": "A water distillation machine in the wreck grammar, present only with FlowWorks: a wreck, a kludged module and a 'repaired' one that turn any distillable liquid into fresh water at a rate per grade and refuse tar, oil, fuel and slime. Its text says it is 'the ship's', and its top grade is named Repaired. It uses tinted vanilla pictures; three sprites for it sit unused in the mod's Textures folder.",
+   "impl": "present",
+   "impl_evidence": ["src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml", "src/RimMandrake/WreckedMachines/Textures/WreckedMachines/Modules/Distillation"],
+   "proof": "missing",
+   "proof_note": "The three defs resolved live 2026-10-07; salt to fresh and the tar refusal were never run. FlowWorks' sweep of 2026-11-22 holds it for FlowWorks 0.2.0. It has no grade extension, no place rule and no study.",
+   "scope": "not_opened",
+   "source": ["ITEM:WRECKED_DISTILLATION_MODULE_1"]
+  },
+  {
+   "id": "inv_wreck_found_in_world",
+   "what": "A wrecked machine that the player finds in the world. Nothing places one today: no map step, site, quest, trader or incident. The power cell and emanator wrecks can only be dev-spawned; the smelter wreck can only be dev-spawned or built from the menu.",
+   "impl": "absent",
+   "search_scope": "src/ (*.xml, *.cs) for RM_WM_, WreckedMachine and Wrecked defNames in any GenStep, IncidentDef, ThingSetMaker, SitePart, QuestScript, TraderKind, stockGenerator or scatter def, and the mod's own Defs, Patches and Source; the only spawners found place other mods' wrecks (FlowWorks, Cold Storage, the Utinni vault layouts)",
+   "proof": "missing",
+   "scope": "open_question",
+   "source": ["ITEM:RAKATAN_ARCHOTECH_MACHINES_1", "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md"]
+  },
+  {
+   "id": "inv_ancient_component_source",
+   "what": "A way to come by an Ancient Component in play. None exists: no loot table, trader stock, recipe or drop, as the item's own def says.",
+   "impl": "absent",
+   "search_scope": "src/ (*.xml, *.cs) for RM_WM_AncientComponent and AncientComponent: it appears only as a cost (this mod's Refurbished grades, Cold Storage's lockers, Cuisine's Rakatan stasis)",
+   "proof": "missing",
+   "scope": "open_question",
+   "source": ["OWNER:1795749476635482102", "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml"]
+  },
+  {
+   "id": "inv_wealth_exclusion",
+   "what": "A relic's value left out of colony wealth, so restoring machines does not raise raids. Not built: the cell and emanator grades carry market values that count like any building's.",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/WreckedMachines/Source (*.cs) for WealthWatcher, wealth and MarketValue: the only Harmony patch in the assembly is the salvage one",
+   "proof": "missing",
+   "scope": "open_question",
+   "source": ["ITEM:RAKATAN_ARCHOTECH_MACHINES_1"]
+  },
+  {
+   "id": "inv_grade_changed_signal",
+   "what": "A neutral signal when a machine changes grade, which a layer above can listen to without this mod knowing who listens. Not built.",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/WreckedMachines/Source (*.cs) for event, Action, signal and Notify: none",
+   "proof": "missing",
+   "scope": "open_question",
+   "source": ["CONDUCTOR:1795106994878118341", "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md"]
+  },
+  {
+   "id": "inv_turret_line",
+   "what": "A salvaged turret on the ladder, the first of the machines he named that is not built: no vanilla ancient turret exists to serve as its original, so it needs its own art and its own combat behaviour.",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/WreckedMachines/Defs for Turret: none; the item's build pass of 2026-10-06 lists it as not built",
+   "proof": "missing",
+   "scope": "later",
+   "source": ["OWNER:1795749459948262983", "infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md"]
+  },
+  {
+   "id": "inv_more_factory_machines",
+   "what": "Wrecked and kludged states for the donor mod's other factory machines (about 17 machines, three pictures in four facings each). Only the smelter is treated; the art tooling for the rest exists in the mod's Source folder.",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/WreckedMachines/MACHINES.md (the treated register) and Defs/ThingDefs_Buildings: one machine, the automated smelter",
+   "proof": "missing",
+   "scope": "later",
+   "source": ["OWNER:1795106694655684530", "src/RimMandrake/WreckedMachines/MACHINES.md"]
+  }
+ ],
+ "built_reviewed": [
+  {"ref": "src/RimMandrake/WreckedMachines", "covered_by": "inv_grade_ladder"},
+  {"ref": "ITEM:WRECKEDMACHINES_COVERAGE_GAPS_1", "covered_by": "inv_mod_settings"},
+  {"ref": "ITEM:WRECKEDMACHINES_MOD_SETTINGS_1", "covered_by": "inv_mod_settings"},
+  {"ref": "ITEM:WRECKEDMACHINES_VFE_SMELTER_REMOVAL_1", "covered_by": "inv_donor_smelter_hidden"},
+  {"ref": "ITEM:WRECKED_MACHINES_RESURRECTION_1", "covered_by": "inv_study_the_wreck"},
+  {"ref": "ITEM:MODCHECK_DONOR_ENVIRONMENTS_1", "covered_by": "inv_smelter_line"},
+  {"ref": "ITEM:COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS", "covered_by": "inv_grade_ladder"},
+  {"ref": "ITEM:GAME_DRIFT_DEPLOY_OLDER_COMMITS", "not_a_capability": "a deploy of 21 mods' older commits on 2026-10-24; it built nothing in this mod"},
+  {"ref": "ITEM:GRAPHICS_GEMINI_BILLING_DECISION_1", "not_a_capability": "a billing decision for an image channel; the trial art for wrecked machines was judged unimpressive and nothing from it ships"},
+  {"ref": "ITEM:JAWA_PATCHES_SPLIT_1", "not_a_capability": "a split of another mod's patch files; it names WreckedMachines relics only as a straddle to extract"},
+  {"ref": "ITEM:RIMMANDRAKE_REASK_FABLE_FROM_START_WHEN_MOD_IS_FREE", "not_a_capability": "the question of which mod Fable builds; answered by s_pick_generic_first"},
+  {"ref": "ITEM:SETTINGS_AUDIT_REFRESH_ONE_GROUP_TOO_MANY", "covered_by": "inv_mod_settings"},
+  {"ref": "ITEM:SETTINGS_SCREENS_FIX_FIVE_OUTGREW_GROUPS", "covered_by": "inv_mod_settings"},
+  {"ref": "ITEM:SETTINGS_SCREENS_FIX_TWO_OUTGREW_AUDIT", "covered_by": "inv_mod_settings"}
+ ],
+ "owner_elsewhere_reviewed": [
+  {"source": "OWNER:1793682737543906740", "not_design_input": "his card retiring the FOUNDRY seat, which re-homed WRECKED_DISTILLATION_MODULE_1; it says nothing about the mod"},
+  {"source": "OWNER:1795107810291165556", "not_design_input": "his hold of 2026-11-19 on the Fable-only passes; lifted by his go (s_go_and_brief)"},
+  {"source": "OWNER:1795111489254411954", "not_design_input": "the same hold, in his own words; lifted by his go"},
+  {"source": "OWNER:1795111494622060342", "not_design_input": "his question about the smallest mod for an all-Fable pass; it led to the pick and says nothing of the design"},
+  {"source": "OWNER:1795734422242984484", "not_design_input": "permission for the Fable run to call Codex when useful; a rule for the run, not for the mod"},
+  {"source": "OWNER:1795734430591185497", "not_design_input": "the item that carries the same Codex permission"}
+ ],
+ "contradictions": [
+  {
+   "id": "c_no_way_in",
+   "status": "open",
+   "core": true,
+   "source": ["src/RimMandrake/WreckedMachines/Defs/ThingDefs_Items/Items_WreckedMachines.xml", "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml", "src/RimMandrake/WreckedMachines/DESIGN.md"],
+   "text": "The mod is about a machine that is found, and nothing lets a player find one. No wreck is placed anywhere and no Ancient Component can be had, so by play alone the ladder starts only where the player builds a 'wreck' from the menu for 30 steel, and it ends at Kludged. Routed to stage 1 and 2 (asks a_root, a_how_found); feasibility is settled in d_feasible_wreck_placement.",
+   "routed": "stage 1-2: a_how_found"
+  },
+  {
+   "id": "c_original_means_two_things",
+   "status": "open",
+   "core": true,
+   "source": ["OWNER:1795749411129133147", "design/validation_walks/RimMandrake/WreckedMachines.md", "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml"],
+   "text": "'The original' is two different things in the built mod. For the smelter it is an ordinary factory machine the player could have built, had the mod not hidden it: restoring it gives back what the mod took. For the power cell and the emanator it is a thing nobody can build: even a kludged one is a gift. His ruling that nothing equals the original holds for both, but the old north star's line that a refurbished machine reads 'beyond modern' is true only of the second kind and is what his ruling withdrew. The root has to say which kind the mod is about, or that it is both and why.",
+   "routed": "stage 1: a_root"
+  },
+  {
+   "id": "c_setting_words_in_generic_tier",
+   "status": "open",
+   "core": false,
+   "source": ["OWNER:1795749349214480499", "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml", "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml", "design/specs/2026-11-26-wrecked-machines-fable/tickets_bundle.md"],
+   "text": "The bundle measured that no def names Rakatan, Utinni, Jawa or Star Wars. That is true and narrower than his ruling, which allows no setting at all. The player still reads 'the ship': 'Bring the ship's alloy forge back to heat', 'restoring wrecked ship machinery', 'The ship's water distillation module, torn off its mounts in the crash', and the three restoration projects carry the ShipRelated tag; README.md still speaks of the Kolyska. Not a question for him: a build item at stage 3, with a check that reads every label and description.",
+   "routed": "stage 3: build item"
+  },
+  {
+   "id": "c_repaired_is_not_a_grade",
+   "status": "open",
+   "core": false,
+   "source": ["infrastructure/state/items/RAKATAN_ARCHOTECH_MACHINES_1.md", "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml", "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml"],
+   "text": "The item's ruling 1 says Repaired is not a level and no def uses the word. The original-grade smelter is still RM_WM_AutomatedSmelter_Repaired, labelled 'repaired automated smelter', the settings screen speaks of 'the Repaired tier', and the distillation module's top grade is 'repaired'. The Armoury, ResearchRetag and the proof scripts name the _Repaired def, so a rename touches neighbours. What the player reads is a design line for stage 3; the defName is a build detail.",
+   "routed": "stage 3"
+  },
+  {
+   "id": "c_study_fights_build_over",
+   "status": "open",
+   "core": true,
+   "source": ["src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml", "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml"],
+   "text": "Study and repair pull against each other. Kludged needs no study and no research, and building it removes the wreck that the smelter's study points at; so the cheapest play is to never study at all, and a player who kludges first has nothing left to study. The mobile lines let the kludged grade be studied too; the smelter does not. The design has to say when study happens and what it buys.",
+   "routed": "stage 2: a_how_study_feels"
+  },
+  {
+   "id": "c_grades_share_one_picture",
+   "status": "open",
+   "core": true,
+   "source": ["src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_Mobile.xml", "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml", "design/validation_walks/RimMandrake/WreckedMachines.md"],
+   "text": "His old north star opens with grades told apart at a glance. On disk the power cell's three grades share the vanilla cell picture, the emanator's three share the vanilla emanator picture, the refurbished smelter shares the original grade's picture, and the Ancient Component is a tinted vanilla component. Only the smelter's wrecked and kludged grades have a picture that no other grade uses. Until the art exists, eight of the ten machine defs share their picture with another grade, so the grade cannot be read without a click. This is the 'much larger lift in terms of art generation' he named; it is build work with an art judge, not a question.",
+   "routed": "stage 3: art build items"
+  },
+  {
+   "id": "c_old_north_star",
+   "status": "resolved",
+   "source": ["design/validation_walks/RimMandrake/WreckedMachines.md", "CONDUCTOR:1795106988858245240"],
+   "text": "The walk's north star declares VALIDATED, and four of its lines judge a Rakatan and sacred reading that the generic tier may not carry.",
+   "resolved": true,
+   "resolution": "Measured 2026-11-26 with modcheck's northstar.parse: the section's effective state is DRAFT (edited since validation: recorded hash 70881b98e8c1, on disk ea3b887f9fe9), and the Conductor's call makes the walk input only. Its eight lines about how grades and wrecks read are carried into this design as input; its four Rakatan lines belong to the layers above; its 'known blocker' (no Mod Settings) is stale, the mod has them."
+  },
+  {
+   "id": "c_neighbours_ride_the_ladder",
+   "status": "open",
+   "core": false,
+   "source": ["src/RimMandrake/ColdStorage/Source/ColdStorageStartup.cs", "src/RimMandrake/ColdStorage/Patches/ColdStorage_WreckedMachinesLadder.xml", "src/RimStarWars/Cuisine/Patches/RSW_RakatanStasisLadder.xml", "src/RimStarWars/Armoury/Patches/RSW_Smelter_Alloys.xml", "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml"],
+   "text": "Four other mods already use this mod as a library, by name and by reflection: the grade extension, the place rule, RatioFor, the Ancient Component, three research defNames and the smelter grade defNames. None declares a dependency. A change of 0.1.0 to any of those names or to what a grade means reaches them silently. A constraint for stage 3 (a check that the names the neighbours read still resolve), and the strongest argument that a generic ladder is worth having.",
+   "routed": "stage 3: constraint and check"
+  },
+  {
+   "id": "c_riders_in_the_folder",
+   "status": "open",
+   "core": false,
+   "source": ["src/RimMandrake/WreckedMachines/Patches/WreckedMachines_AlloyForgeGates.xml", "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_SalvageRule.xml", "src/RimMandrake/WreckedMachines/Patches/WreckedMachines_DistillationModule.xml"],
+   "text": "Three finished rules in the folder are not about finding and repairing a wreck: the alloy forge's steps, the one salvage rule, and the distillation module. Four of the mod's fourteen settings and most of its offline tests belong to them. Under his first-version card they are extras; other mods lean on all three today. Whether 0.1.0's promise covers them is his (a_riders).",
+   "routed": "stage 2: a_riders"
+  },
+  {
+   "id": "c_plasteel_restore_red",
+   "status": "open",
+   "core": false,
+   "source": ["ITEM:WM_PLASTEEL_RESTORE_FIX_FORGE_FORGETS", "src/RimMandrake/WreckedMachines/validation.py"],
+   "text": "One live check is red and open since 2026-11-03: after the plasteel switch goes off and on, the forge did not match its shipped def. The code changed twice since and nobody re-ran it; half of the report may be the harness printing a list as type names. Not a design question: the first live visit re-runs the row and classes it (mod, check or scene).",
+   "routed": "build: first live visit"
+  }
+ ],
+ "script_audit": [
+  {
+   "script": "src/RimMandrake/WreckedMachines/validation.py",
+   "scenes": "wrecked_tier_loads_inert, kludged_tier_has_power_and_processor_comps, repaired_tier_gated_by_own_research: each spawns one smelter grade and reads that it inspects with no error",
+   "start": "partial: the area is cleared, never asserted clear; the research scene never asserts the project is unfinished first",
+   "control": "absent: no case shows a refusal (for example the same grade without its research, or an upper grade on open ground)",
+   "restore": "absent: the spawned buildings stay, and the finished research is never undone",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/WreckedMachines/validation.py",
+   "scenes": "setting_<field>_drives_def, ten rows: set a setting, apply, read the def, restore, read again",
+   "start": "present: reads and asserts the value before the change",
+   "control": "present: the restored read is the off arm and must equal the first read",
+   "restore": "present, in a finally block; a failed re-apply there is ignored",
+   "hold": "absent (none needed: a state read)"
+  },
+  {
+   "script": "src/RimMandrake/WreckedMachines/validation.py",
+   "scenes": "setting_<field>_gates_play, four rows (build-over rule, emanator, smelter salvage, cremation): each only declares itself UNMEASURED live",
+   "start": "absent",
+   "control": "absent",
+   "restore": "nothing changes",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/WreckedMachines/validation.py",
+   "scenes": "alloy_forge_gated, six readings of the forge's gates, cost, recipe order and research tab",
+   "start": "partial: asserts the gate setting is on, else UNMEASURED",
+   "control": "partial: the gate-off arm is the neighbouring settings row, not this scene",
+   "restore": "nothing changes (read only)",
+   "hold": "absent (none needed)"
+  },
+  {
+   "script": "src/RimMandrake/WreckedMachines/validation.py",
+   "scenes": "what no scene stages: a build-over through a blueprint by a pawn (declared UNMEASURED: no bridge tool resolves a blueprint), a study session at a wreck, a cell giving power, an emanator soothing a pawn, a smelter smelting, a wreck found on a generated map, the Architect menu without the donor smelter, and every line of the old north star about how a grade looks",
+   "start": "absent",
+   "control": "absent",
+   "restore": "absent",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/WreckedMachines/selftest_salvage_rule.py",
+   "scenes": "offline: the shipped salvage source compiled against a hand-written fake engine, 41 variants (40 planted faults red), patch XML against the donor's real defs, kernel fuzz; green 2026-11-26",
+   "start": "not a live scene",
+   "control": "present: planted faults",
+   "restore": "not a live scene",
+   "hold": "not a live scene"
+  },
+  {
+   "script": "src/RimMandrake/WreckedMachines/Source/SelfTest/WreckedFuzz.cs",
+   "scenes": "offline: seeded fuzz of the shipped Verse-free kernel (ratios, place rule, emanator stage, scaling); green 2026-11-26 through Utils/selftest_wreckedmachines_fuzz.py; the code that touches the game around the kernel is not covered",
+   "start": "not a live scene",
+   "control": "partial: fails if a path is never reached; no planted-fault run seen",
+   "restore": "not a live scene",
+   "hold": "not a live scene"
+  },
+  {
+   "script": "src/RimMandrake/WreckedMachines/prove_alloy_forge_offline.py",
+   "scenes": "offline: applies the shipped patches to the donor's real XML with its own patch interpreter and a Python copy of the C# cost rule; two rows pass, the live row is UNMEASURED without a capture",
+   "start": "not a live scene",
+   "control": "absent",
+   "restore": "not a live scene",
+   "hold": "not a live scene"
+  }
+ ],
+ "neighbours": [
+  {"mod": "Vanilla Furniture Expanded - Factory (VanillaExpanded.VFEFactory)", "role": "hard dependency and donor: the smelter's recipes, the alloy forge, the factory floor a factory wreck must stand on; owns factory machines as a job"},
+  {"mod": "Research Reinvented (petetimessix.researchreinvented)", "role": "soft: the only carrier of study-the-wreck today; in the mod's small list"},
+  {"mod": "src/RimMandrake/Wreckage (mandrake.rm.wreckage)", "role": "owns wreck families that are taken apart for loot, and a wreck-field map step; a wreck family and a wrecked machine must stay two different things to the player, and 0.1.0 takes none of its scavenging loop (SALVAGE_WRECKAGE_EVERYWHERE_1)"},
+  {"mod": "src/RimMandrake/EnvironmentalHazards", "role": "owns the shared set-piece scatterer (RM_GenStep_PlacedSetPieces): a service this mod can opt into to place wrecks"},
+  {"mod": "src/RimMandrake/ColdStorage", "role": "rides the ladder by reflection and def patch, charges the Ancient Component, and already places its wrecked locker in Odyssey's ancient-ruin rooms: the pattern for this mod's own wrecks"},
+  {"mod": "src/RimMandrake/FlowWorks", "role": "owns liquid machinery and the converter comp under the distillation module, draws pipes into wrecks, and scatters its own wrecked water works in the same three-grade grammar without this mod's ladder types"},
+  {"mod": "src/RimStarWars/Armoury (mandrake.rsw.armoury)", "role": "owns durasteel and adds its alloy recipes to this mod's smelter grades by defName; its beskar smelting composes with the salvage rule"},
+  {"mod": "src/RimStarWars/Cuisine", "role": "puts its Rakatan stasis casket and vault on the ladder and charges the Ancient Component; in effect the first piece of the Rakatan skin layer"},
+  {"mod": "src/RimUtinni/ResearchRetag", "role": "re-tabs and re-techprints three of this mod's research projects by defName"},
+  {"mod": "src/RimMandrake/_Shared (SettingsKit, SalvageRule, HarmonyResilience)", "role": "source-linked shared code this mod already uses; this mod is the only linker of SalvageRule"},
+  {"mod": "vanilla (Core and DLC)", "role": "does parts of the job already: intact vanometric cells and psychic emanators arrive as quest rewards and cannot be built; Odyssey scatters ancient machines as scenery to take apart; Biotech's mechanitor chips are 'study the thing to open the research'. No vanilla thing is found broken and built back up. No third-party mod was searched for."}
+ ],
+ "failure_modes": [
+  "There is no way in. Nothing places a wreck in the world and nothing yields an Ancient Component, so a player never finds a machine: the ladder starts only if they build a 'wreck' from the menu for 30 steel, and it stops at Kludged. The found, surviving ancient machine he pictures never happens in a real game, however good the ladder under it is.",
+  "It reads as a building-upgrade menu, not as a machine that survived. Eight of the ten machine defs share a picture with another grade, so the grade cannot be seen; studying the wreck exists only when another mod is loaded, is never needed for the first step, and loses its subject when that step is built; and nobody has ever watched a grade being built over another by a pawn, a cell giving its trickle, or an emanator soothing anyone. The mod has been loaded, never played.",
+  "The generic mod is not generic and not one thing, so the experiment tests old debris instead of Fable. A stranger who installs it loses the factory mod's smelter from the build menu, gets the alloy forge re-gated, smelting and cremation changed and a 'ship's' distillation module, and reads about 'the ship' in a mod that promises no setting; four of our own mods lean on its names without saying so. If 0.1.0 does not draw the line around the one promise, the build spends its cycles on a red plasteel row and three untested riders, and what is left of the promise is one smelter and two vanilla machines with a number attached."
+ ]
+}
