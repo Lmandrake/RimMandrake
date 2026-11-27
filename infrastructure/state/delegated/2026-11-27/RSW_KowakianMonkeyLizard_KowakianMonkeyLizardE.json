@@ -1,0 +1,139 @@
+{
+ "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+ "judge": "rm-detached-bench-alt-graphics-fix-six-second-faces-1795766686 (claude-opus-5-5; did not make the art: the alternates were drawn by the artpipe donor-regen 2026-10-18/19 and installs to 2026-11-01)",
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RSW_KowakianMonkeyLizard",
+ "alternate_set": "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE",
+ "set_verdict": "KEEP",
+ "approved_primary": "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard",
+ "canon": "design/RimStarWars/canon_references/kowakianmonkeylizard/description.md",
+ "def_facts": {
+  "drawSize_cells_adult": 1.25,
+  "source": "live def dump 2026-11-27 06:22Z (scale_panel.py --def)"
+ },
+ "inputs": "Given and looked at: every facing (south/east/north) of the alternate and of the approved primary at full resolution side by side; a true-scale panel (scale_panel.render_panel: vanilla human beside it at max zoom, and normal play 32 px/cell) of each south; def drawSize from the live def dump 2026-11-27 06:22Z; the canon entry's Must show; sibling keeps from art.py status. Panels: D:\\ClaudeWork\\scratch\\altjudge\\",
+ "verdicts": [
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+   "picture_sha256": "53cdf587e2d660d03cd100dd8668ba297861d07074caf72dfb39a5f520a4de5e",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Same body plan as the kept primary (stooped spindly biped, pot belly, long curled tail, hooked beak, huge back-swept ears, long clawed fingers and toes) in the canon live-action colouring: tan-pink wrinkled skin, ginger crown tuft, jaw tufts and shoulder ruff, slate-blue beak, yellow eyes. Every A2 Must show line is yes, and its NEGATIVE is met (not furry all over, no wings). The kept primary is the blue-ruffed, orange-crested, yellow-bellied CG colour form that the canon NEGATIVE names; he kept it 2026-10-08, so it stays (E3), and KowakianE is the canon colour morph of the same species, not a different creature. Same painterly hand and size class as the primary (B3 yes). North: back of the head, ears and tail, no beak or eyes (C1 yes). Facings agree on size (C2 yes). No outline, real alpha, our own regen."
+  },
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+   "picture_sha256": "2779d432845fb4f0f97399cdea0cf78a248d02b2ebb18597eab9fe6c280a4f8d",
+   "facing": "east",
+   "verdict": "KEEP",
+   "notes": "see the south line: one look covers the set; this facing agrees with it."
+  },
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png",
+   "picture_sha256": "5a090e461defc620339811e2b9aa231a1c388efab819d87f3f271d3a8eed25d4",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "see the south line: one look covers the set; this facing agrees with it."
+  }
+ ],
+ "proposals": [
+  "Flag for the owner (kept-but-flagged, delegation_policy.md §6): his kept primary is the CG colour form that the canon entry's NEGATIVE line names as 'not ... the base form', while all five alternates (80% of spawns) are the canon live-action form. The game will show mostly the canon morph and sometimes his kept blue-yellow morph; no constraint refuses that, but he never saw the two side by side."
+ ],
+ "contract": {
+  "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+  "family": "art_judge_brief",
+  "sha": "53cdf587e2d660d03cd100dd8668ba297861d07074caf72dfb39a5f520a4de5e",
+  "passed": [
+   {
+    "clause": "A2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "B1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "B1a",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "B2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "B3",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "C1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "C2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "D1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "D4",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "E1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   },
+   {
+    "clause": "E3",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/KowakianMonkeyLizard/KowakianMonkeyLizardE_north.png"
+    ]
+   }
+  ],
+  "refusals": []
+ },
+ "fixer_route": "KEEP: record each facing in the art ledger with `art.py install SWBestiary <rel> <sha> --why 'delegated: art <this file>'` (or the ledger's keep verb), and remove its rows from drawn_art_ruled_baseline.json."
+}

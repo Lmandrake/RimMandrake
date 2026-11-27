@@ -1,0 +1,137 @@
+{
+ "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+ "judge": "rm-detached-bench-alt-graphics-fix-six-second-faces-1795766686 (claude-opus-5-5; did not make the art: the alternates were drawn by the artpipe donor-regen 2026-10-18/19 and installs to 2026-11-01)",
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RSW_Falumpaset",
+ "alternate_set": "swanimals/Falumpaset/FalumpasetE",
+ "set_verdict": "KEEP",
+ "approved_primary": "swanimals/Falumpaset/Falumpaset",
+ "canon": "design/RimStarWars/canon_references/falumpaset/description.md",
+ "def_facts": {
+  "drawSize_cells_adult": 4.0,
+  "source": "live def dump 2026-11-27 06:22Z (scale_panel.py --def)"
+ },
+ "inputs": "Given and looked at: every facing (south/east/north) of the alternate and of the approved primary at full resolution side by side; a true-scale panel (scale_panel.render_panel: vanilla human beside it at max zoom, and normal play 32 px/cell) of each south; def drawSize from the live def dump 2026-11-27 06:22Z; the canon entry's Must show; sibling keeps from art.py status. Panels: D:\\ClaudeWork\\scratch\\altjudge\\",
+ "verdicts": [
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+   "picture_sha256": "ce2f3f473c3aa0eb82a247154a3ae07b309cbefb3cd651d73012eae308187a3e",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Same creature and same artist as the kept primary: barrel body with heavy rump on long thick legs, neck sloping down to a low small head with drooping lip, greyish-tan hide with scattered dark blotches, legs darkening to the feet, short tufted tail (A2 body plan, colour layout, hide, head, feet yes; NEGATIVE: no hump, no tusks, no hippo gape). Spot pattern differs from the primary, which is the point of a variant. Body size on the canvas matches the primary at true scale (B3, C2 yes). North shows the rump and tail with only the ear tips of the low head, no face (C1 yes). No outline, real alpha, our own regen."
+  },
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+   "picture_sha256": "7bfb635d52cb35d0410d5c658e6b3d850b6d8682d3d7ab5b66083f54cb0b493a",
+   "facing": "east",
+   "verdict": "KEEP",
+   "notes": "see the south line: one look covers the set; this facing agrees with it."
+  },
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png",
+   "picture_sha256": "113131486fb1db549182304ce41aa0e8911732cf5e1cda65370aac163f086797",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "see the south line: one look covers the set; this facing agrees with it."
+  }
+ ],
+ "proposals": [],
+ "contract": {
+  "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+  "family": "art_judge_brief",
+  "sha": "ce2f3f473c3aa0eb82a247154a3ae07b309cbefb3cd651d73012eae308187a3e",
+  "passed": [
+   {
+    "clause": "A2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "B1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "B1a",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "B2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "B3",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "C1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "C2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "D1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "D4",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "E1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   },
+   {
+    "clause": "E3",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Falumpaset/FalumpasetE_north.png"
+    ]
+   }
+  ],
+  "refusals": []
+ },
+ "fixer_route": "KEEP: record each facing in the art ledger with `art.py install SWBestiary <rel> <sha> --why 'delegated: art <this file>'` (or the ledger's keep verb), and remove its rows from drawn_art_ruled_baseline.json."
+}

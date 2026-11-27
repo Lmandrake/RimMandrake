@@ -1,0 +1,137 @@
+{
+ "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+ "judge": "rm-detached-bench-alt-graphics-fix-six-second-faces-1795766686 (claude-opus-5-5; did not make the art: the alternates were drawn by the artpipe donor-regen 2026-10-18/19 and installs to 2026-11-01)",
+ "judge_model": "claude-opus-5-5",
+ "brief": "design/RimMandrake/art_judge_brief.md@9ad7d729e5",
+ "subject": "RSW_Worrt",
+ "alternate_set": "swanimals/Worrt/WorrtB",
+ "set_verdict": "KEEP",
+ "approved_primary": "swanimals/Worrt/Worrt",
+ "canon": "design/RimStarWars/canon_references/worrt/description.md",
+ "def_facts": {
+  "drawSize_cells_adult": 1.5,
+  "source": "live def dump 2026-11-27 06:22Z (scale_panel.py --def)"
+ },
+ "inputs": "Given and looked at: every facing (south/east/north) of the alternate and of the approved primary at full resolution side by side; a true-scale panel (scale_panel.render_panel: vanilla human beside it at max zoom, and normal play 32 px/cell) of each south; def drawSize from the live def dump 2026-11-27 06:22Z; the canon entry's Must show; sibling keeps from art.py status. Panels: D:\\ClaudeWork\\scratch\\altjudge\\",
+ "verdicts": [
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+   "picture_sha256": "f9d7d19b95108f2d09d48ce0f9faf24d063b0b5fdf86dd40d574d1ead60ded60",
+   "facing": "south",
+   "verdict": "KEEP",
+   "notes": "Same creature and painterly hand as the kept primary: squat upright warty toad on long thin splayed forelimbs, no neck, very wide downturned mouth, bulging heavy-lidded amber eyes under a ridged brow, two palp stalks, ring of conical spikes on head, shoulders and arms, paler ochre belly (A2 yes on each line it can show; the tongue is a canon distinction no idle pose shows). WorrtB is a little bulkier than the primary at true scale (about 1.2x the body width beside the human) but the same size class (B3, C2 yes). North shows the spined back and rump, no face (C1 yes). No outline, real alpha, our own regen."
+  },
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+   "picture_sha256": "7ab03ab6b22d14a037cdbf87d62cc03d4ed5f4b5bfbd3892b4b99220a0343635",
+   "facing": "east",
+   "verdict": "KEEP",
+   "notes": "see the south line: one look covers the set; this facing agrees with it."
+  },
+  {
+   "picture": "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png",
+   "picture_sha256": "dfaf316b40e8fcb9fd24fcb5038c592d84a610ddbeacda13d035b9ca07666600",
+   "facing": "north",
+   "verdict": "KEEP",
+   "notes": "see the south line: one look covers the set; this facing agrees with it."
+  }
+ ],
+ "proposals": [],
+ "contract": {
+  "item": "ALT_GRAPHICS_FIX_SIX_SECOND_FACES",
+  "family": "art_judge_brief",
+  "sha": "f9d7d19b95108f2d09d48ce0f9faf24d063b0b5fdf86dd40d574d1ead60ded60",
+  "passed": [
+   {
+    "clause": "A2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "B1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "B1a",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "B2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "B3",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "C1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "C2",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "D1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "D4",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "E1",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   },
+   {
+    "clause": "E3",
+    "evidence": [
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_south.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_east.png",
+     "src/RimStarWars/SWBestiary/Textures/swanimals/Worrt/WorrtB_north.png"
+    ]
+   }
+  ],
+  "refusals": []
+ },
+ "fixer_route": "KEEP: record each facing in the art ledger with `art.py install SWBestiary <rel> <sha> --why 'delegated: art <this file>'` (or the ledger's keep verb), and remove its rows from drawn_art_ruled_baseline.json."
+}
