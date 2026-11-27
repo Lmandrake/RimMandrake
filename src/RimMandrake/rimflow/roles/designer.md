@@ -234,8 +234,8 @@ His card of 2026-11-26 (`standing_rulings.md` §Each design answers "offline sim
   out. A yes also names the form: the shipped code against a fake clock, a fake machine or a fake game, or a copy of
   the logic. A copy names the live reading that checks it.
 - A no gives the reason in one line, for example: art only, defs with no logic, or one cheap live look decides it.
-- The Conductor's reading guides the answer. A simulation pays where the logic is a state machine or physics with many
-  cases and the live test is slow.
+- The Conductor's judgment of where a simulation pays (its brief of 2026-11-26) guides the answer: a simulation pays
+  where the logic is a state machine or physics with many cases and the live test is slow.
 - The answer moves no locked bar and opens no ticket. The models that the cleanse pass specifies
   (`designer_cleanse.md` §The models) are the detail of a yes.
 

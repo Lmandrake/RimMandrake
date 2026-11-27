@@ -1743,7 +1743,7 @@ offline model from the first build.
   - A simulation does not pay for art, for a def with no logic, or for a thing that one cheap live look decides.
   - The best form runs the real code against a fake clock, a fake machine or a fake game. A second copy of the logic in
     another language can drift from the real code. Such a copy needs a check against live readings.
-- **What it does not change:** it builds nothing and it opens no ticket. It moves no bar, stage or judge.
+- **What it does not change:** the rule builds nothing and opens no ticket. The rule moves no bar, stage or judge.
   `GUIDING_PRINCIPLES.md` is not changed: the rule is about how we build, not about the game.
 - **The census of 2026-11-26** (what exists, and where a simulation would pay): `design/specs/2026-11-26-simulation-census/one_page.md`.
 
