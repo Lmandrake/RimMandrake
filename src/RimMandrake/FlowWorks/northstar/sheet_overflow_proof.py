@@ -537,9 +537,9 @@ def pump_spill(ctx):
 def rain_spill(ctx):
     """PROVE a brim-full canal x=1..6 on z=12 under open sky; rainFillPerPulse raised to 1.0 for the row; jawa/weather_set Rain
     (locked); poll (<= 24 pulses) until inRain rises; then Clear, and rain-fill switched OFF for the rest of the run.
-    HARNESS (belt live 2026-10-22, two runs FAIL inRain 0 in 12 pulses): rain arrives as rainFillPerPulse (shipped 0.1) x
+    HARNESS (belt live 2026-10-22, two runs FAIL inRain 0 in 12 pulses): rain arrives as rainFillPerPulse (shipped 0.01; 0.1 then) x
     RainRate levels a pulse, and RainRate ramps over the 4000-tick weather transition, so the first whole level needs ~18
-    pulses at shipped rates; and after 'Clear' the fading rain still lands a level later -- it landed in the next row's EMPTY
+    pulses at the 0.1 of then; and after 'Clear' the fading rain still lands a level later -- it landed in the next row's EMPTY
     pit (+1 level x 9 squares = 90,000 dL, and inRain +200,000 = 20 brim squares x 1 level), failing SHEET_RETURNS_TO_PIT and
     the ledger balance. So: rate 1.0 here (~6 pulses), rain fill OFF after the row (both restored at the end).
     EXPECT inRain > 0; wet squares beside the canal; the canal still brim full (rain over a full canal goes to the sheet, never
@@ -1180,7 +1180,7 @@ class FakeBridge(object):
         self.tick, self.pulse = 0, 0
         self.rain, self.cold_since, self.warm_since, self.temp = False, None, None, 20.0
         self.settings = {"sheetOverflowEnabled": "False", "cropDrownPulses": "1680", "sheetCapCm": "50",
-                         "rainFillsExcavationsEnabled": "True", "rainFillPerPulse": "0.1"}
+                         "rainFillsExcavationsEnabled": "True", "rainFillPerPulse": "0.01"}
         self.cap_cm = 50
         self.plants = {}        # cell -> stand pulses
         self.plant_age = {}     # cell -> ticks since set (Plant.Age reads it in whole TickLongs)

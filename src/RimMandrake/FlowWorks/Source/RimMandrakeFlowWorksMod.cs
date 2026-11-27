@@ -188,7 +188,10 @@ namespace RimMandrake.FlowWorks
         public static float maxNetworkCells = 6000f;
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
-        public static float rainFillPerPulse = 0.1f;
+        // RIMMANDRAKE_SLOW_RAIN_FILL_PIT_BRIMS_IN_ONE_NIGHT: notches a pulse at rain rate 1. 0.01 is 5 cm an hour of steady heavy
+        // rain at the 250-tick pulse (real heavy rain 10-50 mm/h, plus run-off from the ground round a pit), so a 4 m pit takes
+        // about 80 rain-hours to brim; the old 0.1 brimmed one in a night (live 2026-11-11) and emptied every open pit prison.
+        public static float rainFillPerPulse = 0.01f;
         // EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE (owner 2026-10-27: "Sounds like we need a rain approximation of some kind."):
         // on, rain lands pocket by pocket inside the pulse's own walk (RM_FlowKernel.PocketRain: what an open square cannot
         // hold runs to its pocket, one overflow per pocket); off, the per-square rain pass, spread over the ticks before the pulse.
@@ -621,7 +624,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref maxNetworkCells, "maxNetworkCells", 6000f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
-            Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.1f);
+            Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.01f);
             Scribe_Values.Look(ref rainPocketApproxEnabled, "rainPocketApproxEnabled", true);
             // ── Phase 5 (see the block above; kept contiguous on purpose) ──
             Scribe_Values.Look(ref superdeepCaptureEnabled, "superdeepCaptureEnabled", true);
@@ -1392,10 +1395,11 @@ namespace RimMandrake.FlowWorks
             list.Gap();
             using (Dependent(list, "rainFillPerPulse"))
             {
-                list.Label("Rain fill speed: " + (rainFillPerPulse * RM_Volume.MetresPerLevel).ToString("F2") + " m per pulse");
-                rainFillPerPulse = list.Slider(rainFillPerPulse, 0.01f, 1f);
-                list.Label("How fast heavy rain fills an open trench. At the default a downpour takes "
-                         + "roughly an in-game hour to add half a metre.");
+                float perHour = rainFillPerPulse * RM_Volume.MetresPerLevel * RimWorld.GenDate.TicksPerHour / PulseIntervalTicks;
+                list.Label("Rain fill speed: " + (perHour * 100f).ToString("0.#") + " cm an hour of steady heavy rain");
+                rainFillPerPulse = list.Slider(rainFillPerPulse, 0.001f, 1f);
+                list.Label("How fast heavy rain fills an open trench or pit. At the default a 4 m pit takes "
+                         + "days of storm to fill to its brim.");
             }
             using (Dependent(list, "rainPocketApproxEnabled"))
             {

@@ -94,6 +94,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "can-fail: Ensure ends with SyncParams() outside every branch, so each pulse re-reads the Mod Settings");
             });
 
+            // RIMMANDRAKE_SLOW_RAIN_FILL_PIT_BRIMS_IN_ONE_NIGHT (live 2026-11-11: a 4 m open pit brimmed in one night of rain at
+            // the shipped 0.1, and its prisoner swam out): rain lands rainRate x rainFillPerPulse notches a pulse
+            // (RM_MapComponent_Excavation.RainLevelsNow), so at rain rate 1 and the shipped 250-tick pulse a 4 m pit (8 notches
+            // of 0.5 m) must take more than a day of steady heavy rain to brim: an open pit prison does not empty overnight.
+            Case("Rain_fill_default_brims_a_4m_pit_over_days", () =>
+            {
+                string mod = Src("RimMandrakeFlowWorksMod.cs");
+                var field = Regex.Match(mod, @"public static float rainFillPerPulse = ([0-9.]+)f;");
+                var scribe = Regex.Match(mod, @"Scribe_Values\.Look\(ref rainFillPerPulse, ""rainFillPerPulse"", ([0-9.]+)f\);");
+                Assert(field.Success && scribe.Success, "the rain-fill default and its save default found");
+                float def = float.Parse(field.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture);
+                Assert(scribe.Groups[1].Value == field.Groups[1].Value,
+                    "can-fail: the save default equals the shipped default (" + scribe.Groups[1].Value + " vs " + field.Groups[1].Value + ")");
+                const float pulsesPerHour = 2500f / 250f;   // GenDate.TicksPerHour over the shipped pulse
+                float hoursTo4m = 8f / (def * pulsesPerHour);
+                Assert(hoursTo4m > 24f, "can-fail: steady heavy rain takes more than a day to brim a 4 m pit at the default ("
+                    + hoursTo4m.ToString("0.#") + " h at " + def + ")");
+                Assert(Regex.IsMatch(Body(Src("RM_MapComponent_Excavation.cs"), "private int RainLevelsNow("),
+                    @"rainAccumulator \+= rainRate \* RimMandrakeFlowWorksSettings\.rainFillPerPulse;"),
+                    "the rain accumulator adds rainRate x rainFillPerPulse a pulse (the arithmetic above)");
+            });
+
             // RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN: planted CALLER_CONV_RATE_SETTING_IGNORED (the throughput
             // slider dropped from the budget) and CALLER_CONV_SUN_FACTOR_SKIPPED (a solar still running at night) stayed green
             // under T_CONVERT: the kernel's rate and sun maths are tested, the caller's use of them was not. Source laws.

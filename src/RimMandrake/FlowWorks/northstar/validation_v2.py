@@ -150,7 +150,7 @@ BOOL_DEFAULTS = {
                viscosityEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
-FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
+FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.01,
                   "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0, "pitClimbAbilityMultiplier": 1.0, "pitSlowClimbFactor": 2.0, "pitRampMaxSpan": 3, "pitLadderSlowness": 2.0,
                   "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0,
                   "spikeDamageMultiplier": 1.0, "swaleRateMultiplier": 1.0,
@@ -2061,7 +2061,7 @@ def phase_J(L, args):
         sum7_dl = sum(int(q.get("dl") or 0) for q in L.cells_read(SCENES["E7a_fillin"]["cells"]))
         w = B.call("jawa/weather_set", weather="Rain", lockWeather=True)
         L.sset(S_FW, "rainFillsExcavationsEnabled", False)
-        # pin rain to the UI maximum: at the shipped 0.1 a rising Rain rate adds < 1 level over the
+        # pin rain to the UI maximum: at the shipped 0.01 a rising Rain rate adds < 1 level over the
         # job window, so "toggle OFF -> nothing gained" would hold for an engine that ignores the
         # toggle too (caught by the mock fault rain_toggle_ignored, 2026-10-02)
         L.sset(S_FW, "rainFillPerPulse", 1.0)
