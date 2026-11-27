@@ -800,10 +800,24 @@
     "ref": "run rm-role-designer-1795751318",
     "stage": 3,
     "tokens": 1204328
+   },
+   {
+    "at": "2026-11-27T04:29:05Z",
+    "kind": "helper",
+    "ref": "fresh reader rm-consult opus: exam_retake floor-pin fix, nothing significant",
+    "stage": 4,
+    "tokens": 57458
+   },
+   {
+    "at": "2026-11-27T04:53:23Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795753050",
+    "stage": 4,
+    "tokens": 1271649
    }
   ],
   "reserve": 60000,
-  "spent": 98738907
+  "spent": 100068014
  },
  "coverage_releases": [
   {
@@ -1808,6 +1822,30 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1795751318: stage 3 done"
+  },
+  {
+   "at": "2026-11-27T04:18:07Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "98738907 of 4000000 spent; run rm-role-designer-1795753050 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-27T04:18:07Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1795753050, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-27T04:53:24Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1795753050: stage 4 done"
+  },
+  {
+   "at": "2026-11-27T04:53:24Z",
+   "stage": 5,
+   "what": "exam_map",
+   "why": "read map recorded for 154 scenarios"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -2132,12 +2170,45 @@
    "run": "rm-role-designer-1795751318",
    "stage": 3,
    "summary": "Stage 3 reopened because the builders' 0.2.0 commits changed tree.json and scenes.json (12d6c0feab, d420ae2e45, 6e78fea88e). The packet's carried 'missing decision' (the 19 coverage gaps of 2026-11-12) is stale: those gaps were reworked in later rounds, and coverage passed on his word on 2026-11-13 (d_owner_pass_on_his_word). Lint (Gate A) passed unchanged. The one stage-3 refusal: the 14 inventory bars of 0.2.0 were covered by no showcase and no scene. Repair, on the Pyrelands 0.2.0 precedent: (1) scenes.json gets the 8 built 0.2.0 lane scenes as acceptance scenes. Each cites the 0.1.0 leaf that its parent scene decides, with bars_0_2_0 naming the record.json bars it decides. Each carries its start, its control from its own plants and its restore. (2) The blast show is showcase 2 (sc_blast_show plus sc_settings_sweep_show_switches): 9 new capabilities, 0 overlap. (3) The other 5 lane bars go in coverage_rest. Showcase set accepted. (4) sc_pawn_arc's stale 0.1.0 'holds the same stack in flight' clause is corrected to the 0.2.0 carried_thing_own_arc. (5) All 36 owner words that the packet listed are cited: 13 go to existing decisions and 4 to new decisions (walk frame against mod-off, goods into the pit first, the lit chemfuel ruling, the big-blast whoosh), and 20 are owner_elsewhere_reviewed with a reason; uncited is now 0. (6) plan.md answers offline simulation: yes, the shipped kernel against a model map. (7) version/next_version/README.md gets the chemfuel and whoosh entries; neither moves a 0.2.0 bar. The tree is not touched: it is locked and owner-certified, so the 0.2.0 bars stay record.json inventory rows, as dc_open_0_2_0 wrote them. Stage 4 must retake the exam on the changed scenes."
+  },
+  {
+   "at": "2026-11-27T04:53:24Z",
+   "inputs": {
+    "exam": "f425b1ee2f4919572755b1bdfdef459d5f51ae8a11a69f00fbfd580eaa5a0cc6",
+    "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
+    "scenes": "2eada9ea2bae7c36607112104ab30b760143b8a4e0078f4e15c8041ecfd63035",
+    "sheet": "22a3215f5781450b7b0d8c4325cbe252d4acbc40e69b17f82360fbd000acd086",
+    "tree": "2f443fba60ab70c63c687ce3fc5265c4fe4729e8e526650d80e60672e5e9e810"
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_exam.md": "6ec8760e9b57a40efe589a6ee69489f9405c25bde9f9dec22493ecf975807ed2"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "pinned_at": {
+    "exam": "5f2d38be260a999669b75f732631611d67a571b2",
+    "floor": "5f2d38be260a999669b75f732631611d67a571b2",
+    "root": "5f2d38be260a999669b75f732631611d67a571b2",
+    "scenes": "5f2d38be260a999669b75f732631611d67a571b2",
+    "sheet": "5f2d38be260a999669b75f732631611d67a571b2",
+    "tree": "5f2d38be260a999669b75f732631611d67a571b2"
+   },
+   "quick_look": {
+    "offer": false,
+    "why": "nothing here waits on him: 0.2.0 passed his live walk on 2026-11-26 (OWNER:1795714498917797906), and this run only restamps the exam on a tree whose readable content did not change"
+   },
+   "run": "rm-role-designer-1795753050",
+   "stage": 4,
+   "summary": "Stage 4 reopened because stage 3 changed scenes.json, and tree.json's floor.hash had been re-pinned (644106e197). Neither is shown to an exam Reader. exam_retake.py plan read WHOLE (a retake of all 154 scenarios with five fresh agents), because the floor's hash pin sat in the shared unit that every scenario reads. That was a pipeline defect: a hash pin of concept_floor.json, a file no Reader is shown, is not exam content. Fixed in this run, tests first: the floor hash leaves the shared unit (schema 3; floor.ref and floor.off stay in it). A schema-2 map is read through the exam's own tree in git history, and its shared hash is proven before use. A carry with no retake remakes the control copy only when the new copy reads exactly as the copy the control Reader was shown. The acceptance test exam_retake_map_accept.py is 45 of 45 green, and 3 of its checks are red on the base for the named reason. Across all 12 concepts with an exam, no exam-gate verdict changed. Then the plan read NONE_TOUCHED, and carry --fresh {} restamped the exam (154 of 154 answers carried, score 154/154, accept_where_reject_core 0, control copy remade with only the floor hash changed). record wrote the schema-3 read map. exam_errors is empty against tree 2f443fba60ab and sheet 22a3215f5781. Published: fix 1809ed683a, e3b69feb8f and 643757b069 (git hang guard and could-not-look, faults of form that ./publish named); concept files 303dbba6ef. Recorded as done in this run (RIMMANDRAKE_UNPIN_EXAM_RETAKE_FLOOR_HASH_154_FOR_NOTHING, --did-it 1809ed683a). A fresh Opus reader of the diff found nothing significant."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

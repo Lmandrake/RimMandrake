@@ -1,0 +1,10 @@
+{
+ "run": "rm-role-designer-1795753050",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Stage 4 reopened because stage 3 changed scenes.json, and tree.json's floor.hash had been re-pinned (644106e197). Neither is shown to an exam Reader. exam_retake.py plan read WHOLE (a retake of all 154 scenarios with five fresh agents), because the floor's hash pin sat in the shared unit that every scenario reads. That was a pipeline defect: a hash pin of concept_floor.json, a file no Reader is shown, is not exam content. Fixed in this run, tests first: the floor hash leaves the shared unit (schema 3; floor.ref and floor.off stay in it). A schema-2 map is read through the exam's own tree in git history, and its shared hash is proven before use. A carry with no retake remakes the control copy only when the new copy reads exactly as the copy the control Reader was shown. The acceptance test exam_retake_map_accept.py is 45 of 45 green, and 3 of its checks are red on the base for the named reason. Across all 12 concepts with an exam, no exam-gate verdict changed. Then the plan read NONE_TOUCHED, and carry --fresh {} restamped the exam (154 of 154 answers carried, score 154/154, accept_where_reject_core 0, control copy remade with only the floor hash changed). record wrote the schema-3 read map. exam_errors is empty against tree 2f443fba60ab and sheet 22a3215f5781. Published: fix 1809ed683a, e3b69feb8f and 643757b069 (git hang guard and could-not-look, faults of form that ./publish named); concept files 303dbba6ef. Recorded as done in this run (RIMMANDRAKE_UNPIN_EXAM_RETAKE_FLOOR_HASH_154_FOR_NOTHING, --did-it 1809ed683a). A fresh Opus reader of the diff found nothing significant.",
+ "quick_look": {
+  "offer": false,
+  "why": "nothing here waits on him: 0.2.0 passed his live walk on 2026-11-26 (OWNER:1795714498917797906), and this run only restamps the exam on a tree whose readable content did not change"
+ }
+}
