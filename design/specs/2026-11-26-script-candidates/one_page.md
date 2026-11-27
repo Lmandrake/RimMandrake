@@ -90,7 +90,7 @@ over all calls; wall 43.5 h, of which 15.2 h is the owner thinking on cards.
   wall 3.0 h. Exact repeat is only 2.2%, so a de-duplicating script gains little. Which parts the window uses: UNMEASURED.
   A usage log of the wake comes first.
 - **Publish wait** (section "waiting for a launch, a publish, a run" of `measure/rows.py`). 198 landings, median 47 s, p90 167 s, 4.5 h wall. md/json-only n=13, median 46 s; code n=9,
-  median 93 s: too few to blame the publish check on rule and design text. The second half of `RIMMANDRAKE_BUILD_RULING_FAST_PATH_SENTENCE_TOOK_NINETY_MINUTES` (let rule and design text pass the publish check without the code checks) covers this wait.
+  median 93 s: too few to blame the publish check on rule and design text. The second half of `RIMMANDRAKE_BUILD_RULING_FAST_PATH_SENTENCE_TOOK_NINETY_MINUTES` (let rule and design text pass the publish check without the code checks) covers this wait. One observation of this run, not a measured row: the publish of this page waited 581 s for a tree-check slot (2 other publishes held both slots) and its 28 tree checks then took 41 s, so under load the queue for a slot, not the checks, can be the wait; how often: UNMEASURED.
 
 ## Dropped by the data (do not build)
 - Many tickets parked or closed by hand (guess 9 of the Conductor in the brief of this item): 0 episodes with 5 or more distinct hand acts; bulk work goes to helpers
