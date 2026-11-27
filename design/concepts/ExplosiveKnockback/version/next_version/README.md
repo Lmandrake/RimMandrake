@@ -47,3 +47,13 @@ Divergent work: anything that shifts or extends the 0.1.0 vision (`../vision.md`
 
 ### Design draft of the whoosh (2026-11-27)
 - `design/specs/2026-11-27-knockback-big-blast-whoosh/design.md` (Designer pass of work bundle WB-mod-FlowWorks-20261127-063415): one whoosh event over the set of burning cells, a push from the nearest burning cell through the open air (walls block, an open door weakens), reach that grows with the burning area, one visible wave and one sound; proposed bars with their cheapest tests; three questions for him with recommendations.
+
+## Correction after the 0.2.0 pass: the mod gives the haul back when the thrown stack lands (rimflow `RIMMANDRAKE_SORT_KNOCKBACK_LANE_FAILS_ARCHBIG_PASSES_SAME_CHECKS`)
+
+- **Kind:** Convergent. It is a correction for Design Version 0.2.1 (PATCH). It moves no 0.2.0 bar and adds none. The tag `mod/ExplosiveKnockback/v0.2.0` stays on its pass commit.
+- **Proposed by:** the ticket-lane run that found the fault, 2026-11-27. The Conductor made the version call the same day (note on the item).
+- **What was wrong:** a thrown colonist's carried stack flies further and lands about 7 ticks after the colonist. The mod looked for the stack when the colonist landed, saw none and gave up the haul. The colonist went back to the haul only by its own choice, and at site 27,12 it never did (3 of 3 in 900 ticks).
+- **State:** built and published at 11fffbf13b (`RM_PawnFlyerPatches.ResumeHaul`, `RM_ThingFlyer_Knockback.Land`). The offline selftest fails 5 of 5 on the old code and passes on the fix. SteveDesktop lane job J20261127T141444Z-2eb3a7 reads sc_pawn_arc PASS with the mod's own resume recorded, at site 12,12.
+- **Still owed for 0.2.1:** the fresh reader of the fix (`RIMMANDRAKE_READ_FIX_11FFFBF13B_WITH_FRESH_EYES`), and one live run of sc_pawn_arc at site 27,12, where the fault showed.
+- **Version 0.2.1 is not open.** It opens on the owner's scope answer, as every next Design Version does.
+- **Evidence:** `../in_game/road_back_2026-11-25/evidence/hunt_batches_2026-11-26/HUNT_STEP.md` §Why the lane failed.
