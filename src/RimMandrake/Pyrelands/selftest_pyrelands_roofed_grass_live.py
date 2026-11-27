@@ -657,6 +657,34 @@ for src, dead in LG.SOURCES:
         check("%s: each stage is less saturated than the last, and dead is darker than fresh" % f,
               all(a_ > b_ for a_, b_ in zip(sats, sats[1:])) and seq[3][1][1] < seq[0][1][1], seq)
 
+def stature(img):
+    """Pure. (height, width) in px of the opaque content (alpha > 0.5): the tuft's standing shape."""
+    m = np.asarray(img.convert("RGBA"))[..., 3] > 127
+    ys, xs = np.nonzero(m)
+    return (int(ys.max() - ys.min() + 1), int(xs.max() - xs.min() + 1)) if len(ys) else (0, 0)
+
+
+# A wilt that only changes colour reads to a blind judge as "orange grass fading evenly into brown straw ... nothing about
+# the shapes shows wilting" (live row rgd_5, 2026-11-27). So each stage must also stand lower: the blades sag. The 4 px
+# slack is resampling at the content's edge on these 256 px sprites (our own rule).
+def sags(im, bake):
+    """Pure. (ok, [(look, (h, w))]) -- each stage shorter than the last, each at its look's SQUASH of the fresh height."""
+    st0 = stature(im)
+    seq = [("Fresh", st0)] + [(lk, stature(bake(im, lk))) for lk in ("Wilting", "Withered", "Dead")]
+    hs = [x[1][0] for x in seq]
+    ok = all(a_ > b_ for a_, b_ in zip(hs, hs[1:])) and all(
+        abs(h - st0[0] * LG.LOOKS[lk].get("SQUASH", 1.0)) <= 4 for (lk, (h, _w)) in seq[1:])
+    return ok, seq
+
+
+for src, dead in LG.SOURCES:
+    for f in LG.source_files(src):
+        ok, seq = sags(Image.open(os.path.join(LG.TEX, src, f)), LG.recolour)
+        print("[rgd-st] stature %s: %s" % (f, ", ".join("%s h%d w%d" % (k, v[0], v[1]) for k, v in seq)))
+        check("%s: each stage stands lower than the last, at its look's squash (the blades sag)" % f, ok, seq)
+_im0 = Image.open(os.path.join(LG.TEX, LG.SOURCES[0][0], LG.source_files(LG.SOURCES[0][0])[0]))
+check("planted: a colour-only look reads red on the sag check", not sags(_im0, lambda im, lk: im)[0])
+
 check("the probe rect lies at the middle of A", R.calibration_rect((81, 117, 12, 16)) == (84, 122, 6, 6))
 v, _ = run(Game(), env="mass_kill")
 print("[rgd-st] planted scene %s=mass_kill: %r" % (R.PLANT_ENV, v))

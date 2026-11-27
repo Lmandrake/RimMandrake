@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bake the roofed-grass looks (wilting, withered, dead) as recoloured copies of the living grass sprites.
+"""Bake the roofed-grass looks (wilting, withered, dead) as recoloured, sagging copies of the living grass sprites.
 
 Why textures and not tints: a plant is drawn with the 'Custom/Plant cutout' shader through Plant.Print, and that path
 ignores the material colour. Measured live on ArchSmall, 2026-11-27 (live_small.md, row rgd_3): 96 RM_FE_DeadGrass
@@ -39,10 +39,14 @@ SOURCES = [
 # The looks, as an HSV pull on every opaque pixel: hue toward HUE (degrees) by H_PULL, saturation times S_MUL then capped
 # at S_CAP, value times V_MUL. Invented colours (our own rule), judged live by sc_roofed_grass_declines' blind judge:
 # wilting is a drying ochre that keeps some colour; withered is a dull brown; dead is a grey straw with no orange left.
+# And a sag, because a colour-only wilt read to that judge as "orange grass fading evenly into brown straw ... nothing
+# about the shapes shows wilting" (live row rgd_5): the tuft stands at SQUASH of its height over its own base, and its
+# blades splay outward from its middle by SPLAY of their distance at the top (t^2 in height), so tips flop and lean.
+# Invented shapes (our own rule), judged by the same blind judge.
 LOOKS = {
-    "Wilting": dict(HUE=40.0, H_PULL=0.40, S_MUL=0.72, S_CAP=0.70, V_MUL=0.90),
-    "Withered": dict(HUE=34.0, H_PULL=0.85, S_MUL=0.40, S_CAP=0.38, V_MUL=0.80),
-    "Dead": dict(HUE=30.0, H_PULL=1.00, S_MUL=0.30, S_CAP=0.24, V_MUL=0.62),
+    "Wilting": dict(HUE=40.0, H_PULL=0.40, S_MUL=0.72, S_CAP=0.70, V_MUL=0.90, SQUASH=0.86, SPLAY=0.14),
+    "Withered": dict(HUE=34.0, H_PULL=0.85, S_MUL=0.40, S_CAP=0.38, V_MUL=0.80, SQUASH=0.72, SPLAY=0.26),
+    "Dead": dict(HUE=30.0, H_PULL=1.00, S_MUL=0.30, S_CAP=0.24, V_MUL=0.62, SQUASH=0.56, SPLAY=0.38),
 }
 
 
@@ -77,8 +81,49 @@ def hsv_to_rgb(h, s, v):
     return np.stack([r + m, g + m, b + m], -1)
 
 
+def _bilinear(img, xs, ys):
+    """Pure. Sample img (H,W,C float) at float coords; outside the canvas reads 0."""
+    H, W = img.shape[:2]
+    x0 = np.floor(xs).astype(int)
+    y0 = np.floor(ys).astype(int)
+    fx = (xs - x0)[..., None]
+    fy = (ys - y0)[..., None]
+
+    def at(y, x):
+        ok = (x >= 0) & (x < W) & (y >= 0) & (y < H)
+        return np.where(ok[..., None], img[np.clip(y, 0, H - 1), np.clip(x, 0, W - 1)], 0.0)
+    return (at(y0, x0) * (1 - fx) * (1 - fy) + at(y0, x0 + 1) * fx * (1 - fy)
+            + at(y0 + 1, x0) * (1 - fx) * fy + at(y0 + 1, x0 + 1) * fx * fy)
+
+
+def sag(a, squash, splay):
+    """Pure. RGBA float array -> the tuft standing at `squash` of its height over its base (the lowest opaque row),
+    its blades splayed outward from its middle column by `splay` of their offset at the top. Resampled on premultiplied
+    colour so no dark fringe appears at the alpha edge."""
+    if squash >= 1.0 and splay <= 0.0:
+        return a
+    m = a[..., 3] > 0.5
+    ys, xs = np.nonzero(m)
+    if not len(ys):
+        return a
+    base, top = float(ys.max()) + 0.5, float(ys.min()) - 0.5
+    cx = (float(xs.min()) + float(xs.max()) + 1.0) / 2.0
+    height = base - top
+    H, W = a.shape[:2]
+    yo, xo = np.mgrid[0:H, 0:W].astype(np.float64) + 0.5
+    ysrc = base - (base - yo) / squash                     # each output row reads the row `1/squash` as high
+    t = np.clip((base - ysrc) / height, 0.0, None)         # 0 at the base, 1 at the fresh tuft's top
+    xsrc = cx + (xo - cx) / (1.0 + splay * t * t)          # tops lean outward from the middle
+    pm = a.copy()
+    pm[..., :3] *= pm[..., 3:4]
+    out = _bilinear(pm, xsrc - 0.5, ysrc - 0.5)
+    al = out[..., 3:4]
+    out[..., :3] = np.where(al > 1e-6, out[..., :3] / np.maximum(al, 1e-6), 0.0)
+    return np.clip(out, 0.0, 1.0)
+
+
 def recolour(img, look):
-    """Pure: an RGBA PIL image in, the look's RGBA PIL image out (alpha untouched)."""
+    """Pure: an RGBA PIL image in, the look's RGBA PIL image out: its colours, then its sag."""
     p = LOOKS[look]
     a = np.asarray(img.convert("RGBA")).astype(np.float64) / 255.0
     h, s, v = rgb_to_hsv(a[..., :3])
@@ -88,6 +133,7 @@ def recolour(img, look):
     v2 = v * p["V_MUL"]
     out = a.copy()
     out[..., :3] = hsv_to_rgb(h2, s2, v2)
+    out = sag(out, p.get("SQUASH", 1.0), p.get("SPLAY", 0.0))
     return Image.fromarray(np.clip(np.round(out * 255.0), 0, 255).astype(np.uint8), "RGBA")
 
 
