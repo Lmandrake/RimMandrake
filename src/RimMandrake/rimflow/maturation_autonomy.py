@@ -770,8 +770,9 @@ def _measure(fn):
 
 
 def landed_lock_commit(root, mod, upstream="origin/main"):
-    """RIMMANDRAKE_STAMP_LOCK_COMMIT_ON_MAIN_DISPATCH_HEAD_NEVER_LANDED: the commit that a lock names is one that every
-    clone can read (design/specs/2026-11-27-lock-commit-is-landed/boundary.md). HEAD when origin/main holds it. When
+    """The commit that a lock names is one that every clone can read (item
+    RIMMANDRAKE_ADVANCE_WRECKEDMACHINES_LOCKED_VERSION_TO_PREFLIGHT found the fault; page
+    design/specs/2026-11-27-lock-commit-is-landed/boundary.md). HEAD when origin/main holds it. When
     HEAD holds commits that origin/main lacks (a ledger commit that the next landing replays under another sha), the
     landed commit under them, and only if each locked file is the same there as at HEAD. A locked file that differs
     raises: that lock would name bars that no other clone can read. -> a sha, or UNMEASURED outside a git clone."""
