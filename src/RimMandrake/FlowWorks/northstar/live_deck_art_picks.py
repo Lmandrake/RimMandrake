@@ -7,6 +7,9 @@ Run from the repo root with the bridge on a game holding FlowWorks (tier `flowwo
     eval "$(python3 src/RimMandrake/Utils/game_instance.py env ArchSmall)"
     python3 src/RimMandrake/Utils/../FlowWorks/northstar/live_deck_art_picks.py [--origin X,Z] [--out DIR]
     ... --jetties     only the jetty yard: steel and heavy, each look, 2 squares east and 2 north (16 stations)
+    ... --heavy-scrapper   only the Scrapper heavy bridge (RIMMANDRAKE_DRAW_SCRAPPER_JETTIES_HEAVY_BRIDGE_IN_HIS_PICKED_MANNER):
+                      east-west 2 and 4 squares and north-south 4, a drafted colonist mid-span on each (bare, then in a
+                      cowboy hat), captures on the deck middle and on each end (anchor + post)
 Writes DIR/<station>.png, DIR/yard_default.png, DIR/walk_*.png and DIR/readings.json (default Transient/deck_art_picks).
 """
 import argparse
@@ -90,20 +93,109 @@ def plan_jetties(ox, oz):
     return out
 
 
+HEAVY_SCRAPPER_STRIP = "SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip"   # the installed pieces' texture folder
+HAT = "Apparel_CowboyHat"       # a vanilla hat with a wide brim: the head's highest reach into a far-side hanger
+# rootSize for the close captures: 5 gave 656 px over 5 cells = 131 px/cell on ArchSmall (2026-11-27, 2463x1310 window); the
+# offline judge (verdict_heavy_bridge_Scrapper_B.md Q1/Q2) asked ~128 px/cell. set_camera_zoom clamps at 8 (~82 px/cell
+# measured the same day); screenshot_cell_rect's rootSize does not.
+CLOSE_ROOT = 5.0
+CLOSE_CELLS = 5                 # a 5x5 cell clip centred on the subject: the pawn's square, or the anchor with its post
+
+
+def close_snap(w, out, name, cell):
+    """A CLOSE_CELLS square clip centred on cell at CLOSE_ROOT, copied to out/name.png. Returns the path or an
+    UNMEASURED reason (never a silent None)."""
+    import shutil
+    h = CLOSE_CELLS // 2
+    r = w.call("rimworld/screenshot_cell_rect", x=cell[0] - h, z=cell[1] - h, width=CLOSE_CELLS, height=CLOSE_CELLS,
+               paddingCells=0, fileName="hscrap_%s_%d" % (name, int(time.time())), rootSize=CLOSE_ROOT) or {}
+    src = r.get("path")
+    for _ in range(12):
+        if src and os.path.exists(src):
+            break
+        time.sleep(0.5)
+    try:
+        dst = os.path.join(out, name + ".png")
+        shutil.copyfile(src, dst)
+        time.sleep(1.0)       # take_screenshot names files by the second
+        return dst
+    except Exception as ex:  # noqa: BLE001
+        return "UNMEASURED: close capture %s failed: %s (%s)" % (name, ex, str(r)[:160])
+
+
+def plan_heavy_scrapper(ox, oz):
+    """The Scrapper heavy bridge, east-west 2 and 4 squares (8 apart in z) and north-south 4 (12 east) -- pure.
+    The ticket's two questions: (a) cables drawn over a colonist mid-span, (b) the rusty posts on the old anchor frames."""
+    out = []
+    for k, n in enumerate((2, 4)):
+        x0, z = ox, oz + k * 8
+        pit = [(x, z + dz) for x in range(x0 + 1, x0 + 1 + n) for dz in (-1, 0, 1)]
+        out.append(("ew%d_heavy_Scrapper" % n, "bridge", "Scrapper", "heavy", (x0, z), (x0 + n + 1, z), pit,
+                    (x0 - 1, z - 2, n + 4, 5)))
+    x, z0 = ox + 12, oz
+    out.append(("ns4_heavy_Scrapper", "bridge", "Scrapper", "heavy", (x, z0), (x, z0 + 5),
+                [(x + dx, z) for z in range(z0 + 1, z0 + 5) for dx in (-1, 0, 1)], (x - 2, z0 - 1, 5, 8)))
+    return out
+
+
+def mid_cell(p, q):
+    """The deck square a colonist stands on mid-span: the middle of the run, rounded toward p -- pure."""
+    dx, dz = (q[0] > p[0]) - (q[0] < p[0]), (q[1] > p[1]) - (q[1] < p[1])
+    k = (abs(q[0] - p[0]) + abs(q[1] - p[1])) // 2
+    return (p[0] + dx * k, p[1] + dz * k)
+
+
+def deckart_ok(txt):
+    """(ok, why) for a DECKART reading of a Scrapper heavy bridge: the Scrapper heavy strip, complete=True -- pure."""
+    t = txt or ""
+    if not t.startswith("DECKART look=Scrapper"):
+        return False, "not a Scrapper DECKART reading"
+    if HEAVY_SCRAPPER_STRIP not in t:
+        return False, "strip is not %s" % HEAVY_SCRAPPER_STRIP
+    if " complete=True" not in t:
+        return False, "complete is not True"
+    return True, "Scrapper heavy strip, complete=True"
+
+
+def heavy_scrapper_look(w, out, stations, readings):
+    """Per bridge: a drafted colonist mid-span, captured bare and in a hat on the deck middle, then each end framed on its
+    anchor and post. Returns [(bridge, capture name, path or UNMEASURED reason)]."""
+    shots = []
+    for name, kind, look, tier, p, q, pit, rect in stations:
+        cell = mid_cell(p, q)
+        r = w.call("jawa/spawn_pawn", kindDef="Colonist", faction="PlayerColony", x=cell[0], z=cell[1]) or {}
+        rows = r.get("pawns") or []
+        pid = rows[0].get("id") if rows and isinstance(rows[0], dict) else None
+        if not r.get("spawnedCount") or not pid:
+            shots.append((name, "mid", "UNMEASURED: spawn_pawn on %s refused: %s" % (cell, str(r)[:160])))
+            continue
+        d = w.call("jawa/set_draft", pawnId=pid, drafted=True) or {}
+        readings[name]["pawn"] = dict(id=pid, cell=cell, drafted=d.get("success", d))
+        shots.append((name, "mid_bare", close_snap(w, out, "%s_mid_bare" % name, cell)))
+        g = w.call("jawa/pawn_gear", **{"pawn": pid, "action": "wear", "def": HAT}) or {}   # `def` is a Python keyword
+        readings[name]["hat"] = dict(success=g.get("success"), gear=str(g.get("apparel") or g.get("gear") or "")[:300])
+        shots.append((name, "mid_hat", close_snap(w, out, "%s_mid_hat" % name, cell)))
+        for tag, e in (("endA", p), ("endB", q)):
+            shots.append((name, tag, close_snap(w, out, "%s_%s" % (name, tag), e)))
+    return shots
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--origin", default=None)
     ap.add_argument("--out", default=os.path.join(C.REPO, "Transient", "deck_art_picks"))
     ap.add_argument("--no-build", action="store_true", help="the yard is already built: capture and read only")
     ap.add_argument("--jetties", action="store_true", help="build only the jetty yard: each tier in each look, east and north")
+    ap.add_argument("--heavy-scrapper", action="store_true",
+                    help="build only the Scrapper heavy bridge (EW 2 and 4, NS 4) with a colonist mid-span on each")
     a = ap.parse_args(argv)
     a.mock = False
     a.no_shots = False
     w = C.make_walk(a, a.out)
     sx, sz = C.map_size(w)
     ox, oz = map(int, a.origin.split(",")) if a.origin else (sx // 2 - 25, sz // 2 - 20)
-    stations = plan_jetties(ox, oz) if a.jetties else plan(ox, oz)
-    yard = (ox - 3, oz - 3, 31, 31) if a.jetties else (ox - 3, oz - 3, 56, 40)
+    stations = plan_heavy_scrapper(ox, oz) if a.heavy_scrapper else plan_jetties(ox, oz) if a.jetties else plan(ox, oz)
+    yard = (ox - 3, oz - 3, 22, 18) if a.heavy_scrapper else (ox - 3, oz - 3, 31, 31) if a.jetties else (ox - 3, oz - 3, 56, 40)
     readings = {}
     if not a.no_build:
         w.clear_site(yard)
@@ -122,6 +214,19 @@ def main(argv=None):
         w.say("READ %s: %s" % (name, txt))
         readings.setdefault(name, {})["deckart"] = txt
         readings[name]["shot"] = C.snap(w, name, rect)
+    if a.heavy_scrapper:
+        bad = 0
+        for name in [s_[0] for s_ in stations]:
+            ok, why = deckart_ok(readings[name]["deckart"])
+            readings[name]["deckart_check"] = dict(ok=ok, why=why)
+            bad += not ok
+            w.say("CHECK %s: %s (%s)" % (name, "OK" if ok else "BAD", why))
+        w.say("CHECK heavy Scrapper DECKART: %d bad of %d read (limit 0)" % (bad, len(stations)))
+        readings["_look"] = [list(t) for t in heavy_scrapper_look(w, a.out, stations, readings)]
+        with open(os.path.join(a.out, "readings.json"), "w") as f:
+            json.dump(readings, f, indent=1)
+        w.say("WROTE %s" % os.path.join(a.out, "readings.json"))
+        return
     # the whole yard at the default zoom
     x, z, wd, ht = yard
     w.call("jawa/clear_ui", all=True)
