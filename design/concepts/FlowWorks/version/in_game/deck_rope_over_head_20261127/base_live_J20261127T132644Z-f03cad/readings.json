@@ -1,0 +1,5907 @@
+{
+ "ew2_heavy_Scrapper": {
+  "build": "LOOK look=Scrapper parts=6 styled=6 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge",
+  "deckart": "DECKART look=Scrapper jetty=False dir=1 width=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip pieces=root,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain drawn=RM_SuspensionDeck_Heavy_Strip_root,RM_SuspensionDeck_Heavy_Strip_tip ends=own,own wrap=Clamp",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runner\\Transient\\deck_rope_order\\ew2_heavy_Scrapper.png",
+  "deckart_check": {
+   "ok": true,
+   "why": "Scrapper heavy strip, complete=True"
+  },
+  "pawn": {
+   "id": "Human39067",
+   "cell": [
+    101,
+    135
+   ],
+   "drafted": true
+  },
+  "hat": {
+   "success": true,
+   "gear": ""
+  },
+  "draw_order": {
+   "pawn_close": {
+    "success": true,
+    "ticksGame": 3,
+    "pawn": {
+     "thingId": "Human39067",
+     "x": 101,
+     "z": 135
+    },
+    "framesSinceDraw": 1,
+    "cameraRootSize": 8.0,
+    "drawPath": "notPreRendered",
+    "bodyPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "requests": [
+     {
+      "node": "Body",
+      "tag": "Body",
+      "worker": "PawnRenderNodeWorker_Body",
+      "material": "Custom/CutoutRecolor_Naked_Female_north",
+      "materialId": -55476,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       101.5,
+       8.3855,
+       135.5
+      ]
+     },
+     {
+      "node": "Wounds - pre apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       101.5,
+       8.3884,
+       135.5
+      ]
+     },
+     {
+      "node": "Apparel_CollarShirt",
+      "worker": "PawnRenderNodeWorker_Apparel_Body",
+      "material": "Custom/Cutout_ShirtButton_Female_north",
+      "materialId": -55470,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       101.5,
+       8.3928,
+       135.5
+      ]
+     },
+     {
+      "node": "Wounds - post apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       101.5,
+       8.3964,
+       135.5
+      ]
+     },
+     {
+      "node": "Head",
+      "tag": "Head",
+      "worker": "PawnRenderNodeWorker_Head",
+      "material": "Custom/CutoutRecolor_Female_Narrow_Pointy_north",
+      "materialId": -55506,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       101.5,
+       8.4038,
+       135.84
+      ]
+     },
+     {
+      "node": "Head wounds",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       101.5,
+       8.4092,
+       135.84
+      ]
+     },
+     {
+      "node": "Apparel_CowboyHat",
+      "worker": "PawnRenderNodeWorker_Apparel_Head",
+      "material": "Custom/Cutout_CowboyHat_north",
+      "materialId": -55534,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       101.5,
+       8.4111,
+       135.84
+      ]
+     },
+     {
+      "node": "Status overlay",
+      "worker": "PawnRenderNodeWorker_OverlayStatus",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       101.5,
+       8.422,
+       135.84
+      ]
+     },
+     {
+      "node": "Weapon/carried thing",
+      "worker": "PawnRenderNodeWorker_Carried",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       101.5,
+       8.3781,
+       135.5
+      ]
+     }
+    ],
+    "requestsRead": true,
+    "nodesY": {
+     "n": 9,
+     "min": 8.3781,
+     "max": 8.422,
+     "centre": 8.4001
+    },
+    "operation": {
+     "OperationId": "op_b802a090f7d546d0835fd4766ceaf086",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 35
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "pawn_default": {
+    "success": true,
+    "ticksGame": 3,
+    "pawn": {
+     "thingId": "Human39067",
+     "x": 101,
+     "z": 135
+    },
+    "framesSinceDraw": 1,
+    "cameraRootSize": 24.0,
+    "drawPath": "notPreRendered",
+    "bodyPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "requests": [
+     {
+      "node": "Body",
+      "tag": "Body",
+      "worker": "PawnRenderNodeWorker_Body",
+      "material": "Custom/CutoutRecolor_Naked_Female_north",
+      "materialId": -55476,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "node": "Wounds - pre apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       0.0,
+       0.0029,
+       0.0
+      ]
+     },
+     {
+      "node": "Apparel_CollarShirt",
+      "worker": "PawnRenderNodeWorker_Apparel_Body",
+      "material": "Custom/Cutout_ShirtButton_Female_north",
+      "materialId": -55470,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       0.0,
+       0.0073,
+       0.0
+      ]
+     },
+     {
+      "node": "Wounds - post apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       0.0,
+       0.011,
+       0.0
+      ]
+     },
+     {
+      "node": "Head",
+      "tag": "Head",
+      "worker": "PawnRenderNodeWorker_Head",
+      "material": "Custom/CutoutRecolor_Female_Narrow_Pointy_north",
+      "materialId": -55506,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       0.0,
+       0.0183,
+       0.34
+      ]
+     },
+     {
+      "node": "Head wounds",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       0.0,
+       0.0238,
+       0.34
+      ]
+     },
+     {
+      "node": "Apparel_CowboyHat",
+      "worker": "PawnRenderNodeWorker_Apparel_Head",
+      "material": "Custom/Cutout_CowboyHat_north",
+      "materialId": -55534,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       0.0,
+       0.0256,
+       0.34
+      ]
+     },
+     {
+      "node": "Weapon/carried thing",
+      "worker": "PawnRenderNodeWorker_Carried",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       0.0,
+       -0.0073,
+       0.0
+      ]
+     }
+    ],
+    "requestsRead": true,
+    "nodesY": {
+     "n": 8,
+     "min": -0.0073,
+     "max": 0.0256,
+     "centre": 0.0091
+    },
+    "operation": {
+     "OperationId": "op_6bc02323a79d456089e10e69d7429c31",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 37
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "census_z0": {
+    "success": true,
+    "ticksGame": 3,
+    "cell": {
+     "x": 101,
+     "z": 135
+    },
+    "probeY": 8.422,
+    "sectionsRead": 4,
+    "draws": [
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 6,
+      "area": 0.0024,
+      "ext": [
+       0.9744,
+       0.14,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.0024
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 324,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 18,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_FogOfWar",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "FogOfWar",
+      "shader": "Custom/Fog of war",
+      "renderQueue": 3175,
+      "matColour": [
+       0.2383,
+       0.1736,
+       0.1218,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1616,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "squareY": {
+       "n": 24,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_LightingOverlay",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "LightOverlay",
+      "shader": "Custom/Light overlay",
+      "renderQueue": 3100,
+      "matColour": [
+       0.7891,
+       0.6414,
+       0.4704,
+       1.0
+      ],
+      "tris": 4,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": -1,
+      "aMax": -1,
+      "aMean": 0.0,
+      "rgbMean": [],
+      "colours": [],
+      "mixedArea": 0.0,
+      "materialId": -1596,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 613,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "squareY": {
+       "n": 12,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_Sand",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Sand",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1624,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Snow",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Snow",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1620,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Soil",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2340,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 255,
+      "aMean": 63.75,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 0.5
+       }
+      ],
+      "mixedArea": 0.5,
+      "materialId": -21496,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 1246,
+       "min": 0.0,
+       "max": 0.7317,
+       "centre": 0.3659
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.0,
+       "max": 0.0,
+       "centre": 0.0
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Gravel",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2328,
+      "matColour": [
+       0.6392,
+       0.6078,
+       0.5569,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -29944,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 8,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 6,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Transparent_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Transparent",
+      "renderQueue": 2900,
+      "matColour": [
+       0.0392,
+       0.0314,
+       0.0196,
+       0.3216
+      ],
+      "tris": 31,
+      "area": 0.1985,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       0.9986
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1985
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -34398,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 120,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "squareY": {
+       "n": 93,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 25,
+      "area": 0.1626,
+      "ext": [
+       0.0,
+       0.14,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1626
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 132,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 75,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionDeck_Heavy_Strip_root",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55416,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 4,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "squareY": {
+       "n": 6,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionRailing_Edge",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       0.4118,
+       0.4118,
+       0.4118,
+       1.0
+      ],
+      "tris": 4,
+      "area": 2.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 2.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55402,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 8,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "squareY": {
+       "n": 12,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Soil",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2440,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.3486,
+      "ext": [
+       0.0,
+       0.0,
+       0.3486,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.3486
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55308,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 24,
+       "min": 1.0996,
+       "max": 1.1016,
+       "centre": 1.1006
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.1016,
+       "max": 1.1016,
+       "centre": 1.1016
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2443,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.04,
+      "ext": [
+       0.0,
+       0.0,
+       0.04,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         255
+        ],
+        "area": 0.04
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55314,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 12,
+       "min": 1.1015,
+       "max": 1.1015,
+       "centre": 1.1015
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.1015,
+       "max": 1.1015,
+       "centre": 1.1015
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2446,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 100,
+      "area": 1.6514,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 68,
+      "aMean": 45.02,
+      "rgbMean": [
+       9.8,
+       7.84,
+       6.86
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         53
+        ],
+        "area": 0.6514
+       },
+       {
+        "rgba": [
+         10,
+         8,
+         7,
+         49
+        ],
+        "area": 0.4343
+       }
+      ],
+      "mixedArea": 0.5657,
+      "materialId": -55318,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 142,
+       "min": 1.1018,
+       "max": 1.1019,
+       "centre": 1.1018
+      },
+      "squareY": {
+       "n": 300,
+       "min": 1.1018,
+       "max": 1.1019,
+       "centre": 1.1018
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2441,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.3486,
+      "ext": [
+       0.0,
+       0.0,
+       0.3486,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 5,
+      "aMean": 2.5,
+      "rgbMean": [
+       255.0,
+       248.0,
+       232.0
+      ],
+      "colours": [],
+      "mixedArea": 0.3486,
+      "materialId": -55330,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 8,
+       "min": 1.1019,
+       "max": 1.1019,
+       "centre": 1.1019
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.1019,
+       "max": 1.1019,
+       "centre": 1.1019
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     }
+    ],
+    "realtime": [
+     {
+      "def": "Human",
+      "thingClass": "Pawn",
+      "drawerType": "RealtimeOnly"
+     }
+    ],
+    "layersWithNoMeshData": [],
+    "operation": {
+     "OperationId": "op_b66525baad9c45f69b149b4c320cc566",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 53
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "census_z1": {
+    "success": true,
+    "ticksGame": 3,
+    "cell": {
+     "x": 101,
+     "z": 136
+    },
+    "probeY": 8.422,
+    "sectionsRead": 4,
+    "draws": [
+     {
+      "layer": "SectionLayer_FogOfWar",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "FogOfWar",
+      "shader": "Custom/Fog of war",
+      "renderQueue": 3175,
+      "matColour": [
+       0.2383,
+       0.1736,
+       0.1218,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1616,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "squareY": {
+       "n": 24,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_LightingOverlay",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "LightOverlay",
+      "shader": "Custom/Light overlay",
+      "renderQueue": 3100,
+      "matColour": [
+       0.7891,
+       0.6414,
+       0.4704,
+       1.0
+      ],
+      "tris": 4,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": -1,
+      "aMax": -1,
+      "aMean": 0.0,
+      "rgbMean": [],
+      "colours": [],
+      "mixedArea": 0.0,
+      "materialId": -1596,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 613,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "squareY": {
+       "n": 12,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_Sand",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Sand",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1624,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Snow",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Snow",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1620,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Soil",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2340,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 255,
+      "aMean": 106.25,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 0.25
+       }
+      ],
+      "mixedArea": 0.75,
+      "materialId": -21496,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 1221,
+       "min": 0.0,
+       "max": 0.7317,
+       "centre": 0.3659
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.0,
+       "max": 0.0,
+       "centre": 0.0
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Gravel",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2328,
+      "matColour": [
+       0.6392,
+       0.6078,
+       0.5569,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -29944,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 16,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 6,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Soil",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2440,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 4,
+      "area": 0.6873,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.6873
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55308,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 72,
+       "min": 1.0996,
+       "max": 1.1016,
+       "centre": 1.1006
+      },
+      "squareY": {
+       "n": 12,
+       "min": 1.1006,
+       "max": 1.1016,
+       "centre": 1.1011
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2443,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 4,
+      "area": 0.08,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         255
+        ],
+        "area": 0.08
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55314,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 28,
+       "min": 1.1015,
+       "max": 1.1015,
+       "centre": 1.1015
+      },
+      "squareY": {
+       "n": 12,
+       "min": 1.1015,
+       "max": 1.1015,
+       "centre": 1.1015
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2446,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 54,
+      "area": 1.3127,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 68,
+      "aMean": 45.9877,
+      "rgbMean": [
+       9.6296,
+       7.7037,
+       6.7407
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         53
+        ],
+        "area": 0.3127
+       },
+       {
+        "rgba": [
+         10,
+         8,
+         7,
+         49
+        ],
+        "area": 0.241
+       }
+      ],
+      "mixedArea": 0.759,
+      "materialId": -55318,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 244,
+       "min": 1.1008,
+       "max": 1.1019,
+       "centre": 1.1013
+      },
+      "squareY": {
+       "n": 162,
+       "min": 1.1008,
+       "max": 1.1019,
+       "centre": 1.1013
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2441,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 4,
+      "area": 0.6873,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 5,
+      "aMean": 2.5,
+      "rgbMean": [
+       255.0,
+       248.0,
+       232.0
+      ],
+      "colours": [],
+      "mixedArea": 0.6873,
+      "materialId": -55330,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 32,
+       "min": 1.1009,
+       "max": 1.1019,
+       "centre": 1.1014
+      },
+      "squareY": {
+       "n": 12,
+       "min": 1.1009,
+       "max": 1.1019,
+       "centre": 1.1014
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Transparent_",
+      "shader": "Custom/Transparent",
+      "renderQueue": 2442,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.4294,
+      "ext": [
+       0.0,
+       0.48,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.4294
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55326,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 12,
+       "min": 1.101,
+       "max": 1.101,
+       "centre": 1.101
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.101,
+       "max": 1.101,
+       "centre": 1.101
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 28,
+      "area": 0.1758,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1758
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 132,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 84,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 4,
+      "area": 0.006,
+      "ext": [
+       0.9744,
+       0.0,
+       1.0,
+       0.2872
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.006
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 324,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 12,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     }
+    ],
+    "realtime": [],
+    "layersWithNoMeshData": [],
+    "operation": {
+     "OperationId": "op_265420775ea447e1bf8c15c1c4eb8c31",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 43
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   }
+  }
+ },
+ "ew4_heavy_Scrapper": {
+  "build": "LOOK look=Scrapper parts=10 styled=10 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge",
+  "deckart": "DECKART look=Scrapper jetty=False dir=1 width=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip pieces=root,mid,mid,tip angle=0 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain drawn=RM_SuspensionDeck_Heavy_Strip_root,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_tip ends=own,own wrap=Clamp",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runner\\Transient\\deck_rope_order\\ew4_heavy_Scrapper.png",
+  "deckart_check": {
+   "ok": true,
+   "why": "Scrapper heavy strip, complete=True"
+  },
+  "pawn": {
+   "id": "Human39071",
+   "cell": [
+    102,
+    143
+   ],
+   "drafted": true
+  },
+  "hat": {
+   "success": true,
+   "gear": ""
+  },
+  "draw_order": {
+   "pawn_close": {
+    "success": true,
+    "ticksGame": 3,
+    "pawn": {
+     "thingId": "Human39071",
+     "x": 102,
+     "z": 143
+    },
+    "framesSinceDraw": 1,
+    "cameraRootSize": 8.0,
+    "drawPath": "notPreRendered",
+    "bodyPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "requests": [
+     {
+      "node": "Body",
+      "tag": "Body",
+      "worker": "PawnRenderNodeWorker_Body",
+      "material": "Custom/CutoutRecolor_Naked_Male_north",
+      "materialId": -55558,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4055,
+       143.5
+      ]
+     },
+     {
+      "node": "Wounds - pre apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4084,
+       143.5
+      ]
+     },
+     {
+      "node": "Apparel_CollarShirt",
+      "worker": "PawnRenderNodeWorker_Apparel_Body",
+      "material": "Custom/Cutout_ShirtButton_Male_north",
+      "materialId": -53728,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4128,
+       143.5
+      ]
+     },
+     {
+      "node": "Wounds - post apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4165,
+       143.5
+      ]
+     },
+     {
+      "node": "Head",
+      "tag": "Head",
+      "worker": "PawnRenderNodeWorker_Head",
+      "material": "Custom/CutoutRecolor_Male_Average_Wide_north",
+      "materialId": -55582,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4238,
+       143.84
+      ]
+     },
+     {
+      "node": "Head wounds",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4293,
+       143.84
+      ]
+     },
+     {
+      "node": "Apparel_CowboyHat",
+      "worker": "PawnRenderNodeWorker_Apparel_Head",
+      "material": "Custom/Cutout_CowboyHat_north",
+      "materialId": -55534,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4311,
+       143.84
+      ]
+     },
+     {
+      "node": "Status overlay",
+      "worker": "PawnRenderNodeWorker_OverlayStatus",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4421,
+       143.84
+      ]
+     },
+     {
+      "node": "Weapon/carried thing",
+      "worker": "PawnRenderNodeWorker_Carried",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.3982,
+       143.5
+      ]
+     }
+    ],
+    "requestsRead": true,
+    "nodesY": {
+     "n": 9,
+     "min": 8.3982,
+     "max": 8.4421,
+     "centre": 8.4202
+    },
+    "operation": {
+     "OperationId": "op_8e68a0e15d204bcbbd98458bb2d831ad",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 41
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "pawn_default": {
+    "success": true,
+    "ticksGame": 3,
+    "pawn": {
+     "thingId": "Human39071",
+     "x": 102,
+     "z": 143
+    },
+    "framesSinceDraw": 1,
+    "cameraRootSize": 24.0,
+    "drawPath": "notPreRendered",
+    "bodyPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "requests": [
+     {
+      "node": "Body",
+      "tag": "Body",
+      "worker": "PawnRenderNodeWorker_Body",
+      "material": "Custom/CutoutRecolor_Naked_Male_north",
+      "materialId": -55558,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4055,
+       143.5
+      ]
+     },
+     {
+      "node": "Wounds - pre apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4084,
+       143.5
+      ]
+     },
+     {
+      "node": "Apparel_CollarShirt",
+      "worker": "PawnRenderNodeWorker_Apparel_Body",
+      "material": "Custom/Cutout_ShirtButton_Male_north",
+      "materialId": -53728,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4128,
+       143.5
+      ]
+     },
+     {
+      "node": "Wounds - post apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4165,
+       143.5
+      ]
+     },
+     {
+      "node": "Head",
+      "tag": "Head",
+      "worker": "PawnRenderNodeWorker_Head",
+      "material": "Custom/CutoutRecolor_Male_Average_Wide_north",
+      "materialId": -55582,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4238,
+       143.84
+      ]
+     },
+     {
+      "node": "Head wounds",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4293,
+       143.84
+      ]
+     },
+     {
+      "node": "Apparel_CowboyHat",
+      "worker": "PawnRenderNodeWorker_Apparel_Head",
+      "material": "Custom/Cutout_CowboyHat_north",
+      "materialId": -55534,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       102.5,
+       8.4311,
+       143.84
+      ]
+     },
+     {
+      "node": "Status overlay",
+      "worker": "PawnRenderNodeWorker_OverlayStatus",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.4421,
+       143.84
+      ]
+     },
+     {
+      "node": "Weapon/carried thing",
+      "worker": "PawnRenderNodeWorker_Carried",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       102.5,
+       8.3982,
+       143.5
+      ]
+     }
+    ],
+    "requestsRead": true,
+    "nodesY": {
+     "n": 9,
+     "min": 8.3982,
+     "max": 8.4421,
+     "centre": 8.4202
+    },
+    "operation": {
+     "OperationId": "op_5e0334301ea54977ad7435d06b53bc5c",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 43
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "census_z0": {
+    "success": true,
+    "ticksGame": 3,
+    "cell": {
+     "x": 102,
+     "z": 143
+    },
+    "probeY": 8.4421,
+    "sectionsRead": 2,
+    "draws": [
+     {
+      "layer": "SectionLayer_FogOfWar",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "FogOfWar",
+      "shader": "Custom/Fog of war",
+      "renderQueue": 3175,
+      "matColour": [
+       0.2383,
+       0.1736,
+       0.1218,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1616,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "squareY": {
+       "n": 24,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_LightingOverlay",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "LightOverlay",
+      "shader": "Custom/Light overlay",
+      "renderQueue": 3100,
+      "matColour": [
+       0.7891,
+       0.6414,
+       0.4704,
+       1.0
+      ],
+      "tris": 4,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": -1,
+      "aMax": -1,
+      "aMean": 0.0,
+      "rgbMean": [],
+      "colours": [],
+      "mixedArea": 0.0,
+      "materialId": -1596,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 613,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "squareY": {
+       "n": 12,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_Sand",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Sand",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1624,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Snow",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Snow",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1620,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Gravel",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2328,
+      "matColour": [
+       0.6392,
+       0.6078,
+       0.5569,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -29944,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 88,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 6,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionDeck_Heavy_Strip_mid",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55448,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 16,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "squareY": {
+       "n": 6,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionRailing_Edge",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       0.4118,
+       0.4118,
+       0.4118,
+       1.0
+      ],
+      "tris": 4,
+      "area": 2.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 2.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55402,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 56,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "squareY": {
+       "n": 12,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 5,
+      "area": 0.0024,
+      "ext": [
+       0.9744,
+       0.14,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.0024
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 364,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 15,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2446,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 130,
+      "area": 2.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 53,
+      "aMean": 1.3077,
+      "rgbMean": [
+       9.8462,
+       7.8769,
+       6.8923
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         53
+        ],
+        "area": 1.0
+       },
+       {
+        "rgba": [
+         10,
+         8,
+         7,
+         0
+        ],
+        "area": 0.875
+       }
+      ],
+      "mixedArea": 0.125,
+      "materialId": -55318,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 1055,
+       "min": 1.1008,
+       "max": 1.1019,
+       "centre": 1.1013
+      },
+      "squareY": {
+       "n": 390,
+       "min": 1.1018,
+       "max": 1.1019,
+       "centre": 1.1018
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Transparent_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Transparent",
+      "renderQueue": 2900,
+      "matColour": [
+       0.0392,
+       0.0314,
+       0.0196,
+       0.3216
+      ],
+      "tris": 24,
+      "area": 0.1365,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       0.9998
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1365
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -34398,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 136,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "squareY": {
+       "n": 72,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 19,
+      "area": 0.1346,
+      "ext": [
+       0.0,
+       0.14,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1346
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 156,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 57,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     }
+    ],
+    "realtime": [
+     {
+      "def": "Human",
+      "thingClass": "Pawn",
+      "drawerType": "RealtimeOnly"
+     }
+    ],
+    "layersWithNoMeshData": [],
+    "operation": {
+     "OperationId": "op_005792a928414794a1acf4abc1f56971",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 42
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "census_z1": {
+    "success": true,
+    "ticksGame": 3,
+    "cell": {
+     "x": 102,
+     "z": 144
+    },
+    "probeY": 8.4421,
+    "sectionsRead": 2,
+    "draws": [
+     {
+      "layer": "SectionLayer_FogOfWar",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "FogOfWar",
+      "shader": "Custom/Fog of war",
+      "renderQueue": 3175,
+      "matColour": [
+       0.2383,
+       0.1736,
+       0.1218,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1616,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "squareY": {
+       "n": 24,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_LightingOverlay",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "LightOverlay",
+      "shader": "Custom/Light overlay",
+      "renderQueue": 3100,
+      "matColour": [
+       0.7891,
+       0.6414,
+       0.4704,
+       1.0
+      ],
+      "tris": 4,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": -1,
+      "aMax": -1,
+      "aMean": 0.0,
+      "rgbMean": [],
+      "colours": [],
+      "mixedArea": 0.0,
+      "materialId": -1596,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 613,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "squareY": {
+       "n": 12,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_Sand",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Sand",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1624,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Snow",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Snow",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1620,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Soil",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2340,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 255,
+      "aMean": 63.75,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 0.5
+       }
+      ],
+      "mixedArea": 0.5,
+      "materialId": -21496,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 1274,
+       "min": 0.0,
+       "max": 0.7317,
+       "centre": 0.3659
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.0,
+       "max": 0.0,
+       "centre": 0.0
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Gravel",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2328,
+      "matColour": [
+       0.6392,
+       0.6078,
+       0.5569,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -29944,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 88,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 6,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 3,
+      "area": 0.006,
+      "ext": [
+       0.9744,
+       0.0,
+       1.0,
+       0.2869
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.006
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 364,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 9,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Soil",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2440,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.52,
+      "ext": [
+       0.0,
+       0.48,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.52
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55308,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 206,
+       "min": 1.0996,
+       "max": 1.1016,
+       "centre": 1.1006
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.1006,
+       "max": 1.1006,
+       "centre": 1.1006
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2443,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.04,
+      "ext": [
+       0.0,
+       0.96,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         255
+        ],
+        "area": 0.04
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55314,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 100,
+       "min": 1.1015,
+       "max": 1.1015,
+       "centre": 1.1015
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.1015,
+       "max": 1.1015,
+       "centre": 1.1015
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2446,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 68,
+      "area": 1.48,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 68,
+      "aMean": 20.1667,
+      "rgbMean": [
+       9.7059,
+       7.7647,
+       6.7941
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         53
+        ],
+        "area": 0.48
+       },
+       {
+        "rgba": [
+         10,
+         8,
+         7,
+         49
+        ],
+        "area": 0.12
+       },
+       {
+        "rgba": [
+         10,
+         8,
+         7,
+         0
+        ],
+        "area": 0.21
+       }
+      ],
+      "mixedArea": 0.67,
+      "materialId": -55318,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 1055,
+       "min": 1.1008,
+       "max": 1.1019,
+       "centre": 1.1013
+      },
+      "squareY": {
+       "n": 204,
+       "min": 1.1008,
+       "max": 1.1019,
+       "centre": 1.1013
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2441,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.52,
+      "ext": [
+       0.0,
+       0.48,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 5,
+      "aMean": 2.5,
+      "rgbMean": [
+       255.0,
+       248.0,
+       232.0
+      ],
+      "colours": [],
+      "mixedArea": 0.52,
+      "materialId": -55330,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 98,
+       "min": 1.1009,
+       "max": 1.1019,
+       "centre": 1.1014
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.1009,
+       "max": 1.1009,
+       "centre": 1.1009
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Transparent_",
+      "shader": "Custom/Transparent",
+      "renderQueue": 2442,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 0.52,
+      "ext": [
+       0.0,
+       0.48,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.52
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55326,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 42,
+       "min": 1.101,
+       "max": 1.101,
+       "centre": 1.101
+      },
+      "squareY": {
+       "n": 6,
+       "min": 1.101,
+       "max": 1.101,
+       "centre": 1.101
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 18,
+      "area": 0.1453,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       0.5373
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1453
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 156,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 54,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     }
+    ],
+    "realtime": [],
+    "layersWithNoMeshData": [],
+    "operation": {
+     "OperationId": "op_d1200b3387fb42bf809054c0be1cf61e",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 37
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "experiment": [
+    {
+     "step": "q_below",
+     "materialId": -55408,
+     "setQueue": -2,
+     "reply": {
+      "success": true,
+      "ticksGame": 3,
+      "setQueue": -2,
+      "sectionsRead": 225,
+      "materials": [
+       {
+        "material": "Custom/Cutout_RM_Cable_Chain",
+        "materialId": -55408,
+        "shader": "Custom/Cutout",
+        "shaderQueue": 2900,
+        "before": 2900,
+        "after": 2900,
+        "subMeshes": 4
+       }
+      ],
+      "operation": {
+       "OperationId": "op_6cb6a839e8554c7d87a3e957ce01655b",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 48
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 3
+      }
+     }
+    },
+    {
+     "step": "q_below",
+     "materialId": -55402,
+     "setQueue": -2,
+     "reply": {
+      "success": true,
+      "ticksGame": 3,
+      "setQueue": -2,
+      "sectionsRead": 225,
+      "materials": [
+       {
+        "material": "Custom/Cutout_RM_SuspensionRailing_Edge",
+        "materialId": -55402,
+        "shader": "Custom/Cutout",
+        "shaderQueue": 2900,
+        "before": 2900,
+        "after": 2900,
+        "subMeshes": 4
+       }
+      ],
+      "operation": {
+       "OperationId": "op_40240499d0654761b824486f35d29d19",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 44
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 3
+      }
+     }
+    },
+    {
+     "step": "q_below",
+     "shot": "Transient/deck_rope_order\\ew4_heavy_Scrapper_mid_hat_q_below.png"
+    },
+    {
+     "step": "q_above",
+     "materialId": -55408,
+     "setQueue": 2901,
+     "reply": {
+      "success": true,
+      "ticksGame": 3,
+      "setQueue": 2901,
+      "sectionsRead": 225,
+      "materials": [
+       {
+        "material": "Custom/Cutout_RM_Cable_Chain",
+        "materialId": -55408,
+        "shader": "Custom/Cutout",
+        "shaderQueue": 2900,
+        "before": 2900,
+        "after": 2901,
+        "subMeshes": 4
+       }
+      ],
+      "operation": {
+       "OperationId": "op_4ff1c0e7cdc84d8cacea873122880c37",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 45
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 3
+      }
+     }
+    },
+    {
+     "step": "q_above",
+     "materialId": -55402,
+     "setQueue": 2901,
+     "reply": {
+      "success": true,
+      "ticksGame": 3,
+      "setQueue": 2901,
+      "sectionsRead": 225,
+      "materials": [
+       {
+        "material": "Custom/Cutout_RM_SuspensionRailing_Edge",
+        "materialId": -55402,
+        "shader": "Custom/Cutout",
+        "shaderQueue": 2900,
+        "before": 2900,
+        "after": 2901,
+        "subMeshes": 4
+       }
+      ],
+      "operation": {
+       "OperationId": "op_51cb3987f6de4f0cb6e1bc26c61af53f",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 38
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 3
+      }
+     }
+    },
+    {
+     "step": "q_above",
+     "shot": "Transient/deck_rope_order\\ew4_heavy_Scrapper_mid_hat_q_above.png"
+    },
+    {
+     "step": "q_shader",
+     "materialId": -55408,
+     "setQueue": -1,
+     "reply": {
+      "success": true,
+      "ticksGame": 3,
+      "setQueue": -1,
+      "sectionsRead": 225,
+      "materials": [
+       {
+        "material": "Custom/Cutout_RM_Cable_Chain",
+        "materialId": -55408,
+        "shader": "Custom/Cutout",
+        "shaderQueue": 2900,
+        "before": 2901,
+        "after": 2900,
+        "subMeshes": 4
+       }
+      ],
+      "operation": {
+       "OperationId": "op_932a45a5f8cb4854aebdde84eb0748a6",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 49
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 3
+      }
+     }
+    },
+    {
+     "step": "q_shader",
+     "materialId": -55402,
+     "setQueue": -1,
+     "reply": {
+      "success": true,
+      "ticksGame": 3,
+      "setQueue": -1,
+      "sectionsRead": 225,
+      "materials": [
+       {
+        "material": "Custom/Cutout_RM_SuspensionRailing_Edge",
+        "materialId": -55402,
+        "shader": "Custom/Cutout",
+        "shaderQueue": 2900,
+        "before": 2901,
+        "after": 2900,
+        "subMeshes": 4
+       }
+      ],
+      "operation": {
+       "OperationId": "op_20ff518a7c9149d59018df9f179274f5",
+       "Status": "Completed",
+       "Success": true,
+       "DurationMs": 42
+      },
+      "state": {
+       "programState": "Playing",
+       "hasCurrentGame": true,
+       "paused": true,
+       "timeSpeed": "Paused",
+       "tick": 3
+      }
+     }
+    },
+    {
+     "step": "q_shader",
+     "shot": "Transient/deck_rope_order\\ew4_heavy_Scrapper_mid_hat_q_shader.png"
+    }
+   ]
+  }
+ },
+ "ns4_heavy_Scrapper": {
+  "build": "LOOK look=Scrapper parts=10 styled=10 pink=0 paths=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionAnchor_Heavy|null|RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionRailing_Edge",
+  "deckart": "DECKART look=Scrapper jetty=False dir=0 width=1 strip=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Heavy_Strip pieces=root,mid,mid,tip angle=270 complete=True post=RimMandrake/FlowWorks/SuspensionBridge/Scrapper/RM_SuspensionDeck_Steel_Post cable=RimMandrake/FlowWorks/SuspensionBridge/Cables/RM_Cable_Chain drawn=RM_SuspensionDeck_Heavy_Strip_root,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_mid,RM_SuspensionDeck_Heavy_Strip_tip ends=own,own wrap=Clamp",
+  "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\runner\\Transient\\deck_rope_order\\ns4_heavy_Scrapper.png",
+  "deckart_check": {
+   "ok": true,
+   "why": "Scrapper heavy strip, complete=True"
+  },
+  "pawn": {
+   "id": "Human39076",
+   "cell": [
+    112,
+    137
+   ],
+   "drafted": true
+  },
+  "hat": {
+   "success": true,
+   "gear": ""
+  },
+  "draw_order": {
+   "pawn_close": {
+    "success": true,
+    "ticksGame": 3,
+    "pawn": {
+     "thingId": "Human39076",
+     "x": 112,
+     "z": 137
+    },
+    "framesSinceDraw": 1,
+    "cameraRootSize": 8.0,
+    "drawPath": "notPreRendered",
+    "bodyPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "requests": [
+     {
+      "node": "Body",
+      "tag": "Body",
+      "worker": "PawnRenderNodeWorker_Body",
+      "material": "Custom/CutoutRecolor_Naked_Female_north",
+      "materialId": -55634,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4253,
+       137.5
+      ]
+     },
+     {
+      "node": "Wounds - pre apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4283,
+       137.5
+      ]
+     },
+     {
+      "node": "Apparel_BasicShirt",
+      "worker": "PawnRenderNodeWorker_Apparel_Body",
+      "material": "Custom/Cutout_ShirtBasic_Female_north",
+      "materialId": -55628,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4327,
+       137.5
+      ]
+     },
+     {
+      "node": "Wounds - post apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4363,
+       137.5
+      ]
+     },
+     {
+      "node": "Head",
+      "tag": "Head",
+      "worker": "PawnRenderNodeWorker_Head",
+      "material": "Custom/CutoutRecolor_Female_Average_Pointy_north",
+      "materialId": -55664,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4436,
+       137.84
+      ]
+     },
+     {
+      "node": "Head wounds",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4491,
+       137.84
+      ]
+     },
+     {
+      "node": "Apparel_CowboyHat",
+      "worker": "PawnRenderNodeWorker_Apparel_Head",
+      "material": "Custom/Cutout_CowboyHat_north",
+      "materialId": -55534,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4509,
+       137.84
+      ]
+     },
+     {
+      "node": "Status overlay",
+      "worker": "PawnRenderNodeWorker_OverlayStatus",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4619,
+       137.84
+      ]
+     },
+     {
+      "node": "Weapon/carried thing",
+      "worker": "PawnRenderNodeWorker_Carried",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.418,
+       137.5
+      ]
+     }
+    ],
+    "requestsRead": true,
+    "nodesY": {
+     "n": 9,
+     "min": 8.418,
+     "max": 8.4619,
+     "centre": 8.44
+    },
+    "operation": {
+     "OperationId": "op_500849672dbf4898ba7a9af47805205e",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 41
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "pawn_default": {
+    "success": true,
+    "ticksGame": 3,
+    "pawn": {
+     "thingId": "Human39076",
+     "x": 112,
+     "z": 137
+    },
+    "framesSinceDraw": 1,
+    "cameraRootSize": 24.0,
+    "drawPath": "notPreRendered",
+    "bodyPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "requests": [
+     {
+      "node": "Body",
+      "tag": "Body",
+      "worker": "PawnRenderNodeWorker_Body",
+      "material": "Custom/CutoutRecolor_Naked_Female_north",
+      "materialId": -55634,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4253,
+       137.5
+      ]
+     },
+     {
+      "node": "Wounds - pre apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4283,
+       137.5
+      ]
+     },
+     {
+      "node": "Apparel_BasicShirt",
+      "worker": "PawnRenderNodeWorker_Apparel_Body",
+      "material": "Custom/Cutout_ShirtBasic_Female_north",
+      "materialId": -55628,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4327,
+       137.5
+      ]
+     },
+     {
+      "node": "Wounds - post apparel",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4363,
+       137.5
+      ]
+     },
+     {
+      "node": "Head",
+      "tag": "Head",
+      "worker": "PawnRenderNodeWorker_Head",
+      "material": "Custom/CutoutRecolor_Female_Average_Pointy_north",
+      "materialId": -55664,
+      "shader": "Custom/CutoutRecolor",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4436,
+       137.84
+      ]
+     },
+     {
+      "node": "Head wounds",
+      "worker": "PawnRenderNodeWorker_OverlayWounds",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4491,
+       137.84
+      ]
+     },
+     {
+      "node": "Apparel_CowboyHat",
+      "worker": "PawnRenderNodeWorker_Apparel_Head",
+      "material": "Custom/Cutout_CowboyHat_north",
+      "materialId": -55534,
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "drawn": [
+       112.5,
+       8.4509,
+       137.84
+      ]
+     },
+     {
+      "node": "Status overlay",
+      "worker": "PawnRenderNodeWorker_OverlayStatus",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.4619,
+       137.84
+      ]
+     },
+     {
+      "node": "Weapon/carried thing",
+      "worker": "PawnRenderNodeWorker_Carried",
+      "materialId": 0,
+      "renderQueue": -1,
+      "drawn": [
+       112.5,
+       8.418,
+       137.5
+      ]
+     }
+    ],
+    "requestsRead": true,
+    "nodesY": {
+     "n": 9,
+     "min": 8.418,
+     "max": 8.4619,
+     "centre": 8.44
+    },
+    "operation": {
+     "OperationId": "op_8c698ca49699405c84374f94dd4a7151",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 44
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "census_z0": {
+    "success": true,
+    "ticksGame": 3,
+    "cell": {
+     "x": 112,
+     "z": 137
+    },
+    "probeY": 8.4619,
+    "sectionsRead": 1,
+    "draws": [
+     {
+      "layer": "SectionLayer_FogOfWar",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "FogOfWar",
+      "shader": "Custom/Fog of war",
+      "renderQueue": 3175,
+      "matColour": [
+       0.2383,
+       0.1736,
+       0.1218,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1616,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "squareY": {
+       "n": 24,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_LightingOverlay",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "LightOverlay",
+      "shader": "Custom/Light overlay",
+      "renderQueue": 3100,
+      "matColour": [
+       0.7891,
+       0.6414,
+       0.4704,
+       1.0
+      ],
+      "tris": 4,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": -1,
+      "aMax": -1,
+      "aMean": 0.0,
+      "rgbMean": [],
+      "colours": [],
+      "mixedArea": 0.0,
+      "materialId": -1596,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 613,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "squareY": {
+       "n": 12,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_Sand",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Sand",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1624,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Snow",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Snow",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1620,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Gravel",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2328,
+      "matColour": [
+       0.6392,
+       0.6078,
+       0.5569,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -29944,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 88,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 6,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionDeck_Heavy_Strip_mid",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55448,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 16,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "squareY": {
+       "n": 6,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionRailing_Edge",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       0.4118,
+       0.4118,
+       0.4118,
+       1.0
+      ],
+      "tris": 4,
+      "area": 2.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 2.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55402,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 56,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "squareY": {
+       "n": 12,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Transparent_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Transparent",
+      "renderQueue": 2900,
+      "matColour": [
+       0.0392,
+       0.0314,
+       0.0196,
+       0.3216
+      ],
+      "tris": 6,
+      "area": 0.0131,
+      "ext": [
+       0.0254,
+       0.923,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.0131
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -34398,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 304,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "squareY": {
+       "n": 18,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2446,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 130,
+      "area": 2.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 53,
+      "aMean": 1.3077,
+      "rgbMean": [
+       9.8462,
+       7.8769,
+       6.8923
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         53
+        ],
+        "area": 1.0
+       },
+       {
+        "rgba": [
+         10,
+         8,
+         7,
+         0
+        ],
+        "area": 0.875
+       }
+      ],
+      "mixedArea": 0.125,
+      "materialId": -55318,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 1055,
+       "min": 1.1008,
+       "max": 1.1019,
+       "centre": 1.1013
+      },
+      "squareY": {
+       "n": 390,
+       "min": 1.1018,
+       "max": 1.1019,
+       "centre": 1.1018
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     }
+    ],
+    "realtime": [
+     {
+      "def": "Human",
+      "thingClass": "Pawn",
+      "drawerType": "RealtimeOnly"
+     }
+    ],
+    "layersWithNoMeshData": [],
+    "operation": {
+     "OperationId": "op_0368592ed3c34cd188a61704396032c7",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 41
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   },
+   "census_z1": {
+    "success": true,
+    "ticksGame": 3,
+    "cell": {
+     "x": 112,
+     "z": 138
+    },
+    "probeY": 8.4619,
+    "sectionsRead": 1,
+    "draws": [
+     {
+      "layer": "SectionLayer_FogOfWar",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "FogOfWar",
+      "shader": "Custom/Fog of war",
+      "renderQueue": 3175,
+      "matColour": [
+       0.2383,
+       0.1736,
+       0.1218,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1616,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "squareY": {
+       "n": 24,
+       "min": 12.439,
+       "max": 12.439,
+       "centre": 12.439
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_LightingOverlay",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "LightOverlay",
+      "shader": "Custom/Light overlay",
+      "renderQueue": 3100,
+      "matColour": [
+       0.7891,
+       0.6414,
+       0.4704,
+       1.0
+      ],
+      "tris": 4,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": -1,
+      "aMax": -1,
+      "aMean": 0.0,
+      "rgbMean": [],
+      "colours": [],
+      "mixedArea": 0.0,
+      "materialId": -1596,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 613,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "squareY": {
+       "n": 12,
+       "min": 11.7073,
+       "max": 11.7073,
+       "centre": 11.7073
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_Sand",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Sand",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1624,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Snow",
+      "visible": true,
+      "disabled": true,
+      "drawn": false,
+      "material": "Snow",
+      "shader": "Custom/Snow",
+      "renderQueue": 2401,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 8,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 0,
+      "aMean": 0.0,
+      "rgbMean": [
+       0.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         255,
+         255,
+         0
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -1620,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 2601,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 24,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_Terrain",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Terrain fade rough_Gravel",
+      "shader": "Custom/Terrain fade rough",
+      "renderQueue": 2328,
+      "matColour": [
+       0.6392,
+       0.6078,
+       0.5569,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -29944,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 88,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "squareY": {
+       "n": 6,
+       "min": 0.7317,
+       "max": 0.7317,
+       "centre": 0.7317
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionDeck_Heavy_Strip_mid",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 2,
+      "area": 1.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 1.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55448,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 16,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "squareY": {
+       "n": 6,
+       "min": 2.561,
+       "max": 2.571,
+       "centre": 2.566
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_SuspensionRailing_Edge",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       0.4118,
+       0.4118,
+       0.4118,
+       1.0
+      ],
+      "tris": 4,
+      "area": 2.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 2.0
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55402,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 56,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "squareY": {
+       "n": 12,
+       "min": 6.2195,
+       "max": 6.2295,
+       "centre": 6.2245
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Transparent_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Transparent",
+      "renderQueue": 2900,
+      "matColour": [
+       0.0392,
+       0.0314,
+       0.0196,
+       0.3216
+      ],
+      "tris": 24,
+      "area": 0.1324,
+      "ext": [
+       0.0266,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1324
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -34398,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 304,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "squareY": {
+       "n": 72,
+       "min": 5.4512,
+       "max": 5.4512,
+       "centre": 5.4512
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     },
+     {
+      "layer": "SectionLayer_ThingsGeneral",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Cutout_RM_Cable_Chain",
+      "shader": "Custom/Cutout",
+      "renderQueue": 2900,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 24,
+      "area": 0.1109,
+      "ext": [
+       0.0,
+       0.0474,
+       1.0,
+       1.0
+      ],
+      "aMin": 255,
+      "aMax": 255,
+      "aMean": 255.0,
+      "rgbMean": [
+       255.0,
+       255.0,
+       255.0
+      ],
+      "colours": [
+       {
+        "rgba": [
+         255,
+         255,
+         255,
+         255
+        ],
+        "area": 0.1109
+       }
+      ],
+      "mixedArea": 0.0,
+      "materialId": -55408,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 364,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "squareY": {
+       "n": 72,
+       "min": 8.7805,
+       "max": 8.7805,
+       "centre": 8.7805
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "above"
+     },
+     {
+      "layer": "SectionLayer_RMExcavationWalls",
+      "visible": true,
+      "disabled": false,
+      "drawn": true,
+      "material": "Custom/Vertex Color_SolidColorTex-RGBA(1.000, 1.000, 1.000, 1.000)",
+      "shader": "Custom/Vertex Color",
+      "renderQueue": 2446,
+      "matColour": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "tris": 130,
+      "area": 2.0,
+      "ext": [
+       0.0,
+       0.0,
+       1.0,
+       1.0
+      ],
+      "aMin": 0,
+      "aMax": 53,
+      "aMean": 1.3077,
+      "rgbMean": [
+       9.8462,
+       7.8769,
+       6.8923
+      ],
+      "colours": [
+       {
+        "rgba": [
+         0,
+         0,
+         0,
+         53
+        ],
+        "area": 1.0
+       },
+       {
+        "rgba": [
+         10,
+         8,
+         7,
+         0
+        ],
+        "area": 0.875
+       }
+      ],
+      "mixedArea": 0.125,
+      "materialId": -55318,
+      "boundsY": {
+       "centre": 0.0,
+       "min": -0.5,
+       "max": 0.5
+      },
+      "vertY": {
+       "n": 1055,
+       "min": 1.1008,
+       "max": 1.1019,
+       "centre": 1.1013
+      },
+      "squareY": {
+       "n": 390,
+       "min": 1.1018,
+       "max": 1.1019,
+       "centre": 1.1018
+      },
+      "boundsVsProbe": "below",
+      "straddlesProbe": false,
+      "squareVsProbe": "below"
+     }
+    ],
+    "realtime": [],
+    "layersWithNoMeshData": [],
+    "operation": {
+     "OperationId": "op_6da37041dc644dca9a3d250808939867",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 34
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 3
+    }
+   }
+  }
+ },
+ "_look": [
+  [
+   "ew2_heavy_Scrapper",
+   "mid_bare",
+   "Transient/deck_rope_order\\ew2_heavy_Scrapper_mid_bare.png"
+  ],
+  [
+   "ew2_heavy_Scrapper",
+   "mid_hat",
+   "Transient/deck_rope_order\\ew2_heavy_Scrapper_mid_hat.png"
+  ],
+  [
+   "ew2_heavy_Scrapper",
+   "endA",
+   "Transient/deck_rope_order\\ew2_heavy_Scrapper_endA.png"
+  ],
+  [
+   "ew2_heavy_Scrapper",
+   "endB",
+   "Transient/deck_rope_order\\ew2_heavy_Scrapper_endB.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "mid_bare",
+   "Transient/deck_rope_order\\ew4_heavy_Scrapper_mid_bare.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "mid_hat",
+   "Transient/deck_rope_order\\ew4_heavy_Scrapper_mid_hat.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "endA",
+   "Transient/deck_rope_order\\ew4_heavy_Scrapper_endA.png"
+  ],
+  [
+   "ew4_heavy_Scrapper",
+   "endB",
+   "Transient/deck_rope_order\\ew4_heavy_Scrapper_endB.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "mid_bare",
+   "Transient/deck_rope_order\\ns4_heavy_Scrapper_mid_bare.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "mid_hat",
+   "Transient/deck_rope_order\\ns4_heavy_Scrapper_mid_hat.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "endA",
+   "Transient/deck_rope_order\\ns4_heavy_Scrapper_endA.png"
+  ],
+  [
+   "ns4_heavy_Scrapper",
+   "endB",
+   "Transient/deck_rope_order\\ns4_heavy_Scrapper_endB.png"
+  ]
+ ]
+}
