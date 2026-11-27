@@ -33,6 +33,11 @@ KINDS = {"chain_stop": "at the chain limit: list_dispatch.py clear <ID> for one 
          "no_bundle": "the host's sort left it out of its work bundle: act on the host's reason in its row, or drop it",
          "adopt_too_heavy": "its check is too heavy to attach: `rimflow shape <ID> --enter` for a lighter check",
          "close_refused": "its check holds and the close was refused: the reason names the cause and its repair"}
+# A hold that its own end lifts, told once it outlives REST_S: the machine-load line ends when the load falls, and a load
+# that an outside job holds never falls (evidence rank 2: it held the lane 2.2 h, told to nobody; lane_sweep.py regime
+# load_held). The held tickets are one row: one load holds them all.
+NOTICED = {"machine_load": "the machine's load holds the lane: name what holds the load (uptime; ps) and end it, or "
+                           "let it fall; the lane launches when it is under the line"}
 # His words (2026-11-26): "Conductor sorts after 1 hour." A clock, not a limit: it ends no work. Danger without it: a
 # passed mod rests and its tickets wait for a run that never comes (Gimme Some Slack: 3 tickets, 45 h).
 REST_S = 3600
@@ -119,18 +124,29 @@ def rows(rd, now, rests=None, sorted_of=None):
     rd: the lane reading; rests: {mod: epoch}; sorted_of: mod -> ids already on its next-version list."""
     rests = rests or {}
     sorted_of = sorted_of or (lambda m: [])
-    out, by_mod = [], {}
+    out, by_mod, held = [], {}, {}
     for iid, r in sorted(((rd or {}).get("items") or {}).items()):
         d = (r or {}).get("decision")
         if d in KINDS:
             t = r.get("since")
             out.append({"kind": d, "items": [iid], "mod": None, "why": "%s; %s" % (_why(r.get("why")), KINDS[d]),
                         "age": _age(t, now), "_t": t if isinstance(t, (int, float)) else 9e18})
+        elif d in NOTICED:
+            t = r.get("since")
+            if not isinstance(t, (int, float)) or now - t >= REST_S:      # an unread start is listed
+                held.setdefault(d, []).append((t if isinstance(t, (int, float)) else -9e18, iid, r))
         elif d == "mod_work" and r.get("mod"):
             wu = r.get("wait_until")
             if isinstance(wu, (int, float)) and wu > now:
                 continue                    # its own dated wait stands (the Explosive Knockback hunt has one)
             by_mod.setdefault(r["mod"], []).append(iid)
+    for d, hs in sorted(held.items()):
+        hs.sort(key=lambda h: (h[0], h[1]))
+        t = hs[0][0] if hs[0][0] > -9e18 else None
+        out.append({"kind": d, "items": [h[1] for h in hs], "mod": None, "age": _age(t, now),
+                    "_t": t if isinstance(t, (int, float)) else 9e18,
+                    "why": "%s; %d ticket%s held; %s" % (_why(hs[0][2].get("why")), len(hs), "" if len(hs) == 1 else "s",
+                                                         NOTICED[d])})
     for mod, ids in sorted(by_mod.items()):
         t = rests.get(mod)
         if mod not in rests or (isinstance(t, (int, float)) and now - t < REST_S):

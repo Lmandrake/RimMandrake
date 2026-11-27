@@ -166,10 +166,30 @@ def t_each_limit_names_its_danger():
         assert m and re.search(r"[Dd]anger|his words", m.group(0)), "%s has no danger line above it" % name
 
 
+def t_a_load_hold_is_told_after_an_hour():
+    """A machine_load hold ends when the load falls; a load an outside job holds never falls, and no row told anyone
+    (the lane sweep, lane_sweep.py regime load_held; evidence rank 2: the load line held the lane 2.2 h). After REST_S
+    the held tickets are one row for the Conductor; a younger hold is not listed (the load falls by itself)."""
+    held = {"L1": {"decision": "machine_load", "why": "load average 30.0 on 14 cores is at or over the machine's line "
+                   "of 28 (2 per core); nothing launches on this machine", "since": NOW - 2.2 * H},
+            "L2": {"decision": "machine_load", "why": "load average 30.0 on 14 cores", "since": NOW - 1.5 * H},
+            "L3": {"decision": "machine_load", "why": "load average 30.0 on 14 cores", "since": NOW - 20 * 60},
+            "W1": {"decision": "waiting", "why": "a dated wait", "since": NOW - 5 * H}}
+    rows = CS().rows(reading(held), NOW, rests={})
+    load = [r for r in rows if r["kind"] == "machine_load"]
+    assert len(load) == 1, "one row for the held tickets (%s)" % rows
+    assert load[0]["items"] == ["L1", "L2"], "an hour-old hold is listed, a younger one is not (%s)" % load[0]["items"]
+    assert load[0]["age"] == "2h12", "the age is the oldest hold's (%s)" % load[0]["age"]
+    assert "load average 30.0" in load[0]["why"] and "end" in load[0]["why"], load[0]["why"]
+    young = CS().rows(reading({"L3": held["L3"]}), NOW, rests={})
+    assert young == [], "a hold younger than REST_S is no row (%s)" % young
+
+
 def main():
     failed = 0
     tests = [t_the_four_kinds_go_to_the_conductor, t_a_resting_mod_sorts_after_an_hour, t_the_owed_view_shows_them,
-             t_unread_asks_go_to_the_conductor, t_the_sort_is_one_line, t_each_limit_names_its_danger]
+             t_unread_asks_go_to_the_conductor, t_the_sort_is_one_line, t_each_limit_names_its_danger,
+             t_a_load_hold_is_told_after_an_hour]
     for t in tests:
         try:
             t()

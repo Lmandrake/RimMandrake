@@ -42,6 +42,10 @@ Code: `src/RimMandrake/rimflow/conductor_stops.py` (all of it), `src/RimMandrake
   correction of the passed version that moves no bar; `mod_work` then reads it as the ticket lane's).
   `--to next` adds the id to the mod's sorted list. Each prints the command it ran, and refuses a ticket that is not
   mod work of a resting mod.
+- **a-load-hold-is-told-after-an-hour.** The tickets whose decision is `machine_load` (`NOTICED`) for `REST_S` or
+  longer are one row, aged from the oldest hold, whose reason names the load and the act that ends it (name what holds
+  the load and end it). A younger hold is no row: the load falls by itself. A load an outside job holds never falls
+  (evidence rank 2: the load line held the lane 2.2 h, told to nobody; `lane_sweep.py` regime `load_held`).
 - **each-limit-names-its-danger.** `REST_S` and `READING_STALE_S` are written beside their dangers.
 
 ## LIFE CYCLES
