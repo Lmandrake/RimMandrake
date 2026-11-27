@@ -109,8 +109,9 @@ namespace RimMandrake.Patches
             }
         }
 
-        // True when FlowWorks' "Toss a flame here" shows on this square: its switch is on and something there will catch
-        // by its own test. Its provider asks exactly these two, so the two lines never sit on one right-click.
+        // True when FlowWorks' "Toss a flame here" may show on this square: its switch is on and something there will catch
+        // by its own test, so the two lines never sit on one right-click. Its provider also needs a colonist with hands
+        // (RequiresManipulation); on such a square a colonist without hands gets neither line, not our greyed one.
         public static bool FlowWorksOffersLine(Map map, IntVec3 c)
         {
             if (map == null || !FlowWorksBound)
