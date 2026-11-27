@@ -1190,6 +1190,88 @@ def t_old_no_home_tickets_are_placed_then_named_for_shape():
     del acts[:]
     rd = L.tick(dict(cfg), apply=True, fx=fx, now=NOW + 120)
     chk(lambda: acts == [] and "could not look" in json.dumps(rd.get("old")), "could not look: nothing written, and said")
+def t_a_judge_route_launches_one_fresh_judge_run():
+    """A part routed to a judge: the old-work filter first, then one fresh judge run (owner by card 2026-11-26, "Ticket
+    lane starts it (Recommended)"; RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 2). Before it, a judge route
+    read `routed` and nothing ever launched (10 tickets at the 3:13 PM PST tick)."""
+    jr = {"who": "judge", "ask": "rule design/x.md against design/RimMandrake/art_judge_brief.md", "resumes": "a KEEP"}
+    off = {"stale": None, "live": False}
+    for name, base in (("no check", it(effect=None, verdict=None, route=jr, judge=off)),
+                       ("a failing check", it(route=jr, judge=off))):
+        rows, launches, _ = run({"A": base})
+        r = rows["A"]
+        chk(lambda: r["decision"] == "judge" and launches == ["A"] and r.get("model") == "opus"
+            and r.get("kind") == "judge", "a judge route with %s launches one opus judge run (%s: %s)"
+            % (name, r["decision"], r.get("why")))
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=dict(jr, who="owner"))})
+    chk(lambda: rows["A"]["decision"] == "routed" and launches == [], "an owner route still launches nothing")
+    stale = dict(off, stale="every path the ask names is gone now: design/x.md")
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=stale)})
+    chk(lambda: rows["A"]["decision"] == "stopped" and launches == [] and "stale" in rows["A"]["why"]
+        and rows["A"].get("need"), "a stale judge ask is not launched and goes to the Conductor (%s)" % rows["A"].get("why"))
+    live = {"stale": None, "live": True}
+    held = [{"game": "ArchBig", "state": "HELD", "line": "ArchBig: HELD by BENCH"},
+            {"game": "ArchSmall", "state": "HIS_HOLD", "line": "ArchSmall: HIS HOLD"}]
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=live)}, games=held)
+    chk(lambda: rows["A"]["decision"] == "judge_waits_game" and launches == [] and "ArchBig: HELD" in rows["A"]["why"],
+        "a judge that needs captures waits with the reason when no game is free (%s)" % rows["A"].get("why"))
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=live)}, games=None)
+    chk(lambda: rows["A"]["decision"] == "blind" and launches == [], "games that could not be read launch no live judge")
+    cnl = LD().PR_could_not_look("the lock folder is gone")
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=live)}, games=cnl)
+    chk(lambda: rows["A"]["decision"] == "blind" and "the lock folder is gone" in rows["A"]["why"] and launches == [],
+        "a could-not-look reading of the games names its cause (%s)" % rows["A"].get("why"))
+    free = [dict(held[0], state="FREE", line="ArchBig: FREE"), held[1]]
+    hcfg = dict(CFG, hosts={"SteveDesktop": {"max_live": 2, "min_left_pct": 5}})
+    room = {"SteveDesktop": {"live": 0, "left": 50.0}}
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=live)}, games=free, cfg=hcfg, hosts=room)
+    chk(lambda: rows["A"]["decision"] == "judge" and rows["A"].get("game") == "ArchBig" and not rows["A"].get("host"),
+        "a live judge takes the free game, on Archmagi (%s)" % rows["A"])
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=off)}, account=(False, "drain"))
+    chk(lambda: rows["A"]["decision"] == "account_hold" and launches == [], "the account gate holds a judge launch")
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=off), "B": it()},
+                            systems={"A": "fix:X", "B": "fix:X"})
+    chk(lambda: rows["A"]["decision"] == "judge" and "A" in launches and not rows["A"].get("bundle")
+        and rows["B"]["decision"] == "launch", "a judge run is never folded into a work bundle (%s)" % rows["A"])
+    st = att({"unit": "j1", "failed": None, "next": None, "kind": "judge"})
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=off)},
+                            runs={"A": {"live": [], "ended": ["j1"]}}, st=st)
+    chk(lambda: rows["A"]["decision"] == "stopped" and launches == [],
+        "a judge run that ended and left its route is not launched again (%s)" % rows["A"].get("why"))
+    st = att({"unit": "w1", "failed": None, "next": None})
+    rows, launches, _ = run({"A": it(effect=None, verdict=None, route=jr, judge=off)},
+                            runs={"A": {"live": [], "ended": ["w1"]}}, st=st)
+    chk(lambda: rows["A"]["decision"] == "judge" and launches == ["A"],
+        "the Work run that routed it to a judge does not stop the first judge run (%s)" % rows["A"].get("why"))
+    b = LD().judge_brief_text("A", it(effect=None, verdict=None, route=jr, judge=live, title="t"),
+                              {"game": "ArchBig", "run_n": 1}, makers=["u0"])
+    for need in ("stop", "polish", "You are not u0", "art_judge_brief.md", "game_lock.py claim ArchBig",
+                 "not worth the touch", "STALE", "flight"):
+        chk(lambda need=need: need in b, "the judge brief says %r" % need)
+    sent = []
+    fx = {"launch": lambda *a, **k: sent.append(a) or (0, "", "j9"), "need": lambda *a: None}
+    st = {"items": {}}
+    items = {"A": it(effect=None, verdict=None, route=jr, judge=off)}
+    rows, launches = LD().decide(dict(CFG), st, {"items": items, "runs": {}, "other_live": 0}, NOW)
+    LD().execute(dict(CFG), st, rows, launches, {"items": items}, NOW, fx=fx)
+    chk(lambda: sent and "fresh judge" in sent[0][3] and st["items"]["A"]["attempts"][-1]["kind"] == "judge"
+        and rows[0]["decision"] == "launched", "the tick launches the judge with the judge brief and records it")
+
+
+def t_the_judge_filter_reads_the_ask_against_now():
+    root = tempfile.mkdtemp(prefix="ld_judge_")
+    os.makedirs(os.path.join(root, "design"))
+    open(os.path.join(root, "design", "here.md"), "w").close()
+    jf = LD().judge_facts
+    chk(lambda: jf("rule design/gone.md and design/gone2.json", root)["stale"],
+        "an ask whose every named path is gone is stale")
+    chk(lambda: jf("rule design/here.md, write design/gone.json", root)["stale"] is None,
+        "an ask that names one path of now is not stale")
+    chk(lambda: jf("pick a or b for RM_Murrelith", root)["stale"] is None, "an ask that names no path is not stale")
+    chk(lambda: jf("On in-game captures of the sea-floor view, rule", root)["live"] is True,
+        "an ask on in-game captures needs a game")
+    chk(lambda: jf("From a screenshot of a fresh map on this build", root)["live"] is True, "a screenshot needs a game")
+    chk(lambda: jf("rule design/here.md from the brief", root)["live"] is False, "a text judge needs no game")
 
 
 def main():
@@ -1226,7 +1308,9 @@ def main():
               t_blocked_idle_window_open_is_due,
               t_a_block_with_no_end_ages_whatever_its_needs,
               t_old_no_home_tickets_are_placed_then_named_for_shape,
-              t_each_row_says_since_when_it_took_its_decision):
+              t_each_row_says_since_when_it_took_its_decision,
+              t_a_judge_route_launches_one_fresh_judge_run,
+              t_the_judge_filter_reads_the_ask_against_now):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a promise whose test cannot run is a FAIL, never a crash

@@ -644,7 +644,7 @@ def group(rows, launches, systems, live, join=None):
     lead, keep, mine = {}, [], []
     for r in rows:
         i = r["item"]
-        if r.get("kind") == "shape" or i not in systems:
+        if r.get("kind") == "shape" or r.get("judge") or i not in systems:   # a judge is its own fresh run
             if i in launches:
                 keep.append(i)
             continue

@@ -212,6 +212,18 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 - **only-narrows-the-items-never-the-gates.** `tick --only ID...` (the Conductor's run-now) decides only the named
   items, in the order given, through every gate and the same slots; a named item that is not open with a check or an
   acceptance script reads `not_found`.
+- **a-judge-route-launches-one-fresh-judge-run.** A part routed to `judge` (list_shape) no longer reads `routed`: the old-work
+  filter comes first (`judge_facts` stale reads `stopped`, with a Needs Conductor line, and launches nothing), then the
+  row goes through every gate of a launch and reads `judge`: one opus run with `judge_brief_text` (it names who made the
+  work and says "You are not ...", the stopping level, when to stop looking, the polish route, the art brief for an art
+  ask, and never a flight test). An ask on in-game captures takes a free game of `game_lock.query_all` and stays on
+  Archmagi; no free game reads `judge_waits_game` with each game's line; games that could not be read read `blind`. A
+  judge row is never folded into a work bundle. A judge counts only judge runs (the Work run that routed the part did
+  its act by routing); a judge run that ended and left its route reads `stopped` by the Work run rule. An owner, conductor or review route still reads `routed`. Why: on 2026-11-26 10 tickets were routed to a judge
+  and nothing launched one; owner by card 2026-11-26, "Ticket lane starts it (Recommended)".
+- **the-judge-filter-reads-the-ask-against-now.** `judge_facts(ask, root)`: stale when the ask names repo paths and
+  every one is gone from `root`; an ask that names one path of now, or none, is not stale by program (the judge's own
+  step 1 reads it against now). live when the ask names in-game captures, a screenshot, a live game or "on this build".
 - **each-limit-names-its-danger.** Each numeric setting in `list_dispatch.json` has a `_<name>_doc` that names the danger
   it guards.
 

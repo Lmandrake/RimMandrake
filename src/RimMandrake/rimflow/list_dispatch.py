@@ -21,8 +21,13 @@ oldest item that another waits on, then oldest filing, one decision:
                   shapes the item and, when the item is small, does its work in the same run. A `large` Shape run is not
                   counted as a Work run. A Shape run that left neither check nor route reads stopped. A due item whose
                   acceptance script was refused or is too heavy to adopt also reads shape
-  routed          a part routed to judge, owner, conductor or review and not yet answered (with or without a check):
+  routed          a part routed to owner, conductor or review and not yet answered (with or without a check):
                   nothing launches; the party that answers shapes the item again (list_shape.py)
+  judge           a part routed to a judge: the old-work filter first (judge_facts: an ask whose every named repo path
+                  is gone is stale, and reads stopped, for the Conductor), then one fresh judge run (opus, judge_brief_text)
+                  through every gate below, never in a work bundle. An ask on in-game captures takes a free game
+                  (game_lock.py); none free reads judge_waits_game with the games' lines, and games that could not be
+                  read read blind. A judge run that ended and left its route reads stopped, by the Work run rule
   live            a detached run is live on it
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
                   wait passed and the check fails on an old item that nobody named (a date never launches old work). A due
@@ -507,7 +512,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("off", it["off"])
             continue
         claimed = it.get("claimed") if not att else None     # the lease of a run of ours never stops our next run
-        shape = False
+        shape = judge = False
         if not it.get("effect"):
             acc = it.get("accept")
             if claimed:
@@ -516,7 +521,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
             ref = s.get("adopt_refused") or {}
             refused = bool(acc) and ref.get("fp") == [acc, it.get("events")]
             heavy = bool(acc) and "accept_s" in it and it["accept_s"] is None
-            if it.get("route"):     # routed first: no script is adopted (or said refused) past an open route
+            if it.get("route") and it["route"].get("who") == "judge":
+                judge = True        # the lane starts the judge (part 2): it goes on through the gates below
+            elif it.get("route"):     # routed first: no script is adopted (or said refused) past an open route
                 r = it["route"]
                 put("routed", "routed to %s: %s; resumes on: %s" % (r.get("who"), r.get("ask"), r.get("resumes")))
             elif (refused or heavy) and it.get("shape_due"):
@@ -537,17 +544,17 @@ def decide(cfg, st, facts, now, account=(True, "")):
             else:
                 put("no_effect", "the item carries no outcome check and is not due for Shape: %s"
                     % (it.get("shape_why") or "not named"))
-            if not shape:
+            if not shape and not judge:
                 continue
         verdict = it.get("verdict")
-        if not shape and verdict == "holds":
+        if not shape and not judge and verdict == "holds":
             ref = s.get("close_refused") or {}
             if ref.get("fp") == [it.get("effect"), it.get("events")]:
                 put("close_refused", "the check holds but `rimflow close` refused: %s" % _one(ref.get("why"), 200))
             else:
                 put("close", "the check holds: the work is done (%s)" % _one(it.get("out"), 160))
             continue
-        if not shape and verdict != "fails":
+        if not shape and not judge and verdict != "fails":
             if run.get("bundle") or run.get("live"):    # a live run on it holds nothing back: say so, not blind
                 put("in_bundle" if run.get("bundle") else "live", "its check is unmeasured (%s), but %s works it"
                     % (_one(it.get("out") or verdict, 120), "the live work bundle %s" % run["bundle"]
@@ -555,10 +562,20 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 continue
             put("blind","the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
             continue
-        if it.get("route"):     # an open routed part holds the item: its answer re-shapes it (list_shape.py)
+        if it.get("route") and it["route"].get("who") == "judge":
+            judge = True
+        elif it.get("route"):     # an open routed part holds the item: its answer re-shapes it (list_shape.py)
             r = it["route"]
             put("routed", "a part is routed to %s: %s; resumes on: %s" % (r.get("who"), r.get("ask"), r.get("resumes")))
             continue
+        jf = (it.get("judge") or {}) if judge else {}
+        if judge:
+            row["judge"] = True     # work_bundle.group never folds a judge row into a bundle: a judge is its own run
+            if jf.get("stale"):     # the old-work filter (CLAUDE.md, Old work is filtered) comes before any launch
+                stop("the judge ask is stale: %s" % jf["stale"],
+                     "read the ask on %s against now, then re-shape it (`rimflow shape %s --parts ...`) or drop it"
+                     % (iid, iid))
+                continue
         if runs_blind:
             put("blind", "whether a run is live on it is unknown (%s); nothing launches it" % facts.get("recent"))
             continue
@@ -604,6 +621,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
         fresh = [a for a in done if a.get("at", 0) > sat] if sat and it.get("shape_unit") not in own else done
         # A `large` Shape run only shaped: it is not a Work run (list_shape.py; boundary a-large-shape-run-is-not-a-work-run)
         work = [a for a in fresh if not (a.get("kind") == "shape" and it.get("shape_size") == "large")]
+        if judge:   # a judge counts only judge runs: the Work run that routed the part to a judge did its act by routing
+            work = [a for a in fresh if a.get("kind") == "judge"]
         if done:
             last = done[-1]
             if last.get("unit") not in (run.get("ended") or []):
@@ -658,6 +677,19 @@ def decide(cfg, st, facts, now, account=(True, "")):
             stop("%d launches in a row never started; the last: %s" % (tail, _one(att[-1].get("failed"), 200)),
                  "clear the cause the launch names, then `list_dispatch.py clear %s --why ...`" % iid)
             continue
+        game = None
+        if judge and jf.get("live"):    # a judge on captures takes a free game (CLAUDE.md, The bridge is passed ...)
+            games = facts.get("games")
+            if not isinstance(games, list):     # None, or a could-not-look result from _games
+                put("blind", "the judge needs in-game captures and whether a game is free could not be read (%s); "
+                             "nothing launches it" % (getattr(games, "cause", None) or "no reading"))
+                continue
+            free = [g for g in games if g.get("state") == "FREE"]
+            if not free:
+                put("judge_waits_game", "the judge needs in-game captures and no game is free: %s"
+                    % ("; ".join(str(g.get("line") or g.get("game")) for g in games) or "no game on this machine"))
+                continue
+            game = free[0]["game"]
         if not account[0]:
             put("account_hold", account[1] or "the account gate holds launches")
             continue
@@ -670,6 +702,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
             row["load_could_not_look"] = ocnl
         # a host with room first (boundary a-ready-ticket-goes-to-a-host-with-room-first); Archmagi takes the rest
         only = (cfg.get("archmagi_only_homes") or {}).get(it.get("home"))   # its tools are on Archmagi only
+        if game:
+            only = "its judge takes %s, a game of Archmagi" % game
         host, hwhy = host_first(cfg, facts.get("hosts"), placed, dict(it, needs="archmagi (%s)" % only) if only else it)
         if host:
             free, full = True, None
@@ -697,6 +731,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
             continue
         if shape:
             model, mwhy = "opus", "a Shape run is a judgement, and does the work too when the item is small"
+        elif judge:
+            model, mwhy = "opus", "a judge run is a judgement on work it did not make"
         elif look:
             model, mwhy = "opus", "a second look is a judgement"
         else:
@@ -710,7 +746,12 @@ def decide(cfg, st, facts, now, account=(True, "")):
             row["host"] = host
         else:
             live_total += 1
-        if shape:
+        if judge:
+            row.update(model=model, cap=cap, run_n=len(work) + 1, kind="judge", **({"game": game} if game else {}))
+            put("judge", "judge run %d: %s (%s); the ask: %s%s" % (
+                len(work) + 1, model, mwhy, _one((it.get("route") or {}).get("ask"), 160),
+                "; it takes %s for its captures" % game if game else ""))
+        elif shape:
             row.update(model=model, cap=cap, run_n=1, kind="shape")
             put("shape", "Shape run: %s (%s); %s" % (model, mwhy, it.get("shape_why") or "due for Shape"))
         else:
@@ -1464,6 +1505,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
                 d["wait_until"], d["wait_reason"] = LM.epoch(x.wait_until), x.wait_reason
             except Exception:  # noqa: BLE001 - an unreadable date is not "no wait"
                 d["blocked"], d["blocked_reason"] = True, "its wait date %r cannot be read" % x.wait_until
+        if (sf["route"] or {}).get("who") == "judge":
+            d["judge"] = judge_facts(sf["route"].get("ask"), root)
         if acc:
             d["accept"] = acc
             if not d.get("claimed") and not (mw.get("mod") or mw.get("unreadable")):   # a mod's script is not timed
@@ -1555,7 +1598,9 @@ def gather(st, now=None, root=None, load_lag_s=None):
             "bundles_live": bundles_live, "join": join, "onboard": onboard, "old": old,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "cores": os.cpu_count(),
-            "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old}
+            "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old,
+            # which game is free, read only when a judge ask needs captures (a live judge, part 2)
+            "games": _games() if any((d.get("judge") or {}).get("live") for d in ordered.values()) else []}
 
 
 def account_gate(gate=None, drain=None, now=None):
@@ -1604,6 +1649,86 @@ Steps:
            out=_one(it.get("out"), 600) or "(nothing)",
            look=LOOK % _one(row["look"], 400) if row.get("look") else "",
            stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "") + _reader(it)
+
+
+# ---- the judge (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 2: owner by card 2026-11-26, "Ticket lane starts
+# it (Recommended)": the lane first checks that the ask is still true, then launches one fresh judge run) -------------
+
+# A repo path an ask names: a top folder of this repo, then a path with no placeholder or glob in it.
+JUDGE_PATH_RX = re.compile(r"(?<![\\w/.-])((?:design|src|infrastructure|skills|world|observed)/[^\s'\"`,;:()<>*{}\[\]]+)")
+# An ask that a judge answers from captures of a running game.
+JUDGE_LIVE_RX = re.compile(r"\bin-game\b|\bin game\b|\bscreenshots?\b|\bcaptures?\b|\blive game\b|\bon this build\b", re.I)
+
+
+def judge_facts(ask, root):
+    """-> {"stale": why or None, "live": bool}: the program's part of the old-work filter on a judge ask. Stale when the ask
+    names repo paths and every one of them is gone from `root` (the thing to judge is gone); an ask that names no path,
+    or one path of now, is read against now by the judge run itself (its brief's step 1). live: the ask is answered from
+    in-game captures, so the run takes a free game."""
+    ask = str(ask or "")
+    paths = sorted(set(m.rstrip(".") for m in JUDGE_PATH_RX.findall(ask)))
+    gone = [q for q in paths if not os.path.exists(os.path.join(root, q))]
+    stale = ("every repo path the ask names is gone now: %s" % ", ".join(gone)) if paths and len(gone) == len(paths) else None
+    return {"stale": stale, "live": bool(JUDGE_LIVE_RX.search(ask)), "paths": paths}
+
+
+def _games():
+    """-> [game_lock.query] for each game of this machine, or a could-not-look result naming its cause."""
+    try:
+        import game_lock as GL
+        return [{"game": r.get("game"), "state": r.get("state"), "line": r.get("line")} for r in GL.query_all()]
+    except Exception as e:  # noqa: BLE001 - which game is free is unknown: a live judge reads blind, with the cause
+        return PR_could_not_look("the games could not be read (%s: %s)" % (type(e).__name__, e))
+
+
+JUDGE_ART = "design/RimMandrake/art_judge_brief.md"
+JUDGE_ART_RX = re.compile(r"art_judge_brief|\bart\b|sprite|picture|texture|facing|coat|redraw|re-bake|icon|graphics", re.I)
+
+
+def judge_brief_text(iid, it, row, makers=()):
+    r = it.get("route") or {}
+    art = bool(JUDGE_ART_RX.search(str(r.get("ask") or "")))
+    game = row.get("game")
+    who = ", ".join(sorted(set(m for m in makers if m))) or "the runs that made the work"
+    return """Judge list item {item}: you are a fresh judge run that the Workshop Pipeline's ticket lane launched (judge run {n}).
+
+You are not {who}: you did not make the work you judge. If you find that you made it (your own commit, your own note),
+end at once with a note that says so; never judge your own work.
+
+Title: {title}
+The ask routed to a judge: {ask}
+What resumes the item: {resumes}
+
+Read first: design/RimMandrake/standing_rulings.md sections "The judge refuses flaws, not polish" and "A refusal carries its
+path to pass".{art}
+
+Steps:
+0. Start the item: python3 src/RimMandrake/rimflow/cli.py start {item} --seat BENCH --why "ticket lane judge run (list_dispatch.py)" --publish
+1. The old-work filter (CLAUDE.md, Old work is filtered before any process takes it): read the ask against the state of
+   now (the files, the item's later notes, his later words). If his later words, a later ruling or the code of now already
+   answer it, the ask is STALE: re-shape the item without that route (`python3 src/RimMandrake/rimflow/cli.py shape {item}
+   --parts ...`) with the reason in --why, and end. Judge nothing that is stale.
+2. Judge what the ask names, and only that. The level that is enough: a flaw that the player would see, or a broken
+   promise of the ask's own brief. When to stop looking: when you can rule on each thing the ask names; do not hunt for
+   more. A finding below that level is not worth the touch: write it as one line on the polish.md beside the work (the
+   polish route), never a ticket. A refusal names the flaw and its path to pass.
+3. Write the verdict where the ask says, with your run's name as the judge, land it with ./publish and explicit paths,
+   then re-shape the item so the routed part reads your verdict (a check that a program can read), or close it when its
+   check holds.
+4. If you cannot finish, end with a note that starts `LEFT OPEN:` and names the one next act, or a dated wait that names
+   who acts next.
+{game}
+Never live-test a flyer's flight and never try to capture images of flight (CLAUDE.md, If it flies in the fiction).
+Change no mod, no bar and no version. Start no helper of your own.
+""".format(item=iid, n=row.get("run_n", 1), who=who, title=it.get("title") or "-", ask=_one(r.get("ask"), 1200),
+           resumes=_one(r.get("resumes"), 400),
+           art=("\nThis is an art ask: judge against %s and the subject's canon entry; read that brief whole." % JUDGE_ART)
+           if art else "",
+           game=("\nThis ask is answered from in-game captures. The ticket lane saw %s free. Take it first: python3 "
+                 "src/RimMandrake/rimflow/game_lock.py claim %s --for \"judge captures for %s\" (exit 75 or 3: it was taken "
+                 "since; end with `LEFT OPEN: judge: no game was free at claim`). Release it the moment the captures "
+                 "are taken: python3 src/RimMandrake/rimflow/game_lock.py release %s. Never fullscreen or focus the game.\n"
+                 % (game, game, iid, game)) if game else "")
 
 
 def _reader(it):
@@ -1736,7 +1861,7 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
                 s["adopt_refused"] = {"fp": [row["accept"], it.get("events")], "why": _one(said, 600), "at": now}
                 row.update(decision="adopt_refused", why=_one(said, 300))
             continue
-        if iid not in launches or row["decision"] not in ("launch", "shape"):
+        if iid not in launches or row["decision"] not in ("launch", "shape", "judge"):
             continue        # a second row under a launched id (a hold row) is never a launch: it has no model
         if row.get("bundle"):       # work_bundle.py: one run for every ready member of the system
             launch_bundle_row(cfg, st, row, items, now, do_launch, remote=fx.get("remote"), rows=rows)
@@ -1744,6 +1869,9 @@ def execute(cfg, st, rows, launches, facts, now, fx=None):
         if row.get("kind") == "shape":
             import list_shape as LS
             brief = LS.brief_text(iid, it, row)
+        elif row.get("kind") == "judge":
+            brief = judge_brief_text(iid, it, row, makers=[a.get("unit") for a in s.get("attempts") or [] if a.get("unit")]
+                                     + ([it["shape_unit"]] if it.get("shape_unit") else []))
         else:
             brief = brief_text(iid, it, row)
         rc, text, unit = do_launch(iid, row["model"], row["cap"], brief, cfg.get("seat", "BENCH"), it.get("mod"),
