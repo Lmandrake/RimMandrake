@@ -62,9 +62,14 @@ class Sess(object):
             self.cells.setdefault(c, []).append("Steel")
             return {"success": True}
         if tool == "jawa/destroy_batch":
+            # honours `categories` as jawa/destroy_batch does (its default is Plant), so "the grass stays" is the
+            # canary's own Item-only cleanup, not this fake's: a cleanup that also names Plant, or drops the
+            # categories, goes red here
+            cats = set((p.get("categories") or "Plant").replace(" ", ",").split(",")) - {""}
             c = self._xz(p["rects"])
             self.destroyed.append(c)
-            self.cells[c] = [d for d in self.cells.get(c, []) if d == GRASS]   # categories=Item: plants stay
+            self.cells[c] = [d for d in self.cells.get(c, [])
+                             if not (("Plant" if d == GRASS else "Filth" if d.startswith("Filth") else "Item") in cats)]
             return {"success": True}
         return {"success": True}
 
