@@ -48,8 +48,9 @@ waited for the Conductor's hand, because no program launched them. Each promise 
 
 ## PROMISES (each one is owed a test of the same name)
 
-- **decide-is-pure-and-says-why-on-every-row.** `decide(cfg, st, facts, now, account)` reads only its inputs, writes
-  only `st`, and returns one row per item with a non-empty `why`. A ledger that could not be read (`facts["items"]` is
+- **decide-is-pure-and-says-why-on-every-row.** `decide(cfg, st, facts, now, account)` reads only its inputs (and two
+  files: a host's work switch, `host_work_switch.json` through `switch_refuses`, and the shipped `list_dispatch.json`
+  for a key a partial cfg leaves out), writes only `st`, and returns one row per item with a non-empty `why`. A ledger that could not be read (`facts["items"]` is
   None) is one `blind` row and no launch.
 - **each-row-says-since-when-it-took-its-decision.** Each row of `reading.json` carries `since`: the time of the first
   full applied tick that gave the item its decision; a changed decision starts it again (state `kind_since`). A
@@ -101,7 +102,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   `external` with a reason) or a `needs` window (kind `live` with `needs` `game-up` or `bridge`). Any other block has no
   end: no kind (or `other`), `item` or `judge` with no open predecessor, `time` with no date, `external` with no reason,
   `live` with no window. A block with no end, idle `block_idle_days` since the item's last own event, is stale whatever
-  its `needs`, and the Shape run's why asks it to drop a stale or wrong ticket first, then type the block (`rimflow
+  its `needs` (this rule decides before the window rule of the promise above: a block with no end and `needs`
+  `game-up` whose window opened is read by this rule alone), and the Shape run's why asks it to drop a stale or wrong ticket first, then type the block (`rimflow
   block --kind`) or lift it. Its route must be open: a `mod:` ticket is its mod's (the next promise of the work bundles
   page), a ticket whose home class is off in `onboard_classes` waits for its class, and a ticket with no home waits for
   `no_home_shape_from`. Decision: the Conductor, 2026-11-26 (`design/specs/2026-11-26-testless-tickets/conductor_decisions.md`,
@@ -208,7 +210,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   `effect` for an adopted acceptance script, the one shared note when a required live line is missing or fails, and the
   rule homes and Shape names of the promise old-no-home-tickets-are-placed-then-named-for-shape.
 - **a-dry-tick-writes-nothing.** A tick without `--apply` launches nothing, closes nothing, attaches nothing and writes no
-  state.
+  state of the lane. It may write one thing that is not the lane's: a remote bundle's marker that takes the host's own
+  reading (`work_bundle.refresh_remote`), the same write that the next applied tick makes.
 - **only-narrows-the-items-never-the-gates.** `tick --only ID...` (the Conductor's run-now) decides only the named
   items, in the order given, through every gate and the same slots; a named item that is not open with a check or an
   acceptance script reads `not_found`.
@@ -217,7 +220,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   row goes through every gate of a launch and reads `judge`: one opus run with `judge_brief_text` (it names who made the
   work and says "You are not ...", the stopping level, when to stop looking, the polish route, the art brief for an art
   ask, and never a flight test). An ask on in-game captures takes a free game of `game_lock.query_all` and stays on
-  Archmagi; no free game reads `judge_waits_game` with each game's line; games that could not be read read `blind`. A
+  Archmagi, and two judges of one tick never take the same game; no free game reads `judge_waits_game` with each
+  game's line; games that could not be read read `blind`. A
   judge row is never folded into a work bundle. A judge counts only judge runs (the Work run that routed the part did
   its act by routing); a judge run that ended and left its route reads `stopped` by the Work run rule. An owner, conductor or review route still reads `routed`. Why: on 2026-11-26 10 tickets were routed to a judge
   and nothing launched one; owner by card 2026-11-26, "Ticket lane starts it (Recommended)".
