@@ -63,5 +63,9 @@ Owner, by card 2026-11-19: a rare failure that breaks a promise is listed below 
   counts no dollars for it and lists its unit as UNMEASURED.
 - **hand-run-the-books-now-own-is-folded.** `maturation_hands._fold_tick_own` folds, once, each open `hand_run` act
   whose unit the tick's current books (`tick_units`) hold, and leaves open every act whose unit no book holds.
+- **lane-launched-run-is-no-hand-run.** A run whose unit the Workshop lane's books hold (`list_dispatch` `state.json`,
+  live or cleared attempts: `maturation_hands.lane_units`) is recorded by `collect` as no hand run, and
+  `_fold_tick_own` folds, once, an open `hand_run` act for such a unit, naming the lane. A run that no lane attempt and
+  no tick book holds stays an open hand act; a lane state that cannot be read (`None`) folds nothing.
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

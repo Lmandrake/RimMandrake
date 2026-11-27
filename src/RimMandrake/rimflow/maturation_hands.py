@@ -20,7 +20,7 @@ A hand act (observe, called by maturation_dispatch.tick on every applied tick):
   ceiling_release   a `maturation_dispatch.py release` record (the tick's own killed-run refund is marked auto: not one)
   clear             a `maturation_dispatch.py clear`
   coverage_release  a `coverage_judge.py release` or a grant written by hand (a release a grant made is the grant's)
-  hand_run          a detached run that neither the tick nor left_open_continue.py launched and that does a stage's
+  hand_run          a detached run that neither the tick, the Workshop lane nor left_open_continue.py launched and that does a stage's
                     work on an advancing mod: a blind judge, an in-game driver, a fix on one of the tick's own road-back or stop tickets, or a run live at the
                     offline build with build work owed. Any other run on the mod (a feature build) is not one
   hand_move         a stage move that names no run (maturation.py advance writes its run's unit) and that no run the
@@ -181,6 +181,31 @@ def tick_units(s):
     return units, items
 
 
+def lane_units(fx=None):
+    """-> {unit} the Workshop lane (list_dispatch.py) launched on any item, live attempts and cleared ones, from its books
+    (<list_dispatch dir>/state.json, items.<ID>.attempts[].unit and items.<ID>.cleared[].attempts[].unit), or None when
+    they cannot be read (could not look: then a run still counts as a hand's). A lane launch is a program's launch, never
+    a hand act (RIMMANDRAKE_FOLD_LANE_RUNS_NOT_HANDS_ONE_OPEN_NOW)."""
+    if fx and "lane_units" in fx:
+        return fx["lane_units"]()
+    d = os.environ.get("RM_LIST_DISPATCH_DIR")
+    if not d:
+        import doorbell
+        d = os.path.join(doorbell.state_dir(), "list_dispatch")
+    st = _json(os.path.join(d, "state.json"))
+    if not isinstance(st, dict) or not isinstance(st.get("items"), dict):
+        return None
+    units = set()
+    for it in st["items"].values():
+        if not isinstance(it, dict):
+            continue
+        books = [it.get("attempts")] + [c.get("attempts") for c in it.get("cleared") or [] if isinstance(c, dict)]
+        for b in books:
+            units.update(x.get("unit") for x in b or [] if isinstance(x, dict))
+    units.discard(None)
+    return units
+
+
 def _fix_queue(s):
     """The tick's own fix tickets for a mod: its fixer keys and what its road back names."""
     ids = {str(k).split("|")[0] for k in (s.get("fixers") or {})}     # a Test Pilot sitting's key is ITEM|pilot|<tsn>
@@ -252,6 +277,7 @@ def collect(root, cfg, st, facts, now, fx=None):
         f = (facts or {}).get(mod) or {}
         runs = [r for r in f.get("runs_seen") or [] if isinstance(r, dict) and r.get("unit")]
         queue = _fix_queue(s)
+        lane = lane_units(fx) if runs else None
         rb_items = False        # read once per mod, only when a run needs it
         w = s.get("watch") or {}
         for r in runs:
@@ -259,6 +285,8 @@ def collect(root, cfg, st, facts, now, fx=None):
             # a launch record that never ran (launch_failed) worked on nothing: no run, no hand
             if r["unit"] in units or r.get("ran") is False or not isinstance(at, (int, float)) or at <= since:
                 continue
+            if lane and r["unit"] in lane:
+                continue        # the Workshop lane launched it: a program's run, no hand
             if item not in queue and not MD._is_blind_item(item) and not MD._is_ingame_item(item):
                 if rb_items is False:
                     rb_items = _road_back_items(root, s, fx, h)
@@ -397,8 +425,16 @@ def _fold_tick_own(st, now, fx=None):
     folds = read_folds()
     mods = st.get("mods") or {}
     units = {}
+    lane, lane_read = None, False
     for a in read_acts():
         if a["id"] in folds or a.get("kind") != "hand_run" or not str(a["id"]).startswith("run-"):
+            continue
+        if not lane_read:
+            lane, lane_read = lane_units(fx), True      # read once, only when an open hand run needs it
+        if lane is not None and a["id"][len("run-"):] in lane:      # None = could not look: folds nothing
+            _append(FOLDS, {"id": a["id"], "at": now, "by": "maturation_hands",
+                            "why": "the Workshop lane (list_dispatch.py) launched it: a program's run, not a hand's "
+                                   "(its books hold the unit)"})
             continue
         mod = a.get("mod")
         if mod not in units:
@@ -516,7 +552,7 @@ def main(argv=None):
             f = folds.get(a["id"])
             print("%s  %-16s %-18s %s%s [%s]" % (
                 iso(a["at"]), a["kind"], a["mod"], a["what"], (" | why: %s" % a["why"]) if a["why"] else "",
-                ("folded by %s" % (f.get("item") or f.get("census"))) if f else
+                ("folded by %s" % (f.get("item") or f.get("census") or f.get("why"))) if f else
                 "OPEN %d h, id %s" % ((now - a["at"]) // 3600, a["id"])))
         print("%d act(s) shown, %d recorded, %d open" % (len(rows), len(read_acts()),
                                                          len([a for a in read_acts() if a["id"] not in folds])))
