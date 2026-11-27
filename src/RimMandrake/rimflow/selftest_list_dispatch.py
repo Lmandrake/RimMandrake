@@ -1311,6 +1311,59 @@ def t_a_judge_route_launches_one_fresh_judge_run():
         and rows[0]["decision"] == "launched", "the tick launches the judge with the judge brief and records it")
 
 
+def t_a_live_check_with_no_game_takes_a_free_game_or_waits():
+    # OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ, outage 5 (2026-11-27 03:16Z): DONOR_MUTATORS_MIGRATE's live
+    # check exited 2 ("not in the RUNNING mod list") because no game ran its mods. The row read blind, so the alarm rang
+    # and nothing launched, while a game of Archmagi could take the work (Conductor, note 16: "a live check reads as
+    # waiting for a game, not blind").
+    out = "exit 2 (only 0 holds and 1 fails)\nUNMEASURED: not in the RUNNING mod list: mandrake.rsw.swbestiary"
+    live = lambda **kw: it(effect="cmd:python.exe src/X/live_x.py", verdict="unmeasured", needs="bridge", out=out, **kw)
+    free = [{"game": "ArchBig", "state": "FREE", "line": "ArchBig: FREE"},
+            {"game": "ArchSmall", "state": "HIS_HOLD", "line": "ArchSmall: HIS HOLD"}]
+    held = [dict(free[0], state="HELD", line="ArchBig: HELD by BENCH"), free[1]]
+    hcfg = dict(CFG, hosts={"SteveDesktop": {"max_live": 2, "min_left_pct": 5}})
+    room = {"SteveDesktop": {"live": 0, "left": 50.0}}
+    rows, launches, _ = run({"A": live()}, games=free, cfg=hcfg, hosts=room)
+    r = rows["A"]
+    chk(lambda: r["decision"] == "launch" and launches == ["A"] and r.get("game") == "ArchBig" and not r.get("host")
+        and not r.get("could_not_look"), "a live check that cannot look takes the free game, on Archmagi (%s)" % r)
+    rows, launches, _ = run({"A": live()}, games=held)
+    r = rows["A"]
+    chk(lambda: r["decision"] == "waits_game" and launches == [] and not r.get("could_not_look")
+        and "ArchBig: HELD" in r["why"], "no game free: waits_game with the games' lines, not blind (%s)" % r)
+    bh = LD().blind_hold({"passes": 3}, list(rows.values()), NOW)
+    chk(lambda: bh["passes"] == 0, "a row that waits for a game is no could-not-look hold (%s)" % bh)
+    rows, launches, _ = run({"A": live()}, games=None)
+    chk(lambda: rows["A"]["decision"] == "blind" and launches == [], "games that could not be read: blind")
+    two = {"A": live(), "B": live()}
+    both = [free[0], dict(free[1], state="FREE", line="ArchSmall: FREE")]
+    rows, launches, _ = run(two, games=both, cfg=dict(CFG, max_live=3))
+    chk(lambda: launches == ["A", "B"] and rows["A"].get("game") == "ArchBig" and rows["B"].get("game") == "ArchSmall",
+        "two live checks in one tick take two games (%s, %s)" % (rows["A"].get("game"), rows["B"].get("game")))
+    # what stays blind: an offline item's exit 2, a live item's other exits (127: a fault of the check's form), a
+    # missing file; a live item's failing check is ordinary work and takes no game
+    for name, x in (("an offline item's exit 2", it(verdict="unmeasured", out=out)),
+                    ("a live item's exit 127", it(verdict="unmeasured", needs="bridge",
+                                                  out="exit 127 (only 0 holds and 1 fails)\npython.exe: command not found")),
+                    ("a live item's deadline", it(verdict="unmeasured", needs="game-up",
+                                                  out="the command ran past its 60s deadline"))):
+        chk(lambda x=x: dec({"A": x}, games=free) == ("blind", []), "%s stays blind" % name)
+    rows, launches, _ = run({"A": it(needs="bridge")}, games=free)
+    chk(lambda: launches == ["A"] and not rows["A"].get("game"), "a live item whose check fails takes no game")
+    chk(lambda: LD().waits_for_game(live()) and not LD().waits_for_game(it(verdict="unmeasured", out=out)),
+        "waits_for_game reads the needs and the exit")
+    chk(lambda: LD().games_wanted({"A": live()}) and not LD().games_wanted({"A": it()}),
+        "the tick reads the games for a live check that cannot look, and only then (with a live judge)")
+    b = LD().brief_text("A", live(), dict(rows["A"], game="ArchBig"))
+    chk(lambda: "game_lock.py claim ArchBig" in b and "small_list.json" in b and "game_lock.py release ArchBig" in b,
+        "the Work brief tells the run to claim, deploy and release the game it was given")
+    import work_bundle as WB
+    grows = [{"item": "A", "decision": "launch", "game": "ArchBig"}, {"item": "B", "decision": "launch", "host": "SteveDesktop"}]
+    _, gl = WB.group(grows, ["A", "B"], {"A": "s", "B": "s"}, {})
+    chk(lambda: gl == ["A", "B"] and "bundle" not in grows[0] and grows[1].get("bundle", {}).get("members") == ["B"],
+        "a row that takes a game is its own run, never in a bundle that may run on a host (%s)" % grows)
+
+
 def t_the_judge_filter_reads_the_ask_against_now():
     root = tempfile.mkdtemp(prefix="ld_judge_")
     os.makedirs(os.path.join(root, "design"))
@@ -1363,7 +1416,8 @@ def main():
               t_old_no_home_tickets_are_placed_then_named_for_shape,
               t_each_row_says_since_when_it_took_its_decision,
               t_a_judge_route_launches_one_fresh_judge_run,
-              t_the_judge_filter_reads_the_ask_against_now):
+              t_the_judge_filter_reads_the_ask_against_now,
+              t_a_live_check_with_no_game_takes_a_free_game_or_waits):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a promise whose test cannot run is a FAIL, never a crash

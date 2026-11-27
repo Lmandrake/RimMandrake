@@ -225,6 +225,17 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   judge row is never folded into a work bundle. A judge counts only judge runs (the Work run that routed the part did
   its act by routing); a judge run that ended and left its route reads `stopped` by the Work run rule. An owner, conductor or review route still reads `routed`. Why: on 2026-11-26 10 tickets were routed to a judge
   and nothing launched one; owner by card 2026-11-26, "Ticket lane starts it (Recommended)".
+- **a-live-check-with-no-game-takes-a-free-game-or-waits.** An item whose `needs` is `bridge`, `game-up` or `deploy` and
+  whose check exited 2 (`waits_for_game`: a live check that could not look, because no running game has what it reads)
+  is not `blind`. It goes through every gate of a launch and takes a free game of `game_lock.query_all` on Archmagi, two
+  rows of one tick never the same game: one Work run, never folded into a work bundle, whose brief claims, deploys and
+  releases that game. No free game reads `waits_game` with each game's line; it carries no `could_not_look`, so
+  `blind_hold` does not count it. Games that could not be read read `blind`. Every other unmeasured check stays `blind`:
+  an offline item's exit 2, any item's exit 127 or other exit, a deadline, a missing file. A live item whose check
+  fails takes no game. The tick reads the games only when a row may take one (`games_wanted`). Why: on 2026-11-26 and
+  27 the alarm rang five times; in the fifth outage `DONOR_MUTATORS_MIGRATE_TWENTY_TWO_CAME_HOME` read blind on
+  "not in the RUNNING mod list" and nothing launched. The Conductor ruled (note 16 on
+  `OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ`): "a live check reads as waiting for a game, not blind".
 - **the-judge-filter-reads-the-ask-against-now.** `judge_facts(ask, root)`: stale when the ask names repo paths and
   every one is gone from `root`; an ask that names one path of now, or none, is not stale by program (the judge's own
   step 1 reads it against now). live when the ask names in-game captures, a screenshot, a live game or "on this build".

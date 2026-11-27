@@ -29,6 +29,10 @@ oldest item that another waits on, then oldest filing, one decision:
                   (game_lock.py); none free reads judge_waits_game with the games' lines, and games that could not be
                   read read blind. A judge run that ended and left its route reads stopped, by the Work run rule
   live            a detached run is live on it
+  waits_game      its check is a live check (needs bridge, game-up or deploy) that exited 2: no game ran what it reads.
+                  A free game of Archmagi takes it (one per row of a tick): a Work run, never in a bundle, whose brief
+                  claims, deploys and releases that game; none free reads waits_game with the games' lines (no
+                  could-not-look: the alarm counts it not); games that could not be read read blind
   waits_on | blocked | waiting | reshape   it waits on an open item | is blocked | has a dated wait ahead | its dated
                   wait passed and the check fails on an old item that nobody named (a date never launches old work). A due
                   item with no check whose wait passed reads shape. A lane item (named, or filed after shape_from) whose
@@ -515,7 +519,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
             put("off", it["off"])
             continue
         claimed = it.get("claimed") if not att else None     # the lease of a run of ours never stops our next run
-        shape = judge = False
+        shape = judge = live_game = False
         if not it.get("effect"):
             acc = it.get("accept")
             if claimed:
@@ -563,8 +567,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
                     % (_one(it.get("out") or verdict, 120), "the live work bundle %s" % run["bundle"]
                        if run.get("bundle") else ", ".join(run["live"])))
                 continue
-            put("blind","the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
-            continue
+            if not waits_for_game(it):
+                put("blind","the check is unmeasured: %s" % _one(it.get("out") or verdict, 200))
+                continue
+            live_game = True    # its live check cannot look: no game runs what it reads. A free game takes the work
         if it.get("route") and it["route"].get("who") == "judge":
             judge = True
         elif it.get("route"):     # an open routed part holds the item: its answer re-shapes it (list_shape.py)
@@ -681,17 +687,21 @@ def decide(cfg, st, facts, now, account=(True, "")):
                  "clear the cause the launch names, then `list_dispatch.py clear %s --why ...`" % iid)
             continue
         game = None
-        if judge and jf.get("live"):    # a judge on captures takes a free game (CLAUDE.md, The bridge is passed ...)
+        # a judge on captures, or a live check that no game could feed, takes a free game (CLAUDE.md, The bridge is
+        # passed through one file: a stage that reads "needs the live game" while a game is free is a pipeline defect)
+        if (judge and jf.get("live")) or live_game:
+            need = ("the judge needs in-game captures" if judge else
+                    "its live check cannot look until a game runs what it reads (%s)" % _one(it.get("out"), 160))
             games = facts.get("games")
             if not isinstance(games, list):     # None, or a could-not-look result from _games
-                put("blind", "the judge needs in-game captures and whether a game is free could not be read (%s); "
-                             "nothing launches it" % (getattr(games, "cause", None) or "no reading"))
+                put("blind", "%s and whether a game is free could not be read (%s); nothing launches it"
+                    % (need, getattr(games, "cause", None) or "no reading"))
                 continue
             free = [g for g in games if g.get("state") == "FREE" and g.get("game") not in games_taken]
             if not free:
-                put("judge_waits_game", "the judge needs in-game captures and no game is free: %s"
-                    % ("; ".join("%s (taken by a judge launch of this tick)" % g.get("game") if g.get("game") in games_taken
-                                 else str(g.get("line") or g.get("game")) for g in games) or "no game on this machine"))
+                put("judge_waits_game" if judge else "waits_game", "%s and no game is free: %s" % (
+                    need, "; ".join("%s (taken by a launch of this tick)" % g.get("game") if g.get("game") in games_taken
+                                    else str(g.get("line") or g.get("game")) for g in games) or "no game on this machine"))
                 continue
             game = free[0]["game"]
         if not account[0]:
@@ -707,7 +717,7 @@ def decide(cfg, st, facts, now, account=(True, "")):
         # a host with room first (boundary a-ready-ticket-goes-to-a-host-with-room-first); Archmagi takes the rest
         only = (cfg.get("archmagi_only_homes") or {}).get(it.get("home"))   # its tools are on Archmagi only
         if game:
-            only = "its judge takes %s, a game of Archmagi" % game
+            only = "its %s takes %s, a game of Archmagi" % ("judge" if judge else "live check", game)
         host, hwhy = host_first(cfg, facts.get("hosts"), placed, dict(it, needs="archmagi (%s)" % only) if only else it)
         if host:
             free, full = True, None
@@ -766,9 +776,14 @@ def decide(cfg, st, facts, now, account=(True, "")):
                 row["look"] = it.get("wait_reason") or "no reason given"
             if it.get("blocked") and it.get("block_stale"):
                 row["stale_block"] = it["block_stale"]
-            put("launch", "Work run %d%s%s: %s (%s); the check fails: %s" % (
+            if game:
+                games_taken.add(game)
+                row["game"] = game      # brief_text tells the run to claim it; work_bundle.group keeps it its own run
+            put("launch", "Work run %d%s%s: %s (%s); %s" % (
                 len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "",
-                ", past a stale block" if row.get("stale_block") else "", model, mwhy, _one(it.get("out"), 120)))
+                ", past a stale block" if row.get("stale_block") else "", model, mwhy,
+                "its live check cannot look until a game runs what it reads (%s); it takes %s"
+                % (_one(it.get("out"), 120), game) if game else "the check fails: %s" % _one(it.get("out"), 120)))
         if host:
             row["why"] = "%s; on %s: the host goes first and has room" % (row.get("why", ""), host)
         elif hwhy:
@@ -1590,7 +1605,7 @@ def gather(st, now=None, root=None, load_lag_s=None):
             continue
         if d.get("effect"):
             d["verdict"], d["out"] = LE.run(d["effect"], root)
-            if d["verdict"] != "fails":
+            if d["verdict"] != "fails" and not waits_for_game(d):     # a live check with no game may still launch
                 continue
         try:
             d["held"] = _held(d["mod"])
@@ -1607,8 +1622,8 @@ def gather(st, now=None, root=None, load_lag_s=None):
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "cores": os.cpu_count(),
             "hosts": host_facts(cfg, on_hosts), "unread_old": unread_old,
-            # which game is free, read only when a judge ask needs captures (a live judge, part 2)
-            "games": _games() if any((d.get("judge") or {}).get("live") for d in ordered.values()) else []}
+            # which game is free, read only when a row may take one (games_wanted)
+            "games": _games() if games_wanted(ordered) else []}
 
 
 def account_gate(gate=None, drain=None, now=None):
@@ -1656,7 +1671,19 @@ Steps:
                check_q=shlex.quote(it.get("effect") or ""),
            out=_one(it.get("out"), 600) or "(nothing)",
            look=LOOK % _one(row["look"], 400) if row.get("look") else "",
-           stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "") + _reader(it)
+           stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "") + (
+        GAME % {"game": row["game"], "item": iid} if row.get("game") else "") + _reader(it)
+
+
+GAME = """
+Its check reads a running game, and no game ran what it reads, so it exited 2 (could not look). The ticket lane saw
+%(game)s free. Take it first: python3 src/RimMandrake/rimflow/game_lock.py claim %(game)s --for "live check of %(item)s"
+(exit 75 or 3: it was taken since; end with `LEFT OPEN: live check: no game was free at claim`). Deploy to %(game)s the
+small list of the mod that the check reads (design/concepts/<Mod>/version/small_list.json; the rimworld-deploy skill;
+for ArchSmall pass --instance ArchSmall), load it, and run the check against %(game)s until it reads. Release the game
+the moment the check has read: python3 src/RimMandrake/rimflow/game_lock.py release %(game)s. Never fullscreen or focus
+the game, and never live-test a creature flyer's flight.
+"""
 
 
 # ---- the judge (RIMMANDRAKE_BUILD_STUCK_STOP_REPAIRS_HE_RULED_SIX part 2: owner by card 2026-11-26, "Ticket lane starts
@@ -1678,6 +1705,25 @@ def judge_facts(ask, root):
     gone = [q for q in paths if not os.path.exists(os.path.join(root, q))]
     stale = ("every repo path the ask names is gone now: %s" % ", ".join(gone)) if paths and len(gone) == len(paths) else None
     return {"stale": stale, "live": bool(JUDGE_LIVE_RX.search(ask)), "paths": paths}
+
+
+# A check that reads a running game (OPS_LIST_GATE_HOLDS_READY_WORK_ON_COULD_NOT_LOOK_WTHJ, outage 5, 2026-11-27): its
+# item needs one of Archmagi's games (model.NEEDS) and the check exited 2, a live check's "could not look: no running
+# game has what I read". Its work is a deploy and a load on a free game, not a hold. Every other unmeasured check (exit
+# 127, a deadline, a missing file) stays blind: that is a fault of the check, and the alarm names it.
+GAME_NEEDS = ("bridge", "game-up", "deploy")
+
+
+def waits_for_game(it):
+    """-> True when the item's check is a live check that could not look for lack of a game that runs what it reads."""
+    it = it if isinstance(it, dict) else {}
+    return (it.get("needs") in GAME_NEEDS and it.get("verdict") == "unmeasured"
+            and str(it.get("out") or "").startswith("exit 2 "))
+
+
+def games_wanted(ordered):
+    """-> True when a row of this tick may take a game: a judge on in-game captures, or a live check that waits for a game."""
+    return any((d.get("judge") or {}).get("live") or waits_for_game(d) for d in (ordered or {}).values())
 
 
 def _games():
