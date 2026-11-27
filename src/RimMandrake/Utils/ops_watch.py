@@ -2389,18 +2389,24 @@ def c_flow(now, rules, ctx):
     return out
 
 
-def ghost_runs_reading():
+def ghost_runs_reading(p=None, now=None, unit_loaded=None):
     """flow.ghost_runs (RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE): runs the control store holds started
-    whose unit systemd reads gone, so their end receipt never ran. `pipe doctor` ends them. A unit systemd cannot read
-    is listed, never counted; an unreadable store is UNMEASURED."""
+    whose unit systemd reads gone, so their end receipt never ran (an account switch stops units this way). The pass
+    ends them itself first (control.reconcile, what `pipe doctor` does) and says what it ended in `healed`; the value
+    is what is still left, so the alarm is for a ghost the heal could not end. A unit systemd cannot read is listed,
+    never counted, never ended; an unreadable store is UNMEASURED."""
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "rimflow"))
         import control
-        g = control.ghosts()
+        kw = {"p": p, "now": now, "unit_loaded": unit_loaded}
+        before = {r["unit"] for r in control.ghosts(**kw)["gone"]}
+        control.reconcile(**kw)
+        g = control.ghosts(**kw)
     except Exception as e:  # noqa: BLE001  could not look: said, never a 0
         return U("control store or systemd unreadable: %s: %s" % (type(e).__name__, str(e)))
-    return M(len(g["gone"]), "runs the store holds started that systemd reads gone",
-             gone=[r["unit"] for r in g["gone"]], unreadable=[r["unit"] for r in g["unreadable"]])
+    left = [r["unit"] for r in g["gone"]]
+    return M(len(left), "runs the store holds started that systemd reads gone",
+             gone=left, unreadable=[r["unit"] for r in g["unreadable"]], healed=sorted(before - set(left)))
 
 
 def lane_fault_since(now):
