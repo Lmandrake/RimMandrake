@@ -14,10 +14,11 @@ Run from the repo root with the bridge on a game holding FlowWorks (tier `flowwo
                       zoom) and every section draw on its square and the square north (jawa/cell_draw_census, probeY = its
                       highest drawn node); --queue-experiment adds, on ew4, the cable material's queue set below then above
                       the colonist's, a close capture each, then given back (jawa/material_queue); --rope-sides decides
-                      by state: on an east-west span the rope north of the deck lies below the colonist's lowest drawn
-                      node and the near rope above his highest; on a north-south span both side ropes lie above him (as
-                      before). Each vertex's height decides what covers him (the depth test; every section sub-mesh is
-                      drawn before him, its bounds at y 0). Exit 1 unless every bridge reads PASS.
+                      by state: on an east-west span the rope on his square and the one north straddles the colonist
+                      (its lowest vertex below his lowest drawn node, its highest above his highest) and the square north
+                      of him holds rope below him; on a north-south span every rope vertex beside him lies above him. Each vertex's height decides
+                      what covers him (the depth test; every section sub-mesh is drawn before him, its bounds at y 0).
+                      Exit 1 unless every bridge reads PASS.
 Writes DIR/<station>.png, DIR/yard_default.png, DIR/walk_*.png and DIR/readings.json (default Transient/deck_art_picks).
 """
 import argparse
@@ -251,48 +252,57 @@ def node_span(reading):
 
 
 def cable_ys(census):
-    """[(min, max)] of the rope draws on a census square (squareY), drawn ones only -- pure. None when the census failed."""
+    """[{"vert": (min, max) of the whole rope sub-mesh, "square": (min, max) on the census square}] of the drawn rope draws
+    on a census square -- pure. None when the census failed."""
     if not (census or {}).get("success"):
         return None
     out = []
     for d in census.get("draws") or []:
-        sq = d.get("squareY") or {}
-        if d.get("drawn") and is_cable(d.get("material")) and sq.get("n"):
-            out.append((sq["min"], sq["max"]))
+        sq, vy = d.get("squareY") or {}, d.get("vertY") or {}
+        if d.get("drawn") and is_cable(d.get("material")) and sq.get("n") and vy.get("n"):
+            out.append({"vert": (vy["min"], vy["max"]), "square": (sq["min"], sq["max"])})
     return out
 
 
 def rope_sides(ew, by_tag, spans):
     """("PASS"|"FAIL"|"UNMEASURED", why) -- pure. by_tag: {census tag: cable_ys}; spans: [node_span] of the colonist (each
-    read zoom). East-west: every rope vertex on the square north of him ("0,1") lies below his lowest drawn node, and every
-    one on his own square ("0,0") above his highest. North-south: every rope vertex beside him lies above his highest."""
+    read zoom). Only the rope ON the squares counts: a section's rope sub-mesh holds every bridge of that section, so its
+    whole span mixes bridges; and a square does not hold one side only (the far hangers' feet reach his own square; on a
+    short span the near rope climbs into the square north of him), both read on SteveDesktop J20261127T140548Z-4cd112.
+    East-west: the rope on his square and the one north straddles him (its lowest vertex below his lowest drawn node: the
+    far side behind him; its highest above his highest: the near side over him), and the square north of him ("0,1", where
+    his head meets the far hangers) holds rope below him. Which side prints which height is the C# case
+    Suspension_far_rope_of_an_east_west_run_draws_behind_pawns; the pictures go to the art judge. North-south: every rope
+    vertex lies above his highest node, as before."""
     spans = [s for s in spans if s]
     if not spans:
         return "UNMEASURED", "no drawn node of the colonist was read"
     lo, hi = min(s[0] for s in spans), max(s[1] for s in spans)
     if any(v is None for v in by_tag.values()):
         return "UNMEASURED", "a census square could not be read: %s" % sorted(k for k, v in by_tag.items() if v is None)
-    if ew:
-        far, near = by_tag.get("0,1") or [], by_tag.get("0,0") or []
-        if not far or not near:
-            return "UNMEASURED", "no rope read on the %s square" % ("north" if not far else "colonist's")
-        bad = []
-        top = max(b for _, b in far)
-        if top >= lo:
-            bad.append("the rope north of the deck reaches y %.4f, not below his lowest node %.4f" % (top, lo))
-        bottom = min(a for a, _ in near)
-        if bottom <= hi:
-            bad.append("the near rope reaches down to y %.4f, not above his highest node %.4f" % (bottom, hi))
-        if bad:
-            return "FAIL", "; ".join(bad)
-        return "PASS", "north rope at most y %.4f < his nodes %.4f..%.4f < near rope from y %.4f" % (top, lo, hi, bottom)
-    side = [s for v in by_tag.values() for s in v]
-    if not side:
+    reads = [r for v in by_tag.values() for r in v]
+    if not reads:
         return "UNMEASURED", "no rope read beside him"
-    bottom = min(a for a, _ in side)
-    if bottom <= hi:
-        return "FAIL", "a side rope reaches down to y %.4f, not above his highest node %.4f" % (bottom, hi)
-    return "PASS", "both side ropes from y %.4f, above his nodes %.4f..%.4f" % (bottom, lo, hi)
+    vlo, vhi = min(r["square"][0] for r in reads), max(r["square"][1] for r in reads)
+    if not ew:
+        if vlo <= hi:
+            return "FAIL", "a side rope reaches down to y %.4f, not above his highest node %.4f" % (vlo, hi)
+        return "PASS", "every side rope from y %.4f, above his nodes %.4f..%.4f" % (vlo, lo, hi)
+    north = by_tag.get("0,1") or []
+    if not north:
+        return "UNMEASURED", "no rope read on the square north of him"
+    bad = []
+    if vlo >= lo:
+        bad.append("no rope lies behind him: the lowest rope vertex is y %.4f, his lowest node %.4f" % (vlo, lo))
+    if vhi <= hi:
+        bad.append("no rope lies over him: the highest rope vertex is y %.4f, his highest node %.4f" % (vhi, hi))
+    nlo = min(r["square"][0] for r in north)
+    if nlo >= lo:
+        bad.append("the square north of him holds no rope below him (lowest y %.4f, his lowest node %.4f)" % (nlo, lo))
+    if bad:
+        return "FAIL", "; ".join(bad)
+    return "PASS", "rope from y %.4f (behind) to %.4f (over) around his nodes %.4f..%.4f; north of him from y %.4f" % (
+        vlo, vhi, lo, hi, nlo)
 
 
 def draw_order(w, out, stations, readings, experiment):
