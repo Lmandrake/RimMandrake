@@ -456,6 +456,17 @@ def t_game_bs_brief_names_its_own_install_and_its_unmeasured_full_list_checks(X)
     chk(lambda: "sc_walk" in text and "UNMEASURED" in text, "brief: b's full-list checks are recorded UNMEASURED")
 
 
+def _prepare_b(X, **stubs):
+    """GI.prepare('b') on the fake folders, the game not running, with install, token and Prefs stood in: the page
+    promises what `prepare` copies, so a prepare that stops calling a seed step must go red, not only the step itself."""
+    import game_instance as GI
+    quiet = dict(running=lambda name=None: False, install=lambda name=None, **k: (None, []),
+                 ensure_token=lambda name=None: "t", seed_prefs=lambda path: None)
+    quiet.update(stubs)
+    with mock.patch.multiple(GI, **quiet), contextlib.redirect_stderr(io.StringIO()) as err:
+        return _safe(lambda: GI.prepare("b"), None), err.getvalue()
+
+
 def t_a_named_game_gets_the_registered_site_saves_it_lacks(X):
     import game_instance as GI
     reg = os.path.join(X.top, "sites.json")
@@ -479,6 +490,16 @@ def t_a_named_game_gets_the_registered_site_saves_it_lacks(X):
     chk(lambda: not os.path.exists(os.path.join(bsaves, "RM_river_v2.rws")), "site saves: a save a lacks is skipped, not invented")
     chk(lambda: _safe(lambda: GI.seed_site_saves("a", source=src, registry=reg), None) == [],
         "site saves: ArchBig is the source and is never written")
+    os.remove(os.path.join(bsaves, "NS_site_x.rws"))
+    real = GI.seed_site_saves
+    d, _ = _prepare_b(X, a_saves_dir=lambda: src, seed_site_saves=lambda name=None: real(name, registry=reg))
+    chk(lambda: d and os.path.exists(os.path.join(bsaves, "NS_site_x.rws")),
+        "site saves: prepare (so every launch) copies the registered save b lacks")
+
+    def broken(name=None):
+        raise OSError("planted: ArchBig's Saves cannot be read")
+    d, err = _prepare_b(X, seed_site_saves=broken)
+    chk(lambda: d and "site saves" in err, "site saves: a copy that cannot be made does not stop prepare, and says so")
 
 
 def t_a_named_game_reads_archbigs_def_removal_settings(X):
@@ -512,6 +533,11 @@ def t_a_named_game_reads_archbigs_def_removal_settings(X):
     chk(lambda: _safe(lambda: seed("b", source=empty), None) == [] and os.path.exists(os.path.join(bcfg, name)),
         "def settings: a file ArchBig lacks is not invented and b's is not deleted")
     chk(lambda: _safe(lambda: seed("a", source=src), None) == [], "def settings: ArchBig is the source and is never written")
+    os.remove(os.path.join(bcfg, name))
+    d, _ = _prepare_b(X, a_config_dir=lambda: src, seed_site_saves=lambda name=None: [])
+    chk(lambda: d and os.path.isfile(os.path.join(bcfg, name))
+        and open(os.path.join(bcfg, name)).read() == "a's removal list",
+        "def settings: prepare of b, not running, copies a's Cherry Picker file")
 
 
 def main():
