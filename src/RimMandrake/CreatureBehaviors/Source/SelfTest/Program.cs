@@ -1110,8 +1110,11 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 float hcGiant = RM_TreeCrown.Height(16f, 0.79f);
                 RM_SunHeatMath.CrownFootprint(10, 40, hcGiant, 0f, -1f, cot14, 16f, out ox, out oz);
                 Assert(Math.Abs((40f - oz) - 16f) < 1e-3f, "a giant's crown at E 14 lands " + (40f - oz) + " cells away, not the cap 16");
-                // The disc under the crown at E 90: every cell within r of the root, and none beyond.
-                float r = RM_TreeCrown.Radius(4f, RM_TreeCrown.RadiusFactorDefault);
+                // The disc under the crown at E 90: every cell within r of the root, and none beyond. r is the design's
+                // r = k x s / 2 (design §4.2), written here and not read from RM_TreeCrown.Radius, so a wrong kernel
+                // radius moves the cast disc away from it.
+                float r = RM_TreeCrown.RadiusFactorDefault * 4f / 2f;
+                Assert(Math.Abs(RM_TreeCrown.Radius(4f, RM_TreeCrown.RadiusFactorDefault) - r) < 1e-4f, "the crown radius of a 4-cell tree is " + RM_TreeCrown.Radius(4f, RM_TreeCrown.RadiusFactorDefault) + ", want k x s / 2 = " + r);
                 float[] g = ForestRaster(21, 21, new List<Tree> { new Tree(10, 10, 4f, 4f, 1f) }, 90f, 0f, -1f, true, 1f);
                 for (int z = 0; z < 21; z++)
                     for (int x = 0; x < 21; x++)
@@ -1145,21 +1148,18 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Console.WriteLine("  seedling " + seed + " cells, grown " + full + " cells, canopy off " + offCells + " (the trunk)");
             });
 
-            Case("tree crowns: a synthetic Greentide and Miasma forest is at least 60% shade, within 10 points of the estimate", () =>
+            Case("tree crowns: a synthetic dense Greentide forest is mostly shade, at least 60%", () =>
             {
-                // Stand-ins: the design §2.2 estimate's densities, not the maps'. The live census
-                // (design/specs/2026-11-26-tree-crowns/canopy_census_2026-11-26.md) measured the Greentide at 0.974 but
-                // the Miasma at 0.274: its mud grows few trees. So this case proves the model at the estimate's density
-                // only; the census decides T2 for a real map. The stand-ins: a forest of 3.8-cell trees at 0.70 (the
-                // estimate's ordinary-tree forest, 0.99); RM_Miasma 0.45, 5% 12-cell nogtyl, 30% 6.5-cell mid trees, the
-                // rest 3.8-cell trees (estimate 0.97). Growth uniform 0.3-1 as the estimate.
+                // Design §6 T2 (ruling option (a) of RIMMANDRAKE_RULE_TREE_SHADE_T2_MIASMA_MUD_GROWS_NO_FOREST): a dense
+                // forest map is mostly shade. The stand-in is the design §2.2 estimate's ordinary-tree forest, 3.8-cell
+                // trees at 0.70, growth uniform 0.3-1, at the Greentide's E 45. The live census
+                // (design/specs/2026-11-26-tree-crowns/canopy_census_2026-11-26.md) measured a real Greentide map at
+                // 0.974. No Miasma clause and no estimate clause: the estimate puts trees on every cell, and the
+                // Miasma's mud grows few (0.274 measured).
                 var greentide = SyntheticForest(200, 200, 0.70, new[] { new Spec(1f, 1.5f, 3.8f) }, 1);
-                var miasma = SyntheticForest(200, 200, 0.45, new[] { new Spec(0.05f, 7.2f, 12f), new Spec(0.30f, 3f, 6.5f), new Spec(0.65f, 1.5f, 3.8f) }, 2);
                 double g = Covered(ForestRaster(200, 200, greentide, 45f, 0f, -1f, true, 1f)) / 40000.0;
-                double m = Covered(ForestRaster(200, 200, miasma, 39f, 0f, -1f, true, 1f)) / 40000.0;
-                Console.WriteLine("  covered: Greentide stand-in " + g.ToString("0.00") + " (estimate 0.99), Miasma stand-in " + m.ToString("0.00") + " (estimate 0.97)");
-                Assert(g >= 0.60 && m >= 0.60, "a forest is not mostly shade: " + g + ", " + m);
-                Assert(Math.Abs(g - 0.99) <= 0.10 && Math.Abs(m - 0.97) <= 0.10, "more than 10 points from the estimate: " + g + ", " + m);
+                Console.WriteLine("  covered: Greentide stand-in " + g.ToString("0.00"));
+                Assert(g >= 0.60, "a dense forest is not mostly shade: " + g);
             });
 
             Case("tree crowns: a 7x7 clearing is sunlit at its centre once hc x cot E + r falls short of its edge", () =>

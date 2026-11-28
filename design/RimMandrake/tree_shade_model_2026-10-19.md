@@ -163,7 +163,10 @@ passability) was printed from the same query. It is reproducible with the script
   and the sheets' forests: the Webwork *"dim green gloom under total canopy; hard white blades of sun
   at clearings"*, and the Fever Wood's *"wood-roads twisting through a living crown"*. Sun then lives
   only in clearings, on causeways and water, and wherever the colony cuts. The 0.99 figures assume
-  every tree is fully opaque and the crown factor is 0.8; both are §7 Q2 and tuning.
+  every tree is fully opaque and the crown factor is 0.8; both are §7 Q2 and tuning. They also place a
+  plant on every cell. On a generated map the live census
+  (`design/specs/2026-11-26-tree-crowns/canopy_census_2026-11-26.md`) measured 0.974 covered in the
+  Greentide, 0.694 in the Webwork and 0.274 in the Miasma, whose mud and salt crust grow no trees.
 - **The giants.** `RM_Greatbole` (Greentide, drawn 12–16 cells, commonality 0.03, rare and solitary),
   `RM_Nogtyl` brommok timber (Miasma, 12), `RSW_Plant_HydenockTree_Wild` (Fever Wood, 12),
   `RM_CorriskTree` (Fever Wood, 11.5), `RM_Veluthar` and `RM_Kaddrath` (Greentide, 11–11.5). One mature
@@ -353,9 +356,10 @@ biome.
 - **T1, geometry (offline).** The same tree at the same E gives an identical footprint in every biome.
   At E = 90° the shade is the disc under the crown. At E = 14° the disc is offset by `hc × cot 14°`
   (capped at 16) and the trunk strip is about 4 × hc long. A seedling casts by its drawn size.
-- **T2, forest is mostly shade (offline, then live).** On generated maps of the five tree-heavy
-  biomes, the shaded share of open ground (unroofed, passable, non-water) is at least 60% in the
-  Greentide and the Miasma. The live census (§2.1) must land within ±10 points of the §2.2 estimate.
+- **T2, a dense forest map is mostly shade (offline, then live).** On a generated Greentide map, the
+  shaded share of open ground (unroofed, passable, non-water) is at least 60%. The live census (§2.1)
+  measures it; the §2.2 estimate is not a bar, because it puts plants on every cell, and a map's mud
+  and salt crust grow no trees (the Miasma measured 0.27 covered).
   A 7×7 clearing cut in the middle shows full sun in its centre at E ≥ 30°.
 - **T3, readable (live, owner-watched).** The overlay shows exactly the cells `ExposureAt` reads (the
   same array), the mouseover names the cause, and the owner can tell shade from sun at a glance on a

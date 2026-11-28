@@ -53,12 +53,12 @@ the ground-tint experiment, anything drawn 1.5 cells or more. Each promise below
 These are named cases of `src/RimMandrake/CreatureBehaviors/Source/SelfTest/Program.cs`, run by
 `python3 src/RimMandrake/Utils/selftest_sun_heat.py`; each crown mutant of
 `python3 src/RimMandrake/Utils/mutate_creaturebehaviors_fuzz.py "crown:"` is caught by one of them (7 of 7 on
-2026-11-26).
+2026-11-27; "radius halved" is caught by the T1 disc case, which writes r = k x s / 2 itself).
 
 - "tree crowns: the same tree at the same E casts the same footprint in every biome" (T1)
 - "tree crowns: at E 90 the disc lies under the crown; at E 14 it moves hc x cot 14, capped at 16" (T1)
 - "tree crowns: a seedling casts by its drawn size, leafless thins it, the dial scales it, off casts only the trunk" (T1)
-- "tree crowns: a synthetic Greentide and Miasma forest is at least 60% shade, within 10 points of the estimate" (T2, offline)
+- "tree crowns: a synthetic dense Greentide forest is mostly shade, at least 60%" (T2, offline)
 - "tree crowns: a 7x7 clearing is sunlit at its centre once hc x cot E + r falls short of its edge" (T2, offline)
 - "tree crowns: removing a tree and recomputing clears its footprint; growing it widens it" (T4)
 - "tree crowns: a 275x275 raster at Greentide density takes at most 15 ms" (T5; it prints the measured time)
