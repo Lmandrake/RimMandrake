@@ -537,6 +537,42 @@ namespace RimMandrake.CreatureBehaviors
             return 1f - t * t * (3f - 2f * t);
         }
 
+        /// <summary>One drawn crown shadow into the map's shadow layer `alpha` (row-major, texW x texH texels,
+        /// `texelsPerCell` texels per cell, world (0,0) at texel (0,0)): each texel within the disc of half side `half`
+        /// round (cx, cz) takes opacity x CrownShadowAlpha(d / half, core), keeping the MAX of what is there, so two
+        /// crowns that overlap cast one shadow, not a darker one (a real shadow is the union of what blocks the sun).
+        /// Writes only texels inside the layer. Returns the texels raised.</summary>
+        public static int StampCrownShadow(float[] alpha, int texW, int texH, float texelsPerCell, float cx, float cz,
+            float half, float core, float opacity)
+        {
+            if (half <= 0f || opacity <= 0f || texelsPerCell <= 0f)
+            {
+                return 0;
+            }
+            float o = Clamp01(opacity);
+            int minX = Math.Max(0, (int)Math.Floor((cx - half) * texelsPerCell));
+            int maxX = Math.Min(texW - 1, (int)Math.Ceiling((cx + half) * texelsPerCell));
+            int minZ = Math.Max(0, (int)Math.Floor((cz - half) * texelsPerCell));
+            int maxZ = Math.Min(texH - 1, (int)Math.Ceiling((cz + half) * texelsPerCell));
+            int raised = 0;
+            for (int z = minZ; z <= maxZ; z++)
+            {
+                float dz = (z + 0.5f) / texelsPerCell - cz;
+                for (int x = minX; x <= maxX; x++)
+                {
+                    float dx = (x + 0.5f) / texelsPerCell - cx;
+                    float a = o * CrownShadowAlpha((float)Math.Sqrt(dx * dx + dz * dz) / half, core);
+                    int i = z * texW + x;
+                    if (a > alpha[i])
+                    {
+                        alpha[i] = a;
+                        raised++;
+                    }
+                }
+            }
+            return raised;
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);

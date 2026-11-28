@@ -1,0 +1,106 @@
+{
+ "item": "RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE",
+ "measured": "2026-11-27T20:12:20-08:00",
+ "game": "ArchSmall",
+ "map": {
+  "biome": "RM_LongShade",
+  "size": [
+   250,
+   250
+  ],
+  "sun_elevation_deg": 15.1946335,
+  "shadow_dir": [
+   0.879332542,
+   0.47620824
+  ]
+ },
+ "tree": "RM_Greatbole",
+ "planted": 32,
+ "forest": [
+  65,
+  65,
+  120,
+  120
+ ],
+ "shadows_drawn": 32,
+ "meshes": 1,
+ "rebuild_ms": 5.834,
+ "draw_us_per_frame_on": 1.2349999999999999,
+ "frame_ms_on": 16.666,
+ "frame_ms_off": 16.666,
+ "frames_sampled": [
+  485.0,
+  485.0,
+  485.0
+ ],
+ "disc_centres_shaded": [
+  12,
+  12
+ ],
+ "save": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\CROWN_SHADOW_GREATBOLE_REVIEW.rws",
+ "screenshots": {
+  "crown_shadow_on_s22": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\crown_shadow_on_s22.png",
+  "crown_shadow_off_s22": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\crown_shadow_off_s22.png"
+ },
+ "effort": "One Opus run of about 3 hours, no new art and no Harmony patch: about 250 lines of C# (the grid records each greatbole's footprint, a drawer of one shadow layer, four pure functions in RM_SunHeatMath), one Mod Setting, a C# selftest case and a selftest_tree_crowns check (each seen red on planted faults), and this live scene. Two drawer designs: the first (one alpha-blended quad per crown) stacked to near black where crowns overlap and was replaced the same day by one map-sized soft alpha layer that keeps the max.",
+ "broke": [
+  "FIXED: per-crown alpha-blended quads stacked to near black where crowns overlap (a dense forest read almost black). Now one layer keeps the max of all discs, so overlapping crowns cast one shadow (C# case red at alpha 2 on the additive blend, green at 1).",
+  "OPEN, for his ruling: every greatbole shows two shadows. Greentide's RM_Greatbole carries a vanilla shadowData box (volume 0.8, 1.1, 0.6) that draws a hard dark rectangle under the trunk, with the drawn shadow on or off. A drawn crown shadow wants that box gone: drop shadowData from the def, or suppress it for a species whose shadow is drawn.",
+  "OPEN, for his look: at a low sun (E 15 in the review save) the crown shadow lands 16 cells down-sun and floats apart from the trunk. The grid shades the trunk's strip, but nothing draws that strip, so nothing on the ground joins trunk and crown shadow.",
+  "The sun angle is per tile: the same Long Shade biome read E 83 on one quicktest tile (the shadow sits under the tree) and E 15.2 on another. The review save is the E 15.2 tile.",
+  "A dense greatbole forest (spacing 9, 160 trees) reads as one even dark floor: correct physics, but no single shadow is visible. The greatbole is rare and solitary by design, so the review save uses spacing 22 (32 trees).",
+  "Cost: drawing is one quad, 1.0 to 1.6 microseconds a frame for 32 to 160 trees. The rebuild takes 6 to 11 ms on each grid recompute (every 2000 ticks, or when a tree changes), a possible hitch on a large map: the layer is 3 texels per cell, 2.25 MB on a 250 x 250 map. The frame time read 16.67 ms with the drawer on and off, because the unfocused game is capped at 60 fps. That figure cannot see a cost this small.",
+  "Draw order held: the layer lies at filth altitude, under plants, pawns, chunks and buildings, and nothing drew over a trunk."
+ ],
+ "fails": [],
+ "verdict": "PASS",
+ "dense_forest": {
+  "item": "RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE",
+  "measured": "2026-11-27T20:08:08-08:00",
+  "game": "ArchSmall",
+  "map": {
+   "biome": "RM_LongShade",
+   "size": [
+    250,
+    250
+   ],
+   "sun_elevation_deg": 15.1946335,
+   "shadow_dir": [
+    0.879332542,
+    0.47620824
+   ]
+  },
+  "tree": "RM_Greatbole",
+  "planted": 160,
+  "forest": [
+   65,
+   65,
+   120,
+   120
+  ],
+  "shadows_drawn": 160,
+  "meshes": 1,
+  "rebuild_ms": 11.408,
+  "draw_us_per_frame_on": 1.0415,
+  "frame_ms_on": 16.676,
+  "frame_ms_off": 16.652,
+  "frames_sampled": [
+   484.0,
+   485.0,
+   485.0
+  ],
+  "disc_centres_shaded": [
+   12,
+   12
+  ],
+  "save": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\CROWN_SHADOW_DENSE_COST.rws",
+  "screenshots": {
+   "crown_shadow_on_s9": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\crown_shadow_on_s9.png",
+   "crown_shadow_off_s9": "D:\\ClaudeWork\\rimmandrake\\instances\\b\\Screenshots\\crown_shadow_off_s9.png"
+  },
+  "effort": "",
+  "broke": [],
+  "fails": [],
+  "verdict": "PASS"
+ }
+}

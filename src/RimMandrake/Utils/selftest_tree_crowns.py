@@ -18,8 +18,8 @@ cases named "tree crowns: ...". This file reads defs and source:
                    each saved with that default and named in the Direct Sun group; no per-biome canopy switch.
   drawn_shadow     RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the greatbole, and no other species, carries
                    renderedShadow true; the grid records its drawn shadow from the same footprint it shades
-                   (CrownShadowQuad behind DrawsCrownShadow, with the sun vector), the drawer draws the grid's list, and
-                   the ground tint skips the cells a drawn shadow owns.
+                   (CrownShadowQuad behind DrawsCrownShadow, with the sun vector), the drawer stamps the grid's list
+                   into one layer by max (StampCrownShadow), and the ground tint skips the cells a drawn shadow owns.
   wiring           the shade grid casts each tree's crown in Recompute through RM_SunHeatMath.CastCrown (growth-aware
                    drawn size), folds it into the cast layer, and a shade tree's DeSpawn asks for a recompute; the
                    readout, the sun-load line and the overlay read the grid's cause and exposure.
@@ -242,6 +242,7 @@ DRAWN = [
     ("RM_MapComponent_ShadeGrid.cs", r"RM_SunHeatMath\.CrownShadowQuad\(tree\.Position\.x, tree\.Position\.z, r, hc, sunShadowDir\.x, sunShadowDir\.y,\s*cot, MaxCastCells",
      "the drawn shadow uses the footprint the grid casts"),
     ("RM_ShadeOverlay.cs", r"grid\.RenderedCrowns", "the drawer draws the grid's list"),
+    ("RM_ShadeOverlay.cs", r"RM_SunHeatMath\.StampCrownShadow\(shadowAlpha,", "overlapping shadows join by max into one layer"),
     ("RM_ShadeOverlay.cs", r"renderedCrownShadows && grid\.RenderedCrownOwnsIndex\(ci\)", "the tint skips a drawn shadow's cells"),
 ]
 

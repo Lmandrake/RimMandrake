@@ -22,31 +22,7 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>The overlay toggle; not saved, like a fresh game's vanilla overlays.</summary>
         public static bool showShadeOverlay;
 
-        /// <summary>RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the drawn crown shadow's soft disc, white with
-        /// a radial alpha (RM_SunHeatMath.CrownShadowAlpha), tinted dark by its material: no texture file.</summary>
-        public static readonly Texture2D CrownShadowTex = MakeCrownShadowTex();
-
-        private static Texture2D MakeCrownShadowTex()
-        {
-            const int N = 64;
-            Texture2D t = new Texture2D(N, N, TextureFormat.RGBA32, false);
-            for (int y = 0; y < N; y++)
-            {
-                for (int x = 0; x < N; x++)
-                {
-                    float dx = (x + 0.5f) / N * 2f - 1f;
-                    float dy = (y + 0.5f) / N * 2f - 1f;
-                    float a = RM_SunHeatMath.CrownShadowAlpha(Mathf.Sqrt(dx * dx + dy * dy), RM_SunHeatMath.CrownShadowCore);
-                    t.SetPixel(x, y, new Color(1f, 1f, 1f, a));
-                }
-            }
-            t.wrapMode = TextureWrapMode.Clamp;
-            t.Apply();
-            t.name = "RM_CrownShadowDisc";
-            return t;
-        }
-
-        /// <summary>The live script's reading (crown_shadow_experiment.py, by jawa/static_call): what the drawer of this
+        /// <summary>The live script's reading (live_crown_shadow_experiment.py, by jawa/static_call): what the drawer of this
         /// map did, one line of key=value pairs. Read only.</summary>
         public static string CrownShadowReport(Map map)
         {
@@ -132,13 +108,17 @@ namespace RimMandrake.CreatureBehaviors
         private int tintVersion = -1;
         private Material tintMat;   // per drawer, made on the main thread at first draw (a static Material warns at startup)
 
-        // RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the drawn crown shadows, one batch of quads per opacity
-        // step (a material per step: the map shaders take no per-vertex alpha), rebuilt on GridVersion like the tint.
+        // RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the drawn crown shadows, one map-sized soft alpha layer
+        // (RM_SunHeatMath.StampCrownShadow keeps the max, so overlapping crowns cast one shadow, not a darker one) drawn
+        // as one quad, rebuilt on GridVersion like the tint. The first try drew one alpha-blended quad per crown; in a
+        // forest the overlaps stacked to near black (2026-11-27, ArchSmall, 138 greatboles).
         private const float CrownShadowAlpha = 0.42f;
-        private const int OpacitySteps = 10;
-        private const int MaxQuadsPerMesh = 16383;
-        private readonly Dictionary<int, List<Mesh>> shadowMeshes = new Dictionary<int, List<Mesh>>();
-        private readonly Dictionary<int, Material> shadowMats = new Dictionary<int, Material>();
+        private const int TexelsPerCell = 3;
+        private Texture2D shadowLayer;
+        private float[] shadowAlpha;
+        private Color32[] shadowPixels;
+        private Mesh shadowQuad;
+        private Material shadowMat;
         private int shadowVersion = -1;
         private int shadowsBuilt;
         private int shadowsDrawnLastFrame;
@@ -234,24 +214,16 @@ namespace RimMandrake.CreatureBehaviors
                 RebuildShadows();
                 shadowVersion = grid.GridVersion;
             }
-            foreach (KeyValuePair<int, List<Mesh>> kv in shadowMeshes)
+            if (shadowsBuilt > 0)
             {
-                if (!shadowMats.TryGetValue(kv.Key, out Material mat))
+                if (shadowMat == null)
                 {
-                    float a = CrownShadowAlpha * kv.Key / OpacitySteps;
-                    mat = MaterialPool.MatFrom(RM_ShadeOverlay.CrownShadowTex, ShaderDatabase.Transparent,
-                        new Color(0f, 0.02f, 0.03f, a));
-                    shadowMats[kv.Key] = mat;
+                    shadowMat = MaterialPool.MatFrom(shadowLayer, ShaderDatabase.Transparent,
+                        new Color(0f, 0.02f, 0.03f, CrownShadowAlpha));
                 }
-                for (int k = 0; k < kv.Value.Count; k++)
-                {
-                    if (kv.Value[k].vertexCount > 0)
-                    {
-                        Graphics.DrawMesh(kv.Value[k], Vector3.zero, Quaternion.identity, mat, 0);
-                    }
-                }
+                Graphics.DrawMesh(shadowQuad, Vector3.zero, Quaternion.identity, shadowMat, 0);
+                shadowsDrawnLastFrame = shadowsBuilt;
             }
-            shadowsDrawnLastFrame = shadowsBuilt;
             drawWatch.Stop();
             drawUsSum += drawWatch.Elapsed.TotalMilliseconds * 1000.0;
             drawFrames++;
@@ -260,93 +232,55 @@ namespace RimMandrake.CreatureBehaviors
         private void RebuildShadows()
         {
             System.Diagnostics.Stopwatch w = System.Diagnostics.Stopwatch.StartNew();
-            foreach (List<Mesh> list in shadowMeshes.Values)
+            int tw = map.Size.x * TexelsPerCell;
+            int th = map.Size.z * TexelsPerCell;
+            if (shadowLayer == null)
             {
-                for (int k = 0; k < list.Count; k++)
+                shadowLayer = new Texture2D(tw, th, TextureFormat.RGBA32, false)
                 {
-                    list[k].Clear();
-                }
+                    name = "RM_CrownShadowLayer",
+                    wrapMode = TextureWrapMode.Clamp,
+                    filterMode = FilterMode.Bilinear
+                };
+                shadowAlpha = new float[tw * th];
+                shadowPixels = new Color32[tw * th];
+                // Just under the tint (filth altitude, under plants and pawns, which write depth).
+                float y = AltitudeLayer.Filth.AltitudeFor() - 0.012f;
+                shadowQuad = new Mesh { name = "RM_CrownShadowQuad" };
+                shadowQuad.SetVertices(new List<Vector3>
+                {
+                    new Vector3(0f, y, 0f), new Vector3(0f, y, map.Size.z),
+                    new Vector3(map.Size.x, y, map.Size.z), new Vector3(map.Size.x, y, 0f)
+                });
+                shadowQuad.SetUVs(0, new List<Vector2>
+                {
+                    new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(1f, 0f)
+                });
+                shadowQuad.SetTriangles(new[] { 0, 1, 2, 0, 2, 3 }, 0);
+                shadowQuad.RecalculateBounds();
             }
-            // Just under the tint (filth altitude, under plants and pawns, which write depth).
-            float y = AltitudeLayer.Filth.AltitudeFor() - 0.012f;
-            Dictionary<int, (List<Vector3> v, List<Vector2> uv, List<int> t, int mesh)> build =
-                new Dictionary<int, (List<Vector3>, List<Vector2>, List<int>, int)>();
+            System.Array.Clear(shadowAlpha, 0, shadowAlpha.Length);
             List<RM_RenderedCrown> crowns = grid.RenderedCrowns;
             int built = 0;
             for (int c = 0; c < crowns.Count; c++)
             {
                 RM_RenderedCrown rc = crowns[c];
-                int step = Mathf.Clamp(Mathf.RoundToInt(rc.opacity * OpacitySteps), 0, OpacitySteps);
-                if (step == 0)
+                if (RM_SunHeatMath.StampCrownShadow(shadowAlpha, tw, th, TexelsPerCell, rc.x, rc.z, rc.half,
+                    RM_SunHeatMath.CrownShadowCore, rc.opacity) > 0)
                 {
-                    continue;
+                    built++;
                 }
-                if (!build.TryGetValue(step, out var b))
-                {
-                    b = (new List<Vector3>(), new List<Vector2>(), new List<int>(), 0);
-                }
-                int i0 = b.v.Count;
-                b.v.Add(new Vector3(rc.x - rc.half, y, rc.z - rc.half));
-                b.v.Add(new Vector3(rc.x - rc.half, y, rc.z + rc.half));
-                b.v.Add(new Vector3(rc.x + rc.half, y, rc.z + rc.half));
-                b.v.Add(new Vector3(rc.x + rc.half, y, rc.z - rc.half));
-                b.uv.Add(new Vector2(0f, 0f));
-                b.uv.Add(new Vector2(0f, 1f));
-                b.uv.Add(new Vector2(1f, 1f));
-                b.uv.Add(new Vector2(1f, 0f));
-                b.t.Add(i0); b.t.Add(i0 + 1); b.t.Add(i0 + 2);
-                b.t.Add(i0); b.t.Add(i0 + 2); b.t.Add(i0 + 3);
-                built++;
-                if (b.v.Count / 4 >= MaxQuadsPerMesh)
-                {
-                    FlushShadow(step, b.mesh, b.v, b.uv, b.t);
-                    b.mesh++;
-                }
-                build[step] = b;
             }
-            int meshes = 0;
-            foreach (KeyValuePair<int, (List<Vector3> v, List<Vector2> uv, List<int> t, int mesh)> kv in build)
+            // An empty layer is uploaded too, so a forest that is gone leaves no stale shadow.
+            for (int i = 0; i < shadowAlpha.Length; i++)
             {
-                FlushShadow(kv.Key, kv.Value.mesh, kv.Value.v, kv.Value.uv, kv.Value.t);
+                shadowPixels[i] = new Color32(255, 255, 255, (byte)(shadowAlpha[i] * 255f + 0.5f));
             }
-            foreach (List<Mesh> list in shadowMeshes.Values)
-            {
-                for (int k = 0; k < list.Count; k++)
-                {
-                    if (list[k].vertexCount > 0)
-                    {
-                        meshes++;
-                    }
-                }
-            }
+            shadowLayer.SetPixels32(shadowPixels);
+            shadowLayer.Apply(false);
             shadowsBuilt = built;
-            shadowMeshCount = meshes;
+            shadowMeshCount = built > 0 ? 1 : 0;
             shadowRebuildMs = w.Elapsed.TotalMilliseconds;
-        }
-
-        private void FlushShadow(int step, int index, List<Vector3> verts, List<Vector2> uvs, List<int> tris)
-        {
-            if (verts.Count == 0)
-            {
-                return;
-            }
-            if (!shadowMeshes.TryGetValue(step, out List<Mesh> list))
-            {
-                list = new List<Mesh>();
-                shadowMeshes[step] = list;
-            }
-            while (list.Count <= index)
-            {
-                list.Add(new Mesh { name = "RM_CrownShadow" });
-            }
-            Mesh m = list[index];
-            m.SetVertices(verts);
-            m.SetUVs(0, uvs);
-            m.SetTriangles(tris, 0);
-            m.RecalculateBounds();
-            verts.Clear();
-            uvs.Clear();
-            tris.Clear();
         }
 
         private void RebuildTint()

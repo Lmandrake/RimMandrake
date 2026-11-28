@@ -1174,6 +1174,36 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     Assert(a <= prev + 1e-6f, "the edge is not falling at " + d);
                     prev = a;
                 }
+                // Overlapping shadows make one shadow, not a darker one: the drawn layer keeps the max of the discs (a real
+                // shadow is the union of what blocks the sun). Two greatbole discs 6 cells apart, 3 texels per cell.
+                {
+                    const int TW = 120, TH = 90;
+                    const float T = 3f;
+                    float[] a = new float[TW * TH];
+                    RM_SunHeatMath.StampCrownShadow(a, TW, TH, T, 17f, 15f, 6.8f, RM_SunHeatMath.CrownShadowCore, 1f);
+                    float[] one = (float[])a.Clone();
+                    RM_SunHeatMath.StampCrownShadow(a, TW, TH, T, 23f, 15f, 6.8f, RM_SunHeatMath.CrownShadowCore, 1f);
+                    float maxA = 0f;
+                    int grew = 0;
+                    for (int k = 0; k < a.Length; k++)
+                    {
+                        if (a[k] > maxA) maxA = a[k];
+                        if (a[k] > one[k] + 1e-6f) grew++;
+                    }
+                    Assert(maxA <= 1f + 1e-6f, "two overlapping discs reach alpha " + maxA + ": they stack");
+                    Assert(grew > 0, "the second disc added nothing");
+                    int mid = (int)(15f * T) * TW + (int)(20f * T);
+                    Assert(Math.Abs(a[mid] - 1f) < 1e-6f, "the overlap's centre reads " + a[mid] + ", want exactly one shadow (1)");
+                    // The stamp agrees with the quad: inside the core 1, beyond the half side 0, scaled by opacity.
+                    float[] b = new float[TW * TH];
+                    RM_SunHeatMath.StampCrownShadow(b, TW, TH, T, 17f, 15f, 6.8f, RM_SunHeatMath.CrownShadowCore, 0.3f);
+                    int c0 = (int)(15f * T) * TW + (int)(17f * T);
+                    int far = (int)(15f * T) * TW + (int)((17f + 7f) * T);
+                    Assert(Math.Abs(b[c0] - 0.3f) < 1e-6f && b[far] == 0f, "opacity 0.3: centre " + b[c0] + ", outside " + b[far]);
+                    // A disc off the edge of the map writes only inside it (no index fault).
+                    RM_SunHeatMath.StampCrownShadow(b, TW, TH, T, -3f, 28f, 6.8f, RM_SunHeatMath.CrownShadowCore, 1f);
+                    RM_SunHeatMath.StampCrownShadow(b, TW, TH, T, 39f, 29f, 6.8f, RM_SunHeatMath.CrownShadowCore, 1f);
+                }
                 // The gate: tree crowns on, a sun vector, the flagged species, a crown that casts. Each missing one: no draw.
                 Assert(RM_SunHeatMath.DrawsCrownShadow(true, true, true, 1f), "the greatbole under a fixed sun draws no shadow");
                 Assert(!RM_SunHeatMath.DrawsCrownShadow(false, true, true, 1f), "crowns off still draw");

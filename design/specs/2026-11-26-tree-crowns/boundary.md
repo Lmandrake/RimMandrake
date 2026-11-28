@@ -1,7 +1,7 @@
 # BOUNDARY: tree crowns cast Direct Sun shade by the sun's geometry, Design Version 0.1.0
 
 Code: `src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatMath.cs` (the crown section: `DrawnSize`, `CrownFootprint`,
-`CrownOpacity`, `RasterDisc`, `CastCrown`, `DrawsCrownShadow`, `CrownShadowQuad`, `CrownShadowAlpha`; `RM_TreeCrown`), `RM_TreeCrownExtension.cs`, `RM_TreeCrownPatches.cs`,
+`CrownOpacity`, `RasterDisc`, `CastCrown`, `DrawsCrownShadow`, `CrownShadowQuad`, `CrownShadowAlpha`, `StampCrownShadow`; `RM_TreeCrown`), `RM_TreeCrownExtension.cs`, `RM_TreeCrownPatches.cs`,
 `RM_ShadeOverlay.cs`, `RM_MapComponent_ShadeGrid.cs` (`IsShadeTree`, `DrawnSizeNow`, `CastCrownOf`, `CasterHeight`,
 `ShadeCauseAt`, `OverlayShade`, `RequestPlantRecompute`, the crown lines of `Recompute`), the cause word of
 `RM_Gizmo_SunLoad.cs`, the canopy rows of `RM_CreatureBehaviorsMod.cs`, and `Patches/RM_TreeCrowns_Giants.xml`.
@@ -34,8 +34,6 @@ the ground-tint experiment, anything drawn 1.5 cells or more. Each promise below
   3.8-cell trees shades the clearing's centre (geometry: hc × cot E + r reaches it). Design §6 T2 guessed 30 degrees.
 - **a-drawn-shadow-without-a-sun-vector.** The drawn crown shadow follows the sun: on a map with no sun vector (a
   day/night world, directional shade off) it is not drawn, and the ground tint shows the greatbole's crown.
-- **overlapping-drawn-shadows.** Two drawn shadows that overlap are alpha-blended, so their overlap reads darker than
-  either; a real shadow does not darken where two crowns overlap.
 - **the-tint-on-any-renderer.** The ground tint draws at filth altitude and counts on plants and pawns writing depth;
   how it looks is the owner's look, not a test.
 
@@ -56,8 +54,9 @@ the ground-tint experiment, anything drawn 1.5 cells or more. Each promise below
 
 - **the-greatbole-alone-draws-its-shadow-down-sun.** Only `RM_Greatbole` carries `renderedShadow` true. The grid records
   its drawn shadow behind `RM_SunHeatMath.DrawsCrownShadow` (crowns on, a sun vector, the flag, a crown that casts) from
-  the footprint it shades (`CrownShadowQuad` with the grid's own sun vector and cap), the drawer draws the grid's list,
-  and the ground tint skips the cells a drawn shadow owns (the setting `renderedCrownShadows`, on, in the Direct Sun
+  the footprint it shades (`CrownShadowQuad` with the grid's own sun vector and cap), the drawer stamps the grid's list
+  into one shadow layer by `StampCrownShadow`, which keeps the max (two crowns that overlap cast one shadow, not a
+  darker one), and the ground tint skips the cells a drawn shadow owns (the setting `renderedCrownShadows`, on, in the Direct Sun
   group). Test: `drawn_shadow` of `selftest_tree_crowns.py`; the geometry is the C# case below.
 
 ## PROMISES KEPT BY THE C# SELFTEST
@@ -76,4 +75,5 @@ These are named cases of `src/RimMandrake/CreatureBehaviors/Source/SelfTest/Prog
 - "tree crowns: a 275x275 raster at Greentide density takes at most 15 ms" (T5; it prints the measured time)
 - "tree crowns: a rebuilt grid from the same trees is bit-identical, in any order" (T6)
 - "drawn crown shadow: the greatbole's soft disc sits on the cells its crown shades, down-sun, and only with a sun
-  vector" (every shaded cell under the full-dark core, drawn 12 and 16, E 14, 40 and 89, four bearings)
+  vector" (every shaded cell under the full-dark core, drawn 12 and 16, E 14, 40 and 89, four bearings; two
+  overlapping discs read one shadow, alpha 1, seen red at alpha 2 on the additive blend)

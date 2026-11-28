@@ -226,6 +226,7 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 # --- Pyrelands dev script: a shell harness for burrow trials, never game content (RELEASE_PACKAGING 2026-10-15) ---
 Pyrelands/diag/*   # dev harness script, not game content
 Pyrelands/fire_catches_010_reading.json   # the 0.1.0 reading fire_catches_live.py compares against (taken 2026-11-27 on the tag): evidence read from the repo, never game content
+CreatureBehaviors/crown_shadow_experiment_reading.json   # the drawn crown-shadow experiment's live reading (live_crown_shadow_experiment.py), read by the item's outcome check from the repo, never game content
 
 # --- Pyrelands flora defs hold: LIFTED 2026-09-14, same day --
 # All flora sprites landed (11 rendered, quickgrass C-variant waived at 2/3
