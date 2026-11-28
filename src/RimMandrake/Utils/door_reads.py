@@ -63,7 +63,12 @@ def _git_reads(argv, cwd=None):
     paths = set()
     for x in rest:
         if ":" in x and not x.startswith("-") and not x.startswith(":"):
-            p = x.split(":", 1)[1].strip("/")
+            p = x.split(":", 1)[1]
+            if p.startswith(("./", "../")):        # `rev:./path` is relative to the child's folder, as git reads it
+                p = posixpath.normpath(under + p)
+                if p == "." or p.startswith(".."):
+                    return None, "git %s names the tree's top (or above it) as %s" % (sub, x)
+            p = p.strip("/")
             if p:
                 paths.add(p)
     named = [posixpath.normpath(under + x) for x in rest[rest.index("--") + 1:] if x] if "--" in rest else []

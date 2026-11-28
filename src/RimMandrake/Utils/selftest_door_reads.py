@@ -103,9 +103,10 @@ def t_records_what_a_test_reads(tmp):
     with open(sub, "w", encoding="utf-8") as f:
         f.write("C %s\n" % json.dumps({"cwd": "lib", "argv": ["git", "log", "--", "mod_b.py"]}))
         f.write("C %s\n" % json.dumps({"cwd": "lib", "argv": ["git", "show", "HEAD:data/shown.txt"]}))
+        f.write("C %s\n" % json.dumps({"cwd": "lib", "argv": ["git", "show", "HEAD:./here.py"]}))
     sg = DR.parse(sub)
-    check({"lib/mod_b.py", "data/shown.txt"} <= sg["files"] and "mod_b.py" not in sg["files"],
-          "records-what-a-test-reads: a git child in a subfolder reads its `-- paths` under it (%s)" % sorted(sg["files"]))
+    check({"lib/mod_b.py", "data/shown.txt", "lib/here.py"} <= sg["files"] and "mod_b.py" not in sg["files"],
+          "records-what-a-test-reads: a git child in a subfolder reads its `-- paths` and `rev:./path` under it (%s)" % sorted(sg["files"]))
     top = os.path.join(tmp, "toprec")
     with open(top, "w", encoding="utf-8") as f:
         f.write("C %s\n" % json.dumps({"cwd": ".", "argv": ["git", "log", "--", "."]}))
