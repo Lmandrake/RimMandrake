@@ -88,6 +88,8 @@ One record per ticket in `<list_dispatch state dir>/codex_lane/state.json`:
   takes it.
 - `built` -> `landing`: the Sonnet lander was launched. A refused launch leaves it `built` for the next tick whose
   account gate goes.
+- `built` -> `gone`: the ticket is no longer open with a failing check (closed or fixed by another route), so no
+  lander starts. Final: the lane never sends it again.
 - `landing` is final for this lane: the lander's own record, its note and its close carry the ticket.
 
 ## LIMITS
