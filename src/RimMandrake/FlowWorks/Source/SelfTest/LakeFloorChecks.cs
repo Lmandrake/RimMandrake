@@ -71,6 +71,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             var slot = new Dictionary<int, int>();
             for (int i = 0; i < fp.Count; i++) slot[fp[i]] = i;
             bool Wet(int s) => RM_LevelSolve.PondSquareWater(f[s], surface) >= 0.5;
+            // Standing at height `from` (dL; land 0, a dry floor -f*U), the water surface is no more than k notches down.
+            bool Reach(double from) => from - surface <= (double)k * RM_LevelSolve.U;
             if (!Enumerable.Range(0, fp.Count).Any(Wet)) return true;   // nothing left to reach
             var seen = new HashSet<int>();
             var q = new Queue<int>();
@@ -82,8 +84,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     int X = x + dx[d], Z = z + dz[d];
                     if (X < 0 || Z < 0 || X >= w || Z >= h || slot.ContainsKey(Z * w + X)) continue;
-                    if (Wet(s)) return true;                                  // the water touches the land
-                    if (f[s] <= k && seen.Add(s)) q.Enqueue(s);
+                    // LAKE_FLOOR_SELFTEST_FIX_WET_SKIPS_HEIGHT: wet beside the land counts only when the water surface is
+                    // within k notches below the land (0); a sunken lake's edge is wet but out of reach.
+                    if (Wet(s) && Reach(0.0)) return true;                    // the water touches the land
+                    if (!Wet(s) && f[s] <= k && seen.Add(s)) q.Enqueue(s);
                 }
             }
             while (q.Count > 0)
@@ -94,8 +98,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 {
                     int X = x + dx[d], Z = z + dz[d];
                     if (X < 0 || Z < 0 || X >= w || Z >= h || !slot.TryGetValue(Z * w + X, out int m)) continue;
-                    if (Wet(m)) return true;                                  // a dry floor square beside the water
-                    if (!seen.Contains(m) && Math.Abs(f[m] - f[s]) <= k) { seen.Add(m); q.Enqueue(m); }
+                    if (Wet(m) && Reach(-(double)f[s] * RM_LevelSolve.U)) return true;   // a dry floor square beside the water
+                    if (!Wet(m) && !seen.Contains(m) && Math.Abs(f[m] - f[s]) <= k) { seen.Add(m); q.Enqueue(m); }
                 }
             }
             return false;
@@ -103,6 +107,22 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
+            Case("Lake_floor_ruler_refuses_a_sunken_lake", () =>
+            {
+                // LAKE_FLOOR_SELFTEST_FIX_WET_SKIPS_HEIGHT: a lake whose every square is 5 m deep (10 notches), drawn down to
+                // half a notch of water on its floor. Every square is wet, but the water lies 4.75 m below the land: a
+                // creature that climbs one notch cannot reach it. The old ruler returned true on the first wet edge square.
+                int w = 12, h = 3;
+                var fp = Enumerable.Range(1, 10).Select(x => 1 * w + x).ToList();
+                int[] f = fp.Select(_ => 10).ToArray();
+                double surface = -9.5 * RM_LevelSolve.U;
+                Assert(RM_LevelSolve.PondSquareWater(f[0], surface) >= 0.5, "every square holds water (the scene is wet)");
+                Assert(!EdgeReachable(w, h, fp, f, surface, 1), "can-fail: a sunken lake's water is out of reach of a one-notch climber");
+                Assert(EdgeReachable(w, h, fp, f, -0.5 * RM_LevelSolve.U, 1), "the same lake brim-full: the water is at the land");
+                // a gentle shore: floors 1..10 notches from the west bank, water down to notch 9: walk the dry shelf to it
+                int[] g = Enumerable.Range(1, 10).ToArray();
+                Assert(EdgeReachable(w, h, fp, g, -8.5 * RM_LevelSolve.U, 1), "a one-notch shelf down to the water: reachable");
+            });
             Case("Lake_floor_same_seed_same_floor_any_order", () =>
             {
                 int w = 140, h = 140;
