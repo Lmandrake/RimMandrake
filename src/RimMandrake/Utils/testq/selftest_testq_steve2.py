@@ -4,7 +4,9 @@
 Page: design/specs/2026-11-23-steve-two-games-lane/boundary.md. One test per promise, each named after it.
 Everything runs on temp files: the queue, two worker homes (Steve1's and Steve2's), two driver locks, and a fake ssh
 that runs the remote command locally, so the REAL worker.py runs both attempts. The run phase is a mock modcheck that
-sleeps MOCK_SLEEP seconds, so two attempts can be seen alive at the same time.
+sleeps MOCK_SLEEP seconds, so two attempts can be seen alive at the same time. A test that must see a job still
+running at a later tick sets MOCK_HOLD: the mock then also waits until that file exists, so the reading does not
+race the sleep (a loaded machine stretched one tick to 5 s, past the 4 s sleep: 2026-11-28).
 """
 import glob
 import json
@@ -31,6 +33,10 @@ sys.exit(subprocess.run(["bash", "-c", sys.argv[-1]], env=env).returncode)
 MOCK = r'''
 import json, os, sys, time
 time.sleep(float(os.environ.get("MOCK_SLEEP") or 0))
+# MOCK_HOLD: wait for this release file too; 60 s caps it below Rig.drain's 90 s, so a lost release still drains
+hold, t0 = os.environ.get("MOCK_HOLD"), time.time()
+while hold and not os.path.exists(hold) and time.time() - t0 < 60:
+    time.sleep(0.2)
 name = "Mock_%d_%d" % (int(time.time() * 1000000), os.getpid())
 summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"}]}]}
 json.dump({"mod": "Mock", "summary": summary}, open(os.path.join(os.environ["TESTQ_SHEET_DIR"], name + ".json"), "w"))
@@ -464,11 +470,12 @@ def t_site_saves_reach_steve2(r):
 
 def t_a_tick_with_both_games_busy_writes_the_reading(r):
     r.tq("list")
-    for f in ("steve_both_busy.json", "steve_games.json"):
-        if os.path.exists(r.p("queue", f)):
-            os.remove(r.p("queue", f))
+    hold = r.p("release_both_busy")     # both mock runs stay alive until the readings are taken (MOCK_HOLD)
+    for f in (r.p("queue", "steve_both_busy.json"), r.p("queue", "steve_games.json"), hold):
+        if os.path.exists(f):
+            os.remove(f)
     r.job()
-    r.tq("tick")
+    r.tq("tick", MOCK_HOLD=hold)
     gv = r.py("import testq; print(json.dumps(testq.read_json(testq.q('steve_games.json'))))")
     check(not os.path.exists(r.p("queue", "steve_both_busy.json")) and isinstance(gv, dict)
           and gv.get("both_busy") is False and (gv.get("games") or {}).get("Steve2", {}).get("state") == "off"
@@ -477,12 +484,13 @@ def t_a_tick_with_both_games_busy_writes_the_reading(r):
           "steve_games.json says so (%s)" % (gv,))
     open(r.p("queue", "steve2.on"), "w").close()
     r.job()
-    r.tq("tick")
+    r.tq("tick", MOCK_HOLD=hold)
     rd = r.py("import testq; print(json.dumps(testq.read_json(testq.q('steve_both_busy.json'))))")
     gv = r.py("import testq; print(json.dumps(testq.read_json(testq.q('steve_games.json'))))")
     check(isinstance(rd, dict) and sorted(rd.get("jobs", {})) == ["Steve1", "Steve2"] and isinstance(gv, dict)
           and gv.get("both_busy") is True,
           "a-tick-with-both-games-busy-writes-the-reading: both busy -> steve_both_busy.json names both jobs (%s)" % (rd,))
+    open(hold, "w").close()
     r.reset()
 
 

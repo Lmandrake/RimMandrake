@@ -134,6 +134,13 @@ def t_the_holder_names_itself_until_it_ends():
         R.release_lock(lk)
         ck((t / "state" / "run.lock").read_text() == "",
            "the-holder-names-itself-until-it-ends: the name is gone when the holder ends")
+        # the apply holder's name is what makes a second apply run stand down: one named "dry" would have it wait the
+        # whole run (1.5-2.3 h) and then reap again
+        lk = R.take_lock(t / "state", apply=True)
+        named = (t / "state" / "run.lock").read_text()
+        R.release_lock(lk)
+        ck(lk is not None and named == "apply %d\n" % os.getpid(),
+           "the-holder-names-itself-until-it-ends: an apply holder writes 'apply <pid>' (%r)" % named)
 
 
 def main() -> int:

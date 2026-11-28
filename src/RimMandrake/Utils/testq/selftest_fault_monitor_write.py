@@ -130,6 +130,24 @@ def t_a_write_that_fails_every_try_fails_the_unit_with_its_cause(tmp):
         check(os.path.exists(T.q("fault_state.json")), "the state file is still written on the failing tick")
     finally:
         r.close()
+    # fault_state.json itself: its count is the age of the state that the last good tick left (state_streak), so it dies on
+    # the 10th tick in a row, not sooner (a count by minutes died on the 4th and a looser check let it through)
+    r = Rig(tmp)
+    try:
+        r.m.lines += [SF.rp(5), SF.rp(10)]
+        rc0, _ = r.tick()
+        r.fail("fault_state.json", 10 ** 6)
+        codes = [r.tick() for _ in range(DEAD)]
+        check(rc0 == 0 and all(c == 0 for c, _ in codes[:-1]),
+              "fault_state.json: the first %d failed ticks return 0 (worst: %r, limit 0, %d ticks read)"
+              % (DEAD - 1, [c for c, _ in codes], DEAD))
+        rc, out = codes[-1]
+        check(isinstance(rc, int) and rc != 0 and "FAIL fault_state.json not written for %d ticks in a row" % DEAD in out
+              and "errno 12" in out,
+              "fault_state.json: the tick that makes %d in a row returns non-zero and says so with the errno (got %r, %r)"
+              % (DEAD, rc, out[-200:]))
+    finally:
+        r.close()
 
 
 def t_a_good_write_is_as_today(tmp):
