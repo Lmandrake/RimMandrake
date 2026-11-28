@@ -165,6 +165,18 @@
    "source": "OWNER:1795861940796843369",
    "text": "The player sees a mountain's long shadow as a soft dark band drawn on the ground down-sun of the mountain, the same kind of drawing as the greatbole's crown shadow, so the shade reads without the overlay. He picked it knowing it commits before he has judged the greatbole trial; that trial's ruling for trees stays open (ITEM:RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE).",
    "answers": "a_mountain_drawn"
+  },
+  {
+   "id": "d_mountain_reach_geometry",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "text": "A mountain's band reaches as far as the one geometry casts it from the mountain's height, longer where the sun stands lower, with no extra length rule; a low-sun map that a mountain shades widely is the planning case he named, not a fault. How a cell's height is derived stays the design's (d_mountain_bulk).",
+   "source": [
+    "CONDUCTOR:1795862831529445191",
+    "OWNER:1795861938602549019",
+    "OWNER:1792410159136516913"
+   ],
+   "why": "Evidence-for-Ask: the flood doubt went to him in a_root; his answer softened 'every sunlit map' to 'many maps' and made unwanted mountain shade a major planning concern; a cap outside the geometry fights d_geometry_not_biome."
   }
  ],
  "asks": [
@@ -285,6 +297,42 @@
     "source": "OWNER:1795861940796843369",
     "by_card": "Mtn shadow -> Draw a soft dark band on the ground",
     "taken_by": "rm-role-designer-1795862365"
+   }
+  },
+  {
+   "id": "a_shade_takes",
+   "status": "sent",
+   "author": "rm-role-designer-1795862643",
+   "source": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatPatches.cs:151",
+    "OWNER:1795861938602549019",
+    "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs:160"
+   ],
+   "about": [
+    "inv_direct_sun_heat",
+    "inv_mountain_shade",
+    "inv_wall_lee",
+    "inv_tree_crowns",
+    "inv_cover"
+   ],
+   "decision": "what a cast shadow takes from the ground it falls on: the felt warmth of colonists and animals only, or that warmth and also the light that crops and solar panels use",
+   "text": "Picture a cold world tile under a 15-degree sun, and a mountain whose long band falls over the colony's rice field, its solar panels and the yard where colonists dress stone. What does the band take from them: (a) only the sun's warmth that colonists and animals feel, as wall and tree shade works for crops and panels today: the stonecutters stand colder, and the rice grows and the panels charge as they would anywhere; or (b) the warmth and also the light: the rice in the band grows slower and the panels make less power, and by the one geometry the same holds in every wall's lee, under every parasol and roof edge, and under every tree crown (sun-powered work tables already lose speed in any shade)?",
+   "evidence_against": "His card of 2:27 AM PST 2026-11-28 (OWNER:1795861938602549019) asks that planning for unwanted mountain shade be 'a major concern'. As built, no shade touches crops or solar panels: they read the map's light (plant growth through the glow grid; RM_InsolationPatch.cs scales panels by sun height only). Shade already dims sun-powered work tables (src/RimMandrake/Stillsand/Source/RM_SunPowered.cs:160) and steers pathing and wild plant spawning. Under (a) a mountain's shadow costs mostly a colder place to work outdoors, which warm clothes or a roofed workshop answer, so it may not be the major concern he named; the stage-1 root text also says the shadow can take the sun from 'a field', which is false under (a). Under (b) it is major, but it is a new mechanic that changes every crop and solar panel on every sunlit map.",
+   "owner_cites": [
+    "OWNER:1795861938602549019",
+    "OWNER:1792410159136516913"
+   ],
+   "offers_removal": false,
+   "review_1": {
+    "by": "rm-judge a64da4d3def01ce1c (fresh reviewer, opus)",
+    "verdict": "struck",
+    "why": "'as built, shade changes only a pawn's felt temperature' was false: shade already dims sun-powered work tables and steers pathing and wild plant spawning; the mountain band is not built; four wording fixes given, now applied"
+   },
+   "sent_by": "rm-role-designer-1795862643",
+   "review": {
+    "by": "rm-judge a64da4d3def01ce1c (fresh reviewer, opus)",
+    "verdict": "pass",
+    "why": "after four fixes the code claims match (no shade touches crops or panels; sun-powered tables dim in shade); not answered by his words or asked before; the answer changes what gets built; no removal offered; answerable as (a) or (b); after the pass, 'cut stone' became 'dress stone' because the launcher's KEEP_REMOVE regex reads 'cut' as a removal offer"
    }
   }
  ],
@@ -901,5 +949,19 @@
   "quote": "Soften every sunlit map but also add language that planning for unwanted mountain shade is a major concern too.",
   "note": "His card answer of 2:27 AM PST 2026-11-28 to a_root ('Is this the root, or which words would you change?') named two changes and kept the rest, as on Graffiti and GimmeSomeSlack; both are folded in by rm-role-designer-1795862365 with his meaning unchanged: (1) 'plans around on every sunlit map' becomes 'feels wherever it shines, and on many maps ... plans around'; Direct Sun still runs on every sunlit map (d_every_sunlit_map), only the claim of planning is softened; (2) the new 'Shade is not always wanted' sentence, grounded in the code: the sun's offset is added to a pawn's felt temperature at every temperature (RM_SunHeatPatches.cs Postfix_AmbientTemperature), so shade also takes the sun's warmth. One agent correction: 'grows as the sun drops' became 'is longer where the sun stands lower', because the sun is fixed on a map and differs only between maps (inv_fixed_sun). His addition also answers the root's doubt in part: a long shadow at a low sun is now a thing to plan against, not a reason the sun stops mattering; how long a mountain's shadow may reach is the edge, for stage 2.",
   "author": "rm-role-designer-1795862365"
+ },
+ "turn_stage2": {
+  "run": "rm-role-designer-1795862643",
+  "claim": "A mountain's long shadow is a major concern when the player picks where to build, because it takes what the sun gives from the ground it covers.",
+  "attack": "As built, the sun gives only felt warmth to pawns; crops, panels and air temperature ignore shade. On a cold low-sun tile, the cost of a mountain's shadow is then a parka, and on a hot tile the shadow is only wanted: the 'unwanted' half of his words has little to bite on, and the root's 'field' is false.",
+  "picture": "If warmth only: the band over the rice field is a drawn dark stripe that the rice ignores; the stonecutters' mood line says cold. If warmth and light: the rice in the band reads 'growth 60%' and the panels' readout drops, and a wall's two-cell lee beside a crop row slows that row too.",
+  "moves": {
+   "dumb_version": "draw the band and change nothing but pawn heat; it passes 'a mountain throws a long shadow' but not 'a major concern when the player picks where to build'",
+   "counterexample": "a colony on a cold terminator tile builds its field in a mountain's band and loses nothing",
+   "other_side": "vanilla has no cast shade; light is per map and only lamps and roofs (darkness under a thick roof) change it per cell",
+   "unsaid_sweep": "reload rebuilds the band from the saved roof grid; a mined-out mountain cell stops casting; a constructed roof is cover, not mountain height",
+   "boundary": "shade never cools the air (inv_air_heat), whichever way he answers"
+  },
+  "source": "design/concepts/DirectSun/record.json"
  }
 }
