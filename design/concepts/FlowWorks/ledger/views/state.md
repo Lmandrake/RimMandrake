@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":98294,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"HOLDER.run-1795818114":3744,"HOLDER.run-1795831307":18927,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"JUDGE.judge-1795794888":4312,"STEWARD":2597} body_sha256=653b6119d04de2d1d97986096dd70fc9e2f5a385dedf03c27f461442d2583099 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":98294,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"HOLDER.run-1795818114":3744,"HOLDER.run-1795831307":19909,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"JUDGE.judge-1795794888":4312,"STEWARD":2597} body_sha256=fcc8d933f4eeb7c7f8c494f0d29a19251606eca9fa048aec1745589b782df325 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1919 events in 52 shards · reducer 1
-holder lease run-1795831307, token 66, last active 2026-11-28T10:06:22Z
+version 0.1.0 · stage in_game · 1921 events in 52 shards · reducer 1
+holder lease run-1795831307, token 66, last active 2026-11-28T10:39:11Z
 holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795831307, 2026-11-28T10:06:22Z)
-- done: restart 5: pit floor in its own ground (669fe2fc9c); bridge tool umbrella closed (3b23dc14e9, 35b117c790); sluice seal fault re-measured true on the current build (probe evidence sluice_panel_seal_20261128)
-- next: Build the edge seal for RIMMANDRAKE_SEAL_SLUICE_AT_ITS_PANEL_NOT_ITS_SQUARE as written in the bundle state, regimes first
-- ruled out: the gate square fault is not a harness artefact: with the gate square emptied it stays at 0.0 m between two 1.5 m neighbours after 600 ticks
+## Last checkpoint (HOLDER.run-1795831307, 2026-11-28T10:39:11Z)
+- done: tall, cargo and extra-tall tanks of Industrial and Futuristic drawn in his picks at 87d6f776ba, fresh rm-judge KEEP 6/6; install waits on him (kept art), dated wait 2026-12-05
+- next: Build the warning when rain fills an occupied pit (RIMMANDRAKE_WARN_WHEN_RAIN_IS_FILLING_AN_OCCUPIED_PIT_KEEP_THE_FLOOD)
+- ruled out: a delegated install over the six kept tank pictures: replacing kept art is his act
 
 ## Open findings (174)
 (claimed fixes, awaiting a judge, on one line each with the oldest 119 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -497,6 +497,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1919 events (views/history.md; never read whole)
+- the full history: 1921 events (views/history.md; never read whole)
 
-cursor: t=2026-11-28T10:06:22Z.1795860382091060767 (modledger.py since --mod FlowWorks t=2026-11-28T10:06:22Z.1795860382091060767 prints what changed after this packet)
+cursor: t=2026-11-28T10:39:11Z.1795862351062029433 (modledger.py since --mod FlowWorks t=2026-11-28T10:39:11Z.1795862351062029433 prints what changed after this packet)
