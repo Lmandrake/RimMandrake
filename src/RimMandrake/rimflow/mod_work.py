@@ -7,7 +7,8 @@ selftest_list_dispatch.py. Why: measured 2026-11-24, the Codex lane built two Hu
 because HugeThings has no version folder and the page counted its tickets as work that is not mod work. CLAUDE.md
 §Mods keep their own state: the open work of a mod stays with that mod, and the Maturation Pipeline works it.
 
-    of(item, mods, prose=None) -> {"mod": <folder> or None, "why": <words>, "unreadable": <cause> or None}
+    of(item, mods, prose=None) -> {"mod": <folder> or None, "why": <words>, "unreadable": <cause> or None,
+                                    "names": <sorted mods whose folder a path of it lies in>}
 
 The rule, in order:
   1. a home that cannot be read (not a {home: "<kind>:<name>"} record)  -> could not look: the ticket is not launched;
@@ -17,6 +18,8 @@ The rule, in order:
      (src/<Tier>/<Mod>/ or design/concepts/<Mod>/), and no path outside it -> the work of that mod. A path outside
      every mod (rimflow, Utils, design/specs, ...) or paths in two mods -> not mod work: a pipeline ticket that names a
      mod as its example stays in the Workshop Pipeline. A mod named only by a word, with no path, stays too.
+"names" lists every mod whose folder one of its paths lies in, whatever the rule decided: a host on pipeline work only
+(list_dispatch.switch_refuses) gives such a ticket no room, since it may build or fix that mod.
 """
 import os
 import re
@@ -96,14 +99,15 @@ def of(item, modset, prose=""):
             outside.append("/".join(x for x in m if x))
     if len(inside) == 1 and not outside:
         mod = next(iter(inside))
-        return {"mod": mod, "why": "every repo path it names is inside the mod folder %s" % mod, "unreadable": None}
+        return {"mod": mod, "why": "every repo path it names is inside the mod folder %s" % mod, "unreadable": None,
+                "names": [mod]}
     if inside and outside:
         why = "it names %s and a path outside the mod (%s)" % (", ".join(sorted(inside)), outside[0])
     elif len(inside) > 1:
         why = "its paths lie in %d mods (%s)" % (len(inside), ", ".join(sorted(inside)))
     else:
         why = "no home and no path inside one mod"
-    return {"mod": None, "why": why, "unreadable": None}
+    return {"mod": None, "why": why, "unreadable": None, "names": sorted(inside)}
 
 
 def status(r):

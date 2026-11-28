@@ -127,6 +127,18 @@ def t_mod_work_not_sent_to_a_switched_host():
     check(L.switch_refuses("SteveDesktop", {"mod_work": {"mod": None}}) is None, "a pipeline ticket gets room")
     check(bool(L.switch_refuses("SteveDesktop", {"mod_work": {"mod": None}, "home": "game:research-tree"})),
           "a ticket of a game home gets no room there: game work builds or fixes mods")
+    # Measured 2026-11-27: RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE (C# in CreatureBehaviors, a design
+    # doc cited beside it) read as list work, so SteveDesktop took a mod build against the owner's switch.
+    import mod_work as MW
+    mods = {"CreatureBehaviors", "HugeThings"}
+    mixed = MW.of({"title": "crown shadows"}, mods, "edit src/RimMandrake/CreatureBehaviors/Source/RM_ShadeOverlay.cs; "
+                  "design design/RimMandrake/tree_shade_model_2026-10-19.md")
+    no = L.switch_refuses("SteveDesktop", {"mod_work": mixed})
+    check(mixed["mod"] is None and bool(no) and "CreatureBehaviors" in no,
+          "a ticket that names one mod's files beside a design doc gets no room there (%s)" % no)
+    pipe = MW.of({"title": "list_dispatch: fix the tick"}, mods, "see src/RimMandrake/rimflow/list_dispatch.py")
+    check(L.switch_refuses("SteveDesktop", {"mod_work": pipe}) is None,
+          "a ticket that names no mod's files still gets room there")
 
 
 def t_status_page_shows_it():

@@ -307,7 +307,8 @@ def machine_load(cfg, load, cores):
 
 def switch_refuses(host, it):
     """-> why HOST takes no room for ticket IT, or None. A host on pipeline work only (rimflow/host_work_switch.py)
-    takes no mod work: a ticket that mod_work reads as a mod's, or one whose mod reading could not be made."""
+    takes no mod work: a ticket that mod_work reads as a mod's, one whose mod reading could not be made, or one that
+    names a path inside a mod's folder (mod_work's "names")."""
     import host_work_switch as HWS
     sw = HWS.switched(host)
     if not sw:
@@ -319,6 +320,8 @@ def switch_refuses(host, it):
         return "%s takes no mod work (%s): %s" % (host, mw.get("mod") or it.get("mod"), sw)
     if str(it.get("home") or "").startswith("game:"):    # a game home's tickets build or fix mods, not the pipeline
         return "%s takes no game work (%s): %s" % (host, it["home"], sw)
+    if mw.get("names"):     # a mod's files beside a design doc: may build that mod (measured 2026-11-27, crown shadows)
+        return "%s takes no ticket that names a mod's files (%s): %s" % (host, ", ".join(mw["names"]), sw)
     return None
 
 
