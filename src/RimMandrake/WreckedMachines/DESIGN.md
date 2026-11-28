@@ -194,7 +194,8 @@ without them because their scenes are written; those scenes fail in the game unt
   on ordinary maps, the two placement switches in Mod Settings. The three placement proof methods (`Placement`,
   `InRuinRoom`, `PlantLighterWrecked`) answer "REFUSED not built yet". Scenes that fail on it: `sc_ruin_holds_wrecks`,
   `sc_rare_wreck_ordinary_map`, and `sc_switch_machine_off`, whose start reads the placement list back (seen failing in the
-  game on 2026-11-27).
+  game on 2026-11-27). `PlantLighterWrecked` is not placement: it plants the control row of `sc_three_looks_rows` (a Kludged
+  level that draws the Wrecked picture in a lighter shade), so that scene's control cannot pass before it is built.
 - **The stop of the base game's hand-outs** (plan.md, order, step 6; bar `only_by_repair`). Nothing yet keeps a working
   power cell, a working emanator or an Ancient Component out of the reward, loot and trader generators while their lines are
   on. The scene `sc_no_handouts` also needs one generic bridge function that is not built: run a ThingSetMakerDef or a
