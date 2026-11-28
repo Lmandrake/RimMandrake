@@ -1801,8 +1801,8 @@ def next_version(root, mod, by, why):
         jtext = jtext.rstrip("\n") + "\n\n" + "\n".join([
             "### %s, version change: %s to %s (by %s)" % (when, old, new, by), "", "- Why: %s" % why,
             "- The %s record (at %s) is kept as `%s`." % (old, label(rec.get("stage")), keep)] + (
-            ["- Its numbered evidence (%d cycle, visit and arrival paths) is set aside in `%s`." % (len(moves), aside)]
-            if moves else []) + [
+            ["- Its numbered evidence (%d cycle, visit and arrival paths) is set aside in `%s`: %s." % (
+                len(moves), aside, ", ".join("`%s`" % a for a, _b in moves))] if moves else []) + [
             "- Was, \"Stage now\": %s" % (was or "none"), "- Record: `%s`." % RECORD]) + "\n"
     done = []
     try:

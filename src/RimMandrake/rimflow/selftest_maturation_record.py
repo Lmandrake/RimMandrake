@@ -203,6 +203,10 @@ def t_next_version_sets_aside_numbered_evidence():
     check(sorted(r.get("archived") or []) == want, "the result names every path it set aside", r.get("archived"))
     check("set aside in `version/previous/0.1.0`" in (M.read_text(root, MOD, "journal.md") or ""),
           "the journal entry says where the evidence went")
+    jt = M.read_text(root, MOD, "journal.md") or ""
+    moved = sorted(set(p.rsplit("/", 1)[0] if "/cycle_" in p or "/visit_" in p else p for p in OLD_EVIDENCE))
+    check(all("`%s`" % p in jt for p in moved), "the journal entry names every moved path",
+          [p for p in moved if "`%s`" % p not in jt])
     check(M.read_text(root, MOD, "version/blind_challenge/notes.md") == "not numbered\n",
           "a file that is not numbered evidence stays where it is")
     # the new version's first blind cycle: no folder reads as past it, and its exit is absent until a judge writes it

@@ -2117,7 +2117,7 @@
    ],
    "hash": "31beefad27fdce77",
    "last_run": {
-    "at": "2026-11-26T09:30:29Z",
+    "at": "2026-11-28T10:36:58Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -2481,9 +2481,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "e7358e71fba8ed6b",
+   "hash": "e574b1cb278a5eda",
    "last_run": {
-    "at": "2026-11-28T03:35:29Z",
+    "at": "2026-11-28T10:36:58Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -2519,7 +2519,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-28T03:35:29Z",
+   "reset_at": "2026-11-28T10:36:58Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },
@@ -2540,7 +2540,7 @@
      "ops_one_cause_three_alarms: Do you also file a separate item for each of the three alarms?"
     ]
    },
-   "hash": "7fab35d22fd0495e",
+   "hash": "7ed6297d417007f8",
    "last_run": {
     "at": "2026-11-26T03:18:34Z",
     "cases": "5 planted case(s) ran and came out as planted",
@@ -2613,8 +2613,8 @@
      "id": "ops_one_cause_three_alarms"
     }
    ],
-   "reset_at": "2026-11-26T03:08:39Z",
-   "status": "CALIBRATED",
+   "reset_at": "2026-11-28T10:36:58Z",
+   "status": "UNTESTED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
   },
