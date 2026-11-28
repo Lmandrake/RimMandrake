@@ -1063,9 +1063,9 @@ def walls_verdict(census):
     when every laid hose reads 0; FAIL names each hose that crosses; UNMEASURED when no hose is laid (SITE), or the census did
     not answer or the deployed DLL predates the field (HARNESS). Reads the map as it stands: `--no-fresh-map --only walls` checks a loaded save (e.g. the
     walkthrough save b) without touching it. Returns (status, class, detail)."""
-    hoses = [h for h in (census or {}).get("hoses") or [] if h.get("laid") and h.get("layOk")]
     if not isinstance(census, dict) or census.get("success") is False:
         return "UNMEASURED", "HARNESS", {"why": "the census did not answer: %s" % str(census)[:160]}
+    hoses = [h for h in census.get("hoses") or [] if h.get("laid") and h.get("layOk")]
     if not hoses:
         return "UNMEASURED", "SITE", {"why": "no laid hose on this map", "hoses": len((census or {}).get("hoses") or [])}
     if any("wallCross" not in h for h in hoses):
