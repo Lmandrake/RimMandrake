@@ -2480,6 +2480,11 @@ def t_ls_measures_count_the_reserve():
     w = m.get(AP.week_of(NOW)) or {}
     check(n + ": 60 min under the line of 5 (4% and 3% left, each until the next reading), lowest gap -2",
           w.get("under_line_min", {}).get("lukas") == 60 and w.get("lowest_gap", {}).get("lukas") == -2, w)
+    log = [{"at": AP.iso(NOW + k * 300), "do": d, "runs": r} for k, (d, r) in enumerate(
+        [("normal", 3), ("soft", 3), ("stop", 0), ("stopped", 0), ("normal", 2), ("stopped", None)])]
+    dk = AP.dark_hours(log)
+    check(n + ": dark hours from the plan's own log: 4 passes of 5 min refused new runs, 1 of them with the runs unread",
+          dk.get(AP.week_of(NOW)) == {"dark_h": round(4 * 5 / 60, 2), "passes": 6, "unread": 1}, dk)
 
 
 def t_ls_the_live_plan_replays_pass_for_pass():

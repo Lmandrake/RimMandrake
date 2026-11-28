@@ -2019,6 +2019,23 @@ def runs_at_switches(log) -> dict:
     return out
 
 
+def dark_hours(log) -> dict:
+    """{week: {dark_h, passes, unread}} from this tool's own log: the hours whose pass refused a new run (its `do` is
+    one of REFUSES), each pass counting until the next one (at most 15 min; the last one 5 min, the timer's period).
+    The log does not say whether work waited, so this is the dark hours' upper bound. unread: refusing passes whose
+    runs could not be read."""
+    out, rows = {}, sorted(((stamp(r.get("at")), r) for r in log if stamp(r.get("at")) is not None
+                            and not r.get("shadow")), key=lambda x: x[0])
+    for i, (t, r) in enumerate(rows):
+        w = out.setdefault(week_of(t), {"dark_s": 0.0, "passes": 0, "unread": 0})
+        w["passes"] += 1
+        if r.get("do") in REFUSES:
+            nxt = rows[i + 1][0] if i + 1 < len(rows) else t + 300
+            w["dark_s"] += min(nxt - t, 900)
+            w["unread"] += r.get("runs") is None
+    return {k: {"dark_h": round(v.pop("dark_s") / 3600, 2), **v} for k, v in out.items()}
+
+
 def own_log() -> list:
     out = []
     try:
@@ -2926,6 +2943,12 @@ def run(argv) -> int:
     return REFUSED
 
 
+def line_in_force(plan, a, t, reset):
+    """The leave line of the step of `a` in force at t (its reset at `reset`), or None when no step uses `a` then."""
+    rl = rule_of(plan, a, Env(t, lambda x: None, lambda x: reset if x == a else None))
+    return None if rl is None else rl["line"]
+
+
 def measures_cmd(plan, f, weeks) -> int:
     import account_actuator as ACT
     rows = f.get("series") if "series" in f else series_rows(tail_bytes=10**9)
@@ -2935,12 +2958,13 @@ def measures_cmd(plan, f, weeks) -> int:
         return COULD_NOT_LOOK
     m = measures(rows, sws, lambda a, t: standing_line(plan, a, Env(t - 1, lambda x: None, lambda x: t)),
                  since=f["now"] - weeks * WEEK,
-                 line_now=lambda a, t, rs: standing_line(plan, a, Env(t, lambda x: None, lambda x: rs)))
+                 line_now=lambda a, t, rs: line_in_force(plan, a, t, rs))
     if not m:
         print("NONE: no reset and no switch in the last %d weeks of the series" % weeks)
         return NONE
     print("ALLOWANCE ERASED AT RESETS and SWITCHES, per week (Monday), against the lines of the plan as it is now")
-    mine = runs_at_switches(own_log())
+    lg = own_log()
+    mine, dark = runs_at_switches(lg), dark_hours(lg)
     for w, v in m.items():
         er = "; ".join("%s %s" % (a, x if isinstance(x, str) else "%s points (%s%% left at its reset)" % (
             g(x), g(v["left_at_reset"][a]))) for a, x in sorted(v["erased"].items())) or "no reset seen"
@@ -2948,6 +2972,10 @@ def measures_cmd(plan, f, weeks) -> int:
         res = "; ".join("%s %s min under its line, lowest gap %s" % (a, v["under_line_min"].get(a, 0), g(x))
                         for a, x in sorted((v.get("lowest_gap") or {}).items()))
         print("  week of %s: reserve kept: %s" % (w, res or "no reading"))
+        dk = dark.get(w)
+        print("  week of %s: dark: %s" % (w, "%s h in which the pass refused a new run (%d passes; %d of them with the runs "
+                                             "unread)" % (g(dk["dark_h"]), dk["passes"], dk["unread"]) if dk else
+                                             "UNMEASURED: the plan's log has no pass that week"))
         print("  week of %s: %d switches; %s; erased: %s" % (w, v["switches"], (
             "%d live runs at the plan's %d switches%s" % (k["runs"], k["switches"], ", %d of them with the runs unread"
                                                           % k["unread"] if k["unread"] else "")) if k else

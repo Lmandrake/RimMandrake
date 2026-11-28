@@ -221,6 +221,7 @@ PLANTS = [
      '            if False:      # a line schedule: what the reset erases is above the line at the reset'),
     ("ls_status_plan_forecast_show_the_schedule", P, '    out += schedule_lines(plan, f)\n    if f.get("slow_at"):', '    if f.get("slow_at"):'),
     ("ls_measures_count_the_reserve", P, '                    um[a] += round(min(tb - ta, 6 * 3600) / 60)', '                    um[a] += 0'),
+    ("ls_measures_count_the_reserve", P, '            w["dark_s"] += min(nxt - t, 900)', '            w["dark_s"] += 0'),
 ]
 
 

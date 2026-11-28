@@ -144,8 +144,9 @@ reader sees what the pass computes.
 ### The measures
 
 - **ls_measures_count_the_reserve.** `./acct measures` gives, per account and week, the minutes that the level read
-  under the leave line of that moment and the lowest gap (level less line), beside the points erased at each reset
-  (against the line at that reset) and the switches.
+  under the leave line of that moment and the lowest gap (level less line), and the dark hours (the hours whose pass
+  refused a new run, from the plan's own log), beside the points erased at each reset (against the line at that reset)
+  and the switches.
 
 ## THE MEASURES (the sweep, per account and week; also `./acct measures` where marked)
 
@@ -158,7 +159,8 @@ reader sees what the pass computes.
   under): the percent that was left and that no line asked to keep. `left_at_reset` is the whole level.
 - **dark hours** (`dark_h`): the hours in which work waited (the fleet's demand was over 0) and no account of the plan
   could take a new run (the real gate refused on every account that the work could use). For Codex: the hours in which
-  Codex jobs waited and `can_use codex` refused.
+  Codex jobs waited and `can_use codex` refused. `./acct measures` gives the hours whose pass refused a new run (the
+  plan's own log does not say whether work waited: an upper bound).
 - **owner starved** (`owner_starved_min`): the minutes in which the owner burned and the level was 0.
 - **switches**, and the runs that were alive at each switch (`runs_ended_by_switch`), as before.
 
