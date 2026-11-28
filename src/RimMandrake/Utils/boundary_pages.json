@@ -134,6 +134,7 @@
   "design/specs/2026-11-26-scratch-row-aged-by-write/boundary.md": "src/RimMandrake/Utils/selftest_scratch_reap_row_age.py",
   "design/specs/2026-11-27-check-tree-owner/boundary.md": "src/RimMandrake/Utils/selftest_check_tree_owner.py",
   "design/specs/2026-11-27-reap-apply-waits-out-dry-run/boundary.md": "src/RimMandrake/Utils/selftest_scratch_reap_lock_wait.py",
+  "design/specs/2026-11-28-reap-preserve-transient/boundary.md": "src/RimMandrake/Utils/selftest_scratch_reap_preserve_enomem.py",
   "design/specs/2026-11-22-sense-families-cheap/boundary.md": "src/RimMandrake/Utils/selftest_ops_sense_blind.py",
   "design/specs/2026-11-23-sense-apart-from-beat/boundary.md": "src/RimMandrake/Utils/selftest_metronome_apart.py",
   "design/specs/2026-11-23-telemetry-any-game/boundary.md": "src/RimMandrake/Utils/telemetry/selftest_telemetry_games.py",

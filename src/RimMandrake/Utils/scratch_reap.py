@@ -2175,30 +2175,34 @@ def preserve(row: dict) -> str:
             verify_tar_restore(p, row.get("dirty") if made[0].name == "dirty.tar.gz" else None, made[0])
         day.mkdir(parents=True, exist_ok=True)
         tmp = Path(tempfile.mkdtemp(dir=day, prefix=".incoming-"))      # a new dir per attempt: nothing is overwritten
-        files = {}
-        for f in made:
-            h = sha256(f)
-            shutil.copyfile(f, tmp / f.name)
-            if sha256(tmp / f.name) != h:
-                raise PreserveFailed(f"copy of {f.name} to the archive does not match")
-            files[f.name] = h
-        (tmp / "manifest.json").write_text(json.dumps({
-            "path": row["path"], "kind": row["kind"], "bytes": row["bytes"], "age_h": row["age_h"], "why": row["why"],
-            "tips": row.get("tips", []), "unique_commits": row.get("unique", 0), "dirty_paths": row.get("dirty", []),
-            "rewritten_commits": row.get("changed", []), "files": files, "residual": row.get("residual"),
-            "dropped_paths": row.get("dropped", []),
-            "broken": row.get("broken"),
-            "restore": "git clone --shared /home/mandrake/rm/store.git r && git -C r fetch clone.bundle "
-                       "'refs/rm/*:refs/heads/rescued/*'; check out status.txt's base; tar -xzf staged.tar.gz -C blobs; "
-                       "git -C r hash-object -w --no-filters blobs/*; git -C r read-tree --empty; "
-                       "git -C r update-index -z --index-info < index.txt; tar -xzf dirty.tar.gz -C r; "
-                       "the patches are for reading; a residual.pack instead of a bundle: copy it to "
-                       "r/.git/objects/pack, git index-pack it there, then git cat-file -p the ids in residual.txt"}, indent=1))
-        for f in tmp.iterdir():
-            durable(f)
-        durable(tmp, False)
-        dest = day / f"{slug}-{int(time.time())}-{os.path.basename(tmp)[-8:]}"
-        rename_retrying(tmp, dest)
+        try:
+            files = {}
+            for f in made:
+                h = sha256(f)
+                shutil.copyfile(f, tmp / f.name)
+                if sha256(tmp / f.name) != h:
+                    raise PreserveFailed(f"copy of {f.name} to the archive does not match")
+                files[f.name] = h
+            (tmp / "manifest.json").write_text(json.dumps({
+                "path": row["path"], "kind": row["kind"], "bytes": row["bytes"], "age_h": row["age_h"], "why": row["why"],
+                "tips": row.get("tips", []), "unique_commits": row.get("unique", 0), "dirty_paths": row.get("dirty", []),
+                "rewritten_commits": row.get("changed", []), "files": files, "residual": row.get("residual"),
+                "dropped_paths": row.get("dropped", []),
+                "broken": row.get("broken"),
+                "restore": "git clone --shared /home/mandrake/rm/store.git r && git -C r fetch clone.bundle "
+                           "'refs/rm/*:refs/heads/rescued/*'; check out status.txt's base; tar -xzf staged.tar.gz -C blobs; "
+                           "git -C r hash-object -w --no-filters blobs/*; git -C r read-tree --empty; "
+                           "git -C r update-index -z --index-info < index.txt; tar -xzf dirty.tar.gz -C r; "
+                           "the patches are for reading; a residual.pack instead of a bundle: copy it to "
+                           "r/.git/objects/pack, git index-pack it there, then git cat-file -p the ids in residual.txt"}, indent=1))
+            for f in tmp.iterdir():
+                durable(f)
+            durable(tmp, False)
+            dest = day / f"{slug}-{int(time.time())}-{os.path.basename(tmp)[-8:]}"
+            rename_retrying(tmp, dest)
+        except BaseException:          # each copy is in tmp, and the source stays: a failed attempt leaves nothing
+            shutil.rmtree(tmp, ignore_errors=True)    # (.incoming-6_xh5zj6 was left by the ENOMEM of 2026-11-28 04:00Z)
+            raise
         for q in (day, day.parent, root):               # each new link, up to the root that outlives them
             durable(q, False)
     manifest = dest / "manifest.json"
@@ -2221,6 +2225,24 @@ def preserve(row: dict) -> str:
     return str(dest)
 
 
+# Under load drvfs (/mnt/d, the archive root) answers ENOMEM and works a moment later: the borrower find on 2026-11-01,
+# and preserve() on 2026-11-02 and 2026-11-28 04:00Z. The 04:00Z ENOMEM was a run-end failure that rang SCRATCH_DIRTY_END;
+# the next run archived the same dir clean. Each attempt starts from nothing, so a retry is safe. The waits sum to 35 s,
+# a hang guard against a lasting ENOMEM in a reap that runs about 3 h.
+PRESERVE_ENOMEM_WAITS_S = (5, 30)
+
+
+def preserve_retrying(row: dict) -> str:
+    """preserve(row), tried again through a short ENOMEM. Any other error, or an ENOMEM that outlasts the waits, raises."""
+    for wait in PRESERVE_ENOMEM_WAITS_S + (None,):
+        try:
+            return preserve(row)
+        except OSError as e:
+            if e.errno != errno.ENOMEM or wait is None:
+                raise
+            time.sleep(wait)
+
+
 def act(row: dict, ctx: Ctx, failures: list[str]) -> int:
     """Re-judge one row, preserve it if asked, delete it. -> bytes freed."""
     ctx.refresh()
@@ -2240,7 +2262,7 @@ def act(row: dict, ctx: Ctx, failures: list[str]) -> int:
     row["verdict"] = again["verdict"]
     if row["verdict"] == "ARCHIVE":
         try:
-            row["archive"] = preserve(row)
+            row["archive"] = preserve_retrying(row)
         except (PreserveFailed, OSError, subprocess.SubprocessError) as e:
             row.update(verdict="REFUSE", why=[f"could not preserve it, so it stays: {e}"] + row["why"])
             if not isinstance(e, Refused):
