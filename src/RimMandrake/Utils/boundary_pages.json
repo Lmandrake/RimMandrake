@@ -37,6 +37,7 @@
   "design/specs/2026-11-24-filing-gate/boundary.md": "src/RimMandrake/rimflow/selftest_filing_gate.py",
   "design/specs/2026-11-24-dispatcher-soon-timers/boundary.md": "src/RimMandrake/rimflow/selftest_seat_restart.py",
   "design/specs/2026-11-24-game-watch-tick/boundary.md": "src/RimMandrake/Utils/selftest_game_watch_tick.py",
+  "design/specs/2026-11-27-restart-alarm-reads-progress/boundary.md": "src/RimMandrake/Utils/selftest_restart_reconcile_progress.py",
   "design/specs/2026-11-26-defdump-db-tick/boundary.md": "src/RimMandrake/Utils/selftest_defdump_db_tick.py",
   "design/specs/2026-11-26-vanilla-beast-route-leaks/boundary.md": "src/RimMandrake/Utils/selftest_vanilla_beast_cut.py",
   "design/specs/2026-11-24-fleet-now-stevedesktop/boundary.md": "src/RimMandrake/Utils/selftest_steve_reading.py",

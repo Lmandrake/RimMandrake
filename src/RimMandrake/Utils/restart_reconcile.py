@@ -22,6 +22,10 @@ min, so it gets restart_reconcile_held_s from the same file until a cancel takes
 line only lengthens a bound that still ends: a dropped request stops producing them. "Still journalling" means a hold
 within restart_reconcile_hold_fresh_s: a tick stamps its lines at its start and writes them as it acts, so a slow tick
 leaves none on disk for its whole length (3 m 56 s on 2026-11-01: a false alarm at 615 s, OPS_RESTART_UNSTICK_FOUNDRY_HDDT).
+A request is lost only when it shows no progress: a fresh window of the seat, relaunched at or after it (journal
+restart_relaunched), that is alive and wrote a transcript record within the fire time keeps it off the due list however
+long its first turn runs (1,176 s on 2026-11-28: a false alarm at 445 s, OPS_RESTART_UNSTICK_BENCH_YCVY_ZEXY). A fresh
+window that is silent for the fire time, or gone, or never relaunched, is due as before (window_progress, join).
 
 One open incident per seat, so one outage is one alarm; later requests join it, and a verified restart closes it.
 Told, in order, none through the Dispatcher: the Conductor log, the seat's doorbell if armed and free, one fixed ledger
@@ -173,10 +177,32 @@ def row_key(seat, ts):
     return "%s:%.2f" % (seat, ts)
 
 
-def join(rows, journal, now, lim, armed_at, told=()):
+def window_progress(sch, seat, session_id):
+    """-> the time of the newest transcript record of the fresh window `session_id` of `seat` while that window is alive,
+    else None (no session file names it, the window is gone, or its transcript has no reading). The readers are
+    seat_restart's own (window_alive, transcript_for, tx_summary): the ones that write restart_verified's evidence."""
+    if not session_id:
+        return None
+    cfg = {"clone": (sch.get("seats", {}).get(seat) or {}).get("clone")}
+    for p in glob.glob(os.path.join(SR.claude_home(), "sessions", "*.json")):
+        sf = SR._read_json(p) or {}
+        if sf.get("sessionId") != session_id:
+            continue
+        if not SR.window_alive(sf):
+            continue
+        tx = SR.tx_summary(SR.transcript_for(sf, cfg) or "")
+        if tx and tx.get("last_at") is not None:
+            return tx["last_at"]
+    return None
+
+
+def join(rows, journal, now, lim, armed_at, told=(), progress=None):
     """Pure. -> [unmatched requests due now, oldest first]. rows: request rows (files, goodbyes). journal: read_journal.
     A row older than armed_at or the lookback is history; what was unmatched then is not this pass's to say. told: keys
-    already alarmed. A later hold or kill does not un-alarm one: only restart_verified ends it."""
+    already alarmed. A later hold or kill does not un-alarm one: only restart_verified ends it. progress(seat, session_id)
+    -> the newest record time of that fresh window while it is alive, or None (window_progress): a request with a fresh
+    window relaunched after it that wrote within the fire time is not due, however long its first turn
+    (OPS_RESTART_UNSTICK_BENCH_YCVY_ZEXY, 2026-11-28: a first turn of 1,176 s read as an outage at 445 s)."""
     epoch = OW.epoch
     fire = lim["restart_reconcile_s"] - lim["restart_reconcile_pass_s"] - lim["restart_reconcile_slack_s"]
     held = lim["restart_reconcile_held_s"]
@@ -193,7 +219,7 @@ def join(rows, journal, now, lim, armed_at, told=()):
         m["goodbye"] = m.get("goodbye") or "goodbye" in r["reason"].lower()
     for r in rows:
         add(r)
-    verified, cancels, holds, kills = {}, {}, {}, {}
+    verified, cancels, holds, kills, relaunched = {}, {}, {}, {}, {}
     for j in journal:
         t = epoch(j.get("at"))
         if t is None or not j.get("seat"):
@@ -206,12 +232,27 @@ def join(rows, journal, now, lim, armed_at, told=()):
             holds[j["seat"]] = max(t, holds.get(j["seat"], 0))
         elif j["do"] in ("restart_kill", "restart_relaunched"):
             kills[j["seat"]] = max(t, kills.get(j["seat"], 0))
+            if j["do"] == "restart_relaunched" and j.get("session_id"):
+                relaunched.setdefault(j["seat"], []).append((t, j["session_id"]))
         elif not str(j.get("result") or "").startswith("would"):     # a dry run asked for nothing
             why = str(j.get("why") or "")
             synth = str(j.get("result") or "").startswith("started by the Dispatcher")
             ts = j.get("req_ts")
             add({"seat": j["seat"], "ts": float(ts) if isinstance(ts, (int, float)) else t, "source": "journal",
                  "reason": why, "held": synth or why.startswith("DEFERRED"), "synthetic": synth})
+    seen = {}
+
+    def writing(seat, ts):
+        """A fresh window relaunched at or after the request is alive and wrote within the fire time."""
+        for t, sid in sorted(relaunched.get(seat, ()), reverse=True):
+            if t < ts - 1:
+                break
+            if sid not in seen:
+                seen[sid] = progress(seat, sid)
+            last = seen[sid]
+            if last is not None and last >= ts and now - last < fire:
+                return True
+        return False
     out = []
     for m in sorted(merged.values(), key=lambda x: x["ts"]):
         ts = m["ts"]
@@ -224,7 +265,10 @@ def join(rows, journal, now, lim, armed_at, told=()):
             or now - kills.get(m["seat"], 0) <= fire      # killed: the relaunch has the ordinary time to verify
         patient = (m["held"] or holding) and not m["goodbye"] and not cancelled
         limit = held if patient else fire
-        if now - ts >= limit or row_key(m["seat"], ts) in told:
+        key = row_key(m["seat"], ts)
+        if now - ts >= limit or key in told:
+            if key not in told and progress and writing(m["seat"], ts):
+                continue                 # progress, not an outage: the fresh window is alive and writing
             m["age_s"] = int(now - ts)
             m["cancelled"] = bool(cancelled)
             out.append(m)
@@ -270,8 +314,9 @@ def tell_seat(root, seat, line, now):
     return True
 
 
-def run_pass(now, root, sch, state, filer, out_dir):
-    """One pass. state: the saved dict, updated in place. filer(todo, conf) as ops_watch.real_filer, or None."""
+def run_pass(now, root, sch, state, filer, out_dir, progress=None):
+    """One pass. state: the saved dict, updated in place. filer(todo, conf) as ops_watch.real_filer, or None.
+    progress: join's reader of a fresh window (default window_progress, the real session files and transcript)."""
     lim = limits(sch)
     state.setdefault("armed_at", now)
     cursors = state.setdefault("cursors", {})
@@ -284,7 +329,8 @@ def run_pass(now, root, sch, state, filer, out_dir):
                          if g["ts"] >= now - lim["restart_reconcile_lookback_s"]]
     rows = [r for r in rows if r["source"] != "transcript"] + state["goodbyes"]
     told = {k for cur in open_.values() for k in cur.get("keys", ())}
-    due = join(rows, journal, now, lim, state["armed_at"], told)
+    due = join(rows, journal, now, lim, state["armed_at"], told,
+               progress=progress or (lambda seat, sid: window_progress(sch, seat, sid)))
     by = {}
     for m in due:
         by.setdefault(m["seat"], []).append(m)
@@ -386,7 +432,8 @@ def main(argv=None, filer=None):
             lim = limits(sch)
             rows = read_requests(doorbell.state_dir())
             print(json.dumps(join(rows, read_journal(doorbell.state_dir())[0], time.time(), lim,
-                                  saved.get("armed_at", time.time() - lim["restart_reconcile_lookback_s"])), indent=1))
+                                  saved.get("armed_at", time.time() - lim["restart_reconcile_lookback_s"]),
+                                  progress=lambda seat, sid: window_progress(sch, seat, sid)), indent=1))
             return 0
         if not still_owner("the pass"):
             return EXIT_FENCED
