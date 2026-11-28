@@ -81,6 +81,24 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(RM_PawnCutMath.Decide(false, false, true, 2f, 1.75f, Lie, Tar, out _, out _) == RM_PawnCutMath.Mode.Hidden,
 					"can-fail: wholly under tar: hidden (tar is opaque)");
 			});
+			Case("PawnCut_hidden_living_pawn_sends_a_sign", () =>
+			{
+				// RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW: a hare under tar showed nothing at all
+				var hidden = RM_PawnCutMath.Decide(false, false, false, 0.5f, 0.35f, Lie, Tar, out _, out _);
+				Assert(hidden == RM_PawnCutMath.Mode.Hidden && RM_PawnCutMath.SendsSign(false, hidden, false),
+					"can-fail: a living hare wholly under tar sends the sign");
+				Assert(!RM_PawnCutMath.SendsSign(false, hidden, true), "can-fail: a dead body sends no sign");
+				Assert(RM_PawnCutMath.SendsSign(true, RM_PawnCutMath.Mode.Tinted, false),
+					"can-fail: deep under murky water the realtime gate hides her: she sends the sign");
+				var wading = RM_PawnCutMath.Decide(false, false, false, 0.2f, 0.35f, Lie, Tar, out _, out _);
+				Assert(wading == RM_PawnCutMath.Mode.Cut && !RM_PawnCutMath.SendsSign(false, wading, false),
+					"can-fail: a hare half out of the tar shows herself: no sign");
+				var dimmed = RM_PawnCutMath.Decide(false, false, false, 0.5f, 0.35f, Lie, Water, out _, out _);
+				Assert(!RM_PawnCutMath.SendsSign(false, dimmed, false), "can-fail: under clear water she is seen, dimmed: no sign");
+				Assert(RM_PawnCutMath.SignRingScale(0.35f) >= 0.6f && RM_PawnCutMath.SignRingScale(1.75f) <= 1.2f
+					&& RM_PawnCutMath.SignRingScale(0.35f) < RM_PawnCutMath.SignRingScale(1.75f),
+					"can-fail: a small body's ring is smaller, within 0.6 to 1.2 of a square");
+			});
 			Case("PawnCut_lying_is_never_cut", () =>
 			{
 				// GPT's warning (design section 10): a horizontal line across a lying body cuts through her face

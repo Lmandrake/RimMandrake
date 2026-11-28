@@ -123,6 +123,35 @@ namespace RimMandrake.FlowWorks
 			return Mode.Cut;
 		}
 
+		// ── the sign of a hidden pawn (RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW; the rule: no animal or pawn
+		// ever vanishes without a sign that the player can read). A colonist keeps her name label and alert; a wild hare under
+		// tar had none. A living pawn that nothing of shows (the cut hides her, or the realtime gate does) sends a ring of
+		// froth and a few bubbles up through the surface over her, every SignIntervalTicks. A body that is dead sends none.
+
+		/// <summary>Ticks between two signs over one hidden pawn (1.5 s at speed 1: a slow breath).</summary>
+		public const int SignIntervalTicks = 90;
+
+		/// <summary>Bubbles in one sign, beside its one ring of froth.</summary>
+		public const int SignBubbles = 2;
+
+		/// <summary>The froth ring's scale for a body <paramref name="heightMetres"/> tall, about the size of the body it marks:
+		/// a hare's ring is two thirds of a square, a colonist's or a muffalo's about one, never past 1.2.</summary>
+		public static float SignRingScale(float heightMetres)
+		{
+			float h = heightMetres > 0f ? heightMetres : 1f;
+			float k = 0.45f + 0.4f * h;
+			return k < 0.6f ? 0.6f : k > 1.2f ? 1.2f : k;
+		}
+
+		/// <summary>How far the froth ring's colour is lifted from the liquid's bubble colour towards white: grey on black tar
+		/// was only just seen in a still frame (art judge, 2026-11-28).</summary>
+		public const float SignFrothLift = 0.7f;
+
+		/// <summary>Does this pawn send the sign? <paramref name="gateHides"/>: the realtime gate draws nothing of her (her top
+		/// under the law's label line); <paramref name="cut"/>: the cut's decision. Swimming and flying pawns are drawn whole
+		/// and never reach here hidden.</summary>
+		public static bool SendsSign(bool gateHides, Mode cut, bool dead) => !dead && (gateHides || cut == Mode.Hidden);
+
 		/// <summary>The world z of the line on a picture spanning <paramref name="footZ"/>..<paramref name="crownZ"/>.</summary>
 		public static float LineZ(float footZ, float crownZ, float share) => footZ + (crownZ - footZ) * share;
 

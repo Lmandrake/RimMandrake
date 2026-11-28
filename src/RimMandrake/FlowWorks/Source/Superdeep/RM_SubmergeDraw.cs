@@ -1076,6 +1076,120 @@ namespace RimMandrake.FlowWorks
 			return sb.ToString();
 		}
 
+		/// <summary>Signs sent over hidden pawns since the last proof reset (ProofHiddenSigns reads and clears it).</summary>
+		public static int hiddenSigns;
+
+		private static FleckDef signBubble, signFroth;
+		private static bool signDefsRead;
+
+		/// <summary>Is nothing of <paramref name="pawn"/> drawn, so she owes the sign (RM_PawnCutMath.SendsSign)? Read only.</summary>
+		internal static bool OwesSign(Pawn pawn)
+		{
+			if (!On || pawn == null || !pawn.Spawned || pawn.Swimming || pawn.Flying)
+			{
+				return false;
+			}
+			RealtimeVerdict v = RealtimeRead(pawn, out float _, out float levelM, out float clarity, out float _);
+			if (v == RealtimeVerdict.Whole && !(levelM > 0f))
+			{
+				return false;   // dry, or off a pit
+			}
+			RM_PawnCutMath.Mode mode = RM_PawnCutMath.Decide(RM_Drowning.Lying(pawn), false, pawn.RaceProps.Humanlike, levelM,
+				RM_Drowning.HeightOf(pawn), RM_UnderLiquid.CorpseMetres, clarity, out float _, out float _);
+			return RM_PawnCutMath.SendsSign(v == RealtimeVerdict.Hidden, mode, pawn.Dead);
+		}
+
+		/// <summary>The map's pass, from RM_MapComponent_Excavation's tick: every hidden living pawn sends a ring of froth and a
+		/// few bubbles, in her liquid's bubble colour, up through the surface over her.</summary>
+		internal static void TickHiddenSigns(Map map)
+		{
+			if (!On || map == null || Find.TickManager.TicksGame % RM_PawnCutMath.SignIntervalTicks != 0)
+			{
+				return;
+			}
+			if (!signDefsRead)
+			{
+				signDefsRead = true;
+				signBubble = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_VentBubble");
+				signFroth = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_VentFroth");
+			}
+			if (signBubble == null && signFroth == null)
+			{
+				return;
+			}
+			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+			RM_MapComponent_Excavation eng = null;
+			for (int i = 0; i < pawns.Count; i++)
+			{
+				Pawn p = pawns[i];
+				if (!OwesSign(p))
+				{
+					continue;
+				}
+				eng = eng ?? RM_SuperdeepTrap.EngineOf(map);
+				RM_LiquidSurfaceLook look = LookAt(map, eng, p.Position);
+				Color own = look != null ? look.bubbleColor : SignDefaultBubble;
+				RM_UnderLiquid.Float3 b = RM_GeyserTubMath.BubbleColour(new RM_UnderLiquid.Float3(own.r, own.g, own.b),
+					new RM_UnderLiquid.Float3(SignDefaultBubble.r, SignDefaultBubble.g, SignDefaultBubble.b), LiquidColour(look));
+				Color tint = new Color(b.r, b.g, b.b);
+				Vector3 ctr = p.DrawPos;
+				ctr.y = AltitudeLayer.MoteLow.AltitudeFor();
+				if (!ctr.ShouldSpawnMotesAt(map))
+				{
+					continue;
+				}
+				hiddenSigns++;
+				if (signFroth != null)
+				{
+					FleckCreationData f = FleckMaker.GetDataStatic(ctr, map, signFroth, RM_PawnCutMath.SignRingScale(RM_Drowning.HeightOf(p)));
+					float lift = RM_PawnCutMath.SignFrothLift;
+					f.instanceColor = new Color(tint.r + (1f - tint.r) * lift, tint.g + (1f - tint.g) * lift, tint.b + (1f - tint.b) * lift);
+					f.rotation = Rand.Range(0f, 360f);
+					map.flecks.CreateFleck(f);
+				}
+				if (signBubble == null)
+				{
+					continue;
+				}
+				for (int k = 0; k < RM_PawnCutMath.SignBubbles; k++)
+				{
+					Vector2 off = Rand.InsideUnitCircle * 0.3f;
+					FleckCreationData d = FleckMaker.GetDataStatic(ctr + new Vector3(off.x, 0f, off.y), map, signBubble, Rand.Range(1.6f, 2.2f));
+					d.instanceColor = tint;
+					d.velocityAngle = Rand.Range(0f, 360f);
+					d.velocitySpeed = Rand.Range(0f, 0.04f);
+					map.flecks.CreateFleck(d);
+				}
+			}
+		}
+
+		private static readonly Color SignDefaultBubble = new Color(0.9f, 0.95f, 1f);
+
+		/// <summary>static_call surface: "SIGNS sent=N owed=id,id,..." (the pawns of the current map that owe the sign now);
+		/// "reset" clears the count first; any other word only reads (jawa/static_call takes an empty arg for no parameter).</summary>
+		public static string ProofHiddenSigns(string arg)
+		{
+			if (arg == "reset")
+			{
+				hiddenSigns = 0;
+			}
+			Map map = Find.CurrentMap;
+			StringBuilder sb = new StringBuilder("SIGNS sent=").Append(hiddenSigns).Append(" owed=");
+			if (map != null)
+			{
+				bool first = true;
+				foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+				{
+					if (OwesSign(p))
+					{
+						sb.Append(first ? "" : ",").Append(p.ThingID);
+						first = false;
+					}
+				}
+			}
+			return sb.ToString();
+		}
+
 		/// <summary>A proof line for one pawn (the live matrix reads it): the decision, the line and her picture's extent as the
 		/// last draw measured them. "PAWNCUT id mode=... share=... level=... height=... clarity=... lying=... foot=... crown=...
 		/// line=..." or "PAWNCUT id none".</summary>

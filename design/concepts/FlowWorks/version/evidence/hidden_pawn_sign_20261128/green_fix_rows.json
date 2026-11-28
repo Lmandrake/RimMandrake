@@ -1,0 +1,77 @@
+{
+ "script": "live_hidden_pawn_sign.py",
+ "started": "2026-11-27T23:29:37",
+ "rows": [
+  {
+   "id": "HS_site",
+   "status": "PASS",
+   "detail": {
+    "cut": {
+     "tar": "PAWNCUT Hare46340 mode=Hidden share=0 tint=1 level=0.5 height=0.5 clarity=0 lying=False humanlike=False noCache=True foot=41.972 crown=42.652 line=41.972 drawZ=42.3",
+     "dry": "PAWNCUT Hare46341 dry",
+     "shallow": "PAWNCUT Hare46342 mode=Cut share=0.3 tint=1 level=0.15 height=0.5 clarity=0 lying=False humanlike=False noCache=True foot=41.972 crown=42.652 line=42.176 drawZ=42.3"
+    },
+    "hares": {
+     "tar": "Hare46340",
+     "dry": "Hare46341",
+     "shallow": "Hare46342"
+    }
+   }
+  },
+  {
+   "id": "HS_dry_hare_owes_no_sign",
+   "status": "PASS",
+   "detail": {
+    "owed": [
+     "Hare46340"
+    ],
+    "dry": "Hare46341"
+   }
+  },
+  {
+   "id": "HS_shallow_hare_owes_no_sign",
+   "status": "PASS",
+   "detail": {
+    "owed": [
+     "Hare46340"
+    ],
+    "shallow": "Hare46342",
+    "cut": "PAWNCUT Hare46342 mode=Cut share=0.3 tint=1 level=0.15 height=0.5 clarity=0 lying=False humanlike=False noCache=True foot=43.525 crown=44.205 line=43.729 drawZ=43.853"
+   }
+  },
+  {
+   "id": "HS_sign_sent_over_tar_hare",
+   "status": "PASS",
+   "detail": {
+    "sent": 4,
+    "owed": [
+     "Hare46340"
+    ],
+    "tar": "Hare46340",
+    "after": "SIGNS sent=4 owed=Hare46340",
+    "why": "the tar hare is owed the sign and the map sent it"
+   }
+  }
+ ],
+ "open_sky": {
+  "ok": true,
+  "roofCells": [],
+  "rockCells": [],
+  "why": [],
+  "cleared": {
+   "roofOp": {
+    "success": true,
+    "cellsChanged": 0,
+    "cellsFailedVerify": 0
+   }
+  }
+ },
+ "fills": {
+  "tar": "FILL applied=25 refused=0 notOwned=0 fluid=RM_Fluid_Tar",
+  "shallow": "FILL applied=25 refused=0 notOwned=0 fluid=RM_Fluid_Tar"
+ },
+ "shots": {
+  "close": "D:\\ClaudeWork\\rimmandrake\\scratch\\hidden_sign\\after4\\sign_close.png",
+  "default": "D:\\ClaudeWork\\rimmandrake\\scratch\\hidden_sign\\after4\\sign_default.png"
+ }
+}

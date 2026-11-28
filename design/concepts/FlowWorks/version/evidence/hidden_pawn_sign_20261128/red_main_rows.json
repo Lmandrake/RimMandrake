@@ -1,0 +1,39 @@
+{
+ "script": "live_hidden_pawn_sign.py",
+ "started": "2026-11-27T23:17:23",
+ "rows": [
+  {
+   "id": "HS_site",
+   "status": "PASS",
+   "detail": {
+    "cut": {
+     "tar": "PAWNCUT Hare17742 mode=Hidden share=0 tint=1 level=0.5 height=0.5 clarity=0 lying=False humanlike=False noCache=True foot=111.972 crown=112.652 line=111.972 drawZ=112.3",
+     "dry": "PAWNCUT Hare17743 dry",
+     "shallow": "PAWNCUT Hare17744 mode=Cut share=0.3 tint=1 level=0.15 height=0.5 clarity=0 lying=False humanlike=False noCache=True foot=111.972 crown=112.652 line=112.176 drawZ=112.3"
+    },
+    "hares": {
+     "tar": "Hare17742",
+     "dry": "Hare17743",
+     "shallow": "Hare17744"
+    }
+   }
+  },
+  {
+   "id": "HS_sign_sent_over_tar_hare",
+   "status": "UNMEASURED",
+   "detail": {
+    "why": "no ProofHiddenSigns surface on this build",
+    "got": "{'success': False, 'message': 'No public static ProofHiddenSigns with 0 params.', 'details': {'available': []}, 'operation': {'OperationId': 'op_0ec1996991b140c0a6ef25fc20635a53', 'Status': 'Completed', 'Success': True, 'DurationMs': 17}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 361}}",
+    "tarStillHidden": true
+   }
+  }
+ ],
+ "fills": {
+  "tar": "FILL applied=25 refused=0 notOwned=0 fluid=RM_Fluid_Tar",
+  "shallow": "FILL applied=25 refused=0 notOwned=0 fluid=RM_Fluid_Tar"
+ },
+ "shots": {
+  "close": "D:\\ClaudeWork\\rimmandrake\\scratch\\hidden_sign\\before\\sign_close.png",
+  "default": "D:\\ClaudeWork\\rimmandrake\\scratch\\hidden_sign\\before\\sign_default.png"
+ }
+}

@@ -2860,6 +2860,9 @@ namespace RimMandrake.FlowWorks
 			{
 				RM_PitFillEffects.Tick(map, this);
 			}
+			// RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW: a living pawn that nothing of shows sends froth and
+			// bubbles up over her (own timer; the cut's switch)
+			RM_SubmergeDraw.TickHiddenSigns(map);
 			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: which dug squares are swum (own timer: pumps, hoses and fill-ins write
 			// water between pulses, and the engine may be off)
 			if ((excavatedCells.Count > 0 || swimSet.Count > 0) && Find.TickManager.TicksGame % SwimRefreshTicks == 11)
