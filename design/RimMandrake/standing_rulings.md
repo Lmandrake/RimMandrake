@@ -3280,6 +3280,10 @@ Crystallize is the consolidation pass (the `crystallize` skill of MandrakeWorkfl
     or tool up to the user-level tools. Such a proposal goes in the weekly report, not on a daily card.
   - Each entry gives its name, what moves, why it is general, and the measured evidence. He decides each one.
   - First entry owed: `RIMMANDRAKE_PROPOSE_PROSE_CHECK_TO_USER_TOOLS_BELOW_TWELVE`.
+- **The Conductor decides the weekly sheet rows; Mandrake reads the digest** (owner, by card Sat 2026-11-28 2:17 AM PST:
+  "Conductor decides, digest (Recommended)"). This settles the rows that the `crystallize` skill's table calls "his to
+  change": in this repo the Conductor decides them, logged `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`,
+  and his daily digest tells him after.
 - The report is `CYCLE_REPORT.md` in `D:\ClaudeWork\rimmandrake\conductor\crystallize_<year>W<week>\`.
 - Measured 2026-11-23: the pass runs and applies edits, but it has not been weekly. Its last two runs were 31 days apart
   (2026-10-19 and 2026-11-19). `RIMMANDRAKE_REVIVE_WEEKLY_CRYSTALLIZE_RAN_31_DAYS_APART` holds the repair.

@@ -1,0 +1,3 @@
+On a Mac (no /proc), selftest_own_dirs.proc_start returns GONE for every pid, so every own_dir owner marker reads provably gone; under ./publish on the Laptop selftest_entrypoint_inventory.py failed twice with FileNotFoundError on its own publish_check_* TMPDIR (2026-11-28) while the same test read GREEN run alone, also with a TMPDIR under /var/folders. Suspected (not proven): a concurrent reap of a live check's dir. Read the start time with ps -o lstart= -p <pid> (or psutil) where /proc is absent, and treat an unreadable start as None, never GONE.
+item: RIMMANDRAKE_RECORD_HIS_ANSWERS_ON_SIX_W48_SKILL_MOVES
+home: NONE
