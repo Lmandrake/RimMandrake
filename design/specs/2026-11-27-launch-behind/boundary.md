@@ -49,7 +49,7 @@ promise on planted faults and fails unless each fault turns it red. The live beh
 - **a-front-reason-starts-no-guard-and-says-why.** With a front reason, `guarded` starts no guard, calls the launch, and
   its note names the reason.
 - **a-direct-start-shows-the-window-without-activating-it.** A start that this code makes itself (ArchBig's direct start,
-  a named game) runs `RimWorldWin64.exe` through `RmWin.Start` with `SW_SHOWNOACTIVATE`, so its first window is shown and
+  a named game) runs `RimWorldWin64.exe` through WMI (`Win32_Process.Create`, `start_script`) with `SW_SHOWNOACTIVATE`, so its first window is shown and
   not activated; with a front reason it uses `SW_SHOWNORMAL`. Steam's own start of ArchBig is not ours to shape: there
   the guard alone acts.
 - **a-guard-that-cannot-start-never-stops-the-launch.** When the guard cannot start or gives no READY, the launch still

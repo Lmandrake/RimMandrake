@@ -42,3 +42,17 @@ finding while the stop stands. Its other two findings were proven and fixed by
 - `pipe next` prints the full owner-hold quote on every held mod: 18 lines, 3,894 characters and 10.3 s on
   2026-11-19 (RIMMANDRAKE_PROVE_PIPELINE_CONTROL_ASKS_MET_HE_ASKED_BEFORE). One short line per held mod would do.
 - 2026-11-21 `acceptance/control_promise_breaks_accept.py` reads COULD NOT LOOK: the page promise `an-unseeded-mod-can-be-switched-off` has no planted break, so the harness refuses to run any break. Seen while adding two promises (RIMMANDRAKE_GENERALIZE_PIPELINE_REPAIRS_INTO_FEW_PRINCIPLES); not at the publish door.
+
+## (fresh read, WB-pipeline-read-utils-20261128-092119, 2026-11-28)
+- `src/RimMandrake/rimflow/control.py` role: and item: scope names are not checked against any list. risk: `pipe off role:<typo>` writes a switch that blocks nothing, while the page says a wrong name is refused.
+- `src/RimMandrake/rimflow/control.py` `game_held` with an unknown game name raises GameNameError uncaught. risk: a caller that passes an unknown name gets a traceback, not a refusal.
+- `src/RimMandrake/rimflow/control.py` a `void` whose idem key is already used raises Unreadable, not Refused. risk: a repeat void reads as COULD NOT LOOK instead of a refusal with its reason.
+- `src/RimMandrake/rimflow/control.py` `queue move` counts dropped mods in its positions. risk: a move to position N lands after a dropped mod, one place off from what the line printed.
+- `src/RimMandrake/rimflow/control.py` the `pipe queue` read does not map sqlite3.Error to Unreadable. risk: a locked store prints a traceback, not COULD NOT LOOK.
+- `src/RimMandrake/rimflow/control.py` a `hook_cmd` that is Refused after `admit` leaves the run admitted. risk: the run shows admitted in the store with no process.
+- `src/RimMandrake/rimflow/control.py` `escalate` and `_finish_kill` test for a reaped run in two different ways, and `escalate` writes a message for a run that simply ended. risk: a stop order on a run that ended on its own reads as an escalation.
+- `src/RimMandrake/rimflow/control.py` the stage flag test near `h.get("to") or h.get("stage") or h.get("what") in (...)` binds `in` to the last term only. risk: a history row with any `to` or `stage` counts as a stage move, whatever its value.
+- `src/RimMandrake/rimflow/control.py` the status line takes `look[-1]` when a mod has several account windows. risk: the line names one window and drops the others.
+- `src/RimMandrake/rimflow/control.py` the 'adds commute' wording of the adjustment clamp is inexact at 0. risk: an undo after a clamp at 0 does not return the old value.
+- not handled (for the page's DOES NOT SURVIVE): a writing stop on a reuse-name unit with no live run leaves an order that escalates onto a later run of that name; `run_stop(unit)` by unit name returns an earlier reuse run's order; a test store whose pid was reused; a fixed permit .tmp name; a non-numeric journal value raises ValueError.
+- `src/RimMandrake/Utils/boundary_check.py` `_offline_names` does not read BoolOp `if` tests or `parse_known_args` tuple targets; no registered selftest uses either.

@@ -3,3 +3,6 @@
 - `maturation.launch_mod` passes `RM_GAME_INSTANCE` only when given a game, so a hand-launched visit whose item does not name `IN_GAME_ACCEPTANCE` or `IN_GAME_VISIT` would name no game (`run_game`); every Dispatch-made and suggested visit name does (2026-11-21).
 - Codex review 2026-11-24, not significant in ordinary operation (archbig_gate_reads_ambient_archsmall, `maturation.py:2570`): After using `game_instance.py env ArchSmall`, keep that shell open and use `pilot-launch` for an owed visit when ArchBig is free and selected. With a current mod on ArchSmall and a stale copy on ArchBig, the deployment gate passes the ArchBig visit on ArchSmall's files. The in-memory gate returned current in the ArchSmall ...
 - Codex review 2026-11-24, not significant in ordinary operation (companion_aim_keeps_previous_target, `build.py:110`): not handled: A second `aim` call in one process can label ArchSmall's destination ArchBig. In memory, `aim('ArchSmall')` followed by `aim('ArchBig')` returned the same ArchSmall deploy directory.
+
+## (fresh read, WB-pipeline-read-utils-20261128-092119, 2026-11-28)
+- `src/RimMandrake/Utils/deploy_custom_mods.py` in the held-file note, `in_repo` tests the staged source path, not the repo path; the output is still correct.
