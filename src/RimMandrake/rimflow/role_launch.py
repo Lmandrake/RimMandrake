@@ -2793,7 +2793,7 @@ def void_held(rs, concept, now):
             rc, line = VOID_PROBE_READ(probe)
         except Exception as e:  # noqa: BLE001 - a reader that raises is could not look; the trial rule decides
             rc, line = None, "%s: %s" % (type(e).__name__, e)
-        rs.setdefault("void_probe_reads", {})[concept] = {"at": now, "rc": rc, "line": str(line)[:300]}
+        rs.setdefault("void_probe_reads", {})[concept] = {"at": now, "rc": rc, "line": str(line)}
         if rc == 0:
             void_lift(rs, concept, now, "probe", "the dry check `%s` exited 0: %s" % (" ".join(probe[-2:]), line))
             return False
