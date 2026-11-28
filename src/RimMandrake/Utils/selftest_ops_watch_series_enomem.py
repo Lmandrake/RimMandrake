@@ -11,7 +11,7 @@ turns into a measured 1:
   one_fail   one ENOMEM, then good reads: the read is retried, the target is a measured 0, no alarm opens;
   always     every read fails ENOMEM: the target reads UNMEASURED with the cause, and no alarm opens.
 `--against <rev>` replays the instance on ops_watch.py as it stood at that revision: `rimflow guard ... --instance
-"--against de5b1331e6^"` shows the guard red on the code that opened the false alarm; a bad revision exits 125.
+"--against 59aad62301^"` shows the guard red on the code that opened the false alarm; a bad revision exits 125.
 Page: design/specs/2026-11-22-sense-families-cheap/boundary.md. Fixture-only: stub collectors, a temp store."""
 import builtins
 import errno
