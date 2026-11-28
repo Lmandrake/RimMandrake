@@ -147,13 +147,24 @@
    ],
    "date": "2026-11-27",
    "what": "Tree shade is a timely pre-design or design-adaptation project: it technically touches all our biome mods."
+  },
+  {
+   "id": "d_mountain_bulk",
+   "speaker": "agent",
+   "delegated": "evidence-for-ask",
+   "text": "Mountain shade: a bigger mountain mass throws a longer shadow than a lone ridge or a cliff edge at the same sun; how a cell's height is derived (the saved roof bands or the depth into the rock) is the design's; a small rock outcrop with no mountain roof is rock and casts a wall's lee.",
+   "source": [
+    "CONDUCTOR:1795847134968698829",
+    "OWNER:1795844105314149883"
+   ],
+   "why": "Evidence-for-Ask: his words 'a feel for said mountain' and 'mountain-covered squares' settle it; struck ask a_mountain_height."
   }
  ],
  "asks": [
   {
    "id": "a_live_walk",
-   "status": "draft",
-   "author": "rm-role-designer-1795846532",
+   "status": "struck",
+   "author": "rm-role-designer-1795846936",
    "source": [
     "src/RimMandrake/CreatureBehaviors/crown_shadow_experiment_reading.json",
     "ITEM:DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME"
@@ -165,13 +176,56 @@
     "inv_drawn_crown_shadow",
     "inv_shade_hop"
    ],
-   "decision": "whether the first move is a live walk of what is built",
-   "text": "Most of Direct Sun is built. Before more design, a walk of two saves that already exist: DIRECT_SUN_TUNING_SITTING_20261126_DASHERS (rows of colonists in open, roof, tent, parasol and a wall's lee, with animals dashing shade to shade) and CROWN_SHADOW_GREATBOLE_REVIEW on ArchSmall (32 greatboles with drawn crown shadows at a sun of 15 degrees). It shows what we would otherwise ask you to predict: whether shade reads at a glance (T3), whether the drawn crown shadow stays, and how a wall's short lee looks beside where a mountain's long one would fall.",
-   "evidence_against": ""
+   "decision": "whether the first move is a live look at what is built, and who looks",
+   "text": "Most of Direct Sun is built, so before more design we propose a look at two saves that already exist, on ArchSmall (D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\) or ArchBig (the Steam Saves folder): DIRECT_SUN_TUNING_SITTING_20261126_DASHERS (rows of colonists in the open, under a roof, a tent, a parasol and in a wall's lee, with animals dashing shade to shade) and CROWN_SHADOW_GREATBOLE_REVIEW (32 greatboles with drawn crown shadows at a sun of 15 degrees). It shows what we would otherwise ask you to picture: whether shade reads at a glance, how the drawn crown shadow looks beside the flat tint of other trees, and how short a wall's and a rock's lee is today at a low sun, which is where a mountain's long shadow would fall. Which way: (a) you look with us in one sitting, (b) an agent walks both saves and brings you zoomed shots, and the saves stay for you to open, or (c) not now, argue the root first?",
+   "evidence_against": "An agent walk (b) would be the obvious answer, but the drawn crown shadow is your own experiment and its keep, change or drop waits for your look (RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE, dated wait 2026-12-04), so shots alone cannot settle it.",
+   "owner_cites": [
+    "OWNER:1792412236936119410",
+    "OWNER:1795844096864149267"
+   ],
+   "offers_removal": false,
+   "review": {
+    "by": "rm-judge a70b136599dfbe493 (fresh reviewer)",
+    "verdict": "struck",
+    "why": "a process question whose answer changes neither the build nor the design; the crown save already goes to his own look on RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE; ArchBig holds only the DASHERS save; the sitting's lee reading is 2 cells at a 32-degree sun, not a low sun"
+   },
+   "struck_why": "The look is offered loudly in this run's quick_look instead (QUICK LOOK OFFERED on his queue line), with both saves on ArchSmall, D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\."
+  },
+  {
+   "id": "a_root",
+   "status": "sent",
+   "author": "rm-role-designer-1795846936",
+   "source": [
+    "design/concepts/DirectSun/admission_proposal.md"
+   ],
+   "about": [
+    "inv_direct_sun_heat",
+    "inv_cover",
+    "inv_wall_lee",
+    "inv_tree_crowns",
+    "inv_mountain_shade",
+    "inv_shade_readable",
+    "inv_shade_hop"
+   ],
+   "owner_cites": [
+    "OWNER:1792410159136516913",
+    "OWNER:1792411872974606312",
+    "OWNER:1795764108962326792",
+    "OWNER:1795844096864149267"
+   ],
+   "offers_removal": false,
+   "decision": "the root text of the DirectSun concept (stage 1 ends on his approval of it)",
+   "text": "Proposed root: \"On a world whose sun stands still, Direct Sun makes the sun a thing the player plans around on every sunlit map. The sun's heat a colonist feels follows the sun's height, dimmed only by cloud: a high sun burns hard and leaves shade only under cover and tree crowns; a low sun burns gently and throws long shadows. Everything solid casts shade by one geometry: a roof, a tent or a parasol covers its ground, a wall or a rock throws a short lee, a tree's crown shades the ground under it and down-sun of it, and a mountain throws a long shadow out over the open ground that shows its bulk and grows as the sun drops. Colonists and animals live by it: a forest is mostly shade and its clearings sunlit, animals dash across hot ground from shade to shade, and the lee of a mountain is a refuge from the sun. The player sees where the shade lies and what casts it, the shade overlay shows the shade a colonist feels, and no biome changes the rule.\" Our strongest doubt: on tiles near the terminator the fixed sun stands a few degrees high, and at 5 degrees a cast reaches about 11 cells for each unit of height; a mountain whose shadow grows with its bulk makes that longer still, so a mountain or a forest may shade most of the open ground there, and the sun would stop being a thing you plan around on exactly the maps where shadows are longest. A look at CROWN_SHADOW_GREATBOLE_REVIEW on ArchSmall (32 greatboles at a 15-degree sun) shows the tree half of this today. Is this the root, or which words would you change?",
+   "evidence_against": "The root bundles mountain shade, which is neither designed nor built, and the flood case: at a 5-degree sun one unit of height throws about 11 cells (cot 5 degrees = 11.4), and a mountain whose height grows with its bulk (d_mountain_bulk) throws farther, so 'plans around on every sunlit map' may be false on the low-sun maps. That is his picture of play, so it is his to rule.",
+   "review": {
+    "by": "rm-judge a70b136599dfbe493 (fresh reviewer)",
+    "verdict": "pass",
+    "why": "claims match the inventory and his 2026-11-27 card once four wordings were fixed (heat dimmed by cloud; overlay, not drawn shade; the terminator, not the Long Shade's drawn-sky clamp; crowns at a high sun), and the doubt names mountain bulk so he rules on both together; fixes applied before sending"
+   }
   },
   {
    "id": "a_mountain_height",
-   "status": "draft",
+   "status": "struck",
    "author": "rm-role-designer-1795846532",
    "source": [
     "OWNER:1795844105314149883"
@@ -181,7 +235,13 @@
    ],
    "decision": "what makes one mountain throw a longer shadow than another",
    "text": "Picture a lone ridge rising from flat sand and a cliff that is the edge of a wide massif, at the same sun. Do they throw the same band of shade, or does the bigger mass throw a longer one? And a small rock outcrop with no roof over it (the game clears any natural roof patch under 20 cells): is that a mountain that casts, or a rock?",
-   "evidence_against": "The game keeps a coarse height: rock where the generator's elevation passed 0.70, thin rock roof above 0.728, thick rock roof above 0.798 (GenStep_RocksFromGrid). So the obvious answer, height from the roof band, makes a massif's deep core throw farther than its edge; but his words 'mountain-covered squares' would leave an unroofed outcrop casting only a wall's lee."
+   "evidence_against": "The game keeps a coarse height: rock where the generator's elevation passed 0.70, thin rock roof above 0.728, thick rock roof above 0.798 (GenStep_RocksFromGrid). So the obvious answer, height from the roof band, makes a massif's deep core throw farther than its edge; but his words 'mountain-covered squares' would leave an unroofed outcrop casting only a wall's lee.",
+   "struck_why": "Obvious answer taken by the Evidence-for-Ask rule (decision d_mountain_bulk): a feel for the mountain means the bigger mass throws farther, and 'mountain-covered squares' leaves an unroofed outcrop a rock; how a cell's height is derived is the design's, not his question.",
+   "review": {
+    "by": "rm-judge a70b136599dfbe493 (fresh reviewer)",
+    "verdict": "struck",
+    "why": "strike sound: 'mountain-covered squares' makes an unroofed outcrop a rock, and nothing in his words argues against bulk; the bulk caveat rides on a_root's doubt"
+   }
   },
   {
    "id": "a_mountain_drawn",
@@ -197,7 +257,8 @@
    ],
    "decision": "whether the mountain's long shadow is drawn on the ground",
    "text": "How does the player feel the mountain: by a dark band drawn on the ground down-sun, or by the shade overlay and the cell readout only?",
-   "evidence_against": "Vanilla draws a rock's shadow at height 1, so with no drawn band the player sees a short shadow beside a long band of felt relief (what you see is not what they feel). His ruling on the greatbole's drawn crown shadow, due by 2026-12-04, is the same kind of work and may settle this one."
+   "evidence_against": "Vanilla draws a rock's shadow at height 1, so with no drawn band the player sees a short shadow beside a long band of felt relief (what you see is not what they feel). His ruling on the greatbole's drawn crown shadow, due by 2026-12-04, is the same kind of work and may settle this one.",
+   "note": "Held as draft: the walk (a_live_walk) shows the drawn crown shadow, the same kind of drawing, and his ruling on it is likely to settle this; never ask him to predict what that look will show."
   }
  ],
  "inventory": [
@@ -784,5 +845,12 @@
   "What you see is not what they feel: the mountain's long shade and the crowns' shade are felt by pawns, but vanilla draws a rock's shadow at height 1, so he sees a short shadow beside a long band of relief, and invisible shade reads as a bug rather than as the mountain on the map.",
   "Shade floods the map: at a low fixed sun (the Long Shade clamps 2 to 30 degrees) a cast of height x cot E reaches about 11 cells per unit height at 5 degrees, so a mountain or a forest can shade most open ground and the sun stops being a thing he plans around, the opposite of 'a feel for said mountain depending on the sun angle'.",
   "Built but undecidable: Direct Sun has no folder of its own (code in Creature Behaviors, defs in Environmental Hazards and three biome mods inside mandrake.rm.biomes) and many built parts have no proof row (moving shade, haze, sun pathing, standing casters), so bars cannot be decided by the pipeline and a change in a neighbour breaks the sun silently."
- ]
+ ],
+ "turn_stage1": {
+  "run": "rm-role-designer-1795846936",
+  "claim": "On a world whose sun stands still, Direct Sun makes the sun a thing the player plans around on every sunlit map. The heat a colonist feels follows the sun's height alone: a high sun burns hard and leaves shade only under cover; a low sun burns gently and throws long shadows. Everything solid casts shade by one geometry: a roof, a tent or a parasol covers its ground, a wall or a rock throws a short lee, a tree's crown shades the ground under it and down-sun of it, and a mountain throws a long shadow out over the open ground that shows its bulk and grows as the sun drops. Colonists and animals live by it: a forest is mostly shade and its clearings sunlit, animals dash across hot ground from shade to shade, and the lee of a mountain is a refuge from the sun. The player sees where the shade lies and what casts it, the shade drawn is the shade a colonist feels, and no biome changes the rule.",
+  "attack": "At a low fixed sun the casts flood the map (about 11 cells per unit of height at 5 degrees), and at a high sun only cover shades; so the planet-wide 'thing you plan around' may hold only on mid-angle maps, and an undrawn mountain shadow makes what the player sees differ from what a colonist feels.",
+  "picture": "If the claim wins: at a 15-degree sun a colonist walks from a mountain's long shadow across a sunlit band to a parasol, and the overlay shows both bands. If the attack wins: on the Long Shade the overlay is shade from edge to edge and the sun-load line never moves.",
+  "source": "design/concepts/DirectSun/admission_proposal.md"
+ }
 }
