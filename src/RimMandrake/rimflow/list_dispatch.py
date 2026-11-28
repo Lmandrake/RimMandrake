@@ -1084,14 +1084,13 @@ def pause_reading(items):
             "held": sum(1 for d in (items or {}).values() if str((d or {}).get("off") or "").startswith(PAUSE_PREFIX))}
 
 
-def set_pause(text, on, reason):
-    """-> list_dispatch.json's `text` with its one code_review_pause line set on or off (and `reason`, when given). Every
-    other line stays byte for byte. Raises ValueError when the file has no such line."""
-    rx = re.compile(r'^(\s*"%s":\s*)(\{.*\})(,?\s*)$' % PAUSE_KEY, re.M)
+def set_pause(text, on, reason, key=PAUSE_KEY):
+    """-> list_dispatch.json's `text` with its one `key` line (code_review_pause or game_work_pause) set on or off (and
+    `reason`, when given). Every other line stays byte for byte. Raises ValueError when the file has no such line."""
+    rx = re.compile(r'^(\s*"%s":\s*)(\{.*\})(,?\s*)$' % re.escape(key), re.M)
     m = rx.search(text)
     if not m:
-        raise ValueError('no line `"%s": {"on": true, "reason": "...", "id_patterns": [...]},` in the settings file; '
-                         "add one" % PAUSE_KEY)
+        raise ValueError('no one-line `"%s": {"on": true, "reason": "...", ...},` in the settings file; add one' % key)
     cur = json.loads(m.group(2))
     cur["on"] = bool(on)
     if reason:
@@ -1099,10 +1098,117 @@ def set_pause(text, on, reason):
     return text[:m.start()] + m.group(1) + json.dumps(cur, ensure_ascii=False) + m.group(3) + text[m.end():]
 
 
-def _off(iid, mod):
-    """-> (why it is off or None, could-not-look text or None)."""
+GAME_PAUSE_KEY = "game_work_pause"
+GAME_PAUSE_PREFIX = "game work is paused: "
+GAME_LIFT = ('python3 src/RimMandrake/rimflow/list_dispatch.py pause game off --why "..." (the owner or the Conductor '
+             'window), then ./publish src/RimMandrake/rimflow/list_dispatch.json')
+
+
+def _game_pause_setting():
+    """-> the game work pause of list_dispatch.json: None when the file is readable and has no such key, else {"on": bool,
+    "reason": str, "advancing_mods": [str]} as written. Raises when the file cannot be read or the setting is malformed:
+    a pause that cannot be read is never "off"."""
+    with open(CFG_PATH, encoding="utf-8") as f:
+        raw = json.load(f)
+    if not isinstance(raw, dict):
+        raise ValueError("%s holds %s, not an object" % (os.path.basename(CFG_PATH), type(raw).__name__))
+    s = raw.get(GAME_PAUSE_KEY)
+    if s is None:
+        return None
+    if not isinstance(s, dict) or not isinstance(s.get("on"), bool):
+        raise ValueError("%s needs an object with a true/false `on`" % GAME_PAUSE_KEY)
+    am = s.get("advancing_mods")
+    if not isinstance(am, list) or not all(isinstance(m, str) and m for m in am):
+        raise ValueError("%s.advancing_mods must be a list of mod folder names" % GAME_PAUSE_KEY)
+    return s
+
+
+def work_of(x, mw):
+    """-> the facts `game_work` reads of one ledger item `x`: its own home, whether it holds a live promise (or its
+    promise broke), and its mod reading `mw` (a mod_work.of dict, or a function that makes one when it is needed)."""
+    h = getattr(x, "home", None)
+    return {"home": h.get("home") if isinstance(h, dict) else None,
+            "live": bool(getattr(x, "live", None) or getattr(x, "live_broken", None)), "mod_work": mw}
+
+
+def game_work(iid, work, advancing):
+    """-> (is game work, why). Pure. An Ops alarm item (OPS_*), a live promise item, a pipeline: or machine: home and the
+    work of an advancing mod are not game work; a game: home is; else a ticket that mod_work reads as one mod's work, or
+    that names a mod's files (`names`), is game work when that mod is not in `advancing`. Raises ValueError when the
+    mod reading could not be made: could not look is never "not game work"."""
+    home = str(work.get("home") or "")
+    if str(iid).startswith("OPS_"):
+        return False, "an Ops alarm item"
+    if work.get("live"):
+        return False, "a live promise item"
+    if home.startswith(("pipeline:", "machine:")):
+        return False, "its home is %s" % home
+    if home.startswith("game:"):
+        return True, "its home is %s" % home
+    mw = work.get("mod_work")
+    if not isinstance(mw, dict) or mw.get("unreadable"):
+        raise ValueError("its mod reading could not be made (%s)" % (
+            mw.get("unreadable") if isinstance(mw, dict) else "no mod reading was given"))
+    mods = sorted(set(([mw["mod"]] if mw.get("mod") else []) + list(mw.get("names") or [])))
+    other = [m for m in mods if m not in advancing]
+    if other:
+        return True, "%s %s, not an advancing mod (advancing: %s)" % (
+            "it is the work of" if mw.get("mod") in other else "it names the files of", ", ".join(other),
+            ", ".join(advancing) or "none")
+    return False, ("it is the work of an advancing mod (%s)" % ", ".join(mods)) if mods else "it names no mod's files"
+
+
+def _game_paused(iid, work):
+    """-> (why the game work pause holds the ticket or None, could-not-look text or None). The setting is not read for
+    a ticket that is never game work (an Ops alarm, a live promise, a pipeline: or machine: home), so a setting that
+    cannot be read holds no pipeline repair. work: work_of's dict, or None when the caller read no facts."""
+    w = work or {}
+    if str(iid).startswith("OPS_") or w.get("live") or str(w.get("home") or "").startswith(("pipeline:", "machine:")):
+        return None, None
+    try:
+        s = _game_pause_setting()
+    except Exception as e:  # noqa: BLE001 - could not look is never "the pause is off"
+        return None, "could not look whether game work is paused: %s (%s: %s)" % (
+            os.path.basename(CFG_PATH), type(e).__name__, _one(e, 200))
+    if not s or not s["on"]:
+        return None, None
+    try:
+        if work is None:
+            raise ValueError("its home and mod reading were not read")
+        mw = w.get("mod_work")
+        game, why = game_work(iid, dict(w, mod_work=mw() if callable(mw) else mw), s["advancing_mods"])
+    except Exception as e:  # noqa: BLE001 - a ticket the pause cannot class is held, and says so
+        return None, "could not look whether it is game work, so the game work pause holds it: %s: %s" % (
+            type(e).__name__, _one(e, 200))
+    if not game:
+        return None, None
+    return "%s%s; %s; lift: %s" % (GAME_PAUSE_PREFIX, s.get("reason") or "no reason written", why, GAME_LIFT), None
+
+
+def game_pause_reading(items):
+    """-> the game work pause as the reading says it: {"on", "reason", "advancing_mods", "held"} (held: the lane's rows
+    that it holds), or {"could_not_look": text}."""
+    try:
+        s = _game_pause_setting()
+    except Exception as e:  # noqa: BLE001
+        return {"could_not_look": "could not look whether game work is paused: %s (%s: %s)" % (
+            os.path.basename(CFG_PATH), type(e).__name__, _one(e, 200))}
+    if not s or not s["on"]:
+        return {"on": False, "reason": (s or {}).get("reason"), "advancing_mods": (s or {}).get("advancing_mods"),
+                "held": 0}
+    return {"on": True, "reason": s.get("reason"), "advancing_mods": s.get("advancing_mods"),
+            "held": sum(1 for d in (items or {}).values()
+                        if str((d or {}).get("off") or "").startswith(GAME_PAUSE_PREFIX))}
+
+
+def _off(iid, mod, work=None):
+    """-> (why it is off or None, could-not-look text or None). work: work_of's facts of the ticket, which the game work
+    pause reads (every route of the lane passes them)."""
     import control as C
     why, cnl = _paused_class(iid)
+    if why or cnl:
+        return why, cnl
+    why, cnl = _game_paused(iid, work)
     if why or cnl:
         return why, cnl
     try:
@@ -1483,7 +1589,7 @@ def old_facts(w, open_, now, cfg, mw_mods, mw_cause, mods):
         return bool(waits or blocked)
 
     def off(i):
-        o, cnl = _off(i, mod_of(i, open_[i].title, mods))
+        o, cnl = _off(i, mod_of(i, open_[i].title, mods), work_of(open_[i], lambda: reading(open_[i])))
         return o or cnl
     cands = no_home_cands(open_, now, cfg, system=lambda i: WB.system_of(open_[i], reading, w.items), parked=parked,
                           off=off, held=lambda i: _held(mod_of(i, open_[i].title, mods)),
@@ -1607,11 +1713,14 @@ def onboard_facts(open_, now, cfg, systems, ordered, w, mw_mods, mw_cause, bundl
             for m in b.get("members") or []:
                 busy[m] = b["id"]
 
+    def mw_of(i):
+        return (ordered.get(i) or {}).get("mod_work") or (
+            {"mod": None, "unreadable": mw_cause} if mw_mods is None else MW.reading(old[i], mw_mods, LM.ITEMS))
+
     def system(i):
         if i in (systems or {}):
             return systems[i]
-        mw = (ordered.get(i) or {}).get("mod_work") or (
-            {"mod": None, "unreadable": mw_cause} if mw_mods is None else MW.reading(old[i], mw_mods, LM.ITEMS))
+        mw = mw_of(i)
         return WB.system_of(old[i], lambda it, m=mw: m, w.items)
 
     def left_out(i):
@@ -1628,7 +1737,7 @@ def onboard_facts(open_, now, cfg, systems, ordered, w, mw_mods, mw_cause, bundl
         if blocked:
             return "it is blocked: %s" % (x.blocked_reason or "no reason given")
         mod = mod_of(i, x.title, mods)
-        o, cnl = _off(i, mod)
+        o, cnl = _off(i, mod, work_of(x, lambda: mw_of(i)))
         if o or cnl:
             return o or cnl
         h = _held(mod)
@@ -1702,6 +1811,7 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
              "caused_by": x.caused_by, "needs": getattr(x, "needs", None), "home": (getattr(x, "home", None) or {}).get("home"), "mod_work": mw, "lane_cause": lane_cause, "shape_due": sdue, "shape_why": swhy, "route": sf["route"],
              "shape_size": sf["size"], "shape_at": sf["shape_at"], "shape_unit": sf["shape_unit"],
              "raised": LM.raise_key(x) if x.raised is not None else None, "block_stale": stale,
+             "live_promise": bool(getattr(x, "live", None) or getattr(x, "live_broken", None)),
              # a Shape split is a naming: the run that wrote it read the old item against now (old-work filter)
              "second_look": bool(sf["named"] or sf["shape_at"] or (sf["filed"] and cfg.get("shape_from")
                                                  and sf["filed"] >= LS._epoch(cfg["shape_from"])))}
@@ -1765,7 +1875,9 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
                 busy = set(m for b in bundles.values() if b.get("state") in WB.LIVE_STATES for m in b.get("members") or [])
                 join = join_candidates(cands, now, want=set(systems.values()), system=sys_of,
                                        facts=lambda x: block_facts(w, x, now), lease=lambda x: LM.lease_status(x, now),
-                                       off=lambda i: _off(i, mod_of(i, cands[i].title, mods)),
+                                       off=lambda i: _off(i, mod_of(i, cands[i].title, mods), work_of(
+                                           cands[i], lambda: {"mod": None, "unreadable": mw_cause} if mw_mods is None
+                                           else MW.reading(cands[i], mw_mods, LM.ITEMS))),
                                        held=lambda i: _held(mod_of(i, cands[i].title, mods)),
                                        refused=lambda i: ref.get(i) or (i in busy))
             except Exception as e:  # noqa: BLE001 - which systems a remote bundle holds is unknown: nothing launches
@@ -1781,7 +1893,8 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
     go = []
     for iid, d in ordered.items():
         d["mod"] = mod_of(iid, d.get("title"), mods)
-        d["off"], cnl = _off(iid, d["mod"])
+        d["off"], cnl = _off(iid, d["mod"], {"home": d.get("home"), "live": d.get("live_promise"),
+                                             "mod_work": d.get("mod_work")})
         if cnl:
             d["off_unreadable"] = cnl
         mwd = d.get("mod_work") or {}
@@ -1813,7 +1926,7 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
     load = load_now()
     old = onboard_facts_safe(lambda: old_facts(w, open_, now, cfg, mw_mods, mw_cause, mods))
     return {"items": ordered, "runs": runs, "other_live": 0, "paused": paused, "systems": systems,
-            "pause": pause_reading(ordered),
+            "pause": pause_reading(ordered), "game_pause": game_pause_reading(ordered),
             "bundles_live": bundles_live, "join": join, "onboard": onboard, "old": old,
             "pool": _pool(), "live_lane": live, "load": load.value if load.ok else None, "recent": recent,
             "cores": os.cpu_count(), "checks": cstats,
@@ -2308,7 +2421,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         if apply and not only:
             st["blind_hold"] = bh
         rd = {"schema": 1, "blind_hold": bh, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
-              "old": old, "pause": facts.get("pause"),
+              "old": old, "pause": facts.get("pause"), "game_pause": facts.get("game_pause"),
               "checks": facts.get("checks"),       # the outcome checks' batch (check_once.run_many)
               "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
@@ -2388,8 +2501,39 @@ def _pause_line(p):
     return "%s%s; %d ticket(s) held" % (PAUSE_PREFIX, p.get("reason"), p.get("held") or 0)
 
 
+def _game_pause_line(p):
+    if not isinstance(p, dict):
+        return "game work pause: UNMEASURED (the reading holds no game_pause)"
+    if p.get("could_not_look"):
+        return p["could_not_look"]
+    if not p.get("on"):
+        return "game work pause: off"
+    return "%s%s; advancing: %s; %d ticket(s) held" % (GAME_PAUSE_PREFIX, p.get("reason"),
+                                                      ", ".join(p.get("advancing_mods") or []) or "none", p.get("held") or 0)
+
+
+def _game_status():
+    """`pause game status`: the setting now, and the count of held tickets of the last applied tick. -> rc (2 when that
+    count is unmeasured)."""
+    now = game_pause_reading({})
+    if now.get("could_not_look"):
+        print(now["could_not_look"])
+        return 2
+    head = ("game work pause: on; reason: %s; advancing: %s" % (now.get("reason"), ", ".join(now.get(
+        "advancing_mods") or []) or "none")) if now.get("on") else "game work pause: off"
+    p = os.path.join(sdir(create=False), "reading.json")
+    rd = _read(p, None)
+    gp = (rd or {}).get("game_pause") if isinstance(rd, dict) else None
+    if not isinstance(gp, dict) or not isinstance(gp.get("held"), int):
+        print("%s; held: UNMEASURED (%s holds no game pause count of an applied tick)" % (head, p))
+        return 2
+    print("%s; %d ticket(s) held at the last applied tick (%s)" % (head, gp["held"], rd.get("at_pac") or "-"))
+    return 0
+
+
 def _print(rd):
     print(_pause_line(rd.get("pause")))
+    print(_game_pause_line(rd.get("game_pause")))
     for iid, r in rd["items"].items():
         print("%-64s %-16s %s" % (iid, r["decision"], _one(r.get("why"), 170)))
     print("list_dispatch %s at %s: %d item(s); %s" % ("tick" if rd.get("apply") else "dry tick", rd["at_pac"],
@@ -2405,8 +2549,9 @@ def main(argv=None):
     t.add_argument("--only", nargs="+", metavar="ID", help="the Conductor's run-now: decide only these items (every "
                                                           "gate and slot still applies)")
     sub.add_parser("status")
-    pz = sub.add_parser("pause", help="the code review pause (list_dispatch.json code_review_pause): on, off or show")
-    pz.add_argument("mode", choices=["on", "off", "show"])
+    pz = sub.add_parser("pause", help="the code review pause: on|off|show (code_review_pause); the game work pause: "
+                                      "game on|off|status (game_work_pause)")
+    pz.add_argument("words", nargs="+", metavar="[game] on|off|show|status")
     pz.add_argument("--why", help="the reason, written in the setting (on)")
     c = sub.add_parser("clear")
     c.add_argument("item")
@@ -2423,13 +2568,22 @@ def main(argv=None):
         _print(rd)
         return 0
     if o.cmd == "pause":
-        if o.mode == "show":
+        game = o.words[0] == "game"
+        mode = (o.words[1:] or [""])[0] if game else o.words[0]
+        if len(o.words) != (2 if game else 1) or mode not in (("on", "off", "status", "show") if game else
+                                                               ("on", "off", "show")):
+            print("REFUSED: pause takes on|off|show (the code review pause) or game on|off|status (the game work "
+                  "pause); got %r" % " ".join(o.words))
+            return 2
+        if game and mode in ("status", "show"):
+            return _game_status()
+        if mode == "show":
             print(_pause_line(pause_reading({})))
             return 0
         with open(CFG_PATH, encoding="utf-8") as f:
             text = f.read()
         try:
-            new = set_pause(text, o.mode == "on", o.why)
+            new = set_pause(text, mode == "on", o.why, key=GAME_PAUSE_KEY if game else PAUSE_KEY)
         except ValueError as e:
             print("REFUSED: %s" % e)
             return 2
@@ -2437,8 +2591,8 @@ def main(argv=None):
         with open(tmp, "w", encoding="utf-8") as f:
             f.write(new)
         os.replace(tmp, CFG_PATH)
-        print("code review pause %s in %s; it binds the lane once landed: ./publish -m \"<reason>\" %s"
-              % (o.mode, CFG_PATH, os.path.relpath(CFG_PATH)))
+        print("%s pause %s in %s; it binds the lane once landed: ./publish -m \"<reason>\" %s"
+              % ("game work" if game else "code review", mode, CFG_PATH, os.path.relpath(CFG_PATH)))
         return 0
     # The tick's lock: an applied tick reads state.json, decides for minutes and writes its copy back, so a clear written
     # in between was lost (2026-11-27 10:10 AM PST). The clear waits for a running tick and writes on top of its state.

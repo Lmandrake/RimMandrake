@@ -291,5 +291,27 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   (`blocked`, naming the run); a third ended incident makes one more. An incident record that cannot be read reads `blind`
   (could not look) and is never offered. The earlier runs of the ticket stop no later offer. The gates (pause, off, hold,
   slots, load, account) bind an offer like any launch. The rule that counts incidents lives in `lane_ticket.py` only.
+- **the-game-work-pause-holds-every-route-of-game-work.** While `game_work_pause.on` is true in `list_dispatch.json`,
+  the lane starts no run for a ticket of game work: no Shape run, no Work launch, no work bundle (a ready row or a
+  ticket that joins one), no onboarding run, no Codex lane run, and no Shape name of an old ticket with no home. The
+  one reading is `game_work` (pure) through `_off`, which every route reads. A ticket is game work when its home is
+  `game:<anything>`, or when `mod_work` reads it as one mod's work or it names a mod's files (`names`) and that mod is
+  not in `advancing_mods`. Its row reads `off`, "game work is paused", with the reason, why it is game work and the
+  command that lifts the pause. A live run is not stopped. With the pause off (or no such key in a readable file),
+  every row is as before. A setting that cannot be read, or a mod reading that cannot be made, holds the ticket and its
+  row reads `blind`, "could not look", never "not game work". The Maturation Pipeline's own runs are not the lane's and
+  are not read. Measured 2026-11-27 7:22 PM PST: after his order of one advancing mod, the lane started the work bundle
+  `WB-game-direct-sun-20261128-032012` on a ticket of home `game:direct-sun` (a drawn tree shadow in
+  CreatureBehaviors); `onboard_classes.game: off` stopped only the onboarding of old tickets.
+- **the-game-work-pause-never-holds-pipeline-work.** A ticket whose home is `pipeline:` or `machine:`, an Ops alarm
+  item (`OPS_*`), a live promise item (it holds a `--live` promise, or its promise broke), and a ticket of an advancing
+  mod are never game work: they launch as before with the pause on, and the pause's own setting is not read for them,
+  so even a setting that cannot be read holds no pipeline repair.
+- **the-game-pause-command-sets-one-line-and-counts-the-held.** `list_dispatch.py pause game on|off|status [--why ...]`
+  sets the one `game_work_pause` line of `list_dispatch.json` and leaves every other line byte for byte;
+  `pause on|off|show` keeps its present words for the code review pause. `status` prints the pause, its reason, its
+  advancing mods and the count of tickets that the last applied tick held (`game_pause` in `reading.json`), or
+  UNMEASURED when no reading holds that count. Shipped on, by the owner's order of 2026-11-27 (one advancing mod,
+  FlowWorks; pipeline ticket cleanup first); only the owner or the Conductor window switches it off.
 
-Later lists beside this page: `polish.md` (none yet).
+Later lists beside this page: `polish.md`.

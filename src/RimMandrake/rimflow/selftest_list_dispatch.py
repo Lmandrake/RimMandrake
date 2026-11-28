@@ -1703,6 +1703,238 @@ def t_the_pause_command_edits_one_line_and_nothing_else():
         chk(lambda: "code_review_pause" in str(e), "a file with no pause line is refused, naming the line to add")
 
 
+# ---- the game work pause (item RIMMANDRAKE_SWITCH_OFF_LANE_GAME_TICKETS_CROWN_SHADOW_RAN; his order 2026-11-27) ---------
+
+GAME_WHY = "the owner's order (test): one advancing mod, pipeline ticket cleanup first"
+GAME_ON = {"on": True, "reason": GAME_WHY, "advancing_mods": ["FlowWorks"]}
+CB = "src/RimMandrake/CreatureBehaviors/Source/CrownShadow.cs"      # a mod that does not advance
+FW = "src/RimMandrake/FlowWorks/Source/Flow.cs"                     # the advancing mod
+TOOL = "src/RimMandrake/rimflow/list_dispatch.py"                   # pipeline machinery
+# id: (home, title, effect, filed)
+GAME_TICKETS = {
+    "RIMMANDRAKE_TRY_CROWN_SHADOW_GAME_HOME": ("game:direct-sun", "draw a crown shadow", "cmd:false", "2026-11-27T00:00:00Z"),
+    "RIMMANDRAKE_SHAPE_CROWN_SHADOW_GAME_HOME": ("game:direct-sun", "shape the shade work", None, "2026-12-01T00:00:00Z"),
+    "RIMMANDRAKE_JOIN_CROWN_SHADOW_GAME_HOME": ("game:direct-sun", "an old shade ticket", None, "2026-11-20T00:00:00Z"),
+    "RIMMANDRAKE_FIX_SHADE_NAMES_OTHER_MOD": (None, "fix %s per %s" % (CB, TOOL), "cmd:false", "2026-11-27T00:00:00Z"),
+    "RIMMANDRAKE_FIX_FLOW_NAMES_ADVANCING_MOD": (None, "fix %s per %s" % (FW, TOOL), "cmd:false", "2026-11-27T00:00:00Z"),
+    "RIMMANDRAKE_FIX_LANE_PIPELINE_HOME": ("pipeline:list-dispatch", "fix %s, seen on %s" % (TOOL, CB), "cmd:false",
+                                           "2026-11-27T00:00:00Z"),
+    "RIMMANDRAKE_FIX_ARCHMAGI_MACHINE_HOME": ("machine:Archmagi", "fix the timer, seen on %s" % CB, "cmd:false",
+                                              "2026-11-27T00:00:00Z"),
+    "OPS_ALARM_DIAGNOSE_SHADE_TICK_SEEN_ON_OTHER_MOD": (None, "an alarm on %s and %s" % (CB, TOOL), "cmd:false",
+                                                        "2026-11-27T00:00:00Z"),
+    "RIMMANDRAKE_KEEP_TIMER_LIVE_PROMISE_BROKE": (None, "a live promise on %s and %s" % (CB, TOOL), "cmd:false",
+                                                  "2026-11-27T00:00:00Z"),
+    "RIMMANDRAKE_OLD_NO_HOME_NAMES_OTHER_MOD": (None, "old: %s per %s" % (CB, TOOL), None, "2026-11-20T00:00:00Z"),
+    "RIMMANDRAKE_OLD_NO_HOME_PIPELINE_ONLY": (None, "old: %s only" % TOOL, None, "2026-11-20T00:00:00Z"),
+    "RIMMANDRAKE_OLD_PIPELINE_HOME_NO_CHECK": ("pipeline:list-dispatch", "old: seen on %s" % CB, None,
+                                               "2026-11-20T00:00:00Z"),
+}
+(G_LAUNCH, G_SHAPE, G_JOIN, G_NAMES, G_FW, G_PIPE, G_MACH, G_OPS, G_LIVE, G_OLD_CB, G_OLD_PIPE,
+ G_OLD_PIPE_HOME) = list(GAME_TICKETS)
+
+
+def _game_world(setting):
+    """The game work pause fixture: GAME_TICKETS in a fake ledger, the real `_off` over a settings file that holds
+    `game_work_pause: setting` (None: no such key, the parent's file), onboard_classes all on. -> (tick, gather)."""
+    import contextlib
+    import control
+    import detached_helper as DH
+    import list_effect as LE
+    import model as LM
+    import probe_result as PR
+    import work_bundle as WB
+    ld = LD()
+    evs = []
+    for iid, (home, title, effect, filed) in GAME_TICKETS.items():
+        e = {"id": iid, "event": "file", "for": "BENCH", "seat": "BENCH", "kind": "task", "title": title, "ts": filed}
+        if effect:
+            e["effect"] = effect
+        evs.append(e)
+        if home:
+            evs.append({"id": iid, "event": "home", "home": home, "group": "test", "flag": "CANNOT TELL",
+                        "seat": "BENCH", "ts": filed})
+    evs += [{"id": G_LIVE, "event": "close", "sha": "abc1234", "live": "once: test", "seat": "BENCH",
+             "ts": "2026-11-27T01:00:00Z"},
+            {"id": G_LIVE, "event": "live", "result": "broken", "detail": "the timer died", "seat": "RUNNER",
+             "ts": "2026-11-27T02:00:00Z"}]
+    world = LM.replay(evs)
+    d = tempfile.mkdtemp(prefix="ld_game_")
+    cfgp = os.path.join(d, "list_dispatch.json")
+    with open(cfgp, "w", encoding="utf-8") as f:
+        f.write(json.dumps({} if setting is None else {"game_work_pause": setting}) if not isinstance(setting, str)
+                else setting)
+    shipped = dict(LD()._shipped(), onboard_classes={"pipeline": "on", "machine": "on", "mod": "on", "game": "on"})
+    cfg = dict(CFG, max_live=40, load_line=1000, load_per_run=0, load_lag_s=90)
+    fx = {"account": lambda: (True, "")}
+
+    @contextlib.contextmanager
+    def ctx():
+        with patch.dict(os.environ, RM_DISPATCHER_STATE=d), contextlib.ExitStack() as es:
+            for p in (patch.object(LE, "_world", return_value=world), patch.object(ld, "_mods", return_value=[]),
+                      patch.object(ld, "CFG_PATH", cfgp), patch.object(ld, "_shipped", return_value=shipped),
+                      patch.object(control, "blocked", return_value=None),
+                      patch.object(ld, "_paused", return_value=None), patch.object(ld, "_held", return_value=None),
+                      patch.object(ld, "_pool", return_value=None), patch.object(ld, "_clone_exists", return_value=False),
+                      patch.object(LM, "read", return_value=[]), patch.object(WB, "age_refusal", return_value=None),
+                      patch.object(DH, "live_status", lambda rec, *a: rec["status"]),
+                      patch.object(ld, "load_now", return_value=PR.value(1))):
+                es.enter_context(p)
+            yield
+
+    def tick():
+        with ctx():
+            return ld.tick(cfg, apply=False, fx=fx, now=NOW)
+
+    def gather():
+        with ctx():
+            return ld.gather({}, NOW, load_lag_s=90, run_many=lambda effects, *a, **k: (
+                {e: ("fails", "red") for e in effects}, {}))
+    return tick, gather
+
+
+def _dec(rd, iid):
+    r = rd["items"].get(iid) or {}
+    return r.get("decision"), r.get("why") or ""
+
+
+def _onboard_members(facts, home):
+    h = ((facts.get("onboard") or {}).get("homes") or {}).get(home) or {}
+    return set(h.get("members") or []), h.get("left_out") or {}
+
+
+def t_the_game_work_pause_holds_every_route_of_game_work():
+    """While game_work_pause is on, the lane starts no run of any route for a ticket of game work, and the row says
+    why, with the reason and the command that lifts the pause."""
+    import codex_lane as CL
+    import re
+    tick, gather = _game_world(GAME_ON)
+    rd = tick()
+    for iid in (G_LAUNCH, G_SHAPE, G_NAMES):
+        dcs, why = _dec(rd, iid)
+        chk(lambda dcs=dcs, why=why: dcs == "off" and "game work is paused" in why and GAME_WHY in why
+            and "pause game off" in why, "pause on: %s reads off, 'game work is paused', the reason and the lift (%s: %s)"
+            % (iid, dcs, why))
+    chk(lambda: not any(x["item"] in (G_LAUNCH, G_SHAPE, G_NAMES) for x in rd["launched"]), "no launch on game work")
+    facts = gather()
+    chk(lambda: G_JOIN not in (facts.get("join") or {}), "pause on: an old game ticket joins no work bundle (%s)"
+        % sorted(facts.get("join") or {}))
+    mem, left = _onboard_members(facts, "game:direct-sun")
+    chk(lambda: not mem and all("game work is paused" in str(left.get(i)) for i in (G_SHAPE, G_JOIN)),
+        "pause on: a game home's old tickets start no onboarding run, though its class is on (members %s, left %s)"
+        % (sorted(mem), left))
+    cands = (facts.get("old") or {}).get("cands") or {}
+    chk(lambda: G_OLD_CB not in cands and G_OLD_PIPE in cands,
+        "pause on: an old no-home ticket that names a non-advancing mod's files is not named for Shape; a pipeline one "
+        "is (%s)" % sorted(cands))
+    rx = re.compile(LD()._shipped().get("sonnet_if_check_regex") or ".")
+    cx = dict((facts["items"].get(G_LAUNCH) or {}), effect="cmd:python3 src/x/selftest_x.py", verdict="fails")
+    ok, why = CL.eligible(cx, rx, NOW)
+    chk(lambda: not ok, "pause on: the Codex lane takes no game ticket (%s)" % why)
+    st = ((facts.get("game_pause") or {}))
+    chk(lambda: st.get("on") is True and st.get("held", 0) >= 3, "the facts name the pause and count the held (%s)" % st)
+    # could not look: a malformed setting holds the game ticket as blind, never as 'not game work'
+    tick2, _g = _game_world({"on": True, "reason": "r", "advancing_mods": "FlowWorks"})
+    rd2 = tick2()
+    dcs, why = _dec(rd2, G_LAUNCH)
+    chk(lambda: dcs == "blind" and "could not look" in why, "a setting that cannot be read: the game ticket reads blind, "
+        "could not look (%s: %s)" % (dcs, why))
+    chk(lambda: _dec(rd2, G_PIPE)[0] == "would_launch", "and a pipeline ticket still launches (%s)" % (_dec(rd2, G_PIPE),))
+
+
+def t_the_game_work_pause_never_holds_pipeline_work():
+    tick, gather = _game_world(GAME_ON)
+    rd = tick()
+    for iid in (G_FW, G_PIPE, G_MACH, G_OPS, G_LIVE):
+        chk(lambda iid=iid: _dec(rd, iid)[0] == "would_launch", "pause on: %s still launches (%s)" % (iid, _dec(rd, iid)))
+    tick0, _ = _game_world(None)
+    rd0 = tick0()
+    chk(lambda: _dec(rd0, G_LAUNCH)[0] == "would_launch" and _dec(rd0, G_NAMES)[0] == "would_launch"
+        and _dec(rd0, G_SHAPE)[0] in ("would_shape", "bundled"), "no pause key (the parent's file): the game tickets launch and "
+        "shape (%s, %s, %s)" % (_dec(rd0, G_LAUNCH), _dec(rd0, G_NAMES), _dec(rd0, G_SHAPE)))
+    tick_off, gather_off = _game_world(dict(GAME_ON, on=False))
+    rd_off = tick_off()
+    same = lambda a, b: {i: (r["decision"], r["why"]) for i, r in a["items"].items()} == {  # noqa: E731
+        i: (r["decision"], r["why"]) for i, r in b["items"].items()}
+    chk(lambda: same(rd_off, rd0), "pause off: every row is as with no pause key")
+    f_off, f0 = gather_off(), _game_world(None)[1]()
+    chk(lambda: f_off.get("join") == f0.get("join") and _onboard_members(f_off, "game:direct-sun")[0]
+        == _onboard_members(f0, "game:direct-sun")[0] and (f_off.get("old") or {}).get("cands")
+        == (f0.get("old") or {}).get("cands"), "pause off: the bundle joins, onboarding members and Shape names are as "
+        "with no pause key")
+    # the exemptions hold in both layers: the pure reading, and the pause, which never reads its setting for them
+    gw = LD().game_work
+    names_cb = {"mod": None, "names": ["CreatureBehaviors"]}
+    for iid, work in (("RIMMANDRAKE_X", {"home": "pipeline:list-dispatch", "mod_work": names_cb}),
+                      ("RIMMANDRAKE_X", {"home": "machine:Archmagi", "mod_work": names_cb}),
+                      ("OPS_ALARM_X", {"home": None, "mod_work": names_cb}),
+                      ("RIMMANDRAKE_X", {"home": None, "live": True, "mod_work": names_cb}),
+                      ("RIMMANDRAKE_X", {"home": None, "mod_work": {"mod": "FlowWorks", "names": ["FlowWorks"]}})):
+        chk(lambda iid=iid, work=work: gw(iid, work, ["FlowWorks"])[0] is False,
+            "game_work: %s %s is not game work (%s)" % (iid, work.get("home") or work, gw(iid, work, ["FlowWorks"])))
+    chk(lambda: gw("RIMMANDRAKE_X", {"home": "game:direct-sun", "mod_work": {"mod": None}}, ["FlowWorks"])[0] is True
+        and gw("RIMMANDRAKE_X", {"home": None, "mod_work": names_cb}, ["FlowWorks"])[0] is True,
+        "game_work: a game: home and a ticket that names a non-advancing mod's files are game work")
+    tick_bad, _ = _game_world({"on": True, "reason": "r", "advancing_mods": "FlowWorks"})
+    rd_bad = tick_bad()
+    for iid in (G_PIPE, G_MACH, G_OPS, G_LIVE):
+        chk(lambda iid=iid: _dec(rd_bad, iid)[0] == "would_launch", "a setting that cannot be read holds no %s (%s)"
+            % (iid, _dec(rd_bad, iid)))
+    facts = gather()
+    mem, _left = _onboard_members(facts, "pipeline:list-dispatch")
+    chk(lambda: G_OLD_PIPE_HOME in mem, "pause on: a pipeline home's old ticket still joins its onboarding run (%s)" % sorted(mem))
+
+
+def t_the_game_pause_command_sets_one_line_and_counts_the_held():
+    import io
+    import contextlib
+    ld = LD()
+    with open(ld.CFG_PATH, encoding="utf-8") as f:
+        text = f.read()
+    s = json.loads(text).get("game_work_pause") or {}
+    chk(lambda: s.get("on") is True and s.get("reason") and s.get("advancing_mods") == ["FlowWorks"],
+        "the shipped lane carries the game pause, on, with its reason and FlowWorks as the one advancing mod (%s)" % s)
+    off = ld.set_pause(text, False, None, key="game_work_pause")
+    on = ld.set_pause(off, True, "a new reason", key="game_work_pause")
+    chk(lambda: json.loads(off)["game_work_pause"]["on"] is False and json.loads(on)["game_work_pause"]["reason"]
+        == "a new reason", "pause game off, then on with a new reason: the key follows")
+    keep = lambda t: {k: v for k, v in json.loads(t).items() if k != "game_work_pause"}  # noqa: E731
+    chk(lambda: keep(off) == keep(text) == keep(on), "every other key is untouched, the code review pause included")
+    chk(lambda: sum(1 for a, b in zip(text.splitlines(), off.splitlines()) if a != b) == 1, "exactly one line changes")
+    d = tempfile.mkdtemp(prefix="ld_gcmd_")
+    p = os.path.join(d, "list_dispatch.json")
+    with open(p, "w", encoding="utf-8") as f:
+        f.write(text)
+    sd = tempfile.mkdtemp(prefix="ld_gcmd_state_")
+
+    def cli(*argv):
+        buf = io.StringIO()
+        with patch.object(ld, "CFG_PATH", p), patch.dict(os.environ, RM_LIST_DISPATCH_DIR=sd), \
+                contextlib.redirect_stdout(buf):
+            rc = ld.main(list(argv))
+        return rc, buf.getvalue()
+    rc, out = cli("pause", "game", "off", "--why", "lifted in a test")
+    with open(p, encoding="utf-8") as f:
+        after = json.load(f)
+    chk(lambda: rc == 0 and after["game_work_pause"]["on"] is False and after["code_review_pause"]["on"] is True,
+        "`pause game off` switches only the game pause (%s)" % out.strip())
+    rc, out = cli("pause", "off")
+    with open(p, encoding="utf-8") as f:
+        after = json.load(f)
+    chk(lambda: rc == 0 and after["code_review_pause"]["on"] is False, "`pause off` keeps its words: the code review "
+        "pause (%s)" % out.strip())
+    rc, out = cli("pause", "game", "status")
+    chk(lambda: rc == 2 and "UNMEASURED" in out and "game work pause" in out, "status with no reading: the pause and "
+        "UNMEASURED for the count (%s)" % out.strip())
+    with open(os.path.join(sd, "reading.json"), "w", encoding="utf-8") as f:
+        json.dump({"at": NOW, "at_pac": "then", "game_pause": {"on": True, "reason": GAME_WHY, "held": 7,
+                                                               "advancing_mods": ["FlowWorks"]}}, f)
+    cli("pause", "game", "on", "--why", GAME_WHY)
+    rc, out = cli("pause", "game", "status")
+    chk(lambda: rc == 0 and "on" in out and GAME_WHY in out and "7 ticket" in out and "FlowWorks" in out,
+        "status prints the pause, its reason, its advancing mods and the held count of the last tick (%s)" % out.strip())
+
+
 # ---- a lane-cause ticket whose cause was seen in two incidents gets one Work run between incidents -------------------
 # (item RIMMANDRAKE_OFFER_TWICE_SEEN_LANE_CAUSE_NOTHING_WORKS_IT; page design/specs/2026-11-23-lane-cause-once/boundary.md)
 
@@ -1874,6 +2106,9 @@ def main():
               t_the_code_review_pause_holds_every_review_ticket,
               t_the_shipped_pause_names_the_three_kinds_and_only_them,
               t_the_pause_command_edits_one_line_and_nothing_else,
+              t_the_game_work_pause_holds_every_route_of_game_work,
+              t_the_game_work_pause_never_holds_pipeline_work,
+              t_the_game_pause_command_sets_one_line_and_counts_the_held,
               t_a_lane_cause_ticket_seen_in_two_incidents_gets_one_work_run):
         try:
             t()
