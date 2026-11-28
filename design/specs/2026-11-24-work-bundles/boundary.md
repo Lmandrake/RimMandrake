@@ -43,8 +43,9 @@ bundle began). A member with none of these is **open**.
   the bundle as `dead, no finish` and the members stay in it until the Conductor ends it (`work_bundle.py end`).
 - **a-remote-bundle-whose-host-never-answers.** A marker of a bundle on a host that cannot be read stays live until no
   ledger event has cited it for `REMOTE_QUIET_S` (5 h); a dead remote bundle holds its system that long.
-- **a-member-whose-system-moves.** The members are fixed at launch. A ticket re-homed into the system later joins the
-  next bundle, not the live one.
+- **a-member-whose-system-moves.** The members are fixed at launch, until a restart takes the home's new tickets
+  (a-live-bundle-takes-its-homes-new-tickets-at-restart). A ticket re-homed into the system while the bundle's last run
+  works joins the next bundle. A ticket that leaves the system stays a member.
 - **a-bare-systemctl-stop.** A unit stopped with `systemctl stop` and no `pipe` act reads `killed: signal`, the same
   as a death, so the bundle restarts. Stop a bundle with `./pipe stop` or `pipe off`.
 - **two-launchers-at-once.** The store lock is per machine; a launch from another machine is not seen.
@@ -290,13 +291,16 @@ closes, the checks (every arrival is ready) or the onboarding route's old-ticket
   that one read covers (`read_fold`); one read at the present bytes makes each covering ticket's check hold
   (`fresh_reader.holds` reads the present bytes). While the code review pause is on, the reader rows read `off` and no
   read bundle starts.
+- **a-live-bundle-takes-its-homes-new-tickets-at-restart.** A ready ticket of a home whose bundle is live reads
+  `bundle_live`, and so does a joining ticket with no lane row (`join_candidates`). Each applied lane tick writes them on
+  the live bundle's record in this store (`waiting`, replaced each tick; `work_bundle.waiting_of`, `note_waiting`); a
+  dry tick writes nothing, and a bundle whose record is on another host is not written. When a run of the bundle ends
+  with a member open, the restart takes each waiting ticket whose outcome still reads open (`take_waiting`): the
+  restart's brief names it, and the record's members take it when the restart starts (`note_restart`). A waiting ticket
+  that closed meanwhile is not taken. A bundle that ends takes none: the home's next bundle starts it. The progress guard
+  counts the old members only. Before 2026-11-28 each such ticket started a second bundle of the home on the same files.
 
-## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
-
-- **a-live-bundle-takes-its-homes-new-tickets-at-restart.** Today the members are fixed at launch
-  (a-member-whose-system-moves): a ticket of a home whose bundle is live reads `bundle_live` and joins the next bundle,
-  which starts after the live one ends. Owed: a restart takes the home's ready tickets.
-- **the-page-says-the-size.** `maturation_nonmod.py` shows the median members per bundle of the last day and the count
-  of singles.
+The page's line on the size of the bundles (the median members and the singles of the last 24 h) is a promise of
+`design/specs/2026-11-22-non-mod-pipeline-section/boundary.md`, the page of `maturation_nonmod.py`.
 
 Later lists beside this page: `polish.md`.

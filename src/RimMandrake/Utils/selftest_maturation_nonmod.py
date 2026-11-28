@@ -593,6 +593,31 @@ def t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair():
     assert any(r["id"] == tid for r in sec(s3)["doing"]), "a hand run with no recorded mod is on no page list"
 
 
+def t_the_page_says_the_size():
+    """promise the-page-says-the-size (design/specs/2026-11-24-work-bundles/boundary.md): the page shows, in one line, the
+    median members per Workshop bundle that ended in the last day and the count of singles. A mod's bundle, a bundle
+    still live, one that ended before the day and one that never started are not counted; a store that cannot be read
+    reads could not look, and an empty day reads 0 with what was looked at."""
+    need()
+    def b(n, state="ended", ago=2.0, pipeline="workshop", **kw):
+        return dict({"id": "WB-x-%d-%s-%s" % (n, state, ago), "members": ["T%d" % i for i in range(n)],
+                     "state": state, "pipeline": pipeline, "outcomes_at": NOW - ago * H}, **kw)
+    bs = {x["id"]: x for x in [b(1), b(5), b(6, state="stopped"), b(9, pipeline="maturation"), b(7, ago=30),
+                                b(3, state="live"), b(2, state="launch_failed"),
+                                dict(b(1, state="ended", host="SteveDesktop"), id="WB-x-host", outcomes_at=None, host_read_at=NOW - H)]}
+    got = N.bundle_size(bs, NOW)
+    assert got["ended"] == 4 and got["median"] == 3 and got["singles"] == 2, got
+    assert "median 3;" in got["line"] and "singles: 2" in got["line"], got["line"]
+    assert "could not look" in N.bundle_size(None, NOW)["line"], N.bundle_size(None, NOW)
+    u = N.bundle_size(dict(bs, odd=dict(b(4), id="odd", outcomes_at=None)), NOW)
+    assert u["ended"] == 4 and u["unread"] == 1 and "could not be read: 1" in u["line"], u
+    z = N.bundle_size({}, NOW)
+    assert z["ended"] == 0 and "24 h: 0 (" in z["line"] and "looked" in z["line"], z
+    x = sec(dict(stores(), bundles=bs))
+    for t in (N.panel(x), "\n".join(N.markdown(x))):
+        assert got["line"] in t, "the size line is not on the page"
+
+
 def main():
     tests = [t_mod_or_not_by_one_rule, t_stages_from_one_rule, t_launcher_from_records, t_doing_now_rows,
              t_next_names_its_wait, t_closed_last_day, t_open_by_reason_oldest_first, t_escalated_from_run_ends,
@@ -600,7 +625,7 @@ def main():
              t_page_is_a_picture_not_a_log, t_a_question_for_the_conductor_is_its_own_block, t_waits_in_plain_words, t_plain_titles, t_page_four_answers_differ,
              t_needs_short_and_his_first, t_trend_on_the_page, t_plain_waits, t_same_inputs_same_section,
              t_each_machine_shows_its_runs_room_games_and_lane, t_an_unreadable_machine_reads_could_not_look,
-             t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair]
+             t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair, t_the_page_says_the_size]
     failed = 0
     for t in tests:
         try:

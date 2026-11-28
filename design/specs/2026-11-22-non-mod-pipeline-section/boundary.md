@@ -154,6 +154,11 @@ MATURATION_DETAIL.
 - **an-unreadable-machine-reads-could-not-look.** A machine reading that cannot be made (`running_steve.json` missing,
   unreadable or older than `STEVE_OLD_S`, the lane tick's reading with no machine figures, the run records) makes each
   line it feeds read "could not look" with its cause, never 0, "none" or idle.
+- **the-page-says-the-size.** One line on the page (under the picture) and in the detail (the head block) gives the
+  Workshop bundles that ended in the last 24 h (states ended, stopped, raised, gated; a mod's bundle and a live one are
+  not counted), their median members and the count of singles (`bundle_size`). A bundle store that cannot be read
+  reads "could not look"; a day with none reads 0 with what was looked at. The owner, 2026-11-27: "work in LARGE
+  BUNDLES" (item RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY).
 
 ## LIFE CYCLES
 

@@ -272,6 +272,12 @@ def read_stores(lf, mods):
         s["lane"] = None
         s["causes"]["the Workshop Pipeline tick's reading.json"] = "%s: %s" % (e.__class__.__name__, e)
     try:
+        import work_bundle as WB  # noqa: E402
+        s["bundles"] = WB.all_bundles()
+    except Exception as e:      # noqa: BLE001  the size line reads could not look, never 0
+        s["bundles"] = None
+        s["causes"]["the work bundle store"] = "%s: %s" % (e.__class__.__name__, e)
+    try:
         with open(STEVE_READING, encoding="utf-8") as f:
             s["steve"] = json.load(f)["view"]
     except Exception as e:      # noqa: BLE001  SteveDesktop's block reads could not look, never idle
@@ -312,6 +318,47 @@ def feed_off():
     if os.path.exists(os.environ.get("TESTQ_QUEUE") and os.path.join(os.environ["TESTQ_QUEUE"], "fill.stop") or TESTQ_STOP):
         return "the visit feed is stopped by fill.stop"
     return None
+
+
+# ---- the size of the Workshop bundles (the-page-says-the-size, design/specs/2026-11-24-work-bundles/boundary.md) --------
+# The owner, 2026-11-27: "work in LARGE BUNDLES". The median ended bundle held 1 ticket on Nov 25, 26 and 27.
+BUNDLE_END_STATES = ("ended", "stopped", "raised", "gated")
+DAY_S = 24 * 3600
+
+
+def _bundle_end(r):
+    """-> the epoch a bundle record ended, from the first field its end wrote, or None."""
+    for v in (r.get("outcomes_at"), (r.get("ended_by_hand") or {}).get("at"), (r.get("raised") or {}).get("at"),
+              (r.get("unstarted") or {}).get("at"), r.get("host_read_at")):
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            return float(v)
+    return None
+
+
+def bundle_size(bundles, now):
+    """-> {"ended", "median", "singles", "line"} of the Workshop bundles (not a mod's) that ended in the last day.
+    bundles: {id: record} (work_bundle.all_bundles) or None when the store could not be read. Pure."""
+    if bundles is None:
+        return {"ended": None, "median": None, "singles": None,
+                "line": "Work bundles that ended in the last 24 h: could not look (the work bundle store could not be read)."}
+    import statistics
+    sizes, unread = [], 0
+    for r in bundles.values():
+        if r.get("pipeline") == "maturation" or r.get("state") not in BUNDLE_END_STATES:
+            continue
+        end = _bundle_end(r)
+        if end is None or not isinstance(r.get("members"), list):
+            unread += 1         # its end time or its members cannot be read: counted apart, never as an old bundle
+        elif end > now - DAY_S:
+            sizes.append(len(r["members"]))
+    tail = (" Ended bundles whose end time or members could not be read: %d." % unread) if unread else ""
+    if not sizes:
+        return {"ended": 0, "median": None, "singles": 0, "unread": unread,
+                "line": "Work bundles that ended in the last 24 h: 0 (looked: the work bundle store).%s" % tail}
+    med = statistics.median(sizes)
+    return {"ended": len(sizes), "median": med, "singles": sizes.count(1), "unread": unread,
+            "line": "Work bundles that ended in the last 24 h: %d; members per bundle: median %s; singles: %d.%s" % (
+                len(sizes), ("%g" % med), sizes.count(1), tail)}
 
 
 def _lane_run(r):
@@ -436,7 +483,8 @@ def section(s, now, spend=None, stage=None):
     stage_fn = stage or LP.stage_of
     items, evs, recs = s.get("items"), s.get("evs"), s.get("records")
     causes = dict(s.get("causes") or {})
-    out = {"state": "ok", "causes": causes, "rule": RULE, "cannot": list(CANNOT), "now": now}
+    out = {"state": "ok", "causes": causes, "rule": RULE, "cannot": list(CANNOT), "now": now,
+           "bundle_size": bundle_size(s.get("bundles"), now)}
     if items is None:
         out["state"] = "blind"
         return out
@@ -750,6 +798,8 @@ def blocks(sec):
                 sec["open_total"], sec["unclassed"],
                 (" (%s)" % ", ".join("`%s`" % x for x in sec["unclassed_ids"])) if sec["unclassed"] else "",
                 sec["lane"])]
+    if sec.get("bundle_size"):
+        head.append(sec["bundle_size"]["line"])
     out.append(("", head + looked))
     st = ["**%s** · %s · **%d**%s. %s." % (x["stage"].capitalize(), x["who"], x["count"],
                                          (" · oldest: %s" % x["oldest"]) if x["oldest"] else "", x["how"])
@@ -1118,6 +1168,8 @@ def panel(sec):
                 'count of this half is UNMEASURED.</div>' % (BG, TEXT, html.escape(looked or "the ledger")))
     out = picture(sec)
     foot = "Could not class as mod or non-mod: %d." % sec["unclassed"]
+    if sec.get("bundle_size"):
+        foot = "%s %s" % (sec["bundle_size"]["line"], foot)
     if looked:
         foot = "Could not look: %s. %s" % (looked, foot)
     return '<div>%s%s<div style="font-size:11px;color:%s;padding:2px 14px">%s</div></div>' % (

@@ -592,12 +592,15 @@ def header(rec, p, now):
     a stopped run is "interrupted", nothing more (RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED)."""
     if p.get("bundle"):
         return ("WORK BUNDLE RESTART (left_open_continue.py, %s): restart %d of work bundle %s, in a fresh context.\n"
-                "Members still open: %s. Work `%s` first.\n"
+                "Members still open: %s. Work `%s` first.\n%s"
                 "This is a fresh session with no memory of the previous one. Your clone stands on origin/main. First read "
                 "the bundle's state file %s, then `git log --oneline -15`; do not redo work that is already published. "
                 "Then carry on from the state file's Next.\n" % (
                     local(now), p["n"], p["bundle"], ", ".join("`%s`" % t for t in p.get("open_lane") or []),
-                    p["target"], p.get("state_file") or "-"))
+                    p["target"],
+                    ("Joined at this restart, new ready tickets of the bundle's home (read each with `python3 "
+                     "src/RimMandrake/rimflow/cli.py show <ID>`): %s.\n" % ", ".join("`%s`" % t for t in p["bundle_join"]))
+                    if p.get("bundle_join") else "", p.get("state_file") or "-"))
     lines = ["CONTINUED BY ITSELF (left_open_continue.py, %s): continuation %d of at most %d a day for %s." % (
         local(now), p["n"], MAX_PER_DAY, rec.get("continue_root_item") or rec["item"])]
     if p.get("capped") or (p.get("stopped") and p.get("kind") != "owed"):
@@ -814,7 +817,7 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
         DH.write_record(rec, root)
         if p.get("bundle"):
             import work_bundle as WB
-            WB.note_restart(p["bundle"], m.group(1), now, int(p.get("bundle_ended_now") or 0))
+            WB.note_restart(p["bundle"], m.group(1), now, int(p.get("bundle_ended_now") or 0), join=p.get("bundle_join"))
         line = continued_line(unit, rec, p, m.group(1), lad, sid, fresh_why)
         try:
             DH.conductor_line(line, now, log_path, head=HEAD)

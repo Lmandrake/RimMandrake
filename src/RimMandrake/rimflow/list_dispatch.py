@@ -2313,6 +2313,22 @@ def _need_text(n):
     return "%s | not recovered: %s | smallest act: %s" % (n["outcome"], n["why_not_recovered"], n["smallest_act"])
 
 
+def _bundle_waits(rows, facts, now=None):
+    """The applied tick's step: each local live bundle's record takes the tickets that wait on it (work_bundle.waiting_of,
+    note_waiting), so its next restart takes them (a-live-bundle-takes-its-homes-new-tickets-at-restart). A record that
+    cannot be written is said on stderr; it never stops the tick."""
+    import work_bundle as WB
+    now = time.time() if now is None else now
+    live = facts.get("bundles_live") or {}
+    waits = WB.waiting_of(rows, facts.get("join") or {}, live)
+    for bid in sorted(set(live.values())):
+        try:
+            WB.note_waiting(bid, waits.get(bid, []), now)
+        except Exception as e:  # noqa: BLE001
+            print("list_dispatch: the waiting tickets of %s not written: %s: %s" % (bid, type(e).__name__, e),
+                  file=sys.stderr)
+
+
 def execute(cfg, st, rows, launches, facts, now, fx=None):
     import list_effect as LE
     fx = fx or {}
@@ -2479,6 +2495,8 @@ def tick(cfg, apply, fx=None, now=None, only=None):
                  for i in gone]
         if apply:
             execute(cfg, st, rows, launches, facts, now, fx)
+            if not only and facts.get("systems") is not None:
+                (fx.get("bundle_waits") or _bundle_waits)(rows, facts, now)
         else:
             for r in rows:
                 r["decision"] = {"launch": "would_launch", "close": "would_close", "adopt": "would_adopt",

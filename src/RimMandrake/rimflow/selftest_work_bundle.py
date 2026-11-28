@@ -693,6 +693,73 @@ def t_the_real_restart_path_keeps_the_progress_guard():
     chk(lambda: p2["act"] == "alarm", "progress guard, real path: that restart, ending none, raises (%s)" % p2.get("act"))
 
 
+def t_a_live_bundle_takes_its_homes_new_tickets_at_restart():
+    """promise a-live-bundle-takes-its-homes-new-tickets-at-restart: a ready ticket of a home whose bundle is live reads
+    bundle_live, and the lane's applied tick writes it on the bundle's record (waiting). The bundle's next restart takes
+    each waiting ticket that is still open into its members, and the restart's brief names it; a waiting ticket that
+    closed meanwhile is not taken, and a bundle that ends takes none (the lane's next bundle starts it)."""
+    W = WB()
+    import left_open_continue as LOC
+    import detached_helper as DH
+    import list_dispatch as LD
+    rec = bundle_rec(W, ["K1", "K2"], units=[{"unit": "u-k-first", "at": NOW, "kind": "launch", "ended_before": 0}])
+    live = {"pipeline:ledger": rec["id"], "pipeline:remote": "WB-pipeline-remote-20261127-000000"}
+    rows = [{"item": "N1", "decision": "launch"}, {"item": "N2", "decision": "launch"},
+            {"item": "R1", "decision": "launch"}, {"item": "O1", "decision": "launch"}]
+    systems = {"N1": "pipeline:ledger", "N2": "pipeline:ledger", "R1": "pipeline:remote", "O1": "pipeline:other"}
+    rows, launches = W.group(rows, ["N1", "N2", "R1", "O1"], systems, live, join={"J1": "pipeline:ledger"})
+    waits = W.waiting_of(rows, {"J1": "pipeline:ledger", "X1": "item:X1"}, live)
+    chk(lambda: waits.get(rec["id"]) == ["J1", "N1", "N2"] and "N1" not in launches,
+        "takes new tickets: the bundle_live rows and the joining tickets of a live home wait on its bundle (%s)" % waits)
+    LD._bundle_waits(rows, {"join": {"J1": "pipeline:ledger"}, "bundles_live": live})
+    got = W.store_read(rec["id"])
+    chk(lambda: got.get("waiting") == ["J1", "N1", "N2"],
+        "takes new tickets: the lane's tick writes them on the local record (%s)" % got.get("waiting"))
+    chk(lambda: set(W.members_of_run(run_rec(W, rec, unit="u-k-first"))) == {"K1", "K2", "J1", "N1", "N2"},
+        "takes new tickets: finish reads the waiting tickets beside the members (%s)"
+        % W.members_of_run(run_rec(W, rec, unit="u-k-first")))
+    f = facts_of(K1={"state": "done"}, K2={}, N1={}, N2={"state": "done"}, J1={})
+    r = run_rec(W, rec, unit="u-k-first")
+    DH.write_record(dict(r, status="finished"))
+    p, line = LOC.at_finish(r, {"state": "done", "notes": []}, TMP, NOW + 100, continuer=lambda rr, q: "continue kicked",
+                            states_reader=lambda clone, ids: f)
+    chk(lambda: p["act"] == "continue" and p.get("bundle_join") == ["J1", "N1"] and "N2" not in p["open_lane"]
+        and "J1" in LOC.header(r, p, NOW + 100),
+        "takes new tickets: the restart plan takes the open waiting tickets and its brief names them (%s / %s)"
+        % (p.get("bundle_join"), p.get("open_lane")))
+    got = _step(LOC, "u-k-first", NOW + 150, lambda *a, **k: (0, "DETACHED u-k-second"))
+    b = W.store_read(rec["id"])
+    chk(lambda: got["act"] == "continued" and b["members"] == ["K1", "K2", "J1", "N1"] and not b.get("waiting"),
+        "takes new tickets: at the restart the bundle's members take them (%s / %s)" % (b["members"], b.get("waiting")))
+    unit = next((u for u in b["units"] if u["unit"] == "u-k-second"), {})
+    chk(lambda: unit.get("ended_before") == 1, "takes new tickets: the progress guard counts the old members only (%s)" % unit)
+    # a bundle that ends takes none: its waiting tickets start the lane's next bundle
+    rec2 = bundle_rec(W, ["E1"], units=[{"unit": "u-e-first", "at": NOW, "kind": "launch", "ended_before": 0}])
+    W.note_waiting(rec2["id"], ["E2"], NOW + 5)
+    f2 = facts_of(E1={"state": "done"}, E2={})
+    r2 = run_rec(W, rec2, unit="u-e-first")
+    DH.write_record(dict(r2, status="finished"))
+    p2, _l = LOC.at_finish(r2, {"state": "done", "notes": []}, TMP, NOW + 100, continuer=lambda rr, q: "continue kicked",
+                           states_reader=lambda clone, ids: f2)
+    chk(lambda: p2["act"] == "none" and W.store_read(rec2["id"])["members"] == ["E1"],
+        "takes new tickets: a bundle that ends takes no waiting ticket (%s)" % p2.get("why"))
+    chk(lambda: W.note_waiting("WB-pipeline-remote-20261127-000000", ["R1"], NOW) is None,
+        "takes new tickets: a bundle whose record is not in this store is not written")
+    # the lane's real tick: an applied tick runs the step, a dry tick writes nothing
+    os.environ["RM_LIST_DISPATCH_DIR"] = os.path.join(TMP, "list_dispatch")
+    seen = []
+    facts = {"items": {}, "runs": {}, "other_live": 0, "systems": {}, "join": {"J9": "pipeline:ledger"},
+             "bundles_live": {"pipeline:ledger": rec["id"]}}
+    fx = {"facts": lambda st: facts, "account": lambda: (True, ""), "need": lambda *a: None,
+          "bundle_waits": lambda rows, fa, now: seen.append((now, sorted((fa.get("join") or {}))))}
+    cfg = {"enabled": True, "max_live": 2, "max_chain_depth": 2, "max_runs_per_item": 2, "max_never_started": 2,
+           "sonnet_cap_usd": 5, "opus_cap_usd": 12, "seat": "BENCH"}
+    LD.tick(dict(cfg), apply=False, fx=fx, now=NOW + 400)
+    LD.tick(dict(cfg), apply=True, fx=fx, now=NOW + 500)
+    chk(lambda: seen == [(NOW + 500, ["J9"])],
+        "takes new tickets: the applied tick runs the step and the dry tick does not (%s)" % seen)
+
+
 def t_a_restart_that_never_starts_leaves_the_bundle_gated():
     """part of restart-until-each-member-has-an-outcome: a restart refused after finish planned it (`pipe off
     family:left_open_continue` on the kick, the step's own recheck, a refused launch) must not leave the bundle
@@ -1806,6 +1873,7 @@ def main():
               t_a_restart_cut_short_from_outside_is_restarted,
               t_a_restart_that_ended_by_itself_with_no_member_ended_raises,
               t_a_restart_that_never_starts_leaves_the_bundle_gated,
+              t_a_live_bundle_takes_its_homes_new_tickets_at_restart,
               t_a_bundle_with_every_outcome_ends, t_a_refused_member_is_stopped_with_its_reason,
               t_live_pass_takes_a_free_game_or_says_unrun, t_live_pass_asks_the_games_of_this_machine,
               t_the_page_shows_each_live_bundle,

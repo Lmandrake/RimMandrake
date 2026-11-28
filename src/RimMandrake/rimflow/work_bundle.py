@@ -671,7 +671,9 @@ def group(rows, launches, systems, live, join=None):
     for r in mine:
         s = systems[r["item"]]
         if s in live:
-            r.update(decision="bundle_live", why="waits for the live bundle %s of %s; it joins the next one" % (live[s], s))
+            r.update(decision="bundle_live", live_bundle=live[s],
+                     why="waits for the live bundle %s of %s; its next restart takes it, else it joins the next one" % (
+                         live[s], s))
         elif s in lead and lead[s] is not r:
             lead[s]["bundle"]["members"].append(r["item"])
             r.update(decision="bundled", why="joins the bundle of %s that %s leads this tick" % (s, lead[s]["item"]))
@@ -680,6 +682,53 @@ def group(rows, launches, systems, live, join=None):
         if s in lead and not s.startswith(("item:", "mod:")) and i not in lead[s]["bundle"]["members"]:
             lead[s]["bundle"]["members"].append(i)
     return rows, [i for i in launches if i in keep]
+
+
+# ---- a live bundle takes its home's new tickets at its restart (a-live-bundle-takes-its-homes-new-tickets-at-restart) --
+# Before 2026-11-28 the members were fixed at launch: a ready ticket of a home whose bundle was live read bundle_live and
+# started the home's next bundle after the live one ended, a second cold start on the same files. Item
+# RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY.
+
+def waiting_of(rows, join, live):
+    """-> {bundle id: sorted ids} of the tickets that wait on a live bundle: each bundle_live row that group marked
+    (live_bundle), and each joining ticket (join: {ticket: system}, list_dispatch.join_candidates) of a live system
+    that is a home (not item: or mod:, as group's join). Pure."""
+    out = {}
+    for r in rows:
+        if r.get("decision") == "bundle_live" and r.get("live_bundle"):
+            out.setdefault(r["live_bundle"], set()).add(r["item"])
+    for i, s in (join or {}).items():
+        if s in (live or {}) and not str(s).startswith(("item:", "mod:")):
+            out.setdefault(live[s], set()).add(i)
+    return {b: sorted(v) for b, v in out.items()}
+
+
+def note_waiting(bid, ids, now):
+    """Write the lane's latest reading of the tickets that wait on bundle `bid` (waiting, replaced each applied tick) on
+    its record. -> the record, or None when this store holds no live record of `bid` (a bundle on another host, or one
+    that ended): nothing is written then."""
+    lk = _lock()
+    try:
+        rec = store_read(bid)
+        if not rec or rec.get("state") not in LIVE_STATES:
+            return None
+        new = [i for i in sorted(set(ids or [])) if i not in rec["members"]]
+        if (rec.get("waiting") or []) != new:
+            rec.update(waiting=new, waiting_at=now)
+            rec = store_write(rec)
+        return rec
+    finally:
+        lk.close()
+
+
+def take_waiting(b, facts, now):
+    """-> the waiting tickets of bundle record `b` that its restart takes: each one whose outcome reads open (no close,
+    refusal, wait or route since the bundle began). Pure over its inputs."""
+    ids = [i for i in b.get("waiting") or [] if i not in b["members"]]
+    if not ids:
+        return []
+    o = outcomes(dict(b, members=ids), facts, now)
+    return [i for i in ids if o[i]["outcome"] == "open"]
 
 
 # ---- the hold: a home holds its ready tickets until its bundle is large (a-home-holds-until-five-or-the-hold-time) ----
@@ -1355,16 +1404,24 @@ def note_end(bid, q, unit, now, say=None):
     return rec
 
 
-def note_restart(bid, unit, now, ended_before):
+def note_restart(bid, unit, now, ended_before, join=None):
+    """join: the waiting tickets that the restart's plan took (take_waiting): they become members, and the restart's
+    brief already names them."""
     lk = _lock()
     try:
         rec = store_read(bid)
         if not rec:
             return None
         late = rec.get("state") != "restarting"    # gated or ended meanwhile: the unit is recorded, the state stays
+        took = [i for i in join or [] if i not in rec["members"]] if not late else []
         rec["units"] = (rec.get("units") or []) + [dict({"unit": unit, "at": now, "kind": "restart",
-                                                         "ended_before": ended_before}, **({"late": True} if late else {}))]
+                                                         "ended_before": ended_before}, **({"late": True} if late else {}),
+                                                        **({"joined": took} if took else {}))]
         rec["restarts"] = int(rec.get("restarts") or 0) + 1
+        if took:
+            rec["members"] = rec["members"] + took
+        if not late:
+            rec["waiting"] = []         # the restart read them all; the lane's next applied tick writes the new ones
         if not late:
             rec["state"] = "live"
         return store_write(rec)
@@ -1422,16 +1479,20 @@ def loc_plan(rec, facts, now, gates, base, gate_no):
     if no:
         return dict(out, act="none", why=no, bundle_plan=dict(q, act="gated", why=no))
     import left_open_continue as LOC
+    join = take_waiting(b, facts, now)      # a-live-bundle-takes-its-homes-new-tickets-at-restart
+    if join:
+        out.update(open_lane=list(q["open"]) + join, bundle_join=join)
     return dict(out, act="continue", target=q["target"], capped=LOC.capped(rec), note=None, progress=[],
                 bundle_ended_now=q["ended_now"],     # the restart's progress guard (at_finish drops bundle_plan)
                 n=int(rec.get("continue_n") or 0) + 1, why="work bundle %s: %s" % (bid, q["why"]))
 
 
 def members_of_run(rec):
-    """-> the bundle's members for a run record that carries RM_WORK_BUNDLE, or []."""
+    """-> the bundle's members, then the tickets that wait on it (waiting), for a run record that carries
+    RM_WORK_BUNDLE, or []. finish reads the facts of both: the restart takes the open waiting ones (take_waiting)."""
     bid = (rec.get("env") or {}).get(ENV)
     b = store_read(bid) if bid else None
-    return list(b["members"]) if b else []
+    return list(b["members"]) + [i for i in b.get("waiting") or [] if i not in b["members"]] if b else []
 
 
 # ---- part 5: the live pass ------------------------------------------------------------------------------------------
