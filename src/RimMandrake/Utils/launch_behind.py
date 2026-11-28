@@ -177,6 +177,18 @@ public static class RmWin {
   }
 
   // ---- the probe: what is in front, and where each watched window sits ----
+  // His windows (on screen at the start) below the highest new visible watched window; 0 when none is above any.
+  static int AboveCount(HashSet<long> start, HashSet<long> existed, string[] watch) {
+    List<IntPtr> z = ZOrder();
+    int below = 0, worst = 0;
+    for (int j = z.Count - 1; j >= 0; j--) {
+      IntPtr h = z[j];
+      if (start.Contains(h.ToInt64())) { if (OnScreen(h)) below++; continue; }
+      if (!existed.Contains(h.ToInt64()) && IsWindowVisible(h) && !IsIconic(h) && Watched(h, watch) && Title(h).Length > 0) worst = below;
+    }
+    return worst;
+  }
+
   public static int Probe(string outPath, int seconds, int periodMs, string stopFile, string watchCsv) {
     string[] watch = watchCsv.Split(',');
     HashSet<long> start = new HashSet<long>();      // on screen at the start
@@ -190,10 +202,11 @@ public static class RmWin {
     using (StreamWriter w = new StreamWriter(outPath, false, new UTF8Encoding(false))) {
       w.AutoFlush = true;
       w.WriteLine("{\"k\":\"start\",\"t\":" + Now() + ",\"fg\":" + Win(GetForegroundWindow()) + ",\"onscreen\":[" + sb0 + "],\"existed\":[" + all0 + "]}");
-      // Each foreground event is logged with what GetForegroundWindow says at that moment ("now"), and starts a burst:
-      // the foreground is read every 5 ms (about 16 ms: the Windows timer) for 300 ms ("b" lines), so the length of a
-      // short steal is measured, not
-      // only bounded by the next 100 ms sample.
+      // Each foreground event is logged with what GetForegroundWindow says at that moment ("now"), and so is each
+      // new watched window that is shown ("show"). Both start a burst: every 5 ms (about 16 ms: the Windows timer) for
+      // 300 ms, a "b" line holds the foreground and "above", the count of his windows below the highest new watched
+      // window. So the length of a short steal, in front or in the z-order, is measured, not only bounded by the next
+      // 100 ms sample.
       long burstUntil = 0;
       WinEventProc cb = delegate(IntPtr hook, uint ev, IntPtr h, int obj, int child, uint thread, uint time) {
         try {
@@ -202,6 +215,14 @@ public static class RmWin {
         } catch { }
       };
       IntPtr hk = SetWinEventHook(3, 3, IntPtr.Zero, cb, 0, 0, 2);
+      WinEventProc showCb = delegate(IntPtr hook, uint ev, IntPtr h, int obj, int child, uint thread, uint time) {
+        try {
+          if (obj != 0 || h == IntPtr.Zero || GetAncestor(h, 2) != h || existed.Contains(h.ToInt64()) || !Watched(h, watch)) return;
+          w.WriteLine("{\"k\":\"show\",\"t\":" + Now() + ",\"win\":" + Win(h) + "}");
+          burstUntil = Now() + 300;
+        } catch { }
+      };
+      IntPtr hkShow = SetWinEventHook(0x8002, 0x8002, IntPtr.Zero, showCb, 0, 0, 2);
       long end = Now() + seconds * 1000L;
       while (Now() < end && !File.Exists(stopFile)) {
         MSG m;
@@ -225,13 +246,16 @@ public static class RmWin {
         w.WriteLine("{\"k\":\"s\",\"t\":" + Now() + ",\"fg\":" + Win(fg) + ",\"watched\":[" + ws + "]}");
         long sampled = Now();
         while (Now() - sampled < periodMs) {
-          if (Now() < burstUntil) { PumpWait(5); w.WriteLine("{\"k\":\"b\",\"t\":" + Now() + ",\"fg\":" + Win(GetForegroundWindow()) + "}"); }
+          if (Now() < burstUntil) {
+            PumpWait(5);
+            w.WriteLine("{\"k\":\"b\",\"t\":" + Now() + ",\"fg\":" + Win(GetForegroundWindow()) + ",\"above\":" + AboveCount(start, existed, watch) + "}");
+          }
           else PumpWait((int)Math.Max(1, periodMs - (Now() - sampled)));
         }
       }
-      UnhookWinEvent(hk);
+      UnhookWinEvent(hk); UnhookWinEvent(hkShow);
       w.WriteLine("{\"k\":\"end\",\"t\":" + Now() + "}");
-      GC.KeepAlive(cb);
+      GC.KeepAlive(cb); GC.KeepAlive(showCb);
     }
     return 0;
   }

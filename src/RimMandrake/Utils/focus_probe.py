@@ -114,6 +114,23 @@ def judge(rows, marks=None, shot=None):
         for w in r.get("watched", []):
             if w.get("new") and w.get("start_below", 0) > 0 and not w.get("iconic"):
                 above.append({"t": r["t"], "phase": _phase(r["t"], marks), "win": w})
+    zseq = [r for r in rows if r.get("k") in ("s", "b", "show")]
+
+    def z_flicker(t):
+        """A sample above his windows inside a short z flash: a "show" of a new watched window at or before t, and a
+        row (sample or burst) with nothing above his windows within FLICKER_MS of that show -> its length, else None."""
+        shows = [r["t"] for r in zseq if r.get("k") == "show" and r["t"] <= t]
+        if not shows:
+            return None
+        t0 = shows[-1]
+        for r in zseq:
+            if r["t"] <= t or r.get("k") == "show":
+                continue
+            clear = r.get("above") == 0 if r.get("k") == "b" else not any(
+                w.get("new") and w.get("start_below", 0) > 0 and not w.get("iconic") for w in r.get("watched", []))
+            if clear:
+                return (r["t"] - t0) if r["t"] - t0 <= FLICKER_MS else None
+        return None
     seq = [r for r in rows if r.get("k") in ("s", "event", "b")]     # b: the 5 ms burst after each event
     flickers = []
     for i, r in enumerate(seq):
@@ -128,6 +145,18 @@ def judge(rows, marks=None, shot=None):
                 flickers.append(item)
             else:
                 steals.append(item)
+    # A sample inside a flicker that the event hook and its burst measured is that flicker, not a steal of its own:
+    # whether a 10 Hz sample lands inside a 30 ms flicker is chance, and the verdict is not.
+    spans = [(f["t"], f["t"] + f["ms"]) for f in flickers]
+    kept = [x for x in steals if x["how"] != "sample" or not any(a <= x["t"] <= b for a, b in spans)]
+    in_flicker = len(steals) - len(kept)
+    steals = kept
+    zf = [z_flicker(a["t"]) for a in above]
+    for a, ms in zip(above, zf):
+        if ms is not None:
+            flickers.append({"t": a["t"], "how": "z", "phase": a["phase"], "ms": ms})
+    above = [a for a, ms in zip(above, zf) if ms is None]
+    in_flicker += sum(1 for ms in zf if ms is not None)
     seen_new = any(w.get("new") for r in samples for w in r.get("watched", []))
     out = {"samples": len(samples), "span_s": round((samples[-1]["t"] - samples[0]["t"]) / 1000.0, 1),
            "steal_samples": sum(1 for s in steals if s["how"] == "sample"),
@@ -153,8 +182,8 @@ def judge(rows, marks=None, shot=None):
     out["verdict"] = "RED" if faults else "GREEN"
     out["why"] = "; ".join(faults) or "the game stayed behind and took no focus"
     if flickers:
-        out["why"] += "; %d activation flicker(s) seen by the event hook, put back within %d ms (no sample saw one)" % (
-            len(flickers), out["flicker_ms_max"])
+        out["why"] += "; %d flicker(s) (in front or above his windows) put back within %d ms, %d sample(s) inside them" % (
+            len(flickers), out["flicker_ms_max"], in_flicker)
     return out
 
 

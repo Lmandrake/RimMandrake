@@ -59,8 +59,9 @@ promise on planted faults and fails unless each fault turns it red. The live beh
 
 - The window that was in front before the launch is in front at each sample (about ten a second), from the launch
   command through the main menu and one map load. A foreground event of the game that is undone within 50 ms is a
-  flicker, counted beside the verdict.
-- No new game window sits above a window that was on screen at the start, at any sample.
+  flicker, counted beside the verdict; a sample that lands inside a measured flicker is that flicker.
+- No new game window sits above a window that was on screen at the start, at any sample, except inside a measured
+  flicker: a show of the new window and a reading with nothing above his windows, both within 50 ms.
 - The game still draws: a bridge screenshot after the map load, taken while the game is behind, has content.
 
 Later lists beside this page: `polish.md`.
