@@ -6,8 +6,8 @@
 - **Added:** 2026-11-26
 - **From ticket:** `RIMMANDRAKE_ALLOW_SHARED_INTERACTION_SPOTS_TWO_BENCHES_ONE_STOOL` (ended 2026-11-26: this file keeps the concept)
 - **Code:** none. Measured 2026-11-26 with `git grep -n PreventInteractionSpotOverlap -- '*.cs'`: no C# file names the vanilla placeworker `RimWorld.PlaceWorker_PreventInteractionSpotOverlap`. Some of our def files list that placeworker on their own buildings; that is the vanilla rule, not this concept.
-- **Last offered:** never
-- **His answer:** none yet
+- **Last offered:** 2026-11-27
+- **His answer:** Flesh out now with the Conductor (his card answer of 9:25 PM PST 2026-11-27: he picked 'Utility creatures' and 'Shared work spots')
 
 ## His words
 
@@ -73,3 +73,7 @@ History (4 events):
   the card of 2026-11-14 had named the home.
 - 2026-11-26T21:12:03Z OWNER `note`: "He still wants this idea (his word of 2026-11-26). Not designed, not scheduled.
   No sweep drops it as stale." With his words of 2026-11-26 above.
+
+## Offers
+
+- 2026-11-27: Flesh out now with the Conductor (his card answer of 9:25 PM PST 2026-11-27: he picked 'Utility creatures' and 'Shared work spots')

@@ -6,8 +6,8 @@
 - **Added:** 2026-11-26
 - **From ticket:** `UTILITY_CREATURES_DESIGN_DIG_THIS_PIT_BOY` (ended 2026-11-26: this file keeps the concept)
 - **Code:** none. Measured 2026-11-26 with `git grep -il "utility.creature\|UtilityCreature\|dig this pit" -- src`: no mod code. The two hits are a different thing (`WallsSlotsUtility.CreatureLine` in `D:\Luke\dev\RimMandrake\src\RimMandrake\HugeThings\`).
-- **Last offered:** never
-- **His answer:** none yet
+- **Last offered:** 2026-11-27
+- **His answer:** Flesh out now with the Conductor (his card answer of 9:25 PM PST 2026-11-27: he picked 'Utility creatures' and 'Shared work spots')
 
 ## His words
 
@@ -65,3 +65,7 @@ History (7 events):
     job queue, how a creature holds a shovel is unsettled;
   - open in the rehearsal: how a creature comes to accept commands (training, or by kind). Two of its leaves are marked
     "HIS WORDS DO NOT COVER THIS: he must answer it" (refused at the click; resumes the same order).
+
+## Offers
+
+- 2026-11-27: Flesh out now with the Conductor (his card answer of 9:25 PM PST 2026-11-27: he picked 'Utility creatures' and 'Shared work spots')

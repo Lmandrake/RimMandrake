@@ -6,8 +6,8 @@
 - **Added:** 2026-11-26
 - **From ticket:** `FALLZONE_LOST_CARGO_QUESTS_1` (ended 2026-11-26: this file keeps the concept)
 - **Code:** none for the quest or the manifest. Measured 2026-11-26 with `git grep -il "FallCargo\|cargo chit\|lost-cargo\|lost_cargo" -- src`: no file. The wreckage that it would read exists (the Wreckage mod, `src/RimMandrake/Wreckage/`, and the incident `RUT_FallLineWreckFall` in `src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_FallLineWreckFall.xml`, `baseChance 0`).
-- **Last offered:** never
-- **His answer:** none yet
+- **Last offered:** 2026-11-27
+- **His answer:** Not picked on the card of 9:25 PM PST 2026-11-27; it sleeps (he picked the other two)
 
 ## His words
 
@@ -247,3 +247,7 @@ spawns; run `skills/rimworld-quests/scripts/validate_quest.py` on the quest def 
 5. **How often?** Rare and memorable (a few per year), or regular enough to be a steady side income?
 6. **Fall Line only, or any wreck?** Should only the Fall Line's fresh wrecks carry leads, or older wrecks in
    other biomes too (with older, colder leads)?
+
+## Offers
+
+- 2026-11-27: Not picked on the card of 9:25 PM PST 2026-11-27; it sleeps (he picked the other two)
