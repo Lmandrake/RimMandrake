@@ -3660,15 +3660,24 @@ SERIES_FAULTS = {}      # family -> why its series could not be read on its last
 def read_series(fam, since, max_bytes=32 << 20):
     """-> the family's records since `since`. A missing file is the empty set (no record); any other read error also
     returns [] but is kept in SERIES_FAULTS[fam] until the next good read, so a caller can tell "could not look" from
-    "none" (2026-11-24: ENOMEM on the 9p read of /mnt/d read 5 fresh families as blind)."""
+    "none" (2026-11-24: ENOMEM on the 9p read of /mnt/d read 5 fresh families as blind). A read refused with ENOMEM
+    is tried again (deploy_index._read_retry): one such read of disk.jsonl opened SCRATCH_OUTSIDE_BLIND on
+    2026-11-28T05:52:18Z and read clean a moment later (OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC)."""
+    from deploy_index import _read_retry
     p = series_path(fam)
     out = []
     try:
-        with open(p, "rb") as f:
+        with open(p, "rb", buffering=0) as f:      # unbuffered: a refused read moves nothing, so it can be read again
             f.seek(0, 2)
             size = f.tell()
             f.seek(max(0, size - max_bytes))
-            data = f.read()
+            parts = []
+            while True:
+                part = _read_retry(f)
+                if not part:
+                    break
+                parts.append(part)
+            data = b"".join(parts)
     except FileNotFoundError:
         SERIES_FAULTS.pop(fam, None)
         return out
@@ -5464,7 +5473,10 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         sick += steve_release_finish(release)
     for fam, key in (("seats", "seats.blind"), ("disk", "disk.scratch_outside_blind")):
         if (whole or fam in families) and not counts_as_measured(points.get(key)):
-            points[key] = st_suppressed(points, fam)
+            # a carried family whose series could not be read: could not look, never a measured "not seen" that alarms
+            # (OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC); the alarm opens only on a reading that was read
+            unread = compose and fam not in families and SERIES_FAULTS.get(fam)
+            points[key] = U(unread, "sources not seen") if unread else st_suppressed(points, fam)
             stamp_ranges(points, rules)
     hist, lastm = {}, {}
     for fam, recs in prev.items():

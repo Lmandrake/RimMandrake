@@ -68,6 +68,12 @@ written Sun 2026-11-22, 8:40 PM PST. Each promise has a test of its name in
   count of the rest, and the family's `._collector` point says its series could not be read. A missing series file is
   the empty set and still counts as blind. Item: `OPS_SENSE_FAMILY_READING_RESTORE_XAOE` (2026-11-24 8:18 AM PST, 5
   fresh families alarmed while the box returned `ENOMEM` on `/mnt/c` and `/mnt/d` reads).
+- **a-failed-series-read-is-retried-never-an-alarm.** `read_series` reads again a read that fails with `ENOMEM`
+  (`deploy_index._read_retry`), so one refused read gives the records. A read that still fails is "could not look":
+  in a compose pass the carried `disk.scratch_outside_blind` and `seats.blind` read UNMEASURED with the cause, and no
+  alarm opens. Those alarms open only on a reading that was read. Item: `OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC`
+  (2026-11-28T05:52:18Z, one `ENOMEM` read of `disk.jsonl` opened SCRATCH_OUTSIDE_BLIND). Guard:
+  `src/RimMandrake/Utils/selftest_ops_watch_series_enomem.py`.
 - **a-blind-familys-points-say-why.** The carried UNMEASURED points of a blind family say how many sense passes on it
   were killed since it last read, and the stage the last one was in.
 - **a-killed-pass-leaves-its-stage.** SIGTERM to a `run --compose` pass appends one line to `sense_kills.jsonl` with its

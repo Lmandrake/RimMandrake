@@ -459,6 +459,16 @@ def t_an_unreadable_series_is_not_blind():
     os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
 
 
+def t_a_failed_series_read_is_retried_never_an_alarm():
+    """OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC: the three cases (good read, one ENOMEM then good, always ENOMEM) live in
+    their own guard file, which keeps its own store; this check runs it whole."""
+    r = subprocess.run([sys.executable, str(HERE / "selftest_ops_watch_series_enomem.py")], capture_output=True,
+                       text=True, timeout=600)   # hang guard: the guard runs in under 1 s
+    last = (r.stdout.strip().splitlines() or [""])[-1]
+    check("a-failed-series-read-is-retried-never-an-alarm: the guard passes", r.returncode == 0 and last.endswith("PASS"),
+          "rc=%s %s" % (r.returncode, "\n".join(ln for ln in r.stdout.splitlines() if ln.startswith("FAIL"))[:600]))
+
+
 def main():
     for t in (t_a_family_left_unread_raises_the_blind_alarm,
               t_a_blind_familys_points_say_why,
@@ -471,7 +481,8 @@ def main():
               t_the_ledger_and_the_stamps_are_read_once,
               t_a_light_pass_files_nothing_inside_the_beat,
               t_an_alarm_pass_in_a_beat_files_nothing_inside_it,
-              t_an_unreadable_series_is_not_blind):
+              t_an_unreadable_series_is_not_blind,
+              t_a_failed_series_read_is_retried_never_an_alarm):
         try:
             t()
         except (Exception, SystemExit) as e:  # noqa: BLE001  a test that raises is a red, named
