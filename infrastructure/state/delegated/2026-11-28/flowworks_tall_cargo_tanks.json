@@ -1,0 +1,71 @@
+{
+ "judge": "rm-judge (Opus, fresh)",
+ "brief": "design/RimMandrake/art_judge_brief.md",
+ "verdicts": [
+  {
+   "candidate": "Industrial/RM_LiquidTankTall",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Upright gunmetal steel tank on two cast saddles with a plinth, bolted rim, bolted manway, red hand wheel on a top elbow, brass dial gauge, a second valve, a yellow-black hazard band. Light honest wear, no rust-through. Real alpha (corners 0, fringe 1.4%), no outline, no shadow. Top ellipse about 0.57 of its width (C3). Bbox y 66-706 of 768: inside the 2x3 box, and the def's drawOffset (0,0,0.5) puts the feet on the 2x2 footprint (D3). At 32 px/cell: dark body, yellow band, clearly apart from the brown ground (B2).",
+   "redo_brief": "",
+   "notes": "Passed B1, B1a, B2, B4, C3, D1, D3, D4, E4 (his note 'C is excellent, keep that one': this carries design C; the 2026-11-22 rust note is met). Polish: the feet stop about 0.24 cell above the canvas bottom. They could sit a little lower."
+  },
+  {
+   "candidate": "Industrial/RM_UniversalCargoTank",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Horizontal gunmetal capsule, the picked base tank's body, strapped by two riveted bands with lifting lugs onto cast saddles on a steel skid. Brass gauge, bolted manway, red hand wheel and hazard band in the same places as the base tank. A front drain spigot with a red lever; its bore faces the camera, which is correct for a nozzle pointing at the viewer (C6). Real alpha, no outline. Bbox x 9-501, y 101-466 of 512: inside the 2x2 footprint. Reads as two bold shapes at 32 px/cell.",
+   "redo_brief": "",
+   "notes": "The skid and lugs give it a readable 'cargo' identity apart from the liquid tank. Polish: none worth a line."
+  },
+  {
+   "candidate": "Industrial/RM_UniversalCargoTankXTall",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Tall gunmetal column with three riveted girth bands, the same gauge, manway and red-hand-wheel trio on an elliptical top (about 0.58 of its width), a hazard band, a bottom spigot, and two cast saddle feet. Clean steel with light scuffs. Real alpha, no outline. Bbox y 68-984 of 1024, and drawOffset (0,0,1) seats it on the 2x2 footprint. At 32 px/cell it stands clearly taller than the tall liquid tank and apart from the ground.",
+   "redo_brief": "",
+   "notes": "Polish: the long body has few features between the bands. That is plain but not grey mud: clear shapes and a distinct value. A small stencil or sight glass would add interest."
+  },
+  {
+   "candidate": "Futuristic/RM_LiquidTankTall",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Upright white composite cylinder with flush panel lines, brushed-titanium top and bottom rings, a raised top cap with a slide-port latch, a vertical cyan LED level bar, a lit screen with a trace and status LEDs, a slide-open access port, and a graphite plinth with cyan foot lights. No brass, bolts, wheels or dials. Real alpha, no outline. Top ellipse about 0.59 of its width (C3). Bbox y 78-706 of 768, seated by drawOffset (0,0,0.5).",
+   "redo_brief": "",
+   "notes": "Meets the Futuristic look (computerized readouts, slide ports, sleek, low wear) and his note on design A. Polish: the feet sit about 0.24 cell above the canvas bottom."
+  },
+  {
+   "candidate": "Futuristic/RM_UniversalCargoTank",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "The picked white capsule with its titanium end bands and cyan end caps, the same screen, slide port and cyan LED bar, strapped by two titanium bands with lugs to a graphite skid with cyan foot lights. A short titanium outlet with a cyan ring faces the camera (correct bore, C6). Real alpha, no outline. Bbox x 7-504, y 111-466: inside the 2x2 footprint. It reads at 32 px/cell.",
+   "redo_brief": "",
+   "notes": "Polish: the lug holes and the outlet are small exposed hardware. They are not bolts or bulky plumbing, so this is not a 'Must NOT' breach."
+  },
+  {
+   "candidate": "Futuristic/RM_UniversalCargoTankXTall",
+   "verdict": "KEEP",
+   "violated": "",
+   "quote": "",
+   "seen": "Tall white composite column with three brushed-titanium bands, a domed top with a panel seam and a slide-port latch, a lit screen with status LEDs, a long cyan level bar, a slide port, a titanium bottom outlet with a cyan ring, and a graphite plinth with cyan lights. Real alpha, no outline. Top ellipse about 0.6 of its width. Bbox y 102-984 of 1024, seated by drawOffset (0,0,1). At 32 px/cell it is clearly the tallest of the line.",
+   "redo_brief": "",
+   "notes": "The validator's 'about 0.2 cell shorter than the shape master' is real: the top margin is 102 px against 68 px for the Industrial one. No brief line sets that height. It still reads plainly as extra-tall beside the tall tank and the colonist, so this is polish only."
+  }
+ ],
+ "family": {
+  "Industrial": "One family: the same gunmetal plate, riveted bands, bolted manway, brass gauge plus red hand wheel trio, yellow-black hazard band and cast saddles as his picked design C, scaled to tall, cargo-skid and extra-tall forms, with the same clean working wear.",
+  "Futuristic": "One family: the same white composite, brushed-titanium bands, cyan screen, slide port, LED bar and graphite plinth with cyan foot lights as his picked design A. The cargo tank reuses his capsule almost exactly on a skid, and the two uprights carry the same parts in vertical form."
+ },
+ "panel_notes": "family_64.png and family_32.png carry a stale '(v3)' title, but their files were written at 02:26, after the v4 candidates (02:25:45), and the alpha_ panels match the v4 files. A true-scale panel at 128-256 px/cell beside a human was not given (D1); I judged the 64 px/cell panel with the colonist plus the full-size candidates at 256 px/cell. Scale beside the colonist and the vanilla refinery is plausible for 2x2 tanks.",
+ "item": "RIMMANDRAKE_DRAW_TALL_CARGO_XTALL_TANKS_IN_HIS_PICKED_DESIGNS",
+ "given": [
+  "/mnt/d/ClaudeWork/scratch/tallcargo/judge/ (family_64, family_32, alpha boards; derived, rebuilt by v3/scene_family.py and process_tanks.alpha_board)",
+  "src/RimMandrake/FlowWorks/art_source/TankTall/v4/<Look>/<Tank>.png"
+ ],
+ "install_waits_on": "owner: the six old pictures are owner-KEPT (art ruling 2026-10-15); replacing kept art is his act"
+}
