@@ -643,14 +643,32 @@ def _decide(cfg, st, facts, now, account=(True, ""), hold=None):
             if not shape and not judge:
                 continue
         verdict = it.get("verdict")
-        if not shape and not judge and verdict == "holds":
+        close_fix = None    # a refused close whose repair a run can do: one close-fix run (boundary
+        if not shape and not judge and verdict == "holds":  # a-refused-close-a-run-can-repair-gets-one-run)
             ref = s.get("close_refused") or {}
-            if ref.get("fp") == [it.get("effect"), it.get("events")]:
-                put("close_refused", "the check holds but `rimflow close` refused: %s" % _one(ref.get("why"), 200))
-            else:
+            live = run.get("bundle") or ", ".join(run.get("live") or [])
+            if ref and live:
+                put("in_bundle" if run.get("bundle") else "live", "the check holds and %s works it, so that run owns the "
+                    "close that `rimflow close` refused: %s" % (live, _one(ref.get("why"), 200)))
+                continue
+            if ref.get("fp") != [it.get("effect"), it.get("events")]:
                 put("close", "the check holds: the work is done (%s)" % _one(it.get("out"), 160))
-            continue
-        if not shape and not judge and not offer and verdict != "fails":
+                continue
+            import list_effect as LE
+            cause = LE.run_can_repair(ref.get("why"))
+            fixes = [a for a in done if a.get("kind") == "close_fix"]
+            if not cause:
+                put("close_refused", "the check holds but `rimflow close` refused: %s" % _one(ref.get("why"), 200))
+                continue
+            if fixes:
+                last = fixes[-1]
+                stop("close-fix run %s ended and `rimflow close` still refuses (%s): %s" % (
+                    last.get("unit"), cause, _one(ref.get("why"), 400)),
+                    "read run %s's notes on %s, then do the repair that the refusal names by hand, drop it, or "
+                    "`list_dispatch.py clear %s --why ...` for one more run" % (last.get("unit"), iid, iid))
+                continue
+            close_fix = ref.get("why")
+        if not shape and not judge and not offer and verdict != "fails" and not close_fix:
             if run.get("bundle") or run.get("live"):    # a live run on it holds nothing back: say so, not blind
                 put("in_bundle" if run.get("bundle") else "live", "its check is unmeasured (%s), but %s works it"
                     % (_one(it.get("out") or verdict, 120), "the live work bundle %s" % run["bundle"]
@@ -747,8 +765,10 @@ def _decide(cfg, st, facts, now, account=(True, ""), hold=None):
                  "read the refusal on %s, then act on its reason: drop it, re-home it, or `list_dispatch.py clear %s --why "
                  "...` for one more run" % (iid, iid))
             continue
-        if work and not shape and not offer:    # a Work run on an earlier, cleared check is no Shape run; an offer's new
-            last = work[-1]                     # incident is its own reason to run, so earlier runs stop nothing
+        if work and not shape and not offer and not close_fix:  # a Work run on an earlier, cleared check is no Shape
+            # run; an offer's new incident is its own reason to run, so earlier runs stop nothing; a close-fix run counts
+            # only close-fix runs (above)
+            last = work[-1]
             if len(work) >= max_runs:
                 stop("%d Work runs (%s) ended and the check still fails; %d is the most" % (
                     len(work), ", ".join(str(a.get("unit")) for a in work), max_runs),
@@ -815,7 +835,7 @@ def _decide(cfg, st, facts, now, account=(True, ""), hold=None):
                     if spent_by and done else ""))
                 continue
         hs = (facts.get("systems") or {}).get(iid)
-        if hold and hs in hold and not (judge or shape or offer or game or repair):
+        if hold and hs in hold and not (judge or shape or offer or game or repair or close_fix):
             put("bundle_hold", hold[hs])        # work_bundle.hold_systems: before the room gates, so it takes no slot
             continue
         over, owhy, ocnl = machine_load(cfg, facts.get("load"), facts.get("cores"))
@@ -896,13 +916,17 @@ def _decide(cfg, st, facts, now, account=(True, ""), hold=None):
                 row["game"] = game      # brief_text tells the run to claim it; work_bundle.group keeps it its own run
             if repair:
                 row["repair_check"] = repair    # brief_text: repair the check first; work_bundle.group: its own run
+            if close_fix:
+                row.update(kind="close_fix", close_fix=close_fix)    # brief_text: the refusal; group: its own run
             put("launch", "Work run %d%s%s: %s (%s); %s" % (
                 len(work) + 1, ", a second look (its wait to %s passed)" % pac(wu) if look else "",
                 ", past a stale block" if row.get("stale_block") else "", model, mwhy,
                 "its live check cannot look until a game runs what it reads (%s); it takes %s"
                 % (_one(it.get("out"), 120), game) if game else
                 "its check could not look on %d ticks in a row (%s); the run repairs the check" % (
-                    repair, _one(it.get("out"), 120)) if repair else "the check fails: %s" % _one(it.get("out"), 120)))
+                    repair, _one(it.get("out"), 120)) if repair else
+                "the check holds but `rimflow close` refused (%s); the run does the repair that the refusal names" % _one(
+                    close_fix, 200) if close_fix else "the check fails: %s" % _one(it.get("out"), 120)))
         if grant:
             row["chain_grant"] = grant.get("at")
             row["why"] = "%s; past the chain stop (depth %s) by the clear of %s: %s" % (
@@ -2032,7 +2056,7 @@ def brief_text(iid, it, row):
     return """Work list item {item} (the Workshop Pipeline's Work stage, run {n} of at most 2).
 
 Title: {title}
-Its outcome check, which fails now:   {check}
+Its outcome check, which {now}:   {check}
 What the check printed: {out}
 
 The check is the judge of "done". The item is done when the check holds on origin/main, and not before.
@@ -2057,12 +2081,14 @@ Steps:
      someone else's (the owner's, the Conductor's, a date).
    Do not file a new item for your own next step.
 """.format(item=iid, n=row.get("run_n", 1), title=it.get("title") or "-", check=it.get("effect"),
+           now="holds now (its close was refused: see below)" if row.get("close_fix") else "fails now",
                check_q=shlex.quote(it.get("effect") or ""),
            out=_one(it.get("out"), 600) or "(nothing)",
            look=LOOK % _one(row["look"], 400) if row.get("look") else "",
            stale=STALE.replace("{item}", iid) % _one(row["stale_block"], 600) if row.get("stale_block") else "") + (
         GAME % {"game": row["game"], "item": iid} if row.get("game") else "") + (
-        REPAIR % {"n": row["repair_check"], "item": iid} if row.get("repair_check") else "") + _reader(it)
+        REPAIR % {"n": row["repair_check"], "item": iid} if row.get("repair_check") else "") + (
+        CLOSE_FIX % {"why": _one(row["close_fix"], 1200), "item": iid} if row.get("close_fix") else "") + _reader(it)
 
 
 def lane_cause_brief_text(iid, it, row):
@@ -2112,6 +2138,18 @@ small list of the mod that the check reads (design/concepts/<Mod>/version/small_
 for ArchSmall pass --instance ArchSmall), load it, and run the check against %(game)s until it reads. Release the game
 the moment the check has read: python3 src/RimMandrake/rimflow/game_lock.py release %(game)s. Never fullscreen or focus
 the game, and never live-test a creature flyer's flight.
+"""
+
+
+CLOSE_FIX = """
+Read this before the steps above, which it changes: the check HOLDS now, and the lane's `rimflow close` was refused:
+  %(why)s
+So the work this run does is the repair that the refusal names (a class guard test shown failing on the instance with
+`rimflow guard %(item)s --test <selftest*.py>`, a criterion verified at its level, a --live promise for an operational
+item, or the close's words naming each piece of a card's work), then the close with that repair. When the item was an
+alarm that reopened, read the reopen's detail in the packet first: a new cause that the old check cannot see needs a
+check that sees it (shape it again) and its fix. The lane rings the Conductor only if this run ends with the close still
+refused.
 """
 
 

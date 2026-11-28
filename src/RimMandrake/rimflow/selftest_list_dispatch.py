@@ -856,6 +856,49 @@ def t_a_write_that_stands_unlanded_is_not_a_refusal():
     chk(lambda: "not landed" in rd["items"]["A"]["why"], "the row says the write is not landed yet")
 
 
+def t_a_refused_close_a_run_can_repair_gets_one_run():
+    """Item RIMMANDRAKE_ROUTE_GUARD_REFUSED_CLOSE_TO_A_RUN_TWO_RANG_TONIGHT: a reopened alarm item whose check holds and
+    whose close is refused for a cause that a run can repair (a guard owed, a live line, an owed criterion) reads launch,
+    not close_refused; its brief carries the refusal; a live run on it owns the close; once that run ended and the close
+    still refuses, the lane rings the Conductor once, quoting the refusal."""
+    guard = ("close refused (an owed criterion): close: A has not earned its close at f7c41cab4e: guard this fix died 1 "
+             "time(s), so it closes only with a class guard test shown failing on the instance; repair: verify the criterion")
+    ref = lambda why, ev=5: {"items": {"A": {"close_refused": {"fp": ["cmd:x", ev], "why": why, "at": NOW - 600}}}}  # noqa: E731
+    item = lambda ev=5: {"A": it(effect="cmd:x", verdict="holds", events=ev, out="holds")}  # noqa: E731
+    rows, launches, _ = run(item(), st=ref(guard))
+    r = rows["A"]
+    chk(lambda: r["decision"] == "launch" and launches == ["A"] and r.get("kind") == "close_fix",
+        "a guard-owed close refusal reads launch, not close_refused (%s, %s)" % (r.get("decision"), launches))
+    chk(lambda: "guard" in (r.get("close_fix") or "") and "refused" in r.get("why", ""),
+        "the row carries the refusal and says why it launches")
+    brief = LD().brief_text("A", item()["A"], r)
+    chk(lambda: "class guard test" in brief and "refused" in brief and "holds" in brief,
+        "the run's brief carries the refusal and says the check holds")
+    live_line = ("close refused (an operational item needs its live line): close: A needs a live line: it is an "
+                 "Operations alarm; repair: close with --live naming what must stay alive")
+    d, l2 = dec(item(), st=ref(live_line))
+    chk(lambda: d == "launch" and l2 == ["A"], "a live-line refusal goes to a run too (%s)" % d)
+    other = "close refused (a cause this tool does not know): something odd"
+    d, l3 = dec(item(), st=ref(other))
+    chk(lambda: d == "close_refused" and l3 == [], "a refusal of a cause no run is known to repair stays close_refused")
+    rows, launches, _ = run(item(ev=7), st=ref(guard, ev=5), runs={"A": {"live": ["u-fix"]}})
+    chk(lambda: rows["A"]["decision"] == "live" and launches == [],
+        "while a run is live on a refused item it owns the close: no second close (%s)" % rows["A"]["decision"])
+    st = ref(guard)
+    st["items"]["A"]["attempts"] = [{"at": NOW - 300, "unit": "u-fix", "model": "opus", "cap": 12, "kind": "close_fix",
+                                     "failed": None}]
+    rows, launches, _ = run(item(), st=st, runs={"A": {"ended": ["u-fix"]}})
+    r = rows["A"]
+    chk(lambda: r["decision"] == "stopped" and launches == [] and r.get("need") and "guard" in str(r.get("need")),
+        "after its close-fix run ended and the close still refuses: one stop that rings the Conductor with the refusal "
+        "(%s)" % r.get("decision"))
+    st["items"]["A"]["attempts"] = [{"at": NOW - 300, "unit": "u-shape", "model": "opus", "cap": 12, "kind": "shape",
+                                     "failed": None}]
+    d, l4 = dec(item(), st=st, runs={"A": {"ended": ["u-shape"]}})
+    chk(lambda: d == "launch" and l4 == ["A"], "a Shape run that wrote the check is no close-fix run: the fix run still "
+        "starts (%s)" % d)
+
+
 def t_a_dry_tick_writes_nothing():
     d = tempfile.mkdtemp(prefix="ld_dry_")
     os.environ["RM_LIST_DISPATCH_DIR"] = d
@@ -2096,7 +2139,7 @@ def main():
               t_the_run_owns_no_continuation,
               t_the_tick_files_nothing,
               t_a_heavy_acceptance_script_is_not_adopted,
-              t_a_write_that_stands_unlanded_is_not_a_refusal,
+              t_a_write_that_stands_unlanded_is_not_a_refusal, t_a_refused_close_a_run_can_repair_gets_one_run,
               t_a_dry_tick_writes_nothing,
               t_only_narrows_the_items_never_the_gates,
               t_a_mod_ticket_is_not_the_list_pipelines,

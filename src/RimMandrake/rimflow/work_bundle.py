@@ -654,9 +654,9 @@ def group(rows, launches, systems, live, join=None):
         i = r["item"]
         # a judge is its own fresh run, and so is a lane-cause run (it has no check to bundle on); so is a row that took a
         # game (list_dispatch.waits_for_game), which a bundle led from a host could not reach, and the repair of a check
-        # that cannot look, whose brief names that repair
-        if (r.get("kind") in ("shape", "lane_cause") or r.get("judge") or r.get("game") or r.get("repair_check")
-                or i not in systems):
+        # that cannot look, whose brief names that repair, and a close-fix run, whose brief carries its close's refusal
+        if (r.get("kind") in ("shape", "lane_cause", "close_fix") or r.get("judge") or r.get("game")
+                or r.get("repair_check") or i not in systems):
             if i in launches:
                 keep.append(i)
             continue

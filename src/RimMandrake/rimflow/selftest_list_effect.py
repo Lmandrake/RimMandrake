@@ -426,17 +426,48 @@ def t_a_refused_close_is_not_sent_again_unchanged():
 
     def close(i, text, why, publish):
         sent.append(i)
-        return 2, "close refused: still owes C1 L1"
+        return 2, "close refused (a cause this tool does not know): the ledger said no"
     fx = {"pause": lambda now: None, "blocked": lambda i: None, "close": close, "need": lambda t, now: needs.append(t)}
     L.tick(apply=True, publish=False, root=X["root"], fx=fx)
     rd = L.tick(apply=True, publish=False, root=X["root"], fx=fx)
     chk(lambda: sent.count(iid) == 1, "the refused close is sent once over two beats (sent %d)" % sent.count(iid))
-    chk(lambda: rd["items"][iid]["decision"] == "close_refused" and "owes C1" in rd["items"][iid]["why"],
+    chk(lambda: rd["items"][iid]["decision"] == "close_refused" and "said no" in rd["items"][iid]["why"],
         "the second beat reads close_refused with the refusal")
     chk(lambda: len([n for n in needs if iid in n]) == 1, "the Needs Conductor line is said once")
     cli("note", iid, "--text", "criterion C1 settled", "--why", "selftest")
     L.tick(apply=True, publish=False, root=X["root"], fx=fx)
     chk(lambda: sent.count(iid) == 2, "after the item changes, the close is sent again")
+
+
+def t_a_refused_close_a_run_can_repair_rings_no_one():
+    """Item RIMMANDRAKE_ROUTE_GUARD_REFUSED_CLOSE_TO_A_RUN_TWO_RANG_TONIGHT: a refusal whose repair a run can do (an owed
+    criterion or guard, a live line, a card's work) is the lane's (list_dispatch starts one run with the refusal in its
+    brief): the beat rings no Needs Conductor line for it, on the first refusal or after the item changes."""
+    L = LE()
+    iid = "RIMMANDRAKE_TEST_LIST_EFFECT_REFUSED_FOR_A_GUARD"
+    page("led/g.md", "x\n")
+    file_item(iid, "path-has:led/g.md::READY")
+    page("led/g.md", "READY\n")
+    sent, needs = [], []
+    said = ("close: %s has not earned its close at f7c41cab4e: guard this fix died 1 time(s), so it closes only with a "
+            "class guard test shown failing on the instance" % iid)
+
+    def close(i, text, why, publish):
+        sent.append(i)
+        return 2, L.refusal_line(said)
+    fx = {"pause": lambda now: None, "blocked": lambda i: None, "close": close, "need": lambda t, now: needs.append(t)}
+    rd = L.tick(apply=True, publish=False, root=X["root"], fx=fx)
+    row = rd["items"][iid]
+    chk(lambda: sent.count(iid) == 1 and row["decision"] == "close_refused", "the close is sent and refused (%s)" % row)
+    chk(lambda: not [n for n in needs if iid in n], "a guard-owed refusal rings no Needs Conductor line (%d)" % len(needs))
+    chk(lambda: "list_dispatch" in row["why"], "the row says the lane's run takes the repair: %s" % row["why"][-160:])
+    cli("note", iid, "--text", "the run works on the guard", "--why", "selftest")
+    L.tick(apply=True, publish=False, root=X["root"], fx=fx)
+    chk(lambda: sent.count(iid) == 2 and not [n for n in needs if iid in n],
+        "after the item changes (a run's note), the close is sent again and still rings no one")
+    chk(lambda: L.run_can_repair(L.refusal_line("close: X needs a live line: it is an Operations alarm")) and
+        not L.run_can_repair("close refused (a cause this tool does not know): odd") and not L.run_can_repair(""),
+        "run_can_repair: a live line yes, an unknown cause no, nothing no")
 
 
 def t_a_close_of_an_item_already_done_is_not_a_refusal():
@@ -636,7 +667,7 @@ def main():
                   t_the_tick_closes_nothing_on_fails_unmeasured_or_no_check,
                   t_the_tick_obeys_pause_and_pipe_off,
                   t_the_tick_launches_nothing_and_files_nothing,
-                  t_a_refused_close_is_not_sent_again_unchanged,
+                  t_a_refused_close_is_not_sent_again_unchanged, t_a_refused_close_a_run_can_repair_rings_no_one,
                   t_a_close_of_an_item_already_done_is_not_a_refusal, t_a_refused_close_says_its_own_cause, t_a_dry_beat_writes_nothing,
                   t_closed_reads_item_states_for_a_check, t_both_ticks_keep_an_operational_item_open_until_its_live_promise_holds):
             try:

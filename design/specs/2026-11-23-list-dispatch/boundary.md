@@ -72,7 +72,8 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   stop or an owner hold on the mod). Measured 2026-11-27: a lane run that repaired `maturation_hands.py` carried
   `RM_CONTROL_MOD=ExplosiveKnockback` and the status page read "helper on it" under that passed mod. Tested by
   `t_a_run_carries_a_mod_only_when_mod_work_reads_the_ticket_as_that_mods`.
-- **the-check-runs-before-every-attempt.** An item whose check holds reads `close`, whatever its runs; the tick closes it
+- **the-check-runs-before-every-attempt.** An item whose check holds reads `close`, whatever its runs (an item whose close
+  was refused before and that a live run works reads `live`: a-refused-close-a-run-can-repair-gets-one-run); the tick closes it
   as the pipeline's act (`list_effect.close_item`, role unit `rm-list-dispatch.service`) if its live gate allows it,
   and launches nothing on it. Both ticks share the live gate on the outcome-check boundary page. An
   unmeasured check reads `blind`. An item with no check reads `no_effect`, unless it is routed (`routed`) or due for
@@ -231,6 +232,18 @@ waited for the Conductor's hand, because no program launched them. Each promise 
   landed: another writer moved origin during the publish) stands. The row reads `closed_by_check` or `adopted` and says
   it is not landed yet; it is never recorded as a refusal. Measured 2026-11-23: two of the first ticks' writes exited
   4 and landed on origin minutes later.
+- **a-refused-close-a-run-can-repair-gets-one-run.** An item whose check holds and whose close the lane's `rimflow
+  close` refused (unchanged since) for a cause whose repair a run can do (`list_effect.run_can_repair`: an owed criterion
+  or a guard, a card's work, a live line, a guard's own line) reads `launch`, kind `close_fix`, through every launch gate
+  but the hold, as its own run (never a bundle member); its brief says the check holds and carries the refusal and its
+  repair. While a run or a bundle works an item with a refused close, the row reads `live` or `in_bundle` (the run owns
+  the close) and no close is sent. When a close-fix run ended and the close still refuses, the item reads `stopped` and
+  rings the Conductor once, quoting the refusal; a Shape or Work run before is no close-fix run. A refusal of a cause that
+  no run is known to repair stays `close_refused`. `list_dispatch.py clear` grants one more close-fix run. Why: three
+  rings of the list_effect beat on 2026-11-27 started nothing (OPS_RESTART_UNSTICK_BENCH_YCVY_ZEXY and
+  OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC owed a guard; LIVE_RESTORE_RM_SCRATCH_REAP owed its live line and rang at 11:01
+  PM and 11:16 PM PST while its own run was alive). Item RIMMANDRAKE_ROUTE_GUARD_REFUSED_CLOSE_TO_A_RUN_TWO_RANG_TONIGHT.
+  Test: `t_a_refused_close_a_run_can_repair_gets_one_run`.
 - **the-tick-files-nothing.** A tick writes no `file` or `spawn` event. It writes `close` for a check that holds,
   `effect` for an adopted acceptance script, the one shared note when a required live line is missing or fails, and the
   rule homes and Shape names of the promise old-no-home-tickets-are-placed-then-named-for-shape.

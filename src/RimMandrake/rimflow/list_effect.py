@@ -416,6 +416,32 @@ CLOSE_CAUSES = (
 )
 
 
+# A refused close whose cause CLOSE_CAUSES knows names a repair that a run can do: the lane starts one run on the item,
+# whose brief carries the refusal (list_dispatch, close_fix), and rings the Conductor only when that run ends without it.
+# The beat rings no one for such a refusal. Why: item RIMMANDRAKE_ROUTE_GUARD_REFUSED_CLOSE_TO_A_RUN_TWO_RANG_TONIGHT, three
+# rings on 2026-11-27 (two reopened alarm items that owed a guard, one alarm item that owed its live line while its own run
+# worked it, at 11:01 PM and 11:16 PM PST) that each started nothing.
+RUN_REPAIRS = tuple(c[0] for c in CLOSE_CAUSES)
+
+
+def run_can_repair(why):
+    """-> the cause of a refused close's line (refusal_line) when a run can do its repair (RUN_REPAIRS), else None."""
+    m = re.match(r"close refused \(([^)]*)\)", str(why or ""))
+    return m.group(1) if m and m.group(1) in RUN_REPAIRS else None
+
+
+def lane_takes(it):
+    """-> True when the Workshop Pipeline's lane works the item (it is no one mod's work by mod_work), False when it is a
+    mod's. Raises when that could not be read (the caller rings, as before). Only a lane item's refusal goes to a lane
+    run."""
+    import model as LM
+    import mod_work as MW
+    r = MW.reading(it, MW.mods(), LM.ITEMS)
+    if not isinstance(r, dict) or r.get("unreadable"):
+        raise RuntimeError("mod_work could not read it: %s" % (r.get("unreadable") if isinstance(r, dict) else r))
+    return not r.get("mod")
+
+
 def refusal_line(said):
     """-> 'close refused (<cause>): <the close's own words>; repair: <repair>'. The publish wrapper's line is dropped."""
     text = " ".join(" ".join(ln.split()) for ln in str(said or "").splitlines()
@@ -546,6 +572,17 @@ def _tick(apply, publish, root, fx, now, d):
         why = _one(said, 600) or "rc %s" % rc
         s["refused"] = {"fp": fp, "why": why, "at": now}
         put("close_refused", why)
+        takes = False
+        if run_can_repair(why):
+            try:
+                takes = fx.get("lane_takes", lane_takes)(it)
+            except Exception as e:  # noqa: BLE001 - could not look whether the lane works it: it rings, as before
+                row["lane_could_not_look"] = "%s: %s" % (type(e).__name__, _one(e, 200))
+        if takes:
+            row["why"] = ("%s | no ring: a run can do this repair, so the lane (list_dispatch) starts one close-fix run "
+                          "whose brief carries this refusal, and rings the Conductor only if that run ends without it"
+                          % why)
+            continue
         try:
             do_need("%s: its outcome check holds (%s) but `rimflow close` refused: %s. The list_effect tick sends no "
                     "second close until the item or its check changes." % (iid, eff, _one(why, 300)), now)

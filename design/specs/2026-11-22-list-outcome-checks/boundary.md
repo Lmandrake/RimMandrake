@@ -81,8 +81,16 @@ Item: `RIMMANDRAKE_BUILD_LIST_OUTCOME_CHECKS_SEVEN_DONE_NEVER_CLOSED`, step 1 of
   writes `close` or the one note for an operational item that still owes a live promise. (A `close` itself files the remainder that the item's last note names as not built:
   `design/specs/2026-11-24-close-files-its-remainder/boundary.md`.)
 - **a-refused-close-is-not-sent-again-unchanged.** When `rimflow close` refuses, the beat records the refusal with the
-  item's event count, says it once on the Needs Conductor line, and sends no close for that item until the item or its
-  check changes. A pending live line or an unreadable git read is checked again because either can recover between beats.
+  item's event count, says it once on the Needs Conductor line (unless a run can repair it:
+  a-refused-close-a-run-can-repair-rings-no-one), and sends no close for that item until the item or its check
+  changes. A pending live line or an unreadable git read is checked again because either can recover between beats.
+- **a-refused-close-a-run-can-repair-rings-no-one.** A refusal whose cause `CLOSE_CAUSES` knows (`run_can_repair`:
+  each of them names a repair that a run can do) on an item that the lane works (`lane_takes`: no mod's work by
+  `mod_work`) rings no Needs Conductor line, on its first refusal or after the item changes; the row says that the lane
+  starts one close-fix run (`design/specs/2026-11-23-list-dispatch/boundary.md`,
+  a-refused-close-a-run-can-repair-gets-one-run), which rings only if that run ends with the close still refused. A
+  refusal of an unknown cause, a mod's item, or an item whose mod reading cannot be made rings as before. Item
+  RIMMANDRAKE_ROUTE_GUARD_REFUSED_CLOSE_TO_A_RUN_TWO_RANG_TONIGHT (three rings on 2026-11-27 that started nothing).
 - **a-refused-close-says-its-own-cause.** A refused `close_item` returns `close refused (<cause>): <the close's own
   words>; repair: <repair>` (`refusal_line`, `CLOSE_CAUSES`: an owed criterion, a card's unaccounted work, a missing
   live line, a guard, else "a cause this tool does not know"). The publish wrapper's "nothing to publish" line is
