@@ -426,6 +426,26 @@ def t_a_mod_file_reads_its_locked_bars():
     mod_root("modrecord", lambda r, tt: tt["tests"]["T_ONE"].update(kind="record"))
     eq(check(MOD_A)[0], 0, "a record test with a green run on this build is green")
 
+    # Two mods whose tables share a test id (T_FUZZ is in four real tables): each id's build is its own mod's.
+    import json
+    r = mod_root("modtwomods")
+    other = "src/RimMandrake/Mod2/Source/a.cs"
+    write(r, other, "// mod two\n")
+    t2 = {"id": "T_ONE", "kind": "offline", "file": "src/RimMandrake/Mod2/selftest_t_one.py",
+          "reads": [other], "command": "python3 src/RimMandrake/Mod2/selftest_t_one.py"}
+    write(r, t2["file"], "pass\n")
+    for rel, obj in (("VERSION.json", {"mod": "Mod2", "version": "0.1.0", "state": "locked"}),
+                     ("locked_bars.json", {"mod": "Mod2", "version": "0.1.0", "ids": ["bar_one"]}),
+                     ("test_table.json", {"mod": "Mod2", "version": "0.1.0",
+                                          "bars": [{"id": "bar_one", "decides": ["T_ONE"]}],
+                                          "tests": {"T_ONE": stamp(r, t2)}})):
+        write(r, "design/concepts/Mod2/version/%s" % rel, json.dumps(obj))
+    for order in ((MOD_A, other), (other, MOD_A)):
+        rc, rows = check(*order)
+        eq((rc, state(rows, MOD_A), state(rows, other)), (0, "CLEAN", "CLEAN"),
+           "two mods sharing a test id, checked %s first: each reads its own build (%s | %s)"
+           % (order[0], line(rows, MOD_A), line(rows, other)))
+
 
 def t_a_mod_without_locked_bars_has_no_page():
     for name, kw in (("nover", {"version": False}), ("drafting", {"version": {"mod": "Mod", "version": "0.2.0",

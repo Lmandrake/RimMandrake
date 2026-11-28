@@ -745,7 +745,8 @@ def ingame_standing(mod, tt):
 
 def mod_page_state(mod, builds=None):
     """-> (state, detail) of the files inside `mod` against its locked bars (the
-    mod promises on the page above). `builds` caches each test's build id."""
+    mod promises on the page above). `builds` caches each test's build id by (mod, test id): one
+    `check` shares it across mods, and test ids repeat across mods' tables (T_FUZZ is in four)."""
     import judge_certificate as JC  # noqa: E402  the build a recorded run is bound to (rimflow/)
     builds = {} if builds is None else builds
     head = "mod %s" % mod
@@ -824,16 +825,17 @@ def mod_page_state(mod, builds=None):
             if not r.get("ran"):
                 bad.append(("UNRUN", "bar %s's test %s has no recorded run" % (bid, d)))
                 continue
-            if d not in builds:
+            key = (mod, d)
+            if key not in builds:
                 try:
-                    builds[d] = JC.test_build(ROOT, t)
+                    builds[key] = JC.test_build(ROOT, t)
                 except (OSError, UnicodeDecodeError) as e:
-                    builds[d] = e
-            if isinstance(builds[d], Exception):
-                bad.append(("UNREADABLE", "bar %s's test %s: its build cannot be read: %s" % (bid, d, builds[d])))
-            elif not r.get("build") or r["build"] != builds[d]:
+                    builds[key] = e
+            if isinstance(builds[key], Exception):
+                bad.append(("UNREADABLE", "bar %s's test %s: its build cannot be read: %s" % (bid, d, builds[key])))
+            elif not r.get("build") or r["build"] != builds[key]:
                 bad.append(("STALE", "bar %s's test %s ran on build %s, not this build %s (`maturation.py "
-                            "certificate %s --run`)" % (bid, d, r.get("build") or "(none)", builds[d], mod)))
+                            "certificate %s --run`)" % (bid, d, r.get("build") or "(none)", builds[key], mod)))
             elif r.get("command") is not None and r["command"] != t["command"]:
                 bad.append(("STALE", "bar %s's test %s ran another command than the table's" % (bid, d)))
             elif not (r.get("rc") == 0 and r.get("result", "PASS") == "PASS"):
