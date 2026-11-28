@@ -1,16 +1,16 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":98294,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"HOLDER.run-1795818114":3744,"HOLDER.run-1795831307":2167,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"JUDGE.judge-1795794888":4312,"STEWARD":2597} body_sha256=83b8d5588374c8fef8fbaf22b8e28853be1bcd98fb6abb95cc45805856508bfd -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":98294,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"HOLDER.run-1795818114":3744,"HOLDER.run-1795831307":7784,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"JUDGE.judge-1795794888":4312,"STEWARD":2597} body_sha256=96f16274c95b5d2d496dcc59d275b21e42d68ef1c0de80b93a83a323bd9e5479 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1884 events in 52 shards · reducer 1
-holder lease run-1795831307, token 66, last active 2026-11-28T03:36:08Z
+version 0.1.0 · stage in_game · 1895 events in 52 shards · reducer 1
+holder lease run-1795831307, token 66, last active 2026-11-28T04:58:01Z
 holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795831307, 2026-11-28T03:36:08Z)
-- done: seal of the blind brief sealed section fixed and closed (c2404dd6a0); bundle WB-mod-FlowWorks-20261128-020147 step A: 25 of 47 members have an outcome (2 closed, 2 dropped, 10 refused as 0.2.0 work, 11 re-homed); MIDCHANNEL unblocked
-- next: Run step A on the 22 members left in infrastructure/bundles/WB-mod-FlowWorks-20261128-020147.md
-- ruled out: the selftest_resume_voided_blind_judge red was this run environment (RM_MODLEDGER_WRITER), not the seal change
+## Last checkpoint (HOLDER.run-1795831307, 2026-11-28T04:58:01Z)
+- done: restart 1 of WB-mod-FlowWorks-20261128-020147: step A on 22 members; fixes published b64b4353ef, 8491944d06, 8d559e4074, 989284c054, f0a9d24739; live rescue scene PASS 32a2ed9dfd; wrong-checks and rescue umbrellas closed
+- next: Restart the bundle from its state file Next: liquid rules first, then the rain alert
+- ruled out: dug-substructure state cannot come from a colonist dig; MIDCHANNEL reach already PASS in visits 3 and 11
 
 ## Open findings (174)
-(claimed fixes, awaiting a judge, on one line each with the oldest 126 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 120 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
 - RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES [open, polish · bars inv_overflow_sheet]
 - RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES [open, polish · bars inv_converters]
 - ALL_OFF_FIX_DEPTH_ENGINE_STAYS_ON [open, problem]
@@ -22,7 +22,6 @@ holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 4
 - DIG_FINDS_PROVE_NEVER_FINISHES_ON_STEVE [open, problem]
 - DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH [open, problem · bars hung_bridge_spans]
 - DROWNING_ESCAPE_FIX_READS_DECK_ABOVE [open, problem · bars hung_bridge_spans, inv_swim]
-- FLOWWORKS_CLIMBERS_REWIRE_NAMES_THAT_LEFT [open, problem]
 - FLOWWORKS_CODE_REVIEW_FINISH_DIRTY_FILES [open, problem]
 - FLOWWORKS_FIX_NATIVE_WATER_AUDIT_RED [open, problem]
 - FLOWWORKS_GUARDS_FIX_THREE_RED_SELFTESTS [open, problem]
@@ -50,8 +49,6 @@ holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 4
 - HOSE_STYLES_FIX_RELOAD_DRIFT_SEEN [open, problem]
 - INDUSTRIAL_RUINS_FIX_HIDDEN_EH_DEPENDENCY [open, problem]
 - JOINED_WEIR_BREACH_FIX_CATCH_UNTOUCHED [open, problem]
-- LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING [open, problem · bars inv_bridges]
-- LAKE_FLOOR_SELFTEST_FIX_WET_SKIPS_HEIGHT [open, problem]
 - LAKE_FLOOR_STAGE_TAME_QUADRATIC_SETS [open, problem]
 - LEVELLING_BUDGET_FIX_STARVES_LATER_HOSES [open, problem · bars inv_hoses]
 - LEVEL_SET_SELFTEST_FIX_IDLE_PULSE_SETTLES [open, problem]
@@ -64,14 +61,12 @@ holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 4
 - OUTFLOW_REGRESSION_FIX_HARDCODED_CAP [open, problem]
 - P5_SITE_FIX_RERUN_DIGS_DEEPER [open, problem]
 - PIT_RAIN_FIX_FRACTIONAL_HEADROOM_FULL [open, problem]
-- PIT_RESCUE_FIX_UNREACHABLE_SPARE_LADDER [open, problem · bars ways_in_and_out]
 - PIT_SHOT_PROOF_FIX_OTHER_TARGET_PASSES [open, problem]
 - PLACER_SELFCHECK_FIX_LEAVES_MERGED_ORE [open, problem · bars inv_quarry]
 - POCKET_TRAP_FIX_LADDER_TO_SEALED_POCKET [open, problem · bars ways_in_and_out]
 - REFUSED_HANDOVER_DRAIN_FIX_PUDDLE_OVERSTAYS [open, problem · bars inv_overflow_sheet]
 - REVIEW_MAP_FIX_STATIONS_NO_LEAD_OUT [open, problem · bars hose_reads_as_hose, inv_hoses]
 - RIMMANDRAKE_CHECK_SHOOTING_RULE_OFF_PICKS_FARTHER_PIT_FOE [open, problem]
-- RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE [open, problem · bars drained_hole_is_a_prison, ways_in_and_out]
 - RIMMANDRAKE_JUDGE_FLOWWORKS_REVIEW_SAVE_FOUR_LOOK_QUESTIONS [open, problem · bars pit_reads_as_hole, pawn_height_follows_depth, canal_reads_as_dug, hose_reads_as_hose]
 - RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES [open, problem · bars raiders_fetch_their_fallen, inv_raider_fetch_fallen, drained_hole_is_a_prison, inv_prison_no_bed, hung_bridge_spans, pawn_height_follows_depth, pit_reads_as_hole, covered_pit_springs]
 - RIMMANDRAKE_LIGHT_FUEL_SAP_TERRAIN_FIRES_STARTED_ZERO [open, problem · bars inv_fire]
@@ -90,7 +85,6 @@ holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 4
 - WEIR_CATCH_FIX_ESCAPES_CAP_RADIUS [open, problem]
 - BODY_CLASSIFY_FIX_STICKY_OFF_NEVER_FORMS [open, problem]
 - READOUT_CHECK_FIX_STALE_AFTER_PROOF_REWIRE [open, problem]
-- RIMMANDRAKE_COVER_FLOWWORKS_REVIEW_MAP_THIRTY_NINE_STILL_UNSHOWN [open, problem]
 - RIMMANDRAKE_ENACT_FLOWWORKS_THREE_CARDS_WETTING_SINK_SWALE [open, problem]
 - RIMMANDRAKE_MAP_NEW_FLOWWORKS_DEFS_REVIEW_MAP_FELL_BEHIND [open, problem]
 - RIMMANDRAKE_REPAIR_DECK_COLLAPSE_SEAM_CHECK_LOST_ITS_ANCHOR [open, problem]
@@ -185,6 +179,12 @@ holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 4
 - ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE on d319937af57cc7ccf60aaa2eac783a934dc6accd
 - REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES on 8e48f09407
 - RIMMANDRAKE_PIN_SHEET_CALLER_KILLS_THE_DROWNED_CROP [open, problem · bars inv_overflow_sheet]
+- FLOWWORKS_CLIMBERS_REWIRE_NAMES_THAT_LEFT on b64b4353ef72
+- LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING on 8d559e407430
+- LAKE_FLOOR_SELFTEST_FIX_WET_SKIPS_HEIGHT on 989284c054d6
+- RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE on 5d9004b9ce
+- PIT_RESCUE_FIX_UNREACHABLE_SPARE_LADDER on 5d9004b9ce
+- RIMMANDRAKE_COVER_FLOWWORKS_REVIEW_MAP_THIRTY_NINE_STILL_UNSHOWN on f0a9d24739aa
 
 ## Traps (276) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
@@ -205,7 +205,6 @@ holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 4
 - trap:first-find-sends-letter-has-never-been-read
 - trap:sha-ee9fa61fbc-and-the-lesson-s-commit-13ba79077b
 - trap:the-owner-held-validation-until-the-girth-look
-- trap:the-stale-rsw-names-raise-no-error-they
 - trap:the-hose-live-rows-are-gated-by-offline
 - trap:core-live-rows-j-workgiver-selection-fail-rm
 - trap:a-red-run-never-closes-this-item-as
@@ -318,7 +317,7 @@ holder session c9cbf7ed-3b78-4561-8075-4ee057f3f873, context 413072 of ceiling 4
 - trap:red-marks-over-tar-in-a-paused-shot-are-hit-flecks
 - trap:the-floor-band-set-is-swept-every-60-ticks
 - trap:a-full-wet-cap-anywhere-refuses-every-spill
-- 145 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
+- 146 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (48) — do not chase these again
 - cause:285-shows-lake-floor-1-5184-squares-plains: Mod regression in deep beds: ruled out as SITE. Player_s2_river_load.log:285 sh… (on f518e7c1987b)
@@ -494,11 +493,11 @@ spend recorded: USD 78.94, 45401435 tokens
 - closed findings: 186, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - closed traps: 2, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - tests: 49, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- claimed fixes in brief: 48 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 126 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
+- claimed fixes in brief: 54 on one line (name and sha), their claim, test and fix by `show`
+- open findings in brief: the oldest 120 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1884 events (views/history.md; never read whole)
+- the full history: 1895 events (views/history.md; never read whole)
 
-cursor: t=2026-11-28T03:48:52Z.1795837732400304510 (modledger.py since --mod FlowWorks t=2026-11-28T03:48:52Z.1795837732400304510 prints what changed after this packet)
+cursor: t=2026-11-28T04:58:01Z.1795841881596648161 (modledger.py since --mod FlowWorks t=2026-11-28T04:58:01Z.1795841881596648161 prints what changed after this packet)

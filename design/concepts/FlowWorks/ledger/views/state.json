@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "8146dd1e9d29579bd1b7060a63e69194faf7c59bf142062721b4db4d25e52453",
+  "body_sha256": "9daec4bec447665fc832f38706cd22ef4a9d9a404295ebdc64254f3a1fa966a6",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -49,7 +49,7 @@
    "HOLDER.run-1795782541": 1037,
    "HOLDER.run-1795783799": 859,
    "HOLDER.run-1795818114": 3744,
-   "HOLDER.run-1795831307": 2167,
+   "HOLDER.run-1795831307": 7784,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1301,10 +1301,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795831307",
-   "done": "seal of the blind brief sealed section fixed and closed (c2404dd6a0); bundle WB-mod-FlowWorks-20261128-020147 step A: 25 of 47 members have an outcome (2 closed, 2 dropped, 10 refused as 0.2.0 work, 11 re-homed); MIDCHANNEL unblocked",
-   "next": "Run step A on the 22 members left in infrastructure/bundles/WB-mod-FlowWorks-20261128-020147.md",
-   "ruled_out": "the selftest_resume_voided_blind_judge red was this run environment (RM_MODLEDGER_WRITER), not the seal change",
-   "ts": "2026-11-28T03:36:08Z"
+   "done": "restart 1 of WB-mod-FlowWorks-20261128-020147: step A on 22 members; fixes published b64b4353ef, 8491944d06, 8d559e4074, 989284c054, f0a9d24739; live rescue scene PASS 32a2ed9dfd; wrong-checks and rescue umbrellas closed",
+   "next": "Restart the bundle from its state file Next: liquid rules first, then the rain alert",
+   "ruled_out": "dug-substructure state cannot come from a colonist dig; MIDCHANNEL reach already PASS in visits 3 and 11",
+   "ts": "2026-11-28T04:58:01Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1756,7 +1756,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1884,
+  "events": 1895,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2431,18 +2431,18 @@
     "accept": "none, no acceptance filed beyond an offline selftest or live proof to be chosen; check git log origin/main --grep for an existing commit first.",
     "bars": [],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "seven moved names repointed to RM_ (Karrask is in neither form)",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "b64b4353ef72",
     "proposed_fix": "Repoint the defName= list in FlowWorks_LadderClimbers.xml from RSW_ to RM_ names; sweep once after the moves with git grep -w per moved RSW_ name, as later batches add more.",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [
      "live",
      "test",
      "other-mod"
     ],
     "text": "FlowWorks_LadderClimbers.xml still names RSW_ creatures that moved to the RM tier as RM_ (Diplocaulus, Holcorobeus, Platyhystrix, Protosolpuga, Karrask); the old names match nothing, a silent no-op.",
-    "ts": "2026-11-16T11:41:22Z",
+    "ts": "2026-11-28T04:07:55Z",
     "version": "0.1.0"
    },
    "finding:FLOWWORKS_CODE_REVIEW_FINISH_DIRTY_FILES": {
@@ -4579,14 +4579,14 @@
      "inv_bridges"
     ],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "MightClimb lets a ladderless pawn reach CanClimbAt while a ladder leans on a wall of its map",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "8d559e407430",
     "proposed_fix": "Let MightClimb admit pawns when a standing leaning ladder is available, not only the player or a ladder carrier.",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "RM_LadderParity.cs MightClimb (267-278) admits only the player faction or a ladder carrier, so a ladderless hostile never reaches CanClimbAt for an already leaning ladder; the RM_WallClimb.cs callers (172,335,367,401,477) reject it and it bashes or waits outside.",
-    "ts": "2026-11-16T11:41:27Z",
+    "ts": "2026-11-28T04:23:53Z",
     "version": "0.1.0"
    },
    "finding:LADDER_ROWS_WIDEN_STILL_COUNT_TO_TWO": {
@@ -4610,17 +4610,17 @@
     "accept": "none, item only records the defect; no command filed",
     "bars": [],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "EdgeReachable counts a wet square only when the water surface is within k notches below where the creature stands",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "989284c054d6",
     "proposed_fix": "Check the final height difference (the step into the wet cell) before accepting a wet cell or wet neighbour as reachable.",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [
      "test",
      "other-mod"
     ],
     "text": "LakeFloorChecks.cs EdgeReachable (lines 85,97) returns reachable on any wet cell or wet neighbour before comparing heights, so a sunken lake can be called reachable and the drained-lake access proof misses an inaccessible final descent.",
-    "ts": "2026-11-16T11:41:27Z",
+    "ts": "2026-11-28T04:34:35Z",
     "version": "0.1.0"
    },
    "finding:LAKE_FLOOR_STAGE_TAME_QUADRATIC_SETS": {
@@ -5340,14 +5340,14 @@
      "ways_in_and_out"
     ],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "TryQueueFor asks HasNoWayOut; SparePortable offers only a reachable ladder",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "5d9004b9ce",
     "proposed_fix": "Add a reachability check to SparePortable so an unreachable minified ladder is not chosen over building a new one.",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "SparePortable (RM_PitAccess.cs:257-268) picks a minified portable ladder without checking reachability. For one in a sealed chamber, TryQueueFor makes an install blueprint nobody can finish, and the pending blueprint stops later attempts building a ladder, so rescue stalls.",
-    "ts": "2026-11-16T11:41:29Z",
+    "ts": "2026-11-28T04:51:16Z",
     "version": "0.1.0"
    },
    "finding:PIT_SHOT_PROOF_FIX_OTHER_TARGET_PASSES": {
@@ -5793,11 +5793,11 @@
     "accept": "python3 src/RimMandrake/FlowWorks/selftest_review_map.py exits 0; the uncovered list is empty.",
     "bars": [],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "every inventory item matches a FEATURES rule",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "f0a9d24739aa",
     "proposed_fix": "Add FEATURES rows to review_map_coverage.py naming a station or a 'matrix: <reason>' for each uncovered item.",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [
      "test",
      "settings",
@@ -5805,7 +5805,7 @@
      "other-mod"
     ],
     "text": "selftest_review_map.py is red on main: 43 inventory items match no FEATURES rule in review_map_coverage.py (39 after one run covered 5). Uncovered: geyser-pool defs, RM_LiquidCoat, ~24 Mod Settings fields, 'Dig pit'/'Fill in pit' gizmos, textures RM_SunkVent, RM_Shovel(_m), RM_VentFroth.",
-    "ts": "2026-11-16T11:41:55Z",
+    "ts": "2026-11-28T04:55:38Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING": {
@@ -6039,14 +6039,14 @@
      "ways_in_and_out"
     ],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "TryQueueFor asks HasNoWayOut; SparePortable offers only a reachable ladder",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "5d9004b9ce",
     "proposed_fix": "Make TrappedIn read trapped for an own-faction pawn when superdeepCapturesOwnFaction is off and the pocket has no climbable exit; find how an idle colonist got in (wander and warden lip jobs suspected).",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "A colonist stranded in a roofed 5x5 pit dug 4 m reads `trapped=False` in ProofClimb (POCKET pocket=True size=25 depth=8), cannot leave, and the stranded-colonist rescue never queues.",
-    "ts": "2026-11-16T11:41:31Z",
+    "ts": "2026-11-28T04:51:15Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_JUDGE_FLOWWORKS_REVIEW_SAVE_FOUR_LOOK_QUESTIONS": {
@@ -7872,7 +7872,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-28T03:36:08Z",
+   "last": "2026-11-28T04:58:01Z",
    "lease": "run-1795831307",
    "released": false,
    "token": 66
