@@ -29,6 +29,7 @@ the guard lets the mod through and says so.
 
 Contract: the docstring of acceptance/guard_judge_certificate_accept.py (the filing seat's; the builder does not edit it).
 """
+from collections import Counter
 import datetime
 import hashlib
 import json
@@ -741,10 +742,12 @@ def _asks_on_empty_game(root, tt, row, did_not_run):
                 did_not_run.append("asks_on_empty_game did not run on %d in-game test(s) in %s: %s"
                                    % (sum(len(u) for u in entries.values()), path, why))
             continue
-        if got.get("refused"):
+        if got.get("refused"):      # the whole count and each distinct act (refused is the first 20 examples only)
+            acts = got.get("refused_acts") or [[a, n] for a, n in sorted(Counter(got["refused"]).items())]
             did_not_run.append("asks_on_empty_game: the sandbox refused %d act(s) of %s's chains on an empty game (a "
-                               "chain that needed one may list too little): %s" % (len(got["refused"]), path,
-                                                                                    "; ".join(got["refused"][:3])))
+                               "chain that needed one may list too little): %s" % (
+                                   got.get("refused_count") or len(got["refused"]), path,
+                                   "; ".join("%s (%d)" % (a, n) for a, n in acts)))
         missing = [e for e in sorted(entries) if e in (got.get("missing") or [])]
         if missing:     # never run, so absence from the vacuous list establishes nothing
             did_not_run.append("asks_on_empty_game did not run on %d in-game scene(s) %s: not a live chain of %s's suite"

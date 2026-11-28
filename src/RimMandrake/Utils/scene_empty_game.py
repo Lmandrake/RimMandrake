@@ -25,6 +25,7 @@ part 2, design/specs/2026-11-15-cheap-guards-at-every-door.md section 3.4). No g
 Two harnesses have an adapter: FlowWorks' scene harness (`_Stage` scenes in a STAGE3_SCENES table) and a modcheck `Suite`
 (RIMMANDRAKE_ADAPT_SUITE_SCENES_TO_EMPTY_GAME_FLOWWORKS_ONLY). The certificate runs each in its own bounded process.
 """
+from collections import Counter
 import inspect
 import os
 import sys
@@ -238,7 +239,8 @@ def suite_file_vacuous(root, path, chains=None):
     have = [n for n, _ in suite.chains if n not in suite.offline_chains]
     ask = None if chains is None else [c for c in chains if c in have]
     return {"vacuous": [list(p) for p in suite_vacuous(suite, ask)], "chains": have if ask is None else ask,
-            "missing": [] if chains is None else [c for c in chains if c not in have], "refused": REFUSED[:20]}, None
+            "missing": [] if chains is None else [c for c in chains if c not in have], "refused": REFUSED[:20],
+            "refused_count": len(REFUSED), "refused_acts": sorted([a, n] for a, n in Counter(REFUSED).items())}, None
 
 
 def main(argv=None):

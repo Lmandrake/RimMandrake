@@ -79,7 +79,23 @@ def scene_s(t):
 '''
 
 
-def suite_run():
+SUITE_MANY = '''
+from modcheck import Suite
+suite = Suite("M")
+
+@suite.chain("scene_s")
+def scene_s(t):
+    for k in range(25):
+        try:
+            open(%(w)r if k %% 2 else %(p)r, "w").write("x")
+        except OSError:
+            pass
+    with t.component("c_vac"):
+        pass
+'''
+
+
+def suite_run(src=None):
     """-> (certificate, [marks made]) for a Suite chain that writes, spawns and makes a dir before a vacuous row."""
     out = tempfile.mkdtemp(prefix="aoeg_out_")
     ROOTS.append(out)
@@ -87,7 +103,7 @@ def suite_run():
     root = root_with(None, table())
     os.makedirs(os.path.join(root, "src/RimMandrake/M"))
     with open(os.path.join(root, "src/RimMandrake/M/validation.py"), "w") as f:
-        f.write(SUITE % marks)
+        f.write((src or SUITE) % marks)
     v = JC.certify(root, "M", to="in_game")
     return v, [k for k, m in marks.items() if os.path.exists(m)]
 
@@ -105,6 +121,15 @@ def t_refused_act_is_named():
     v, _made = suite_run()
     ok(any("sandbox refused 3" in d for d in v["did_not_run"]),
        "the refused acts are named with their count, never silent (%s)" % v["did_not_run"])
+    t_refused_act_count_is_whole()
+
+
+def t_refused_act_count_is_whole():
+    """refused-act-is-named, past the first few: 25 refusals of 2 distinct acts are counted whole and both are named."""
+    v, made = suite_run(SUITE_MANY)
+    line = [d for d in v["did_not_run"] if "sandbox refused" in d]
+    ok(not made and line and "sandbox refused 25 " in line[0] and "written" in line[0] and "spawned" in line[0],
+       "every refused act is counted and each distinct act is named (%s)" % (line or v["did_not_run"]))
 
 
 def t_csharp_and_scene_scripts_are_not_executed():
