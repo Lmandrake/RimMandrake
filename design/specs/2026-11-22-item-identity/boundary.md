@@ -30,5 +30,13 @@ it, three readers (`maturation_now.py`, `rimflow_metrics.py`, `fleet_mods.py`) e
   `RM_CONTROL_STAGE` that the ticket lane launched is on no mod. So the badge of a mod reads a live run only when the run
   is work on that mod (RIMMANDRAKE_FIX_PASSED_MOD_BADGE_HELPER_WAS_TOOL_REPAIR). Tested by case 19 of
   `selftest_maturation_now.py` (`p19_badges`).
+- **a-badge-of-a-mod-with-no-live-run-names-the-next-step-and-who-takes-it.** `maturation_now.badge_of` gives a mod that is
+  not held and has no live run the words of `wait_reason`: a passed mod with no scope proposal page reads "rests" (calm
+  colour) and says no scope page exists yet; with a page and no `scope_answer` it reads "waiting" and names the page and
+  the owner; in a build stage it carries the reason of the Dispatch tick (`mod_next`). A reason that cannot be read (no
+  VERSION.json, no `next_version` folder, an UNMEASURED reading) reads "could not look" and names what; the badge is never
+  the bare word "waiting" and never empty (RIMMANDRAKE_NAME_WHAT_A_WAITING_MOD_WAITS_FOR_PASSED_READ_STUCK). Tested by
+  `t_a_badge_of_a_mod_with_no_live_run_names_the_next_step_and_who_takes_it` in `selftest_item_identity.py`, and by case 20
+  (`p20_a_badge_of_a_mod_with_no_live_run_names_the_next_step_and_who_takes_it`) of `selftest_maturation_now.py`.
 - **one-alias-table.** A short name that is not in a mod's own name (`HOSE`, `FW` for FlowWorks) is in `ALIASES` here
   and nowhere else among the readers.

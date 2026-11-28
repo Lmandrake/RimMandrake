@@ -903,11 +903,70 @@ def p19_badges():
           m2b["status"] == "helper" and "RIMMANDRAKE_ADVANCE_FOOMOD_OFFLINE" in M.status_word(m2b),
           "word %r" % M.status_word(m2b))
     m3 = mod_view("FooMod", "3", [])
-    check("19 a mod with no live run: the badge is unchanged (waiting)",
-          m3["status"] == "waiting" and M.status_word(m3) == "waiting", "%r %r" % (m3["status"], M.status_word(m3)))
+    check("19 a mod with no live run is waiting; with no recorded reason its badge says could not look (case 20 has the reasons)",
+          m3["status"] == "waiting" and M.status_word(m3).startswith("could not look"), "%r %r" % (m3["status"], M.status_word(m3)))
     m4 = mod_view("FooMod", "3", [own], held=True)
     check("19 a held mod with a live run tied to it: the badge still reads held",
           m4["status"] == "held" and M.status_word(m4) == "held", "%r %r" % (m4["status"], M.status_word(m4)))
+
+
+def p20_a_badge_of_a_mod_with_no_live_run_names_the_next_step_and_who_takes_it():
+    """A badge of a mod with no live run names the next step and who takes it
+    (RIMMANDRAKE_NAME_WHAT_A_WAITING_MOD_WAITS_FOR_PASSED_READ_STUCK): a passed mod rests (calm, not orange) and says
+    whether a scope page exists; a scope page with no answer waits for the owner and names the page; a build stage
+    names the dispatch tick's reason; a reason that cannot be read says COULD NOT LOOK and what; a hold is unchanged."""
+    M = MN()
+
+    def view(column, rest=None, waits="UNMEASURED (not given)", held=False):
+        m = {"name": "FooMod", "column": column, "held": held, "runs": [], "waits_on": waits}
+        if rest is not None:
+            m["rest"] = rest
+        m["status"], m["status_what"] = M.badge_of(m)
+        return m, M.status_word(m), M.status_word(m, short=True)
+
+    passed_waits = "waiting: the version passed and the mod rests; its next version opens only on his answer"
+    m1, w1, s1 = view("passed", {"pages": [], "answer": "", "err": None}, passed_waits)
+    check("20 a passed mod with no scope page: the badge is not the bare word 'waiting'; it says passed, rests, no scope page",
+          w1 != "waiting" and "rest" in w1.lower() and "no scope page" in w1.lower() and s1 != "waiting",
+          "status %r long %r short %r" % (m1["status"], w1, s1))
+    check("20 a passed mod that rests is not orange (orange is a wait on an act that somebody owes)",
+          M.STATUS[m1["status"]][0] != M.STATUS["waiting"][0], "status %r fill %r" % (m1["status"], M.STATUS[m1["status"]][0]))
+    m2, w2, s2 = view("passed", {"pages": ["scope_proposal_0.3.0.md"], "answer": "", "err": None}, passed_waits)
+    check("20 a passed mod with a scope page and no scope_answer: waits for the owner's answer and names the page",
+          m2["status"] == "waiting" and "owner" in w2.lower() and "scope_proposal_0.3.0.md" in w2 and "owner" in s2.lower(),
+          "status %r long %r short %r" % (m2["status"], w2, s2))
+    m2b, w2b, _s = view("passed", {"pages": ["scope_proposal_0.3.0.md"], "answer": "OWNER:1", "err": None}, passed_waits)
+    check("20 a passed mod with a recorded scope_answer is not shown as waiting for it",
+          "owner's answer" not in w2b.lower() and m2b["status"] == "waiting", "status %r long %r" % (m2b["status"], w2b))
+    m2c, w2c, s2c = view("passed", {"pages": None, "answer": None, "err": "VERSION.json: no file"}, passed_waits)
+    check("20 a passed mod whose scope facts cannot be read: COULD NOT LOOK and what could not be read",
+          "could not look" in w2c.lower() and "VERSION.json" in w2c and w2c != "waiting",
+          "status %r long %r short %r" % (m2c["status"], w2c, s2c))
+    m3, w3, s3 = view("3", None, "waiting: waiting, says the Dispatch tick (11:50 AM for 12 min): needs an owner answer on card X")
+    check("20 a mod in a build stage with no live run: the badge names the dispatch tick's reason",
+          m3["status"] == "waiting" and "needs an owner answer on card X" in w3 and s3 != "waiting",
+          "status %r long %r short %r" % (m3["status"], w3, s3))
+    m3b, w3b, _s = view("3", None, "UNMEASURED (mod_next: OSError: boom)")
+    check("20 a build-stage mod whose reason cannot be read: COULD NOT LOOK and what; never a made-up reason or an empty badge",
+          "could not look" in w3b.lower() and "mod_next" in w3b, "status %r long %r" % (m3b["status"], w3b))
+    m4, w4, s4 = view("3", None, "held: HELD BY OWNER 2026-11-20 x", held=True)
+    check("20 a held mod: the badge reads held, unchanged", m4["status"] == "held" and w4 == "held" and s4 == "held",
+          "%r %r %r" % (m4["status"], w4, s4))
+    # the reading of the files: a planted folder tree
+    with tempfile.TemporaryDirectory() as t:
+        c = os.path.join(t, "design", "concepts", "FooMod", "version", "next_version")
+        os.makedirs(c)
+        open(os.path.join(c, "README.md"), "w").write("x")
+        json.dump({"version": "0.2.0", "state": "passed"}, open(os.path.join(t, "design", "concepts", "FooMod", "version", "VERSION.json"), "w"))
+        r0 = M.read_rest(t, "FooMod")
+        open(os.path.join(c, "scope_proposal_0.3.0.md"), "w").write("page")
+        r1 = M.read_rest(t, "FooMod")
+        json.dump({"version": "0.2.0", "scope_answer": "OWNER:77"}, open(os.path.join(t, "design", "concepts", "FooMod", "version", "VERSION.json"), "w"))
+        r2 = M.read_rest(t, "FooMod")
+        r3 = M.read_rest(t, "NoSuchMod")
+    check("20 read_rest reads the page, the answer, and says could-not-look for a missing tree",
+          r0["pages"] == [] and not r0["answer"] and r1["pages"] == ["scope_proposal_0.3.0.md"]
+          and r2["answer"] == "OWNER:77" and r3["err"] and r3["pages"] is None, "%r %r %r %r" % (r0, r1, r2, r3))
 
 
 def main():
@@ -939,6 +998,7 @@ def main():
     p17_owed_close()
     p18_dense_mod_section(d, page)
     p19_badges()
+    p20_a_badge_of_a_mod_with_no_live_run_names_the_next_step_and_who_takes_it()
     print("FAILED: %d (%s)" % (len(FAILS), ", ".join(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

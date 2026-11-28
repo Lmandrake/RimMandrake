@@ -112,8 +112,9 @@ BG, CARD, EDGE, TEXT, DIM, FAINT = "#171310", "#211b16", "#4a3d2e", "#efe7d9", "
 ALERT, INK = "#ff8a7a", "#14100c"
 DONE = "#3f5a2c"
 STATUS = {   # key: (fill, text colour, word on the chip, legend line)
-    "helper": ("#8aa24a", INK, "run live", "a run is live on it now (its chip names the stage or item)"),
-    "waiting": ("#c98536", INK, "waiting", "waiting for its next step"),
+    "helper": ("#8aa24a", INK, "run live", "a run is live"),
+    "waiting": ("#c98536", INK, "waiting", "waits on an owed act"),
+    "rests": ("#7d6f58", TEXT, "rests", "passed, resting"),
     "held": ("hatch", TEXT, "held", "held on purpose"),
     "unknown": ("#6d6252", TEXT, "stage unread", "its stage could not be read"),
 }
@@ -359,6 +360,8 @@ def read_mod(root, folder, names, live=True):
     if m["versionless"] and not re.match(r"(held|off|paused|UNMEASURED)\b", m["waits_on"]):   # a hold outranks the Designer
         m["waits_on"] = ("the owner's lock: the Designer tree is locked, no Design Version is named yet" if m["owner_lock"]
                          else (m["designer_why"] or "the Designer; no Design Version named yet"))
+    if m["column"] == "passed":
+        m["rest"] = read_rest(root, folder)
     m["questions"] = j.get("questions") or ""
     m["journal_version"] = j.get("version") or ""
     # last movement: the newest dated thing in the journal or the Designer record
@@ -648,25 +651,74 @@ def run_view(rec, now, spend=read_spend):
             "died": not live and (st == "dead" or bool(res) and not FC.of_run(dict(rec, status="finished")).counts)}
 
 
+def read_rest(root, folder):
+    """-> {"pages": [scope proposal page names] | None, "answer": VERSION.json's scope_answer, "err": None | what could not
+    be read}. The facts that tell a passed mod's rest from a wait (the rule that decides the next step stays in
+    maturation.py and mod_next: this reads only the files they read). None for pages: could not look, never "none"."""
+    v = os.path.join(root, "design", "concepts", folder, "version")
+    d, err = read_json(os.path.join(v, "VERSION.json"))
+    if d is None:
+        return {"pages": None, "answer": None, "err": "VERSION.json: %s" % err}
+    nv = os.path.join(v, "next_version")
+    try:
+        pages = sorted(f for f in os.listdir(nv) if re.match(r"scope_proposal_.+\.md$", f))
+    except OSError as e:
+        return {"pages": None, "answer": None, "err": "version/next_version: %s" % e.__class__.__name__}
+    return {"pages": pages, "answer": str(d.get("scope_answer") or "").strip(), "err": None}
+
+
+def wait_reason(m):
+    """-> (status key, long words, short words) for a mod that is not held and has no live run: its next step and who
+    takes it. A passed mod that rests is "rests" (calm); a wait on an act somebody owes is "waiting". A reason that cannot
+    be read is "could not look" and names what: never a made-up reason, never an empty badge."""
+    if m.get("column") == "passed":
+        r = m.get("rest")
+        if not isinstance(r, dict) or r.get("err") or r.get("pages") is None:
+            why = (r or {}).get("err") if isinstance(r, dict) else None
+            return "waiting", "could not look: %s" % (why or "the scope page and scope_answer were not read"), "could not look"
+        if r["pages"] and r.get("answer"):
+            return ("waiting", "the Conductor opens the next version: his answer %s is recorded for %s"
+                    % (r["answer"], r["pages"][-1]), "opens next")
+        if r["pages"]:
+            return "waiting", "waits for the owner's answer to the scope page %s" % r["pages"][-1], "owner's answer"
+        return ("rests", "rests: the version passed; no scope page for the next version exists yet (the Designer writes it)",
+                "passed, rests")
+    w = str(m.get("waits_on") or "")
+    if not w or w.startswith(UNM):
+        return ("waiting", "could not look: %s" % (re.sub(r"^UNMEASURED\s*", "", w).strip("() ") or "no reason was recorded"),
+                "could not look")
+    x = re.match(r"nothing: it may run \((.*)\)\s*$", w, re.S)
+    w = ("the tick launches it: " + x.group(1)) if x else re.sub(r"^waiting:\s*", "", plain_wait(w))
+    short = ("your hold" if w.startswith("your hold") else "switched off" if w.startswith("switched off")
+             else "waits: owner" if re.search(r"(?i)owner|his answer|card", w) else "waits: tick" if re.search(r"(?i)tick", w)
+             else "waits: its step")
+    return "waiting", "waiting: " + clip(w, 150), short
+
+
 def badge_of(m):
-    """-> (status key, what the live run does or "") of a mod's badge. The owner's hold outranks a run. A run that is on
-    the mod is in m["runs"] (runs_for_mods); a run of the ticket lane never is. what: the stage of the run, else its item
-    (a hand run on the mod records none), and "+N" for N more live runs."""
+    """-> (status key, what) of a mod's badge. The owner's hold outranks a run. A run that is on the mod is in m["runs"]
+    (runs_for_mods); a run of the ticket lane never is. With a live run, what is the stage of the run, else its item (a
+    hand run on the mod records none), and "+N" for N more live runs. With none, the status and words are wait_reason's:
+    the next step and who takes it."""
     if m["column"] == UNM:
         return "unknown", ""
     if m["held"]:
         return "held", ""
     live = [r for r in m["runs"] if r["live"]] if isinstance(m["runs"], list) else []
     if not live:
-        return "waiting", ""
+        st, what, _short = wait_reason(m)
+        return st, what
     r = live[0]
     what = ("at " + stage_title(r["stages"][0])) if r.get("stages") else "on " + r["item"]
     return "helper", what + (" +%d" % (len(live) - 1) if len(live) > 1 else "")
 
 
 def status_word(m, short=False):
-    """The word on a mod's badge: for a live run, what it does (its stage, else its item). short: for the chip in a stage
-    column of the picture, where about 14 characters fit."""
+    """The word on a mod's badge: for a live run, what it does (its stage, else its item); with none, the next step (rests
+    or waiting: wait_reason). short: for the chip in a stage column of the picture, where about 14 characters fit."""
+    if m["status"] in ("waiting", "rests") and m.get("status_what"):
+        st, long_, short_ = wait_reason(m)
+        return short_ if short else long_
     if m["status"] != "helper" or not m.get("status_what"):
         return STATUS[m["status"]][2]
     what = m["status_what"]
@@ -1274,7 +1326,7 @@ def picture(d):
         p.append(t_(x, 27, a, 11, TEXT, 700) + t_(x + 10 + len(a) * 7.8, 27, b, 10.5, DIM))
     # legend
     x = 14
-    for k in ("helper", "waiting", "held"):
+    for k in ("helper", "waiting", "rests", "held"):
         p.append('<rect x="%d" y="46" width="12" height="12" rx="2" fill="%s"/>' % (x, chip_fill(k)))
         p.append(t_(x + 17, 56.5, STATUS[k][3], 10.5, DIM))
         x += 30 + len(STATUS[k][3]) * 5.6

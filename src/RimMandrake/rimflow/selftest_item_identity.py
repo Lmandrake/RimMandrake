@@ -139,9 +139,41 @@ def t_a_run_is_placed_by_its_record_or_its_id_never_its_title():
     return bad
 
 
+def t_a_badge_of_a_mod_with_no_live_run_names_the_next_step_and_who_takes_it():
+    """RIMMANDRAKE_NAME_WHAT_A_WAITING_MOD_WAITS_FOR_PASSED_READ_STUCK: the badge of a mod with no live run is never the bare
+    word 'waiting'. Passed, no scope page: rests (calm, not the orange of a wait); a page and no answer: the owner, naming
+    the page; a build stage: the tick's reason; an unreadable reason: could not look. A hold reads held."""
+    mn = importlib.import_module("maturation_now")
+
+    def word(column, rest=None, waits="UNMEASURED (not given)", held=False):
+        m = {"name": "FooMod", "column": column, "held": held, "runs": [], "waits_on": waits, "rest": rest}
+        m["status"], m["status_what"] = mn.badge_of(m)
+        return m, mn.status_word(m), mn.status_word(m, short=True)
+
+    bad = []
+    m, w, s = word("passed", {"pages": [], "answer": "", "err": None})
+    if not (m["status"] == "rests" and "no scope page" in w and s != "waiting"
+            and mn.STATUS["rests"][0] != mn.STATUS["waiting"][0]):
+        bad.append("passed, no scope page: %r %r %r" % (m["status"], w, s))
+    m, w, s = word("passed", {"pages": ["scope_proposal_0.3.0.md"], "answer": "", "err": None})
+    if not (m["status"] == "waiting" and "owner" in w and "scope_proposal_0.3.0.md" in w):
+        bad.append("passed, a page and no answer: %r %r" % (m["status"], w))
+    m, w, s = word("3", None, "waiting: waiting, says the Dispatch tick (x): needs the card answered")
+    if not (m["status"] == "waiting" and "needs the card answered" in w and s != "waiting"):
+        bad.append("build stage: %r %r %r" % (m["status"], w, s))
+    m, w, s = word("3", None, "UNMEASURED (mod_next: boom)")
+    if "could not look" not in w or "mod_next" not in w:
+        bad.append("unreadable reason: %r" % w)
+    m, w, s = word("3", None, "held: x", held=True)
+    if not (m["status"] == "held" and w == "held"):
+        bad.append("held: %r %r" % (m["status"], w))
+    return bad
+
+
 def main():
     tests = (t_one_answer, t_id_before_title, t_a_tie_names_none, t_one_alias_table, t_a_run_is_on_its_recorded_stage,
-             t_a_run_is_placed_by_its_record_or_its_id_never_its_title)
+             t_a_run_is_placed_by_its_record_or_its_id_never_its_title,
+             t_a_badge_of_a_mod_with_no_live_run_names_the_next_step_and_who_takes_it)
     fails = 0
     for t in tests:
         bad = t()
