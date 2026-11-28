@@ -3326,6 +3326,9 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         text = (judge_resumed_text(f, session) if f.get("stage") == "blind_challenge" else
                 resumed_text(mod, session)) + "\n" + text
     path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
+    text, sealed = seal_steward(text, path, expect=f.get("stage") == "blind_challenge")
+    if text is None:
+        return 2, sealed, None
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     argv = [sys.executable, detached_helper_path(), "launch", "--by-program", "maturation", "--seat", seat, "--item", item, "--brief-file", path,
@@ -3354,6 +3357,37 @@ BLIND_DIR = "version/blind_challenge"
 FORMAT_NOTES = "design/concepts/ExplosiveKnockback/version/blind_challenge/FORMAT_NOTES.md"
 OFFLINE_PROVES = ("2", "4-5")       # FORMAT_NOTES: the offline bars are those proving at stage 2 or 4-5
 JUDGE_MODELS = ("opus", "fable")    # a judging role: Agent_Policy.md forbids a cheaper tier
+# RIMMANDRAKE_SEAL_STEWARD_SECTION_BLIND_JUDGE_READ_IT_FIRST (design/specs/2026-11-28-seal-steward-section/boundary.md):
+# a detached run's launch line orders it to read its whole brief file, so the blind judge of FlowWorks cycle 5 read the
+# sealed section before lane 1 (2026-11-27). At launch the section goes to its own file beside the brief, named in it.
+SEAL_MARK = "## Steward's decisions (SEALED: read only after lane 1 is committed)"
+SEAL_RULE = ("## Steward's decisions (SEALED)", "",
+             "The Conductor's decisions as steward for this cycle are in `%s`. They are not in this brief, so that "
+             "reading this whole brief keeps you blind. Open that file only after lane 1 is committed; then read it "
+             "whole, before lane 2.")
+
+
+def seal_steward(text, brief_path, expect):
+    """-> (handed text, sealed text or None), or (None, refusal). The sealed section, from its marker (and the `---`
+    rule just before it) to the end, is cut from the text and written to <brief_path>.sealed.md; the handed text ends
+    with SEAL_RULE naming that file. No marker: unchanged when none is expected; a refusal naming the marker when one
+    is (expect: the blind challenge, whose brief always carries it)."""
+    i = text.rfind(SEAL_MARK)      # the last: the section ends the stage's brief; a prepended packet may quote it
+    if i < 0:
+        if expect:
+            return None, ("REFUSED: the blind judge's brief has no sealed section marker `%s`, so its Steward's decisions "
+                          "cannot be kept out of the brief file; nothing launched (fix blind_brief_text)" % SEAL_MARK)
+        return text, None
+    head, sealed = text[:i].rstrip("\n"), text[i:]
+    if head.endswith("\n---"):
+        head = head[:-len("\n---")]
+    sp = brief_path + ".sealed.md"
+    with open(sp, "w", encoding="utf-8") as fh:
+        fh.write(sealed)
+    handed = head.rstrip("\n") + "\n\n---\n\n" + "\n".join(SEAL_RULE) % sp + "\n"
+    return handed, sealed
+
+
 BLIND_DEFAULT = ("No Conductor decisions are written for this cycle, so the standing default holds: judge every bar as "
                  "locked, fix each Problem in place red first, write every bar or criterion you believe wrong up as "
                  "NOTED_FOR_CONDUCTOR, and build no verdict on it. Nothing here asks you to change a bar, its wording, "
@@ -4037,7 +4071,7 @@ def blind_brief_text(root, mod, cap_usd=None):
         base_sha = cycle_open_sha(mod, n - 1)
         closed.insert(0, "anything under `version/blind_challenge/` except `cycle_%d/tests_edited.json`" % (n - 1))
         closed.append("commit messages after `%s`" % (base_sha[:10] if base_sha else UNM))
-    closed.append("the section \"Steward's decisions\" at the end of this brief")
+    closed.append("the sealed \"Steward's decisions\" (the end of this brief names where they are)")
     L += ["", "**Stay blind until lane 1 is recorded.** Before then, do not open any of these:"] + \
          ["- %s" % x for x in closed]
 
@@ -4118,7 +4152,7 @@ def blind_brief_text(root, mod, cap_usd=None):
           "Now open `version/test_table.json` (`tests.*.command`, `runs_today`, `kind`, `partial`, `known_red`; "
           "`bars.*.proves_at` and `offline_decides`), the code including the game-side callers of every kernel you "
           "tested (the pilot's two real Problems were both in callers), the journal's open questions and its oddities%s, "
-          "and then the Steward's decisions at the end." % (", and `%s`" % FORMAT_NOTES if own_notes else ""), "",
+          "and then the sealed Steward's decisions (the end of this brief names their file)." % (", and `%s`" % FORMAT_NOTES if own_notes else ""), "",
           "**Reruns.** Rerun every decider of an offline bar with its recorded command, then as many of the other "
           "offline tests as the bound allows:"]
     seen = set()
@@ -4252,7 +4286,7 @@ def blind_brief_text(root, mod, cap_usd=None):
 
     # ---- steward's decisions
     lines, undated = steward_lines(rec, read_text(root, mod, "journal.md") or "", n)
-    L += ["", "---", "", "## Steward's decisions (SEALED: read only after lane 1 is committed)", "",
+    L += ["", "---", "", SEAL_MARK, "",
           "These are the Conductor's decisions as steward, carrying the owner's authority: design inputs, not findings. "
           "Record each one you act on with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` (that writes "
           "`infrastructure/state/ledger/events/OWNER.jsonl`: commit and publish it too).", ""]
