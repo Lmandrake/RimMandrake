@@ -48,13 +48,9 @@ Divergent work: anything that shifts or extends the 0.1.0 vision (`../vision.md`
 ### Design draft of the whoosh (2026-11-27)
 - `design/specs/2026-11-27-knockback-big-blast-whoosh/design.md` (Designer pass of work bundle WB-mod-FlowWorks-20261127-063415): one whoosh event over the set of burning cells, a push from the nearest burning cell through the open air (walls block, an open door weakens), reach that grows with the burning area, one visible wave and one sound; proposed bars with their cheapest tests; three questions for him with recommendations.
 
-## Correction after the 0.2.0 pass: the mod gives the haul back when the thrown stack lands (rimflow `RIMMANDRAKE_SORT_KNOCKBACK_LANE_FAILS_ARCHBIG_PASSES_SAME_CHECKS`)
+## After the 0.2.0 pass: a thrown colonist is not sent back to its haul (the owner's card of 2026-11-27)
 
-- **Kind:** Convergent. It is a correction for Design Version 0.2.1 (PATCH). It moves no 0.2.0 bar and adds none. The tag `mod/ExplosiveKnockback/v0.2.0` stays on its pass commit.
-- **Proposed by:** the ticket-lane run that found the fault, 2026-11-27. The Conductor made the version call the same day (note on the item).
-- **What was wrong:** a thrown colonist's carried stack flies further and lands about 7 ticks after the colonist. The mod looked for the stack when the colonist landed, saw none and gave up the haul. The colonist went back to the haul only by its own choice, and at site 27,12 it never did (3 of 3 in 900 ticks).
-- **State:** built and published at 11fffbf13b (`RM_PawnFlyerPatches.ResumeHaul`, `RM_ThingFlyer_Knockback.Land`). The offline selftest fails 5 of 5 on the old code and passes on the fix. SteveDesktop lane job J20261127T141444Z-2eb3a7 reads sc_pawn_arc PASS with the mod's own resume recorded, at site 12,12.
-- **Fresh reader:** done, nothing significant found (`RIMMANDRAKE_READ_FIX_11FFFBF13B_WITH_FRESH_EYES`, review record 3c23aeab37). Known and not filed: the haul memory is not saved, so a save and quit inside the stack's last ticks of flight loses that one haul.
-- **Still owed for 0.2.1:** one live run of sc_pawn_arc at site 27,12, where the fault showed.
-- **Version 0.2.1 is not open.** It opens on the owner's scope answer, as every next Design Version does.
-- **Evidence:** `../in_game/road_back_2026-11-25/evidence/hunt_batches_2026-11-26/HUNT_STEP.md` §Why the lane failed.
+- **His decision:** card of 2026-11-27 9:51 PM PST, "Leave it for hauling". The thrown colonist takes its next job by priority. The stack it carried lands on its own path and waits for any hauler, as in the passed 0.2.0. His words on the card before it, 9:25 PM PST: "I don't read this as a fault. A colonist hauling something loses the haul... it flies out of their hand and lands awhile later. Sounds great! what's the problem?"
+- **No new version.** No Design Version 0.2.1 opens for this. No bar moves. The tag `mod/ExplosiveKnockback/v0.2.0` stays on its pass commit.
+- **What was done:** rimflow `RIMMANDRAKE_REVERT_KNOCKBACK_HAUL_WALKBACK_HE_LIKES_THE_SCATTER` took out the walk-back code of 11fffbf13b (the colonist waited for its stack to land and was given the haul back). The game code equals 0.2.0 again. The verdict of scene `sc_pawn_arc` no longer needs the haul back: it reads the flight, the landing cell, the stun and a job after the stun, so a colonist that walks away passes. The offline selftest `selftest_explosiveknockback_no_haul_back_for_stack_in_flight.py` keeps the walk-back out.
+- **Kept from 0.2.0:** the haul memory (`RM_PawnFlyerPatches.Hauling`, `ResumeHaul`). It still gives the haul back when the stack is on the map at the landing: a stack too heavy to fly, dropped on the start cell, or a stack that came down before the colonist.

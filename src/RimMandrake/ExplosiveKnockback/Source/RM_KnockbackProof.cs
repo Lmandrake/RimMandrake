@@ -2471,6 +2471,13 @@ namespace RimMandrake.ExplosiveKnockback
                                 {
                                     s.numbers["stunEnd"] = dd;
                                 }
+                                // bar pawn_flight_arc "goes back to work when the stun ends": any job by priority counts (his card of
+                                // 2026-11-27, "Leave it for hauling": the stack waits for any hauler, a colonist that walks away passes)
+                                if (s.numbers.ContainsKey("stunEnd") && !s.numbers.ContainsKey("working") && p.Spawned && p.CurJob != null
+                                    && p.stances?.stunner != null && !p.stances.stunner.Stunned)
+                                {
+                                    s.numbers["working"] = dd;
+                                }
                                 if (s.numbers.ContainsKey("stunEnd") && !s.numbers.ContainsKey("rehaul") && p.CurJob != null
                                     && (p.CurJobDef == JobDefOf.HaulToCell || p.CurJobDef == JobDefOf.HaulToContainer) && p.CurJob.targetA.Thing == st)
                                 {
@@ -2524,17 +2531,13 @@ namespace RimMandrake.ExplosiveKnockback
                             && ForThing(sc, "land", p).Any(r => (IntVec3)r["at"] == planned);
                         bool hitWalker = ForThing(sc, "land_on_pawn", p).Any(r => (int)r["pawnId"] == sc.things["w"].thingIDNumber);
                         bool stun = sc.numbers.ContainsKey("stunEnd") && sc.numbers["stunEnd"] - sc.numbers["landTick"] <= RimMandrakeExplosiveKnockbackSettings.landingStunMax;
+                        // rehaul (the colonist took the same stack again) is read, never required: no bar promises the haul back
+                        bool working = sc.numbers.ContainsKey("working");
                         bool rehaul = sc.numbers.ContainsKey("rehaul");
-                        // the mod gives the haul back (ResumeHaul, or StackLanded when the stack lands after the colonist), so a
-                        // free-will haul does not pass the row: the lane at origin 27,12 read stack_gone and no free-will haul in
-                        // 900 ticks, 3 runs of 3 (RIMMANDRAKE_SORT_KNOCKBACK_LANE_FAILS_ARCHBIG_PASSES_SAME_CHECKS)
-                        bool resumed = ForThing(sc, "resume", p).Any(r => r.TryGetValue("started", out object v) && v is bool b && b);
-                        string skips = string.Join(",", ForThing(sc, "resume_skip", p).Select(r => r.TryGetValue("reason", out object v) ? v + "" : "?"));
-                        bool waited = ForThing(sc, "resume_wait", p).Count > 0;
                         bool control = !sc.numbers.ContainsKey("tpHeld");
-                        return Result(sc, arc && onPlanned && hitWalker && stun && resumed && rehaul && control, "arcTicks=" + bt + " planned=" + planned.x + "," + planned.z
-                            + " onPlanned=" + onPlanned + " hitWalker=" + hitWalker + " stun=" + stun + " resumed=" + resumed + " (waited for the stack=" + waited
-                            + " skips=" + (skips == "" ? "none" : skips) + ") rehaul=" + rehaul + " teleportControlClean=" + control
+                        return Result(sc, arc && onPlanned && hitWalker && stun && working && control, "arcTicks=" + bt + " planned=" + planned.x + "," + planned.z
+                            + " onPlanned=" + onPlanned + " hitWalker=" + hitWalker + " stun=" + stun + " working=" + working
+                            + " (at tick " + (working ? sc.numbers["working"] + "" : "none") + ", rehaul=" + rehaul + ") teleportControlClean=" + control
                             + " (step 900 ticks)");
                     };
                     return null;

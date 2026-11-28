@@ -1,4 +1,3 @@
-using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -237,19 +236,6 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 haul = HaulAIUtility.HaulToStorageJob(p, held, false);
             }
-            // bar carried_thing_own_arc: the stack left the hands at the blast and flies further, so it is still in its own
-            // flyer when the pawn lands (lane and ArchBig, 2026-11-26: resume_skip stack_gone in every sc_pawn_arc run). The
-            // haul waits for the stack and is given back when it comes down (StackLanded).
-            if (haul == null && held == null && stack != null && !stack.Destroyed && stack.ParentHolder is RM_ThingFlyer_Knockback)
-            {
-                foreach (Thing gone in AwaitingStack.Keys.Where(t => t.Destroyed).ToList())
-                {
-                    AwaitingStack.Remove(gone);   // a stack destroyed in its flyer without a landing (burned): no wait is kept
-                }
-                AwaitingStack[stack] = new System.Collections.Generic.KeyValuePair<Pawn, Job>(p, orig);
-                RM_KnockbackJournal.Add("resume_wait", 0, p, "job", orig.def.defName, "stack", stack.ThingID);
-                return;
-            }
             if (haul == null)
             {
                 if (held != null || stack != null)
@@ -278,37 +264,6 @@ namespace RimMandrake.ExplosiveKnockback
             IntVec3 at = target.Spawned ? target.Position : IntVec3.Invalid;
             p.jobs.StartJob(haul, JobCondition.InterruptForced, null, resumeCurJobAfterwards: false, cancelBusyStances: false);
             RM_KnockbackJournal.Add("resume", 0, p, "job", jobDef, "started", p.CurJob == haul, "held", held != null, "stackAt", at);
-        }
-
-        /// <summary>Hauls that wait for their stack to come down: the stack -> the pawn thrown with it and its haul. Not saved:
-        /// a game saved and loaded inside the stack's last few ticks of flight leaves the pawn to its own work.</summary>
-        private static readonly System.Collections.Generic.Dictionary<Thing, System.Collections.Generic.KeyValuePair<Pawn, Job>> AwaitingStack =
-            new System.Collections.Generic.Dictionary<Thing, System.Collections.Generic.KeyValuePair<Pawn, Job>>();
-
-        /// <summary>Called by RM_ThingFlyer_Knockback when a thrown stack comes down (landed: the thing now on the map, or
-        /// null when the stack was destroyed in flight). A pawn whose haul waits for this stack gets the same haul again
-        /// (ResumeHaul's own checks: standing, undrafted, reservations). A stack merged into a resident stack is another
-        /// thing: the haul is not given back.</summary>
-        internal static void StackLanded(Thing inner, Thing landed)
-        {
-            if (inner == null || !AwaitingStack.TryGetValue(inner, out var w))
-            {
-                return;
-            }
-            AwaitingStack.Remove(inner);
-            Pawn p = w.Key;
-            if (p == null || p.Destroyed)
-            {
-                return;
-            }
-            if (landed == inner && landed.Spawned)
-            {
-                Hauling[p] = w.Value;
-                ResumeHaul(p);
-                return;
-            }
-            RM_KnockbackJournal.Add("resume_skip", 0, p, "job", w.Value.def.defName, "reason",
-                landed == null || landed.Destroyed ? "stack_destroyed" : landed != inner ? "stack_merged" : "stack_not_spawned");
         }
 
         private static void Landed(Pawn __state)

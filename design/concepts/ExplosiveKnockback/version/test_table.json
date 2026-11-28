@@ -602,7 +602,7 @@
    "why_game": "mid-flight drawn position inside RM_PawnFlyer_Knockback exists only in a running game",
    "why_full_list": null,
    "entry_exists": true,
-   "partial": "holder and in-between drawn position, landing on the planned cell with a land_on_pawn line naming the walker, stun end within landingStunMax, a haul job of the same stack after, the teleport control. Not yet: 'the stack it dropped at takeoff' (the flyer carries the stack: flyWithCarriedThing; a journal question)",
+   "partial": "holder and in-between drawn position, landing on the planned cell with a land_on_pawn line naming the walker, stun end within landingStunMax, a job after the stun (any job by priority: his card of 2026-11-27, Leave it for hauling), the teleport control. Not yet: 'the stack it dropped at takeoff' (the flyer carries the stack: flyWithCarriedThing; a journal question)",
    "item": "RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS",
    "runs_today": {
     "ran": false,

@@ -48,3 +48,5 @@ His words, 2026-11-24 (OWNER:1795565769863524396): *"Include all polish items to
 ## Walk save signs (2026-11-26, walk brief reader)
 
 - `design/concepts/ExplosiveKnockback/version/in_game/visit_3/scripts/walk_save.py` STATIONS: sign 13 says "three colonists are killed"; at the 0.1.0 walk two died and one lived (0.1.0 arrival_2.md). Make the sign say what the scene does (people killed and thrown), not a count, when the next walk save script is copied.
+
+- record: the `sc_pawn_arc` verdict check that the colonist took its stack again (`rehaul`, and from 11fffbf13b the mod's own `resume` line) was wrong: no bar needs it (pawn_flight_arc says "goes back to work"). Removed by `RIMMANDRAKE_REVERT_KNOCKBACK_HAUL_WALKBACK_HE_LIKES_THE_SCATTER` on the owner's card of 2026-11-27 ("Leave it for hauling"); the verdict now reads a job after the stun.

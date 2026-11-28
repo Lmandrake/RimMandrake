@@ -326,7 +326,6 @@ namespace RimMandrake.ExplosiveKnockback
                 {
                     RM_KnockbackJournal.Add("item_land", explosionId, inner, "from", originCell, "to", at, "bounces", bounces,
                         "stop", stop.ToString(), "count", 0, "destroyedInFlight", true);
-                    RM_Patch_PawnFlyer_KnockbackLanding.StackLanded(inner, null);   // a haul that waited for it is not given back
                     Destroy();
                     return;
                 }
@@ -373,8 +372,6 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 RM_MapComponent_Knockback.GoodsImpact(landed, explosionId, stop, cellsLeft, impactFactor, instigator, "landed");
             }
-            // the colonist thrown with this stack lands first and its haul waits for the stack (bar carried_thing_own_arc)
-            RM_Patch_PawnFlyer_KnockbackLanding.StackLanded(inner, landed);
             Destroy();
         }
 
