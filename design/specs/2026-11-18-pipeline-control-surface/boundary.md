@@ -1,6 +1,7 @@
 # BOUNDARY: the control store and `pipe`, Design Version 0.1.0
 
-Code: `src/RimMandrake/rimflow/control.py`, and the two doors that ask `src/RimMandrake/rimflow/test_process.py`
+Code: `src/RimMandrake/rimflow/control.py`, `src/RimMandrake/rimflow/pipeline_pause.py` (its reading of the store's
+switches), and the two doors that ask `src/RimMandrake/rimflow/test_process.py`
 (`launch_unit` here, `append` in `src/RimMandrake/rimflow/model.py`). This page says where the control store stops. A claim about the store
 counts only if it quotes an entry here (`standing_rulings.md` §A boundary page before pipeline code). Written
 2026-11-18 11:50 PM PST. Read fresh 2026-11-19 by `RIMMANDRAKE_READ_CONTROL_PAGE_FRESH_BEFORE_CODE_IS_CUT`: 4 holes
@@ -112,6 +113,17 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 ## PROMISES (each one is owed a test of the same name)
 
 - **off-blocks-starts.** After `pipe off` returns, nothing that had not begun can begin. Tested by `t_race`.
+- **a-design-only-switch-admits-the-designer-alone.** `pipe off <Mod> --design-ok` writes the mod's control switch with a
+  design-only allowance (`extra.design_ok`). Admission, the start check, `blocked` and the cancel at `off` let through
+  the mod's Designer (family `role`, a role of `DESIGNER_ROLES`: Designer, DesignerCodex; `design_passes`), and
+  `role_launch.owner_held` and `pipeline_held` do not hold it (the hold row of `mod_holds` and the pause entry of
+  `pipeline_pause.store_entries` carry the allowance). Every other run of the mod (a build, a deploy, an in-game run,
+  another role) is refused as before, and `pipeline_pause.blocks` still reads the mod paused. A plain `pipe off` over it
+  drops the allowance and cancels an admitted Designer; `--design-ok` on a scope that is not one mod is refused. His
+  owner hold is never opened by it, whatever its row carries. Why: a switch on the whole mod refused the Designer too
+  (DirectSun, `design/concepts/DirectSun/admission_proposal.md`), and the Conductor lifted the switch by hand for design
+  text (act ct_000302). Item RIMMANDRAKE_BUILD_DESIGN_ONLY_SWITCH_DESIGNER_STOPS_WITH_BUILDS. Tested by
+  `t_a_design_only_switch_admits_the_designer_alone`.
 - **one-admission-point.** Every pipeline launch site goes through `launch_unit`, and a site that does not turns the
   selftest red. Tested by `t_sites`.
 - **his-hold-refuses-launch.** A launch that names a mod he holds is refused, with his words, until he or the Conductor lifts it.

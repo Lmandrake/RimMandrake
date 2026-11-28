@@ -2818,13 +2818,68 @@ def t_a_write_now_order_says_write_then_end():
           C.WRITE_NOW_DEADLINE_S)
 
 
+def t_a_design_only_switch_admits_the_designer_alone():
+    """Item RIMMANDRAKE_BUILD_DESIGN_ONLY_SWITCH_DESIGNER_STOPS_WITH_BUILDS: `pipe off <Mod> --design-ok` keeps every build,
+    test and in-game run of the mod off and admits its Designer (role Designer or DesignerCodex). Without the allowance a
+    `pipe off` refuses both; his owner hold is never opened by it. Red on the parent (no --design-ok; the Designer is
+    refused)."""
+    fresh()
+    designer = lambda u, m="Graffiti", r="Designer": {"family": "role", "unit": u, "role": r, "mod": m}  # noqa: E731
+    build = lambda u, m="Graffiti": spec(u, family="detached", mod=m, stage="offline_build")  # noqa: E731
+    rc, out, _ = pipe("off", "Graffiti", "--design-ok", "--why", "design text only, builds off")
+    check(rc == 0 and "design" in out.lower(), "pipe off <Mod> --design-ok is taken and says so", out)
+    a = C.admit(designer("rm-role-designer-probe-1"))
+    check(a["ok"], "a Designer run-now on a mod off with the allowance is admitted", a)
+    check(C.condition(a["run"])[0] == 0, "and its start check passes", C.condition(a["run"]))
+    a2 = C.admit(designer("rm-role-designercodex-probe-1", r="DesignerCodex"))
+    check(a2["ok"], "the Codex Designer lane is admitted too", a2)
+    b = C.admit(build("rm-detached-build-probe-1"))
+    check(not b["ok"] and "OFF" in (b["why"] or ""), "a build-stage launch on the same mod is refused", b)
+    g = C.admit({"family": "game_deploy", "unit": "rm-game-deploy-probe-1", "mod": "Graffiti"})
+    check(not g["ok"], "a game deploy of the same mod is refused", g)
+    o = C.admit({"family": "role", "unit": "rm-role-steward-probe-1", "role": "Steward", "mod": "Graffiti"})
+    check(not o["ok"], "a role run that is not the Designer is refused", o)
+    h = C.mod_holds().get("Graffiti") or {}
+    check(h.get("control") and h.get("design_ok"), "the hold row a reader sees carries the allowance", h)
+    q = C.admit(designer("rm-role-designer-probe-q"))
+    C.switch("mod:Graffiti", True, "off again, builds and design", idem=None)
+    check(C.run_state(q["run"])["state"] == "cancelled", "an off without the allowance cancels an admitted Designer",
+          C.run_state(q["run"]))
+    check(not (C.mod_holds().get("Graffiti") or {}).get("design_ok"), "a plain off over it drops the allowance")
+    c = C.admit(designer("rm-role-designer-probe-2"))
+    d = C.admit(build("rm-detached-build-probe-2"))
+    check(not c["ok"] and not d["ok"], "a mod that is off without the allowance refuses both", (c, d))
+    rc, out, _ = pipe("off", "Cauldron", "--design-ok", "--why", "design only")
+    C.switch("mod:Cauldron", True, "his hold", layer="owner", said="hold Cauldron")
+    e = C.admit(designer("rm-role-designer-probe-3", m="Cauldron"))
+    check(not e["ok"] and "HELD BY OWNER" in (e["why"] or ""), "his owner hold is never opened by the allowance", e)
+    C.switch("mod:Cauldron", True, "his hold", layer="owner", said="hold Cauldron", extra={"design_ok": {"why": "x"}})
+    f = C.admit(designer("rm-role-designer-probe-4", m="Cauldron"))
+    check(not f["ok"], "an owner row that carries the allowance's key still refuses the Designer", f)
+    rc, out, _ = pipe("off", "all", "--design-ok", "--why", "x")
+    check(rc != 0 and "mod" in out, "--design-ok is refused on a scope that is not one mod", out)
+    import role_launch as RL
+    acts = []
+    C.switch("mod:Pyrelands", True, "design only", extra={"design_ok": {"why": "design only"}})
+    check(not RL.owner_held("Designer", {}, "design/concepts/Pyrelands", time.time(), lambda **k: acts.append(k)),
+          "role_launch: the Designer is not held on a mod off with the allowance")
+    check(RL.owner_held("Steward", {}, "design/concepts/Pyrelands", time.time(), lambda **k: acts.append(k)),
+          "role_launch: another role is still held there")
+    import pipeline_pause as PP
+    check(PP.blocks("Pyrelands") is not None, "pipeline_pause still reads the mod paused for its builds")
+    k = C.admit(designer("rm-role-designer-probe-k", m="Pyrelands"))
+    C.switch("mod:Pyrelands", True, "again, design only", extra={"design_ok": {"why": "design only"}})
+    check(C.run_state(k["run"])["state"] == "admitted", "an off with the allowance keeps an admitted Designer",
+          C.run_state(k["run"]))
+
+
 def main():
     # its probe units have fixed names in the one user systemd: runs on one machine (sibling clones' ./publish) take
     # turns, or one run's unit is "already loaded" for the other (RIMMANDRAKE_SERIALIZE_CONTROL_SELFTEST_SIBLINGS_SHARE_UNIT_NAMES)
     import fcntl
     lock = open("/tmp/rm-selftest-control-%d.lock" % os.getuid(), "w")
     fcntl.flock(lock, fcntl.LOCK_EX)
-    for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
+    for t in (t_void_books_by_run_id, t_verbs, t_scope, t_a_design_only_switch_admits_the_designer_alone, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
               t_accounts, t_queue, t_review_round_four_p1,

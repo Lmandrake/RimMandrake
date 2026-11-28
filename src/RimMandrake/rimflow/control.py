@@ -511,13 +511,41 @@ def blocking(c, scopes, now=None):
     return sorted(rows, key=lambda r: (0 if r["layer"] == "owner" else 1, scopes.index(r["scope"])))
 
 
+# The design-only allowance (item RIMMANDRAKE_BUILD_DESIGN_ONLY_SWITCH_DESIGNER_STOPS_WITH_BUILDS): `pipe off <Mod>
+# --design-ok` keeps every build, test, deploy and in-game run of the mod off and admits its Designer, as
+# `mod_owner_hold.py allow-design` does for a designer_cleanse pass on his hold. Why: a switch on the whole mod refused the
+# Designer too (DirectSun, admission_proposal.md), and the Conductor lifted the switch by hand for design text (act
+# ct_000302). It never opens his owner hold. The Designer's roles, as maturation_autonomy.DESIGNER_ROLES names them.
+DESIGNER_ROLES = ("Designer", "DesignerCodex")
+
+
+def _extra(r):
+    try:
+        return json.loads(r["extra"]) if r["extra"] else {}
+    except (ValueError, TypeError):
+        return {}
+
+
+def design_passes(r, spec):
+    """-> True when switch row `r` is a control `pipe off <Mod> --design-ok` and `spec` is that mod's Designer run
+    (family role, a role of DESIGNER_ROLES): the allowance lets it through. Pure."""
+    return (r["layer"] == "control" and str(r["scope"]).startswith("mod:") and bool(_extra(r).get("design_ok"))
+            and (spec or {}).get("family") == "role" and (spec or {}).get("role") in DESIGNER_ROLES)
+
+
+def blocking_run(c, spec, now=None):
+    """-> blocking() over a run's scopes, less the rows whose design-only allowance lets this run through."""
+    return [r for r in blocking(c, run_scopes(spec), now) if not design_passes(r, spec)]
+
+
 def describe(r):
     import game_names                   # a game's scope reads by its name (game:ArchBig); the store keeps game:a
     sc = game_names.show_scope(r["scope"])
     if r["layer"] == "owner":
         return "HELD BY OWNER (%s, %s): %s" % (sc, r["date"] or "?", r["said"] or r["why"])
     until = " until %s" % pac(r["until"]) if r["until"] else ""
-    return "OFF (%s, act %s at %s%s): %s" % (sc, r["act"], r["at_pacific"], until, r["why"])
+    ok = "; its Designer runs (design text only)" if _extra(r).get("design_ok") else ""
+    return "OFF (%s, act %s at %s%s%s): %s" % (sc, r["act"], r["at_pacific"], until, ok, r["why"])
 
 
 def _release(c, where, args, why, now, fault=False):
@@ -539,11 +567,12 @@ def _in_scope(r, scope):
     return scope == "unit:" + r["unit"] or scope in run_scopes(spec)
 
 
-def _cancel_in_scope(c, scope, why, now):
-    """Cancel every admitted (unstarted) run in `scope`, releasing its reservations. -> [unit]."""
+def _cancel_in_scope(c, scope, why, now, keep=None):
+    """Cancel every admitted (unstarted) run in `scope`, releasing its reservations. keep(spec) -> True keeps one (the
+    Designer under a design-only allowance). -> [unit]."""
     out = []
     for r in c.execute("SELECT * FROM runs WHERE state='admitted'").fetchall():
-        if _in_scope(r, scope):
+        if _in_scope(r, scope) and not (keep and keep(json.loads(r["spec"] or "{}"))):
             c.execute("UPDATE runs SET state='cancelled', ended_at=?, why=? WHERE id=?", (now, why, r["id"]))
             _release(c, "run=?", (r["id"],), "cancelled before start: " + why, now)
             out.append(r["unit"])
@@ -606,7 +635,8 @@ def _switch(scope, off, why, layer, until, said, owner_said, per_ruling, idem, p
                       "extra) VALUES (?,?,?,?,?,?,?,?,?,?)",
                       (scope, layer, why.strip(), said or owner_said, date or utc(now)[:10], until, a["id"],
                        a["at_pacific"], a["who"], json.dumps(extra) if extra else None))
-            cancelled = _cancel_in_scope(c, scope, why, now)
+            row = c.execute("SELECT * FROM switches WHERE scope=? AND layer=?", (scope, layer)).fetchone()
+            cancelled = _cancel_in_scope(c, scope, why, now, keep=lambda sp: design_passes(row, sp))
         else:
             if layer == "control":      # `on` also withdraws the stop orders on the scope not yet obeyed
                 pend = [r for r in _stop_rows_in(c, scope) if r["state"] in ("pending", "seen")]
@@ -641,7 +671,7 @@ def blocked(spec, p=None, now=None):
     """-> why a run with this spec would be refused by a switch now, or None. Raises Unreadable."""
     c = read(p)
     try:
-        rows = blocking(c, run_scopes(spec), now)
+        rows = blocking_run(c, spec, now)
     except sqlite3.Error as e:
         raise Unreadable(_err(e))
     finally:
@@ -665,8 +695,9 @@ def mod_holds(p=None, now=None):
                 pass
             out[m] = row
         else:
-            out.setdefault(m, {"mod": m, "date": (s["date"] or ""), "said": s["why"], "control": True, "act": s["act"],
-                               "at_pacific": s["at_pacific"], "until": s["until"]})
+            out.setdefault(m, dict({"mod": m, "date": (s["date"] or ""), "said": s["why"], "control": True,
+                                    "act": s["act"], "at_pacific": s["at_pacific"], "until": s["until"]},
+                                   **({"design_ok": _extra(s)["design_ok"]} if _extra(s).get("design_ok") else {})))
     return out
 
 
@@ -1689,7 +1720,7 @@ def admit(spec, p=None, now=None):
 
 def _admit(spec, now, p, reaped):
     with txn(p) as c:
-        rows = blocking(c, run_scopes(spec), now)
+        rows = blocking_run(c, spec, now)
         why = describe(rows[0]) if rows else None
         rid = "run_%s" % spec["unit"]
         replaced = None
@@ -1751,7 +1782,7 @@ def condition(run, p=None, now=None):
                 return 1, "REFUSED %s: no admission for this run" % run
             if r["state"] != "admitted":
                 return 1, "REFUSED %s: its intent is %s (%s), not admitted" % (run, r["state"], r["why"] or "-")
-            rows = blocking(c, run_scopes(json.loads(r["spec"] or "{}")), now)
+            rows = blocking_run(c, json.loads(r["spec"] or "{}"), now)
             if rows:
                 why = describe(rows[0])
                 c.execute("UPDATE runs SET state='refused', ended_at=?, why=? WHERE id=?", (now, why, run))
@@ -3008,6 +3039,11 @@ def cmd_switch(o, off):
             extra = {"end": POE.parse(o.end)}
         except POE.Refused as e:
             raise Refused(str(e))
+    if off and getattr(o, "design_ok", False):
+        if not scope.startswith("mod:"):
+            raise Refused("--design-ok is for one mod (pipe off <Mod> --design-ok): %s has no Designer of its own; "
+                          "switch the mod off with it instead" % shown)
+        extra = dict(extra or {}, design_ok={"why": o.why.strip()})
     r = switch(scope, off, o.why, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem, extra=extra)
     if r["replayed"]:
         return ["%s: already applied as %s (idempotency key %s): nothing changed" % (shown, r["act"]["id"], o.idem)]
@@ -3020,6 +3056,8 @@ def cmd_switch(o, off):
     else:
         lines0 = []
     after = "OFF" if off else ("still " + r["still"][0][:120] if r["still"] else "ON")  # cut-ok: terminal display
+    if off and (extra or {}).get("design_ok"):
+        after += " (design text allowed: its Designer runs; every build, test, deploy and in-game run stays off)"
     lines = ["%s %s -> %s%s" % (shown, r["before"], after,
                                 "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else "")]
     rep = r.get("replaced")
@@ -3247,6 +3285,8 @@ def main(argv=None):
         if v == "off":
             p.add_argument("--end", help="the end condition the Maturation tick reads (pipe_off_end.py): "
                                          "closed:<ITEM> | ready:<Mod> | cmd:<command>")
+            p.add_argument("--design-ok", action="store_true", help="one mod only: its Designer (design text) still "
+                                                                    "runs; every build, test, deploy and in-game run stays off")
     p = w(sub.add_parser("stop"))
     p.add_argument("target")
     p.add_argument("--write-now", action="store_true", help="stop now, write where you are, end")

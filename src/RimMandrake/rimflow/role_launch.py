@@ -2922,6 +2922,9 @@ def owner_held(name, rs, concept, now, act):
     rs.pop("hold_blind", None)
     if pipeline_held(name, rs, concept, now, act):
         return True
+    import control as C
+    if h and h.get("control") and h.get("design_ok") and name in C.DESIGNER_ROLES:
+        return False    # `pipe off <Mod> --design-ok`: its Designer runs; control admits it (control.design_passes)
     if not h:
         return False
     mark = "%s %s" % (day_of(now), OH.key(concept))
@@ -2940,8 +2943,12 @@ def pipeline_held(name, rs, concept, now, act):
     A planned stop: said once a day per scope as a role_hold note, never an alarm. An unreadable pause store holds
     everything (a pause that cannot be proved lifted is never read as running), alarmed once per outage."""
     import pipeline_pause as PP
+    import control as C
     pst = PP.state(now)
     why = PP.reason(pst, concept)
+    if (why and concept and name in C.DESIGNER_ROLES and not pst.get("error") and not pst.get("all")
+            and ((pst.get("mods") or {}).get(PP.key(concept)) or {}).get("design_ok")):
+        why = None      # `pipe off <Mod> --design-ok`: the mod's Designer runs; its builds stay off
     if not why:
         rs.pop("pause_blind", None)
         return False

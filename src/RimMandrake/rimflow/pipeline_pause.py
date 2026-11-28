@@ -108,8 +108,8 @@ def store_entries(now=None):
     all|<Mod>`, `maturation_dispatch.py pause`), shaped as this file's entries. Raises control.Unreadable."""
     import control as C
     now = time.time() if now is None else now
-    rows = C._q("SELECT s.scope, s.why, s.until, s.who, s.act, a.ts FROM switches s LEFT JOIN acts a ON a.id = s.act "
-                "WHERE s.layer = 'control' AND (s.scope = 'all' OR s.scope LIKE 'mod:%')")
+    rows = C._q("SELECT s.scope, s.why, s.until, s.who, s.act, s.extra, a.ts FROM switches s LEFT JOIN acts a "
+                "ON a.id = s.act WHERE s.layer = 'control' AND (s.scope = 'all' OR s.scope LIKE 'mod:%')")
     al, mods = None, {}
     for r in rows:
         if r["until"] is not None and now >= float(r["until"]):
@@ -120,6 +120,9 @@ def store_entries(now=None):
             al = e
         else:
             e["mod"] = r["scope"][4:]
+            ok = C._extra(r).get("design_ok")
+            if ok:
+                e["design_ok"] = ok     # `pipe off <Mod> --design-ok`: its Designer still runs (control.design_passes)
             mods[e["mod"]] = e
     return al, mods
 

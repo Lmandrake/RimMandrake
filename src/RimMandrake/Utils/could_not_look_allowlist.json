@@ -51,6 +51,7 @@
   "src/RimMandrake/rimflow/conductor_closeout.py::_event_ts::except-returns-empty": 1,
   "src/RimMandrake/rimflow/conductor_closeout.py::dismissed_keys::except-returns-empty": 1,
   "src/RimMandrake/rimflow/control.py::_alive::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/control.py::_extra::except-returns-empty": 1,
   "src/RimMandrake/rimflow/control.py::_unit_loaded::except-returns-empty": 1,
   "src/RimMandrake/rimflow/control.py::heartbeat::except-returns-empty": 1,
   "src/RimMandrake/rimflow/control.py::reap_detached::or-empty": 1,
@@ -315,6 +316,9 @@
   "src/RimMandrake/rimflow/maturation_read_cache.py::load::except-returns-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/rimflow/control.py::_extra::except-returns-empty": [
+   "NOT A COLLAPSE: {} is \"this switch row carries no extra\": a row whose extra cannot be parsed carries no design-only allowance, so the Designer is refused like every other run of the mod (the safe side, as an off switch with no allowance reads) (design/specs/2026-11-18-pipeline-control-surface/boundary.md a-design-only-switch-admits-the-designer-alone)"
+  ],
   "src/RimMandrake/rimflow/list_shape.py::own_check::except-returns-empty": [
    "NOT A COLLAPSE: False is \"not the item's own holds command\": a text that shlex cannot split is then run as its own check, which gives its own verdict"
   ],
