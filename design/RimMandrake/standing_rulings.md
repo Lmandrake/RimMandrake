@@ -2149,7 +2149,7 @@ His card answers, 2026-11-13, and his later rulings:
     `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`.
   - No filing waits. A helper or a Judge files the change with the class that it recommends and its evidence. The
     Conductor decides.
-  - His user-level rule for other projects ("ask at filing", `~/.claude/CLAUDE.md`) is unchanged.
+  - His user-level rule for other projects (`~/.claude/CLAUDE.md`, "Every design has a Design Version") now matches this one: since 2026-11-27 (question card, 10:49 AM PST) the agent that files a change decides its class and tells him after.
 - **Judge deferral** of a bar is approved by the Conductor. He sees each one after.
 - **The mods in the Designer enter as 0.1.0** at today's bars (the bars of 2026-11-13). Their open gaps are sorted into
   Problem, Polish and next version.
