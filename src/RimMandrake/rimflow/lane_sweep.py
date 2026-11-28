@@ -408,8 +408,8 @@ def check(sim, rd):
         if not ok:
             bad[iid] = d
         key = (iid, d)
-        if d in told.values() and key in sim.acted and sim.acted[key] >= (since or 0) and \
-                now - sim.acted[key] >= 2 * TICK_S and told.get(iid) == d:
+        if told.get(iid) == d and key in sim.acted and sim.acted[key] >= (since or 0) and \
+                now - sim.acted[key] >= 2 * TICK_S:
             sim.findings.append({"kind": "act_did_not_end", "regime": sim.regime, "item": iid, "decision": d,
                                  "t": now, "why": "the Conductor acted at %s and %s still holds" % (
                                      iso(sim.acted[key]), d)})
