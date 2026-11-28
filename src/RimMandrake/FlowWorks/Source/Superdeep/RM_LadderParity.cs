@@ -318,7 +318,8 @@ namespace RimMandrake.FlowWorks
 			bool canSet = !leaning && RM_LadderUtility.LadderAt(map, foot) == null && CarriedLadder(p) != null
 				&& RM_LadderUtility.MaxLevelsOf(RimMandrakeFlowWorks_DefOf.RM_LadderPortable) >= 0
 				&& (map.GetComponent<RM_MapComponent_Excavation>()?.ClimbDepthAt(foot) ?? 0) == 0;
-			bool usable = !RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled || RM_LadderRules.MayClimb(p);
+			// owner Q1 (the body) holds with the prison-door rule (who) off, as in RM_PitPathing.ClosedLaddersFor
+			bool usable = ClimbEligible(p) && (!RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled || RM_LadderRules.MayClimb(p));
 			return RM_LadderParityMath.LadderOverWallOpen(true, leaning || canSet, true, usable, squares, false, false, false, true, true);
 		}
 

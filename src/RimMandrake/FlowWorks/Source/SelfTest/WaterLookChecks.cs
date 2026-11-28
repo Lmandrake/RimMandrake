@@ -223,6 +223,69 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitReliefMath.SheetAlpha(1f, 0f) == 0f, "clear and dry: nothing drawn");
             });
 
+            // Fresh read 2026-11-28: the floor and the faces must tile the dug square. A point under no face and no floor piece gets no
+            // floor shade and no cast shadow when dry, and no floor print and no sheet under a clear liquid: the square's own liquid
+            // terrain shows there, a second water layer (WATER_ONE_SURFACE_LIVE). The oracle above skips such points (DepthAt null), so
+            // this sweep reads the range of neighbour depths the game makes: every square depth 1 to 10 against neighbours shallower,
+            // half, one less, level and deeper, the corner pieces' regimes (north-west, north-east, both, unequal heights) among them.
+            Case("WaterLook_faces_and_floor_tile_every_dug_square", () =>
+            {
+                var polys = new System.Collections.Generic.List<float[]>();
+                var kinds = new System.Collections.Generic.List<int>();
+                var wedges = new System.Collections.Generic.List<float[]>();
+                float[] r = new float[8];
+                int read = 0, corners = 0, gaps = 0;
+                float worst = 0f;
+                string worstAt = "-";
+                const int G = 12;
+                foreach (int d in new[] { 1, 2, 3, 4, 5, 6, 8, 10 })
+                {
+                    var vs = new System.Collections.Generic.SortedSet<int> { 0, d / 2, d - 1, d, d + 1 };
+                    foreach (int n in vs) foreach (int w in vs) foreach (int e in vs) foreach (int nw in vs) foreach (int ne in vs)
+                    foreach (int so in new[] { 0, d })
+                    {
+                        RM_PitReliefMath.StepPlan f = RM_PitReliefMath.PlanStep(d, n, so, w, e, nw, ne, 0f);
+                        polys.Clear();
+                        kinds.Clear();
+                        RM_PitReliefMath.ReliefFaces(f, polys, kinds);
+                        int nr = RM_PitReliefMath.FloorRects(f.L, f.R, f.T, f.CnwW, f.CnwH, f.CneW, f.CneH, r);
+                        RM_PitReliefMath.FloorUnderMitres(f.L, f.R, f.T, f.CnwW, f.CnwH, f.CneW, f.CneH, wedges);
+                        var all = new System.Collections.Generic.List<float[]>(polys);
+                        for (int i = 0; i < nr; i++)
+                        {
+                            float x0 = r[4 * i], z0 = r[4 * i + 1], x1 = r[4 * i + 2], z1 = r[4 * i + 3];
+                            all.Add(new[] { x0, z0, x0, z1, x1, z1, x1, z0 });
+                        }
+                        all.AddRange(wedges);
+                        read++;
+                        if (f.CnwW > 0f || f.CneW > 0f) corners++;
+                        int bare = 0;
+                        for (int i = 0; i < G; i++)
+                        {
+                            for (int j = 0; j < G; j++)
+                            {
+                                float px = (i + 0.5f) / G, pz = (j + 0.41f) / G;
+                                bool covered = false;
+                                foreach (float[] p in all) if (Inside(p, px, pz)) { covered = true; break; }
+                                if (!covered && !NearEdge(all, px, pz)) bare++;
+                            }
+                        }
+                        if (bare > 0) gaps++;
+                        float share = bare / (float)(G * G);
+                        if (share > worst)
+                        {
+                            worst = share;
+                            worstAt = "d=" + d + " n=" + n + " s=" + so + " w=" + w + " e=" + e + " nw=" + nw + " ne=" + ne;
+                        }
+                    }
+                }
+                Console.WriteLine("      tiling: worst bare share " + worst + " (limit 0) at " + worstAt + "; " + read + " squares read, "
+                    + corners + " with a corner piece, " + gaps + " with a bare part");
+                Assert(read > 10000 && corners > 1000, "the sweep reached the corner pieces (" + read + " squares, " + corners + " corners)");
+                Assert(gaps == 0, "can-fail: " + gaps + " of " + read + " dug squares leave floor under no face and no floor piece; worst share "
+                    + worst + " (limit 0) at " + worstAt);
+            });
+
             Case("WaterLook_sluice_parts_the_sheet_and_a_drained_floor_reprints", () =>
             {
                 var pieces = new System.Collections.Generic.List<float[]>();
@@ -267,7 +330,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!walls.Contains("SideUnder(") && !walls.Contains("SeeThrough(") && !walls.Contains("DrownedBandX"),
                     "can-fail: the drowned-wall rectangles are gone");
                 RiverSwitchFlipChecks.Has(walls, @"float lv = sheet \? 0f : lvTrue;", "a wet square under a clear liquid draws the dry pit's faces");
-                RiverSwitchFlipChecks.Has(walls, @"ReliefCell\(map, eng, c, d, sp, note == 0 \|\| sheet, sc, y\);", "and its floor shade, lip bands and shadow");
+                RiverSwitchFlipChecks.Has(walls, @"ReliefCell\(map, eng, c, d, sp, note == 0 \|\| sheet, sc, y, ground != null\);", "and its floor shade, lip bands and shadow");
                 RiverSwitchFlipChecks.Has(looks, @"!RM_WaterLookDraw\.IsStillWater\(map, c\) \|\| eng\.IsExcavated\(c\)", "can-fail: the deep tint leaves dug squares to the one sheet");
                 RiverSwitchFlipChecks.Has(walls, @"RM_PitReliefMath\.ReprintsFloor\(true, false, BesideLiquidTerrain\(map, c\)\)", "a drained square reprints its floor");
                 // live 2026-11-25: a brim-full pit lost its rim outline under the sheet; the rim stands above the water
@@ -368,6 +431,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 float[] r = new float[8];
                 int nr = RM_PitReliefMath.FloorRects(f.L, f.R, f.T, f.CnwW, f.CnwH, f.CneW, f.CneH, r);
                 for (int i = 0; i < nr; i++) if (r[4 * i] < x && x < r[4 * i + 2] && r[4 * i + 1] < z && z < r[4 * i + 3]) return d;
+                var wedges = new System.Collections.Generic.List<float[]>(2);
+                RM_PitReliefMath.FloorUnderMitres(f.L, f.R, f.T, f.CnwW, f.CnwH, f.CneW, f.CneH, wedges);
+                foreach (float[] p in wedges) if (Inside(p, x, z)) return d;
                 return null;
             }
             int cw = f.CnwW > 0f ? polys.Count - (f.CneW > 0f ? 2 : 1) : -1;

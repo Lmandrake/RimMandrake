@@ -181,6 +181,38 @@ namespace RimMandrake.FlowWorks
 			into[4 * k + 3] = z1;
 		}
 
+		/// <summary>The floor under each corner piece's mitred foot, which FloorRects leaves out: the rects stop at the pieces' strip
+		/// below the TALLER piece's foot, and CornerPoly's foot rises by min(w, h) away from the block, so the wedge (and, beside a
+		/// shorter piece, the strip) between them is floor no rect covers (an L pit 2 m deep: 0.026 of the square; 0.13 at 4 m beside
+		/// two 4 m blocks; fresh read 2026-11-28, SelfTest WaterLook_faces_and_floor_tile_every_dug_square). Polygons (x, z pairs, z
+		/// north, clockwise seen from above as the floor's quads) into <paramref name="into"/>, cleared first; with the faces and
+		/// FloorRects they tile the square, overlapping neither. Same arguments as FloorRects. Returns how many.</summary>
+		public static int FloorUnderMitres(float ww, float ew, float h, float wnw, float hnw, float wne, float hne,
+			System.Collections.Generic.List<float[]> into)
+		{
+			into.Clear();
+			float top = 1f - h, x0 = ww, x1 = 1f - ew;
+			float hc = Math.Max(hnw, hne);
+			if (x1 <= x0 || top <= 0f || hc <= 0f) return 0;
+			float zc = Math.Min(top, 1f - hc);
+			if (wnw > 0f && hnw > 0f) MitreWedge(false, wnw, hnw, zc, x0, x1, top, into);
+			if (wne > 0f && hne > 0f) MitreWedge(true, wne, hne, zc, x0, x1, top, into);
+			return into.Count;
+		}
+
+		/// <summary>The floor between z = <paramref name="zc"/> (FloorRects' top of its full-width rect) and the foot of one corner
+		/// piece (CornerPoly), inside the floor's bounds.</summary>
+		private static void MitreWedge(bool east, float w, float h, float zc, float x0, float x1, float top,
+			System.Collections.Generic.List<float[]> into)
+		{
+			float m = Math.Min(w, h), zFoot = 1f - h, zMitre = 1f - h + m;
+			bool square = zFoot - zc > 1e-6f; // a shorter piece: the strip under its whole foot, else the wedge alone
+			float[] q = east
+				? (square ? new[] { 1f - w, zc, 1f - w, zMitre, 1f, zFoot, 1f, zc } : new[] { 1f - w, zc, 1f - w, zMitre, 1f, zc })
+				: (square ? new[] { 0f, zc, 0f, zFoot, w, zMitre, w, zc } : new[] { 0f, zc, w, zMitre, w, zc });
+			AddUnderLine(q, -1, 0f, x0, x1, 0f, top, into);
+		}
+
 		// ── the stepped-pit rule (RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM) ─────────────────────────
 		// Owner, 2026-11-22, of stepped-pit mock-ups: "it can't go all the way up to the original pit outside... that's what's
 		// making it look like a standing wall. The inner "cliff" should only go part way up the side walls. It's all about the
@@ -746,6 +778,9 @@ namespace RimMandrake.FlowWorks
 				float x0 = r[4 * i], z0 = r[4 * i + 1], x1 = r[4 * i + 2], z1 = r[4 * i + 3];
 				AddUnderLine(new[] { x0, z0, x0, z1, x1, z1, x1, z0 }, -1, 0f, wx0, wx1, wz0, wz1, into);
 			}
+			var gaps = new System.Collections.Generic.List<float[]>(2);
+			FloorUnderMitres(full.L, full.R, full.T, full.CnwW, full.CnwH, full.CneW, full.CneH, gaps);
+			foreach (float[] g in gaps) AddUnderLine(g, -1, 0f, wx0, wx1, wz0, wz1, into);
 			var polys = new System.Collections.Generic.List<float[]>(5);
 			var kinds = new System.Collections.Generic.List<int>(5);
 			ReliefFaces(full, polys, kinds);

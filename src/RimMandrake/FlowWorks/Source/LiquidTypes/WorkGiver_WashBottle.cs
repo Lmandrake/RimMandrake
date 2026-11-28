@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 return false;
             }
             IntVec3 cell;
-            return RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell);
+            return RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell, size: ext.size);
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -47,7 +47,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 return null;
             }
             IntVec3 cell;
-            if (!RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell))
+            if (!RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell, size: ext.size))
             {
                 return null;
             }

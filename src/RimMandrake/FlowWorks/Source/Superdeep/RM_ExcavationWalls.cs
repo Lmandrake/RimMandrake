@@ -261,6 +261,9 @@ namespace RimMandrake.FlowWorks
 		}
 
 		private readonly float[] floorRects = new float[8];
+		/// <summary>The floor under each corner piece's mitred foot (RM_PitReliefMath.FloorUnderMitres), which FloorRects leaves out.</summary>
+		private readonly System.Collections.Generic.List<float[]> mitreFloor = new System.Collections.Generic.List<float[]>(2);
+		private readonly System.Collections.Generic.List<float[]> mitreCell = new System.Collections.Generic.List<float[]>(1);
 		private readonly float[] cornerXz = new float[8];
 		private static readonly Color32 ShadeBlack = new Color32(10, 8, 7, 0);
 
@@ -287,6 +290,11 @@ namespace RimMandrake.FlowWorks
 			{
 				float x0 = floorRects[4 * i], z0 = floorRects[4 * i + 1], x1 = floorRects[4 * i + 2], z1 = floorRects[4 * i + 3];
 				QuadVMat(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y, k, k);
+			}
+			RM_PitReliefMath.FloorUnderMitres(ww, ew, h, wnw, hnw, wne, hne, mitreFloor);
+			foreach (float[] p in mitreFloor)
+			{
+				Fan(RM_FaceMaterial.TintMat, Verts(c, p, y), Uniform(p.Length / 2, k), false, c.z);
 			}
 		}
 
@@ -523,6 +531,45 @@ namespace RimMandrake.FlowWorks
 				if (any)
 				{
 					Grid(RM_FaceMaterial.TintMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, nx, col, y, nz);
+				}
+			}
+			// the floor under each corner piece's mitred foot, cut on the upper floor rect's own sample lines so the shade meets it
+			if (RM_PitReliefMath.FloorUnderMitres(sp.L, sp.R, sp.T, sp.CnwW, sp.CnwH, sp.CneW, sp.CneH, mitreFloor) == 0)
+			{
+				return;
+			}
+			float gx0 = sp.L, gx1 = 1f - sp.R, gTop = 1f - sp.T, gzc = Mathf.Min(gTop, 1f - Mathf.Max(sp.CnwH, sp.CneH));
+			int gx = Mathf.Max(1, Mathf.CeilToInt((gx1 - gx0) * 8f)), gz = Mathf.Max(1, Mathf.CeilToInt((gTop - gzc) * 8f));
+			foreach (float[] p in mitreFloor)
+			{
+				for (int a = 0; a < gx; a++)
+				{
+					for (int b = 0; b < gz; b++)
+					{
+						float cx0 = gx0 + (gx1 - gx0) * a / gx, cx1 = gx0 + (gx1 - gx0) * (a + 1) / gx;
+						float cz0 = gzc + (gTop - gzc) * b / gz, cz1 = gzc + (gTop - gzc) * (b + 1) / gz;
+						mitreCell.Clear();
+						RM_PitReliefMath.AddUnderLine(p, -1, 0f, cx0, cx1, cz0, cz1, mitreCell);
+						if (mitreCell.Count == 0)
+						{
+							continue;
+						}
+						float[] q = mitreCell[0];
+						mitreCell.Clear();
+						Color32[] col = new Color32[q.Length / 2];
+						bool any = false;
+						for (int v = 0; v < col.Length; v++)
+						{
+							Color32 k = ShadeBlack;
+							k.a = Alpha(dark * (1f - RM_PitReliefMath.Lit(win, q[2 * v], 1f - q[2 * v + 1], sunHere)));
+							any |= k.a > 0;
+							col[v] = k;
+						}
+						if (any)
+						{
+							Fan(RM_FaceMaterial.TintMat, Verts(c, q, y), col, false, c.z);
+						}
+					}
 				}
 			}
 		}
@@ -1023,6 +1070,12 @@ namespace RimMandrake.FlowWorks
 				float x0 = floorRects[4 * i], z0 = floorRects[4 * i + 1], x1 = floorRects[4 * i + 2], z1 = floorRects[4 * i + 3];
 				Quad(floorMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y, Opaque, Opaque, UvWorld);
 				RM_PitReliefMath.AddUnderLine(new[] { x0, z0, x0, z1, x1, z1, x1, z0 }, -1, 0f, wx0, wx1, wz0, wz1, sheetPieces);
+			}
+			RM_PitReliefMath.FloorUnderMitres(ww, ew, h, wnw, hnw, wne, hne, mitreFloor);
+			foreach (float[] p in mitreFloor)
+			{
+				Fan(floorMat, Verts(c, p, y), Uniform(p.Length / 2, Opaque), false, c.z);
+				RM_PitReliefMath.AddUnderLine(p, -1, 0f, wx0, wx1, wz0, wz1, sheetPieces);
 			}
 			for (int i = 0; i < facePolys.Count; i++)
 			{

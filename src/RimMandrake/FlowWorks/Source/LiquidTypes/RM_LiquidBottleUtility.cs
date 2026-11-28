@@ -251,13 +251,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         /// <summary>Nearest reachable FRESH water edge -- the spec's "wash
         /// job (consumes water)" always means fresh water, never whatever
-        /// the bottle was last dirty with.</summary>
-        public static bool TryFindWashCell(Pawn pawn, out IntVec3 cell, float maxDist = 60f)
+        /// the bottle was last dirty with. WASH_SEARCH_FIX_WALKS_TO_SHEET: <paramref name="size"/> is the washed container's,
+        /// because JobDriver_WashBottle debits one fill at that size (a barrel 2080 units, a bucket 150); a search gated on a
+        /// bottle's 15 sends a dirty barrel to a sheet or pond that cannot pay it, and the next scan picks the same cell.</summary>
+        public static bool TryFindWashCell(Pawn pawn, out IntVec3 cell, float maxDist = 60f, RM_ContainerSize size = RM_ContainerSize.Bottle)
         {
             LiquidDef unused;
             string unusedRefusal;
             return TryFindLiquidCell(pawn, out cell, out unused, maxDist, requireBottled: false,
-                requireFreshWaterOnly: true, size: RM_ContainerSize.Bottle, container: null, refusal: out unusedRefusal,
+                requireFreshWaterOnly: true, size: size, container: null, refusal: out unusedRefusal,
                 potableOnly: true);
         }
 

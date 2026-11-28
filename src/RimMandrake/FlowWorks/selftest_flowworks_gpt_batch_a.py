@@ -118,11 +118,34 @@ CASES = [
     Case("DUG_FILL_FIX_WALKS_TO_SHEET", "the fill search never walks to a sheet thinner than the container",
          "LiquidTypes/RM_LiquidBottleUtility.cs",
          r"private static bool TryFindLiquidCellUncached\(",
-         [r"if \( ex != null && ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl \("
-          r" container != null \? RM_ContainerMaterials\.UnitsIn \( container , candidate , size \) : candidate\.UnitsFor \( size \) ,"
-          r" ex\.WaterDlAt \( c \) , true , RM_LevelSolve\.U \) < 0 \) \{ continue ; \}"],
+         # the units are the fill job's own (container-aware), computed once and shared by both gates
+         [r"int units = container != null \? RM_ContainerMaterials\.UnitsIn \( container , candidate , size \) : candidate\.UnitsFor \( size \) ;",
+          r"if \( ex != null && ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl \("
+          r" units , ex\.WaterDlAt \( c \) , true , RM_LevelSolve\.U \) < 0 \) \{ continue ; \}"],
          ("if (ex != null && ex.IsExcavated(c) && RM_ContainerMaterialMath", "if (false && ex.IsExcavated(c) && RM_ContainerMaterialMath"),
-         order=(r"ex\.Stock\.CanSupply", r"ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl")),
+         order=(r"! CanDebitTerrain \( map , c , units \)", r"ex\.IsExcavated \( c \) && RM_ContainerMaterialMath\.DugCellDebitDl")),
+    # ── WASH_SEARCH_FIX_WALKS_TO_SHEET (fresh read, group E): the wash search gates on the WASHED container's units ──
+    # JobDriver_WashBottle debits liquid.UnitsFor(<carried size>) (barrel 2080, bucket 150); a search gated on one bottle (15)
+    # sends a dirty barrel to a sheet or pond that cannot pay it: made 0, and the next scan picks the same cell.
+    Case("WASH_SEARCH_FIX_WALKS_TO_SHEET", "the wash search asks for the washed container's size",
+         "LiquidTypes/RM_LiquidBottleUtility.cs",
+         r"public static bool TryFindWashCell\(Pawn pawn, out IntVec3 cell, float maxDist = 60f, RM_ContainerSize size = RM_ContainerSize\.Bottle\)",
+         [r"requireFreshWaterOnly : true , size : size , container : null"],
+         ("requireFreshWaterOnly: true, size: size, container: null", "requireFreshWaterOnly: true, size: RM_ContainerSize.Bottle, container: null"),
+         absent=[r"size : RM_ContainerSize\.Bottle , container : null"]),
+    # the two callers pass the carried container's size (without them the utility's size parameter stays Bottle)
+    Case("WASH_SEARCH_FIX_WALKS_TO_SHEET", "the wash job offer asks for the dirty container's size",
+         "LiquidTypes/WorkGiver_WashBottle.cs",
+         r"public override bool HasJobOnThing\(Pawn pawn, Thing t, bool forced = false\)",
+         [r"return RM_LiquidBottleUtility\.TryFindWashCell \( pawn , out cell , size : ext\.size \) ;"],
+         ("return RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell, size: ext.size);",
+          "return RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell);")),
+    Case("WASH_SEARCH_FIX_WALKS_TO_SHEET", "the wash job picks a cell that can pay the dirty container",
+         "LiquidTypes/WorkGiver_WashBottle.cs",
+         r"public override Job JobOnThing\(Pawn pawn, Thing t, bool forced = false\)",
+         [r"if \( ! RM_LiquidBottleUtility\.TryFindWashCell \( pawn , out cell , size : ext\.size \) \)"],
+         ("if (!RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell, size: ext.size))",
+          "if (!RM_LiquidBottleUtility.TryFindWashCell(pawn, out cell))")),
     # ── TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH (FA_core_sim_1.8, option A) ──
     Case("TAR_GLASS_FLOOD_FIX_UNREACHABLE_PATH", "the undug bank beside the release hardens to glass", "Flood_FlowWorks.cs",
          r"private void CoolFrontToGlass\(\)",

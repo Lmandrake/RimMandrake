@@ -213,6 +213,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!p.Contains("return p.Faction == Faction.OfPlayer || CarriedLadder(p) != null;"),
                     "can-fail: the old player-or-carrier gate is gone");
             });
+            Case("LadderParity_wall_ladder_eligible", () =>
+            {
+                // owner Q1 2026-10-23 ("Bigger things no, wheeled things no"): the per-creature rule is about the body, not the
+                // prison-door rule, so turning "A ladder works like a prison door" off must not let a colony elephant over a wall
+                // by a leaning ladder (RM_PitPathing.ClosedLaddersFor keeps `&& eligible` with that setting off too).
+                string p = Src("Superdeep", "RM_LadderParity.cs");
+                int at = p.IndexOf("public static bool CanClimbAt(", StringComparison.Ordinal);
+                Assert(at >= 0, "CanClimbAt found");
+                int end = p.IndexOf("LadderOverWallOpen(", at, StringComparison.Ordinal);
+                Assert(end > at, "CanClimbAt asks LadderOverWallOpen");
+                string body = p.Substring(at, end - at);
+                int u = body.IndexOf("bool usable =", StringComparison.Ordinal);
+                Assert(u >= 0, "CanClimbAt computes usable");
+                string usable = body.Substring(u, body.IndexOf(';', u) - u);
+                Assert(usable.Contains("ClimbEligible(p)"),
+                    "can-fail: the wall ladder's usable gates on ClimbEligible(p) even with the prison-door setting off: " + usable);
+            });
             Case("LadderParity_wiring", () =>
             {
                 string u = Src("Superdeep", "RM_LadderUtility.cs");
