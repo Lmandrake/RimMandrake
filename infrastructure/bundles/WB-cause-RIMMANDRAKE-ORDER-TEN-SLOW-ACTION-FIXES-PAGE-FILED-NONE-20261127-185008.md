@@ -1,6 +1,7 @@
 # WB-cause-RIMMANDRAKE-ORDER-TEN-SLOW-ACTION-FIXES-PAGE-FILED-NONE-20261127-185008: state
 
-Members (7). Restart 1 is owed (context 559 k of 1,000 k at 3:05 PM PST, past the 500 k line). Every member's code and
+Members (7). Restart 1 is owed (context 559 k of 1,000 k at 3:05 PM PST, past the 500 k line). Publishes waited 45 to 55 min
+for a slot this afternoon; two were refused because a Codex build of the same member landed while they waited. Every member's code and
 test is written and committed; what is left is landing, live readings, the slow-actions page lines and the closes.
 
 ## Done (code, tests red-then-green, boundary page; commit shas change on publish: find them by subject)
@@ -11,10 +12,11 @@ test is written and committed; what is left is landing, live readings, the slow-
   before, 86 to 203 s after (one 379 s). Offline, real 81 checks: first beat 83 s, second 42 s (56 kept, 16 unnamed run
   every time: git children, shell loops), load 45. Follow-up commit (not yet landed): list_dispatch's reading carries
   `checks`. Close it with the landed sha of that follow-up, `--evidence` the timings above.
-- `RIMMANDRAKE_CUT_TICK_PAGE_REPEAT_WORK_716_LAST_WORDS`: commit "tick and page stop repeating work". Same window, load
-  ~45: tick 62.5 -> 41.5 s wall (16.7 -> 12.5 s CPU); page 94 -> 31 s wall (35 -> 16.5 s CPU). Page
-  `design/specs/2026-11-27-tick-repeat-work/boundary.md`. Not done: the two ledger replays per process (trend 9 s,
-  fleet_mods 2.5 to 4.7 s) are not shared; say so at close or file it.
+- `RIMMANDRAKE_CUT_TICK_PAGE_REPEAT_WORK_716_LAST_WORDS`: the Codex lane's build LANDED first (cdec189bc4); this
+  bundle's build was dropped at 5:10 PM. Its numbers (tick 62.5 -> 41.5 s, page 94 -> 31 s) were of the dropped build:
+  profile one tick and one page of the landed code before writing a line on the slow-actions page. Ideas from the
+  dropped build that the landed one may lack: run records and out-file facts kept by stat (dir_fd); PNG at zlib default
+  (4 to 6 times faster, same pixels). Read the landed code first; any of these is a new item, not this one.
 - `RIMMANDRAKE_MEMO_SUBJECT_ALIASES_THREE_MILLION_CALLS_A_RUN`: the Codex lane's build LANDED first (db371e01aa). This
   bundle's own build was dropped before publish. Measured with this bundle's build: collect 82 -> 54 s wall. Check the
   ticket's state; close it on db371e01aa if still open.
@@ -28,10 +30,9 @@ test is written and committed; what is left is landing, live readings, the slow-
   42). Dry run 723 s at load ~40: live 322 s (the borrower find 314 s), judge 254 s, fixtures 108 s; git children 32 s.
   A folder's own time is not a safe judge (a deep in-place write leaves it), so no folder-time shortcut. Page
   `design/specs/2026-11-27-scratch-reap-listing/boundary.md`.
-- `RIMMANDRAKE_RECORD_MODEL_AND_TOOL_SECONDS_833_HOURS_UNSPLIT`: commit "each finished run's record carries its tool and
-  model seconds". `run_seconds.py`, `detached_helper.seconds_of`, record field `seconds_split`. This run at 2:40 PM:
-  span 13,335 s, tool 10,940 s, model 2,395 s. Page `design/specs/2026-11-27-run-seconds/boundary.md`. Owed for the
-  spec: a split of the 7 days' runs (loop seconds_of over the records of the week) on the slow-actions page.
+- `RIMMANDRAKE_RECORD_MODEL_AND_TOOL_SECONDS_833_HOURS_UNSPLIT`: the Codex lane's build LANDED first (ccc65c468d,
+  fields model_seconds and tool_seconds); this bundle's build was dropped at 5:10 PM. Owed for the spec: the 7-day split
+  on the slow-actions page, from the landed fields or the transcripts.
 - `RIMMANDRAKE_MEASURE_PUBLISH_SLOT_DANGER_BEFORE_ANY_CHANGE`: `design/specs/2026-11-26-slow-actions/publish_line.md` and
   `publish_line_measure.py`. Recommends SLOTS stays 2; door-reads records per test and tree (46 % of selected runs are
   "another version", caused by unlanded trees overwriting the one per-machine record); name the 61 always-unknown
