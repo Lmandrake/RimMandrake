@@ -1,0 +1,1131 @@
+{
+ "mod": "FlowWorks",
+ "script": "proof_hose.py",
+ "tier": "flowworks",
+ "mode": "partial",
+ "started": "2026-11-27T18:32:45",
+ "rows": [
+  {
+   "id": "HP1_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "playing": true,
+    "flowworks": true,
+    "gimmesomeslack": true,
+    "startupLogRead": true,
+    "startupErrorsNamingHose": []
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "HP2_probes_site_pinned",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "hoseProbe": true,
+    "colonistsDrafted": [
+     671,
+     674,
+     677
+    ]
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "H1b_install_validity",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "far": "too far",
+    "wall": "target blocked",
+    "ok": null
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H2_hose_laid_as_hose_cord",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "layOk": true,
+    "pathLen": 23.54,
+    "flatLen": 23.7187,
+    "plumpLen": 23.7185,
+    "straight": 22.5277,
+    "points": 99,
+    "couplings": 2,
+    "fellBack": false,
+    "unwalkablePoints": 0,
+    "selfIntersects": false,
+    "geometryHash": "890f6088eae395a1",
+    "lay1": null,
+    "lay2": null,
+    "lastLayMs": 10
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H6_plump_within_transition",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "mid": {
+     "state": "Filling",
+     "blend": 0.4667,
+     "wobbling": true
+    },
+    "after": {
+     "state": "Plump",
+     "blend": 1,
+     "widthOverWire": 3.68,
+     "poseLen": 23.7185,
+     "history": [
+      [
+       308,
+       "Filling"
+      ],
+      [
+       338,
+       "Plump"
+      ]
+     ]
+    },
+    "flat": {
+     "widthOverWire": 2.88,
+     "poseLen": 23.7187
+    },
+    "transitionTicks": 30
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H7_no_flicker_fast_toggle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "toggles": 30,
+    "every": 40,
+    "history": [
+     [
+      353,
+      "Filling"
+     ],
+     [
+      383,
+      "Plump"
+     ]
+    ],
+    "state": "Plump",
+    "transitions": 2
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H8_collapse_after_release",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "after400": {
+     "state": "Plump",
+     "blend": 1
+    },
+    "after1200": {
+     "state": "Flat",
+     "blend": 0,
+     "history": [
+      [
+       308,
+       "Filling"
+      ],
+      [
+       338,
+       "Plump"
+      ],
+      [
+       2052,
+       "Draining"
+      ],
+      [
+       2082,
+       "Flat"
+      ]
+     ]
+    },
+    "releaseTicks": 500,
+    "minPlumpDwell": 600
+   },
+   "block": "hose"
+  },
+  {
+   "id": "H9_stiffness_setting",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "minBend2": 44.2108,
+    "hash2": "968907ee1c99bf4f",
+    "hashDefault": "1cc744c74271c285"
+   },
+   "block": "hose"
+  },
+  {
+   "id": "CR1_deploy_carrying",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=deploy:106,68",
+     "reason": null,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "carry": "Stored"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;671",
+     "job": "RM_CarryHoseEnd",
+     "curJob": "RM_CarryHoseEnd",
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ]
+    },
+    "ticks": 66,
+    "seen": [
+     "Stored",
+     "Carrying"
+    ],
+    "hose": {
+     "carry": "Carrying",
+     "carrier": 671,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 2,
+     "trailLast": [
+      84,
+      69
+     ],
+     "pulled": 0.8973,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat",
+     "layOk": false,
+     "drawMode": "carry"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR2_trail_follows_walk",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": {
+     "carry": "Carrying",
+     "carrier": 671,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 2,
+     "trailLast": [
+      84,
+      69
+     ],
+     "pulled": 0.8973,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat",
+     "layOk": false,
+     "drawMode": "carry"
+    },
+    "after": {
+     "carry": "Carrying",
+     "carrier": 671,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 4,
+     "trailLast": [
+      86,
+      68
+     ],
+     "pulled": 2.5407,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat",
+     "layOk": false,
+     "drawMode": "carry"
+    },
+    "pawnPos": [
+     86,
+     68
+    ],
+    "drawMode": "carry"
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR3_draft_drops_end",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "draft": true,
+    "pawn": {
+     "id": 671,
+     "name": "Damien",
+     "pos": [
+      86,
+      68
+     ],
+     "drafted": true,
+     "downed": false,
+     "job": "Wait_Combat",
+     "forced": false,
+     "driver": "JobDriver_Wait",
+     "toil": 0
+    },
+    "hose": {
+     "carry": "Dropped",
+     "carrier": null,
+     "far": [
+      86,
+      68
+     ],
+     "trailCount": 4,
+     "trailLast": [
+      86,
+      68
+     ],
+     "pulled": 2.5407,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat",
+     "layOk": true,
+     "drawMode": "lay"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5_resume_laid_at_target",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "startjob": "work",
+    "unforcedStarted": true,
+    "resumeTicks": 45,
+    "layTicks": 360,
+    "seen": [
+     "Dropped",
+     "Carrying",
+     "Carrying",
+     "Laid"
+    ],
+    "hose": {
+     "carry": "Laid",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 24,
+     "trailLast": [
+      106,
+      68
+     ],
+     "pulled": 22.5277,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat",
+     "layOk": true,
+     "drawMode": "lay"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5b_laid_hose_plumps",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "state": "Plump",
+    "provider": "debug",
+    "signal": true
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR5c_end_kind",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "endKind": "Free",
+    "note": "endKind is stage S4"
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR6_retract_stored",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=retract",
+     "reason": null,
+     "pending": "Retract",
+     "pendingAt": null,
+     "carry": "Laid"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;671",
+     "job": "RM_RetractHose",
+     "curJob": "RM_RetractHose",
+     "pending": "Retract",
+     "pendingAt": null
+    },
+    "ticks": 810,
+    "budget": 1426,
+    "seen": [
+     "Laid",
+     "Retracting",
+     "Stored"
+    ],
+    "hose": {
+     "carry": "Stored",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 0,
+     "trailLast": null,
+     "pulled": 0,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat",
+     "layOk": false,
+     "drawMode": "none"
+    }
+   },
+   "block": "carry"
+  },
+  {
+   "id": "CR7_no_instant_gizmos_without_devmode",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "devModeOff_labels": [
+     "Deploy hose",
+     "Choose style",
+     "End look: plain",
+     "Free end: Capped"
+    ],
+    "offending": [],
+    "devModeOn_labels": [
+     "Deploy hose",
+     "Choose style",
+     "End look: plain",
+     "Free end: Capped",
+     "DEV: lay hose instantly"
+    ],
+    "control_found_in_devmode": [
+     "DEV: lay hose instantly"
+    ],
+    "devModeBefore": true
+   },
+   "block": "carry"
+  },
+  {
+   "id": "SL1_save_landed_new_file_only",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "new": [
+     "RM_fw_hose_proof_20261127183731.rws"
+    ],
+    "changed": []
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL2_save_names_no_class_of_ours",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "drivers": 1,
+    "offending": [],
+    "RM_MapComponent_Hoses": 0,
+    "rmHoseState": 2,
+    "colonistsOnHoseJobsAtSave": 1,
+    "hoseReelStylesInSave": {
+     "Scrapper": 0,
+     "Industrial": 0,
+     "Modern": 0,
+     "Futuristic": 0
+    },
+    "hosesAtSave": "some"
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL3_hoses_and_reel_styles_survive",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hoses": 4,
+    "carriedLeftToSL4": [
+     [
+      82,
+      75
+     ]
+    ],
+    "scribed": {
+     "firstDiff": null,
+     "diffKeys": {},
+     "lost": [],
+     "gained": []
+    },
+    "runtimeBeforeRelay": {},
+    "settled": {
+     "firstDiff": null,
+     "diffKeys": {},
+     "lost": [],
+     "gained": [],
+     "noLay": [],
+     "relaidOtherCurve": []
+    },
+    "hosesEqual": true,
+    "reelStylesEqual": true,
+    "loadSeconds": 6
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "SL4_carry_states_survive",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "dropped(CR4a)": {
+     "before": {
+      "carry": "Dropped",
+      "far": [
+       86,
+       68
+      ],
+      "trailCount": 4,
+      "trailLast": [
+       86,
+       68
+      ],
+      "pending": "Deploy",
+      "pendingAt": [
+       106,
+       68
+      ]
+     },
+     "after": {
+      "carry": "Dropped",
+      "far": [
+       86,
+       68
+      ],
+      "trailCount": 4,
+      "trailLast": [
+       86,
+       68
+      ],
+      "pending": "Deploy",
+      "pendingAt": [
+       106,
+       68
+      ]
+     }
+    },
+    "carrying(CR4b)": {
+     "before": {
+      "carry": "Carrying",
+      "carrier": 674,
+      "far": [
+       -1000,
+       -1000
+      ],
+      "trailCount": 4,
+      "trailLast": [
+       86,
+       74
+      ],
+      "pulled": 2.5407,
+      "pending": "Deploy",
+      "pendingAt": [
+       106,
+       74
+      ],
+      "wound": 0,
+      "state": "Flat",
+      "layOk": false,
+      "drawMode": "carry"
+     },
+     "after": {
+      "carry": "Carrying",
+      "carrier": 674,
+      "far": [
+       -1000,
+       -1000
+      ],
+      "trailCount": 4,
+      "trailLast": [
+       86,
+       74
+      ],
+      "pulled": 2.5407,
+      "pending": "Deploy",
+      "pendingAt": [
+       106,
+       74
+      ],
+      "wound": 0,
+      "state": "Flat",
+      "layOk": false,
+      "drawMode": "carry"
+     }
+    },
+    "resumedAfterLoad(CR5)": {
+     "carry": "Laid",
+     "far": [
+      106,
+      74
+     ],
+     "pending": "None",
+     "ticks": 330,
+     "seen": [
+      "Carrying",
+      "Laid"
+     ]
+    },
+    "staging": {
+     "reel1": [
+      82,
+      68
+     ],
+     "reel2": [
+      82,
+      74
+     ],
+     "colonists": 3,
+     "reel1_staged": {
+      "carry": "Dropped",
+      "seen": [
+       "Stored",
+       "Carrying"
+      ],
+      "pawn": 671
+     },
+     "p1": 671,
+     "reel2_staged": {
+      "carry": "Carrying",
+      "seen": [
+       "Stored",
+       "Carrying"
+      ],
+      "pawn": 674
+     },
+     "p2": 674
+    },
+    "allCarried": {
+     "before": {
+      "(82, 69)": {
+       "carry": "Dropped",
+       "carrier": null,
+       "far": [
+        86,
+        68
+       ],
+       "trailCount": 4,
+       "trailLast": [
+        86,
+        68
+       ],
+       "pulled": 2.5407,
+       "pending": "Deploy",
+       "pendingAt": [
+        106,
+        68
+       ],
+       "wound": 0,
+       "state": "Flat",
+       "layOk": true,
+       "drawMode": "lay"
+      },
+      "(82, 75)": {
+       "carry": "Carrying",
+       "carrier": 674,
+       "far": [
+        -1000,
+        -1000
+       ],
+       "trailCount": 4,
+       "trailLast": [
+        86,
+        74
+       ],
+       "pulled": 2.5407,
+       "pending": "Deploy",
+       "pendingAt": [
+        106,
+        74
+       ],
+       "wound": 0,
+       "state": "Flat",
+       "layOk": false,
+       "drawMode": "carry"
+      }
+     },
+     "after": {
+      "(82, 69)": {
+       "carry": "Dropped",
+       "carrier": null,
+       "far": [
+        86,
+        68
+       ],
+       "trailCount": 4,
+       "trailLast": [
+        86,
+        68
+       ],
+       "pulled": 2.5407,
+       "pending": "Deploy",
+       "pendingAt": [
+        106,
+        68
+       ],
+       "wound": 0,
+       "state": "Flat",
+       "layOk": true,
+       "drawMode": "lay"
+      },
+      "(82, 75)": {
+       "carry": "Carrying",
+       "carrier": 674,
+       "far": [
+        -1000,
+        -1000
+       ],
+       "trailCount": 4,
+       "trailLast": [
+        86,
+        74
+       ],
+       "pulled": 2.5407,
+       "pending": "Deploy",
+       "pendingAt": [
+        106,
+        74
+       ],
+       "wound": 0,
+       "state": "Flat",
+       "layOk": false,
+       "drawMode": "carry"
+      }
+     }
+    }
+   },
+   "block": "save_load"
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errorsNamingHoseOrFlowWorks": [],
+    "otherErrors": 1,
+    "tap": {
+     "polls": 250,
+     "lost": 0,
+     "kept": 2
+    },
+    "siteClearErrors": 0,
+    "newWarnings": 2
+   },
+   "block": "session"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 73.4,
+   "rows": 2,
+   "raised": null
+  },
+  "hose": {
+   "wall_s": 94.1,
+   "rows": 6,
+   "raised": null
+  },
+  "carry": {
+   "wall_s": 65.4,
+   "rows": 8,
+   "raised": null
+  },
+  "save_load": {
+   "wall_s": 69.8,
+   "rows": 4,
+   "raised": null
+  },
+  "session": {
+   "wall_s": 0.2,
+   "rows": 1,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md",
+ "offline": {
+  "red": [],
+  "steps": {
+   "hose_offline": {
+    "exit": 0,
+    "tail": [
+     "HO9_drawn_fittings_meet_ports PASS      12 drawn pieces (4 looks x coupling/nozzle/cap) match JoinerFace/PieceBand/*Max; planted gauge coupling refused",
+     "HO10_reel_feed_off_pipe_is_pipe PASS      DrawFeed draws a pipe port's link in the pipe's straight tile (cloth only off tanks/pumps/machines); C7 pair: 2 strips pipe-centre to reel-centre insi"
+    ],
+    "wall_s": 0.5
+   },
+   "style_hose_R0": {
+    "exit": 0,
+    "tail": [
+     "R0_reel_styles_offline       PASS      {'problems': [], 'reelDefSeen': True, 'artFilesFound': 36, 'defsXmlSwept': 2386, 'styleDefs': 4}"
+    ],
+    "wall_s": 0.7
+   },
+   "hose_port_gates": {
+    "exit": 0,
+    "tail": [
+     "UNMEASURED  PP1/PP2 pre-port saves load through the aliases (live rows; no fixtures yet) -- P3/P8 above are source shape only",
+     "hose port gates: PASS (0 failing)"
+    ],
+    "wall_s": 1.4
+   },
+   "selftest_proof_hose": {
+    "exit": 0,
+    "tail": [
+     "ok    write_result: a refused rename onto the existing result writes it in place, no temp left ",
+     "selftest_proof_hose: PASS (0 failing)"
+    ],
+    "wall_s": 162.9
+   },
+   "csharp_selftest": {
+    "exit": 0,
+    "tail": [
+     "hose: 457/457 assertions passed (moved from Gimme Some Slack: 350; new: 107)",
+     "--only Hose*,StyleStage3Checks: 43 case(s) and 14 hose suite(s) ran, 1443 filtered out"
+    ],
+    "wall_s": 801.8
+   },
+   "design_spec": {
+    "exit": 0,
+    "tail": [
+     "  spec_hash d0c70426b4cae5ca",
+     "wrote /mnt/d/ClaudeWork/rimmandrake/scratch/fw_hose_proof/scenes_design.json"
+    ],
+    "wall_s": 0.6
+   }
+  },
+  "wall_s": 802.4
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "dubwise.dubsbadhygiene.lite",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "toastyman.moreritualseats",
+   "vanillaexpanded.vchemfuele",
+   "void.charactereditor",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches"
+  ],
+  "running_sha256": "9bfa9cd9f1105637581b4914b2629d528ec5e977b9563cd012b2f714bb1b07e1",
+  "assembly_matches": 1,
+  "assembly_sha256": "fa6c2e8aa135f5eb2498dc2d772f5be930504d88940b5b48688c32af2281eb7e"
+ },
+ "log_revive": {
+  "alive": true,
+  "sentinel": "[proof log sentinel] revive 1795833191784",
+  "emitted": true,
+  "why": null,
+  "cleared": true
+ },
+ "mod_hash": "8892b1377a8d9ac36f6cefc021332f4417c2b6032e5f36d403bcb11f2de3f3b7",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/proof_hose.py",
+  "runtime": "c5930cdbdccf9d16da5d0b63c465a1719290e179d7ec29700c12719a8c07ea4b",
+  "test": "94077dd2927a7d863215ca7ec5646dc99cb07a0b66e9778e95c603213d4871f3",
+  "test_files": [
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/conds.py",
+   "Utils/conds_dsl.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/deploy_index.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/game_watcher.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/list_journal.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/biome_site.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/quiet_site.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/save_uncompress.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/settings_keep.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/test_site_saves.json",
+   "Utils/modcheck/test_site_saves.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/nightly_scope.py",
+   "Utils/northstar_driver/__init__.py",
+   "Utils/northstar_driver/session.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/northstar_driver/transport.py",
+   "Utils/pipeline_tests.json",
+   "Utils/progress_guard.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/tickburst_step.py",
+   "Utils/time_budget.py",
+   "Utils/tps_record.py",
+   "Utils/validation_core.py",
+   "Utils/waitalive.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "sweeps": {
+  "preflight": {
+   "route": "destroy_bulk",
+   "removed": 27,
+   "left": [],
+   "kept": 0
+  },
+  "hose": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "carry": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  },
+  "save_load": {
+   "route": "destroy_bulk",
+   "removed": 0,
+   "left": [],
+   "kept": 0
+  }
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive47264"
+    ],
+    [
+     "GlowPod",
+     "GlowPod47281"
+    ],
+    [
+     "GlowPod",
+     "GlowPod47282"
+    ],
+    [
+     "Hive",
+     "Hive47283"
+    ],
+    [
+     "EggSac",
+     "EggSac47307"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  },
+  "fed": [
+   "Human671",
+   "Human674",
+   "Human677"
+  ]
+ },
+ "wall_s": 304.8,
+ "site_notes": [
+  {
+   "id": "H0_probe_channel",
+   "detail": "defaults applied"
+  },
+  {
+   "id": "H1_reels_built",
+   "detail": {
+    "reels": 2,
+    "build": true,
+    "walls": true,
+    "textures": true
+   }
+  },
+  {
+   "id": "CR0_scene",
+   "detail": {
+    "pawn": {
+     "id": 671,
+     "name": "Damien",
+     "pos": [
+      85,
+      68
+     ],
+     "drafted": false,
+     "downed": false,
+     "job": null,
+     "forced": false,
+     "driver": null,
+     "toil": -1
+    },
+    "reel": [
+     82,
+     68
+    ]
+   }
+  }
+ ],
+ "certifiable": false,
+ "site_calm_blocks": {
+  "hose": true,
+  "carry": true,
+  "save_load": true
+ },
+ "huge_plants_cleared": {
+  "hose": {
+   "blockers": 2605,
+   "tiles": 133,
+   "blockersLeft": 2605
+  },
+  "carry": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  },
+  "save_load": {
+   "blockers": 0,
+   "tiles": 0,
+   "blockersLeft": 0
+  }
+ },
+ "save": "RM_fw_hose_proof_20261127183731.rws",
+ "site_calm_restore": false
+}
