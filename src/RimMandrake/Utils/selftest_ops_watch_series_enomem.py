@@ -10,6 +10,8 @@ turns into a measured 1:
   good       the series reads: the carried target is a measured 0 and no alarm opens;
   one_fail   one ENOMEM, then good reads: the read is retried, the target is a measured 0, no alarm opens;
   always     every read fails ENOMEM: the target reads UNMEASURED with the cause, and no alarm opens.
+`--against <rev>` replays the instance on ops_watch.py as it stood at that revision: `rimflow guard ... --instance
+"--against de5b1331e6^"` shows the guard red on the code that opened the false alarm; a bad revision exits 125.
 Page: design/specs/2026-11-22-sense-families-cheap/boundary.md. Fixture-only: stub collectors, a temp store."""
 import builtins
 import errno
@@ -28,7 +30,21 @@ _TMP = Path(_tf.mkdtemp(prefix="selftest_ops_watch_series_enomem_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
 os.environ["RM_OPS_WATCH_LIVE_DIR"] = str(_TMP / "live_elsewhere")
 os.environ.pop("METRONOME_DEADLINE", None)
-import ops_watch as OW  # noqa: E402
+if "--against" in sys.argv:     # replay the instance: ops_watch.py's code as it stood at <rev>, run as this tree's file
+    import subprocess
+    REV = sys.argv[sys.argv.index("--against") + 1]
+    r = subprocess.run(["git", "show", "%s:src/RimMandrake/Utils/ops_watch.py" % REV], cwd=HERE, capture_output=True,
+                       text=True)
+    if r.returncode:    # a typo'd revision shows nothing about the instance: exit 125, which a guard reads as died
+        print("COULD NOT LOOK: no ops_watch.py at %s: %s" % (REV, r.stderr.strip()))
+        sys.exit(125)
+    OW = types.ModuleType("ops_watch")
+    OW.__file__ = str(HERE / "ops_watch.py")       # its HERE (rules, rimflow, ops_core) stays this tree
+    sys.modules["ops_watch"] = OW
+    exec(compile(r.stdout, "ops_watch.py@%s" % REV, "exec"), OW.__dict__)
+    print("against %s: ops_watch.py from that revision" % REV)
+else:
+    import ops_watch as OW  # noqa: E402
 
 FAILS = []
 TARGETS = {"disk": ("disk.scratch_outside_blind", "SCRATCH_OUTSIDE_BLIND"), "seats": ("seats.blind", None)}
