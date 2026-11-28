@@ -245,118 +245,124 @@ def main():
         r2 = art_sheet.generate(art_sheet.doubles(idx), out, "t", "t_sheet", "<p>t</p>")
         check(not r2["wrote_decisions"], "regenerating the sheet never overwrites the decisions file")
 
-        # the per-biome sheet (BIOME_FLORAFAUNA_ART_REVIEW_1): canon row + linked stand-in, sit1 prefill, NO ART row
-        canon_key = next((d.name for d in sorted(art_sheet.CANON.iterdir()) if d.is_dir()
-                          and any(p.suffix in (".png", ".jpg", ".webp") for p in d.iterdir())), None)
-        row_a = {"key": "RSW_Beast", "kind": "fauna", "label": "beast", "defNames": ["RSW_Beast"], "port": "RSW_Beast",
-                 "placements": [{"layer": "patch", "patch_mod": "mandrake.rut.patches"}], "commonality_max": 0.5,
-                 "canon": {"entry": f"design/RimStarWars/canon_references/{canon_key}" if canon_key else None},
-                 "twins": [{"defName": "RM_Beast", "relation": "tier_twin_same_stem", "in_this_biome": True}],
-                 "art": {"resources": [{"res": "Things/Beast/Beast", "role": "body", "prior_selection": {
-                     "decision": "B", "note": "", "picked_label": "x", "picked_faces": {"south": sgreen}}}]},
-                 "artpipe_state_jobs": [],
-                 # both Beast pictures are already ruled in this temp ledger (above), and a sheet drops a row whose
-                 # options are all ruled (c87bbf460); this section tests twin linking, so the row is shown on purpose
-                 "reopen": True}
-        row_b = {"key": "RM_Beast", "kind": "fauna", "label": "beast", "defNames": ["RM_Beast"], "placements": [],
-                 "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
-        cen = tmp / "census.json"
-        cen.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
-                                   "biomes": {"RM_Test": {"label": "Test", "rows": [row_a, row_b]}}}))
-        bout = tmp / "sheet" / "test_sheet.html"
-        # the sheet build rewrites BIOME_OUT/scale_ground_measured.json, a TRACKED file in the real tree: a fixture build
-        # writes it under tmp (red census 2026-11-22: it dirtied every clone that ran the suite and blocked their pulls)
-        art_sheet.BIOME_OUT = tmp / "biome_out"
-        art_sheet.BIOME_OUT.mkdir(parents=True, exist_ok=True)
-        rb = art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")
-        bh = bout.read_text()
-        bitems = json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', bh, re.S).group(1))
-        byid = {i["id"]: i for i in bitems}
-        check(rb["rows"] == 2 == rb["census_rows"], f"biome sheet: one item per census row ({rb['rows']})")
-        check([r["id"] for r in byid["RSW_Beast"]["related"]] == ["RM_Beast"]
-              and [r["id"] for r in byid["RM_Beast"]["related"]] == ["RSW_Beast"]
-              and byid["RSW_Beast"]["group"] == byid["RM_Beast"]["group"] and byid["RM_Beast"].get("band"),
-              "biome sheet: twins linked both ways, same group + colour band")
-        check(byid["RM_Beast"]["noArt"] and rb["no_art"] == ["RM_Beast"], "biome sheet: a row with no pictures is NO ART YET")
-        bdec = json.loads((tmp / "sheet" / "test_sheet.decisions.json").read_text())
-        green_letter = next(c["letter"] for g in byid["RSW_Beast"]["graphics"] for c in g["cols"] if c["faces"].get("south") == sgreen)
-        check(byid["RSW_Beast"]["prefillSource"] == "sit1" and bdec["decisions"]["RSW_Beast"]["decision"] == green_letter,
-              "biome sheet: desert sitting 1 pick prefills the matching column")
-        if canon_key:
-            check(bool(byid["RSW_Beast"]["canon"] and byid["RSW_Beast"]["canon"]["imgs"]), "biome sheet: canon row carries reference images")
-        chk = subprocess.run([sys.executable, str(art_sheet.SKILL / "check_sheet.py"), str(bout), "--decisions",
-                              str(tmp / "sheet" / "test_sheet.decisions.json")], capture_output=True, text=True)
-        check(chk.returncode == 0, "biome sheet passes check_sheet.py")
-        rb2 = art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")
-        check(rb2["wrote_decisions"] and rb2["snapshotId"] == rb["snapshotId"], "biome rebuild: untouched prefill regenerated, letters stable")
-        bdec["savedBy"], bdec["writeCount"] = "serve_sheet.py", 1
-        (tmp / "sheet" / "test_sheet.decisions.json").write_text(json.dumps(bdec))
-        check(not art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")["wrote_decisions"],
-              "biome rebuild never overwrites a decisions file the sidecar wrote")
-        # ART_SHEET_DONOR_JOIN_GAPS_1: a donor-prefixed texPath (RG_Brambles) must still join its finished render
-        # `brambles_v1`, and a render the old canon gate failed shows as a candidate with the grader's advice
-        import backfill as _bf
-        yellow = png((255, 255, 0, 255))
-        syellow = L.sha256_bytes(yellow)
-        L.store_put_bytes(yellow)
-        wr = L.Writer()
-        _bf._variant(wr, sha=sgreen, b=green, kind="donor", loc="donor:brambles", rel="Things/Plant/RG_Brambles_south.png",
-                     extra={"donor_pkg": "rg.mod", "donor_mod": "RG Mod", "how": "loose"})
-        _bf._variant(wr, sha=sblue, b=blue, kind="artpipe", loc="_artsrc/brambles_v1/x.png",
-                     extra={"job": "brambles_v1", "facing": "south", "date": "2026-10-05"})
-        _bf._variant(wr, sha=syellow, b=yellow, kind="artpipe", loc="_artsrc/foxwing_v1/x.png",
-                     extra={"job": "foxwing_v1", "facing": "south", "date": "2026-10-05"})
-        frames = {}
-        for n in (1, 2, 3):
-            for fac in ("east", "south"):
-                b_ = png((10 * n, 40 if fac == "east" else 90, 200, 255))
-                frames[(n, fac)] = L.sha256_bytes(b_)
-                L.store_put_bytes(b_)
-                _bf._variant(wr, sha=frames[(n, fac)], b=b_, kind="artpipe", loc=f"_artsrc/x/{n}{fac}.png",
-                             extra={"job": f"pyre_foxwing_flight8_{n}_{fac}", "facing": fac, "date": "2026-10-06"})
-        wr.flush()
-        (tmp / "artpipe" / "failed").mkdir(parents=True)
-        (tmp / "artpipe" / "failed" / "foxwing_v1.manifest.json").write_text(json.dumps({"id": "foxwing_v1", "worker_status": "failed_canon",
-            "canon_check": {"status": "graded", "verdict": "FAIL", "score": "1/2", "graded": 2, "lines": [
-                {"line": "Big round eyes", "verdict": "fail", "reason": "small vertical ovals"},
-                {"line": "Forked tail", "verdict": "pass", "reason": "ok"}]}}))
-        (tmp / "artpipe" / "done").mkdir(parents=True)
-        (tmp / "artpipe" / "done" / "brambles_v1.manifest.json").write_text(json.dumps({"id": "brambles_v1", "status": "ok",
-            "canon_check": {"status": "graded", "verdict": "PASS", "score": "0/0", "graded": 0, "lines": []}}))
-        os.environ["ARTPIPE_STATE_DIR"] = str(tmp / "artpipe")
-        row_c = {"key": "RG_Plant_Brambles", "kind": "flora", "label": "thorny bush", "defNames": ["RG_Plant_Brambles"],
-                 "placements": [], "canon": {"entry": None}, "twins": [], "artpipe_state_jobs": [],
-                 "art": {"resources": [{"res": "Things/Plant/RG_Brambles", "role": "body"}]},
-                 "reopen": True}   # sgreen/sblue are already ruled here; this tests the donor join, not the drop
-        row_d = {"key": "RM_Foxwing", "kind": "fauna", "label": "foxwing", "defNames": ["RM_Foxwing"], "placements": [],
-                 "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
-        cen2 = tmp / "census2.json"
-        cen2.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
-                                    "biomes": {"RM_Test": {"label": "Test", "rows": [row_c, row_d]}}}))
-        bout2 = tmp / "sheet" / "test2_sheet.html"
-        art_sheet.generate_biome("RM_Test", cen2, bout2, "T", allow_failing="selftest fixture")
-        items2 = {i["id"]: i for i in json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>',
-                                                          bout2.read_text(), re.S).group(1))}
-        cols_c = [c for g in items2["RG_Plant_Brambles"]["graphics"] for c in g["cols"]]
-        check(any(sblue in c["faces"].values() for c in cols_c), "donor-prefixed row RG_Plant_Brambles shows the render brambles_v1")
-        cols_d = [c for g in items2["RM_Foxwing"]["graphics"] for c in g["cols"]]
-        check(any(syellow in c["faces"].values() and art_sheet.FAILED_CANON_BADGE in c["label"] for c in cols_d),
-              "an old failed_canon render is a candidate, badged as an advisory grader flag")
-        fx = next((c for c in cols_d if syellow in c["faces"].values()), {})
-        check(fx.get("canonFlag") and any("Big round eyes" in t and "small vertical ovals" in t and "1/2" in t
-                                          for t in fx.get("canonAdvice", [])),
-              f"the grader's flagged line, reason and score ride on the column: {fx.get('canonAdvice')}")
-        bx = next((c for c in cols_c if sblue in c["faces"].values()), {})
-        check(not bx.get("canonFlag") and any("UNGRADED" in t for t in bx.get("canonAdvice", [])),
-              f"a stored 0/0 PASS shows as UNGRADED, never PASS: {bx.get('canonAdvice')}")
-        check("bs-grader" in bout2.read_text(), "the sheet renders the grader advisory line")
-        fg = [g for g in items2["RM_Foxwing"]["graphics"] if g.get("flip")]
-        check(len(fg) == 1 and len(fg[0]["cols"]) == 1 and len(fg[0]["cols"][0]["faces"]) == 6
-              and fg[0]["nframes"] == 3 and fg[0]["flipFacings"] == ["east", "south"]
-              and fg[0]["facings"][:3] == ["1_east", "2_east", "3_east"],
-              "flight frames join into ONE flip-book set, a frames x facings grid")
-        check(not any(set(frames.values()) & set(c["faces"].values()) for g in items2["RM_Foxwing"]["graphics"]
-                      if not g.get("flip") for c in g["cols"]), "flight frames never also show as one-frame name sets")
+        import scale_panel
+        # the biome sheet reads the def dump (scale_panel.DB, a Windows path): absent on another machine, these
+        # checks are UNMEASURED there and the ingest checks below still run
+        if Path(scale_panel.DB).is_file():
+            # the per-biome sheet (BIOME_FLORAFAUNA_ART_REVIEW_1): canon row + linked stand-in, sit1 prefill, NO ART row
+            canon_key = next((d.name for d in sorted(art_sheet.CANON.iterdir()) if d.is_dir()
+                              and any(p.suffix in (".png", ".jpg", ".webp") for p in d.iterdir())), None)
+            row_a = {"key": "RSW_Beast", "kind": "fauna", "label": "beast", "defNames": ["RSW_Beast"], "port": "RSW_Beast",
+                     "placements": [{"layer": "patch", "patch_mod": "mandrake.rut.patches"}], "commonality_max": 0.5,
+                     "canon": {"entry": f"design/RimStarWars/canon_references/{canon_key}" if canon_key else None},
+                     "twins": [{"defName": "RM_Beast", "relation": "tier_twin_same_stem", "in_this_biome": True}],
+                     "art": {"resources": [{"res": "Things/Beast/Beast", "role": "body", "prior_selection": {
+                         "decision": "B", "note": "", "picked_label": "x", "picked_faces": {"south": sgreen}}}]},
+                     "artpipe_state_jobs": [],
+                     # both Beast pictures are already ruled in this temp ledger (above), and a sheet drops a row whose
+                     # options are all ruled (c87bbf460); this section tests twin linking, so the row is shown on purpose
+                     "reopen": True}
+            row_b = {"key": "RM_Beast", "kind": "fauna", "label": "beast", "defNames": ["RM_Beast"], "placements": [],
+                     "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
+            cen = tmp / "census.json"
+            cen.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
+                                       "biomes": {"RM_Test": {"label": "Test", "rows": [row_a, row_b]}}}))
+            bout = tmp / "sheet" / "test_sheet.html"
+            # the sheet build rewrites BIOME_OUT/scale_ground_measured.json, a TRACKED file in the real tree: a fixture build
+            # writes it under tmp (red census 2026-11-22: it dirtied every clone that ran the suite and blocked their pulls)
+            art_sheet.BIOME_OUT = tmp / "biome_out"
+            art_sheet.BIOME_OUT.mkdir(parents=True, exist_ok=True)
+            rb = art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")
+            bh = bout.read_text()
+            bitems = json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', bh, re.S).group(1))
+            byid = {i["id"]: i for i in bitems}
+            check(rb["rows"] == 2 == rb["census_rows"], f"biome sheet: one item per census row ({rb['rows']})")
+            check([r["id"] for r in byid["RSW_Beast"]["related"]] == ["RM_Beast"]
+                  and [r["id"] for r in byid["RM_Beast"]["related"]] == ["RSW_Beast"]
+                  and byid["RSW_Beast"]["group"] == byid["RM_Beast"]["group"] and byid["RM_Beast"].get("band"),
+                  "biome sheet: twins linked both ways, same group + colour band")
+            check(byid["RM_Beast"]["noArt"] and rb["no_art"] == ["RM_Beast"], "biome sheet: a row with no pictures is NO ART YET")
+            bdec = json.loads((tmp / "sheet" / "test_sheet.decisions.json").read_text())
+            green_letter = next(c["letter"] for g in byid["RSW_Beast"]["graphics"] for c in g["cols"] if c["faces"].get("south") == sgreen)
+            check(byid["RSW_Beast"]["prefillSource"] == "sit1" and bdec["decisions"]["RSW_Beast"]["decision"] == green_letter,
+                  "biome sheet: desert sitting 1 pick prefills the matching column")
+            if canon_key:
+                check(bool(byid["RSW_Beast"]["canon"] and byid["RSW_Beast"]["canon"]["imgs"]), "biome sheet: canon row carries reference images")
+            chk = subprocess.run([sys.executable, str(art_sheet.SKILL / "check_sheet.py"), str(bout), "--decisions",
+                                  str(tmp / "sheet" / "test_sheet.decisions.json")], capture_output=True, text=True)
+            check(chk.returncode == 0, "biome sheet passes check_sheet.py")
+            rb2 = art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")
+            check(rb2["wrote_decisions"] and rb2["snapshotId"] == rb["snapshotId"], "biome rebuild: untouched prefill regenerated, letters stable")
+            bdec["savedBy"], bdec["writeCount"] = "serve_sheet.py", 1
+            (tmp / "sheet" / "test_sheet.decisions.json").write_text(json.dumps(bdec))
+            check(not art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")["wrote_decisions"],
+                  "biome rebuild never overwrites a decisions file the sidecar wrote")
+            # ART_SHEET_DONOR_JOIN_GAPS_1: a donor-prefixed texPath (RG_Brambles) must still join its finished render
+            # `brambles_v1`, and a render the old canon gate failed shows as a candidate with the grader's advice
+            import backfill as _bf
+            yellow = png((255, 255, 0, 255))
+            syellow = L.sha256_bytes(yellow)
+            L.store_put_bytes(yellow)
+            wr = L.Writer()
+            _bf._variant(wr, sha=sgreen, b=green, kind="donor", loc="donor:brambles", rel="Things/Plant/RG_Brambles_south.png",
+                         extra={"donor_pkg": "rg.mod", "donor_mod": "RG Mod", "how": "loose"})
+            _bf._variant(wr, sha=sblue, b=blue, kind="artpipe", loc="_artsrc/brambles_v1/x.png",
+                         extra={"job": "brambles_v1", "facing": "south", "date": "2026-10-05"})
+            _bf._variant(wr, sha=syellow, b=yellow, kind="artpipe", loc="_artsrc/foxwing_v1/x.png",
+                         extra={"job": "foxwing_v1", "facing": "south", "date": "2026-10-05"})
+            frames = {}
+            for n in (1, 2, 3):
+                for fac in ("east", "south"):
+                    b_ = png((10 * n, 40 if fac == "east" else 90, 200, 255))
+                    frames[(n, fac)] = L.sha256_bytes(b_)
+                    L.store_put_bytes(b_)
+                    _bf._variant(wr, sha=frames[(n, fac)], b=b_, kind="artpipe", loc=f"_artsrc/x/{n}{fac}.png",
+                                 extra={"job": f"pyre_foxwing_flight8_{n}_{fac}", "facing": fac, "date": "2026-10-06"})
+            wr.flush()
+            (tmp / "artpipe" / "failed").mkdir(parents=True)
+            (tmp / "artpipe" / "failed" / "foxwing_v1.manifest.json").write_text(json.dumps({"id": "foxwing_v1", "worker_status": "failed_canon",
+                "canon_check": {"status": "graded", "verdict": "FAIL", "score": "1/2", "graded": 2, "lines": [
+                    {"line": "Big round eyes", "verdict": "fail", "reason": "small vertical ovals"},
+                    {"line": "Forked tail", "verdict": "pass", "reason": "ok"}]}}))
+            (tmp / "artpipe" / "done").mkdir(parents=True)
+            (tmp / "artpipe" / "done" / "brambles_v1.manifest.json").write_text(json.dumps({"id": "brambles_v1", "status": "ok",
+                "canon_check": {"status": "graded", "verdict": "PASS", "score": "0/0", "graded": 0, "lines": []}}))
+            os.environ["ARTPIPE_STATE_DIR"] = str(tmp / "artpipe")
+            row_c = {"key": "RG_Plant_Brambles", "kind": "flora", "label": "thorny bush", "defNames": ["RG_Plant_Brambles"],
+                     "placements": [], "canon": {"entry": None}, "twins": [], "artpipe_state_jobs": [],
+                     "art": {"resources": [{"res": "Things/Plant/RG_Brambles", "role": "body"}]},
+                     "reopen": True}   # sgreen/sblue are already ruled here; this tests the donor join, not the drop
+            row_d = {"key": "RM_Foxwing", "kind": "fauna", "label": "foxwing", "defNames": ["RM_Foxwing"], "placements": [],
+                     "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
+            cen2 = tmp / "census2.json"
+            cen2.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
+                                        "biomes": {"RM_Test": {"label": "Test", "rows": [row_c, row_d]}}}))
+            bout2 = tmp / "sheet" / "test2_sheet.html"
+            art_sheet.generate_biome("RM_Test", cen2, bout2, "T", allow_failing="selftest fixture")
+            items2 = {i["id"]: i for i in json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>',
+                                                              bout2.read_text(), re.S).group(1))}
+            cols_c = [c for g in items2["RG_Plant_Brambles"]["graphics"] for c in g["cols"]]
+            check(any(sblue in c["faces"].values() for c in cols_c), "donor-prefixed row RG_Plant_Brambles shows the render brambles_v1")
+            cols_d = [c for g in items2["RM_Foxwing"]["graphics"] for c in g["cols"]]
+            check(any(syellow in c["faces"].values() and art_sheet.FAILED_CANON_BADGE in c["label"] for c in cols_d),
+                  "an old failed_canon render is a candidate, badged as an advisory grader flag")
+            fx = next((c for c in cols_d if syellow in c["faces"].values()), {})
+            check(fx.get("canonFlag") and any("Big round eyes" in t and "small vertical ovals" in t and "1/2" in t
+                                              for t in fx.get("canonAdvice", [])),
+                  f"the grader's flagged line, reason and score ride on the column: {fx.get('canonAdvice')}")
+            bx = next((c for c in cols_c if sblue in c["faces"].values()), {})
+            check(not bx.get("canonFlag") and any("UNGRADED" in t for t in bx.get("canonAdvice", [])),
+                  f"a stored 0/0 PASS shows as UNGRADED, never PASS: {bx.get('canonAdvice')}")
+            check("bs-grader" in bout2.read_text(), "the sheet renders the grader advisory line")
+            fg = [g for g in items2["RM_Foxwing"]["graphics"] if g.get("flip")]
+            check(len(fg) == 1 and len(fg[0]["cols"]) == 1 and len(fg[0]["cols"][0]["faces"]) == 6
+                  and fg[0]["nframes"] == 3 and fg[0]["flipFacings"] == ["east", "south"]
+                  and fg[0]["facings"][:3] == ["1_east", "2_east", "3_east"],
+                  "flight frames join into ONE flip-book set, a frames x facings grid")
+            check(not any(set(frames.values()) & set(c["faces"].values()) for g in items2["RM_Foxwing"]["graphics"]
+                          if not g.get("flip") for c in g["cols"]), "flight frames never also show as one-frame name sets")
+        else:
+            print(f"def dump {scale_panel.DB} absent — biome sheet checks UNMEASURED, not a pass or a fail")
     else:
         print("review-sheets template absent — sheet checks UNMEASURED, not a pass or a fail")
 
