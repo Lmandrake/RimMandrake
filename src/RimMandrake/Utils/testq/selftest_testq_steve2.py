@@ -468,6 +468,22 @@ def t_site_saves_reach_steve2(r):
     r.reset()
 
 
+def t_steve_games_load_archbigs_def_set(r):
+    """The tick's copy (`--sites`) also puts ArchBig's def-shaping mod settings (Cherry Picker's removal list) into the
+    Config beside Steve1's and Steve2's Saves, so one mod list loads one def set on all three games."""
+    code = ("import sync_test_mods as M, game_instance as GI, os, tempfile\npushed = []\n"
+            "t = tempfile.mkdtemp(); open(os.path.join(t, GI.DEF_SHAPING_SETTINGS[0]), 'w').write('cuts')\n"
+            "M.DEF_CONFIG_SRC = t\nM.SAVES_WSL = '/a/Saves'\nM.remote_sha = lambda path: ''\n"
+            "M.site_saves = lambda apply, extra=(): 0\n"
+            "M.push_bytes = lambda data, d, n: pushed.append((n, d))\n"
+            "sys.argv = ['sync_test_mods.py', '--sites', '--apply', '--also-saves', '/b/Saves']\nM.main()\n"
+            "print(json.dumps(sorted(pushed)))")
+    got = r.py(code)
+    want = [["Mod_3521312241_Mod_CherryPicker.xml", "/a/Config"], ["Mod_3521312241_Mod_CherryPicker.xml", "/b/Config"]]
+    check(got == want, "steve-games-load-archbigs-def-set: the tick's copy puts ArchBig's Cherry Picker settings in "
+                       "Steve1's and Steve2's Config (%s)" % (got,))
+
+
 def t_a_tick_with_both_games_busy_writes_the_reading(r):
     r.tq("list")
     hold = r.p("release_both_busy")     # both mock runs stay alive until the readings are taken (MOCK_HOLD)
@@ -511,7 +527,8 @@ def t_a_proof_that_crashes_is_unmeasured_not_fail(r):
 def main():
     tmp = tempfile.mkdtemp(prefix="testq_steve2_")
     r = Rig(tmp)
-    for t in (t_a_test_worker_never_writes_this_machines_real_list, t_steve2_reads_its_own_install, t_site_saves_reach_steve2, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
+    for t in (t_a_test_worker_never_writes_this_machines_real_list, t_steve2_reads_its_own_install, t_site_saves_reach_steve2,
+              t_steve_games_load_archbigs_def_set, t_steve2_command_carries_its_game, t_steve2_worker_is_a_steve_lane, t_steve2_results_are_steve_results,
               t_fault_drain_waits_for_both_workers, t_filler_fills_an_idle_game, t_visit_feed_one_mod_per_game,
               t_steve2_off_by_default, t_two_jobs_run_at_once_one_per_game,
               t_steve2_respects_the_machine_pause_and_its_own, t_steve2_stop_file_wins,

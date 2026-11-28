@@ -22,8 +22,12 @@ The companion is compared by sha256.
     python3 infrastructure/stevedesktop/sync_test_mods.py            # plan: what would go where
     python3 infrastructure/stevedesktop/sync_test_mods.py --apply    # stream each folder over ssh
     ... --only PACKAGEID --also-mods <Steve2's Mods>                 # one mod, into both Steve games' Mods
+    ... --sites [--also-saves <Steve2's Saves>] --apply              # the testq tick's copy: site saves + def settings
+    ... --def-settings [--also-saves <Steve2's Saves>]               # ArchBig's Cherry Picker settings on each game?
+                                                                     # exit 0 yes, 1 no, 2 could not look
 
-Runs on Archmagi WSL. Target: `$STEVE_WSL` (default mandrake@stevedesktop-wsl) and
+Runs on Archmagi WSL. `--def-settings` also runs on SteveDesktop (target commands under bash there, ArchBig's Config
+read over ssh from `$ARCHMAGI_WSL`). Target: `$STEVE_WSL` (default mandrake@stevedesktop-wsl) and
 `$STEVE_GAME_WSL` (default /mnt/d/SteamLibrary/steamapps/common/RimWorld). A folder already
 present with the same file count and byte total is skipped. A target that cannot be read (ssh down)
 is UNMEASURED and a source folder absent here is MISSING; both exit 1, never 'same' or 'copy'.
@@ -49,7 +53,18 @@ TARGET = os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl")
 GAME = os.environ.get("STEVE_GAME_WSL", "/mnt/d/SteamLibrary/steamapps/common/RimWorld")
 INBOX = os.environ.get("STEVE_TESTQ_HOME", "/mnt/d/RimTest/testq") + "/companion"
 ARTIFACT = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "artifacts", "BridgeTools", "JawaBench")
-SSH = shlex.split(os.environ.get("TESTQ_SSH", "ssh -o BatchMode=yes -o ConnectTimeout=8 -o LogLevel=ERROR")) + [TARGET]
+_SSH_OPTS = "ssh -o BatchMode=yes -o ConnectTimeout=8 -o LogLevel=ERROR"
+
+
+def on_target():
+    """True when this runs on SteveDesktop itself: its own sshd refuses a connection from itself (measured 2026-11-28),
+    so a target command runs here under bash instead."""
+    import socket
+    return socket.gethostname().lower() == TARGET.split("@")[-1].lower().replace("-wsl", "")
+
+
+SSH = (shlex.split(os.environ["TESTQ_SSH"]) + [TARGET] if os.environ.get("TESTQ_SSH")
+       else ["bash", "-c"] if on_target() else shlex.split(_SSH_OPTS) + [TARGET])
 _SKIP = re.compile(r"<(modDependencies\w*|loadAfter\w*|loadBefore\w*|incompatibleWith\w*)>.*?</\1>", re.S)
 
 
@@ -256,6 +271,109 @@ def site_saves(apply, registry=REGISTRY, saves=None, extra=()):
     return 1 if bad else 0
 
 
+DEF_CONFIG_SRC = os.environ.get("STEVE_DEF_CONFIG_SRC")  # else ArchBig's own Config (game_instance.a_config_dir)
+ARCHMAGI = os.environ.get("ARCHMAGI_WSL", "mandrake@archmagi-wsl")     # where ArchBig's Config is, read from SteveDesktop
+
+
+def _fetch_archbig(path):
+    """The bytes of ArchBig's file PATH (WSL form) read over ssh from SteveDesktop; None when unread or absent."""
+    try:
+        r = subprocess.run(shlex.split(_SSH_OPTS) + [ARCHMAGI, "cat %s" % shlex.quote(path)], capture_output=True,
+                           # budget: danger=a hung ssh to Archmagi holds the sync; longest=1s (76 KB in 0.76 s,
+                           # budget: SteveDesktop, 2026-11-28)
+                           timeout=120)
+    except subprocess.TimeoutExpired:
+        return None
+    return r.stdout if r.returncode == 0 and r.stdout else None
+
+
+def def_source():
+    """-> [(name, bytes or None, where)] for each def-shaping file (game_instance.DEF_SHAPING_SETTINGS, the one list, so
+    ArchSmall and the Steve games get the same files): ArchBig's own copy, read here on Archmagi, or over ssh from
+    SteveDesktop. None: could not read it."""
+    import game_instance as GI
+    src = DEF_CONFIG_SRC or GI.a_config_dir()
+    out = []
+    for n in GI.DEF_SHAPING_SETTINGS:
+        p = os.path.join(src, n)
+        if os.path.isfile(p):
+            with open(p, "rb") as f:
+                out.append((n, f.read(), p))
+        elif not DEF_CONFIG_SRC and on_target():
+            w = "%s/Config/%s" % (gp._DEF_LOW_WSL, n)
+            out.append((n, _fetch_archbig(w), "%s:%s" % (ARCHMAGI, w)))
+        else:
+            out.append((n, None, p))
+    return out
+
+
+def def_source_digest():
+    """sha256 over ArchBig's def-shaping files (name and bytes); None when one is unread. The tick's copy runs again
+    when it moves."""
+    import hashlib
+    h = hashlib.sha256()
+    for n, data, _ in def_source():
+        if data is None:
+            return None
+        h.update(n.encode() + b"\0" + hashlib.sha256(data).hexdigest().encode())
+    return h.hexdigest()
+
+
+def push_bytes(data, dest_dir, name):
+    """Stream DATA into `dest_dir`/NAME on the target (a .part, then an atomic mv)."""
+    d, f = shlex.quote(dest_dir), shlex.quote(dest_dir + "/" + name)
+    r = subprocess.run(SSH + ["set -e; mkdir -p %s; cat > %s.part; mv %s.part %s" % (d, f, f, f)], input=data,
+                       # budget: danger=a hung ssh holds the push and its tick; longest=1s (76 KB in 0.76 s,
+                       # budget: SteveDesktop, 2026-11-28)
+                       capture_output=True, timeout=600)
+    if r.returncode:
+        raise RuntimeError("push %s failed: ssh=%s %s" % (name, r.returncode, r.stderr.decode(errors="replace").strip()))
+
+
+def def_settings(apply, extra=()):
+    """Put ArchBig's def-shaping mod settings (game_instance.DEF_SHAPING_SETTINGS: Cherry Picker's removal list) into the
+    Config folder beside each target Saves folder: Steve1's, and EXTRA (Steve2's, `--also-saves`). Compared by sha256.
+    -> 0 every target holds ArchBig's file (after the copy, with apply); 1 a target differs (plan) or did not take the
+    copy; 2 could not look (ArchBig's file unread, or a target unread). Never deletes, never writes ArchBig's folder.
+    Runs on Archmagi (the tick) and on SteveDesktop (on_target).
+    RIMMANDRAKE_CHECK_STEVEDESKTOP_CHERRY_PICKER_SETTINGS_ARCHSMALL_HAD_NONE: Steve1 and Steve2 held no
+    Mod_3521312241_Mod_CherryPicker.xml, so one mod list loaded more defs there than on ArchBig (ArchSmall's case,
+    2026-11-27: 132 errors when its save loaded on ArchBig)."""
+    import hashlib
+    there = remote_saves()
+    if not there:
+        print("UNMEASURED def settings: SteveDesktop's Saves folder unread (RM_GAME_USERDATA from %s on %s)"
+              % (ENV_SH, TARGET))
+        return 2
+    targets = [os.path.dirname(x.rstrip("/")) + "/Config" for x in [there] + [x for x in extra if x and x != there]]
+    unread = differ = 0
+    for n, data, where in def_source():
+        if data is None:
+            print("UNMEASURED def settings %s: ArchBig's copy unread at %s" % (n, where))
+            unread += 1
+            continue
+        want = hashlib.sha256(data).hexdigest()
+        for cfg in targets:
+            got = remote_sha(cfg + "/" + n)
+            if got is None:
+                print("UNMEASURED def settings %s: could not read %s on %s" % (n, cfg, TARGET))
+                unread += 1
+                continue
+            state = "same" if got == want else "copy"
+            print("%-4s def settings %-38s sha256 %s -> %s" % (state, n, want[:12], cfg))
+            if state == "same":
+                continue
+            if not apply:
+                differ += 1
+                continue
+            push_bytes(data, cfg, n)
+            after = remote_sha(cfg + "/" + n)
+            differ += after != want
+            print("     %s (target sha %s; the game reads it at its next load)" % (
+                "ok" if after == want else "MISMATCH", (after or "unreadable")[:12]))
+    return 2 if unread else (1 if differ else 0)
+
+
 def _sha256(path):
     import hashlib
     h = hashlib.sha256()
@@ -274,9 +392,18 @@ def main():
     ap.add_argument("--only", action="append", default=[], metavar="PACKAGEID", help="only these mods; no companion")
     ap.add_argument("--also-mods", action="append", default=[], help="another Mods folder on SteveDesktop (WSL form) that "
                                                                      "gets the same mods (Steve2's)")
+    ap.add_argument("--def-settings", action="store_true", help="only ArchBig's def-shaping mod settings (Cherry Picker), "
+                                                                "into the Config beside each Saves folder; exit 0 every "
+                                                                "game holds them, 1 one differs, 2 could not look")
     a = ap.parse_args()
-    if a.sites:
+    if a.def_settings:
+        rc = def_settings(a.apply, extra=a.also_saves)
+        if not a.apply:
+            print("\nplan only; --apply copies")
+        return rc
+    if a.sites:     # the tick's copy: the site saves, and the mod settings that decide which defs those games load
         rc = site_saves(a.apply, extra=a.also_saves)
+        rc = max(rc, def_settings(a.apply, extra=a.also_saves))
         if not a.apply:
             print("\nplan only; --apply copies")
         return rc

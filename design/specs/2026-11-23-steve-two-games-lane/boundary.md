@@ -1,6 +1,6 @@
 # BOUNDARY: the SteveDesktop lane drives Steve1 and Steve2 at once, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `games_reading`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, `Attempt.load`'s fresh PID checks, `Attempt.mods_dir`, `Attempt.companion_dir`, the kept environment of `spawn`, `proof_verdict`, `real_list_cmd` and its two calls in `compose_then_load` and the tier swap), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`), `testq.py`'s `site_stage_argv`.
+Code: `src/RimMandrake/Utils/testq/testq.py` (`STEVE2`, `on_steve`, `steve2_on`, `steve_lanes`, `games_reading`, `remote` with `host`, `worker_for`, `admit` with `host`, `lane_running`, the tick's Steve2 step, `fill_plan`'s busy rule), `infrastructure/stevedesktop/worker.py` (`STEVE_LANE`, `staged_companion`, `Attempt.load`'s fresh PID checks, `Attempt.mods_dir`, `Attempt.companion_dir`, the kept environment of `spawn`, `proof_verdict`, `real_list_cmd` and its two calls in `compose_then_load` and the tier swap), `src/RimMandrake/Utils/testq/visit_feed.py` (the in-flight rule of `step`), `src/RimMandrake/Utils/testq/fault_monitor.py` (`gate`, `worker_busy`, the not-quarantined count), `src/RimMandrake/Utils/testq/ingest.py` (`env_window`, `ingest_group`'s config), `infrastructure/stevedesktop/sync_test_mods.py` (`site_saves`' extra targets, `--also-saves`, `def_settings`, `--def-settings`), `testq.py`'s `site_stage_argv` and `def_settings_digest`.
 Item: `RIMMANDRAKE_FILL_BOTH_STEVEDESKTOP_GAMES_HE_SAYS_IT_HOLDS_TWO`, written 2026-11-23. The owner's words that night:
 *"Fill up Steve Desktop please... it can support two live games at a time."* Each promise has a test of its name in
 `src/RimMandrake/Utils/testq/selftest_testq_steve2.py`. This page covers only these parts of the files named; the rest
@@ -25,7 +25,7 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
   games fit in its memory (127.9 GB, 106.5 GB free with Steve1 up at 4.5 GB private, measured 2026-11-23 02:20 PST).
   A list near Archmagi's full 316 mods on both games is not measured.
 - **a-third-party-mod-updated-after-steve2s-copy.** Steve2's `Mods` copy of a third-party mod is the copy of the day
-  `install b` ran (`install b --refresh` adds and updates). `sync_test_mods.py` writes Steve1's folders only.
+  `install b` ran (`install b --refresh` adds and updates). `sync_test_mods.py` writes Steve2's Mods only when `--also-mods` names them.
 - **a-stale-steve2-runner-clone-code.** Steve2's worker pulls `runner_b` before each attempt, as Steve1's does; a
   runner_b that cannot pull refuses the job (REFUSED/SYNC), which pauses Steve2 only.
 
@@ -74,6 +74,13 @@ host `stevedesktop.b`); the map is `src/RimMandrake/rimflow/game_names.py`.
   folder it is given (`--also-saves`), and the tick's copy names Steve2's Saves
   (`/mnt/d/ClaudeWork/rimmandrake/instances/b/Saves`) while Steve2 is switched on. (A Pyrelands job on a game with no
   site save polls 420 s and reads UNMEASURED SITE: RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE.)
+- **steve-games-load-archbigs-def-set.** The tick's copy (`sync_test_mods.py --sites`) also puts each file of
+  `game_instance.DEF_SHAPING_SETTINGS` (Cherry Picker's removal list) from ArchBig's Config into the Config beside
+  each target Saves folder, Steve1's and Steve2's, compared by sha256; a new file on ArchBig moves the tick's key, so
+  the copy runs once more. `--def-settings` alone exits 0 when every game holds ArchBig's file, 1 when one differs,
+  2 when it could not look. (2026-11-28: Steve1 and Steve2 held no `Mod_3521312241_Mod_CherryPicker.xml`, so they
+  removed none of the campaign's defs; ArchSmall's save of the same gap loaded on ArchBig with 132 errors:
+  RIMMANDRAKE_CHECK_STEVEDESKTOP_CHERRY_PICKER_SETTINGS_ARCHSMALL_HAD_NONE.)
 - **a-tick-with-both-games-busy-writes-the-reading.** Each tick that reached SteveDesktop writes `QHOME/steve_games.json`
   (each game: off, paused, idle or the job it runs; `both_busy`). Only a tick in which both games run a job writes
   `QHOME/steve_both_busy.json` (the two jobs), so its age is the time since both games were last busy together: the

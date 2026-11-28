@@ -417,6 +417,15 @@ def t_filler_prefers_advancing_mods():
 
 
 def t_site_saves_ship_when_the_registry_changes():
+    saved = T.def_settings_digest
+    T.def_settings_digest = lambda: "cuts-v1"       # the real one reads ArchBig's Config (over ssh from SteveDesktop)
+    try:
+        _site_saves_ship()
+    finally:
+        T.def_settings_digest = saved
+
+
+def _site_saves_ship():
     calls = []
 
     def run_ok():
@@ -442,6 +451,15 @@ def t_site_saves_ship_when_the_registry_changes():
     check(calls == ["ok", "bad", "ok"],
           "site-saves-ship-when-the-registry-changes: a failed copy is retried after %d s, not every tick (%s)"
           % (T.SITE_RETRY_S, calls))
+    # RIMMANDRAKE_CHECK_STEVEDESKTOP_CHERRY_PICKER_SETTINGS_ARCHSMALL_HAD_NONE: the same copy ships ArchBig's Cherry
+    # Picker removal list to the Steve games; a new list on ArchBig ships once more, the registry unchanged
+    calls.clear()
+    T.site_stage_step(now=NOW + 7200, run=run_ok)             # the last good copy shipped "cuts-v1": nothing
+    T.def_settings_digest = lambda: "cuts-v2"
+    T.site_stage_step(now=NOW + 7260, run=run_ok)
+    T.site_stage_step(now=NOW + 7320, run=run_ok)
+    check(calls == ["ok"], "site-saves-ship-when-the-registry-changes: a new Cherry Picker removal list on "
+                                 "ArchBig ships once more, then not every tick (%s)" % calls)
 
 
 def t_the_feed_runs_after_reconcile_before_admission():

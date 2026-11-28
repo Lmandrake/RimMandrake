@@ -811,8 +811,22 @@ SITE_STAGE = "site_saves_stage.json"
 SITE_RETRY_S = 1800
 
 
+def def_settings_digest():
+    """The digest of ArchBig's def-shaping mod settings, which the same copy ships (sync_test_mods.def_settings), or
+    "unread". RIMMANDRAKE_CHECK_STEVEDESKTOP_CHERRY_PICKER_SETTINGS_ARCHSMALL_HAD_NONE."""
+    try:
+        here = os.path.join(REPO, "infrastructure", "stevedesktop")
+        if here not in sys.path:
+            sys.path.insert(0, here)
+        import sync_test_mods
+        return sync_test_mods.def_source_digest() or "unread"
+    except Exception as e:  # noqa: BLE001 - an unread digest still copies once, and the copy itself says what it read
+        return "unread:%s" % type(e).__name__
+
+
 def site_stage_argv():
-    """The copy the tick runs: Steve1's Saves, and Steve2's too while Steve2 is switched on."""
+    """The copy the tick runs: Steve1's Saves and Config (ArchBig's def-shaping mod settings), and Steve2's too while
+    Steve2 is switched on."""
     return [sys.executable, os.path.join(REPO, "infrastructure", "stevedesktop", "sync_test_mods.py"), "--sites",
             "--apply"] + (["--also-saves", STEVE2_SAVES] if steve2_on() else [])
 
@@ -820,7 +834,8 @@ def site_stage_argv():
 def site_stage_step(now=None, run=None):
     """Ship every registered test-site save SteveDesktop lacks (sync_test_mods.site_saves;
     RIMMANDRAKE_ROUTE_PYRE_TESTQ_OFF_STEVE_NO_SITE_THERE: no Pyrelands site there, 5 jobs 0 PASS). Runs when
-    test_site_saves.json changed since the last good copy, or SITE_RETRY_S after a failed one. Never breaks the tick."""
+    test_site_saves.json or ArchBig's def-shaping mod settings (Cherry Picker's removal list, def_settings_digest) changed
+    since the last good copy, or SITE_RETRY_S after a failed one. Never breaks the tick."""
     import hashlib
     now = time.time() if now is None else now
     if run is None and os.path.realpath(QHOME) != os.path.realpath("/mnt/d/ClaudeWork/rimmandrake/testq"):
@@ -832,6 +847,7 @@ def site_stage_step(now=None, run=None):
             want = hashlib.sha256(f.read()).hexdigest() + ("+steve2" if steve2_on() else "")    # switching on copies
     except OSError as e:
         return {"state": "unmeasured", "why": "%s unreadable: %s" % (reg, e)}
+    want += "+def:%s" % def_settings_digest()     # a new Cherry Picker removal list on ArchBig copies again
     st = read_json(q(SITE_STAGE)) or {}
     if st.get("registry") == want and (st.get("rc") == 0 or now - float(st.get("epoch") or 0) < SITE_RETRY_S):
         return {"state": "unchanged", "rc": st.get("rc")}

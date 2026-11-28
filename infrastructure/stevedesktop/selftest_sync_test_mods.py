@@ -183,6 +183,68 @@ try:
         rc = S.site_saves(True, registry=reg, saves=sv)
     check("site saves: an unread target is UNMEASURED, exit 1, nothing pushed", rc == 1 and pushed == []
           and out.getvalue().count("UNMEASURED") == 2, (rc, out.getvalue()))
+
+    # def_settings(): ArchBig's def-shaping mod settings (Cherry Picker's removal list) reach the Config folder beside
+    # each Steve game's Saves, compared by sha256 (RIMMANDRAKE_CHECK_STEVEDESKTOP_CHERRY_PICKER_SETTINGS_ARCHSMALL_HAD_NONE:
+    # Steve1 and Steve2 held no Mod_3521312241_Mod_CherryPicker.xml, so they removed none of the campaign's defs)
+    import game_instance as GI
+    cp = GI.DEF_SHAPING_SETTINGS[0]
+    src_cfg = os.path.join(tmp, "archbig_config")
+    os.makedirs(src_cfg)
+    with open(os.path.join(src_cfg, cp), "w") as f:
+        f.write("<SettingsBlock>cuts</SettingsBlock>")
+    want = S._sha256(os.path.join(src_cfg, cp))
+    S.DEF_CONFIG_SRC = src_cfg
+    check("on_target: SteveDesktop runs its target commands under bash (its sshd refuses itself), Archmagi over ssh",
+          S.on_target() == (__import__("socket").gethostname().lower() == "stevedesktop"), S.on_target())
+    S.SAVES_WSL = "/steve1/Saves"
+    there = {}
+    S.remote_sha = lambda p: there.get(p, "")
+    pushed = []
+    S.push_bytes = lambda data, d, n: (pushed.append((n, d)), there.__setitem__(d + "/" + n, want))
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.def_settings(False, extra=["/steve2/Saves"])
+    check("def settings: absent on both games -> plan exit 1, nothing pushed", rc == 1 and pushed == []
+          and out.getvalue().count("copy") == 2, (rc, out.getvalue()))
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.def_settings(True, extra=["/steve2/Saves"])
+    check("def settings: --apply puts ArchBig's file in Steve1's and Steve2's Config -> exit 0",
+          rc == 0 and sorted(d for _, d in pushed) == ["/steve1/Config", "/steve2/Config"], (rc, pushed, out.getvalue()))
+    pushed.clear()
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.def_settings(False, extra=["/steve2/Saves"])
+    check("def settings: both hold ArchBig's file -> exit 0, nothing pushed", rc == 0 and pushed == [], (rc, out.getvalue()))
+    there["/steve2/Config/" + cp] = "0" * 64                    # Steve2 holds another removal list
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.def_settings(False, extra=["/steve2/Saves"])
+    check("def settings: another version on Steve2 is 'copy', plan exit 1", rc == 1 and "copy" in out.getvalue(),
+          (rc, out.getvalue()))
+    S.remote_sha = lambda p: None
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.def_settings(True, extra=["/steve2/Saves"])
+    check("def settings: an unread target is UNMEASURED, exit 2, nothing pushed", rc == 2 and pushed == []
+          and "UNMEASURED" in out.getvalue(), (rc, out.getvalue()))
+    S.remote_sha = lambda p: there.get(p, "")
+    S.DEF_CONFIG_SRC = os.path.join(tmp, "no_such_config")
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = S.def_settings(True, extra=["/steve2/Saves"])
+    check("def settings: ArchBig's file unread here is UNMEASURED, exit 2, never 'same'", rc == 2 and pushed == []
+          and "UNMEASURED" in out.getvalue() and "same" not in out.getvalue(), (rc, out.getvalue()))
+    S.DEF_CONFIG_SRC = src_cfg
+    d1 = S.def_source_digest()
+    with open(os.path.join(src_cfg, cp), "a") as f:
+        f.write("more")
+    check("def_source_digest moves when ArchBig's file changes (the tick copies again)", d1 and S.def_source_digest() != d1,
+          (d1, S.def_source_digest()))
+    S.DEF_CONFIG_SRC = os.path.join(tmp, "no_such_config")
+    check("def_source_digest of an unread source is None, not a digest", S.def_source_digest() is None,
+          S.def_source_digest())
 finally:
     shutil.rmtree(tmp, ignore_errors=True)
 
