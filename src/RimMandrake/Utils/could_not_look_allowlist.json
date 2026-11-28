@@ -313,7 +313,8 @@
   "src/RimMandrake/rimflow/list_effect.py::_check_tmp::except-returns-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::fanout_line::except-returns-empty": 1,
   "src/RimMandrake/Utils/maturation_now.py::image_stamp::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/maturation_read_cache.py::load::except-returns-empty": 1
+  "src/RimMandrake/rimflow/maturation_read_cache.py::load::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/maturation.py::ledger_fold_ended::except-returns-empty": 1
  },
  "reasons": {
   "src/RimMandrake/rimflow/control.py::_extra::except-returns-empty": [
@@ -1314,6 +1315,9 @@
   ],
   "src/RimMandrake/rimflow/maturation_read_cache.py::load::except-returns-empty": [
    "NOT A COLLAPSE: {} is a cold cache: every file is read again from its source and every image drawn again; a cache that cannot be read never supplies a value"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::ledger_fold_ended::except-returns-empty": [
+   "NOT A COLLAPSE: the empty set is \"the fold ends no item beyond what the event scan read\": a ledger the fold cannot read (a torn line the scan skips) leaves the scan's own answer, so an item stays open and holds, the safe side of every gate that reads it (design/specs/2026-11-25-road-back-holds-stage-exit/boundary.md closed-or-dropped-items-do-not-hold)"
   ]
  }
 }

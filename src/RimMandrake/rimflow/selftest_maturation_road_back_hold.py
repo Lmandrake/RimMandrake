@@ -104,6 +104,15 @@ def t_closed_or_dropped_items_do_not_hold():
     r, _ = hold_of(make("reopened", reopened))
     check(r is not None and "RIMMANDRAKE_RENAME_RMOD_DEFS_OPEN_ONE" in (r.get("observed") or ""),
           "a reopened item holds again", r)
+    # an offline item that reaches done by a verify pass, with no close event (the ledger's own fold
+    # reads it done), does not hold
+    v = "RIMMANDRAKE_FIX_RMOD_VERIFIED_DONE_ONE"
+    verified = done + [ev(8, "file", v, caused_by=DRIVER, title="verified", kind="task", **{"for": "BENCH"}),
+                       ev(9, "implemented", v, sha="b" * 40, needs="offline",
+                          criteria=[{"id": "c1", "text": "it works", "level": "L0"}]),
+                       ev(10, "verify", v, sha="b" * 40, result="pass", level="L0", config="x", evidence="e")]
+    r, passed = hold_of(make("verified", verified))
+    check(r is None and "road_back_items" in passed, "an item done by a verify pass, with no close, does not hold", r)
 
 
 def t_a_live_only_item_does_not_hold_an_offline_stage():

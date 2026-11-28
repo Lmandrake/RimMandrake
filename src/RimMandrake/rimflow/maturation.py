@@ -5666,9 +5666,36 @@ def road_back_hold(root, mod, rec, cur):
     return out
 
 
+_FOLDS = {}      # root -> (the ledger files' (path, size, mtime) key, {item: state}): one fold per ledger state
+
+
+def ledger_fold_ended(root, ids):
+    """-> the ids that the ledger's own fold (model.replay of this root's ledger) holds done, dropped or superseded.
+    The event scans below cannot see two of those ends: a verify pass that reaches done with no close event, and a
+    `live` kept that puts a reopened item back. The fold is kept per root while no ledger file changes. A ledger that
+    the fold cannot read gives the empty set, so the scan's own answer stands."""
+    want = set(ids)
+    if not want:
+        return set()
+    try:
+        import model as MO
+        head = os.path.join(root, "infrastructure", "state", "ledger", "events.jsonl")
+        files = MO.ledger_files(head)
+        key = tuple((f, os.stat(f).st_size, os.stat(f).st_mtime_ns) for f in files)
+        if _FOLDS.get(root, (None,))[0] != key:
+            w = MO.replay(MO.read_clone(head))
+            _FOLDS.clear()
+            _FOLDS[root] = (key, {i: it.state for i, it in w.items.items()})
+        states = _FOLDS[root][1]
+        return {i for i in want if states.get(i) in MO.TERMINAL}
+    except Exception:   # noqa: BLE001 - a fold that cannot be read ends nothing: the scan's answer stands
+        return set()
+
+
 def ledger_ended(root, ids):
     """-> the subset of ids whose newest close, drop, supersede or reopen (a `live` event with result broken) on any
-    shard under infrastructure/state/ledger/events/ is not a reopen; ordered by tsn, file order where it is missing."""
+    shard under infrastructure/state/ledger/events/ is not a reopen (ordered by tsn, file order where it is missing),
+    and the ids that the ledger's own fold holds done, dropped or superseded (ledger_fold_ended)."""
     d = os.path.join(root, "infrastructure", "state", "ledger", "events")
     want, last, n = set(ids), {}, 0
     for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
@@ -5691,24 +5718,25 @@ def ledger_ended(root, ids):
                 key = (int(e["tsn"]) if str(e.get("tsn") or "").isdigit() else 0, n)
                 if i not in last or key > last[i][0]:
                     last[i] = (key, kind != "live")
-    return {i for i, (_, done) in last.items() if done}
+    scanned = {i for i, (_, done) in last.items() if done}
+    return scanned | ledger_fold_ended(root, want - scanned)
 
 
 def ledger_items_caused_by(root, ids, ended_too=False, named=()):
-    """-> [{id, title, needs}] for the ledger items filed (file or spawn) with caused_by one of ids and not closed,
-    dropped or superseded since (ended_too: those as well), read from every shard under
+    """-> [{id, title, needs}] for the ledger items filed (file or spawn) with caused_by one of ids and not ended
+    (ledger_ended: closed, dropped or superseded and not reopened since, or ended by the ledger's own fold; ended_too:
+    those as well), read from every shard under
     infrastructure/state/ledger/events/. `needs` is the item's current window (ledger_needs), None when it never had
     one. named: item ids taken as well, whatever their caused_by, when any ledger event names them (the items a visit's
     failed lines cite, visit_cited_items; design/specs/2026-11-21-visit-wait-cited-items/boundary.md)."""
     d = os.path.join(root, "infrastructure", "state", "ledger", "events")
-    want, filed, ended, named = set(ids), {}, set(), set(named or ())
+    want, filed, named = set(ids), {}, set(named or ())
     for f in sorted(os.listdir(d)) if os.path.isdir(d) and (want or named) else []:
         if not f.endswith(".jsonl"):
             continue
         with open(os.path.join(d, f), encoding="utf-8") as fh:
             for ln in fh:
-                if '"caused_by"' not in ln and '"close"' not in ln and '"drop"' not in ln and '"supersede"' not in ln \
-                        and not (named and any(n in ln for n in named)):
+                if '"caused_by"' not in ln and not (named and any(n in ln for n in named)):
                     continue
                 try:
                     e = json.loads(ln)
@@ -5718,9 +5746,8 @@ def ledger_items_caused_by(root, ids, ended_too=False, named=()):
                     filed[e.get("id")] = e.get("title") or filed.get(e.get("id")) or ""
                 if e.get("event") in ("file", "spawn") and e.get("caused_by") in want:
                     filed[e.get("id")] = e.get("title") or ""
-                elif e.get("event") in ("close", "drop", "supersede"):
-                    ended.add(e.get("id"))
-    live = [k for k in sorted(filed) if ended_too or k not in ended]
+    ended = set() if ended_too else ledger_ended(root, list(filed))
+    live = [k for k in sorted(filed) if k not in ended]
     needs = ledger_needs(root, live)
     homes = ledger_homes(root, live)
     return [dict({"id": k, "title": filed[k], "needs": needs.get(k)}, **({"home": homes[k]} if k in homes else {}))

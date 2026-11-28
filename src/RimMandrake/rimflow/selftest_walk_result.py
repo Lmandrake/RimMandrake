@@ -169,9 +169,16 @@ def t_walk_gate_holds_on_open_item(tmp):
     append(root, "BENCH", {"seat": "BENCH", "event": "drop", "id": SCENE, "tsn": 4242000000000002001})
     e3 = M.evaluate(root, MOD, "his_walk", by="BENCH", why="x")
     r3 = [x for x in e3["verdict"]["refusals"] if x["clause"] == "walk_items_closed"]
+    # a fix-list item that is closed, then reopened (a `live` event with result broken), is open again
+    append(root, "RUNNER", {"seat": "RUNNER", "event": "live", "id": FIX_A, "result": "broken",
+                            "tsn": 4242000000000002002})
+    e4 = M.evaluate(root, MOD, "his_walk", by="BENCH", why="x")
+    r4 = [x for x in e4["verdict"]["refusals"] if x["clause"] == "walk_items_closed"]
     check(r1 and all(i in obs for i in (FIX_A, FIX_B, PICK, SCENE)) and NEXT not in obs and r2 and SCENE in str(
-        r2[0].get("observed")) and not r3 and e3["ok"], "walk-gate-holds-on-open-item",
-          {"open": obs, "after_three_closed": [x.get("observed") for x in r2], "after_all": e3["ok"]})
+        r2[0].get("observed")) and not r3 and e3["ok"] and r4 and FIX_A in str(r4[0].get("observed")),
+          "walk-gate-holds-on-open-item",
+          {"open": obs, "after_three_closed": [x.get("observed") for x in r2], "after_all": e3["ok"],
+           "after_reopen": [x.get("observed") for x in r4]})
 
 
 def t_walk_gate_unreadable_result_refuses(tmp):
