@@ -1,0 +1,31 @@
+{
+ "script": "live_bridge_landing_refusal.py",
+ "started": "2026-11-27T23:35:31",
+ "rows": [
+  {
+   "id": "BL_span_to_far_landing_says_landing",
+   "status": "FAIL",
+   "detail": {
+    "got": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=Both ends of a suspension bridge must stand at one height: solid surface ground, or (a sunken bridge) dry ledges at the same depth inside the hole.",
+    "placed": false
+   }
+  },
+  {
+   "id": "BL_span_to_near_landing_says_landing",
+   "status": "FAIL",
+   "detail": {
+    "got": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=Both ends of a suspension bridge must stand at one height: solid surface ground, or (a sunken bridge) dry ledges at the same depth inside the hole.",
+    "placed": false
+   }
+  },
+  {
+   "id": "BL_control_landing_to_landing_places",
+   "status": "PASS",
+   "detail": {
+    "got": "BUILD ok=True anchors=0 decks=0 blueprints=7 records=1 reason=-",
+    "why": "the instrument can place a bridge here"
+   }
+  }
+ ],
+ "open_sky": true
+}

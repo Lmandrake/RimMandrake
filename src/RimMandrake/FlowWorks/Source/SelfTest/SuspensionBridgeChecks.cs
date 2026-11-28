@@ -70,7 +70,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHG"), null, SuspensionTier.Rope, 1f) == null, "can-fail: rope spans 12, so 9 is fine");
                 Assert(RM_SuspensionMath.ValidateLane(Lane("GHHHHHHHHHG"), null, t, 1.2f) == null, "the length multiplier reaches the validator");
                 string start = RM_SuspensionMath.ValidateLane(Lane("HHHHG"), null, t, 1f);
-                Assert(start != null && start.Contains("start on solid"), "a drag starting over the hole is refused");
+                // RIMMANDRAKE_SAY_FLOWWORKS_BRIDGE_DRAG_STARTS_ON_THE_LANDING (owner walk 2026-11-20: "it should tell you that you
+                // start on the landing, not the span"): a drag started on the span says so
+                Assert(start != null && start.Contains("landing") && start.Contains("beside the hole") && start.Contains("not on the span"),
+                    "can-fail: a drag starting over the hole is refused, and the refusal says to start on the landing: " + start);
+                string endOver = RM_SuspensionMath.ValidateLane(Lane("GHHHH"), null, t, 1f);
+                Assert(endOver == start, "can-fail: a drag ending over the hole gets the same words (the lane's order is the map's, "
+                    + "not the mouse's): " + endOver);
+                // live 2026-11-28 (live_bridge_landing_refusal.py, red): the designator refuses a drag begun on the span earlier,
+                // because its two ends stand at different heights; one end on the surface and one in the hole is that mistake
+                Assert(RM_SuspensionMath.EndsRefusal(0, 2) == RM_SuspensionMath.LandingRefusal
+                    && RM_SuspensionMath.EndsRefusal(2, 0) == RM_SuspensionMath.LandingRefusal
+                    && RM_SuspensionMath.EndsRefusal(0, -1) == RM_SuspensionMath.LandingRefusal,
+                    "can-fail: one end on the surface and one in the hole (a ledge, or wet) is refused with the landing words");
+                Assert(RM_SuspensionMath.EndsRefusal(2, 3) == RM_SuspensionMath.EndsHeightRefusal,
+                    "can-fail: two ledges at different depths keep the one-height words");
                 string end = RM_SuspensionMath.ValidateLane(Lane("GHHHX"), null, t, 1f);
                 Assert(end != null && end.Contains("end on solid"), "a drag ending on blocked ground is refused");
                 string touch = RM_SuspensionMath.ValidateLane(Lane("GHHGHHG"), null, t, 1f);

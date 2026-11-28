@@ -269,6 +269,21 @@ namespace RimMandrake.FlowWorks
 			return order;
 		}
 
+		/// <summary>The refusal of a drag that begins or ends over the hole.</summary>
+		public const string LandingRefusal = "Start the drag on a landing, the solid ground beside the hole, not on the span, and end it "
+			+ "on the landing on the far side.";
+
+		/// <summary>The refusal of a drag whose two ends stand at different heights, neither of them the surface beside the hole.</summary>
+		public const string EndsHeightRefusal = "Both ends of a suspension bridge must stand at one height: solid surface ground, or (a "
+			+ "sunken bridge) dry ledges at the same depth inside the hole.";
+
+		/// <summary>Why a drag whose ends <see cref="DeckNotchesFor"/> refused is refused (walking depths in notches; -1 = wet or
+		/// off the map): one end on the surface and the other in the hole is a drag begun on the span (LandingRefusal).</summary>
+		public static string EndsRefusal(int startDepth, int endDepth)
+		{
+			return (startDepth == 0) != (endDepth == 0) ? LandingRefusal : EndsHeightRefusal;
+		}
+
 		/// <summary>One lane of a drag, from one end to the other. Null = it can be built; otherwise the refusal, in the
 		/// player's words. towers: indices along the lane where a tower stands or is planned (a support in the middle).</summary>
 		public static string ValidateLane(IList<SpanGround> lane, ICollection<int> towers, SuspensionTier tier, float lengthMultiplier)
@@ -277,6 +292,13 @@ namespace RimMandrake.FlowWorks
 			if (n < 3)
 			{
 				return "Drag a suspension bridge from solid ground, across a dug hole, to solid ground on the far side.";
+			}
+			// RIMMANDRAKE_SAY_FLOWWORKS_BRIDGE_DRAG_STARTS_ON_THE_LANDING (owner walk 2026-11-20): a drag begun or ended over the
+			// hole is the common mistake, so it is named in his words: the landing, not the span. One text for either end: the
+			// lane runs in map order, not from where the mouse went down.
+			if (lane[0] == SpanGround.Hole || lane[n - 1] == SpanGround.Hole)
+			{
+				return LandingRefusal;
 			}
 			if (lane[0] != SpanGround.Ground)
 			{

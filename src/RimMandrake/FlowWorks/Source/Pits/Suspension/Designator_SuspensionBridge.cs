@@ -31,7 +31,7 @@ namespace RimMandrake.FlowWorks.Pits
 		/// <summary>DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS phase 6: this button places a drawbridge (timber or steel).</summary>
 		protected virtual bool Drawbridge => false;
 
-		public override string Desc => base.Desc + "\n\nDrag from solid ground, across a dug hole, to solid ground: "
+		public override string Desc => base.Desc + "\n\nStart on the landing, not the span: drag from the solid ground beside a dug hole, across it, to the landing on the far side: "
 			+ (Drawbridge ? "1 to " + RM_SuspensionMath.DrawbridgeMaxWidth : RM_SuspensionMath.MaxWidthOf(Tier) == 1 ? "1"
 				: "1 to " + RM_SuspensionMath.MaxWidthOf(Tier)) + " squares wide, at most "
 			+ RM_SuspensionMath.MaxLength(Tier, RM_SuspensionSettings.suspensionLengthMultiplier)
@@ -53,7 +53,8 @@ namespace RimMandrake.FlowWorks.Pits
 
 		public override void DesignateSingleCell(IntVec3 c)
 		{
-			Messages.Message("Drag a suspension bridge from solid ground, across a dug hole, to solid ground on the far side.",
+			Messages.Message("Drag a suspension bridge: start on the landing (the solid ground beside a dug hole, not the span), "
+				+ "drag across the hole, and end on the landing on the far side.",
 				MessageTypeDefOf.RejectInput, false);
 		}
 
@@ -155,12 +156,12 @@ namespace RimMandrake.FlowWorks.Pits
 				};
 				// SUSPENSION_UNDERPASS_BUILD_MIND_YOUR_HEAD: the deck's height is the ends' (surface, or one dry ledge depth: a
 				// sunken bridge, setting sunkenBridges)
-				r.deckNotches = RM_SuspensionMath.DeckNotchesFor(EndDepth(map, r.Cell(0, 0)), EndDepth(map, r.Cell(0, r.length - 1)),
-					RM_SuspensionSettings.sunkenBridges);
+				int d0 = EndDepth(map, r.Cell(0, 0)), d1 = EndDepth(map, r.Cell(0, r.length - 1));
+				r.deckNotches = RM_SuspensionMath.DeckNotchesFor(d0, d1, RM_SuspensionSettings.sunkenBridges);
 				if (r.deckNotches < 0)
 				{
-					first = first ?? "Both ends of a suspension bridge must stand at one height: solid surface ground, or (a sunken bridge) "
-						+ "dry ledges at the same depth inside the hole.";
+					// RIMMANDRAKE_SAY_FLOWWORKS_BRIDGE_DRAG_STARTS_ON_THE_LANDING: one end in the hole is a drag begun on the span
+					first = first ?? RM_SuspensionMath.EndsRefusal(d0, d1);
 					continue;
 				}
 				string why = Plan(map, r, dragged, out List<SuspensionBridgeRecord> pieces);
