@@ -2128,7 +2128,7 @@ Every mod's Design Version is numbered `MAJOR.MINOR.PATCH` (semver.org). In this
 - A version before release is `0.x`. `1.0.0` is the version shipped to players. A judge round is a release candidate,
   `-rc.N`. A review round before a pass is a judge round, `-rc.N`, not a PATCH.
 
-The rule is user-level since the same day (*"Semantic Versioning should be a Lodestar-level, User-level addition to all current and future projects, along with the Convergent changes and Divergent changes that are part of the same design."*). The user-level rule is in `~/.claude/CLAUDE.md`. Its terms are in `~/dev/Lodestar/LEXICON.md`. Here the unit is the mod.
+The rule is user-level since the same day (*"Semantic Versioning should be a Lodestar-level, User-level addition to all current and future projects, along with the Convergent changes and Divergent changes that are part of the same design."*). The user-level rule's full text is `~/dev/Lodestar/claude/rules/design-versions.md`. Its terms are in `~/dev/Lodestar/LEXICON.md`. Here the unit is the mod.
 
 The judge layer is this repo's own, not the user-level rule's (owner, by card Thu 2026-11-26 10:23 AM PST: *"Core global, judge out"*). The judge layer is: Problem or Polish and the Polish list, Judge deferral and its grounds, and `-rc.N` review rounds before a pass. The user-level rule points other projects with a judge loop to this section.
 

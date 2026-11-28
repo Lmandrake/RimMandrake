@@ -25,7 +25,7 @@ question below: if this goes wrong, who catches it?) is measured, not argued.
 > game-waiting or fast mode. A Fable helper is allowed for design work or for an extremely difficult problem (owner
 > 2026-11-26, the Fable row below). Pass `model` on every spawn. Read the environment
 > (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting a rung; name no account. Ladder source of truth:
-> `~/dev/Lodestar/claude/global/45-subagents.md`.
+> `~/dev/Lodestar/claude/rules/subagents.md`.
 
 The rule "never Fable for game-waiting" has one exception. The Test Pilot runs on Fable 5.2 (owner 2026-11-16; the
 Fable row below).

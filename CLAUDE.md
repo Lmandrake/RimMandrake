@@ -540,7 +540,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 ## No limit without the danger it guards
 
 - The user-level rule, loaded in every session, is `~/dev/Lodestar/claude/global/37-limits-guard-a-named-danger.md`;
-  its scope applies here. This section holds what is particular to RimMandrake.
+  its full text is `~/dev/Lodestar/claude/rules/limits-guard-a-named-danger.md`, and its scope applies here. This section holds what is particular to RimMandrake.
 - Each limit names the danger that it guards and the evidence that the danger happens. Put this beside the number, on
   the boundary page under LIMITS, or in the brief. A class names it once: a call or test deadline is a hang guard
   (`call_deadline_lint.py`, `run_selftests.py`), at least 10 times the longest real run, never a speed bar.
@@ -637,7 +637,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - In this repo, the Conductor decides each move to a mod's Polish list (`version/polish.md` in its design folder), and whether a change goes in the current Design
   Version or the next. The Conductor decides at filing and tells the owner after, in his daily digest. Log it with
   `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "<the call and its reason>"`. Do not ask him
-  at filing (this replaces the "ask at filing" words of the user-level rule, in this repo only). A helper files the
+  at filing; the user-level rule says the same. A helper files the
   change and names what it recommends: current version, next version or Polish list. That call files a change.
   That call opens no version.
 - Before a mod's next Design Version opens, the owner reviews its scope. The review applies to every mod. The review is
