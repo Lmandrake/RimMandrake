@@ -350,15 +350,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     continue;   // THIRST_RULES_BUILD_SALT_OFF_THE_MENU: non-potable liquid moves only by an order
                 }
-                if (ex?.Stock != null && !ex.Stock.CanSupply(map, c, ex))
+                // The units the fill job debits (JobDriver_FillBottle: RM_ContainerMaterials.UnitsIn).
+                int units = container != null ? RM_ContainerMaterials.UnitsIn(container, candidate, size) : candidate.UnitsFor(size);
+                // C2-F2: a spent pond body gives nothing; never walk a pawn to it. BOTTLE_FILL_FIX_SMALL_POND_TOO: ask
+                // whether the body can pay for THIS bottle (as the drink search does), never for one whole level, or a
+                // pond under 1000 L is refused a bottle it could fill.
+                if (ex?.Stock != null && !CanDebitTerrain(map, c, units))
                 {
-                    continue;   // C2-F2: a spent pond body gives nothing; never walk a pawn to it
+                    continue;
                 }
                 // DUG_FILL_FIX_WALKS_TO_SHEET: a dug cell pays from its own water (TryDebitTerrain), so a sheet thinner
                 // than one container is no source; walking a pawn to it failed the fill and the next scan picked it again.
                 if (ex != null && ex.IsExcavated(c) && RM_ContainerMaterialMath.DugCellDebitDl(
-                        container != null ? RM_ContainerMaterials.UnitsIn(container, candidate, size) : candidate.UnitsFor(size),
-                        ex.WaterDlAt(c), true, RM_LevelSolve.U) < 0)
+                        units, ex.WaterDlAt(c), true, RM_LevelSolve.U) < 0)
                 {
                     continue;
                 }
