@@ -1563,6 +1563,22 @@ def t_a_routed_member_has_an_outcome():
     chk(lambda: "route_ts" in W.READ_MEMBERS and "route" in W.READ_MEMBERS, "read_members: reads the shape event's route")
 
 
+def t_a_rehomed_member_has_an_outcome():
+    W = WB()
+    rec = bundle_rec(W, ["H1", "H2", "H3", "H4"])
+    f = facts_of(H1={"home": "pipeline:bridge", "home_ts": NOW + 5}, H2={"home": "pipeline:bridge", "home_ts": NOW - 50},
+                 H3={"home": "pipeline:ledger", "home_ts": NOW + 5}, H4={})
+    o = W.outcomes(rec, f, NOW + 100)
+    chk(lambda: o["H1"]["outcome"] == "rehomed" and "pipeline:bridge" in o["H1"]["why"]
+        and all(o[m]["outcome"] == "open" for m in ("H2", "H3", "H4")),
+        "outcomes: a member re-homed away since the bundle began reads rehomed; one re-homed before, one re-homed to the "
+        "bundle's own system and one never re-homed read open (%s)" % o)
+    p = W.plan_restart(dict(rec, members=["H1", "H4"]), facts_of(H1={"home": "pipeline:bridge", "home_ts": NOW + 5}, H4={}),
+                       {"result": "success"}, NOW + 100)
+    chk(lambda: p.get("open") == ["H4"], "plan_restart: a re-homed member is not open, so no restart names it (%s)" % p)
+    chk(lambda: "home_ts" in W.READ_MEMBERS and "getattr(x, \"home\"" in W.READ_MEMBERS, "read_members: reads the member's home and its time")
+
+
 def t_an_onboarding_on_a_host_keeps_its_old_tickets():
     W = WB()
     import list_dispatch as LD
@@ -1886,7 +1902,8 @@ def main():
               t_the_onboard_classes_are_data,
               t_one_onboarding_beside_no_live_bundle, t_an_onboarding_that_could_not_look_starts_nothing,
               t_a_home_lead_takes_its_old_tickets, t_the_onboarding_brief_sorts_before_it_checks,
-              t_a_routed_member_has_an_outcome, t_an_onboarding_on_a_host_keeps_its_old_tickets,
+              t_a_routed_member_has_an_outcome, t_a_rehomed_member_has_an_outcome,
+              t_an_onboarding_on_a_host_keeps_its_old_tickets,
               t_the_page_shows_each_onboarding_run, t_the_mods_own_bundle_onboards_its_old_tickets,
               t_a_mod_bundle_takes_an_old_ticket_past_a_block_with_no_end,
               t_a_code_bundle_gets_one_fresh_read, t_every_lane_ticket_has_a_real_home,

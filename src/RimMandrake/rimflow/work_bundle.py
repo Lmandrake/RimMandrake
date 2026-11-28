@@ -1249,8 +1249,11 @@ items = model.replay(evs).items
 out = {}
 for i in sys.argv[1:]:
     x = items.get(i)
+    home = getattr(x, "home", None) if x is not None else None
+    home = home if isinstance(home, dict) else {}
     out[i] = None if x is None else {"state": x.state, "wait_until": x.wait_until, "wait_ts": None, "refusal": None,
-                                     "refusal_ts": None, "close_ts": None, "route_ts": None}
+                                     "refusal_ts": None, "close_ts": None, "route_ts": None,
+                                     "home": home.get("home"), "home_ts": home.get("at")}
 for e in evs:
     f = out.get(e.get("id"))
     if f is None:
@@ -1288,9 +1291,10 @@ def _when(v):
 
 
 def outcomes(rec, facts, now):
-    """-> {member: {"outcome", "why"}}: fixed | already_fixed | dropped | refused | waits | routed | open | unread. A
-    refusal, wait or route counts only when written since the bundle began (routed: its newest split, written since,
-    has a routed part: the party that answers re-shapes it)."""
+    """-> {member: {"outcome", "why"}}: fixed | already_fixed | dropped | rehomed | refused | waits | routed | open |
+    unread. A re-home, refusal, wait or route counts only when written since the bundle began (routed: its newest split,
+    written since, has a routed part: the party that answers re-shapes it; rehomed: its home is now another system, and
+    that home's lane works it)."""
     out, since = {}, rec.get("at") or 0
     for m in rec["members"]:
         f = (facts or {}).get(m)
@@ -1303,6 +1307,8 @@ def outcomes(rec, facts, now):
             waits = bool(f.get("wait_until")) and _when(f["wait_until"]) > now and _when(f.get("wait_ts")) >= since
             before = bool(f.get("close_ts")) and _when(f["close_ts"]) < since
             routed = bool(f.get("route_ts")) and _when(f["route_ts"]) >= since
+            rehomed = (bool(f.get("home")) and f["home"] != rec.get("system") and bool(f.get("home_ts"))
+                       and _when(f["home_ts"]) >= since)
         except (TypeError, ValueError) as e:
             out[m] = {"outcome": "unread", "why": "a time on it could not be read (%s)" % e}
             continue
@@ -1312,6 +1318,9 @@ def outcomes(rec, facts, now):
             out[m] = {"outcome": "already_fixed" if m in (rec.get("sort_closed") or []) else "fixed", "why": "closed done"}
         elif st in ("dropped", "superseded"):
             out[m] = {"outcome": "dropped", "why": "closed %s" % st}
+        elif rehomed:
+            out[m] = {"outcome": "rehomed", "why": "re-homed to %s since the bundle began; that home's lane works it"
+                      % f["home"]}
         elif refused:
             out[m] = {"outcome": "refused", "why": f["refusal"]}
         elif waits:

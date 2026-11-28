@@ -19,7 +19,7 @@ launch: its system, its members, the runs it took, each member's outcome so far,
 identity, its own test and its own close. An **outcome** is one of: `fixed` (closed `done` after the bundle began),
 `already_fixed` (closed by the reality sort), `dropped` (closed `dropped` or `superseded`), `refused` (a note on the member
 since the bundle began whose text starts `REFUSED BY BUNDLE:` (the role's words; `BUNDLE REFUSED:` is read too) and gives a reason), `waits` (a dated wait put on it since the
-bundle began). A member with none of these is **open**.
+bundle began), `routed` and `rehomed` (see their promises). A member with none of these is **open**.
 
 ## ACCEPTS (the only inputs this is built for)
 
@@ -234,6 +234,9 @@ onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_d
   is filtered before any process takes it. It states no spend, cap or remainder.
 - **a-routed-member-has-an-outcome.** A member that the run routes (`rimflow shape --parts` with a routed part, since the
   bundle began) reads the outcome `routed`; it is not open, so the bundle does not restart for it.
+- **a-rehomed-member-has-an-outcome.** A member whose home (`rimflow home`) moved to another system since the bundle
+  began reads the outcome `rehomed`; it is not open, so no restart names it and the bundle can end without it. A re-home
+  before the bundle began, or to the bundle's own system, changes nothing.
 - **an-onboarding-on-a-host-keeps-its-old-tickets.** An onboarding run whose room is a host launches there with
   `./pipe bundle <ids> --onboard`. `--onboard` keeps an old ticket that the age filter (`age_refusal`) would leave out
   UNVETTED: the run's own step A and step B are that filter, and no member is worked before its check is seen red
