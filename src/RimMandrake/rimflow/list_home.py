@@ -102,6 +102,27 @@ def _own_home(it):
     return h if h and h != UNPLACED else None
 
 
+# A fresh-reader ticket (fresh_reader.py) has no home and no cause, so the lane keyed it on its own id: a bundle of one
+# by its form (measured 2026-11-26 and 27: 71 of the 73 `item:` bundles that ended were fresh-reader tickets). Its home
+# is the area of the files it names, so the reads of one area fold into one bundle (work_bundle.read_fold). Item
+# RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY; page design/specs/2026-11-24-work-bundles/boundary.md.
+READ_AREAS = (("src/RimMandrake/rimflow/", "pipeline:read-rimflow"), ("src/RimMandrake/Utils/", "pipeline:read-utils"))
+READ_OTHER = "pipeline:read-other"
+
+
+def reader_home(it):
+    """-> the home of a fresh-reader ticket by the area of its first file (READ_AREAS, else READ_OTHER), or None for any
+    other ticket or a reader title that names no file. Pure."""
+    import fresh_reader as FR
+    t = it.get("title") if isinstance(it, dict) else getattr(it, "title", None)
+    if not str(t or "").startswith(FR.PREFIX):
+        return None
+    paths = FR.parse_title(t)[0]
+    if not paths:
+        return None
+    return next((h for pre, h in READ_AREAS if paths[0].startswith(pre)), READ_OTHER)
+
+
 def rule_home(it, items, reading, words):
     """-> (home, group, reason) of a ticket with no home of its own, by the first rule that places it, or None.
     (1) the nearest ancestor in its chain of causes (caused_by) that has a real home: its mod by mod_work (reading),

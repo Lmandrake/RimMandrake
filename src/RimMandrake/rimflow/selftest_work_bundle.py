@@ -1756,6 +1756,44 @@ def _real_reader_path(W, lines):
     return {"filed": len(filed), "effect": eff[0] if eff else None, "fix": fix, "said": lines[-1:]}
 
 
+# The promises of the section "Large bundles by home" (item RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY): their
+# tests live in selftest_bundle_hold.py; each runs here by its name, and its failures count here.
+def _bh(name):
+    import selftest_bundle_hold as BH
+    n = len(BH.FAILS)
+    getattr(BH, name)()
+    FAILS.extend(BH.FAILS[n:])
+
+
+def t_every_lane_ticket_has_a_real_home():
+    _bh("t_every_lane_ticket_has_a_real_home")
+
+
+def t_a_home_holds_until_five_or_the_hold_time():
+    _bh("t_a_home_holds_until_five_or_the_hold_time")
+
+
+def t_the_replay_of_nov_27_reads_a_median_of_five():
+    _bh("t_the_replay_of_nov_27_reads_a_median_of_five")
+
+
+def t_no_ticket_waits_past_the_hold_time():
+    _bh("t_no_ticket_waits_past_the_hold_time")
+
+
+def t_an_urgent_ticket_never_waits():
+    _bh("t_an_urgent_ticket_never_waits")
+
+
+def t_the_lane_holds_before_its_room_gates():
+    _bh("t_the_lane_holds_before_its_room_gates")
+
+
+def t_fresh_reader_tickets_fold():
+    _bh("t_fresh_reader_tickets_fold")
+
+
+
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
               t_ready_members_only, t_one_live_bundle_per_system, t_the_record_is_written_at_launch,
@@ -1782,7 +1820,10 @@ def main():
               t_a_routed_member_has_an_outcome, t_an_onboarding_on_a_host_keeps_its_old_tickets,
               t_the_page_shows_each_onboarding_run, t_the_mods_own_bundle_onboards_its_old_tickets,
               t_a_mod_bundle_takes_an_old_ticket_past_a_block_with_no_end,
-              t_a_code_bundle_gets_one_fresh_read]:
+              t_a_code_bundle_gets_one_fresh_read, t_every_lane_ticket_has_a_real_home,
+              t_a_home_holds_until_five_or_the_hold_time, t_the_replay_of_nov_27_reads_a_median_of_five,
+              t_no_ticket_waits_past_the_hold_time, t_an_urgent_ticket_never_waits,
+              t_the_lane_holds_before_its_room_gates, t_fresh_reader_tickets_fold]:
         print("-- %s" % t.__name__)
         try:
             t()

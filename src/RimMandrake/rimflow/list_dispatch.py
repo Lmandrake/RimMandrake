@@ -483,8 +483,55 @@ def machine_reading(cfg, facts):
     return out
 
 
+# ready: it waits for room, for its home's live bundle, or for the hold; its wait counts from its first such tick
+READY_ROWS = ("launch", "slots_full", "bundled", "bundle_hold", "bundle_live", "machine_load", "pool_full")
+
+
 def decide(cfg, st, facts, now, account=(True, "")):
-    """-> (rows, launches). Pure over (cfg, st, facts, now, account); writes only st. One row per item, in order."""
+    """-> (rows, launches). Pure over (cfg, st, facts, now, account); writes only st. One row per item, in order; an
+    urgent ticket's row first (work_bundle.urgent_why). The hold (work_bundle.hold_systems, design/specs/2026-11-24-work-
+    bundles/boundary.md a-home-holds-until-five-or-the-hold-time): a pass on a copy of st finds the systems whose lead
+    bundle waits; the real pass holds their rows before the room gates, so a held home takes no slot from another home.
+    Each ready row's first ready tick is kept in st (ready_at), the start of its wait."""
+    import copy
+    items = (facts or {}).get("items")
+    if items is not None:
+        urgent = {i: d.get("urgent") for i, d in items.items() if (d or {}).get("urgent")}
+        if urgent:
+            facts = dict(facts, items=dict([(i, items[i]) for i in items if i in urgent]
+                                           + [(i, items[i]) for i in items if i not in urgent]))
+    hold, until = {}, {}
+    if items is not None and facts.get("systems") is not None:
+        import work_bundle as WB
+        sti = (st or {}).get("items") or {}
+        since = {i: (sti.get(i) or {}).get("ready_at", now) for i in items}
+        urgent = {i: d.get("urgent") for i, d in items.items() if (d or {}).get("urgent")}
+        hold_h = cfg.get("bundle_hold_h")
+        hold_s = hold_h * 3600.0 if isinstance(hold_h, (int, float)) and not isinstance(hold_h, bool) else None
+        for _n in range(len(set(facts["systems"].values())) + 1):     # each pass holds one more system at least
+            rows, _l = _decide(cfg, copy.deepcopy(st), facts, now, account, hold)
+            new = {s: w for s, w in WB.hold_systems(rows, since, urgent, now, hold_s, cfg.get("bundle_full_n", 5),
+                                                    until=until).items() if s not in hold}
+            if not new:
+                break
+            hold.update(new)
+    rows, launches = _decide(cfg, st, facts, now, account, hold)
+    for r in rows:
+        if r.get("decision") == "bundle_hold":
+            r["hold_until"] = until.get((facts.get("systems") or {}).get(r["item"]))     # lane_sweep: what ends it
+    if items is not None:
+        sti = st.setdefault("items", {})
+        for r in rows:
+            s = sti.get(r["item"])
+            if r.get("decision") in READY_ROWS:
+                sti.setdefault(r["item"], {}).setdefault("ready_at", now)
+            elif s and "ready_at" in s:
+                s.pop("ready_at")
+    return rows, launches
+
+
+def _decide(cfg, st, facts, now, account=(True, ""), hold=None):
+    """-> (rows, launches): one pass of decide. hold: {system: why} of the systems whose rows wait for a larger bundle."""
     items = (facts or {}).get("items")
     if items is None:
         why = "the ledger could not be read; nothing launches"
@@ -767,6 +814,10 @@ def decide(cfg, st, facts, now, account=(True, "")):
                     "; the clear of %s was spent by run %s" % (pac(spent_by), done[-1].get("unit"))
                     if spent_by and done else ""))
                 continue
+        hs = (facts.get("systems") or {}).get(iid)
+        if hold and hs in hold and not (judge or shape or offer or game or repair):
+            put("bundle_hold", hold[hs])        # work_bundle.hold_systems: before the room gates, so it takes no slot
+            continue
         over, owhy, ocnl = machine_load(cfg, facts.get("load"), facts.get("cores"))
         if ocnl:
             row["load_could_not_look"] = ocnl
@@ -1024,6 +1075,26 @@ def _held(mod):
     if not h:
         return None
     return "HELD BY OWNER: %s (%s): %s" % (mod, h.get("date") or "-", _one(h.get("said"), 120))
+
+
+def readiness_texts(root=None):
+    """-> {mod: the text of its newest readiness list} for each advancing mod (maturation_dispatch.json `advancing`) that
+    the owner does not hold. Raises when a list cannot be read (work_bundle.urgent_why then reads none: the ticket waits
+    at most the hold time)."""
+    import glob
+    import control as C
+    import pipe_off_end as POE
+    root = root or POE.CONCEPTS
+    out = {}
+    for mod in C.known_mods(advancing_only=True):
+        if _held(mod):
+            continue
+        files = glob.glob(os.path.join(root, mod, "version", "in_game", "readiness_*.md"))
+        if files:
+            newest = max(files, key=lambda p: (int((POE.VISIT_RX.search(p) or [0, 0])[1]), os.path.basename(p)))
+            with open(newest, encoding="utf-8") as f:
+                out[mod] = f.read()
+    return out
 
 
 PAUSE_KEY = "code_review_pause"
@@ -1831,6 +1902,15 @@ def gather(st, now=None, root=None, load_lag_s=None, keep=False, run_many=None):
                 d["accept_why"] = ((st.get("items") or {}).get(iid) or {}).get("accept_timed", {}).get("why")
         items[iid] = d
     ordered = {i: items[i] for i in order_ids(items)}
+    import work_bundle as WB
+    try:        # an urgent ticket never waits for a bundle (work_bundle.urgent_why)
+        blocks = WB.readiness_blocks(readiness_texts())
+    except Exception as e:  # noqa: BLE001 - could not look: no ticket reads urgent by BLOCKS; each waits the hold at most
+        print("readiness lists: could not look (%s: %s); no ticket reads urgent by BLOCKS" % (type(e).__name__, e),
+              file=sys.stderr)
+        blocks = {}
+    for iid, d in ordered.items():
+        d["urgent"] = WB.urgent_why(iid, getattr(open_[iid], "live_broken", None), blocks)
     on_hosts, unread_old = {}, []
     runs, recent = _runs(set(ordered), now, cfg["load_lag_s"] if load_lag_s is None else load_lag_s, on_hosts,
                          unread_old)
@@ -2426,7 +2506,7 @@ def tick(cfg, apply, fx=None, now=None, only=None):
               "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
                            if r.get("decision") == "launched"],
-              "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need")
+              "items": {r["item"]: dict({k: r.get(k) for k in ("decision", "why", "model", "unit", "need", "hold_until")
                                          + (("onboard",) if r.get("onboard") else ())},
                                         stage=row_stage((facts.get("items") or {}).get(r["item"]), r, now),
                                         since=ks[r["item"]][1], **_mod_fields((facts.get("items") or {}).get(r["item"]), r))

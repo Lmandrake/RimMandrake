@@ -249,8 +249,54 @@ onboarding lines of `gather` in `list_dispatch.py`, `onboard_classes` in `list_d
   (`design/specs/2026-11-26-testless-tickets/conductor_decisions.md`, question 2): a mod's ticket never goes to a lane
   Shape run, so its own route settles the block.
 
+### Large bundles by home (item RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY)
+
+Why: the median ended bundle held 1 ticket on 2026-11-25, 26 and 27. Measured over the Archmagi store (SteveDesktop's
+markers included), the bundles that ended on Nov 26 and 27 by the rule that made their size: lane `item:` 73 (73
+singles; 71 of them fresh-reader tickets, which have no home and no cause), lane onboarding of `pipeline:` homes 39 (29),
+of `game:` homes 39 (21), of `machine:` homes 4 (3), lane `cause:` 16 (12), lane `game:` 6 (3), lane `pipeline:` 6 (6),
+the Maturation Pipeline's mod bundles 2 (0). Code: `list_home.reader_home`, the reader branch of
+`work_bundle.system_of`, `work_bundle.hold_systems`, `urgent_why`, `readiness_blocks`, `read_fold`, `read_fold_text`
+(in `brief`), the hold pass of `list_dispatch.decide` (`_decide` is one pass), the urgent facts of `gather`
+(`readiness_texts`), `bundle_hold_h` and `bundle_full_n` in `list_dispatch.json`, and the offline simulation
+`bundle_replay.py` over the fixture `arrivals_2026-11-23_to_27.json` beside this page. Tests: `selftest_bundle_hold.py`,
+one function per promise below, by name. Offline simulation: yes, `bundle_replay.py` replays the real arrivals of Nov 23
+to 27 through the real `system_of`, `group` and `hold_systems` with a fake clock; it does not model restarts, a run's own
+closes, the checks (every arrival is ready) or the onboarding route's old-ticket filter.
+
+- **every-lane-ticket-has-a-real-home.** A fresh-reader ticket's system is the home of the area of its first file:
+  `pipeline:read-rimflow`, `pipeline:read-utils`, else `pipeline:read-other` (`list_home.reader_home`), never
+  `item:<ID>`. A ticket's own home and its mod still come first. The home is a rule that the lane reads at each tick, not
+  a ledger write: the reader tickets that exist got it at once.
+- **a-home-holds-until-five-or-the-hold-time.** In a lane tick, a lead bundle with fewer than `bundle_full_n` members, no
+  urgent member, and an oldest member that has waited less than `bundle_hold_h`, does not start: each of its rows reads
+  `bundle_hold`, with the size and the latest start. The hold is decided before the room gates (a pass of `_decide` on a
+  copy of the state finds the held homes), so a held home takes no slot from another home. A ticket's wait counts from
+  its first ready tick (`ready_at` in the lane's state; a wait for room or for the home's live bundle counts too).
+- **the-replay-of-nov-27-reads-a-median-of-five.** The replay of Nov 27 reads a median under 5 in the parent's form (no
+  hold, no reader home) and 5 or more at the shipped settings; with the hold at 0, or the reader home off, it reads under
+  5 (each a planted fault).
+- **no-ticket-waits-past-the-hold-time.** In the replay, no ticket is held for its bundle longer than `bundle_hold_h`.
+  A wait for room (all slots live) is not a wait for the hold.
+- **an-urgent-ticket-never-waits.** An Ops alarm item (`OPS_` or `RIMMANDRAKE_OPS_` id), a ticket whose live promise is
+  broken, and a ticket that the newest readiness list of an advancing mod that the owner does not hold marks BLOCKS
+  (`readiness_blocks`: a line that names the ticket and BLOCKS; a "No BLOCKS" line names none) is urgent. Its row goes
+  first in the tick, its home is not held, and its bundle takes the home's ready tickets with it. In the replay a planted
+  urgent ticket starts in the tick that first sees it, and with the rule off it waits for the hold. Readiness lists that
+  cannot be read mark no ticket urgent, said on stderr: such a ticket waits the hold at most.
+- **the-lane-holds-before-its-room-gates.** With one slot, a held home and a home past its hold: the slot goes to the
+  home past its hold; each ready row keeps its first ready tick; an urgent row goes first.
+- **fresh-reader-tickets-fold.** A bundle's brief lists each file that its reader members name ONCE, with the tickets
+  that one read covers (`read_fold`); one read at the present bytes makes each covering ticket's check hold
+  (`fresh_reader.holds` reads the present bytes). While the code review pause is on, the reader rows read `off` and no
+  read bundle starts.
+
 ## PLANNED (built part by part; each moves up to PROMISES, with its test, when its part lands)
 
-(none)
+- **a-live-bundle-takes-its-homes-new-tickets-at-restart.** Today the members are fixed at launch
+  (a-member-whose-system-moves): a ticket of a home whose bundle is live reads `bundle_live` and joins the next bundle,
+  which starts after the live one ends. Owed: a restart takes the home's ready tickets.
+- **the-page-says-the-size.** `maturation_nonmod.py` shows the median members per bundle of the last day and the count
+  of singles.
 
 Later lists beside this page: `polish.md`.

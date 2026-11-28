@@ -14,7 +14,7 @@ On every tick it reads each open ticket's lane row and each bundle record and as
   - a run state (launched, in_bundle, bundled, bundle_live, live, claimed) needs a run that is running, or a
     continuation step that is due, for that ticket or bundle;
   - slots_full needs a running run; waiting needs a dated wait still ahead; waits_on and blocked need an open
-    predecessor; system_wait needs its hour still ahead;
+    predecessor; system_wait needs its hour still ahead; bundle_hold needs its hold's end (hold_until) still ahead;
   - a hand state (conductor_stops.KINDS, machine_load) needs someone told: a row of the Conductor's stops view or a
     Conductor need line since it began, within REST_S + one tick;
   - a live bundle (work_bundle.LIVE_STATES) needs a running unit or a due continuation step of its own.
@@ -389,6 +389,9 @@ def check(sim, rd):
             ok = on_open
         elif d == "system_wait":
             ok = isinstance(since, (int, float)) and since + 3600 > now
+        elif d == "bundle_hold":    # work_bundle.hold_systems: the hold ends at hold_until, or earlier at five ready
+            hu = (r or {}).get("hold_until")
+            ok = isinstance(hu, (int, float)) and hu > now
         elif d in HAND:
             how = told_of(rd, now, sim.needs, iid, since)
             if how:

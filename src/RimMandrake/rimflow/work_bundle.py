@@ -81,6 +81,10 @@ def system_of(it, reading, items=None):
     h = _home(it)
     if h:
         return h
+    import list_home as LH
+    h = LH.reader_home(it)      # a fresh-reader ticket: the area of its files (every-lane-ticket-has-a-real-home)
+    if h:
+        return h
     pid = _g(it, "caused_by")
     parent = items.get(pid) if items is not None and pid else None
     if parent is not None:
@@ -551,9 +555,10 @@ The members ({n}), each with its own test and its own close:
 {rows}
 
 Why this bundle: {why}
-
+{reads}
 {polish}""".format(bid=rec["id"], system=rec["system"], role=ROLE, setting=SETTING, sf=rec["state_file"], lead=rec["lead"],
-                    n=len(rec["members"]), rows="\n".join(rows), why=rec["why"], polish=polish_text(rec["system"], root))
+                    n=len(rec["members"]), rows="\n".join(rows), why=rec["why"], polish=polish_text(rec["system"], root),
+                    reads=read_fold_text(rec["members"], items))
 
 
 def tests_text(ids, items, prose_of):
@@ -675,6 +680,95 @@ def group(rows, launches, systems, live, join=None):
         if s in lead and not s.startswith(("item:", "mod:")) and i not in lead[s]["bundle"]["members"]:
             lead[s]["bundle"]["members"].append(i)
     return rows, [i for i in launches if i in keep]
+
+
+# ---- the hold: a home holds its ready tickets until its bundle is large (a-home-holds-until-five-or-the-hold-time) ----
+# Measured 2026-11-25 to 27: the median ended bundle held 1 ticket, because each ticket led its own bundle the tick it
+# was ready. Item RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY. The two numbers are list_dispatch.json's
+# bundle_hold_h and bundle_full_n, each with its danger beside it.
+
+def hold_systems(rows, ready_since, urgent, now, hold_s, full_n, until=None):
+    """-> {system: why} of the systems whose lead bundle (group's rows) waits this tick: fewer than full_n members, no
+    urgent member, and its oldest ready member has waited less than hold_s. ready_since: {ticket: epoch it was first
+    ready}; a member with none (a joiner) counts in the size, not in the wait. urgent: {ticket: why}. A hold_s that is
+    not a positive number holds nothing. until: a dict that takes {system: the epoch its hold ends}. Pure."""
+    if not (isinstance(hold_s, (int, float)) and not isinstance(hold_s, bool) and hold_s > 0):
+        return {}
+    out = {}
+    for r in rows:
+        b = r.get("bundle")
+        if not b or r.get("decision") != "launch":
+            continue
+        mem = b["members"]
+        if len(mem) >= int(full_n) or any(urgent.get(m) for m in mem):
+            continue
+        since = min([ready_since[m] for m in mem if ready_since.get(m) is not None] or [now])
+        if now - since >= hold_s:
+            continue
+        if until is not None:
+            until[b["system"]] = since + hold_s
+        out[b["system"]] = ("holds for a larger bundle of %s: %d of %d ready; the oldest ready since %s, so it starts by "
+                            "%s at the latest (the hold, %.0f h), or at once on an urgent ticket"
+                            % (b["system"], len(mem), int(full_n), when(since), when(since + hold_s), hold_s / 3600.0))
+    return out
+
+
+URGENT_OPS_RX = re.compile(r"^(?:RIMMANDRAKE_)?OPS_")
+BLOCKS_ROW_RX = re.compile(r"\bBLOCKS\b")
+TICKET_RX = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){3,}\b")
+
+
+def readiness_blocks(texts):
+    """-> {ticket: mod} of the tickets that the readiness lists mark BLOCKS. texts: {mod: the text of its newest
+    readiness list}. A line that names a ticket and the class BLOCKS marks it; "No BLOCKS" lines name none. Pure."""
+    out = {}
+    for mod, text in (texts or {}).items():
+        for ln in str(text or "").splitlines():
+            if BLOCKS_ROW_RX.search(ln) and not re.search(r"\bno BLOCKS\b", ln, re.I):
+                for t in TICKET_RX.findall(ln):
+                    out.setdefault(t, mod)
+    return out
+
+
+def urgent_why(iid, live_broken, blocks):
+    """-> why the ticket never waits for a bundle, or None: an Ops alarm item (its id), a broken live promise (the
+    deadman's `live --result broken`), a ticket that the readiness list of an advancing mod marks BLOCKS. Pure."""
+    if URGENT_OPS_RX.match(str(iid or "")):
+        return "an Ops alarm item"
+    if live_broken:
+        return "its live promise is broken (%s)" % _one(live_broken, 120)
+    if iid in (blocks or {}):
+        return "the readiness list of %s marks it BLOCKS" % blocks[iid]
+    return None
+
+
+# ---- fresh-reader tickets fold: one file is read once, at its present bytes (fresh-reader-tickets-fold) ----
+
+def read_fold(ids, items):
+    """-> {path: [ticket ids]} over the fresh-reader members among `ids`, in the order first named: one read of a file
+    at its present bytes covers every reader ticket that names it (fresh_reader.holds reads the present bytes). Pure."""
+    import fresh_reader as FR
+    out = {}
+    for i in ids:
+        x = items.get(i)
+        if x is None or not FR.is_reader(x):
+            continue
+        for p in FR.parse_title(_g(x, "title"))[0]:
+            out.setdefault(p, []).append(i)
+    return out
+
+
+def read_fold_text(ids, items):
+    """-> the brief's block of the folded reads, or "" when no member is a fresh-reader ticket."""
+    f = read_fold(ids, items)
+    if not f:
+        return ""
+    rows = "\n".join("- `%s`: covers %s" % (p, ", ".join(t)) for p, t in f.items())
+    return ("\n## The reads, folded (%d file(s) for %d reader ticket(s))\n\nRead each file ONCE, as it stands on "
+            "origin/main now, by the role of the fresh reader (`python3 src/RimMandrake/rimflow/fresh_reader.py`, its "
+            "brief block). One read at the present bytes covers every reader ticket that names the file: "
+            "`code_review_status.py mark-clean <path>` (or `flag`) once, then close each covered ticket whose check "
+            "now holds, with the sha of that read.\n\n%s\n" % (len(f), len({t for v in f.values() for t in v}), rows))
 
 
 # ---- a bundle on another host (SteveDesktop) -------------------------------------------------------------------------
