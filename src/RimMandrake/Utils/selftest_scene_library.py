@@ -384,8 +384,14 @@ def test_raw_undeclared_tool_marks_the_process_and_a_new_session_carries_it():
     must(s3.receipt.stamps == [], "a new process carries the old process's mark")
 
 
+_TREES = []     # the run's own dir for _tree fixtures: own_dir_for_run removes it at exit, or the next run does after a kill
+
+
 def _tree(files):
-    d = tempfile.mkdtemp()
+    if not _TREES:      # a bare mkdtemp here left 3 repos a run, 135 a mutant pass (LIVE_RESTORE_RM_SCRATCH_REAP)
+        import selftest_own_dirs
+        _TREES.append(selftest_own_dirs.own_dir_for_run("scene_tree", redirect_tmp=False))
+    d = tempfile.mkdtemp(dir=_TREES[0])
     for n, t in files.items():
         os.makedirs(os.path.dirname(os.path.join(d, n)), exist_ok=True)
         with open(os.path.join(d, n), "w", encoding="utf-8") as f:
