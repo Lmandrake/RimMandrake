@@ -1351,8 +1351,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			// DEEP_SAND_FIX_READS_AS_FRESHWATER: deep sand carries the Water tag for fishing only; a terrain marked
+			// RM_NotLiquidExtension is ground, never a source, lake square or pond body.
 			TerrainDef baseTerrain = map.terrainGrid.BaseTerrainAt(c);
-			return baseTerrain != null && baseTerrain.IsWater;
+			return baseTerrain != null && baseTerrain.IsWater && !baseTerrain.HasModExtension<ManyWaters.RM_NotLiquidExtension>();
 		}
 
 		/// <summary>A cell that supplies liquid without being excavated: natural

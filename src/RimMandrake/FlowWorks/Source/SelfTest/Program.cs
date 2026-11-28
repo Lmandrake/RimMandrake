@@ -2286,6 +2286,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseBandChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 6: hoses into pits only by ramp or ladder, band-aware end reach, raised ladder hangs, dig re-plans once (HoseBandChecks.cs)
             SuspensionBridgeChecks.Run(Case);  // SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: drag validator, spans, load, falls, wiring (SuspensionBridgeChecks.cs)
             GroundClassChecks.Run(Case);  // DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN: ground classes, spoil, fill credit, mining miss, wiring (GroundClassChecks.cs)
+            DeepSandSourceChecks.Run(Case);    // DEEP_SAND_FIX_READS_AS_FRESHWATER: deep sand's Water tag is for fishing; it is no natural liquid (DeepSandSourceChecks.cs)
             ThirstChecks.Run(Case);            // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: thirst math, shipped defs, the Dubs cut (ThirstChecks.cs)
             PondDepthChecks.Run(Case);         // POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD: ponds shallow out, one surface across connected water (PondDepthChecks.cs)
             LevelSurfaceChecks.Run(Case);      // WATER_SURFACE_REPAIR_LEVEL_OR_BUST: live S5/S6 scenes offline, one level surface (LevelSurfaceChecks.cs)

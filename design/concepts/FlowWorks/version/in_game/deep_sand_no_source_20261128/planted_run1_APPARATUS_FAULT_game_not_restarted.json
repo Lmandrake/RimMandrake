@@ -1,0 +1,132 @@
+{
+ "script": "live_deep_sand_no_source.py",
+ "started": "2026-11-27T21:53:40",
+ "rows": [
+  {
+   "id": "DS_control_water_is_a_source",
+   "status": "PASS",
+   "detail": {
+    "water": [
+     {
+      "cell": [
+       110,
+       110
+      ],
+      "ok": true,
+      "src": true,
+      "depth": 4,
+      "waterDl": 0,
+      "dug": false
+     },
+     {
+      "cell": [
+       110,
+       111
+      ],
+      "ok": true,
+      "src": true,
+      "depth": 4,
+      "waterDl": 0,
+      "dug": false
+     },
+     {
+      "cell": [
+       110,
+       112
+      ],
+      "ok": true,
+      "src": true,
+      "depth": 4,
+      "waterDl": 0,
+      "dug": false
+     }
+    ],
+    "paint": {
+     "success": true,
+     "opsApplied": 1,
+     "cellsChanged": 9,
+     "error": null
+    },
+    "why": "painted WaterShallow reads as a natural source, SUPERDEEP"
+   }
+  },
+  {
+   "id": "DS_deep_sand_is_no_source",
+   "status": "PASS",
+   "detail": {
+    "wrong": [],
+    "sample": [
+     {
+      "cell": [
+       122,
+       110
+      ],
+      "ok": true,
+      "src": false,
+      "depth": 0,
+      "waterDl": 0,
+      "dug": false
+     },
+     {
+      "cell": [
+       122,
+       111
+      ],
+      "ok": true,
+      "src": false,
+      "depth": 0,
+      "waterDl": 0,
+      "dug": false
+     },
+     {
+      "cell": [
+       122,
+       112
+      ],
+      "ok": true,
+      "src": false,
+      "depth": 0,
+      "waterDl": 0,
+      "dug": false
+     }
+    ],
+    "paint": {
+     "success": true,
+     "opsApplied": 1,
+     "cellsChanged": 9,
+     "error": null
+    },
+    "why": "every deep sand square: isSourceCell False, not SUPERDEEP"
+   }
+  },
+  {
+   "id": "DS_pit_beside_sand_stays_dry",
+   "status": "PASS",
+   "detail": {
+    "waterPit": {
+     "cell": [
+      113,
+      111
+     ],
+     "ok": true,
+     "src": false,
+     "depth": 2,
+     "waterDl": 18055,
+     "dug": true
+    },
+    "sandPit": {
+     "cell": [
+      125,
+      111
+     ],
+     "ok": true,
+     "src": false,
+     "depth": 2,
+     "waterDl": 0,
+     "dug": true
+    },
+    "why": "the pit beside water filled, the pit beside deep sand stayed dry"
+   }
+  }
+ ]
+}

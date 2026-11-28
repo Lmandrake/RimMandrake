@@ -332,6 +332,8 @@
          and its one Harmony guard (JoyGiver_GoSwimming). -->
     <Compile Include="ManyWaters\RM_NoRecreationalSwimExtension.cs" />
     <Compile Include="ManyWaters\RM_Patch_NoRecreationalSandSwim.cs" />
+    <!-- DEEP_SAND_FIX_READS_AS_FRESHWATER: Water-tagged ground that holds no liquid (IsNaturalLiquid skips it). -->
+    <Compile Include="ManyWaters\RM_NotLiquidExtension.cs" />
   </ItemGroup>
 
   <!-- The liquid registry, merged 2026-09-16 (ruling 14). Namespace

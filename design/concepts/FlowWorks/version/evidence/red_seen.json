@@ -116,6 +116,19 @@
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
+ "T_CONVERT": {
+  "at": "2026-11-28T05:29:46Z",
+  "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+  "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+  "last": "call site: the search skips a body that cannot pay for this bottle  (pattern if \\(ex\\?\\.Stock != null && !CanDebitTerrain\\(map, c, units\\)\\))",
+  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs b/src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs\nindex 60886a69f7..9fc41baaaa 100644\n--- a/src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs\n+++ b/src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs\n@@ -355,7 +355,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes\n                 // C2-F2: a spent pond body gives nothing; never walk a pawn to it. BOTTLE_FILL_FIX_SMALL_POND_TOO: ask\n                 // whether the body can pay for THIS bottle (as the drink search does), never for one whole level, or a\n                 // pond under 1000 L is refused a bottle it could fill.\n-                if (ex?.Stock != null && !CanDebitTerrain(map, c, units))\n+                if (ex?.Stock != null && !ex.Stock.CanSupply(map, c, ex))\n                 {\n                     continue;\n                 }\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs"
+  ],
+  "patch_sha": "55b8e2822c8479cd",
+  "rc": 1,
+  "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
+ },
  "T_DOORS": {
   "at": "2026-11-23T04:13:48Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FLOWWORKS*,FlowDoor*,FlowDoorFacing*,Grate*,Ruling18*,Sluice*",

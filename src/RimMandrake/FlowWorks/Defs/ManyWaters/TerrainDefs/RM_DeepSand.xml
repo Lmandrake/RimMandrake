@@ -158,6 +158,8 @@
       <li Class="RimMandrake.FlowWorks.ManyWaters.RM_NoRecreationalSwimExtension" />
       <!-- DEEP_SAND_FIX_READS_AS_FRESHWATER: the Water tag is for fishing; this row stops the thirst scan reading it as a freshwater drink. -->
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension"><liquid>RM_Liquid_NotDrinkable</liquid></li>
+      <!-- DEEP_SAND_FIX_READS_AS_FRESHWATER, source half: FlowWorks reads this ground as no natural liquid (no water source, lake square or pond body). -->
+      <li Class="RimMandrake.FlowWorks.ManyWaters.RM_NotLiquidExtension" />
       <!-- Fishable "Water"-tagged ground, not literal swimmable water — keeps
            JoyGiver_GoSwimming from offering a recreational swim job here now that
            the terrain is Standable. See header and RM_Patch_NoRecreationalSandSwim.cs. -->

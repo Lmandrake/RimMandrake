@@ -103,6 +103,7 @@
     <Compile Include="..\RM_SuspensionMath.cs" />
     <Compile Include="SuspensionBridgeChecks.cs" />
     <Compile Include="GroundClassChecks.cs" />
+    <Compile Include="DeepSandSourceChecks.cs" />
     <Compile Include="UnderpassReachChecks.cs" />
     <Compile Include="SpanBaseChecks.cs" />
     <Compile Include="..\Pits\RM_PitCoverBeneathMath.cs" />

@@ -2,6 +2,7 @@
 // Triage: Transient/release_push_2026-10-15/gpt_FlowWorks/TRIAGE.md. Each case runs the PRODUCTION rule and would have gone red
 // on the code the finding was made against.
 using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimMandrake.FlowWorks.Machinery;
@@ -104,7 +105,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string util = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "RM_LiquidBottleUtility.cs"));
                 RiverSwitchFlipChecks.Has(util, @"made\.HitPoints = RM_ContainerMaterialMath\.CarriedHitPoints\(from\.HitPoints, from\.MaxHitPoints, made\.MaxHitPoints\);", "MakeContainer carries the wear");
                 RiverSwitchFlipChecks.Has(util, @"return ex\.Stock\.TryDebit\(map, c, stock, ex\);", "terrain debit spends the body");
-                RiverSwitchFlipChecks.Has(util, @"if \(ex\?\.Stock != null && !ex\.Stock\.CanSupply\(map, c, ex\)\)", "the search skips a spent body");
+                // BOTTLE_FILL_FIX_SMALL_POND_TOO (8491944d06): the search asks whether the body can pay for THIS bottle, never
+                // CanSupply's whole level, or a pond under one level (1000 L) refuses a bottle that costs a fraction of it.
+                RiverSwitchFlipChecks.Has(util, @"if \(ex\?\.Stock != null && !CanDebitTerrain\(map, c, units\)\)", "the search skips a body that cannot pay for this bottle");
+                Assert(!Regex.IsMatch(util, @"!ex\.Stock\.CanSupply\(map, c, ex\)"), "the bottle search no longer gates on CanSupply's whole level");
                 string fill = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("LiquidTypes", "JobDriver_FillBottle.cs"));
                 // THIRST_RULES_BUILD_SALT_OFF_THE_MENU: fill and wash run per container of a carried batch, so a failed debit breaks out
                 // of the loop instead of returning; the invariant (debit before the container is made) is unchanged
