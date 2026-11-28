@@ -38,10 +38,12 @@ test is written and committed; what is left is landing, live readings, the slow-
 - `RIMMANDRAKE_RECORD_MODEL_AND_TOOL_SECONDS_833_HOURS_UNSPLIT`: the Codex lane's build LANDED first (ccc65c468d,
   fields model_seconds and tool_seconds); this bundle's build was dropped at 5:10 PM. Owed for the spec: the 7-day split
   on the slow-actions page, from the landed fields or the transcripts.
-- `RIMMANDRAKE_MEASURE_PUBLISH_SLOT_DANGER_BEFORE_ANY_CHANGE`: `design/specs/2026-11-26-slow-actions/publish_line.md` and
-  `publish_line_measure.py`. Recommends SLOTS stays 2; door-reads records per test and tree (46 % of selected runs are
-  "another version", caused by unlanded trees overwriting the one per-machine record); name the 61 always-unknown
-  tests' reads. File the door-reads change as its own item (with its acceptance test) when closing.
+- `RIMMANDRAKE_MEASURE_PUBLISH_SLOT_DANGER_BEFORE_ANY_CHANGE`: DONE (closed by the list_effect tick on its page check).
+  Restart 1 (7:25 to 8:05 PM PST) built recommendation 2: door_reads.py keeps one record per test and tree
+  (`TREES = 16`), LANDED at 539495cd3d (test `t_a_tree_that_never_landed_hides_no_record` red on the parent); the page
+  has the Conductor's 4 PM reading and the census of unseen reads. Recommendation 3 is its own item,
+  `RIMMANDRAKE_NARROW_DOOR_UNSEEN_READS_SIXTY_EIGHT_RECORDS_TWENTY_KINDS`. That item's before-and-after measurement with
+  `publish_line_measure.py` also reads the "another version" share under the per-tree store.
 
 ## Found on the way (no ticket before)
 
