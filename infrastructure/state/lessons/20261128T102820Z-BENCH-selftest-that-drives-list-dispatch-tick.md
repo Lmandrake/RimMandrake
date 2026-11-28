@@ -1,0 +1,2 @@
+A selftest that drives list_dispatch.tick with a fresh-reader ticket whose title names the selftest file itself reaches fresh_reader.pages, which runs that tests file: the selftest runs itself without end (368 nested copies, a memory-cgroup OOM kill of ./publish's tree check, 2026-11-28). Fake FR.pages in such a test. It passes when run alone in a clone, so only a publish tree check shows it.
+item: RIMMANDRAKE_READ_FIX_DA73CBC922_WITH_FRESH_EYES
