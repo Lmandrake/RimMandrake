@@ -1,0 +1,14 @@
+# ArchSmall Player.log harvest, WB-pipeline-read-other-20261128-092015, 2026-11-28T10:58:40Z
+# source: D:\ClaudeWork\rimmandrake\instances\b\Player.log (558 lines; launch 2026-11-28 02:53 PST, list flowworks_list 21 mods)
+# decision tokens FlowWorks_LadderClimbers|RM_LadderClimber|RimMandrakeFlowWorks: hits below (none = none)
+# exception / Config error / patch / load-abort lines:
+# FlowWorks lines:
+26:Mod RM Showing: silt-trap redraw candidates dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+49:[FlowWorks] hose essential patches: all present (save-skip, type alias, def alias)
+409:[RimMandrake.FlowWorks] Harmony: patched 211, missing 0
+410:[FlowWorks] thirst provider: Own (FlowWorks' own thirst; Dubs Bad Hygiene thirst is not supported)
+526:Loading game from file FLOWWORKS_OWNER_REVIEW_VISIT13_SMALL_20261125_0957 with mods:
+543:  - mandrake.rm.flowworks
+# error-ish lines (Failed|Error|Tried to):
+57:Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+551:Tried to get CurKindLifeStage from humanlike pawn Ellison
