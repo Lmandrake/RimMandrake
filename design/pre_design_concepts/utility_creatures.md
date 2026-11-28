@@ -69,3 +69,38 @@ History (7 events):
 ## Offers
 
 - 2026-11-27: Flesh out now with the Conductor (his card answer of 9:25 PM PST 2026-11-27: he picked 'Utility creatures' and 'Shared work spots')
+
+## The design talk of 2026-11-27 (his card of 9:51 PM PST), first pass
+
+The Conductor proposed a mechanism (an order to one creature; animals trained and droids by module; the Shovels rule
+holds; refused at the click with a reason; an interrupted creature finishes the same order; a first version of one job).
+Two points went to him on a card.
+
+**How should a creature come to take orders?** He typed his own answer, word for word:
+
+"Digging animals don't use shovels, they have them built-in. They should naturally dig by themselves as they desire. The
+training allows players to induce them to work where desired. They never need a shovel. Droids receive skills and
+abilities through modules and augmentation via their limbs and actuators, working together to enable the effect. Droids
+take work like colonists. It is open whether they can be click-commanded like a colonist or simply work in the
+background."
+
+The options on the card that he did not pick: "Train animals, module droids (Recommended)", "By kind, no training", "A
+harness makes it able", "Training and a harness".
+
+**What should one order be?** He picked "One click, one job (Recommended)". The description, word for word: "Why: it is
+a command, as you said. You click one pit square or one tree; that creature does it and is free again. Simple to build
+and test. Costs many clicks for a big dig. Recommended: the smallest thing that proves the mod; a queue can follow." Not
+picked: "A queue of jobs", "A work area".
+
+What his words settle (the Conductor's reading):
+
+- A digging animal digs with its own body. It never needs a shovel. The Shovels rule (nothing digs bare-handed) does not
+  bind a digging animal.
+- A digging animal digs by itself, where and when it desires, with no order. Training lets the player direct that digging
+  to a chosen place.
+- A droid gets a skill from its modules together with its limbs and actuators. A droid takes work as a colonist does.
+- An order to an animal is one click for one job.
+
+Open after this pass: whether a droid takes a click order or only works in the background (his own open point); what an
+animal's own digging leaves on the map and how the player reads it; which animal kinds dig; whether the droid half belongs
+to this mod or to the droid mod.

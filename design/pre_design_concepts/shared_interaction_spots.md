@@ -8,6 +8,7 @@
 - **Code:** none. Measured 2026-11-26 with `git grep -n PreventInteractionSpotOverlap -- '*.cs'`: no C# file names the vanilla placeworker `RimWorld.PlaceWorker_PreventInteractionSpotOverlap`. Some of our def files list that placeworker on their own buildings; that is the vanilla rule, not this concept.
 - **Last offered:** 2026-11-27
 - **His answer:** Flesh out now with the Conductor (his card answer of 9:25 PM PST 2026-11-27: he picked 'Utility creatures' and 'Shared work spots')
+- **Went to:** the ticket `RIMMANDRAKE_PATCH_SHARED_WORK_SPOTS_BOTH_STAND_IN_IT` (2026-11-27), a small patch in the RimMandrake patches mod. It waits behind the pipeline repairs by his order of the same evening.
 
 ## His words
 
@@ -77,3 +78,12 @@ History (4 events):
 ## Offers
 
 - 2026-11-27: Flesh out now with the Conductor (his card answer of 9:25 PM PST 2026-11-27: he picked 'Utility creatures' and 'Shared work spots')
+
+## The design talk of 2026-11-27 (his card of 9:51 PM PST)
+
+The one open point was put to him: when two workers want the shared spot at the same time, what should happen? He picked
+"Both stand in it". The description of that option, word for word: "Why: no extra code. The base game already lets two
+workers stand in one square while they work, so both benches run at once. Costs: two colonists drawn on top of each
+other." The options that he did not pick: "One waits (Recommended)" and "Decide after a look".
+
+So the design is: the patch only, behind an on/off Mod Setting (default on); no rule that reserves the spot.
