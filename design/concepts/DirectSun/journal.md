@@ -13,9 +13,8 @@ RIMMANDRAKE_ADMIT_DIRECT_SUN_WITH_TREE_AND_MOUNTAIN_SHADE). His words ask for de
 
 ## The mod as it stands
 
-- **Waiting on:** the Conductor, who reads `admission_proposal.md` and brings its two questions to the owner; its
-  readiness list (none written yet) and its switch, which is OFF (`./pipe off DirectSun`).
-- **Stage now:** Intake, ideas waiting, since 2026-11-27 9:57 PM PST.
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-27 10:12 PM PST).
+- **Stage now:** Stage 1, the Designer, since 2026-11-27 10:12 PM PST (`version/stage_record.json`).
 - **Mod:** no shipping folder of its own. The code is in `src/RimMandrake/CreatureBehaviors` (a member of
   `mandrake.rm.biomes`, namespace `RimMandrake.CreatureBehaviors`); the shade-gear defs in
   `src/RimMandrake/EnvironmentalHazards`; the air-heat defs in TheForge, TerminalBiomes and Greentide.
@@ -36,3 +35,11 @@ RIMMANDRAKE_ADMIT_DIRECT_SUN_WITH_TREE_AND_MOUNTAIN_SHADE). His words ask for de
   `selftest_sun_heat.py` 65/65, `selftest_direct_sun.py`, `selftest_tree_crowns.py` and `selftest_shade_lessons.py`
   ALL PASS, `selftest_planet_fixed_sun.py` 72/72; mountain shade has no design and no code (rock casts the lee of a
   wall, height 1). Detail: `admission_proposal.md` §What exists.
+
+### 2026-11-27 10:12 PM PST, stage change: ideas waiting (Intake) to Designer (Stage 1) (by CONDUCTOR)
+
+- Why: his order of 9:25 PM PST 2026-11-27: design attention now for Direct Sun with tree shade and mountain shade; admission page design/concepts/DirectSun/admission_proposal.md (bda9d44fc2); hand act folded into RIMMANDRAKE_BUILD_DESIGN_ONLY_SWITCH_DESIGNER_STOPS_WITH_BUILDS
+- Checks passed: order, by, version, hold, intake_closed.
+- Was, "Stage now": - **Stage now:** Intake, ideas waiting, since 2026-11-27 9:57 PM PST.
+- Was, "Waiting on": - **Waiting on:** the Conductor, who reads `admission_proposal.md` and brings its two questions to the owner; its readiness list (none written yet) and its switch, which is OFF (`./pipe off DirectSun`).
+- Record: `version/stage_record.json`.

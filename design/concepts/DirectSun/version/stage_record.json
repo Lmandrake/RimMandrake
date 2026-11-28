@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "DirectSun",
   "version": "0.1.0",
-  "stage": "intake",
-  "stage_label": "ideas waiting (Intake)",
-  "since": "UNMEASURED",
-  "since_from": "no dated journal heading names it",
+  "stage": "designer",
+  "stage_label": "Designer (Stage 1)",
+  "since": "2026-11-27T22:12:20-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-27T21:58:11-08:00",
@@ -19,7 +19,25 @@
     "total": 0
   },
   "pre_human_arrivals": 0,
-  "moves": [],
+  "moves": [
+    {
+      "from": "intake",
+      "to": "designer",
+      "at": "2026-11-27T22:12:20-08:00",
+      "by": "CONDUCTOR",
+      "why": "his order of 9:25 PM PST 2026-11-27: design attention now for Direct Sun with tree shade and mountain shade; admission page design/concepts/DirectSun/admission_proposal.md (bda9d44fc2); hand act folded into RIMMANDRAKE_BUILD_DESIGN_ONLY_SWITCH_DESIGNER_STOPS_WITH_BUILDS",
+      "unit": null,
+      "item": null,
+      "confirmed": {},
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "intake_closed"
+      ]
+    }
+  ],
   "spend": [
     {
       "stage": "designer",
