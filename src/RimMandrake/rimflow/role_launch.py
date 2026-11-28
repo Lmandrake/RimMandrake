@@ -3422,6 +3422,12 @@ def stage_abort(concept, unit):
     return DS.abort_run(concept, unit)
 
 
+def stage_unopen(concept, unit):
+    """A launch the control store refused: designer_stage.unopen_run (no abort row; the open row is taken back)."""
+    import designer_stage as DS
+    return DS.unopen_run(concept, unit)
+
+
 def mode_model(role, mode):
     """The model alias a run of `mode` gets: the schedule's `model_by_mode[mode]`, else its `model`
     (OPS_ROLE_SHRINK_RUN_COST: Operations triages alarms on sonnet, owner e7069d65ba "cheaper triage model")."""

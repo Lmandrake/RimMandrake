@@ -744,6 +744,7 @@ def main():
         refusals_launcher(tmp, repo)
         # ---- the launcher wiring
         wiring(tmp, repo)
+        t_a_refused_start_leaves_no_stage_entry(tmp)
         # ---- the real instrument can see: the live ledger folds to thousands of done items, FlowWorks among them
         real = real_done(DS.REPO)
         check("sanity probe: the real ledger's done items are readable (not None, not a round zero)",
@@ -1696,6 +1697,53 @@ def refusals_launcher(tmp, repo):
     check("working record: the root line carries its source", "root: climb out [OWNER:1001]" in wr, wr)
     check("working record: an ask line carries its status", "- a7: q? status=sent [log.md#L2]" in wr, wr)
     check("working record: the failure modes are listed", "failure_modes: fm-one | fm-two" in wr, wr)
+
+
+def t_a_refused_start_leaves_no_stage_entry(tmp):
+    """Promise a-refused-start-leaves-no-stage-entry (RIMMANDRAKE_FIX_ROLE_START_CHECK_RUNS_STALE_CLONE_CODE): the
+    dispatcher opens the stage's run (an `open` history entry) before systemd-run, and a launch the control store
+    refused (at admission, or at the unit's start check) appended an `abort` entry beside it: 22 starts refused on
+    DirectSun 2026-11-28 left 44 entries in the Designer clone's stage.json. A refused start now leaves stage.json as it
+    was. A launch systemd-run itself refuses still records its abort (wiring, above). Red on the parent."""
+    import dispatcher as D
+    import role_launch as RL
+    import time as _t
+    tmp = os.path.join(tmp, "refused-start")
+    sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8"))
+    row = dict(next(r for r in sch["roles"] if isinstance(r, dict) and r.get("ledger_item") ==
+                    "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING"), clone=tmp)
+    s2 = {"roles": [row]}
+    d = os.path.join(tmp, "design/concepts/Wire")
+    DS.init(d, "Wire", "WIRE_ITEM", cap=100000, reserve=10000)
+    req = RL.run_now_request(s2, {"role": row["name"], "by": "BENCH", "why": "w", "concept": "design/concepts/Wire"}, 1.0)
+    robs = {"ops": lambda: None, "account": lambda: "acct", "unit_state": lambda u: "active",
+            "result": lambda r: None, "off": lambda p: None}
+    fx = {"off": lambda p: None, "paused": lambda: None, "note": lambda i, t: (True, ""), "publish": lambda n: None}
+    xroot = os.path.join(tmp, "exec")
+    os.makedirs(xroot)
+    now = _t.time()
+    for why in ("REFUSED by control: refused at start: OFF (mod:Wire, act ct_9 at now): off",
+                "REFUSED by control: OFF (mod:Wire, act ct_9 at now): off"):
+        before = DS.load_state(d)
+        st = {"roles": {row["name"]: {"run_now": dict(req, at=now - 5)}}, "alarms": {}}
+        acts = []
+        RL.decide_roles(s2, st, robs, now, lambda **kw: acts.append(kw), set(), None)
+        la = [a for a in acts if a.get("do") == "role_launch"]
+        opened = []
+
+        def refused(r, unit, msg, root_, claude):
+            opened.append((DS.load_state(d).get("running") or {}).get("run"))
+            return False, why, {}
+        D.execute(la, s2, st, xroot, True, now, dict(fx, role_launch=refused))
+        after = DS.load_state(d)
+        check("a refused start (%s) was opened before its launch, as the dispatcher does" % why[:40],
+              len(la) == 1 and opened == [la[0]["unit"]], (opened, [a.get("result") for a in la]))
+        check("a refused start (%s) adds no entry to the concept's stage.json" % why[:40],
+              after.get("history") == before.get("history"),
+              [h for h in after.get("history") or [] if h not in (before.get("history") or [])])
+        check("a refused start (%s) leaves no open run and charges nothing" % why[:40],
+              after.get("running") is None and after["budget"] == before["budget"],
+              (after.get("running"), after["budget"], before["budget"]))
 
 
 def wiring(tmp, repo):

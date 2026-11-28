@@ -109,3 +109,19 @@ lost is the only record of the state a change replaced: a second `pipe off` or `
 OFF row (its why, its act, his words); a grant replaces the account it changed; `pipe limit` replaces a limit. With
 `before` null, the store and its `export_acts` file could not say what any of those were. `t_every_change_is_an_act`
 now checks `before` (and who, when, why, after) on an off over an off, an on, a grant, two limits and a set.
+
+## 2026-11-28 3:19 AM PST: five breaks run again
+
+Item `RIMMANDRAKE_FIX_ROLE_START_CHECK_RUNS_STALE_CLONE_CODE`. Before it, `control_promise_breaks_accept.py` read
+COULD NOT LOOK on every run: three promises on the page had no break (`a-design-only-switch-admits-the-designer-alone`,
+`a-write-now-order-says-write-then-end`, `an-unseeded-mod-can-be-switched-off`). Their breaks were added, the break of
+`ended-run-is-recorded-ended` was moved to the new text of `hook_cmd()`, and `start-check-runs-the-admitting-code` got
+its break. `--only` on those five [measured]:
+
+| promise | the break | named test | result |
+|---|---|---|---|
+| start-check-runs-the-admitting-code | `hook_cmd()` runs the run clone's `control.py` first for the start check too | `t_start_check_runs_the_admitting_code` | RED |
+| ended-run-is-recorded-ended | `hook_cmd()` does not fall through to the seat clones' `control.py` | `t_ended_run_is_recorded_ended` | RED |
+| a-design-only-switch-admits-the-designer-alone | `design_passes()` lets no Designer through | `t_a_design_only_switch_admits_the_designer_alone` | RED |
+| an-unseeded-mod-can-be-switched-off | `scope_of()` never reads a shipping folder as a mod | `t_an_unseeded_mod_can_be_switched_off` | RED |
+| a-write-now-order-says-write-then-end | the write-now deadline is cut to 600 s | `t_a_write_now_order_says_write_then_end` | RED |

@@ -188,13 +188,21 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **a-test-process-never-writes-the-real-ledger.** `model.append` from a test process refuses a write into the ledger
   of the checkout that the code is in, before any byte. A ledger of the test's own (a path, `RIMFLOW_LEDGER`, a
   rebound `model.EVENTS`) takes the event.
-- **ended-run-is-recorded-ended.** A unit that ends by itself is recorded ended: its start check and end receipt run
-  the first `control.py` still on disk (the run's clone, the launcher's, then the seat clones'), so a clone returned
-  before the receipt does not leave its run `started`. A run whose receipt still never ran (systemd reads its unit gone)
+- **ended-run-is-recorded-ended.** A unit that ends by itself is recorded ended: its end receipt runs the first
+  `control.py` still on disk (the run's clone, the launcher's, then the seat clones'), and its start check the first of
+  the launcher's, the run's clone's, then the seat clones', so a clone returned before the receipt does not leave its
+  run `started`. A run whose receipt still never ran (systemd reads its unit gone)
   is ended by `pipe doctor`, its stop orders done; a unit systemd cannot read is left started and named UNREADABLE.
   `ops_watch` reads `flow.ghost_runs` every run and alarms on any (`RIMMANDRAKE_END_GHOST_RUN_RECEIPT_NEVER_RAN_LUVL`). Added 2026-11-19 by
   `RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE` (4 runs stayed started for good). Tested by
   `t_end_receipt_outlives_its_clone`.
+- **start-check-runs-the-admitting-code.** A unit's start check (ExecCondition, the `condition` verb) runs the
+  launcher's `control.py` first: the code that admitted the run. It never runs a run clone's older copy while the
+  launcher's is on disk. systemd runs the start check before ExecStart, so before a role clone's `./sync`. Added
+  2026-11-28 by `RIMMANDRAKE_FIX_ROLE_START_CHECK_RUNS_STALE_CLONE_CODE`: the Designer clone stood 153 commits behind,
+  its `control.py` did not know `pipe off --design-ok`, and it refused 22 admitted Designer starts on DirectSun; a
+  refused unit never reaches `./sync`, so the clone stayed stale. A mod that is plain `pipe off` still refuses its
+  Designer at the start. Tested by `t_start_check_runs_the_admitting_code`.
 - **permit-never-ghosts.** The containment permit beside the store follows every `all` switch, from `pipe`, `pipe stop
   all`, `pipe undo` or any caller of `switch()` (slice review 13), and every admitted launch re-writes it, so a timed all-off that lapsed by itself never leaves a
   drop-in-gated unit skipped while its run sits `admitted`. Added 2026-11-19 by

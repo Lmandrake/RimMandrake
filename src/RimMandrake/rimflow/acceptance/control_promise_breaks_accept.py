@@ -154,8 +154,16 @@ brk("a-test-process-never-writes-the-real-ledger", "model.append() takes a test 
     "(the test's writer is a recorder, so the break writes nothing)",
     ("model.py", '.startswith(REAL_LEDGER + os.sep):', '.startswith(REAL_LEDGER + os.sep) and False:'))
 brk("ended-run-is-recorded-ended", "hook_cmd() does not fall through to the seat clones' control.py",
-    ("[os.path.abspath(__file__)] + \\\n        [os.path.join(c, rel) for c in wrapup.seat_clones()]",
-     "[os.path.abspath(__file__)]"))
+    ('(mine + own if verb == "condition" else own + mine) + [os.path.join(c, rel) for c in wrapup.seat_clones()]',
+     '(mine + own if verb == "condition" else own + mine)'))
+brk("a-design-only-switch-admits-the-designer-alone", "design_passes() lets no Designer through a --design-ok switch",
+    ('def design_passes(r, spec):\n', 'def design_passes(r, spec):\n    return False\n'))
+brk("an-unseeded-mod-can-be-switched-off", "scope_of() never reads a shipping folder as a mod",
+    ('        folders = mod_folders() if unseeded else []', '        folders = []'))
+brk("a-write-now-order-says-write-then-end", "the write-now deadline is cut to 600 s",
+    ('WRITE_NOW_DEADLINE_S = 6000\n', 'WRITE_NOW_DEADLINE_S = 600\n'))
+brk("start-check-runs-the-admitting-code", "hook_cmd() runs the run clone's control.py first for the start check too",
+    ('(mine + own if verb == "condition" else own + mine)', '(own + mine)'))
 brk("permit-never-ghosts", "switch() leaves the permit alone when the all-switch moves",
     ('        if scope == "all":      # the containment permit follows the all-switch from every caller, not only `pipe`',
      '        if False:'))

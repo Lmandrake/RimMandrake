@@ -1900,13 +1900,19 @@ def hook_cmd(verb, run, p, clone=None):
     argument (round-three claim 10). A path with `$` in it is outside the page (plain-paths): systemd would expand it.
     It runs the first control.py that still exists when systemd runs it: the run's clone's, the launcher's, then the
     seat clones' (detached_helper's resolver). Either clone may be returned before the end receipt, and a receipt that
-    cannot start leaves its run `started` for good (RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE)."""
+    cannot start leaves its run `started` for good (RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE).
+    The start check (`condition`) runs the launcher's control.py first, the code that admitted the run: systemd runs it
+    before ExecStart, so before a role clone's ./sync, and a stale clone's copy refused every admitted run whose switch
+    grammar it did not know, for good (22 Designer starts on DirectSun, 2026-11-28:
+    RIMMANDRAKE_FIX_ROLE_START_CHECK_RUNS_STALE_CLONE_CODE). systemd-run waits for the unit's start job, so the
+    launcher's file is still on disk then; the clone and seat clones stay as its fallbacks."""
     import shlex
     import detached_helper as DH
     import wrapup
     rel = os.path.join("src", "RimMandrake", "rimflow", "control.py")
-    cands = ([os.path.join(os.path.abspath(clone), rel)] if clone else []) + [os.path.abspath(__file__)] + \
-        [os.path.join(c, rel) for c in wrapup.seat_clones()]
+    own = [os.path.join(os.path.abspath(clone), rel)] if clone else []
+    mine = [os.path.abspath(__file__)]
+    cands = (mine + own if verb == "condition" else own + mine) + [os.path.join(c, rel) for c in wrapup.seat_clones()]
     words = DH.stop_resolver(cands, [verb, run, "--db", os.path.abspath(p)])
     if any("$" in x for x in words):
         raise Refused("plain-paths: a clone or store path has no $ in it: %s" % " ".join(words))

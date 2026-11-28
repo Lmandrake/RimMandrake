@@ -2163,6 +2163,29 @@ def abort_run(d, run):
     return True
 
 
+def unopen_run(d, run):
+    """The control store refused the launch (a planned hold: a switch, at admission or at the unit's start check): the
+    open run is dropped and the history rows its open wrote (`open`, `over_budget`) are taken back, so a refused start
+    leaves no entry (22 refused starts on DirectSun left 44 rows, 2026-11-28:
+    RIMMANDRAKE_FIX_ROLE_START_CHECK_RUNS_STALE_CLONE_CODE). What the open settled for an earlier run (a `retry`
+    charge) stays: it is that run's record. -> True when it dropped the open run."""
+    st = load_state(d)
+    if (st.get("running") or {}).get("run") != run:
+        return False
+    st["running"] = None
+    h = st.get("history") or []
+    # this open's rows only: its `open` row is the last one naming the run, and open_run writes its `over_budget` row
+    # just before it (an earlier run of the same unit name keeps its rows)
+    i = next((k for k in range(len(h) - 1, -1, -1) if h[k].get("what") == "open"
+              and str(h[k].get("why") or "").startswith("run %s," % run)), None)
+    if i is not None:
+        j = i - 1 if i and h[i - 1].get("what") == "over_budget" and (
+            " run %s goes on " % run) in str(h[i - 1].get("why") or "") else i
+        st["history"] = h[:j] + h[i + 1:]
+    write_json(state_path(d), st)
+    return True
+
+
 def owner_moved(st, d, repo):
     w = st.get("waiting_owner_feed")
     if w is None:

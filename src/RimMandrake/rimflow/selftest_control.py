@@ -2887,6 +2887,79 @@ def t_a_design_only_switch_admits_the_designer_alone():
           C.run_state(k["run"]))
 
 
+def _stale_clone(name):
+    """-> (clone root, its control.py): a role clone whose rimflow is this one, except a control.py that predates the
+    design-only allowance (design_passes always False: the grammar before f7ed85ef64)."""
+    rc = os.path.join(TMP, name)
+    shutil.rmtree(rc, ignore_errors=True)
+    rim = os.path.join(rc, "src", "RimMandrake", "rimflow")
+    os.makedirs(rim)
+    for x in os.listdir(HERE):
+        if x not in ("control.py", "__pycache__"):
+            os.symlink(os.path.join(HERE, x), os.path.join(rim, x))
+    src = open(os.path.join(HERE, "control.py"), encoding="utf-8").read()
+    head = "def design_passes(r, spec):\n"
+    check(head in src, "the stale copy can be made (design_passes is in control.py)")
+    stale = src.replace(head, head + "    return False  # stale: no design-only allowance\n", 1)
+    with open(os.path.join(rim, "control.py"), "w", encoding="utf-8") as f:
+        f.write(stale)
+    return rc, os.path.join(rim, "control.py")
+
+
+def t_start_check_runs_the_admitting_code():
+    """Promise start-check-runs-the-admitting-code (RIMMANDRAKE_FIX_ROLE_START_CHECK_RUNS_STALE_CLONE_CODE): a unit's
+    start check (ExecCondition) ran the control.py of the run's own clone, before that clone's ./sync. On 2026-11-28 the
+    Designer clone stood 153 commits behind, its control.py did not know `--design-ok`, and it refused 22 admitted
+    Designer runs on DirectSun at start; a refused unit never reaches ./sync, so the clone stayed stale. The start check
+    runs the admitting (launcher's) control.py first. Case 1 red on the parent; case 3 green before and after."""
+    import shlex
+    import types
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+    import time_budget as TB
+    rc, stale = _stale_clone("staleclone")
+    designer = lambda u, m="Graffiti": {"family": "role", "unit": u, "role": "Designer", "mod": m}  # noqa: E731
+
+    def start(sp):
+        """-> (run id, the run's state after its unit's ExecCondition command really ran, the command)."""
+        got = []
+        r = C.launch_unit(["--user", "--", "true"], sp, p=DB, clone=rc,
+                          runner=lambda a, **k: got.append(list(a)) or types.SimpleNamespace(
+                              returncode=0, stdout="", stderr="", args=a))
+        props = {a.split("=", 1)[0]: a.split("=", 1)[1] for a in (got[0] if got else []) if a.startswith("Exec")}
+        cmd = props.get("ExecCondition", "false")
+        if r.run:
+            subprocess.run(shlex.split(cmd), capture_output=True, text=True, timeout=TB.CALL_S)
+        return r.run, (C.run_state(r.run, DB) or {}).get("state") if r.run else "refused-at-admit", cmd
+    # case 1: a stale role clone, a design-ok switch on the mod: the admitted Designer run starts
+    fresh()
+    C.switch("mod:Graffiti", True, "design only, builds off", extra={"design_ok": {"why": "design only"}}, p=DB)
+    rid, st, cmd = start(designer("rm-role-designer-stale-1"))
+    check(st == "started", "case 1: a stale role clone's admitted Designer run on a design-ok mod starts", (st, cmd))
+    check(stale not in shlex.split(cmd)[3:4], "case 1: the start check does not run the clone's control.py first", cmd)
+    # case 3: a mod that is plain off still refuses its Designer at the start (green before and after)
+    fresh()
+    rid, st, cmd = start(designer("rm-role-designer-stale-3"))
+    check(st == "started", "case 3 control: with no switch the Designer run starts", (st, cmd))
+    fresh()
+    got = []
+    r = C.launch_unit(["--user", "--", "true"], designer("rm-role-designer-stale-3b"), p=DB, clone=rc,
+                      runner=lambda a, **k: got.append(list(a)) or types.SimpleNamespace(returncode=0, stdout="",
+                                                                                         stderr="", args=a))
+    cmd = {a.split("=", 1)[0]: a.split("=", 1)[1] for a in got[0] if a.startswith("Exec")}["ExecCondition"]
+    with C.txn(DB) as c:    # a plain off row the run's admission never saw (no cancel): only the start check decides
+        c.execute("INSERT INTO switches (scope, layer, why, act, at_pacific) VALUES (?,?,?,?,?)",
+                  ("mod:Graffiti", "control", "plain off", "ct_test", "now"))
+    x = subprocess.run(shlex.split(cmd), capture_output=True, text=True, timeout=TB.CALL_S)
+    st = (C.run_state(r.run, DB) or {}).get("state")
+    check(x.returncode != 0 and st == "refused", "case 3: a plain `pipe off` mod refuses its Designer at the start",
+          (x.returncode, st, x.stderr[-300:]))
+    fresh()
+    q = C.admit(designer("rm-role-designer-stale-3c"), DB)
+    C.switch("mod:Graffiti", True, "plain off", p=DB)
+    check(C.condition(q["run"], DB)[0] == 1, "case 3: a plain off after admission refuses the Designer at start",
+          C.run_state(q["run"], DB))
+
+
 def main():
     # its probe units have fixed names in the one user systemd: runs on one machine (sibling clones' ./publish) take
     # turns, or one run's unit is "already loaded" for the other (RIMMANDRAKE_SERIALIZE_CONTROL_SELFTEST_SIBLINGS_SHARE_UNIT_NAMES)
@@ -2898,7 +2971,7 @@ def main():
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
               t_accounts, t_queue, t_review_round_four_p1,
               t_slice4, t_slices_review, t_his_hold_refuses_launch, t_void_never_moves_a_stage,
-              t_reused_name_runs_again, t_end_receipt_outlives_its_clone,
+              t_reused_name_runs_again, t_end_receipt_outlives_its_clone, t_start_check_runs_the_admitting_code,
               t_stop_reaches_the_agent, t_kill_verified_dead, t_killed_run_needs_no_hand_step,
               t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act,
               t_permit_never_ghosts, t_before_is_read, t_hold_file_mirrors_the_store,

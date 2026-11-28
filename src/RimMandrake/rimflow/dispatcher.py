@@ -2050,8 +2050,11 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     rs["held_control_key"] = a["slot"]
                                     RL.unlaunch(rs, a["unit"])
                                     if a.get("concept"):
-                                        try:     # never launched: the stage's open run is dropped, uncharged
-                                            fx.get("stage_abort", RL.stage_abort)(a["concept"], a["unit"])
+                                        # never launched: the stage's open run is dropped, uncharged, and its open
+                                        # row taken back: a held start leaves no stage entry (22 refused starts left
+                                        # 44 rows: RIMMANDRAKE_FIX_ROLE_START_CHECK_RUNS_STALE_CLONE_CODE)
+                                        try:
+                                            fx.get("stage_unopen", RL.stage_unopen)(a["concept"], a["unit"])
                                         except Exception:  # noqa: BLE001 - the next open charges it instead
                                             pass
                                 elif not ok:
