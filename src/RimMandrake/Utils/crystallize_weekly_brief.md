@@ -5,7 +5,8 @@ wait for the owner and do not ask him anything in this run.
 Read first:
 - `design/RimMandrake/standing_rulings.md` §The weekly Crystallize pass improves the agents. That section names the
   two jobs of this pass.
-- The `crystallize` skill (`~/.claude/skills/crystallize/SKILL.md` and the reference files that it names). Its table
+- The `crystallize` skill (`~/dev/MandrakeWorkflows/skills/crystallize/SKILL.md` and the reference files that it
+  names; the skill is reached by path, not as a global skill). Its table
   "What needs Mandrake and what does not" decides what you land and what goes on his sheet.
 - The report of the last pass ({PREV_WEEK}): {PREV}
 
@@ -33,8 +34,22 @@ The jobs, in this order:
 
 Land with `./publish` and explicit paths, one commit for each kind of change, subjects that start `crystallize {WEEK}:`.
 The project rules still bind: CLAUDE.md §Correctness outranks seat ownership, §Touching code has a cost, and
-§Only five acts stay his. A loaded rule file that another live run is editing gets its pass in a `git worktree` from origin/main, rebased
-before it lands. Say in the report which runs edited it during the pass.
+§Only five acts stay his. A loaded rule file that another live run is editing gets its pass in a scratch clone from
+origin/main (`src/RimMandrake/Utils/scratch_clone.py clone`), landed with `./publish`, which rebases before it pushes.
+Never a `git worktree`: worktrees are off in this repo (`design/RimMandrake/GIT_WORKFLOW.md` §Subagents), and
+`.claude/hooks/block_worktrees.py` refuses `git worktree add`, so the skill's worktree step reads as this clone here.
+Say in the report which runs edited the file during the pass.
+
+Known faults of the skill (`~/dev/Lodestar/docs/crystallize/2026-11-27-audit/crystallize-evaluation.md`):
+- Never write an answer that he did not give. A sheet row that the Conductor decides is the Conductor's act, recorded
+  as such; it is never "his answer: yes". When `ledger.py settle --landing` exits 1 only on rows that nobody asked
+  him, report the exit and those rows; do not fill in answers to make it pass.
+- When `ledger.py plant` cannot plant in a small file, the inspector is unproved: say UNMEASURED for that check.
+- The briefs of the run that worked on the global file are `PREP-BRIEF.md`, `REVIEW-BRIEF.md`, `LAND-BRIEF.md` and
+  `INSPECT-BRIEF.md` in `~/dev/Lodestar/docs/crystallize/`. Read them before job 4.
+- The user-level rules keep a short loaded core in `~/dev/Lodestar/claude/global/` and their full text in
+  `~/dev/Lodestar/claude/rules/<name>.md`. A line here that only restates a user-level rule is a repeat: put the
+  repeat on his sheet as a pointer to the rule doc's path, and keep only what is particular to RimMandrake.
 
 The report has these sections: 1 the last pass's change and its verdict; 2 what each job did, before and after, with
 the commit of each change; 3 the change adopted this pass, with one success criterion that the next pass measures and
