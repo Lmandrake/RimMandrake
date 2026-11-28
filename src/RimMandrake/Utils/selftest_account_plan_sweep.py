@@ -28,6 +28,13 @@ UNREAD = [(P, '            return {**base, "do": "soft", "unread": True,   # no 
            '        return {**base, "do": "soft",       # planted: the unread mark is gone')]
 # the fault of d469f03d9d: a machine on an account that no step uses was switched only at its line
 NO_STEP = [(P, '    if not (n.get("account_end") or finished):', '    if not n.get("account_end"):')]
+# planted faults of the line schedule (page design/specs/2026-11-27-account-line-schedule/boundary.md)
+SCHED_FLAT = [(P, '        return {"line": info["pct"], "schedule": info,', '        return {"line": hi, "schedule": info,')]
+RAMP_AS_HOLD = [(P, '        pct = pts[j - 1]["pct"] + (pts[j]["pct"] - pts[j - 1]["pct"]) * (t - a) / (b - a)',
+                 '        pct = pts[j]["pct"]')]
+UNREAD_ZERO = [(P, '        hi = lv if is_num(lv) else 100.0', '        hi = 0.0')]
+CODEX_Q = "quick: Codex on the owner's example, with his own use"
+BROKEN_Q = "quick: Codex with a line schedule that a hand edit broke"
 
 
 def check(name, ok, detail=""):
@@ -36,7 +43,7 @@ def check(name, ok, detail=""):
         FAILS.append(name)
 
 
-def quick_in_copy(plants):
+def quick_in_copy(plants, only=None):
     """-> ({region name: {check: count}}, output) of `account_plan_sweep.py quick` in a copy of the code, plants in."""
     tmp = Path(tempfile.mkdtemp(prefix="account_plan_sweep_selftest_"))
     try:
@@ -53,7 +60,8 @@ def quick_in_copy(plants):
                 return None, "the plant's anchor is found %d times in %s: %s" % (text.count(old), rel, old.strip()[:80])
             p.write_text(text.replace(old, new), encoding="utf-8")
         out = tmp / "quick.json"
-        r = subprocess.run([sys.executable, str(root / "Utils" / "account_plan_sweep.py"), "quick", "--json", str(out)],
+        r = subprocess.run([sys.executable, str(root / "Utils" / "account_plan_sweep.py"), "quick", "--json", str(out)]
+                           + (["--only", only] if only else []),
                            capture_output=True, text=True, timeout=900,   # budget: class=call (a hang guard)
                            env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=""))
         if not out.exists():
@@ -140,11 +148,33 @@ def t_the_sweep_finds_the_fault_of_d469f03d9d():
           "STUCK" in hit and hit["STUCK"][1].get("machine") == S.STEVE, got if got is not None else out)
 
 
+def t_the_sweep_finds_a_schedule_read_as_flat():
+    n = "the_sweep_finds_a_schedule_read_as_flat"
+    got, out = quick_in_copy(SCHED_FLAT, only="Codex")
+    check(n + ": with the schedule's highest percent in place of its line, LINE_NOT_AS_TYPED on the owner's example",
+          "LINE_NOT_AS_TYPED" in (got or {}).get(CODEX_Q, {}), got if got is not None else out)
+
+
+def t_the_sweep_finds_a_ramp_read_as_a_hold():
+    n = "the_sweep_finds_a_ramp_read_as_a_hold"
+    got, out = quick_in_copy(RAMP_AS_HOLD, only="Codex")
+    check(n + ": with a ramp read as a hold, LINE_NOT_AS_TYPED on the owner's example",
+          "LINE_NOT_AS_TYPED" in (got or {}).get(CODEX_Q, {}), got if got is not None else out)
+
+
+def t_the_sweep_finds_an_unreadable_schedule_free_to_burn():
+    n = "the_sweep_finds_an_unreadable_schedule_free_to_burn"
+    got, out = quick_in_copy(UNREAD_ZERO, only="Codex")
+    check(n + ": with an unreadable schedule read as 0, FREE_TO_BURN in the region of a hand edit",
+          "FREE_TO_BURN" in (got or {}).get(BROKEN_Q, {}), got if got is not None else out)
+
+
 def main():
     try:
         for t in (t_the_sweep_runs_the_real_pass, t_the_sweep_is_deterministic, t_the_sweep_touches_no_live_folder,
                   t_the_quick_part_is_green_on_this_code, t_the_sweep_finds_the_fault_of_391283b692,
-                  t_the_sweep_finds_the_fault_of_d469f03d9d):
+                  t_the_sweep_finds_the_fault_of_d469f03d9d, t_the_sweep_finds_a_schedule_read_as_flat,
+                  t_the_sweep_finds_a_ramp_read_as_a_hold, t_the_sweep_finds_an_unreadable_schedule_free_to_burn):
             try:
                 t()
             except Exception as e:  # noqa: BLE001  a check that broke is a FAIL of its promise, by name

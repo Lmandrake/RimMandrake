@@ -2137,7 +2137,7 @@ def t_status_and_help_are_the_operators_page():
 
 # ------------------------------------------------------------------ the line schedule (page
 # design/specs/2026-11-27-account-line-schedule/boundary.md; each check's name starts ls_)
-GOLDEN = HERE / "account_plan_replay.golden.json"
+GOLDEN = HERE / "account_plan_replay.golden.jsonl"
 REPLAY_T0 = AP.stamp("2026-11-26T12:00:00-08:00")      # the dated steps of the live plan end inside this week
 
 
@@ -2162,10 +2162,10 @@ def replay_frames(plan_):
             codex_used, codex_reset = 0.0, codex_reset + 7 * 86400
         age = 30.0 if k % 7 == 3 else 1.0
         src = "ESTIMATE" if k % 23 == 11 else "MEASURED"
-        rows = {a: R(round(100 - used[a]), (resets[a] - t) / 3600, src=src if a == live else "MEASURED", age=age, now=t)
+        rows = {a: R(round(100 - used[a], 1), (resets[a] - t) / 3600, src=src if a == live else "MEASURED", age=age, now=t)
                 for a in resets}
-        cx = {**AP.reading(None, t), "left": round(100 - codex_used), "ok": True, "state": "MEASURED",
-              "reset": codex_reset, "age_min": 5.0, "last_left": round(100 - codex_used), "burn_h": 0.8}
+        cx = {**AP.reading(None, t), "left": round(100 - codex_used, 1), "ok": True, "state": "MEASURED",
+              "reset": codex_reset, "age_min": 5.0, "last_left": round(100 - codex_used, 1), "burn_h": 0.8}
         out.append(F(live, rows, runs=RUN if k % 2 else [], burn_h=None if k % 13 == 5 else 4.0, now=t, codex=cx))
         near = any(abs((100 - used[live]) - x) <= 3 for x in (1, 3, 5, 52)) or abs(codex_used - 75) <= 3 or any(
             0 <= rs - t <= 3600 for rs in list(resets.values()) + [codex_reset])
@@ -2250,11 +2250,18 @@ def t_ls_hold_and_ramp_give_the_line_of_the_moment():
 def t_ls_a_point_at_the_reset_is_its_end():
     n = "ls_a_point_at_the_reset_is_its_end"
     p = SP()
-    for label, rs in (("5 min early", CR - 300), ("6 min late", CR + 360), ("1 h late", CR + 3600)):
+    for label, rs in (("5 min early", CR - 300), ("6 min late", CR + 360), ("1 h late", CR + 3600), ("1 h early", CR - 3600)):
         got = (LN(p, WED, rs) or {}).get("line"), (LN(p, MON, rs) or {}).get("line"), (LN(p, rs - 1, rs) or {}).get("line")
         check(n + ": the reset %s: Tue 13:30 is still the end of the week (40 on Wednesday, the ramp on Monday, near 0 "
-                  "at the reset)" % label, near(got[0], 40) and near(got[1], 15.6, 0.4) and got[2] is not None
+                  "at the reset)" % label, near(got[0], 40) and near(got[1], 15.6, 0.6) and got[2] is not None
               and got[2] <= 0.8, got)
+    rl = LN(p, CR - 3600 - 1, CR - 3600) or {}
+    check(n + ": the reset 1 h early: the ramp ends at the reset (0 there), not an hour after it (0.65)",
+          near(rl.get("line"), 0, 0.05), rl)
+    q = SP(text="Tue 14:00=50 hold; Sat 23:59=40 hold; Tue 13:00=0 ramp")
+    rl = LN(q, WED, CR + 2700) or {}       # the reset 45 min late: the first point is 15 min before the week begins
+    check(n + ": a first point just after the reset survives a reset that comes late (40 on Wednesday, nothing outside)",
+          rl.get("line") == 40 and "outside" not in str(rl.get("note")), rl)
     # 2026-11-01: a reset fixed in UTC comes one hour earlier on the Pacific clock after daylight saving ends
     rs = AP.stamp("2026-11-03T12:30:00-08:00")
     got = (LN(p, AP.stamp("2026-10-28T12:00:00-07:00"), rs) or {}).get("line"), (LN(p, rs - 1, rs) or {}).get("line")
@@ -2321,7 +2328,7 @@ def t_ls_a_bad_schedule_is_refused_at_the_command():
            ("a ramp on the first point", "codex", "Sat 23:59=40 ramp; Tue 13:30=0 hold", "no point before it"),
            ("two points at the same moment", "codex", "Sat 23:59=40; Sat 23:59=10", "same moment"),
            ("points that run past a week", "codex", "Sat 23:59=40; Fri 12:00=30; Thu 12:00=20", "past a week"),
-           ("a Claude point under the floor", "lukas", "Wed 12:00=0.5", "floor"),
+           ("a Claude point under the floor", "lukas", "Wed 12:00=30 hold; Tue 13:30=0.5 ramp", "floor"),
            ("a point outside the measured week", "codex", "Mon 12:00=40 hold; Wed 12:00=0 ramp", "outside the week"))
     for label, a, text, why in bad:
         fresh(frame=f)

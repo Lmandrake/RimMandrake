@@ -717,7 +717,9 @@ def parse_schedule(text, floor=0.0) -> list:
         day = DAY_OF.get(m.group(1).lower())
         if day is None:
             raise Refused("`%s`: %s is no weekday; repair: mon, tue, wed, thu, fri, sat or sun" % (x, m.group(1)))
-        hh, mm, half = int(m.group(2)), int(m.group(3) or 0), (m.group(4) or "").lower()
+        hh = int(m.group(2))
+        mm = int(m.group(3)) if m.group(3) is not None else 0           # `Sat 9` is 9:00
+        half = m.group(4).lower() if m.group(4) is not None else ""      # no am/pm: a 24-hour clock
         if half and not 1 <= hh <= 12:
             hh = 99
         elif half:
@@ -730,7 +732,7 @@ def parse_schedule(text, floor=0.0) -> list:
         if pct < floor:
             raise Refused("`%s`: %s%% is under the floor %s%% (a Claude account is never taken under it); repair: a percent "
                           "of %s or more" % (x, g(pct), g(floor), g(floor)))
-        how = (m.group(6) or "hold").lower()
+        how = m.group(6).lower() if m.group(6) is not None else "hold"     # no word: hold
         if how not in ("hold", "ramp"):
             raise Refused("`%s`: `%s` is neither hold nor ramp; repair: %s" % (x, m.group(6), SCHED_HELP))
         if i == 0 and how == "ramp":

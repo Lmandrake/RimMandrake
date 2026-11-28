@@ -6,8 +6,9 @@ that gives the leave line of a step at a moment; `rule_of` and `standing_line` c
 line-schedule regions). Item: `RIMMANDRAKE_SCHEDULE_LEAVE_LINES_BY_WEEKDAY_FLAT_NUMBER_TODAY`. The plan that this
 extends: `design/specs/2026-11-24-account-plan-one-file/boundary.md`. The sweep that this extends:
 `design/specs/2026-11-25-account-plan-sweep/boundary.md`. The owner's operating page: `ops_rules.md` beside this page.
-Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_plan.py` (prefix `ls_`) or
-`src/RimMandrake/Utils/selftest_account_plan_sweep.py`. Planted faults: `src/RimMandrake/Utils/account_plan_mutants.py`.
+Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_plan.py` (prefix `ls_`); the sweep's
+own promises for line schedules are on its page, checked in `src/RimMandrake/Utils/selftest_account_plan_sweep.py`.
+Planted faults: `src/RimMandrake/Utils/account_plan_mutants.py`.
 
 ## Words
 
@@ -77,6 +78,13 @@ reader sees what the pass computes.
   the weekdays against. The line still follows the typed weekdays (rule 4 and 5 above), and the output says so; whether
   that is still what he wants is his call (`ops_rules.md`, "after a reset moves").
 - **a-schedule-for-jpl-genai.** JPL GenAI has no step and no meter that the plan reads; a schedule on it does nothing.
+- **a-falling-ramp-on-the-last-claude-account.** With no other account that can take over, the pass stops the fleet at
+  the line; the falling line gives headroom, the fleet starts, reaches the line within about an hour, its runs are told
+  to save, and it stops again (up to 12 stops in 96 h in the sweep). Found by the sweep; not reached today (no Claude
+  account has a schedule), so it is an operating rule (`ops_rules.md` rule 2), not a change of the decision.
+- **a-rising-line-on-the-live-account-with-a-run-that-does-not-end.** The account end drains for `rescue.drain_h`, and
+  the fleet burns under the new line for those hours (up to 61 points in 96 h in the sweep): the plan's own
+  `a-run-that-outlives-the-rescue-drain` (`ops_rules.md` rule 3).
 - **a-second-burner-that-the-plan-cannot-see.** The owner's own use of Codex or of a Claude account is a burn that the
   plan does not control. The plan keeps the line against the fleet only; the sweep measures what his use does
   (`ops_rules.md`).
@@ -109,7 +117,7 @@ reader sees what the pass computes.
   refused for it, and `./acct status` says it. The account is never free to burn under it.
 - **ls_every_reader_gets_the_line_from_one_function.** On one plan with a Codex schedule and a Claude schedule, at two
   moments with different lines, each reader gives the line of that moment: `decide`, `week_ahead`, `can_use` (Codex),
-  `burn_mode`, `legacy_view` (the actuator and `account_end`), `pool_pace` (the allocator), `rules_now` (the
+  `burn_mode` (the line at the reset: what a reset erases), `legacy_view` (the actuator and `account_end`), `pool_pace` (the allocator), `rules_now` (the
   Dispatcher's priority), `temporary_line` (the allocator), `account_lines` (status), `ops_watch`'s runway,
   `codex_advice` (Codex's door; `codex_lane` asks it). No code outside `line_of_step` reads a step's `leave` to make a
   line (a scan of the source).
@@ -128,7 +136,7 @@ reader sees what the pass computes.
 ### The flat plan of today
 
 - **ls_the_live_plan_replays_pass_for_pass.** Today's live plan (rev 4, steps with flat numbers only, copied into
-  `src/RimMandrake/Utils/account_plan_replay.golden.json`) is decided over a simulated week (every 30 min, and every
+  `src/RimMandrake/Utils/account_plan_replay.golden.jsonl`) is decided over a simulated week (every 30 min, and every
   5 min near each line and reset), with the code before this change and with this code: each pass has the same act,
   target, line, warning line, level and drain; `can_use` for Codex, Burn Mode's states and the actuator's lines are the
   same. The golden file was written by the code before this change (`--write-golden`, commit 34121b95c6).
@@ -163,5 +171,7 @@ reader sees what the pass computes.
   after the reset is read as at the reset. 2 h is the daylight-saving hour plus the jitter, with margin.
 - `MAX_POINTS` = 14 (`account_plan.py`): two points a day. Danger: a list that nobody can read in one status line.
   Ends no work: the command refuses it with the repair.
+
+The sweep's regions, its verdicts and every regime's measures: `regime_map.md` beside this page.
 
 Later lists beside this page: `polish.md` (none yet).

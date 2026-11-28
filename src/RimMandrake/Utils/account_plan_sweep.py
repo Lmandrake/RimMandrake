@@ -24,6 +24,7 @@ import shutil
 import sys
 import tempfile
 import time
+from datetime import datetime, timedelta
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -101,20 +102,93 @@ def plan_of(reg, t0):
     elif pv.get("kind") == "request":
         p["requests"].append({"to": pv["to"], "at": at, "ends": AP.iso(t0 + (h + 24) * 3600), "why": "sweep",
                               "now": bool(pv.get("now"))})
+    for sc in reg.get("schedules") or []:
+        if not sc.get("at_h"):
+            put_sched(p, sc, reg, t0)
     return p
 
 
-def change_mid_week(reg):
-    """A write of the plan in the middle of the week: (hour, change), or None."""
-    pv = reg.get("plan") or {}
-    if pv.get("kind") != "order":
-        return None
-    order = pv["order"]
+def assumed_reset(reg, t0, a, sc):
+    """The reset that the owner typed the schedule against: the true first reset ahead, moved by drift_h."""
+    r = t0 + reg["start"]["reset_h"][a] * 3600
+    while r <= t0:
+        r += WEEK
+    return r + sc.get("drift_h", 0) * 3600
 
-    def ch(p):
-        p["steps"].sort(key=lambda s: order.index(s["use"]) if s["use"] in order else 99)
-        return p
-    return pv.get("at_h", 24), ch
+
+def sched_text(points, reset):
+    """Points [hours before the reset, percent, how] as the text that the owner would type for that reset."""
+    return "; ".join("%s=%s %s" % (AP.pacific_point(reset - hb * 3600), g(pct), how) for hb, pct, how in points)
+
+
+def g(x):
+    return AP.g(x)
+
+
+def put_sched(p, sc, reg, t0):
+    """The step of sc["account"] (its first step in force) takes the schedule, typed for the assumed reset."""
+    a = sc["account"]
+    text = sc.get("text") or sched_text(sc["points"], assumed_reset(reg, t0, a, sc))
+    s = next(x for x in p["steps"] if x["use"] == a)
+    try:
+        AP.put_schedule(p, s, text)
+    except AP.Refused:          # a text that a hand edit broke: kept as typed, its highest percent in leave
+        s["schedule"] = text
+        s["leave"] = max([float(x) for x in __import__("re").findall(r"=\s*(\d+(?:\.\d+)?)", text)] or [s["leave"]])
+    return p
+
+
+def oracle_line(sc, reset_assumed, t):
+    """The line that the owner typed, at t, computed apart from the plan's code: from the regime's points as hours
+    before the assumed reset (the week (reset - 7 days, reset]). None outside that week."""
+    if not reset_assumed - WEEK < t <= reset_assumed:
+        return None
+    pts = sorted(sc["points"], key=lambda x: -x[0])
+    h = (reset_assumed - t) / 3600
+    for i, (hb, pct, how) in enumerate(pts):
+        if h >= hb:
+            if i == 0 or how != "ramp":
+                return pct
+            hb0, pct0 = pts[i - 1][0], pts[i - 1][1]
+            return pct0 + (pct - pct0) * (hb0 - h) / (hb0 - hb)
+    return pts[-1][1]
+
+
+def typed_off(sc, reset_assumed, t, line, t_typed=None, jitter_h=0.0):
+    """How far the plan's line is from the line as typed (oracle_line), or None where the check does not apply: within
+    SNAP_S of either end of the week (the minutes in which the meter's reset and the true one disagree: the week's
+    end and the next week's start are both right), and in a week that holds a daylight-saving change the typed points
+    keep their Pacific clock while a reset fixed in UTC does not, so the line may be the typed one an hour away (t_typed:
+    a moment of the week that the points were typed for). jitter_h: the meter's reset moves the point at the reset, and
+    so the slope of a ramp to it, by up to that much: the line may be the typed one that many hours away."""
+    if reset_assumed - t <= AP.SNAP_S or t - (reset_assumed - WEEK) <= AP.SNAP_S:
+        return None
+    off = lambda x: datetime.fromtimestamp(x, AP.TZ).utcoffset()     # noqa: E731
+    dst = len({off(x) for x in (t, reset_assumed, reset_assumed - WEEK, t if t_typed is None else t_typed)}) > 1
+    k = (1.0 if dst else 0.0) + abs(jitter_h)
+    wants = [oracle_line(sc, reset_assumed, x) for x in ((t, t - k * 3600, t + k * 3600) if k else (t,))]
+    wants = [x for x in wants if x is not None]
+    if k and len(wants) > 1:        # any line between the typed ones an hour (or the jitter) either way
+        return 0.0 if min(wants) - 0.6 <= line <= max(wants) + 0.6 else min(abs(x - line) for x in wants)
+    return None if not wants else min(abs(x - line) for x in wants)
+
+
+def change_mid_week(reg):
+    """The writes of the plan in the middle of the week: [(hour, change)], in order."""
+    out = []
+    pv = reg.get("plan") or {}
+    if pv.get("kind") == "order":
+        order = pv["order"]
+
+        def ch(p):
+            p["steps"].sort(key=lambda s: order.index(s["use"]) if s["use"] in order else 99)
+            return p
+        out.append((pv.get("at_h", 24), ch))
+    t0 = T0 + reg.get("t0_shift_s", 0)
+    for sc in reg.get("schedules") or []:
+        if sc.get("at_h"):
+            out.append((sc["at_h"], lambda p, sc=sc: put_sched(p, sc, reg, t0)))
+    return sorted(out, key=lambda x: x[0])
 
 
 # ------------------------------------------------------------------ the world (the stand-ins)
@@ -131,6 +205,11 @@ def rate_at(b, h):
         return b["peak"] if (h - b.get("phase_h", 0)) % b["period_h"] < b["on_h"] else b["base"]
     if k == "zero":
         return 0.0 if (h - b.get("phase_h", 0)) % 24 < b["zero_h"] else b["rate"]
+    if k == "pulse":        # peak from from_h to to_h (each period_h when it has one), else base
+        x = h - b["from_h"]
+        if b.get("period_h"):
+            x %= b["period_h"]
+        return b["peak"] if 0 <= x < b["to_h"] - b["from_h"] else b["base"]
     raise ValueError("burn kind %s" % k)
 
 
@@ -216,6 +295,12 @@ class World:
         self.steve_refused_min = 0
         self.last_read_t = {a: None for a in ACCTS}
         self.plan_now = None
+        # the measures of a line schedule (page design/specs/2026-11-27-account-line-schedule/boundary.md)
+        self.under_min = {a: 0 for a in ACCTS}
+        self.lowest_gap = {a: None for a in ACCTS}
+        self.dark_min = 0.0
+        self.fleet_under = 0.0
+        self.line_cache = {}
 
     def h(self, t=None):
         return ((self.t if t is None else t) - self.t0) / 3600
@@ -420,8 +505,11 @@ class World:
             self.arch.tick(t)
             self.steve.tick(t)
             ok_a, _w = self.gate_arch(plan)
+            demand = rate_at(self.burn, h) * dt / 3600
             if not ok_a:
                 self.refused_min += dt / 60
+                if demand > 0:
+                    self.dark_min += dt / 60     # work waited and no account could take a new run
             if ok_a and not self.stopped:
                 while len(self.arch.runs) < self.arch.n:
                     forever = self.arch.mode == "never_ends" and not any(
@@ -433,8 +521,10 @@ class World:
             if ok_s:
                 while len(self.steve.runs) < self.steve.n:
                     self.steve.start(t)
-            demand = rate_at(self.burn, h) * dt / 3600
             land = 0.0 if self.stopped else demand * self.arch.share()
+            lc = self.line_cache.get(self.arch.live)
+            if lc is not None and self.left(self.arch.live) <= lc and land > 0:
+                self.fleet_under += land
             self.idle_pts += demand - land
             self._burn(self.arch, self.arch.live, land, t)
             sd = rate_at(self.steve_burn, h) * dt / 3600 * self.steve.share()
@@ -497,7 +587,7 @@ def _one(job):
     name, spec, seed, hours = job
     reg = realize(spec, seed, hours)
     try:
-        return name, seed, reg, run_regime(reg)
+        return name, seed, reg, (codex_week(reg) if "codex" in reg else run_regime(reg))
     except Exception as e:  # noqa: BLE001  a regime that breaks the code is a finding, by name
         import traceback
         return name, seed, reg, {"violations": [{"check": "CRASH", "h": 0, "detail": {
@@ -540,7 +630,7 @@ def verdict(name, runs):
             worst = {"seed": s, "by": r.get("costly_by", 0), "plan": r.get("measures"), "bound": r.get("bound")}
     v = "VIOLATES" if viol else "COSTLY" if costly else "OK"
     return {"name": name, "verdict": v, "n": len(runs), "violations": viol, "costly": costly, "worst": worst,
-            "seconds": round(secs, 1)}
+            "seconds": round(secs, 1), "all_measures": [r.get("measures") or {} for _s, _reg, r in runs]}
 
 
 def fresh_dirs():
@@ -588,7 +678,7 @@ def run_regime(reg, hours=None, stop_at_first=False, trace=None):
     plan = plan_of(reg, w.t0)
     AP.commit(lambda _o: copy.deepcopy(plan), {"why": "sweep", "create": True}, base=None)
     w.plan_now = AP.load_plan()[0]
-    mid = change_mid_week(reg)
+    mids = change_mid_week(reg)
     hours = hours or reg.get("hours", 72)
     viol, seen = [], set()
     w.history()
@@ -617,10 +707,10 @@ def run_regime(reg, hours=None, stop_at_first=False, trace=None):
         AP.machine_notice = spy_mn
         try:
             while w.t < w.t0 + hours * 3600:
-                if mid and w.h() >= mid[0]:
-                    AP.commit(lambda o: mid[1](o), {"why": "sweep: a change of order"})
+                while mids and w.h() >= mids[0][0]:
+                    ch = mids.pop(0)[1]
+                    AP.commit(lambda o: ch(o), {"why": "sweep: a change in the middle of the week"})
                     w.plan_now = AP.load_plan()[0]
-                    mid = None
                 machine_ds.clear()
                 ev0 = len(w.events)
                 live0 = w.arch.live
@@ -766,10 +856,37 @@ def check_pass(w, reg, st, flag, machine_ds, ev0, live0):
                 flag("SWITCH_ABOVE_LINE", {"key": "above:%s" % e["machine"], "machine": e["machine"],
                                             "from": e["from"], "left": round(e["left"][e["from"]], 1),
                                             "line": rl_from["line"], "why": fulltext.fit(why, 300)})
+    # the reserve kept, and the line as the owner typed it (page design/specs/2026-11-27-account-line-schedule/)
+    for a in ACCTS:
+        rla = w.line_of(a)
+        w.line_cache[a] = None if rla is None else rla["line"]
+        if rla is None:
+            st.setdefault("cross", {}).pop(a, None)
+            continue
+        gap = w.left(a) - rla["line"]
+        w.lowest_gap[a] = round(gap, 1) if w.lowest_gap[a] is None else min(w.lowest_gap[a], round(gap, 1))
+        if gap < 0:
+            w.under_min[a] += PASS_S // 60
+        cr = st.setdefault("cross", {})
+        if gap > 0:
+            cr.pop(a, None)
+        elif a not in cr:       # the level at which it went under: the line (a burn) or the level (a rising line)
+            cr[a] = min(rla["line"], st.get("prev_left", {}).get(a, w.left(a)))
+        for sc in reg.get("schedules") or []:
+            if sc["account"] != a or sc.get("text") or abs(sc.get("drift_h", 0)) * 3600 >= AP.SNAP_S \
+                    or w.h() < sc.get("at_h", 0) or "schedule" not in rla:
+                continue
+            ra = w.reset[a] + sc.get("drift_h", 0) * 3600
+            d = typed_off(sc, ra, w.t, rla["line"], t_typed=w.t0)
+            if d is not None and d > 0.6:
+                flag("LINE_NOT_AS_TYPED", {"key": "typed:%s" % a, "account": a, "want": round(oracle_line(sc, ra, w.t), 2),
+                                           "line": rla["line"], "h_to_reset": round((w.reset[a] - w.t) / 3600, 2)})
+    st["prev_left"] = {a: w.left(a) for a in ACCTS}
     # the live account's overshoot under its line while the fleet is on it
     rl = w.line_of(live)
     if rl is not None and can:
-        under_by = min(rl["line"], w.start_left[live]) - w.left(live)  # one that started under its line overshot nothing
+        # one that started under its line overshot nothing; one that a rising line put under overshoots from there
+        under_by = min(rl["line"], w.start_left[live], st.get("cross", {}).get(live, 100.0)) - w.left(live)
         if under_by > st["max_over"]:
             st["max_over"] = under_by
             rate = rate_at(w.burn, w.h())
@@ -802,7 +919,9 @@ def measures_of(w):
             "runs_ended_by_switch": w.arch.ended_by_switch + w.steve.ended_by_switch,
             "idle_pts": round(w.idle_pts, 1), "stops": sum(1 for e in w.events if e["kind"] == "stop"),
             "cost": round(erased + 3 * len(sw) + w.idle_pts, 1),
-            "left_end": {a: round(w.left(a), 1) for a in ACCTS}}
+            "left_end": {a: round(w.left(a), 1) for a in ACCTS},
+            "under_line_min": dict(w.under_min), "lowest_gap": dict(w.lowest_gap), "dark_h": round(w.dark_min / 60, 2),
+            "fleet_under_pts": round(w.fleet_under, 1)}
 
 
 # ------------------------------------------------------------------ the foresight bound
@@ -885,6 +1004,149 @@ def _edf(w0, reg, dem, lap, theta, step, n, machines=1):
             used[lap_on] = min(100.0, used[lap_on] + lap[i])
     return {"cost": round(erased + 3 * sw + idle, 1), "erased": round(erased, 1), "switches": sw,
             "idle": round(idle, 1), "theta": theta}
+
+
+# ------------------------------------------------------------------ the Codex week, on the real gate
+OWNER_EX = [[None, 40, "hold"], [0, 0, "ramp"]]     # the owner's example; None: Saturday 11:59 PM, set per regime
+
+
+def owner_example(reset):
+    """The owner's example of 2026-11-27 as points before `reset`: 40% through Saturday 11:59 PM, a ramp to 0% at the
+    reset (his Codex reset is on Tuesday afternoon)."""
+    d = datetime.fromtimestamp(reset, AP.TZ)
+    sat = d - timedelta(days=(d.weekday() - 5) % 7)
+    sat = sat.replace(hour=23, minute=59, second=0, microsecond=0)
+    if sat.timestamp() >= reset:
+        sat -= timedelta(days=7)
+    return [[round((reset - sat.timestamp()) / 3600, 4), 40, "hold"], [0, 0, "ramp"]]
+
+
+def codex_week(reg):
+    """Codex (a meter account: no switch) over `weeks` weeks at the timed pass's 5 min, on the real gate
+    (account_plan.can_use, what codex_advice and the Codex lane ask). Stand-ins: the meter (a reading each pass,
+    whole points, the reported reset = the true reset + jitter, windows when it cannot be read, a stale reading after
+    the reset), the Codex lane's demand (jobs wait while its burn is over 0; a job is sent only on a yes), and the
+    owner's own use (a second burner on some weekdays that the plan does not control).
+    -> {violations, measures: per week and in total}."""
+    t_start = time.time()
+    cx = reg["codex"]
+    t0 = T0 + reg.get("t0_shift_s", 0)
+    plan = today_plan()
+    for path, v in (reg.get("numbers") or {}).items():
+        d = plan["numbers"]
+        keys = path.split(".")
+        for k in keys[:-1]:
+            d = d[k]
+        d[keys[-1]] = v
+    R = t0 + cx.get("reset_h", 90) * 3600
+    sc = cx.get("schedule")
+    if sc is not None:
+        sc = dict(sc, account="codex")
+        if sc.get("example"):
+            sc["points"] = owner_example(R + sc.get("drift_h", 0) * 3600)
+    reg_like = {"start": {"reset_h": {"codex": (R - t0) / 3600}}}
+    if sc is not None and not sc.get("at_h"):
+        put_sched(plan, sc, reg_like, t0)
+    left, viol, seen = float(cx.get("left", 70)), [], set()
+    fleet, owner = cx.get("fleet") or {"kind": "const", "rate": 0.8}, cx.get("owner")
+    unread, post_gap = cx.get("unread_h"), cx.get("post_reset_gap_min", 0)
+    jitter = cx.get("jitter_min", 0)
+    m = {"under_line_min": 0, "lowest_gap": None, "fleet_under_pts": 0.0, "erased": 0.0, "left_at_reset": [],
+         "dark_h": 0.0, "owner_starved_min": 0, "fleet_pts": 0.0, "owner_pts": 0.0, "line_shift_max": 0.0,
+         "resets": 0, "switches": 0}
+    old_read, last_reset = None, R - WEEK
+    t, weeks = t0, cx.get("weeks", 2)
+
+    def flag(check, detail):
+        if (check, detail.get("key")) in seen:
+            return
+        seen.add((check, detail.get("key")))
+        viol.append({"check": check, "h": round((t - t0) / 3600, 2), "detail": detail})
+    while t < t0 + weeks * WEEK:
+        h = (t - t0) / 3600
+        if sc is not None and sc.get("at_h") and h >= sc["at_h"] and "schedule" not in plan["steps"][AP.find_step(plan, "codex")]:
+            put_sched(plan, sc, reg_like, t0)
+        if R <= t:      # the true reset: what is left above the line one second before it is erased
+            env = AP.Env(R - 1, lambda x: left, lambda x: R)
+            rl = AP.rule_of(plan, "codex", env)
+            line = rl["line"] if rl else 0
+            m["erased"] += max(0.0, left - line)
+            m["left_at_reset"].append(round(left, 1))
+            m["resets"] += 1
+            left, last_reset = 100.0, R
+            R += WEEK
+        rep_reset = R + (jitter if (m["resets"] % 2 == 0) else -jitter) * 60
+        blind = unread and unread[0] <= h < unread[1]
+        stale = post_gap and last_reset <= t < last_reset + post_gap * 60 and old_read is not None
+        if blind:
+            rd = {**AP.reading(None, t), "last_left": None if old_read is None else old_read["last_left"],
+                  "why": "sweep: the meter cannot be read", "burn_h": None}
+        elif stale:
+            rd = dict(old_read)          # the reading of before the reset: its level and its reset, now passed
+        else:
+            rd = {**AP.reading(None, t), "left": float(round(left)), "ok": True, "state": "MEASURED", "reset": rep_reset,
+                  "age_min": 1.0, "last_left": float(round(left)), "why": "", "burn_h": rate_at(fleet, h)}
+            if R - t > 600:
+                old_read = rd
+        f = {"now": t, "rows": {}, "codex": rd}
+        try:
+            rc, why = AP.can_use(plan, f, "codex")
+        except Exception as e:  # noqa: BLE001  a gate that raises is a finding, by name
+            flag("CRASH", {"key": "crash", "error": "%s: %s" % (type(e).__name__, e)})
+            break
+        rl_true = AP.rule_of(plan, "codex", AP.Env(t, lambda x: left, lambda x: rep_reset))
+        line = rl_true["line"] if rl_true else 0.0
+        if sc is not None and h >= sc.get("at_h", 0):
+            want = oracle_line(sc, R + sc.get("drift_h", 0) * 3600, t)
+            if want is not None:
+                m["line_shift_max"] = max(m["line_shift_max"], round(abs(want - line), 1))
+                d = typed_off(sc, R + sc.get("drift_h", 0) * 3600, t, line, t_typed=t0, jitter_h=jitter / 60)
+                if abs(sc.get("drift_h", 0)) * 3600 < AP.SNAP_S and abs(jitter) * 60 < AP.SNAP_S and not sc.get("text") \
+                        and d is not None and d > 0.6:
+                    flag("LINE_NOT_AS_TYPED", {"key": "typed", "want": round(want, 2), "line": line,
+                                               "h_to_reset": round((R - t) / 3600, 2)})
+        gap = left - line
+        m["lowest_gap"] = round(gap, 1) if m["lowest_gap"] is None else min(m["lowest_gap"], round(gap, 1))
+        if gap < 0:
+            m["under_line_min"] += 5
+        demand = rate_at(fleet, h)
+        if rc != AP.OK:
+            if demand > 0:
+                m["dark_h"] += PASS_S / 3600
+            if not rd["ok"] and rc == AP.OK:
+                pass
+        elif not rd["ok"]:
+            flag("FREE_TO_BURN", {"key": "blind", "why": why})     # a yes on a level that is not read
+        hi = plan["steps"][AP.find_step(plan, "codex")]["leave"]
+        if rc == AP.OK and rl_true and "COULD NOT LOOK" in str(rl_true.get("note")) and left <= hi:
+            flag("FREE_TO_BURN", {"key": "unreadable", "left": round(left, 1), "line": line, "why": why})
+        burn_f = demand * PASS_S / 3600 if rc == AP.OK else 0.0
+        if burn_f and left <= line - 1.5:     # whole points and one pass of burn: the gate's own grain
+            flag("FLEET_UNDER", {"key": "under", "left": round(left, 1), "line": line, "why": why})
+        if burn_f and left <= line:
+            m["fleet_under_pts"] += burn_f
+        burn_o = 0.0
+        if owner:
+            d = datetime.fromtimestamp(t, AP.TZ)
+            if d.weekday() in owner["days"] and owner["from_h"] <= d.hour < owner["to_h"]:
+                burn_o = owner["rate"] * PASS_S / 3600
+                if left <= 0.05:
+                    m["owner_starved_min"] += 5
+        take = min(left, burn_f + burn_o)
+        if burn_f + burn_o > 0:
+            m["fleet_pts"] += take * burn_f / (burn_f + burn_o)
+            m["owner_pts"] += take * burn_o / (burn_f + burn_o)
+        left -= take
+        t += PASS_S
+    wk = max(1e-9, weeks)
+    for k in ("erased", "dark_h", "fleet_pts", "owner_pts", "fleet_under_pts"):
+        m[k + "_per_week"] = round(m[k] / wk, 1)
+        m[k] = round(m[k], 1)
+    m["under_line_h_per_week"] = round(m["under_line_min"] / 60 / wk, 1)
+    m["owner_starved_h_per_week"] = round(m["owner_starved_min"] / 60 / wk, 1)
+    m["cost"] = round(m["erased"] + m["dark_h"], 1)
+    return {"violations": viol, "measures": m, "bound": {"cost": m["cost"]}, "costly_by": 0, "passes": int(weeks * 2016),
+            "seconds": round(time.time() - t_start, 2)}
 
 
 # ------------------------------------------------------------------ the grid
@@ -1082,17 +1344,236 @@ def realize(spec, seed, hours=None):
         reg["switcher"] = {"kind": "hour", "fail_h": [h, h + 1]}
     elif sw:
         reg["switcher"] = sw
+    if spec.get("t0_shift_s"):
+        reg["t0_shift_s"] = spec["t0_shift_s"]
+    if spec.get("sched"):
+        realize_schedules(spec, reg, rng, u)
+    if spec.get("codex"):
+        realize_codex(spec, reg, rng, u)
     return reg
 
 
+def drift_of(spec, rng, u):
+    d = spec.get("drift_h")
+    return 0.0 if not d else round(rng.choice((-1, 1)) * u(*d), 3)
+
+
+def realize_schedules(spec, reg, rng, u):
+    """Line schedules on the Claude accounts of a regime, as points before each account's reset (sched_text renders
+    them in the owner's words). Kinds: rising (the live account's line ramps up past its level), falling (another
+    account's high line ramps down: it can take over in the middle of the week), cross (both), live_more (the live
+    account's line ramps down, the next one flat), beside_window (a schedule on system beside steven's 48 h step)."""
+    st = reg["start"]
+    live, kind = st["live"], spec["sched"]
+    others = [a for a in ACCTS if a != live]
+    out = []
+
+    def hb_now(a):
+        r = st["reset_h"][a]
+        return r if r > 0 else r + 168
+    if kind in ("rising", "cross"):
+        a, r = live, hb_now(live)
+        st["left"][a] = u(20, 70)
+        x = u(1, min(12, r - 4)) if r > 6 else 0.5
+        hb1 = round(r - x, 2)
+        hb2 = round(max(0.2, hb1 - u(2, 12)), 2)
+        out.append({"account": a, "points": [[hb1, rng.choice((1, 3, 5)), "hold"],
+                                             [hb2, min(95, round(st["left"][a] + u(5, 30))), "ramp"]]})
+    if kind in ("falling", "cross"):
+        b = rng.choice(others)
+        r = hb_now(b)
+        st["left"][b] = u(30, 80)
+        hb1 = round(r - u(0.5, min(6, r - 2)), 2) if r > 3 else r
+        hb2 = round(max(0.2, hb1 - u(6, 30)), 2)
+        out.append({"account": b, "points": [[hb1, min(95, round(st["left"][b] + u(5, 15))), "hold"],
+                                             [hb2, 5, "ramp"]]})
+    if kind == "live_more":
+        a, r = live, hb_now(live)
+        st["left"][a] = u(25, 60)
+        hb1 = round(r - u(1, min(24, r - 2)), 2) if r > 3 else r
+        out.append({"account": a, "points": [[hb1, 30, "hold"], [round(max(0.2, hb1 - u(6, 48)), 2), 5, "ramp"]]})
+    if kind == "beside_window":
+        r = hb_now("system")
+        hb1 = round(r - u(1, min(24, r - 2)), 2) if r > 3 else r
+        out.append({"account": "system", "points": [[hb1, 40, "hold"], [round(max(0.2, hb1 - u(6, 48)), 2), 1, "ramp"]]})
+    for sc in out:
+        sc["drift_h"] = drift_of(spec, rng, u)
+        if spec.get("at_h"):
+            sc["at_h"] = u(*spec["at_h"])
+    reg["schedules"] = out
+    if spec.get("unread_near_point") and out:
+        sc = out[0]
+        h = st["reset_h"][sc["account"]] - sc["points"][-1][0]
+        h = h if h > 0 else h + 168
+        reg["meter"] = {"every_min": 5, "unread": {"account": rng.choice((sc["account"], "all")), "from_h": max(0, h - u(0.5, 3)),
+                                                   "to_h": h + u(0.5, 3)}}
+    if spec.get("laptop_on_sched") and out:
+        reg["laptop"] = {"rate": u(1, 4), "from_h": u(0, 24), "to_h": 1e9, "account": out[0]["account"]}
+
+
+def realize_codex(spec, reg, rng, u):
+    """A Codex week: its start, its reset, the Codex lane's burn, the owner's own use, the meter, and the plan (today's
+    flat 25%, the owner's example, or a schedule of the region)."""
+    c = spec["codex"]
+    x = {"weeks": c.get("weeks", 2), "reset_h": u(*c.get("reset_h", (1, 168))), "left": u(*c.get("left", (20, 100)))}
+    fl = c.get("fleet", ("const", 0.2, 1.5))
+    if fl[0] == "const":
+        x["fleet"] = {"kind": "const", "rate": u(fl[1], fl[2])}
+    elif fl[0] == "before_ramp":     # a burst in the 12 h before the ramp of the owner's example, each week
+        start = x["reset_h"] - 61.5 - 12
+        x["fleet"] = {"kind": "pulse", "base": u(0.1, 0.5), "peak": u(3, 8), "from_h": start % 168,
+                      "to_h": start % 168 + 12, "period_h": 168}
+    elif fl[0] == "burst":
+        x["fleet"] = {"kind": "burst", "base": u(0.1, 0.5), "peak": u(2, 6), "on_h": u(1, 4), "period_h": u(8, 24),
+                      "phase_h": u(0, 8)}
+    if c.get("jitter_min"):
+        x["jitter_min"] = round(u(*c["jitter_min"]), 2)
+    if c.get("owner"):
+        lo, hi = c["owner"]
+        x["owner"] = {"days": [2, 3, 4, 5], "from_h": 9, "to_h": 23, "rate": u(lo, hi)}
+    sk = c.get("schedule", "example")
+    if sk == "example":
+        x["schedule"] = {"example": True}
+    elif sk == "unreadable":
+        x["schedule"] = {"text": "Sat 23:59=40 hold; Tue 25:99=0 ramp", "points": [[61.5, 40, "hold"], [0, 0, "ramp"]]}
+    elif sk == "at_reset":       # a point at the very minute of the reset, and one in the middle
+        x["schedule"] = {"points": [[u(60, 120), rng.choice((30, 40, 50)), "hold"], [0, 0, "ramp"]]}
+    elif sk == "steps":          # three held steps down to the reset
+        a = u(100, 150)
+        x["schedule"] = {"points": [[a, 50, "hold"], [round(a / 2, 2), 30, "hold"], [round(a / 4, 2), 10, "hold"],
+                                    [0, 0, "hold"]]}
+    if "schedule" in x:
+        x["schedule"]["drift_h"] = drift_of(c, rng, u)
+        if c.get("at_h"):
+            x["schedule"]["at_h"] = u(*c["at_h"])
+    if c.get("unread") == "near_point":
+        h = (x["reset_h"] - 61.5) % 168
+        x["unread_h"] = [max(0, h - u(0.5, 4)), h + u(0.5, 4)]
+    elif c.get("unread") == "near_reset":
+        h = x["reset_h"] % 168
+        x["unread_h"] = [max(0, h - u(0.5, 4)), h + u(0.5, 4)]
+    if c.get("post_reset"):
+        x["post_reset_gap_min"] = rng.randint(*c["post_reset"])
+    reg["codex"] = x
+
+
+DST_MAR = AP.stamp("2027-03-11T18:00:00-08:00") - T0     # the week holds 2027-03-14 2:00 AM (clocks go forward)
+DST_NOV = AP.stamp("2026-10-29T18:00:00-07:00") - T0     # the week holds 2026-11-01 2:00 AM (clocks go back)
+
+
+def schedule_regions():
+    """Line schedules on the Claude accounts, run through the real pass: each kind with each run state, the reset
+    drifting from the schedule's, the meter unread near a point and after a reset, a schedule set mid-week, the two
+    daylight-saving weeks, the owner's laptop on the scheduled account, a burst before a ramp."""
+    R = []
+    for kind, label in (("rising", "the live account's line ramps up past its level"),
+                        ("falling", "another account's high line falls: it can take over mid-week"),
+                        ("cross", "two schedules that cross"),
+                        ("live_more", "the live account's line falls, the next account flat"),
+                        ("beside_window", "a schedule on system beside steven's 48 h step")):
+        for rl, runs in (("no run", {"mode": "none"}), ("4 runs, save in 1-30 min",
+                                                         {"mode": "always", "n": 4, "save_min": (1, 30)}),
+                         ("a run that never ends", {"mode": "never_ends", "n": 3, "save_min": (5, 30)})):
+            R.append(("schedule: %s | %s" % (label, rl), {"sched": kind, "runs": runs, "hours": 96}))
+    for d, label in (((0.02, 1), "1 min to 1 h"), ((1, 6), "1 to 6 h"), ((24, 72), "1 to 3 days")):
+        R.append(("schedule: the reset is %s from the one the schedule was typed for" % label,
+                  {"sched": "cross", "drift_h": d, "hours": 120}))
+    R.append(("schedule: the meter cannot be read near a point", {"sched": "rising", "unread_near_point": True, "hours": 96}))
+    R.append(("schedule: RESET PASSED with no level for 5-60 min, beside a falling line",
+              {"sched": "falling", "meter": ("post_reset", 5, 60), "hours": 96}))
+    R.append(("schedule: set in the middle of the week", {"sched": "cross", "at_h": (6, 48), "hours": 96}))
+    R.append(("schedule: the week of the daylight-saving change in March", {"sched": "cross", "t0_shift_s": DST_MAR,
+                                                                            "hours": 120}))
+    R.append(("schedule: the week of the daylight-saving change in November", {"sched": "cross", "t0_shift_s": DST_NOV,
+                                                                               "hours": 120}))
+    R.append(("schedule: the owner's laptop burns the scheduled account (personal use)",
+              {"sched": "rising", "laptop_on_sched": True, "hours": 96}))
+    R.append(("schedule: a burst before a ramp", {"sched": "rising", "burn": ("burst",), "hours": 96}))
+    return R
+
+
+FLEETS = (("slow (0.05-0.3/h: never reaches the line)", ("const", 0.05, 0.3)),
+          ("medium (0.5-1.2/h, today's 0.8)", ("const", 0.5, 1.2)),
+          ("fast (2.5-5/h: at the line on the first day)", ("const", 2.5, 5)),
+          ("a burst of 3-8/h in the 12 h before the ramp", ("before_ramp",)))
+
+
+CODEX_T0 = AP.stamp("2026-11-24T13:40:00-08:00")      # 4 min after a Codex reset (the meter's: Tuesday 1:36 PM)
+CODEX_WEEK_H = (AP.stamp("2026-12-01T13:36:00-08:00") - CODEX_T0) / 3600
+
+
+def codex_regions():
+    """Codex on the real gate: the owner's example and today's flat 25% over the burn regimes, with and without his own
+    use; then the corner cases of the example (the reset moving, the meter, the clock edges, a hand edit)."""
+    R = []
+    for fl, f in FLEETS:
+        for ol, o in (("no personal use", None), ("his use Wed-Sat 9 AM-11 PM at 0.3-0.7/h", (0.3, 0.7))):
+            for pl, sk in (("today's flat 25%", "flat"), ("the owner's example", "example")):
+                # the real Codex week: from the reset of Tuesday 1:36 PM (2026-11-24), full, three weeks
+                c = {"weeks": 3, "reset_h": (CODEX_WEEK_H, CODEX_WEEK_H), "left": (100, 100), "fleet": f, "schedule": sk}
+                if o:
+                    c["owner"] = o
+                R.append(("codex: %s | %s | %s" % (pl, fl, ol), {"codex": c, "t0_shift_s": CODEX_T0 - T0}))
+    ex = {"weeks": 2, "fleet": ("const", 0.5, 2), "schedule": "example", "reset_h": (CODEX_WEEK_H, CODEX_WEEK_H),
+          "left": (100, 100)}
+    for label, more in (("the meter's reset jitters by 1-60 min", {"jitter_min": (1, 60)}),
+                        ("the reset is 1-6 h from the one the schedule was typed for", {"drift_h": (1, 6)}),
+                        ("the reset is 1-3 days from the one the schedule was typed for", {"drift_h": (24, 72)}),
+                        ("the meter cannot be read near the point of Saturday", {"unread": "near_point"}),
+                        ("the meter cannot be read near the reset", {"unread": "near_reset"}),
+                        ("a reading from before the reset for 5-60 min", {"post_reset": (5, 60)}),
+                        ("the schedule set in the middle of the week", {"at_h": (6, 100)}),
+                        ("a point at the reset's minute", {"schedule": "at_reset"}),
+                        ("three held steps down to the reset", {"schedule": "steps"}),
+                        ("a schedule that a hand edit broke", {"schedule": "unreadable"}),
+                        ("his use Wed-Sat at 1-3/h (more than the reserve)", {"owner": (1, 3)})):
+        R.append(("codex: the owner's example | %s" % label, {"codex": dict(ex, **more), "t0_shift_s": CODEX_T0 - T0}))
+    for label, shift in (("March", DST_MAR), ("November", DST_NOV)):
+        x = dict(ex)
+        x.pop("reset_h")
+        x.pop("left")
+        R.append(("codex: the owner's example | the week of the daylight-saving change in %s" % label,
+                  {"codex": x, "t0_shift_s": shift}))
+    return R
+
+
+def compare_table(results):
+    """The owner's example against today's flat 25%, over the burn regimes: each measure, side by side (the mean over
+    the regimes of each region, per week)."""
+    by = {r["name"]: r for r in results}
+    cols = (("reserve: h/week under the line", "under_line_h_per_week"), ("lowest gap", "lowest_gap"),
+            ("erased at the reset, pts/week", "erased_per_week"), ("dark h/week", "dark_h_per_week"),
+            ("owner starved h/week", "owner_starved_h_per_week"), ("fleet pts/week", "fleet_pts_per_week"),
+            ("owner pts/week", "owner_pts_per_week"))
+    out = ["| burn regime | his own use | plan | " + " | ".join(c for c, _k in cols) + " |",
+           "|---|---|---|" + "---|" * len(cols)]
+    for fl, _f in FLEETS:
+        for ol in ("no personal use", "his use Wed-Sat 9 AM-11 PM at 0.3-0.7/h"):
+            for pl in ("today's flat 25%", "the owner's example"):
+                r = by.get("codex: %s | %s | %s" % (pl, fl, ol))
+                if not r:
+                    continue
+                ms = r.get("all_measures") or []
+                vals = []
+                for _c, k in cols:
+                    xs = [m[k] for m in ms if m.get(k) is not None]
+                    vals.append("UNMEASURED" if not xs else g(min(xs)) if k == "lowest_gap" else g(sum(xs) / len(xs)))
+                out.append("| %s | %s | %s | %s |" % (fl, ol, pl, " | ".join(vals)))
+    return out
+
+
 def regime_line(reg):
+    if "codex" in reg:
+        return "codex %s%s" % (json.dumps(reg["codex"], sort_keys=True), "; t0 shift %s s" % reg["t0_shift_s"]
+                               if reg.get("t0_shift_s") else "")
     s = reg["start"]
     return ("live %s; left %s; resets in %s h; burn %s; runs %s; SteveDesktop %s%s%s%s%s" % (
         s["live"], {a: s["left"][a] for a in ACCTS}, {a: s["reset_h"][a] for a in ACCTS}, reg["burn"], reg["runs"],
         reg.get("steve"), "; laptop %s" % reg["laptop"] if reg.get("laptop") else "",
         "; meter %s" % reg["meter"] if reg.get("meter") != {"every_min": 5} else "",
         "; plan %s" % reg["plan"] if reg.get("plan") else "", "; switcher %s" % reg["switcher"] if reg.get("switcher")
-        else ""))
+        else "")) + ("; schedules %s" % json.dumps(reg["schedules"]) if reg.get("schedules") else "") + (
+        "; t0 shift %s s" % reg["t0_shift_s"] if reg.get("t0_shift_s") else "")
 
 
 def report(results, title):
@@ -1103,6 +1584,9 @@ def report(results, title):
             out.append("  - %s in %d regime(s); smallest: seed %d, at hour %s: %s" % (
                 c, v["count"], v["seed"], v["h_first"], fulltext.fit(json.dumps(v["detail"], sort_keys=True), 400)))
             out.append("    - regime: `%s`" % regime_line(v["regime"]))
+        ms = r.get("all_measures") or []
+        if any("under_line_min" in m for m in ms):
+            out.append("  - measures (each regime): " + "; ".join(measure_line(m) for m in ms))
         if r["verdict"] == "COSTLY":
             c = max(r["costly"], key=lambda x: x["by"])
             out.append("  - COSTLY in %d of %d: worst seed %d, %s points over the bound (plan: %s erased, %s switches, "
@@ -1114,6 +1598,18 @@ def report(results, title):
     return out
 
 
+def measure_line(m):
+    """The measures of the line schedule page, in one line."""
+    if "under_line_h_per_week" in m:        # a Codex week
+        return ("under the line %s h/wk, lowest gap %s, erased %s/wk, dark %s h/wk, owner starved %s h/wk, line off "
+                "the typed one by up to %s" % (m["under_line_h_per_week"], m["lowest_gap"], m["erased_per_week"],
+                                              m["dark_h_per_week"], m["owner_starved_h_per_week"], m["line_shift_max"]))
+    under = {a: v for a, v in (m.get("under_line_min") or {}).items() if v}
+    return "under its line %s min, lowest gap %s, erased %s, dark %s h, %s switches (%s runs ended), fleet under %s" % (
+        under or 0, {a: v for a, v in (m.get("lowest_gap") or {}).items() if v is not None and v < 5} or "none under 5",
+        m.get("erased_total"), m.get("dark_h"), m.get("switches"), m.get("runs_ended_by_switch"), m.get("fleet_under_pts"))
+
+
 QUICK = [("quick: tonight, burn 4-12, slow save, SteveDesktop with runs",
           {"burn": ("const", 4, 12), "runs": {"mode": "always", "n": 3, "save_min": (30, 120)},
            "steve": {"account": "same", "runs": {"mode": "always", "n": 2, "save_min": (5, 60)},
@@ -1121,35 +1617,51 @@ QUICK = [("quick: tonight, burn 4-12, slow save, SteveDesktop with runs",
            "left_steven": (53, 58), "left_system": (40, 95), "left_lukas": (2, 40), "hours": 12}),
          ("quick: the live account's reset passes with no level read for 20-60 min",
           {"meter": ("post_reset", 20, 60), "live_resets": True, "reset_in": (2, 8), "hours": 12}),
-         ("quick: SteveDesktop on an account that no step uses", {"steve": ("no_step",), "hours": 12})]
+         ("quick: SteveDesktop on an account that no step uses", {"steve": ("no_step",), "hours": 12}),
+         ("quick: a line schedule rises past the live account's level", {"sched": "rising", "hours": 12,
+                                                                          "runs": {"mode": "always", "n": 3, "save_min": (1, 30)}}),
+         ("quick: Codex on the owner's example, with his own use", {"codex": {"weeks": 1, "fleet": ("const", 0.5, 3),
+                                                                              "schedule": "example", "owner": (1, 3)}}),
+         ("quick: Codex with a line schedule that a hand edit broke", {"codex": {"weeks": 1, "fleet": ("const", 0.5, 3),
+                                                                                  "schedule": "unreadable"}})]
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("what", choices=("tonight", "grid", "quick", "one"))
+    ap.add_argument("what", choices=("tonight", "grid", "quick", "one", "schedules", "codex"))
     ap.add_argument("regime", nargs="?")
     ap.add_argument("--seeds", type=int, default=4, help="regimes drawn inside each region")
     ap.add_argument("--hours", type=float, default=None)
     ap.add_argument("--map", default=None, help="write the report here")
     ap.add_argument("--json", default=None, help="write every result here")
     ap.add_argument("--trace", default=None, help="one: write one line for each pass here")
+    ap.add_argument("--only", default=None, help="quick: only the regions whose name holds this text")
     a = ap.parse_args(argv)
     t = time.time()
     try:
         if a.what == "one":
             tr = [] if a.trace else None
-            r = run_regime(json.loads(a.regime), hours=a.hours, trace=tr)
+            reg1 = json.loads(a.regime)
+            r = codex_week(reg1) if "codex" in reg1 else run_regime(reg1, hours=a.hours, trace=tr)
             if tr is not None:
                 Path(a.trace).write_text("\n".join(tr) + "\n")
             print(json.dumps(r, indent=1, sort_keys=True, default=str))
             return 1 if r["violations"] else 0
         if a.what == "quick":
-            res = run_regions(QUICK, [1, 2])
+            res = run_regions([q for q in QUICK if not a.only or a.only in q[0]], [1, 2])
         elif a.what == "tonight":
             res = run_regions(tonight_regions(), range(1, a.seeds + 1), a.hours)
+        elif a.what == "schedules":
+            res = run_regions(schedule_regions(), range(1, a.seeds + 1), a.hours)
+        elif a.what == "codex":
+            res = run_regions(codex_regions(), range(1, a.seeds + 1), a.hours)
         else:
-            res = run_regions(tonight_regions() + axis_regions(), range(1, a.seeds + 1), a.hours)
+            res = run_regions(tonight_regions() + axis_regions() + schedule_regions() + codex_regions(),
+                              range(1, a.seeds + 1), a.hours)
         text = "\n".join(report(res, a.what)) + "\n"
+        if a.what in ("codex", "grid"):
+            text += "\n## The owner's example against today's flat 25%% (Codex, the mean per week over %d regimes each)\n\n" % (
+                a.seeds) + "\n".join(compare_table(res)) + "\n"
         cnt = {k: sum(1 for r in res if r["verdict"] == k) for k in ("OK", "VIOLATES", "COSTLY")}
         text += "\n%s: %d regions, %d regimes, %.0f s: %d OK, %d VIOLATES, %d COSTLY\n" % (
             a.what, len(res), sum(r["n"] for r in res), time.time() - t, cnt["OK"], cnt["VIOLATES"], cnt["COSTLY"])

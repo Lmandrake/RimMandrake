@@ -27,6 +27,8 @@ The stand-ins replace only what touches the world:
 | the second consumer | the owner's laptop | a burn on one fixed account that the plan does not move |
 | the disk | `os.fsync` | a no-op: the scratch folder need not reach the disk |
 | the phone and the ledger | `notify_stop`, `flush_ledger` | no-ops |
+| Codex's meter and the Codex lane (`codex_week`) | `account_usage.read_codex_points`, `codex_lane` | a reading each pass in whole points, its reset the true one plus a jitter; windows in which it cannot be read; a reading of before the reset for some minutes after it. The lane sends a job only on the real gate's yes (`account_plan.can_use`), while its burn is over 0. |
+| the owner's own use | his Codex, his laptop | a burn on some weekdays and hours that the plan does not control |
 
 The burn of a machine lands on its live account: the whole demand with no run model (`none`: its windows burn), else
 the demand times the share of its `n` runs that are live. A stopped fleet burns nothing. Demand that does not land is
@@ -47,8 +49,8 @@ the demand times the share of its `n` runs that are live. A stopped fleet burns 
   how long it takes, or that a window opens again after it.
 - **a-real-run.** The stand-in run ends when its save time is up. The sweep does not show that a real run saves and
   ends when it is told, or that a run tells the truth about being done.
-- **the-real-meter.** The stand-in reads whole points with no error and no jitter in the reset time. The sweep does not
-  show the Anthropic meter's own lags or wrong readings.
+- **the-real-meter.** The stand-in reads whole points with no error. The reset of a Claude account has no jitter; Codex's
+  has the jitter of its region. The sweep does not show the Anthropic meter's own lags or wrong readings.
 - **two-plan-files.** One machine decides. A second deciding machine is not modelled.
 - **the-live-plan-file.** The live plan file is on Archmagi. This run built today's plan from the first plan of the
   seed (`today_plan`); `ssh archmagi` from SteveDesktop failed (host key) on 2026-11-25.
@@ -69,6 +71,11 @@ the demand times the share of its `n` runs that are live. A stopped fleet burns 
 - **the_sweep_finds_the_fault_of_d469f03d9d.** With `machine_switch` back to "only at its line" in a copy of the code,
   the sweep reports STUCK on SteveDesktop in the region "SteveDesktop on an account that no step uses".
 - **the_quick_part_is_green_on_this_code.** `./acct sweep quick` reports no VIOLATES on the published code.
+- **the_sweep_finds_a_schedule_read_as_flat.** With `line_of_step` giving a schedule's highest percent in place of its
+  line, in a copy of the code, the sweep reports LINE_NOT_AS_TYPED in the quick region of Codex on the owner's example.
+- **the_sweep_finds_a_ramp_read_as_a_hold.** With a ramp read as a hold in a copy of the code, LINE_NOT_AS_TYPED there.
+- **the_sweep_finds_an_unreadable_schedule_free_to_burn.** With an unreadable schedule read as 0 in a copy of the code,
+  FREE_TO_BURN in the quick region of a schedule that a hand edit broke.
 
 ## THE WANTED BEHAVIOUR (checked on every pass)
 
@@ -84,6 +91,9 @@ the demand times the share of its `n` runs that are live. A stopped fleet burns 
 | SWITCH_ABOVE_LINE | a machine above its line is switched only in the stated cases: a rescue, a step that ended, an account that no step uses now, a request | the decision's reason line at the switch |
 | OVERSHOOT | the live account goes under its line by no more than the burn of the save time | the true level against the line, while another account can take over; bound 1.5 points plus the burn of `save_min` + 15 min |
 | CRASH | the pass never raises | any exception out of the pass |
+| LINE_NOT_AS_TYPED | the line of a schedule is the line that the owner typed, within 0.6 points, while the reset is within `SNAP_S` of the one it was typed for | `oracle_line`: the regime's points as hours before the typed reset, computed apart from the plan's code; not within `SNAP_S` of either end of the week (the meter's and the true reset disagree there and both answers are right); in a daylight-saving week, or with Codex's jitter, the typed line up to an hour (or the jitter) away counts |
+| FREE_TO_BURN | Codex is never a yes on a level that is not read, nor under the highest percent of a schedule that cannot be read | the real gate's answer against the reading and the line's note (`codex_week`) |
+| FLEET_UNDER | the Codex lane sends nothing while the true level is 1.5 points under the line | the gate's grain: whole points and one pass of burn (`codex_week`) |
 
 The checks that come from the plan's PROMISES: `live_account_stays_until_its_own_line` and
 `the_account_burns_to_its_line` (SWITCH_ABOVE_LINE), `an_account_left_at_its_line_is_no_target` (SWITCH_TO_SPENT),
@@ -93,7 +103,9 @@ The checks that come from the plan's PROMISES: `live_account_stays_until_its_own
 
 ## THE MEASURES (each regime)
 
-The points above a line that each reset erases (the line of the step in force one second before the reset), the
+The measures of a line schedule (reserve kept, the fleet under the line, dark hours, and for Codex the owner's empty
+hours) are defined on `design/specs/2026-11-27-account-line-schedule/boundary.md`. Besides them: the points above a
+line that each reset erases (the line of the step in force one second before the reset), the
 switches (each counts 3 points), the minutes in which new runs were refused (Archmagi and SteveDesktop apart), the runs
 that a switch ended, the stops, the idle points, and the largest overshoot under a line (`overshoot_max`). Cost = erased + 3 x switches + idle, the plan's own cost
 (`idle_weight` 1).
@@ -118,7 +130,7 @@ drain, the meter's lag and the save time, so a gap under COSTLY_PTS is noise.
   and the save time, worth up to `rescue.drain_h` x the burn; 10 points is more than three switches.
 - The regime length (`hours`, 30 h tonight, 96 h elsewhere, 12 h in the quick part). Not a limit: the sample. Danger of
   a short one: a reset that falls outside it is never seen. The grid draws the resets over the whole week.
-- The quick part's size (3 regions, 2 seeds, 12 h): a few seconds a regime, so that `./publish` stays fast. Danger
+- The quick part's size (6 regions, 2 seeds, 12 h or one Codex week): a few seconds a regime, so that `./publish` stays fast. Danger
   that it guards: a publish that waits minutes for a check that seldom changes. The full sweep is a command.
 
 Later lists beside this page: `polish.md`.
