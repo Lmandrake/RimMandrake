@@ -1,0 +1,342 @@
+{
+ "script": "pit_floor_ladder_live.py",
+ "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+ "stamp": "20261128T002117",
+ "started": "2026-11-28T00:21:17",
+ "origin": [
+  62,
+  84
+ ],
+ "ladder": [
+  4,
+  6,
+  8,
+  16,
+  32
+ ],
+ "planted_flat": false,
+ "verdicts": {
+  "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_off": {
+   "verdict": "PASS",
+   "darker": {
+    "4->8": 0.204,
+    "8->16": 0.302,
+    "16->32": 0.415
+   }
+  },
+  "FLOOR_LADDER_DRAWS_THE_LAW_relief_off": {
+   "verdict": "PASS",
+   "drawn_vs_law": {
+    "4": [
+     1.0,
+     1.0
+    ],
+    "6": [
+     0.919,
+     0.871
+    ],
+    "8": [
+     0.796,
+     0.78
+    ],
+    "16": [
+     0.556,
+     0.56
+    ],
+    "32": [
+     0.325,
+     0.34
+    ]
+   }
+  },
+  "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on": {
+   "verdict": "PASS",
+   "darker": {
+    "4->8": 0.179,
+    "8->16": 0.255,
+    "16->32": 0.326
+   }
+  },
+  "FLOOR_LADDER_DRAWS_THE_LAW_relief_on": {
+   "verdict": "PASS",
+   "drawn_vs_law": {
+    "4": [
+     1.0,
+     1.0
+    ],
+    "6": [
+     0.943,
+     0.884
+    ],
+    "8": [
+     0.821,
+     0.807
+    ],
+    "16": [
+     0.612,
+     0.647
+    ],
+    "32": [
+     0.413,
+     0.533
+    ]
+   }
+  },
+  "FLOOR_DEEPEST_KEEPS_GRAIN_relief_on": {
+   "verdict": "PASS",
+   "std_16m_on": 3.3,
+   "std_16m_off_known_bad": 1.86,
+   "bar": 2.0
+  }
+ },
+ "rows": [
+  {
+   "id": "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_off",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"darker\": {\"4->8\": 0.204, \"8->16\": 0.302, \"16->32\": 0.415}}"
+  },
+  {
+   "id": "FLOOR_LADDER_DRAWS_THE_LAW_relief_off",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"drawn_vs_law\": {\"4\": [1.0, 1.0], \"6\": [0.919, 0.871], \"8\": [0.796, 0.78], \"16\": [0.556, 0.56], \"32\": [0.325, 0.34]}}"
+  },
+  {
+   "id": "FLOOR_LADDER_EACH_DOUBLING_DARKER_relief_on",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"darker\": {\"4->8\": 0.179, \"8->16\": 0.255, \"16->32\": 0.326}}"
+  },
+  {
+   "id": "FLOOR_LADDER_DRAWS_THE_LAW_relief_on",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"drawn_vs_law\": {\"4\": [1.0, 1.0], \"6\": [0.943, 0.884], \"8\": [0.821, 0.807], \"16\": [0.612, 0.647], \"32\": [0.413, 0.533]}}"
+  },
+  {
+   "id": "FLOOR_DEEPEST_KEEPS_GRAIN_relief_on",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_FIX_PIT_FLOOR_TINT_PAST_TWO_M_DRAWS_ONE_COLOUR",
+   "detail": "{\"std_16m_on\": 3.3, \"std_16m_off_known_bad\": 1.86, \"bar\": 2.0}"
+  }
+ ],
+ "site": [],
+ "harness": [],
+ "captures": "D:\\ClaudeWork\\scratch\\darken_pit\\ladder",
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "8e8d0369bac19caf16c48af307bfca27afa78d4120f4fbd7f59eb6f170e8bdc5",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/pit_floor_ladder_live.py",
+  "runtime": "4c8fee39cdb3a3fa0c3fb43154827ad76ccc5350b974f0a935a4482a060e63fd",
+  "test": "5354cc97a5c58c8c77422ae7167de72c1ab4b285ce5a8e241f85c94eba72807e",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/pit_floor_ladder_live.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/deploy_index.py",
+   "Utils/deploy_listing.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/game_watcher.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/launch_behind.py",
+   "Utils/list_journal.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/biome_site.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/quiet_site.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/save_uncompress.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/settings_keep.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/test_site_saves.json",
+   "Utils/modcheck/test_site_saves.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/nightly_scope.py",
+   "Utils/northstar_driver/__init__.py",
+   "Utils/northstar_driver/session.py",
+   "Utils/northstar_driver/transport.py",
+   "Utils/pipeline_tests.json",
+   "Utils/progress_guard.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/tickburst_step.py",
+   "Utils/time_budget.py",
+   "Utils/tps_record.py",
+   "Utils/waitalive.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "adaptive.storage.framework",
+   "brrainz.rimbridgeserver",
+   "lwm.deepstorage",
+   "neronix17.toolbox",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ebsg.framework",
+   "neronix17.outerrim.core",
+   "ray1203.simplecamerasetting",
+   "void.charactereditor",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.explosiveknockback",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rsw.armoury",
+   "mandrake.rsw.swbestiary"
+  ],
+  "assembly_sha256": "57faee7935f300bfeeb4f75d73406fb6a5d72ca16c1a6335b62045f7d5b475a9"
+ },
+ "dug": [
+  4,
+  6,
+  8,
+  16,
+  32
+ ],
+ "light": {
+  "hour": 14.0,
+  "skyGlow": 1.0,
+  "groundGlow": 1.0,
+  "roofed": false
+ },
+ "drawn_rgb": {
+  "off": {
+   "4": [
+    36.0,
+    27.5,
+    20.8
+   ],
+   "6": [
+    32.8,
+    25.3,
+    19.4
+   ],
+   "8": [
+    28.8,
+    21.8,
+    16.5
+   ],
+   "16": [
+    19.9,
+    15.2,
+    11.8
+   ],
+   "32": [
+    11.9,
+    8.7,
+    6.8
+   ]
+  },
+  "on": {
+   "4": [
+    59.8,
+    46.1,
+    34.7
+   ],
+   "6": [
+    55.4,
+    43.5,
+    33.5
+   ],
+   "8": [
+    49.2,
+    37.6,
+    28.6
+   ],
+   "16": [
+    36.5,
+    28.0,
+    21.5
+   ],
+   "32": [
+    24.9,
+    18.7,
+    14.3
+   ]
+  }
+ },
+ "grain_std": {
+  "off": {
+   "4": 5.24,
+   "6": 2.86,
+   "8": 1.97,
+   "16": 2.12,
+   "32": 1.86
+  },
+  "on": {
+   "4": 8.6,
+   "6": 4.84,
+   "8": 3.39,
+   "16": 4.91,
+   "32": 3.3
+  }
+ }
+}

@@ -1,0 +1,472 @@
+{
+ "script": "pit_floor_ground_live.py",
+ "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+ "stamp": "20261128T001952",
+ "started": "2026-11-28T00:19:52",
+ "origin": [
+  62,
+  62
+ ],
+ "grounds": [
+  "Soil",
+  "SoilRich",
+  "Sand",
+  "Gravel",
+  "MarshyTerrain",
+  "Mud",
+  "Slate_Rough",
+  "Granite_Rough",
+  "Marble_Rough"
+ ],
+ "depths": [
+  1,
+  4
+ ],
+ "verdicts": {
+  "FLOOR_DARKER_THAN_ITS_GROUND_Soil": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.862,
+    "2 m": 0.602
+   },
+   "floor_ground_grey": {
+    "1": [
+     65.8,
+     76.3
+    ],
+    "4": [
+     46.8,
+     77.7
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_SoilRich": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.83,
+    "2 m": 0.636
+   },
+   "floor_ground_grey": {
+    "1": [
+     49.8,
+     60.0
+    ],
+    "4": [
+     37.9,
+     59.6
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_Sand": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.856,
+    "2 m": 0.63
+   },
+   "floor_ground_grey": {
+    "1": [
+     92.5,
+     108.0
+    ],
+    "4": [
+     68.7,
+     109.0
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_Gravel": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.815,
+    "2 m": 0.61
+   },
+   "floor_ground_grey": {
+    "1": [
+     60.2,
+     73.9
+    ],
+    "4": [
+     45.3,
+     74.3
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_MarshyTerrain": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.828,
+    "2 m": 0.623
+   },
+   "floor_ground_grey": {
+    "1": [
+     53.0,
+     64.0
+    ],
+    "4": [
+     42.5,
+     68.2
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_Mud": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.879,
+    "2 m": 0.615
+   },
+   "floor_ground_grey": {
+    "1": [
+     48.5,
+     55.2
+    ],
+    "4": [
+     36.0,
+     58.5
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_Slate_Rough": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.804,
+    "2 m": 0.642
+   },
+   "floor_ground_grey": {
+    "1": [
+     42.7,
+     53.1
+    ],
+    "4": [
+     30.0,
+     46.7
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_Granite_Rough": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.801,
+    "2 m": 0.628
+   },
+   "floor_ground_grey": {
+    "1": [
+     56.7,
+     70.8
+    ],
+    "4": [
+     38.8,
+     61.8
+    ]
+   }
+  },
+  "FLOOR_DARKER_THAN_ITS_GROUND_Marble_Rough": {
+   "verdict": "PASS",
+   "floor_over_ground": {
+    "0.5 m": 0.853,
+    "2 m": 0.6
+   },
+   "floor_ground_grey": {
+    "1": [
+     80.3,
+     94.1
+    ],
+    "4": [
+     53.6,
+     89.3
+    ]
+   }
+  }
+ },
+ "rows": [
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_Soil",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.862, \"2 m\": 0.602}, \"floor_ground_grey\": {\"1\": [65.8, 76.3], \"4\": [46.8, 77.7]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_SoilRich",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.83, \"2 m\": 0.636}, \"floor_ground_grey\": {\"1\": [49.8, 60.0], \"4\": [37.9, 59.6]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_Sand",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.856, \"2 m\": 0.63}, \"floor_ground_grey\": {\"1\": [92.5, 108.0], \"4\": [68.7, 109.0]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_Gravel",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.815, \"2 m\": 0.61}, \"floor_ground_grey\": {\"1\": [60.2, 73.9], \"4\": [45.3, 74.3]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_MarshyTerrain",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.828, \"2 m\": 0.623}, \"floor_ground_grey\": {\"1\": [53.0, 64.0], \"4\": [42.5, 68.2]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_Mud",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.879, \"2 m\": 0.615}, \"floor_ground_grey\": {\"1\": [48.5, 55.2], \"4\": [36.0, 58.5]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_Slate_Rough",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.804, \"2 m\": 0.642}, \"floor_ground_grey\": {\"1\": [42.7, 53.1], \"4\": [30.0, 46.7]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_Granite_Rough",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.801, \"2 m\": 0.628}, \"floor_ground_grey\": {\"1\": [56.7, 70.8], \"4\": [38.8, 61.8]}}"
+  },
+  {
+   "id": "FLOOR_DARKER_THAN_ITS_GROUND_Marble_Rough",
+   "status": "PASS",
+   "class": "",
+   "item": "RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER",
+   "detail": "{\"floor_over_ground\": {\"0.5 m\": 0.853, \"2 m\": 0.6}, \"floor_ground_grey\": {\"1\": [80.3, 94.1], \"4\": [53.6, 89.3]}}"
+  }
+ ],
+ "site": [],
+ "harness": [],
+ "captures": "D:\\ClaudeWork\\scratch\\darken_pit\\ground",
+ "seen": {
+  "Soil": {
+   "1": [
+    65.8,
+    76.3
+   ],
+   "4": [
+    46.8,
+    77.7
+   ]
+  },
+  "SoilRich": {
+   "1": [
+    49.8,
+    60.0
+   ],
+   "4": [
+    37.9,
+    59.6
+   ]
+  },
+  "Sand": {
+   "1": [
+    92.5,
+    108.0
+   ],
+   "4": [
+    68.7,
+    109.0
+   ]
+  },
+  "Gravel": {
+   "1": [
+    60.2,
+    73.9
+   ],
+   "4": [
+    45.3,
+    74.3
+   ]
+  },
+  "MarshyTerrain": {
+   "1": [
+    53.0,
+    64.0
+   ],
+   "4": [
+    42.5,
+    68.2
+   ]
+  },
+  "Mud": {
+   "1": [
+    48.5,
+    55.2
+   ],
+   "4": [
+    36.0,
+    58.5
+   ]
+  },
+  "Slate_Rough": {
+   "1": [
+    42.7,
+    53.1
+   ],
+   "4": [
+    30.0,
+    46.7
+   ]
+  },
+  "Granite_Rough": {
+   "1": [
+    56.7,
+    70.8
+   ],
+   "4": [
+    38.8,
+    61.8
+   ]
+  },
+  "Marble_Rough": {
+   "1": [
+    80.3,
+    94.1
+   ],
+   "4": [
+    53.6,
+    89.3
+   ]
+  }
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "8e8d0369bac19caf16c48af307bfca27afa78d4120f4fbd7f59eb6f170e8bdc5",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/pit_floor_ground_live.py",
+  "runtime": "4c8fee39cdb3a3fa0c3fb43154827ad76ccc5350b974f0a935a4482a060e63fd",
+  "test": "f51c1e7fdfc0c465add844469c10cf24ee0ddc9275ad3c00f7b76a95f2319f37",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/pit_floor_ground_live.py",
+   "FlowWorks/northstar/pit_floor_ladder_live.py",
+   "Utils/await_lifecycle.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/deploy_index.py",
+   "Utils/deploy_listing.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_instance.py",
+   "Utils/game_paths.py",
+   "Utils/game_watcher.py",
+   "Utils/harness_run.py",
+   "Utils/known_results.py",
+   "Utils/launch_behind.py",
+   "Utils/list_journal.py",
+   "Utils/live_def_check.py",
+   "Utils/load_policy.json",
+   "Utils/load_policy.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/biome_site.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/play_zoom.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/quiet_site.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/save_uncompress.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/settings_keep.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/spoil_gate.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/test_site_saves.json",
+   "Utils/modcheck/test_site_saves.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/nightly_scope.py",
+   "Utils/northstar_driver/__init__.py",
+   "Utils/northstar_driver/session.py",
+   "Utils/northstar_driver/transport.py",
+   "Utils/pipeline_tests.json",
+   "Utils/progress_guard.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/tickburst_step.py",
+   "Utils/time_budget.py",
+   "Utils/tps_record.py",
+   "Utils/waitalive.py",
+   "Utils/winbuild.py",
+   "Utils/wrapup_debt.py",
+   "Utils/zoom_guard.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "adaptive.storage.framework",
+   "brrainz.rimbridgeserver",
+   "lwm.deepstorage",
+   "neronix17.toolbox",
+   "owlchemist.cherrypicker",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ebsg.framework",
+   "neronix17.outerrim.core",
+   "ray1203.simplecamerasetting",
+   "void.charactereditor",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.explosiveknockback",
+   "mandrake.rm.hugethings",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes",
+   "mandrake.rm.patches",
+   "mandrake.rsw.armoury",
+   "mandrake.rsw.swbestiary"
+  ],
+  "assembly_sha256": "57faee7935f300bfeeb4f75d73406fb6a5d72ca16c1a6335b62045f7d5b475a9"
+ },
+ "light": {
+  "hour": 14.0,
+  "skyGlow": 1.0,
+  "groundGlow": 1.0,
+  "roofed": false
+ }
+}

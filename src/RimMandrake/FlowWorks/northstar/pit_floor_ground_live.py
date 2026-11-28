@@ -23,6 +23,10 @@ lay. HARNESS: a refused call or a missing capture. Exit 0 only when every row PA
   - jawa/sky_glow_set is overwritten on the next frame (its own note): a "night" capture made with it is a day capture. Night
     is jawa/time_set_ticks (design/specs/2026-11-23-pit-floor-depth-ladder/live_look.py).
   - The Soil, Gravel, Sand and Marble rows PASS on the build that fails Slate: the check can see both ways in one run.
+  - FIXED 669fe2fc9c (build B): the dry floor prints its recorded ground (OriginalTerrainAt) and StepK darkens that ground.
+    ArchSmall 2026-11-28, 9 of 9 PASS, floor / ground at 0.5 m .80 to .88 (code .847; the spread is the textures' local
+    variation), at 2 m .60 to .64 (code .630). Closest to the limit: Mud at 0.5 m, .879. Evidence:
+    design/concepts/FlowWorks/version/evidence/pit_floor_own_ground_20261128/.
 
     python.exe src\\RimMandrake\\FlowWorks\\northstar\\pit_floor_ground_live.py [<captures_dir>] [--origin 62,62] [--keep]
 The result is northstar/pit_floor_ground_result_<stamp>.json, stamped by driver_stamp; FlowWorks' functional script reads it
