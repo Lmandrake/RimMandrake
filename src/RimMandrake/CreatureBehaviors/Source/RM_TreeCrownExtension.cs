@@ -19,6 +19,11 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>0..1, before the leafless factor and the canopy strength dial.</summary>
         public float opacity = RM_TreeCrown.OpacityDefault;
 
+        /// <summary>RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: draw this species' crown shadow on the ground
+        /// as a soft dark disc that follows the sun (RM_ShadeOverlay.cs), instead of the canopy ground tint. The owner's
+        /// experiment on one large tree type (card 2026-10-19 Q3): the greatbole only.</summary>
+        public bool renderedShadow;
+
         public static float RadiusFactorOf(ThingDef def)
         {
             RM_TreeCrownExtension e = def?.GetModExtension<RM_TreeCrownExtension>();
@@ -29,6 +34,12 @@ namespace RimMandrake.CreatureBehaviors
         {
             RM_TreeCrownExtension e = def?.GetModExtension<RM_TreeCrownExtension>();
             return e != null ? e.crownHeightFactor : RM_TreeCrown.HeightFactorDefault;
+        }
+
+        public static bool RenderedShadowOf(ThingDef def)
+        {
+            RM_TreeCrownExtension e = def?.GetModExtension<RM_TreeCrownExtension>();
+            return e != null && e.renderedShadow;
         }
 
         public static float OpacityOf(ThingDef def)

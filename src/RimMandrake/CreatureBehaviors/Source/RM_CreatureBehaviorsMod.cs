@@ -272,7 +272,9 @@ namespace RimMandrake.CreatureBehaviors
     //      CROWNS_ON_STILTS: a plant drawn 1.5 cells or more casts its crown
     //      disc down-sun (growth-aware; RM_TreeCrownExtension on a species).
     //      Off: trees cast only the trunk strip. canopyGroundTint — the ground
-    //      under crown shade is drawn darker. shadeOverlayButton — the shade
+    //      under crown shade is drawn darker. renderedCrownShadows — the
+    //      greatbole's crown shadow drawn as a soft disc down-sun, the
+    //      owner's experiment (card 2026-10-19 Q3). shadeOverlayButton — the shade
     //      overlay toggle in the play-settings row, and the readout line.
     //      sunPathingEnabled / sunPathCostMultiplier — undrafted pawns
     //      route shade-to-shade. sunLoadBarEnabled — the inspect bar.
@@ -460,6 +462,8 @@ namespace RimMandrake.CreatureBehaviors
         public static float canopyShadeStrength = 1f;
         public static bool shadeOverlayButton = true;
         public static bool canopyGroundTint = true;
+        // RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the greatbole's crown shadow drawn as a soft disc.
+        public static bool renderedCrownShadows = true;
         public static bool sunPathingEnabled = true;
         public static float sunPathCostMultiplier = 1f;
         public static bool sunLoadBarEnabled = true;
@@ -701,6 +705,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref canopyShadeStrength, "canopyShadeStrength", 1f);
             Scribe_Values.Look(ref shadeOverlayButton, "shadeOverlayButton", true);
             Scribe_Values.Look(ref canopyGroundTint, "canopyGroundTint", true);
+            Scribe_Values.Look(ref renderedCrownShadows, "renderedCrownShadows", true);
             Scribe_Values.Look(ref sunPathingEnabled, "sunPathingEnabled", true);
             Scribe_Values.Look(ref sunPathCostMultiplier, "sunPathCostMultiplier", 1f);
             Scribe_Values.Look(ref sunLoadBarEnabled, "sunLoadBarEnabled", true);
@@ -1126,7 +1131,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "creatures hostile to them, so wild prey is ignored.");
                 list.GapLine();
             }
-            if (Group(list, "Direct Sun", new[] { "sunHeatEnabled", "sunHeatStrength", "directSunZenithC", "directSunWeatherDims", "directionalShadeEnabled", "treeCanopyShadeEnabled", "canopyShadeStrength", "shadeOverlayButton", "canopyGroundTint", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "DirectSun", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }, RimMandrake.Shared.SettingScope.NextPulse))
+            if (Group(list, "Direct Sun", new[] { "sunHeatEnabled", "sunHeatStrength", "directSunZenithC", "directSunWeatherDims", "directionalShadeEnabled", "treeCanopyShadeEnabled", "canopyShadeStrength", "shadeOverlayButton", "canopyGroundTint", "renderedCrownShadows", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "DirectSun", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }, RimMandrake.Shared.SettingScope.NextPulse))
             {
                 list.Label("Direct Sun — the same on every sunlit map: the higher the sun stands, the hotter it is, "
                          + "and the shorter the shadows. A roof or a parasol always protects.");
@@ -1149,6 +1154,10 @@ namespace RimMandrake.CreatureBehaviors
                     list.CheckboxLabeled("  Darken the ground under tree shade", ref canopyGroundTint,
                         "On: the ground in a tree's shadow is drawn a little darker, so you can see a forest's shade "
                       + "at a glance. Off: the ground looks normal (the shade still counts).");
+                    list.CheckboxLabeled("  Draw the greatbole's crown shadow (experiment)", ref renderedCrownShadows,
+                        "On: under a fixed sun, a greatbole's crown shadow is drawn on the ground as a soft dark disc, "
+                      + "where the sun throws it, instead of the flat darkening. Off: the greatbole's shade is shown "
+                      + "like every other tree's (the shade still counts either way).");
                 }
                 list.CheckboxLabeled("Shade overlay button", ref shadeOverlayButton,
                     "On: a button in the bottom-right row shows where the sun is blocked, and how much: roofs, "

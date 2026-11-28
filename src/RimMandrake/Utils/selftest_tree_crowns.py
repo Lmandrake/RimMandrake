@@ -14,8 +14,12 @@ cases named "tree crowns: ...". This file reads defs and source:
                    ThingDef that exists under src/ with a <plant> node; nothing else.
   plant_only       every RM_TreeCrownExtension in XML under src/ sits on a ThingDef (a def or a patch xpath on ThingDef).
   settings         Creature Behaviors has the canopy rows of design §4.6: treeCanopyShadeEnabled (on),
-                   canopyShadeStrength (1), shadeOverlayButton (on), canopyGroundTint (on), each saved with that default
-                   and named in the Direct Sun group; no per-biome canopy switch.
+                   canopyShadeStrength (1), shadeOverlayButton (on), canopyGroundTint (on), renderedCrownShadows (on),
+                   each saved with that default and named in the Direct Sun group; no per-biome canopy switch.
+  drawn_shadow     RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the greatbole, and no other species, carries
+                   renderedShadow true; the grid records its drawn shadow from the same footprint it shades
+                   (CrownShadowQuad behind DrawsCrownShadow, with the sun vector), the drawer draws the grid's list, and
+                   the ground tint skips the cells a drawn shadow owns.
   wiring           the shade grid casts each tree's crown in Recompute through RM_SunHeatMath.CastCrown (growth-aware
                    drawn size), folds it into the cast layer, and a shade tree's DeSpawn asks for a recompute; the
                    readout, the sun-load line and the overlay read the grid's cause and exposure.
@@ -43,7 +47,7 @@ CB = "src/RimMandrake/CreatureBehaviors"
 GIANTS_XML = CB + "/Patches/RM_TreeCrowns_Giants.xml"
 CROWNS_JSON = "src/RimMandrake/HugeThings/tree_crowns_measured.json"
 SETTINGS = {"treeCanopyShadeEnabled": "true", "canopyShadeStrength": "1f", "shadeOverlayButton": "true",
-            "canopyGroundTint": "true"}
+            "canopyGroundTint": "true", "renderedCrownShadows": "true"}
 # A crown or canopy SHADE field (a field name, not a plant's defName used as a roster key, and not a def reference such as
 # the Leaning Scrub's venomvine crownDef): crown/canopy joined to a shade number, either way round.
 WORD = re.compile(r"(canopy|crown)\w*(shade|radius|height|opacity|factor|strength)|shade\w*(canopy|crown)", re.I)
@@ -232,6 +236,53 @@ WIRING = [
     ("RM_MapComponent_ShadeGrid.cs", r"return 1f - exposure\[i\];", "the overlay is the exposure ExposureAt reads"),
 ]
 
+DRAWN = [
+    ("RM_MapComponent_ShadeGrid.cs", r"RM_SunHeatMath\.DrawsCrownShadow\([^;]*directional,\s*RM_TreeCrownExtension\.RenderedShadowOf\(tree\.def\), o\)",
+     "the grid draws a shadow only with a sun vector, for a flagged species"),
+    ("RM_MapComponent_ShadeGrid.cs", r"RM_SunHeatMath\.CrownShadowQuad\(tree\.Position\.x, tree\.Position\.z, r, hc, sunShadowDir\.x, sunShadowDir\.y,\s*cot, MaxCastCells",
+     "the drawn shadow uses the footprint the grid casts"),
+    ("RM_ShadeOverlay.cs", r"grid\.RenderedCrowns", "the drawer draws the grid's list"),
+    ("RM_ShadeOverlay.cs", r"renderedCrownShadows && grid\.RenderedCrownOwnsIndex\(ci\)", "the tint skips a drawn shadow's cells"),
+]
+
+
+def check_drawn_shadow(root, rows, fails):
+    flagged = []
+    for dirpath, _dirs, files in os.walk(_p(root, "src")):
+        for fn in files:
+            if not fn.endswith(".xml"):
+                continue
+            path = os.path.join(dirpath, fn)
+            try:
+                tree = ET.parse(path)
+            except ET.ParseError:
+                continue
+            parent = {c: p for p in tree.iter() for c in p}
+            for li in tree.iter("li"):
+                if li.get("Class") != EXT:
+                    continue
+                rs = li.find("renderedShadow")
+                if rs is None or (rs.text or "").strip().lower() != "true":
+                    continue
+                # The def it sits on: the nearest ancestor's defName child (a def), or its xpath's defName (a patch).
+                name, node = None, parent.get(li)
+                while node is not None and name is None:
+                    if node.find("defName") is not None:
+                        name = (node.find("defName").text or "").strip()
+                    elif node.find("xpath") is not None:
+                        m = re.search(r'defName="([^"]+)"', node.find("xpath").text or "")
+                        name = m.group(1) if m else None
+                    node = parent.get(node)
+                flagged.append(name or os.path.relpath(path, _p(root, "")))
+    if flagged != ["RM_Greatbole"]:
+        fails.append("drawn_shadow: renderedShadow true sits on %r, want ['RM_Greatbole'] only" % flagged)
+    for f, pat, what in DRAWN:
+        rel = CB + "/Source/" + f
+        if not re.search(pat, _read(root, rel)):
+            fails.append("drawn_shadow: %s (%s lacks /%s/)" % (what, f, pat))
+    rows.append("PASS drawn_shadow: the greatbole only, %d links" % len(DRAWN) if not any(
+        f.startswith("drawn_shadow") for f in fails) else "FAIL drawn_shadow")
+
 
 def check_wiring(root, rows, fails):
     for f, pat, what in WIRING:
@@ -250,9 +301,10 @@ t_the_giants_carry_their_measured_crowns = check_giants
 t_the_extension_sits_on_plant_thingdefs_only = check_plant_only
 t_the_canopy_settings_match_the_design = check_settings
 t_the_grid_casts_crowns_and_clears_on_despawn = check_wiring
+t_the_greatbole_alone_draws_its_shadow_down_sun = check_drawn_shadow
 
 CHECKS = [("no_biome_field", check_no_biome_field), ("giants", check_giants), ("plant_only", check_plant_only),
-          ("settings", check_settings), ("wiring", check_wiring)]
+          ("settings", check_settings), ("wiring", check_wiring), ("drawn_shadow", check_drawn_shadow)]
 
 
 def run(root, only):
@@ -288,6 +340,10 @@ PLANTS = [
     ("settings", CB + "/Source/RM_CreatureBehaviorsMod.cs", "public static bool canopyGroundTint = true;",
      "public static bool canopyGroundTint = false;"),
     ("wiring", CB + "/Source/RM_MapComponent_ShadeGrid.cs", "CastCrownOf(tree, width, height);", "// crowns not cast"),
+    # The veluthar flagged too (a second species draws), and the tint stacking on the drawn shadow.
+    ("drawn_shadow", GIANTS_XML, "<crownRadiusFactor>0.95</crownRadiusFactor>\n          <crownHeightFactor>0.78</crownHeightFactor>",
+     "<crownRadiusFactor>0.95</crownRadiusFactor>\n          <crownHeightFactor>0.78</crownHeightFactor>\n          <renderedShadow>true</renderedShadow>"),
+    ("drawn_shadow", CB + "/Source/RM_ShadeOverlay.cs", "renderedCrownShadows && grid.RenderedCrownOwnsIndex(ci)", "renderedCrownShadows && false"),
 ]
 
 
@@ -320,7 +376,7 @@ def main(argv=None):
     # Every promise's test runs by default; --only narrows a run by hand.
     promised = (t_no_biome_carries_a_crown_field, t_the_giants_carry_their_measured_crowns,
                 t_the_extension_sits_on_plant_thingdefs_only, t_the_canopy_settings_match_the_design,
-                t_the_grid_casts_crowns_and_clears_on_despawn)
+                t_the_grid_casts_crowns_and_clears_on_despawn, t_the_greatbole_alone_draws_its_shadow_down_sun)
     assert all(fn in dict(CHECKS).values() for fn in promised)
     only = {x.strip() for x in a.only.split(",") if x.strip()}
     unknown = only - {n for n, _ in CHECKS}

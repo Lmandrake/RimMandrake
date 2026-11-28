@@ -1128,6 +1128,60 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Console.WriteLine("  E 14: crown offset " + (hc * cot14).ToString("0.0") + " cells for a 4-cell tree, the giant's capped at 16");
             });
 
+            Case("drawn crown shadow: the greatbole's soft disc sits on the cells its crown shades, down-sun, and only with a sun vector", () =>
+            {
+                // RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE. A grown greatbole (drawn 12 to 16, factors 0.97 /
+                // 0.79 from Patches/RM_TreeCrowns_Giants.xml) at E 14 and E 40 with the sun from four bearings.
+                foreach (float drawn in new[] { 12f, 16f })
+                    foreach (float elev in new[] { 14f, 40f, 89f })
+                        foreach (var dir in new[] { (0f, -1f), (1f, 0f), (-0.6f, 0.8f), (0.7071f, 0.7071f) })
+                        {
+                            const int W = 81;
+                            float r = RM_TreeCrown.Radius(drawn, 0.97f);
+                            float hc = RM_TreeCrown.Height(drawn, 0.79f);
+                            float cot = RM_SunHeatMath.ShadowLengthPerHeight(elev);
+                            float[] g = new float[W * W];
+                            RM_SunHeatMath.CastCrown(g, W, W, 40, 40, r, hc, dir.Item1, dir.Item2, cot, 16f, 1f, null, 0);
+                            RM_SunHeatMath.CrownShadowQuad(40, 40, r, hc, dir.Item1, dir.Item2, cot, 16f, out float sx, out float sz, out float half);
+                            int raised = 0;
+                            for (int z = 0; z < W; z++)
+                                for (int x = 0; x < W; x++)
+                                {
+                                    if (g[z * W + x] < 0.999f) continue;
+                                    raised++;
+                                    float dx = x + 0.5f - sx, dz = z + 0.5f - sz;
+                                    float d = (float)Math.Sqrt(dx * dx + dz * dz) / half;
+                                    Assert(RM_SunHeatMath.CrownShadowAlpha(d, RM_SunHeatMath.CrownShadowCore) >= 0.999f,
+                                        "drawn " + drawn + " E " + elev + ": shaded cell " + x + "," + z + " is outside the drawn shadow's dark core (d " + d + ")");
+                                }
+                            Assert(raised > 0, "no cell shaded");
+                            // The drawn disc fades within one cell outside the shaded cells: its edge is no more than the
+                            // penumbra beyond the crown radius.
+                            Assert(Math.Abs(half - r - RM_SunHeatMath.CrownShadowPenumbra) < 1e-4f, "half side " + half + " for r " + r);
+                            // Down-sun: the drawn centre moved along the shadow vector, by the same offset the grid casts.
+                            RM_SunHeatMath.CrownFootprint(40, 40, hc, dir.Item1, dir.Item2, cot, 16f, out float ox, out float oz);
+                            Assert(Math.Abs(sx - (ox + 0.5f)) < 1e-4f && Math.Abs(sz - (oz + 0.5f)) < 1e-4f, "drawn centre " + sx + "," + sz + " vs footprint " + ox + "," + oz);
+                            float along = (sx - 40.5f) * dir.Item1 + (sz - 40.5f) * dir.Item2;
+                            Assert(elev > 80f || along > 1f, "E " + elev + ": the drawn shadow is not down-sun (" + along + ")");
+                        }
+                // The soft edge: full inside the core, falling, 0 at the edge and beyond.
+                Assert(RM_SunHeatMath.CrownShadowAlpha(0f, 0.85f) == 1f && RM_SunHeatMath.CrownShadowAlpha(0.85f, 0.85f) == 1f, "core not full");
+                Assert(RM_SunHeatMath.CrownShadowAlpha(1f, 0.85f) == 0f && RM_SunHeatMath.CrownShadowAlpha(1.3f, 0.85f) == 0f, "edge not clear");
+                float prev = 1f;
+                for (float d = 0.85f; d <= 1f; d += 0.01f)
+                {
+                    float a = RM_SunHeatMath.CrownShadowAlpha(d, 0.85f);
+                    Assert(a <= prev + 1e-6f, "the edge is not falling at " + d);
+                    prev = a;
+                }
+                // The gate: tree crowns on, a sun vector, the flagged species, a crown that casts. Each missing one: no draw.
+                Assert(RM_SunHeatMath.DrawsCrownShadow(true, true, true, 1f), "the greatbole under a fixed sun draws no shadow");
+                Assert(!RM_SunHeatMath.DrawsCrownShadow(false, true, true, 1f), "crowns off still draw");
+                Assert(!RM_SunHeatMath.DrawsCrownShadow(true, false, true, 1f), "no sun vector still draws");
+                Assert(!RM_SunHeatMath.DrawsCrownShadow(true, true, false, 1f), "an unflagged species draws");
+                Assert(!RM_SunHeatMath.DrawsCrownShadow(true, true, true, 0f), "a crown that casts nothing draws");
+            });
+
             Case("tree crowns: a seedling casts by its drawn size, leafless thins it, the dial scales it, off casts only the trunk", () =>
             {
                 float sSeed = RM_SunHeatMath.DrawnSize(1f, 3f, 12f, 0.1f);

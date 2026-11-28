@@ -18,6 +18,8 @@
         <li Class="RimMandrake.CreatureBehaviors.RM_TreeCrownExtension">
           <crownRadiusFactor>0.97</crownRadiusFactor>
           <crownHeightFactor>0.79</crownHeightFactor>
+          <!-- RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the owner's drawn-shadow experiment, this species only -->
+          <renderedShadow>true</renderedShadow>
         </li>
       </value>
     </match>

@@ -490,6 +490,53 @@ namespace RimMandrake.CreatureBehaviors
             return RasterDisc(grid, width, height, ox, oz, radius, opacity, owner, id);
         }
 
+        /// <summary>RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: whether a crown's shadow is DRAWN (the owner's
+        /// experiment, card 2026-10-19 Q3 option 3): tree crowns on, a sun vector to follow (no vector, no drawn shadow:
+        /// the ground tint shows those maps' crowns), the species flagged by RM_TreeCrownExtension.renderedShadow, and a
+        /// crown that casts at all.</summary>
+        public static bool DrawsCrownShadow(bool settingOn, bool directional, bool speciesFlagged, float opacity)
+        {
+            return settingOn && directional && speciesFlagged && opacity > 0f;
+        }
+
+        /// <summary>The drawn crown shadow's square, in world units: centred on the crown's footprint (CrownFootprint;
+        /// a grid cell x has its world centre at x + 0.5), half side = radius + CrownShadowPenumbra, so the soft disc's
+        /// full-dark core covers every cell RasterDisc raises and its edge fades over one cell outside them.</summary>
+        public static void CrownShadowQuad(int cx, int cz, float radius, float crownHeight, float dirX, float dirZ,
+            float cotE, float cap, out float centreX, out float centreZ, out float halfSide)
+        {
+            CrownFootprint(cx, cz, crownHeight, dirX, dirZ, cotE, cap, out float ox, out float oz);
+            centreX = ox + 0.5f;
+            centreZ = oz + 0.5f;
+            halfSide = (radius < 0f ? 0f : radius) + CrownShadowPenumbra;
+        }
+
+        /// <summary>The width in cells of the drawn shadow's soft edge (INVENTED: one cell reads as soft at the
+        /// default zoom and is still inside the next cell).</summary>
+        public const float CrownShadowPenumbra = 1f;
+
+        /// <summary>The drawn disc's full-dark core as a fraction of its half side. A shaded cell's centre lies within r
+        /// of the disc's centre, so the core must reach r: core >= r / (r + penumbra 1). A greatbole grown is drawn 12 to
+        /// 16 cells, r = 0.97 x drawn / 2 = 5.8 to 7.8 cells, r / (r + 1) = 0.853 to 0.886; 0.9 covers them all with a
+        /// fade of about 0.7 to 0.9 cells (the selftest checks drawn 12 and 16).</summary>
+        public const float CrownShadowCore = 0.9f;
+
+        /// <summary>The drawn shadow's alpha at distance d from its centre, as a fraction of the half side (0 centre, 1
+        /// the square's inscribed circle): 1 inside `core`, a smoothstep down to 0 at 1, 0 beyond.</summary>
+        public static float CrownShadowAlpha(float d, float core)
+        {
+            if (d <= core)
+            {
+                return 1f;
+            }
+            if (d >= 1f || core >= 1f)
+            {
+                return 0f;
+            }
+            float t = (d - core) / (1f - core);
+            return 1f - t * t * (3f - 2f * t);
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);

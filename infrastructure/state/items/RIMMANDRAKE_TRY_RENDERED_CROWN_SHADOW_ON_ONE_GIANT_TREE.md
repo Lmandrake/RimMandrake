@@ -21,3 +21,9 @@ rendered crown shadow that follows the sun vector (design `design/RimMandrake/tr
 ## verify
 
 Acceptance test: none, a look by the owner.
+
+## refs
+
+file: src/RimMandrake/CreatureBehaviors/Source/RM_ShadeOverlay.cs
+file: src/RimMandrake/CreatureBehaviors/Patches/RM_TreeCrowns_Giants.xml
+def: ThingDef/RM_Greatbole

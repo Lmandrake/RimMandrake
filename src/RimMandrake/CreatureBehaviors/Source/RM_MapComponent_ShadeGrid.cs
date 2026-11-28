@@ -97,6 +97,10 @@ namespace RimMandrake.CreatureBehaviors
 		// (the species whose crown raised the cell), -1 for none. Rebuilt with the grid; nothing is saved.
 		private float[] canopyShade;
 		private int[] canopyOwner;
+		// RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE: the crowns whose shadow is drawn (RM_ShadeOverlay.cs),
+		// rebuilt with every recompute whatever the drawn-shadow setting (the drawer and the tint read the setting each
+		// frame, so a switch takes effect at once), so the drawer reads the same footprints the grid shades.
+		private readonly List<RM_RenderedCrown> renderedCrowns = new List<RM_RenderedCrown>();
 		private readonly List<ThingDef> canopyDefs = new List<ThingDef>();
 		private readonly Dictionary<ThingDef, int> canopyDefIndex = new Dictionary<ThingDef, int>();
 
@@ -407,6 +411,21 @@ namespace RimMandrake.CreatureBehaviors
 			return Mathf.Max(roofShade[i], castShade[i]);
 		}
 
+		/// <summary>The crown shadows to draw, from the last recompute (RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE).</summary>
+		public List<RM_RenderedCrown> RenderedCrowns => renderedCrowns;
+
+		/// <summary>True when the crown that shades this cell index has its shadow drawn, so the ground tint skips the
+		/// cell and the two do not stack.</summary>
+		public bool RenderedCrownOwnsIndex(int i)
+		{
+			if (renderedCrowns.Count == 0 || canopyOwner == null || i < 0 || i >= canopyOwner.Length)
+			{
+				return false;
+			}
+			int k = canopyOwner[i];
+			return k >= 0 && k < canopyDefs.Count && RM_TreeCrownExtension.RenderedShadowOf(canopyDefs[k]);
+		}
+
 		/// <summary>Crown shade 0..1 at a cell index (the ground tint reads it).</summary>
 		public float CanopyShadeAtIndex(int i)
 		{
@@ -414,6 +433,13 @@ namespace RimMandrake.CreatureBehaviors
 		}
 
 		private RM_ShadeOverlayDrawers drawers;
+
+		/// <summary>The drawer's reading for the live script (RM_ShadeOverlay.CrownShadowReport); "drawers=none" before
+		/// the first frame on this map. Resets the drawer's frame sample.</summary>
+		public string CrownShadowReport()
+		{
+			return drawers == null ? "drawers=none" : drawers.Report(true);
+		}
 
 		/// <summary>Every frame: the shade overlay and the canopy ground tint (RM_ShadeOverlay.cs), current map only.
 		/// Each rebuilds its mesh only when GridVersion moved.</summary>
@@ -740,6 +766,7 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			canopyDefs.Clear();
 			canopyDefIndex.Clear();
+			renderedCrowns.Clear();
 			ResolveSun();
 			lastHazeFactor = RM_ShadeHaze.ShadowLengthFactor(map);
 			if (directional)
@@ -817,6 +844,13 @@ namespace RimMandrake.CreatureBehaviors
 			float cot = directional ? sunLengthPerHeight : 0f;
 			RM_SunHeatMath.CastCrown(canopyShade, width, height, tree.Position.x, tree.Position.z, r, hc,
 				sunShadowDir.x, sunShadowDir.y, cot, MaxCastCells, o, canopyOwner, id);
+			if (RM_SunHeatMath.DrawsCrownShadow(RM_CreatureBehaviorsSettings.treeCanopyShadeEnabled, directional,
+				RM_TreeCrownExtension.RenderedShadowOf(tree.def), o))
+			{
+				RM_SunHeatMath.CrownShadowQuad(tree.Position.x, tree.Position.z, r, hc, sunShadowDir.x, sunShadowDir.y,
+					cot, MaxCastCells, out float sx, out float sz, out float half);
+				renderedCrowns.Add(new RM_RenderedCrown(sx, sz, half, o));
+			}
 		}
 
 		/// <summary>SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: zero the buffer and let
