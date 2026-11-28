@@ -47,6 +47,9 @@ test is written and committed; what is left is landing, live readings, the slow-
   cut-tick, deploy, scratch and run-seconds are landing in their own clones (`/home/mandrake/rm/runs/clones/<ID>.det`).
   Whichever lands second must reconcile: keep one build per file. Read origin first.
 - `selftest_stage6_checks.py` is red on origin (PRE-EXISTING at the door): not this bundle's.
+- The landed Codex `selftest_deploy_listing.py` passes when run alone and FAILS under `run_selftests.py --only` (its
+  t_relative_stat_gives_the_same_index_as_absolute: `assert scans == {True}` reads {False}; seen 6:25 PM). Class it
+  (test or code) and fix it test first, or file it with that evidence.
 
 ## Polish
 
