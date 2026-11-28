@@ -571,7 +571,7 @@ The rule:
     `code_review_status.py flag <path> --why "…"`.
   - Nobody reviews a FLAGGED file again. There is no third read.
 - **New pipeline machinery gets a blind Opus review.** A run that adds pipeline machinery files its blind Opus
-  review before it ends. After publishing, run `python3 src/RimMandrake/rimflow/new_machinery_review.py file <sha>...`
+  review before it ends. After `./publish` prints PUBLISHED <sha>, run `python3 src/RimMandrake/rimflow/new_machinery_review.py file <sha>...`
   with your published commits in order. The ticket lane gives the review to a fresh run under
   `src/RimMandrake/rimflow/roles/code_review.md`. Paths with READ-CLEAN or FLAGGED records are left out.
   The owner gave this order on 2026-11-26.
