@@ -159,6 +159,10 @@ MATURATION_DETAIL.
   not counted), their median members and the count of singles (`bundle_size`). A bundle store that cannot be read
   reads "could not look"; a day with none reads 0 with what was looked at. The owner, 2026-11-27: "work in LARGE
   BUNDLES" (item RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY).
+- **the-page-shows-the-lane-pauses.** The code review pause and the game work pause of the lane tick's reading
+  (`reading.json` fields `pause` and `game_pause`) each read one line on the page and in the detail: on, with the count
+  of tickets it holds and its reason, or off (`pause_lines`). A reading that cannot be read, or that lacks the field,
+  reads "could not look" with its cause.
 
 ## LIFE CYCLES
 

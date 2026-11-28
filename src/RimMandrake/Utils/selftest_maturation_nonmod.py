@@ -618,6 +618,24 @@ def t_the_page_says_the_size():
         assert got["line"] in t, "the size line is not on the page"
 
 
+def t_the_page_shows_the_lane_pauses():
+    """promise the-page-shows-the-lane-pauses: the code review pause and the game work pause of the lane's reading
+    (reading.json `pause`, `game_pause`) each read one line on the page and in the detail: on with its held count and
+    reason, or off. A reading that cannot be read, or that has no such field, reads could not look."""
+    need()
+    lane = {"at": NOW - 120, "items": {}, "pause": {"on": True, "reason": "his order of today", "held": 59},
+            "game_pause": {"on": False, "held": 0}}
+    got = N.pause_lines(lane)
+    assert any("code review pause is on" in x and "59" in x and "his order of today" in x for x in got), got
+    assert any("game work pause is off" in x for x in got), got
+    assert all("could not look" in x for x in N.pause_lines(None)) and len(N.pause_lines(None)) == 2, N.pause_lines(None)
+    assert any("game work pause: could not look" in x for x in N.pause_lines({"pause": {"on": False}})), \
+        N.pause_lines({"pause": {"on": False}})
+    x = sec(dict(stores(), lane=dict(stores()["lane"], **{k: lane[k] for k in ("pause", "game_pause")})))
+    for t in (N.panel(x), "\n".join(N.markdown(x))):
+        assert "code review pause is on" in t and "game work pause is off" in t, "the pauses are not on the page"
+
+
 def main():
     tests = [t_mod_or_not_by_one_rule, t_stages_from_one_rule, t_launcher_from_records, t_doing_now_rows,
              t_next_names_its_wait, t_closed_last_day, t_open_by_reason_oldest_first, t_escalated_from_run_ends,
@@ -625,7 +643,8 @@ def main():
              t_page_is_a_picture_not_a_log, t_a_question_for_the_conductor_is_its_own_block, t_waits_in_plain_words, t_plain_titles, t_page_four_answers_differ,
              t_needs_short_and_his_first, t_trend_on_the_page, t_plain_waits, t_same_inputs_same_section,
              t_each_machine_shows_its_runs_room_games_and_lane, t_an_unreadable_machine_reads_could_not_look,
-             t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair, t_the_page_says_the_size]
+             t_a_lane_run_on_a_ticket_that_names_a_mod_is_a_pipeline_repair, t_the_page_says_the_size,
+             t_the_page_shows_the_lane_pauses]
     failed = 0
     for t in tests:
         try:

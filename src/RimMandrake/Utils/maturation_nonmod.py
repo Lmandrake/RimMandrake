@@ -361,6 +361,27 @@ def bundle_size(bundles, now):
                 len(sizes), ("%g" % med), sizes.count(1), tail)}
 
 
+PAUSES = (("pause", "The code review pause"), ("game_pause", "The game work pause"))
+
+
+def pause_lines(lane):
+    """-> one line for each pause of the lane's reading (list_dispatch reading.json `pause`, `game_pause`): on, with its
+    held count and reason, or off; could not look when the reading or its field cannot be read. Pure."""
+    out = []
+    for key, name in PAUSES:
+        p = lane.get(key) if isinstance(lane, dict) else None
+        if not isinstance(p, dict) or not isinstance(p.get("on"), bool):
+            out.append("%s: could not look (%s)." % (name, "the tick's reading could not be read" if not isinstance(lane, dict)
+                                                    else "the tick's reading has no `%s`" % key))
+        elif p["on"]:
+            out.append("%s is on: it holds %s ticket(s) (%s)." % (
+                name, p["held"] if isinstance(p.get("held"), int) else "an unread count of",
+                clip(p.get("reason") or "no reason given", 140)))
+        else:
+            out.append("%s is off." % name)
+    return out
+
+
 def _lane_run(r):
     """A live Workshop Pipeline run on this machine: launched by the lane tick, or a work bundle's run."""
     return is_live(r) and not r.get("host") and lane_launched(r)     # a mod's bundle (WB-mod-) is mod work
@@ -484,7 +505,7 @@ def section(s, now, spend=None, stage=None):
     items, evs, recs = s.get("items"), s.get("evs"), s.get("records")
     causes = dict(s.get("causes") or {})
     out = {"state": "ok", "causes": causes, "rule": RULE, "cannot": list(CANNOT), "now": now,
-           "bundle_size": bundle_size(s.get("bundles"), now)}
+           "bundle_size": bundle_size(s.get("bundles"), now), "pauses": pause_lines(s.get("lane"))}
     if items is None:
         out["state"] = "blind"
         return out
@@ -800,6 +821,7 @@ def blocks(sec):
                 sec["lane"])]
     if sec.get("bundle_size"):
         head.append(sec["bundle_size"]["line"])
+    head += sec.get("pauses") or []
     out.append(("", head + looked))
     st = ["**%s** · %s · **%d**%s. %s." % (x["stage"].capitalize(), x["who"], x["count"],
                                          (" · oldest: %s" % x["oldest"]) if x["oldest"] else "", x["how"])
@@ -1170,6 +1192,8 @@ def panel(sec):
     foot = "Could not class as mod or non-mod: %d." % sec["unclassed"]
     if sec.get("bundle_size"):
         foot = "%s %s" % (sec["bundle_size"]["line"], foot)
+    if sec.get("pauses"):
+        foot = "%s %s" % (" ".join(sec["pauses"]), foot)
     if looked:
         foot = "Could not look: %s. %s" % (looked, foot)
     return '<div>%s%s<div style="font-size:11px;color:%s;padding:2px 14px">%s</div></div>' % (
