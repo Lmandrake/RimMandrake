@@ -83,6 +83,51 @@ namespace RimMandrake.FlowWorks.Pits
 				+ " records=" + records.Count + " reason=" + (reason ?? "-");
 		}
 
+		/// <summary>RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: "x,z;Look" applies Look to the whole bridge at x,z through the
+		/// Choose style pick (RM_SuspensionLooks.SetBridgeLook) and reads back every part on its squares → "BRIDGELOOK gizmo=True
+		/// changed=N record=Look parts=def:Look,..."; "x,z" alone only reads.</summary>
+		public static string ProofBridgeLook(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || !Cell(a[0], out IntVec3 c))
+			{
+				return "REFUSED: arg must be x,z[;Look] on the current map";
+			}
+			SuspensionBridgeRecord r = RM_MapComponent_SuspensionBridges.Of(map)?.RecordAt(c);
+			if (r == null)
+			{
+				return "REFUSED: no bridge at " + c;
+			}
+			bool gizmo = false;
+			foreach (Thing t in c.GetThingList(map))
+			{
+				CompBridgeLook comp = (t as ThingWithComps)?.GetComp<CompBridgeLook>();
+				if (comp != null && comp.CompGetGizmosExtra().OfType<Command_Action>().Any(g => g.defaultLabel == CompBridgeLook.Label))
+				{
+					gizmo = true;
+				}
+			}
+			int changed = a.Length > 1 ? RM_SuspensionLooks.SetBridgeLook(map, r, a[1]) : 0;
+			List<string> parts = new List<string>();
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = 0; i < r.length; i++)
+				{
+					foreach (Thing t in r.Cell(lane, i).GetThingList(map))
+					{
+						ThingDef built = t.def.entityDefToBuild as ThingDef ?? t.def;
+						if (RM_SuspensionDefOf.IsPartDef(built))
+						{
+							ThingStyleDef sd = t.StyleDef;
+							parts.Add(t.def.defName + ":" + (sd == null ? "-" : Machinery.PipeLook.Core.LookOfStyle(sd) ?? sd.defName));
+						}
+					}
+				}
+			}
+			return "BRIDGELOOK gizmo=" + gizmo + " changed=" + changed + " record=" + (r.look ?? "-") + " parts=" + string.Join(",", parts);
+		}
+
 		/// <summary>SUSPENSION_ISLANDS_BUILD_TOWERS_COST_PLENTY: "" → what the tower def costs now and what a tower blueprint of
 		/// steel charges (one tower: a bridge needs one per lane). → "TOWERCOST stuff=N Steel=N work=N mult=x steelBuilt=Steel:N"
 		/// (no components since SUSPENSION_TOWER_TUNE_NO_CHIPS_IN_STONE)</summary>

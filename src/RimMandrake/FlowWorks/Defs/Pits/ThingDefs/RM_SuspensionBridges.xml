@@ -185,6 +185,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -226,6 +227,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -278,6 +280,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -331,6 +334,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -374,6 +378,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -428,6 +433,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -483,6 +489,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -528,6 +535,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -582,6 +590,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -624,6 +633,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -676,6 +686,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 
@@ -728,6 +739,7 @@
     </modExtensions>
     <comps>
       <li Class="CompProperties_Styleable" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->
     </comps>
   </ThingDef>
 

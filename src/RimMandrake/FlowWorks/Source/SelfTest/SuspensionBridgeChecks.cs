@@ -461,6 +461,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(des.Contains("new Designation(w, DesignationDefOf.Deconstruct)") && des.Contains("w.Destroy(DestroyMode.Deconstruct)")
                     && des.Contains("RM_SuspensionMath.WreckMarkedForClearing"), "can-fail: the wreck is marked (or cleared in god mode) and the player told");
             });
+            // RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES (his walk 2026-11-20: "For the bridges, they have Styles like
+            // Industrial but no UI button to select it."): every styled bridge part offers Choose style, and its pick restyles the
+            // whole bridge and keeps the look on the record.
+            Case("Suspension_built_bridge_offers_choose_style", () =>
+            {
+                string defs = ModFile("Defs", "Pits", "ThingDefs", "RM_SuspensionBridges.xml");
+                string looks = Src("Pits", "Suspension", "RM_SuspensionPatches.cs");
+                int listAt = looks.IndexOf("public static readonly string[] StyledDefs =");
+                string list = looks.Substring(listAt, looks.IndexOf("};", listAt) - listAt);
+                int offered = 0;
+                foreach (string part in list.Split('"'))
+                {
+                    if (!part.StartsWith("RM_Suspension") || part == "RM_SuspensionWreck")
+                    {
+                        continue;
+                    }
+                    int at = defs.IndexOf("<defName>" + part + "</defName>");
+                    int end = defs.IndexOf("</ThingDef>", at);
+                    Assert(at > 0 && defs.IndexOf("CompProperties_BridgeLook", at) > 0 && defs.IndexOf("CompProperties_BridgeLook", at) < end,
+                        "can-fail: " + part + " carries the Choose style comp");
+                    offered++;
+                }
+                Assert(offered == 12, "can-fail: twelve styled bridge parts read (" + offered + ")");
+                Assert(looks.Contains("public class CompBridgeLook : ThingComp") && looks.Contains("public const string Label = \"Choose style\";")
+                    && looks.Contains("RM_SuspensionLooks.SetBridgeLook(map, r, l)"), "can-fail: the button picks a look for the whole bridge");
+                int set = looks.IndexOf("public static int SetBridgeLook(Map map, SuspensionBridgeRecord r, string look)");
+                Assert(set > 0 && looks.IndexOf("r.look = look;", set) > set && looks.IndexOf("RM_SuspensionDefOf.IsPartDef(built)", set) > set
+                    && looks.IndexOf("t.SetStyleDef(sd);", set) > set && looks.IndexOf("t.Notify_ColorChanged();", set) > set,
+                    "can-fail: the pick keeps the look on the record and restyles every part (blueprints too) with a fresh graphic");
+            });
             // SUSPENSION_WATERS_BUILD_MAY_BACKTRACK (parent §3, §7; Q5): natural water, floods, current, towers.
             Case("Waters_spannable_and_flood_damage", () =>
             {

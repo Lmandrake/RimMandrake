@@ -1,0 +1,20 @@
+{
+ "script": "live_bridge_choose_style.py",
+ "started": "2026-11-28T01:28:52",
+ "rows": [
+  {
+   "id": "CS_built_bridge_has_choose_style",
+   "status": "FAIL",
+   "detail": {
+    "gizmos": [
+     "Deconstruct",
+     "Railings: off",
+     "Build copy"
+    ]
+   }
+  }
+ ],
+ "open_sky": true,
+ "built": "BUILD ok=True anchors=2 decks=5 blueprints=0 records=1 reason=-",
+ "before": "No public static ProofBridgeLook with 1 params."
+}

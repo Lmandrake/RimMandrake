@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -1038,6 +1040,119 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				t.StyleDef = s;
 			}
+		}
+
+		/// <summary>The parts and the record restyled by the last SetBridgeLook (the state read of its proof).</summary>
+		public static int lastBridgeRestyled;
+
+		/// <summary>RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES (his walk 2026-11-20: "For the bridges, they have Styles like
+		/// Industrial but no UI button to select it."): give a whole built bridge another look, free and instant, art only. Every
+		/// part of the player's on the bridge's squares (deck, anchors, railings, towers; their blueprints and frames too, so what is
+		/// still to be built comes up in the new look) takes the look's style where it has one, and the record keeps the look, so
+		/// railings and a wreck made later follow it and a drawbridge's leaf, winch and gate draw in it. Returns the parts changed.</summary>
+		public static int SetBridgeLook(Map map, SuspensionBridgeRecord r, string look)
+		{
+			lastBridgeRestyled = 0;
+			if (map == null || r == null || !Machinery.PipeStyles.IsLook(look))
+			{
+				return 0;
+			}
+			r.look = look;
+			int n = 0;
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = 0; i < r.length; i++)
+				{
+					IntVec3 c = r.Cell(lane, i);
+					if (!c.InBounds(map))
+					{
+						continue;
+					}
+					foreach (Thing t in c.GetThingList(map).ToList())
+					{
+						if (t.Faction != Faction.OfPlayer)
+						{
+							continue;
+						}
+						ThingDef built = t.def.entityDefToBuild as ThingDef ?? t.def;
+						if (!RM_SuspensionDefOf.IsPartDef(built))
+						{
+							continue;
+						}
+						ThingStyleDef sd = StyleFor(built, look);
+						if (sd == null)
+						{
+							continue;
+						}
+						t.SetStyleDef(sd);
+						t.Notify_ColorChanged();
+						n++;
+					}
+					map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
+				}
+			}
+			if (r.IsDrawbridge)
+			{
+				// the winch and gate cache their look (RM_DrawbridgeArt reads the record); the leaf reads it at print
+				foreach (Building b in map.listerBuildings.allBuildingsColonist)
+				{
+					if (b is Building_DrawbridgeWinch || b is Building_DrawbridgeGate)
+					{
+						b.Notify_ColorChanged();
+					}
+				}
+				map.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
+			}
+			return lastBridgeRestyled = n;
+		}
+	}
+
+	/// <summary>RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: the Choose style button of a built suspension bridge, on
+	/// each of its styled parts (deck, anchor, tower, railing, jetty).</summary>
+	public class CompProperties_BridgeLook : CompProperties
+	{
+		public CompProperties_BridgeLook()
+		{
+			compClass = typeof(CompBridgeLook);
+		}
+	}
+
+	public class CompBridgeLook : ThingComp
+	{
+		public const string Label = "Choose style";
+
+		public override IEnumerable<Gizmo> CompGetGizmosExtra()
+		{
+			foreach (Gizmo g in base.CompGetGizmosExtra())
+			{
+				yield return g;
+			}
+			Map map = parent.Map;
+			SuspensionBridgeRecord r = map == null || parent.Faction != Faction.OfPlayer ? null
+				: RM_MapComponent_SuspensionBridges.Of(map)?.RecordAt(parent.Position);
+			if (r == null || !RM_SuspensionLooks.StyledDefs.Contains(parent.def.defName))
+			{
+				yield break;
+			}
+			yield return new Command_Action
+			{
+				defaultLabel = Label,
+				defaultDesc = "Give this whole bridge another look (scrapper, industrial, modern, futuristic): its deck, anchors, railings "
+					+ "and towers. Free and instant; it changes art only, never cost, strength or function.",
+				icon = parent.StyleDef?.UIIcon ?? (Texture2D)parent.def.uiIcon,
+				action = () => Find.WindowStack.Add(new FloatMenu(LookMenu(map, r))),
+			};
+		}
+
+		private static List<FloatMenuOption> LookMenu(Map map, SuspensionBridgeRecord r)
+		{
+			var opts = new List<FloatMenuOption>();
+			foreach (string look in Machinery.PipeStyles.Looks)
+			{
+				string l = look;
+				opts.Add(new FloatMenuOption(look + (look == r.look ? " (current)" : ""), () => RM_SuspensionLooks.SetBridgeLook(map, r, l)));
+			}
+			return opts;
 		}
 	}
 }

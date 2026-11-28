@@ -104,15 +104,15 @@
   "test_blob": "37b99ece8064c1dbd6e8cb0fbe593721f6e57a5f"
  },
  "T_BRIDGES": {
-  "at": "2026-11-28T08:56:57Z",
+  "at": "2026-11-28T09:50:52Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Drawbridge*,SpanBase*,Suspension*,SuspensionBridges*,Underpass*,Waters*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "can-fail: a wreck in the hole does not block the span",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\t2026-11-28 00:49:57.400423600 -0800\n+++ b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\t2026-11-28 00:49:57.422585200 -0800\n@@ -663,7 +663,7 @@\n \t\t/// blocks.</summary>\n \t\tpublic static bool EdificeBlocksSpan(bool hasEdifice, bool edificeIsWreck)\n \t\t{\n-\t\t\treturn hasEdifice && !edificeIsWreck;\n+\t\t\treturn hasEdifice;\n \t\t}\n \n \t\t/// <summary>The message when a new bridge marks the wreck under it for clearing (RIMMANDRAKE_LET_FLOWWORKS_BRIDGE_SPAN_OVER_RUINED_BRIDGE_SCRAP).</summary>\n",
+  "last": "can-fail: RM_SuspensionDeck_Steel carries the Choose style comp",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Defs/Pits/ThingDefs/RM_SuspensionBridges.xml\t2026-11-28 01:37:47.109208300 -0800\n+++ b/src/RimMandrake/FlowWorks/Defs/Pits/ThingDefs/RM_SuspensionBridges.xml\t2026-11-28 01:37:47.154545500 -0800\n@@ -280,7 +280,6 @@\n     </modExtensions>\n     <comps>\n       <li Class=\"CompProperties_Styleable\" />   <!-- the four looks: without it Thing.StyleDef is a no-op (live 2026-10-19) -->\n-      <li Class=\"RimMandrake.FlowWorks.Pits.CompProperties_BridgeLook\" />   <!-- RIMMANDRAKE_ADD_FLOWWORKS_CHOOSE_STYLE_TO_BUILT_BRIDGES: Choose style -->\n     </comps>\n   </ThingDef>\n \n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs"
+   "src/RimMandrake/FlowWorks/Defs/Pits/ThingDefs/RM_SuspensionBridges.xml"
   ],
-  "patch_sha": "5eabb4d1d9334011",
+  "patch_sha": "b28f10dcdd954b3e",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
@@ -130,7 +130,7 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_DOORS": {
-  "at": "2026-11-28T09:03:30Z",
+  "at": "2026-11-28T09:37:17Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FLOWWORKS*,FlowDoor*,FlowDoorFacing*,Grate*,Ruling18*,Sluice*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
   "last": "can-fail: a solid deck keeps its spill",
