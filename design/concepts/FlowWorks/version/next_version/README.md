@@ -174,3 +174,12 @@ Each of these three ledger tickets held only an idea: nothing built, no failure,
   natural water to filled pit basins with a bottom altitude map (fishing, aquatic growing and swimming kept); rivers are
   the one open point. His by-card answers on edge lakes, wet-biome lakes and drought are on the ticket. A redesign with
   him, not a 0.1.0 bar.
+
+## A body fully under tar or another opaque liquid shows a sign (FlowWorks next version, the Conductor's call 2026-11-27)
+
+- 0.1.0 gives a living pawn that is fully hidden under an opaque liquid a sign: a ring of froth and two bubbles over
+  its spot (`RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW`, 3634353c9d). A dead body gets no sign, so
+  that froth always means "something alive is under here".
+- The gap: a corpse that is fully under tar shows nothing, so the player cannot find the body.
+- For the next version: a sign for a hidden corpse that reads different from the living sign (a still shape or a stain,
+  no froth and no bubbles). It moves no 0.1.0 bar.
