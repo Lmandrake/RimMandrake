@@ -2324,6 +2324,14 @@ def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str], st
     return freed, deferred
 
 
+CHECK_TREE = re.compile(r"(publish_check|wrong_check)_[a-z0-9_]{8}")     # their mkdtemp prefixes before 2026-11-27
+
+
+def own_dirs():
+    import selftest_own_dirs as O                                      # noqa: PLC0415  (the owner marker's reader)
+    return O
+
+
 def fixture_dirs() -> list[Path]:
     """~/.seat-tmp/<SEAT>/selftest_*: a selftest's tempfile prefix, so no agent's work lives there."""
     found = [Path(s) for r in roots() if r.name == ".seat-tmp" for s in glob.glob(str(r / "*" / "selftest_*"))]
@@ -2331,6 +2339,10 @@ def fixture_dirs() -> list[Path]:
     # under ~/.seat-tmp/BENCH on 2026-11-01, past the runner's per-test TMPDIR); same day-old, nothing-uses-it rule.
     found += [Path(s) for r in roots() if r.name == ".seat-tmp" for s in glob.glob(str(r / "*" / "tmp*"))
               if re.fullmatch(r"tmp[a-z0-9_]{8}", os.path.basename(s))]
+    # The check trees ./publish and selftest_wrong_check_fixed_in_sitting.py made before they named their owner: 279
+    # of them held 1.13 M entries under ~/.seat-tmp/BENCH on 2026-11-27 (check-tree-owner boundary).
+    found += [Path(s) for r in roots() if r.name == ".seat-tmp" for s in glob.glob(str(r / "*" / "*_check_*"))
+              if CHECK_TREE.fullmatch(os.path.basename(s))]
     tr = tmp_root()
     if tr is not None:                  # a selftest run without the runner's TMPDIR makes them straight in /tmp
         found += [Path(s) for s in glob.glob(str(tr / "selftest_*"))]
@@ -2392,9 +2404,11 @@ def keeps_work(p: Path) -> bool:
 
 def handed_over(p: Path) -> bool:
     """A fixture dir sweep_fixtures leaves to the clone judgment: a git repo or a save inside a name that proves nothing.
-    A selftest_ name under ~/.seat-tmp is the runner's own prefix; in /tmp anyone can pick it."""
+    A selftest_ name under ~/.seat-tmp is the runner's own prefix, and a check tree's name is publish's or a selftest's
+    own (CHECK_TREE); in /tmp anyone can pick it."""
     tr = tmp_root()
-    return (not p.name.startswith("selftest_") or (tr is not None and p.parent == tr)) and keeps_work(p)
+    named = p.name.startswith("selftest_") or bool(CHECK_TREE.fullmatch(p.name))
+    return (not named or (tr is not None and p.parent == tr)) and keeps_work(p)
 
 
 def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
@@ -2410,8 +2424,9 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
             st = p.lstat() if not guard(p) else None
         except OSError:
             st = None
-        if st is None or not stat.S_ISDIR(st.st_mode):
-            out["held"] += 1
+        owner = own_dirs().owner_alive(p) if st is not None else None
+        if st is None or not stat.S_ISDIR(st.st_mode) or owner or (owner is None and os.path.lexists(p / own_dirs().MARK)):
+            out["held"] += 1                    # a marker that names an owner who may live, or that cannot be read
             continue
         if ctx.now - max(touched(st)) < FIXTURE_TTL_S:
             out["young"] += 1

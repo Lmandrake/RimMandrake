@@ -1772,11 +1772,17 @@ def _kill_own_sessions():
 
 
 def _on_term(signum, _frame):
-    """SIGTERM (`timeout N ./publish`, a unit stop) ends publish through its clean-up: the check children die and every
-    `finally` runs, so no random-named check tree is left (bench's rm-treecheck-rqp5014m, 4.6 GB, was left by
-    `timeout 530 ./publish` on 2026-11-24 7:45 PM PST, when the default action skipped them)."""
+    """SIGTERM (`timeout N ./publish`, a unit stop) and SIGHUP (a closed terminal) end publish through its clean-up: the
+    check children die and every `finally` runs, so no random-named check tree is left (bench's rm-treecheck-rqp5014m,
+    4.6 GB, was left by `timeout 530 ./publish` on 2026-11-24 7:45 PM PST, when the default action skipped them)."""
     _kill_own_sessions()
     raise SystemExit(128 + signum)
+
+
+def install_term_handlers():
+    """The signals a process can catch that end publish: each goes through _on_term (check-tree-owner boundary)."""
+    for s in (signal.SIGTERM, signal.SIGHUP):
+        signal.signal(s, _on_term)
 
 
 # RIMMANDRAKE_STRIP_HOLDER_WRITER_FROM_DOOR_TESTS: a pilot holder's unit writes the mod ledger as HOLDER.<lease>; a door
@@ -1811,6 +1817,7 @@ def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
     for the whole-tree checks, which refuse on any red."""
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import progress_guard       # a hung check ends on no progress; a slow one on a loaded machine does not
+    from selftest_own_dirs import own_dir   # a check tree that names its owner (its name is historical: not only tests)
     limit = cfg.get("timeout_s", CHECK_CAP_S)
     env = {k: v for k, v in os.environ.items() if k not in LEDGER_IDENTITY + GAME_CHOICE}
 
@@ -1830,20 +1837,21 @@ def _run_tree_checks(top, cfg, what="tree check", base=None, committed=False):
     def one(c, tree=top):
         t0 = time.monotonic()
         # a TMPDIR of the check's own, gone after: every publish ran selftest_alpha_biomes_census.py in ours, and its
-        # five git repos a run were 2,236 of the scratch cleaner's 3,836 waiting clones (2026-11-18)
-        tdir = tempfile.mkdtemp(prefix="publish_check_")
-        try:
-            argv = [sys.executable, os.path.join(tree, c["test"])] + [str(x) for x in c.get("args") or []]
-            rec = os.path.join(tdir, "door_reads.rec") if base is not None else None
-            e = dict(env, TMPDIR=tdir)
-            r = progress_guard.run(argv, cwd=tree, cap_s=limit, env=_door_reads().hook_env(e, tree, rec) if rec else e)
-            if rec and r.returncode == 0:
-                keep_reads(c, tree, rec)
-            return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
-        except subprocess.TimeoutExpired as e:      # a Hung of the guard: it names which bound ended the check
-            return c, None, str(e), time.monotonic() - t0
-        finally:
-            shutil.rmtree(tdir, ignore_errors=True)
+        # five git repos a run were 2,236 of the scratch cleaner's 3,836 waiting clones (2026-11-18). It carries this
+        # process as its owner, so a publish killed past its clean-up (SIGKILL) has its trees removed by the next
+        # publish (design/specs/2026-11-27-check-tree-owner/boundary.md); signals=False keeps _on_term
+        with own_dir("publish_check", prefix="publish_check_", signals=False) as tdir:
+            try:
+                argv = [sys.executable, os.path.join(tree, c["test"])] + [str(x) for x in c.get("args") or []]
+                rec = os.path.join(tdir, "door_reads.rec") if base is not None else None
+                e = dict(env, TMPDIR=tdir)
+                r = progress_guard.run(argv, cwd=tree, cap_s=limit,
+                                       env=_door_reads().hook_env(e, tree, rec) if rec else e)
+                if rec and r.returncode == 0:
+                    keep_reads(c, tree, rec)
+                return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
+            except subprocess.TimeoutExpired as e:      # a Hung of the guard: it names which bound ended the check
+                return c, None, str(e), time.monotonic() - t0
     t0 = time.monotonic()
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
         res = list(ex.map(one, cfg["checks"]))
@@ -2066,7 +2074,7 @@ def main(argv=None):
     # Progress goes to stdout and REFUSED to stderr. Under a pipe stdout is block-buffered, so `2>&1 | tail` printed the
     # progress AFTER the refusal and hid it (RIMMANDRAKE_FLUSH_PUBLISH_OUTPUT_SO_TAIL_SHOWS_REFUSAL): line-buffer it.
     sys.stdout.reconfigure(line_buffering=True)
-    signal.signal(signal.SIGTERM, _on_term)
+    install_term_handlers()
     msg = a.message
     if a.file:
         msg = sys.stdin.read() if a.file == "-" else open(a.file).read()

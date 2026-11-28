@@ -11,11 +11,15 @@ import json
 import os
 import shutil
 import sys
-import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-TMP = tempfile.mkdtemp(prefix="wrong_check_")
+sys.path.append(os.path.join(HERE, "..", "Utils"))
+import selftest_own_dirs  # noqa: E402
+# Owned by this process, not by main(): four selftests import this module for its fixtures, and each run left its tree
+# (181 wrong_check_ trees, 521 k entries, under ~/.seat-tmp/BENCH on 2026-11-27). It goes at exit, on SIGTERM/SIGHUP,
+# or, after a SIGKILL, at the next import (design/specs/2026-11-27-check-tree-owner/boundary.md).
+TMP = selftest_own_dirs.own_dir_for_run("wrong_check", redirect_tmp=False)
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "_dispatcher")
 import maturation as M  # noqa: E402
 import maturation_autonomy as MA  # noqa: E402

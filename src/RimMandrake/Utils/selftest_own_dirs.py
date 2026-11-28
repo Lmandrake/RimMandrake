@@ -93,11 +93,26 @@ def reap(tag: str) -> list[str]:
     return removed
 
 
+def owner_alive(p: Path) -> bool | None:
+    """True: the marker in `p` names a process that may live; False: it names one that is provably gone; None: `p` holds
+    no readable marker (a tree made before own_dir, or not one of ours)."""
+    try:
+        ident = json.loads((Path(p) / MARK).read_text())
+    except (OSError, ValueError):
+        return None
+    if not isinstance(ident, dict) or not isinstance(ident.get("path"), str) \
+            or os.path.realpath(ident["path"]) != os.path.realpath(p):
+        return None                                   # a marker of another path: a copy, not this owner's tree
+    return alive(ident)
+
+
 @contextlib.contextmanager
-def own_dir(tag: str, dir: str | None = None):
-    """A TemporaryDirectory that a killed run cannot strand. Yields the path as a str."""
+def own_dir(tag: str, dir: str | None = None, *, prefix: str | None = None, signals: bool = True):
+    """A TemporaryDirectory that a killed run cannot strand. Yields the path as a str. `prefix` names the dir (default
+    selftest_<tag>_). signals=False leaves the process's SIGTERM/SIGHUP handlers alone: a caller with its own
+    (./publish's _on_term) keeps them."""
     reap(tag)
-    d = Path(tempfile.mkdtemp(prefix=f"selftest_{tag}_", dir=dir))
+    d = Path(tempfile.mkdtemp(prefix=prefix or f"selftest_{tag}_", dir=dir))
     ident = {"pid": os.getpid(), "start": proc_start(os.getpid()), "path": str(d), "tag": tag}
     (d / MARK).write_text(json.dumps(ident))
     reg = registry() / tag
@@ -105,7 +120,7 @@ def own_dir(tag: str, dir: str | None = None):
     entry = reg / f"{d.name}.json"
     entry.write_text(json.dumps(ident))
     saved = {}
-    if threading.current_thread() is threading.main_thread():
+    if signals and threading.current_thread() is threading.main_thread():
         def unwind(sig, _frame):
             raise SystemExit(128 + sig)
         for s in (signal.SIGTERM, signal.SIGHUP):
@@ -123,17 +138,20 @@ def own_dir(tag: str, dir: str | None = None):
 _RUN_DIRS = []
 
 
-def own_dir_for_run(tag: str) -> str:
-    """own_dir for a whole selftest process: tempfile.tempdir and TMPDIR point into it, so every bare mkdtemp of the
-    run (and of its children) lands inside, and it goes at exit, on SIGTERM/SIGHUP, or at the next run of `tag`.
-    Built for selftests that mkdtemp freely and never clean up (SELFTEST_LITTER_FIX_SEED_WALL_STRAGGLERS)."""
+def own_dir_for_run(tag: str, *, redirect_tmp: bool = True) -> str:
+    """own_dir for a whole selftest process: it goes at exit, on SIGTERM/SIGHUP, or at the next run of `tag`. With
+    redirect_tmp, tempfile.tempdir and TMPDIR point into it, so every bare mkdtemp of the run (and of its children) lands
+    inside; built for selftests that mkdtemp freely and never clean up (SELFTEST_LITTER_FIX_SEED_WALL_STRAGGLERS).
+    redirect_tmp=False is for a module-level fixture root that other selftests import and may rmtree themselves
+    (selftest_wrong_check_fixed_in_sitting.TMP)."""
     stack = contextlib.ExitStack()
     d = stack.enter_context(own_dir(tag))
     _RUN_DIRS.append(stack)
     atexit.register(stack.close)
-    tempfile.tempdir = d
-    for k in ("TMPDIR", "TMP", "TEMP"):
-        os.environ[k] = d
+    if redirect_tmp:
+        tempfile.tempdir = d
+        for k in ("TMPDIR", "TMP", "TEMP"):
+            os.environ[k] = d
     return d
 
 
