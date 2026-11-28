@@ -130,9 +130,13 @@ def unit_alive(unit):
 def eligible(it, rx, now):
     """-> (ok, why): a ticket of `list_home.py offer` (not parked, not one mod's work) whose outcome check fails now and
     runs a selftest or an acceptance script, and that only needs offline work."""
+    import fresh_reader as FR
+
     mw = it.get("mod_work") or {}
     if mw.get("mod") or mw.get("unreadable") or it.get("mod") or str(it.get("home") or "").startswith("mod:"):
         return False, "one mod's work, or its mod reading could not be made: it waits for that mod's pipeline"
+    if FR.is_reader(it):
+        return False, "its check reads review records; the Claude lane supplies the fresh-reader brief"
     if not rx.search(str(it.get("effect") or "")):
         return False, "its check runs no selftest or acceptance script"
     if it.get("verdict") != "fails":
@@ -192,7 +196,7 @@ def plan(cfg, cst, facts, now, room_r, share_r, account, alive):
                 out["take"].append(iid)
                 row(iid, "codex_live", "Codex works it in its unit %s" % r.get("unit"))
                 continue
-        if r.get("state") == "void" and int(r.get("voids") or 0) >= max_voids:
+        if r.get("state") in ("void", "void_seen") and int(r.get("voids") or 0) >= max_voids:
             r["state"] = "stopped"      # two system failures in a row: the Claude lane takes it; the record says why
             row(iid, "codex_stopped", "%d Codex tries in a row ended with no result, the last: %s; the Claude lane "
                 "takes it" % (r["voids"], _one(r.get("why"), 200)))

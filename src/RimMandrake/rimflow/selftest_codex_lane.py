@@ -23,6 +23,7 @@ _TMP = tempfile.mkdtemp(prefix="selftest_codex_lane_")
 os.environ["RM_LIST_DISPATCH_DIR"] = os.path.join(_TMP, "list_dispatch")
 
 import codex_lane as CL  # noqa: E402
+import fresh_reader as FR  # noqa: E402
 import list_dispatch as LD  # noqa: E402
 
 NOW = 1795800000.0
@@ -30,9 +31,9 @@ CHECK = "cmd:python3 src/RimMandrake/rimflow/selftest_some_tool.py"
 
 
 def notice(why="system live at 79% (line 5%): it stays. Next: none (no account can take over: it waits for a reset)",
-           state="none", account_end=False, age_s=60, **more):
+           state="none", account_end=False, age_s=60, now=NOW, **more):
     import account_plan as AP
-    return dict({"state": state, "at": AP.iso(NOW - age_s), "account": "system", "line": 5, "pct_left": 79.0,
+    return dict({"state": state, "at": AP.iso(now - age_s), "account": "system", "line": 5, "pct_left": 79.0,
                  "why": why, "drain": False, "account_end": account_end}, **more)
 
 
@@ -111,6 +112,16 @@ def t_room_short_sends_a_proven_ticket_to_codex():
     # the room reading is what the account plan writes: the phrase it matches stays in account_plan.py
     with open(os.path.join(REPO, "src", "RimMandrake", "Utils", "account_plan.py"), encoding="utf-8") as f:
         assert CL.NO_TAKEOVER in f.read(), "account_plan.py no longer says %r: codex_lane.room reads it" % CL.NO_TAKEOVER
+
+
+def t_a_fresh_reader_ticket_stays_with_the_claude_lane():
+    sha = "da73cbc922e6053502f6a73143b74ef8d1bec958"
+    paths = ["src/RimMandrake/rimflow/codex_lane.py", "src/RimMandrake/rimflow/selftest_codex_lane.py"]
+    iid = FR.ticket_id(sha)
+    reader = item(title=FR.title(sha, paths, "another run"), effect=FR.effect(sha, paths))
+    fxo = Fx()
+    tick({iid: reader}, fxo)
+    assert fxo.codex == [] and fxo.claude == [iid], (fxo.codex, fxo.claude)
 
 
 def t_a_member_of_a_live_bundle_or_run_is_never_sent():
@@ -304,6 +315,28 @@ def t_one_try_per_ticket():
     assert rd["items"]["C"]["decision"] == "codex_waits", rd["items"]["C"]
 
 
+def t_two_failed_launches_return_the_ticket_to_claude():
+    fresh_state()
+    fxo = Fx()
+    fx = fxo.tick_fx({"A": item()})
+
+    def refused_launch(iid, job):
+        fxo.codex.append(iid)
+        return 75, "unit start refused", None
+
+    fx["codex_launch"] = refused_launch
+    for n in range(2):
+        now = NOW + 600 * n
+        fxo.room = notice(now=now)
+        rd = LD.tick(cfg(), True, fx=fx, now=now)
+        assert rd["items"]["A"]["decision"] == "codex_launch_failed", rd["items"]["A"]
+    now = NOW + 1200
+    fxo.room = notice(now=now)
+    rd = LD.tick(cfg(), True, fx=fx, now=now)
+    assert fxo.codex == ["A", "A"] and fxo.claude == ["A"], (fxo.codex, fxo.claude)
+    assert rd["counts"].get("codex_stopped") == 1, rd["counts"]
+
+
 def t_the_codex_child_reads_no_real_state():
     tmp = tempfile.mkdtemp(dir=_TMP)
     job = _job(tmp)
@@ -373,22 +406,18 @@ def t_the_scratch_clone_is_freed_when_the_patch_is_saved():
     assert os.path.isdir(other), "free_clone deleted a path that is no cx- scratch clone"
 
 
-TESTS = (t_room_short_sends_a_proven_ticket_to_codex, t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
-         t_a_result_that_fails_its_check_is_not_landed, t_his_codex_share_is_left,
-         t_a_passing_result_gets_one_sonnet_lander, t_one_try_per_ticket, t_the_codex_child_reads_no_real_state,
-         t_review_goes_by_code_review_brief, t_the_scratch_clone_is_freed_when_the_patch_is_saved)
-
-
 def main():
+    # the tests are listed here, in main(): code_review_status.py reads which tests main() runs from this list
+    tests = (t_room_short_sends_a_proven_ticket_to_codex, t_a_fresh_reader_ticket_stays_with_the_claude_lane,
+             t_a_member_of_a_live_bundle_or_run_is_never_sent, t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
+             t_a_result_that_fails_its_check_is_not_landed, t_his_codex_share_is_left,
+             t_a_passing_result_gets_one_sonnet_lander, t_one_try_per_ticket,
+             t_two_failed_launches_return_the_ticket_to_claude, t_the_codex_child_reads_no_real_state,
+             t_review_goes_by_code_review_brief, t_the_scratch_clone_is_freed_when_the_patch_is_saved)
     bad = 0
     saved = {k: os.environ.get(k) for k in CL.SANDBOX_KEYS}
     try:
-        for t in (t_room_short_sends_a_proven_ticket_to_codex, t_a_member_of_a_live_bundle_or_run_is_never_sent,
-                  t_room_ample_sends_none, t_a_mod_ticket_is_never_sent,
-                  t_a_result_that_fails_its_check_is_not_landed, t_his_codex_share_is_left,
-                  t_a_passing_result_gets_one_sonnet_lander, t_one_try_per_ticket,
-                  t_the_codex_child_reads_no_real_state, t_review_goes_by_code_review_brief,
-                  t_the_scratch_clone_is_freed_when_the_patch_is_saved):
+        for t in tests:
             try:
                 t()
                 print("PASS %s" % t.__name__)
@@ -403,7 +432,7 @@ def main():
                         os.environ[k] = v
     finally:
         shutil.rmtree(_TMP, ignore_errors=True)
-    print("%d of %d pass" % (len(TESTS) - bad, len(TESTS)))
+    print("%d of %d pass" % (len(tests) - bad, len(tests)))
     return 1 if bad else 0
 
 

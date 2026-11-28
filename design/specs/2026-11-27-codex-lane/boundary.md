@@ -49,6 +49,9 @@ fake Codex meter, a fake Codex runner, a fake check and a fake launcher.
 - **a member of a live bundle or run is never sent**: a ticket that is a member of a live work bundle, or that a live
   run works, is not sent to Codex; nor is any ticket while the run records could not be read. The Claude lane's own row
   for it says which (`in_bundle`, `live`, `blind`).
+- **a fresh reader ticket stays with the claude lane**: a ticket that reads a fix (`fresh_reader.is_reader`) is never
+  sent to Codex, whatever file names its check reads; its check reads review records, and the Claude lane supplies the
+  reader's brief.
 - **room ample sends none**: when the room is not short, or the notice is missing or stale (could not look), no
   ticket goes to Codex, and every ticket stays with the Claude lane.
 - **a mod ticket is never sent**: a ticket that is one mod's work (`mod_work`, a `mod:` home or a mod folder in its
@@ -62,6 +65,8 @@ fake Codex meter, a fake Codex runner, a fake check and a fake launcher.
 - **one try per ticket**: a ticket gets at most one Codex try; a try that a system failure ended (its unit gone
   before it wrote a result) is voided and does not count; at most `max_live` Codex units live at once, and a ticket
   past them waits for a Codex slot.
+- **two failed launches return the ticket to claude**: a ticket whose Codex launch is refused twice in a row (the
+  state `void_seen` included) is `stopped` at `max_voids_per_item` and goes to the Claude lane; no tick sends it again.
 - **the codex child reads no real state**: the Codex child runs with the Maturation and Dispatcher state paths
   pinned to a sandbox folder of its job (lesson of 2026-11-17: a Codex builder reached the real Dispatcher state).
 - **the scratch clone is freed when the patch is saved**: when a work unit ends (built, failed or void), it deletes
