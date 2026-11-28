@@ -1,0 +1,2 @@
+A sheet row whose decision equals its prefill, with no 'at' stamp and no note, is the sheet's default, not the owner's pick. Before you call a value 'his keep' from a .decisions.json, check the row's 'at'/'decidedAt' stamp and compare the decision to 'prefill'. The RUT_FleetFlier card called two prefill A values 'kept A twice'. Also: one blanket sentence ('accept the newly redone base standing creatures') stamped 310 art keep rulings; such a keep is not a choice between two looks.
+item: RIMMANDRAKE_READ_FLEETFLIER_LOOK_AGAINST_HIS_WORDS_BEFORE_SHOWING
