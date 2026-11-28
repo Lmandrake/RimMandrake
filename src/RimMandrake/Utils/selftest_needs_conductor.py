@@ -117,6 +117,20 @@ def t_held_mod_lines_wait():
     for bad in ("DIVERGING", "is HELD", "has run 4 times", "HeldMod", "OffMod", "JournalHeld"):
         assert bad not in s, "a held mod's line %r is a need: %s" % (bad, s)
     assert any("DIVERGING" in x for x in rec.get("HeldMod", [])), rec
+    # the same through the real reading: maturation_dispatch.reading over rows as held_rows (owner hold) and the pipe
+    # switch (control_off) make them, so the fixture's klass is the one the producer writes
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
+    import maturation_dispatch as MD
+    rows = [{"mod": "HeldMod", "stage": "in_game", "live": [], "decision": "owner_hold", "klass": "held",
+             "status": "HELD", "why": "HELD"},
+            {"mod": "OffMod", "stage": "offline_build", "live": [], "decision": "control_off", "klass": "held",
+             "status": "off", "why": "off"}]
+    real = MD.reading({}, rows, NOW - 60)
+    real["needs_conductor"] = list(rd["needs_conductor"])
+    co2, _, _ = needs([mod("HeldMod", "6", runs), mod("OffMod", "3", [run("u-off2", NOW - 4 * H, "3")])], real)
+    s2 = joined(co2)
+    assert "HeldMod" not in s2 and "OffMod" not in s2, "a held or off mod's line is a need through the real " \
+        "reading (klass %s): %s" % ({k: v.get("klass") for k, v in real["mods"].items()}, s2[:300])
 
 
 def t_hand_acts_one_line():

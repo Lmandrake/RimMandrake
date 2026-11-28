@@ -4048,7 +4048,7 @@ def reading(cfg, rows, now):
                          if r.get("decision") == "launched"],
             "needs_conductor": [r["need"] for r in rows if r.get("need")],
             "mods": {r["mod"]: {k: r.get(k) for k in ("decision", "why", "stage", "owed", "refused", "live",
-                                                       "idle_min", "stage_tokens", "cycle", "visit", "exit",
+                                                       "idle_min", "stage_tokens", "cycle", "visit", "exit", "klass",
                                                        "stop_lifted", "batch", "launch", "pipeline_paused")}
                      for r in rows}}
 
