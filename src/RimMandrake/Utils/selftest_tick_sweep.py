@@ -99,18 +99,38 @@ def t_swallowed_exception_found():
     check("swallowed_exception_found: a TypeError the tick caught is an error case",
           bool(got) and "TypeError" in str(got[0].get("why")), "%s; %s" % (got[:1], line(out)))
 
+    def raise_on_publish(item):
+        raise RuntimeError("sweep fixture failed to publish")
+
+    out = run("stale.steward_gives_up.0", "relaunch_loop", fx={"publish": raise_on_publish})
+    got = stuck_of(out, "error")
+    check("swallowed_exception_found: a RuntimeError the tick caught is an error case",
+          any(c["what"] == "Ek" and "RuntimeError: sweep fixture failed to publish" in c["why"] for c in got),
+          "%s; %s" % (got[:1], line(out)))
+
 
 def t_world_calls_are_refused_and_counted():
+    def connect_ex():
+        # If the guard misses this call, there is no server at the scratch path.
+        with socket.socket(socket.AF_UNIX) as client:
+            return client.connect_ex(str(TS.ROOT / "no-server.sock"))
+
     del TS.TOUCHED[:]
-    errs = []
-    for f in (lambda: subprocess.run(["true"], timeout=5),     # budget: fixture (refused before it starts)
-              lambda: socket.create_connection(("127.0.0.1", 9), timeout=1)):  # budget: fixture (refused, never sent)
+    calls = (
+        ("subprocess", lambda: subprocess.run(["true"], timeout=5)),  # budget: fixture (refused before it starts)
+        ("socket", lambda: socket.create_connection(("127.0.0.1", 9), timeout=1)),  # budget: fixture (never sent)
+        ("connect_ex", connect_ex),
+        ("address lookup", lambda: socket.getaddrinfo("127.0.0.1", 9, flags=socket.AI_NUMERICHOST)),
+    )
+    for name, call in calls:
+        count = len(TS.TOUCHED)
+        error = None
         try:
-            f()
+            call()
         except OSError as e:
-            errs.append(str(e))
-    check("world_calls_are_refused_and_counted: a process and a socket are each refused and counted",
-          len(errs) == 2 and len(TS.TOUCHED) == 2, "%s %s" % (errs, TS.TOUCHED))
+            error = str(e)
+        check("world_calls_are_refused_and_counted: %s refused and counted" % name,
+              error is not None and len(TS.TOUCHED) == count + 1, "%s %s" % (error, TS.TOUCHED[count:]))
     del TS.TOUCHED[:]
 
 
@@ -172,15 +192,17 @@ def _planted_globally(name):
 
 @contextlib.contextmanager
 def _blind_world():
-    """The guard that refuses world calls is taken off: nothing is refused, nothing counted."""
-    TS.subprocess.Popen.__init__ = TS._POPEN_INIT
-    conn = TS.socket.socket.connect
-    TS.socket.socket.connect = lambda self, addr: (_ for _ in ()).throw(OSError("refused, not counted (red run)"))
+    """Hide world calls from the counter while keeping the refusal in place."""
+    class UncountedCalls(list):
+        def append(self, detail):
+            pass
+
+    old = TS.TOUCHED
+    TS.TOUCHED = UncountedCalls()
     try:
         yield
     finally:
-        TS.subprocess.Popen.__init__ = TS._refuse_popen
-        TS.socket.socket.connect = conn
+        TS.TOUCHED = old
 
 
 @contextlib.contextmanager
@@ -197,7 +219,7 @@ def _good_stub():
 
 
 RED = [
-    (t_world_calls_are_refused_and_counted, "the world guard off", _blind_world),
+    (t_world_calls_are_refused_and_counted, "world calls uncounted", _blind_world),
     (t_mod_resting_after_pass_keeps_open_tickets_found, "unplanted", lambda: _unplanted("rest")),
     (t_refused_load_counted_as_visit_failure_found, "unplanted", lambda: _unplanted("refused")),
     (t_deploy_given_to_a_steward_that_may_not_stop_the_game_found, "unplanted", lambda: _unplanted("steward_deploy")),

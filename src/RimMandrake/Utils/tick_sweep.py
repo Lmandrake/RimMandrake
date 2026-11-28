@@ -26,8 +26,6 @@ import datetime
 import json
 import os
 import re
-import socket
-import subprocess
 import sys
 import tempfile
 import time
@@ -37,7 +35,8 @@ HERE = Path(__file__).resolve().parent
 RIMFLOW = HERE.parent / "rimflow"
 ROOT = Path(tempfile.mkdtemp(prefix="tick_sweep_"))
 # the scratch world, set before the tick's code is imported (several modules read their folders at import)
-_ENV = {"RM_MATURATION_DISPATCH_DIR": "state", "RM_CONTROL_DB": "control.db", "RM_DISPATCHER_STATE": "dispatcher",
+_ENV = {"RM_MATURATION_DISPATCH_DIR": "state", "RM_WORK_BUNDLE_DIR": "state/work_bundle",
+        "RM_CONTROL_DB": "control.db", "RM_DISPATCHER_STATE": "dispatcher",
         "RM_REFUSAL_DIR": "refusals", "RM_OPS_WATCH_DIR": "ops_watch", "RM_JUDGE_CALIBRATION": "no_calibration.json",
         "RM_OWNER_HOLD_FILE": "owner_hold.json", "MATURATION_BRIEF_DIR": "briefs", "RM_LIST_DISPATCH_DIR": "list_dispatch",
         "RIMFLOW_LEDGER": "ledger.jsonl"}
@@ -47,19 +46,24 @@ for _k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE", "RM_LIST
 for _p in (str(HERE / "testq"), str(HERE), str(RIMFLOW)):
     sys.path.insert(0, _p)
 
-# The world is never touched: every process and socket the real code opens is refused and counted.
+# Audit the operations before Python hands them to the OS, including socket creation and DNS lookup.
 TOUCHED = []
-_POPEN_INIT = subprocess.Popen.__init__
+WORLD_EVENTS = {
+    "subprocess.Popen", "os.system", "os.exec", "os.fork", "os.forkpty", "os.posix_spawn", "os.startfile",
+    "os.startfile/2", "_posixsubprocess.fork_exec",
+    "socket.__new__", "socket.bind", "socket.connect", "socket.sendto", "socket.sendmsg",
+    "socket.getaddrinfo", "socket.gethostbyname", "socket.gethostbyaddr", "socket.getnameinfo",
+}
 
 
-def _refuse_popen(self, args, *a, **k):
-    TOUCHED.append(args if isinstance(args, str) else " ".join(str(x) for x in args))
-    raise OSError("tick_sweep: no process may start (the world is stood in)")
+def _refuse_world_call(event, args):
+    if event in WORLD_EVENTS:
+        detail = "%s %r" % (event, args[0]) if event == "subprocess.Popen" else event
+        TOUCHED.append(detail)
+        raise OSError("tick_sweep: refused " + detail)
 
 
-def _refuse_connect(*a, **k):
-    TOUCHED.append("socket connect %r" % (a[1:],))
-    raise OSError("tick_sweep: no network")
+sys.addaudithook(_refuse_world_call)
 
 
 import control as C  # noqa: E402
@@ -74,8 +78,8 @@ import visit_feed as VF  # noqa: E402
 import modledger as ML  # noqa: E402
 import role_launch as RL  # noqa: E402
 
-subprocess.Popen.__init__ = _refuse_popen
-socket.socket.connect = _refuse_connect
+if TOUCHED:
+    raise RuntimeError("tick_sweep: imports attempted world calls: " + ", ".join(TOUCHED))
 
 DAY = 24 * 3600
 STEP_S = 600            # a step every 10 min: the tick runs every 60 s live; 10 min keeps a day at 144 ticks (measured
@@ -406,9 +410,9 @@ SET_PAUSES = ("held", "no_cap", "blind_off", "ingame_off", "steward_off", "disab
               "owner_hold", "pipeline_paused", "control_off")
 
 
-# a Python exception the tick caught and wrote into a row's why (it turns any raise into a launch_failed / repairing text)
-ERROR_RE = re.compile(r"\b(TypeError|AttributeError|KeyError|NameError|ValueError|IndexError|AssertionError|"
-                      r"UnboundLocalError|ZeroDivisionError|ModLedgerError)\b")
+# The tick formats a caught exception as "ClassName: message", sometimes inside a longer reason.
+ERROR_RE = re.compile(r"\b(?:[A-Z]\w*(?:Error|Exception)|Exception(?:Group)?|Stop(?:Async)?Iteration|"
+                      r"TimeoutExpired|Unreadable):")
 
 
 def told(row):
