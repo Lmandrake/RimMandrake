@@ -8,7 +8,25 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
-## From Fri 2026-11-27, about 9:47 AM PST: one advancing mod; pipeline ticket cleanup first (block 12, on top)
+## From Fri 2026-11-27, 9:50 PM PST: pipeline upgrades and fixes first, work bundles large; design talk behind them (block 13, on top)
+
+His words (ledger, owner-said on `RIMMANDRAKE_ALERT_HIM_WHEN_PIPELINE_REPAIRS_END_HE_ASKED`): *"I still want to make sure
+that the Workshop Pipeline and the Maturation Pipeline upgrades and fixes have top priority, work bundles... all of that.
+Alert me when the pipeline repairs are complete."* His words of the same evening (owner-said on
+`RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY`): *"PLEASE PLEASE do all the tickets that work bundles need to
+succeed (getting old tickets ready for them etc.) and then work in LARGE BUNDLES. It's critical."* The blocks below stay in
+force after this block.
+
+1. **The ticket lane and the mod pipeline are repaired, and the lane works in large bundles**, week of 2026-11-23:
+   `RIMMANDRAKE_FILL_BUNDLES_BY_HOME_HOLD_MEDIAN_ONE_TODAY` (bundles by home), `RIMMANDRAKE_SWITCH_OFF_LANE_GAME_TICKETS_CROWN_SHADOW_RAN`
+   (no game work on the lane), `OPS_RESTART_UNSTICK_BENCH_YCVY_ZEXY` (the restart alarm). When pipeline work and any other
+   work compete for a run slot, an account or a game, this goal's work goes first.
+2. **One mod advances: FlowWorks** (block 12, goal 2, unchanged).
+3. **Design text that he ordered the same evening, behind goals 1 and 2**, week of 2026-11-23: Direct Sun with tree shade
+   and mountain shade (`RIMMANDRAKE_ADMIT_DIRECT_SUN_WITH_TREE_AND_MOUNTAIN_SHADE`), and the two Pre-Design Concepts that he
+   picked (`RIMMANDRAKE_FLESH_OUT_UTILITY_CREATURES_AND_SHARED_SPOTS_HIS_PICK`). Design text only; no build starts.
+
+## From Fri 2026-11-27, about 9:47 AM PST: one advancing mod; pipeline ticket cleanup first (block 12)
 
 His words (ledger, owner-said on `RIMMANDRAKE_SWEEP_PIPELINE_TICKETS_HE_ORDERED_ONE_MOD_ONLY`): *"Please gracefully
 throttle down game development to a single advancing mod. Refocus on pipeline ticket cleanup."* The blocks below stay
