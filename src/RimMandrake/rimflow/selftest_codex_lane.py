@@ -120,8 +120,17 @@ def t_a_fresh_reader_ticket_stays_with_the_claude_lane():
     iid = FR.ticket_id(sha)
     reader = item(title=FR.title(sha, paths, "another run"), effect=FR.effect(sha, paths))
     fxo = Fx()
-    tick({iid: reader}, fxo)
+    # The Claude lane's brief for a reader ticket reads each page's states (fresh_reader.pages), and the real read RUNS
+    # the tests file it names: here that is this file, which would run itself without end (368 copies and an OOM kill
+    # in a publish's tree check, 2026-11-28). So the page read is faked, and the test says it was asked.
+    asked, real = [], FR.pages
+    FR.pages = lambda ps, runner=None: asked.append(list(ps)) or {}
+    try:
+        tick({iid: reader}, fxo)
+    finally:
+        FR.pages = real
     assert fxo.codex == [] and fxo.claude == [iid], (fxo.codex, fxo.claude)
+    assert asked == [paths], "the reader brief read the pages through fresh_reader.pages once: %r" % (asked,)
 
 
 def t_a_member_of_a_live_bundle_or_run_is_never_sent():
