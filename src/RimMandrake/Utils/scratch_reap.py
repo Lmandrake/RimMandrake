@@ -3131,6 +3131,45 @@ def run(a, sd: Path) -> int:
     return 1 if failures else 0
 
 
+def take_lock(sd: Path, apply: bool):
+    """-> run.lock, open and held, with this run's mode and pid written in it; or None when this run stands down.
+
+    An apply run waits for a DRY run that holds the lock, so a dry run started by hand never costs the hourly apply
+    run its slot (a dry run writes no last_run.json: on 2026-11-27 one skipped slot aged that reading past the 2 h line
+    of three live promises, LIVE_RESTORE_RM_SCRATCH_REAP). An apply run stands down for an apply run; a dry run stands
+    down for any run. A holder that names no mode (an older reaper, or the moment before a holder writes its name) is
+    read as an apply run. The wait has no bound of its own: a hung dry run is caught by the unit's TimeoutStartSec and by
+    the age of last_run.json, as a hung apply run is."""
+    fd = os.open(sd / "run.lock", os.O_RDWR | os.O_CREAT, 0o664)     # never "w": that would erase the holder's name
+    lock = os.fdopen(fd, "r+")
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        lock.seek(0)
+        holder = lock.read().split()
+        if not (apply and holder[:1] == ["dry"]):
+            print("another reaper run holds the lock" + (f" ({' '.join(holder)})" if holder else ""))
+            lock.close()
+            return None
+        print(f"a dry run ({' '.join(holder)}) holds the lock: this apply run waits for it to end", flush=True)
+        fcntl.flock(lock, fcntl.LOCK_EX)
+    lock.seek(0)
+    lock.truncate()
+    lock.write(f"{'apply' if apply else 'dry'} {os.getpid()}\n")
+    lock.flush()
+    return lock
+
+
+def release_lock(lock) -> None:
+    """Erase this run's name from run.lock, then let the lock go."""
+    try:
+        lock.seek(0)
+        lock.truncate()
+        lock.flush()
+    finally:
+        lock.close()
+
+
 def main(argv=None) -> int:
     global _CORPUS, _VOCAB, _MIRROR_TIPS, _CANON
     _CORPUS = _VOCAB = _MIRROR_TIPS = _CANON = None
@@ -3149,12 +3188,10 @@ def main(argv=None) -> int:
         m = measure(time.time(), None, last_record(sd))
         print(json.dumps({"measures": m, "problems": judge_sanity("start", m)}, indent=1))
         return 0
-    with open(sd / "run.lock", "w") as lock:
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except OSError:
-            print("another reaper run holds the lock")
-            return 0
+    lock = take_lock(sd, a.apply)
+    if lock is None:
+        return 0
+    try:
         token = _CHILD_TIMES.set(None if a.apply else {})
         try:
             return run(a, sd)
@@ -3166,6 +3203,8 @@ def main(argv=None) -> int:
             raise
         finally:
             _CHILD_TIMES.reset(token)
+    finally:
+        release_lock(lock)
 
 
 if __name__ == "__main__":
