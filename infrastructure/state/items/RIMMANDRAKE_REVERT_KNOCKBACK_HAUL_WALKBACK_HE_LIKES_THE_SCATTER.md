@@ -22,3 +22,32 @@
 **Picked:** Both stand in it
 **Its description:** Why: no extra code. The base game already lets two workers stand in one square while they work, so both benches run at once. Costs: two colonists drawn on top of each other.
 **Other options:** One waits (Recommended) · Decide after a look
+
+## The work
+
+The owner's card of 2026-11-27 9:51 PM PST picked "Leave it for hauling": a thrown colonist takes its next job by
+priority; the stack waits for any hauler, as in the passed 0.2.0. No new version.
+
+## spec
+
+- Remove the code of commit 11fffbf13b (`RM_PawnFlyerPatches.ResumeHaul`, the resume call in
+  `RM_ThingFlyer_Knockback.Land`). Rebuild the DLL with its `.srchash`.
+- Remove `selftest_explosiveknockback_resume_after_stack_lands.py` and each place that names it.
+- Remove the "resumed" requirement from the verdict of scene `sc_pawn_arc` (proof code and scripts that read it).
+- Correct "Correction after the 0.2.0 pass" in `design/concepts/ExplosiveKnockback/version/next_version/README.md`.
+- One `record:` line on `design/concepts/ExplosiveKnockback/version/polish.md`.
+
+## verify
+
+- Offline selftest "a thrown colonist is not sent back to its haul": red on the walk-back code, green after.
+- Live: one run of `sc_pawn_arc` on a free game, or UNRUN with its command.
+
+## criteria
+
+- The selftest above passes, and is seen red on a planted walk-back.
+- `sc_pawn_arc` gives the same verdict when the colonist walks away from its stack.
+
+## refs
+file: src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs
+file: src/RimMandrake/ExplosiveKnockback/Source/RM_ThingFlyer_Knockback.cs
+file: src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs
