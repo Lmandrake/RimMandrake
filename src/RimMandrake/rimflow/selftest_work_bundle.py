@@ -1877,6 +1877,14 @@ def t_fresh_reader_tickets_fold():
     _bh("t_fresh_reader_tickets_fold")
 
 
+def t_the_live_replay_models_the_live_routes():
+    _bh("t_the_live_replay_models_the_live_routes")
+
+
+def t_the_live_replay_reads_close_to_the_lane():
+    _bh("t_the_live_replay_reads_close_to_the_lane")
+
+
 
 def main():
     for t in [t_sort_runs_each_members_test_and_closes_only_green, t_sort_dry_closes_nothing, t_members_are_one_system,
@@ -1909,7 +1917,8 @@ def main():
               t_a_code_bundle_gets_one_fresh_read, t_every_lane_ticket_has_a_real_home,
               t_a_home_holds_until_five_or_the_hold_time, t_the_replay_of_nov_27_reads_a_median_of_five,
               t_no_ticket_waits_past_the_hold_time, t_an_urgent_ticket_never_waits,
-              t_the_lane_holds_before_its_room_gates, t_fresh_reader_tickets_fold]:
+              t_the_lane_holds_before_its_room_gates, t_fresh_reader_tickets_fold,
+              t_the_live_replay_models_the_live_routes, t_the_live_replay_reads_close_to_the_lane]:
         print("-- %s" % t.__name__)
         try:
             t()

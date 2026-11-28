@@ -5,7 +5,8 @@ Item: `RIMMANDRAKE_BATCH_ONE_MODS_OPEN_WORK_INTO_ONE_RUN_PIPELINE_SPLITS_PER_TIC
 same system again (design section 1).
 
 Code: `src/RimMandrake/rimflow/work_bundle.py` (all of it), `src/RimMandrake/rimflow/roles/builder.md` (its Work Bundle setting),
-`src/RimMandrake/rimflow/roles/list_onboard.md` (the onboarding run), the
+`src/RimMandrake/rimflow/roles/list_onboard.md` (the onboarding run), `src/RimMandrake/rimflow/bundle_replay.py` (the
+offline simulation of the lane's bundling), the
 bundle hooks in `list_dispatch.py` (`gather`: `work_bundle.overlay`; `decide`: the `in_bundle` and `bundle_refused`
 rows and `work_bundle.group`; `execute`: a lead row launches its bundle), the bundle branch of
 `left_open_continue.py` (`plan`, `recheck`, `resume_choice`, `header`, `run`, `at_finish`), the `bundle` verb of
@@ -266,7 +267,8 @@ the Maturation Pipeline's mod bundles 2 (0). Code: `list_home.reader_home`, the 
 `bundle_replay.py` over the fixture `arrivals_2026-11-23_to_27.json` beside this page. Tests: `selftest_bundle_hold.py`,
 one function per promise below, by name. Offline simulation: yes, `bundle_replay.py` replays the real arrivals of Nov 23
 to 27 through the real `system_of`, `group` and `hold_systems` with a fake clock; it does not model restarts, a run's own
-closes, the checks (every arrival is ready) or the onboarding route's old-ticket filter.
+closes, the checks (every arrival is ready) or the onboarding route's old-ticket filter. `replay_live` models the live
+routes (the section below).
 
 - **every-lane-ticket-has-a-real-home.** A fresh-reader ticket's system is the home of the area of its first file:
   `pipeline:read-rimflow`, `pipeline:read-utils`, else `pipeline:read-other` (`list_home.reader_home`), never
@@ -302,6 +304,65 @@ closes, the checks (every arrival is ready) or the onboarding route's old-ticket
   restart's brief names it, and the record's members take it when the restart starts (`note_restart`). A waiting ticket
   that closed meanwhile is not taken. A bundle that ends takes none: the home's next bundle starts it. The progress guard
   counts the old members only. Before 2026-11-28 each such ticket started a second bundle of the home on the same files.
+
+### The live routes in the replay (item RIMMANDRAKE_BUNDLE_SHAPE_ROWS_BY_HOME_HOLD_HELD_NOTHING)
+
+Why: the check of 2026-11-27 (`large_bundles_check_2026-11-27.md`) found that the hold acts on no live launch: a Shape
+row is never held (`list_dispatch._decide`, the `not (judge or shape ...)` gate), an onboarding run reads no hold
+(`onboard_step`), and a ticket of a `cause:` or `item:` home starts as a Shape run of its own. The replay above holds
+every arrival, so its median of 5 came from the reader tickets that the code review pause holds. Code:
+`bundle_replay.replay_live`, `live_route`, `RULES`, `build_live`, `live_lane`; the frozen fixture
+`arrivals_live_2026-11-23_to_27.json` beside this page (1291 arrivals: each ticket filed 2026-11-23 to 27 PST, from the
+ledger at 8b1c582d0f, with the times of its check, route, claim, home and close; plus 166 old tickets that an onboarding
+run took; plus the live lane's own figures of each day). Offline simulation: yes, the real `system_of`, `urgent_why` and
+`hold_systems` with a fake clock, as above; it does not model restarts, reruns of one ticket, judge and lane-cause runs,
+tickets filed before 2026-11-23 that were not onboarded, or the load and account gates.
+
+The measurement (MEASURED, 2026-11-27 11:55 PM PST; `python3 src/RimMandrake/rimflow/bundle_replay.py --live --sweep
+--day <day>`). The code review tickets and the game work are left out, as the two pauses stand. Each run is one bundle;
+a Shape run of its own is a bundle of 1.
+
+| rule | hold | Nov 25 runs / median / singles | Nov 26 | Nov 27 | longest wait |
+|---|---|---|---|---|---|
+| `live` (the code of ed14a18611) | 4 h | 55 / 1 / 53 | 49 / 1 / 38 | 44 / 1 / 41 | 4.7 h |
+| `no_item_hold` (an `item:` bundle is not held) | 4 h | 55 / 1 / 53 | 49 / 1 / 38 | 44 / 1 / 41 | 4.7 h |
+| `shape_by_home` (the Shape rows of one home in one tick are one run; the hold applies to them and to an onboarding run; no `item:` hold) | 4 h | 49 / 1 / 45 | 45 / 1 / 33 | 39 / 1 / 31 | 4.2 h |
+| `shape_by_home_cause` (also: a `cause:` home onboards its old tickets) | 4 h | 49 / 1 / 45 | 45 / 1 / 33 | 39 / 1 / 31 | 4.2 h |
+| `shape_by_home_nohold` (Shape rows grouped, not held) | 4 h | 54 / 1 / 51 | 49 / 1 / 38 | 44 / 1 / 41 | 4.7 h |
+
+Each rule at each hold from 0 to 24 h reads median 1 on each day. The replay reads close to the live lane: on Nov 27,
+with the game work kept in (the game pause began that morning), the `live` rule reads 56 runs, median 1, 53 singles (95%);
+the lane read 70 launches, median 1, 64 singles (91%). The lane's 14 more launches are reruns, judge and lane-cause runs
+and tickets older than the fixture.
+
+**The pick: no rule is built.** No rule raises the median above the present reading of 1, so none keeps the three
+promises (an urgent ticket never waits; no ticket waits longer than the hold time; one home never has two bundles on the
+same files) and gives more. The reason is the arrivals, not the rule. With one bundle per system for a whole day (the
+largest any rule of one system per bundle can make), the arrivals read median 1: Nov 25 44 systems, 40 of them one
+ticket; Nov 26 35 and 25; Nov 27 33 and 28. A home walked up the whole chain of causes (`list_home.rule_home`; the
+system has one hop on purpose, above) still reads median 1: Nov 27 27 systems, 20 of one ticket. `shape_by_home` at 4 h
+cuts the singles of Nov 27 from 41 to 31 and the runs from 44 to 39, but the median stays 1. The lever that the numbers
+show is the code review pause (median 5 with the reader tickets, 1 without; `large_bundles_check_2026-11-27.md` §5), which
+is his order.
+
+The wait `shape_grace_h` (24 h) guards a danger that happens: a Shape run spent on a ticket that its filer is about to
+close or claim. Of the 415 tickets that a window filed (no `role_unit`: the Conductor, his seat and programs outside a
+helper) on 2026-11-23 to 27 with no check, 293 closed within 24 h and 217 were closed, claimed, checked or routed within
+1 h (MEASURED from the ledger, the same fixture). So the wait stays for a ticket that the Conductor files; its doc in
+`list_dispatch.json` names the danger and this evidence.
+
+- **the-live-replay-models-the-live-routes.** `replay_live` makes a ticket with no check unseen for `shape_grace_h`, then
+  a Shape row; under the rule `live` a Shape row and an onboarding run are never held, the old and Shape tickets of a
+  `pipeline:` home are one onboarding run, a `cause:` or `item:` Shape row is a run of its own, an old ticket of a
+  `cause:` home never starts, a checked bundle (an `item:` one too) waits the hold, and an `OPS_` ticket starts at once
+  with its home's ready tickets. A ticket that its filer claimed or closed first never arrives; the code review switch
+  leaves out a reader ticket. Under `shape_by_home` the Shape rows of one `cause:` home are one run held for the hold,
+  and an `item:` ticket is never held. An empty tick starts nothing. Seen red on the parent (no `replay_live`) and on
+  seven planted faults, each caught: no grace, the hold on onboarding, no urgent rule, an `item:` hold, no Shape grouping,
+  a filer's claim ignored, the review switch ignored. Test: `t_the_live_replay_models_the_live_routes`.
+- **the-live-replay-reads-close-to-the-lane.** On the frozen fixture, the `live` rule's replay of Nov 27 reads the live
+  lane's median (1) and its share of singles within 10 points, and one bundle per system for a whole day reads median 1
+  on Nov 25, 26 and 27. Test: `t_the_live_replay_reads_close_to_the_lane`.
 
 The page's line on the size of the bundles (the median members and the singles of the last 24 h) is a promise of
 `design/specs/2026-11-22-non-mod-pipeline-section/boundary.md`, the page of `maturation_nonmod.py`.

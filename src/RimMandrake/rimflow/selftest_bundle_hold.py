@@ -150,10 +150,111 @@ def t_fresh_reader_tickets_fold():
     chk("covers R1, R2" in WB.brief(rec, items, {}), "the bundle's brief carries the folded reads")
 
 
+# ---- the live routes (item RIMMANDRAKE_BUNDLE_SHAPE_ROWS_BY_HOME_HOLD_HELD_NOTHING) ----------------------------------
+
+T0 = 1_796_000_000 - 1_796_000_000 % 600       # a tick boundary; no real arrival is near it
+
+
+def _arr(iid, filed=T0, **kw):
+    a = {"id": iid, "filed": filed, "title": "t", "home": None, "home_at": 0, "caused_by": None, "parent_home": None,
+         "parent_home_at": 0, "check_at": None, "route_at": None, "claim_at": None, "closed_at": None, "mod": None,
+         "lane_taken": False, "old": False, "window": True}
+    a.update(kw)
+    return a
+
+
+def _live(arrivals, rule="live", hold_s=4 * 3600, **kw):
+    import bundle_replay as R
+    return R.replay_live({"bundle_s": 2700, "arrivals": arrivals}, hold_s, 5, rule=rule, **kw)
+
+
+def _bundle_of(res, iid):
+    return next((b for b in res["bundles"] if iid in b["members"]), None)
+
+
+def t_the_live_replay_models_the_live_routes():
+    import bundle_replay as R
+    g = R.GRACE_S
+    arr = [_arr("PIPE_ALONE_ONE_TICKET_HOME", home="pipeline:alone"),
+           _arr("PIPE_MANY_FIRST_OF_THREE", home="pipeline:many"), _arr("PIPE_MANY_SECOND_OF_THREE", home="pipeline:many"),
+           _arr("PIPE_MANY_THIRD_OF_THREE", home="pipeline:many"),
+           _arr("OPS_PLANTED_ALARM_OF_A_SMALL_HOME", home="pipeline:ops-home", check_at=T0),
+           _arr("OPS_HOME_CHECKED_COMPANION_TICKET", home="pipeline:ops-home", check_at=T0),
+           _arr("HELD_HOME_CHECKED_LONE_TICKET", home="pipeline:held", check_at=T0),
+           _arr("CAUSE_CHILD_FIRST_OF_TWO", caused_by="CAUSE_PARENT_WITH_NO_HOME"),
+           _arr("CAUSE_CHILD_SECOND_OF_TWO", caused_by="CAUSE_PARENT_WITH_NO_HOME"),
+           _arr("ITEM_LONE_TICKET_NO_HOME_NO_CAUSE"), _arr("ITEM_CHECKED_TICKET_NO_HOME_NO_CAUSE", check_at=T0),
+           _arr("FILER_CLOSED_IT_WITHIN_THE_HOUR", home="pipeline:alone", closed_at=T0 + 3600),
+           _arr("FILER_CLAIMED_ITS_CHECKED_TICKET", home="pipeline:claimed", check_at=T0, claim_at=T0 + 60),
+           _arr("RIMMANDRAKE_READ_FIX_ABCDEF1234_WITH_FRESH_EYES", home="pipeline:read-utils", check_at=T0),
+           _arr("OLD_TICKET_OF_A_CAUSE_HOME", old=True, caused_by="CAUSE_PARENT_WITH_NO_HOME")]
+    res = _live(arr)
+    b = _bundle_of(res, "PIPE_ALONE_ONE_TICKET_HOME")
+    chk(b and b["members"] == ["PIPE_ALONE_ONE_TICKET_HOME"] and g <= b["at"] - T0 < g + R.TICK_S and b["route"] == "onboard",
+        "one ticket alone in its home, no check: unseen for shape_grace_h, then its home's onboarding run, not held: %s" % b)
+    b = _bundle_of(res, "PIPE_MANY_FIRST_OF_THREE")
+    chk(b and len(b["members"]) == 3 and b["at"] - T0 < g + R.TICK_S,
+        "several tickets of one home in one tick: one onboarding run, never held (live): %s" % b)
+    b = _bundle_of(res, "OPS_PLANTED_ALARM_OF_A_SMALL_HOME")
+    chk(b and set(b["members"]) == {"OPS_PLANTED_ALARM_OF_A_SMALL_HOME", "OPS_HOME_CHECKED_COMPANION_TICKET"}
+        and b["at"] - T0 < R.TICK_S, "an OPS_ ticket among them starts at once and takes its home's ready ticket: %s" % b)
+    b = _bundle_of(res, "HELD_HOME_CHECKED_LONE_TICKET")
+    chk(b and 4 * 3600 <= b["at"] - T0 < 4 * 3600 + R.TICK_S, "a lone checked ticket waits the hold, no more: %s" % b)
+    c1, c2 = _bundle_of(res, "CAUSE_CHILD_FIRST_OF_TWO"), _bundle_of(res, "CAUSE_CHILD_SECOND_OF_TWO")
+    chk(c1 and c2 and c1 is not c2 and len(c1["members"]) == 1 and c1["route"] == "shape",
+        "a cause: home under the live rule: each Shape row is a run of its own, never held: %s %s" % (c1, c2))
+    b = _bundle_of(res, "ITEM_LONE_TICKET_NO_HOME_NO_CAUSE")
+    chk(b and b["members"] == ["ITEM_LONE_TICKET_NO_HOME_NO_CAUSE"] and b["at"] - T0 < g + R.TICK_S,
+        "an item: home: a Shape run of its own at shape_grace_h: %s" % b)
+    b = _bundle_of(res, "ITEM_CHECKED_TICKET_NO_HOME_NO_CAUSE")
+    chk(b and 4 * 3600 <= b["at"] - T0 < 4 * 3600 + R.TICK_S, "live: a checked item: ticket waits the hold: %s" % b)
+    chk(_bundle_of(res, "FILER_CLOSED_IT_WITHIN_THE_HOUR") is None, "a ticket its filer closed first never arrives")
+    chk(_bundle_of(res, "FILER_CLAIMED_ITS_CHECKED_TICKET") is None, "a ticket its filer claimed at once never arrives")
+    chk(_bundle_of(res, "RIMMANDRAKE_READ_FIX_ABCDEF1234_WITH_FRESH_EYES") is None,
+        "the code review switch leaves out a reader ticket")
+    chk(_bundle_of(_live(arr, review=True), "RIMMANDRAKE_READ_FIX_ABCDEF1234_WITH_FRESH_EYES") is not None,
+        "with the review tickets kept, the reader ticket starts")
+    chk(_bundle_of(res, "OLD_TICKET_OF_A_CAUSE_HOME") is None, "an old ticket of a cause: home never starts (live)")
+    grp = _live(arr, rule="shape_by_home")
+    c1, c2 = _bundle_of(grp, "CAUSE_CHILD_FIRST_OF_TWO"), _bundle_of(grp, "CAUSE_CHILD_SECOND_OF_TWO")
+    chk(c1 is not None and c1 is c2 and 4 * 3600 <= c1["at"] - (T0 + g) < 4 * 3600 + R.TICK_S,
+        "shape_by_home: the Shape rows of one cause: home are one run, held for the hold: %s" % c1)
+    b = _bundle_of(grp, "ITEM_LONE_TICKET_NO_HOME_NO_CAUSE")
+    chk(b and b["at"] - T0 < g + R.TICK_S, "shape_by_home: an item: home is never held (it can gain no company): %s" % b)
+    b = _bundle_of(grp, "ITEM_CHECKED_TICKET_NO_HOME_NO_CAUSE")
+    chk(b and b["at"] - T0 < R.TICK_S, "shape_by_home: a checked item: ticket starts at once: %s" % b)
+    b = _bundle_of(grp, "OPS_PLANTED_ALARM_OF_A_SMALL_HOME")
+    chk(b and b["at"] - T0 < R.TICK_S, "shape_by_home: the OPS_ ticket still starts at once: %s" % b)
+    empty = _live([])
+    chk(empty["bundles"] == [] and empty["held_s"] == {}, "an empty tick: no run, no wait")
+
+
+def t_the_live_replay_reads_close_to_the_lane():
+    import statistics
+    import bundle_replay as R
+    fx = R.load(R.LIVE_ARRIVALS)
+    lane = fx["lane"][DAY]
+    got = R.day_figures(R.replay_live(fx, 4 * 3600, 5, rule="live", game=True), DAY)
+    share = lambda f: f["singles"] / float(f["bundles"])    # noqa: E731
+    chk(got["median"] == lane["median"] == 1 and abs(share(got) - share(lane)) <= 0.10,
+        "the live-route replay of Nov 27 reads the lane's median and its share of singles within 10 points: replay %s, "
+        "lane %s" % (got, lane))
+    for day in ("2026-11-25", "2026-11-26", "2026-11-27"):
+        res = R.replay_live(fx, 24 * 3600, 5, rule="live")
+        per = {}
+        for i, s in res["systems"].items():
+            if R._day(R.live_route(next(a for a in fx["arrivals"] if a["id"] == i))[1]) == day:
+                per[s] = per.get(s, 0) + 1
+        chk(statistics.median(per.values()) == 1, "%s: one bundle per system for the whole day reads median 1 (%d "
+            "systems, %d of one ticket): no rule of one system per bundle raises the median" % (
+                day, len(per), sum(1 for v in per.values() if v == 1)))
+
+
 def main():
     for t in [t_every_lane_ticket_has_a_real_home, t_a_home_holds_until_five_or_the_hold_time,
               t_the_replay_of_nov_27_reads_a_median_of_five, t_no_ticket_waits_past_the_hold_time,
-              t_an_urgent_ticket_never_waits, t_the_lane_holds_before_its_room_gates, t_fresh_reader_tickets_fold]:
+              t_an_urgent_ticket_never_waits, t_the_lane_holds_before_its_room_gates, t_fresh_reader_tickets_fold,
+              t_the_live_replay_models_the_live_routes, t_the_live_replay_reads_close_to_the_lane]:
         print("-- %s" % t.__name__)
         try:
             t()
