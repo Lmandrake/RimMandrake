@@ -161,3 +161,16 @@ Each of these three ledger tickets held only an idea: nothing built, no failure,
   reel tail colour, and style icons in every look menu.
 - `RIMMANDRAKE_SHOW_TANK_FILL_LEVEL_AND_LIQUID_COLOUR_ON_ITS_SIDE`: every tank shows its fill and its liquid's colour on
   its side ("a must by his words").
+
+## Two more ledger tickets aimed at 0.2.0, listed by the restart of the same work bundle (2026-11-28)
+- **Why listed:** the ticket sweep of 2026-11-22 classed each one as FlowWorks 0.2.0 (next version; moves no 0.1.0 bar),
+  and the 0.1.0 work bundle WB-mod-FlowWorks-20261128-020147 refused each one for that reason and left it open on the
+  ledger (`rimflow show <ID>`).
+- `GRAVSHIP_LOCKED_FIX_ENGINE_TURNS_THEM_ANYWAY`: a turned gravship turns 14 non-square buildings that say
+  rotatable=false (8 are FlowWorks' 3x2 Desal Plant, Detox Works, Pumping Station and Tar Refinery, kludged and repaired),
+  so they land in a facing the def never drew. Needs per-facing art and ports. Done when `gravship_rotation_audit.py
+  --check` passes with none of them in `gravship_rotation_owed.json`.
+- `RIMMANDRAKE_DESIGN_NATURAL_WATER_AS_PITS_NOT_FLAT_PONDS`: his decision of 2026-11-12, a full conversion of still
+  natural water to filled pit basins with a bottom altitude map (fishing, aquatic growing and swimming kept); rivers are
+  the one open point. His by-card answers on edge lakes, wet-biome lakes and drought are on the ticket. A redesign with
+  him, not a 0.1.0 bar.
