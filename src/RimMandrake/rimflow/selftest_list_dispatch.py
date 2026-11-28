@@ -1729,9 +1729,11 @@ GAME_TICKETS = {
     "RIMMANDRAKE_OLD_NO_HOME_PIPELINE_ONLY": (None, "old: %s only" % TOOL, None, "2026-11-20T00:00:00Z"),
     "RIMMANDRAKE_OLD_PIPELINE_HOME_NO_CHECK": ("pipeline:list-dispatch", "old: seen on %s" % CB, None,
                                                "2026-11-20T00:00:00Z"),
+    "RIMMANDRAKE_FIX_SHADE_MOD_HOME_OTHER_MOD": ("mod:CreatureBehaviors", "a mod's own ticket", "cmd:false",
+                                                 "2026-11-27T00:00:00Z"),
 }
 (G_LAUNCH, G_SHAPE, G_JOIN, G_NAMES, G_FW, G_PIPE, G_MACH, G_OPS, G_LIVE, G_OLD_CB, G_OLD_PIPE,
- G_OLD_PIPE_HOME) = list(GAME_TICKETS)
+ G_OLD_PIPE_HOME, G_MODHOME) = list(GAME_TICKETS)
 
 
 def _game_world(setting):
@@ -1816,6 +1818,10 @@ def t_the_game_work_pause_holds_every_route_of_game_work():
             and "pause game off" in why, "pause on: %s reads off, 'game work is paused', the reason and the lift (%s: %s)"
             % (iid, dcs, why))
     chk(lambda: not any(x["item"] in (G_LAUNCH, G_SHAPE, G_NAMES) for x in rd["launched"]), "no launch on game work")
+    n_off = sum(1 for r in rd["items"].values() if r["decision"] == "off" and "game work is paused" in r["why"])
+    chk(lambda: _dec(rd, G_MODHOME)[0] == "mod_work" and (rd.get("game_pause") or {}).get("held") == n_off == 3,
+        "the reading counts the rows the pause holds, never a mod's own ticket, whose row reads mod_work (%s held, %d "
+        "rows, %s)" % ((rd.get("game_pause") or {}).get("held"), n_off, _dec(rd, G_MODHOME)))
     facts = gather()
     chk(lambda: G_JOIN not in (facts.get("join") or {}), "pause on: an old game ticket joins no work bundle (%s)"
         % sorted(facts.get("join") or {}))
@@ -1832,7 +1838,7 @@ def t_the_game_work_pause_holds_every_route_of_game_work():
     ok, why = CL.eligible(cx, rx, NOW)
     chk(lambda: not ok, "pause on: the Codex lane takes no game ticket (%s)" % why)
     st = ((facts.get("game_pause") or {}))
-    chk(lambda: st.get("on") is True and st.get("held", 0) >= 3, "the facts name the pause and count the held (%s)" % st)
+    chk(lambda: st.get("on") is True and st.get("reason") == GAME_WHY, "the facts name the pause and its reason (%s)" % st)
     # could not look: a malformed setting holds the game ticket as blind, never as 'not game work'
     tick2, _g = _game_world({"on": True, "reason": "r", "advancing_mods": "FlowWorks"})
     rd2 = tick2()

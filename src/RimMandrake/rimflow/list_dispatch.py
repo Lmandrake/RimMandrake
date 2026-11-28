@@ -2439,6 +2439,15 @@ def launch_bundle_row(cfg, st, row, items, now, do_launch, remote=None, rows=())
         row.update(decision="launch_failed", why=_one(rec.get("launch_out"), 300))
 
 
+def _held_by(p, rows, prefix):
+    """-> the pause reading `p` with `held` counted from the tick's rows: a row that reads off for that pause. A ticket
+    whose row another decision took first (mod_work, closed, the pipeline's pause) is not held by it (measured
+    2026-11-27: four mod: tickets of mods that do not advance were counted held, though their rows read mod_work)."""
+    if not isinstance(p, dict) or "held" not in p:
+        return p
+    return dict(p, held=sum(1 for r in rows if r.get("decision") == "off" and str(r.get("why") or "").startswith(prefix)))
+
+
 def tick(cfg, apply, fx=None, now=None, only=None):
     fx = fx or {}
     now = time.time() if now is None else now
@@ -2501,7 +2510,8 @@ def tick(cfg, apply, fx=None, now=None, only=None):
         if apply and not only:
             st["blind_hold"] = bh
         rd = {"schema": 1, "blind_hold": bh, "at": now, "at_pac": pac(now), "apply": apply, "account": list(account), "counts": counts,
-              "old": old, "pause": facts.get("pause"), "game_pause": facts.get("game_pause"),
+              "old": old, "pause": _held_by(facts.get("pause"), rows, PAUSE_PREFIX),
+              "game_pause": _held_by(facts.get("game_pause"), rows, GAME_PAUSE_PREFIX),
               "checks": facts.get("checks"),       # the outcome checks' batch (check_once.run_many)
               "machines": machine_reading(cfg, facts),
               "launched": [{"item": r["item"], "unit": r.get("unit"), "model": r.get("model")} for r in rows
