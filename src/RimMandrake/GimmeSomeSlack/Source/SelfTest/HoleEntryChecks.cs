@@ -41,7 +41,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static void Pictures()
         {
             string tex = LookIconChecks.TexturesDir();
-            string[] files = tex == null ? new string[0] : System.IO.Directory.GetFiles(tex, "Stub*.png", System.IO.SearchOption.AllDirectories);
+            // A clone without media (scratch_clone.py slim shape) has no Textures/: GetFiles threw and ended Main before
+            // WallPlugChecks and every later family ran. The picture check fails by name and the run goes on.
+            if (tex == null || !System.IO.Directory.Exists(tex))
+            {
+                Program.Check(false, $"cord enters hole: found the mod's Textures/ to read the 16 plate and hole pictures ({tex ?? "no Textures dir"}; a slim clone: scratch_clone.py shape . --full)");
+                return;
+            }
+            string[] files = System.IO.Directory.GetFiles(tex, "Stub*.png", System.IO.SearchOption.AllDirectories);
             int bad = 0;
             foreach (string f in files)
             {
