@@ -328,8 +328,8 @@ DAY_S = 24 * 3600
 
 def _bundle_end(r):
     """-> the epoch a bundle record ended, from the first field its end wrote, or None."""
-    for v in (r.get("outcomes_at"), (r.get("ended_by_hand") or {}).get("at"), (r.get("raised") or {}).get("at"),
-              (r.get("unstarted") or {}).get("at"), r.get("host_read_at")):
+    for v in (r.get("outcomes_at"), r.get("ended_at"), (r.get("ended_by_hand") or {}).get("at"),
+              (r.get("raised") or {}).get("at"), (r.get("unstarted") or {}).get("at"), r.get("host_read_at")):
         if isinstance(v, (int, float)) and not isinstance(v, bool):
             return float(v)
     return None

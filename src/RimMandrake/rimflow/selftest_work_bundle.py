@@ -1193,6 +1193,7 @@ def t_a_bundle_on_another_host_launches_there():
     after = W.store_read(bid)
     chk(lambda: after["state"] == "ended" and after["host"] == "SteveDesktop" and len(after["units"]) == 2,
         "refresh_remote: the host's end is copied into the marker (%s)" % after)
+    chk(lambda: after.get("ended_at") == NOW + 3600, "refresh_remote: the marker says when it ended (%s)" % after.get("ended_at"))
     runs = W.overlay({}, list(systems), W.all_bundles(), live=lambda u: True)
     chk(lambda: "rm-detached-hooks-1" in runs["H1"]["ended"] and "bundle" not in runs["H1"]
         and runs["H2"].get("bundle_refused", {}).get("id") == bid,
@@ -1210,7 +1211,7 @@ def t_a_bundle_on_another_host_launches_there():
     W.refresh_remote({bid + "q": W.store_read(bid + "q")}, NOW + 100 + W.REMOTE_QUIET_S + 60,
                      read=lambda r: (None, "down"), events=lambda: [])
     q = W.store_read(bid + "q")
-    chk(lambda: q["state"] == "ended" and "quiet" in q.get("ended_why", ""),
+    chk(lambda: q["state"] == "ended" and "quiet" in q.get("ended_why", "") and q.get("ended_at") == NOW + 160 + W.REMOTE_QUIET_S,
         "refresh_remote: a remote bundle that nobody can read or cite for REMOTE_QUIET_S reads ended (%s)" % q)
     # the page: a live remote bundle is never read "dead, no finish" by a local unit check
     W.store_write(dict(rec, id=bid + "p", state="live"))

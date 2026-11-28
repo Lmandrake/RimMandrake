@@ -904,7 +904,7 @@ def launch_remote(host, system, members, why, pipeline, now=None, runner=subproc
         if said:
             dec = ("bundle_live" if "already has a live bundle" in said[0] else
                    "no_bundle" if said[0].startswith("NO BUNDLE:") else "host_refused")
-            let_go("ended", ended_why="on %s: %s" % (host, _one(said[0], 400)), left_out=left)
+            let_go("ended", ended_why="on %s: %s" % (host, _one(said[0], 400)), left_out=left, ended_at=now)
             return 3, {"launch_out": "on %s: %s" % (host, _one(said[0], 400)), "decision": dec, "left_out": left}
         txt = "on %s, rc %s: %s" % (host, r.returncode, _one(out, 600) or "no output")
         let_go("launch_failed", launch_out=txt, left_out=left)
@@ -983,13 +983,15 @@ def refresh_remote(bundles, now, read=read_remote, events=None):
                 new["units"] = [dict(u, host=b["host"]) for u in got["units"]]
             if got.get("state") not in LIVE_STATES:
                 new["state"] = got.get("state") or "ended"
+                if b.get("state") in LIVE_STATES:
+                    new["ended_at"] = now       # when this store first read its end (the page's size line reads it)
         else:
             if evs is None:
                 evs = list(events()) if events else []
             last = max(float(b.get("at") or 0), _cited_at(evs, b["id"]))
             new = dict(b, host_unread=why)
             if now - last > REMOTE_QUIET_S:
-                new.update(state="ended", ended_why="quiet: %s could not be read (%s), and no ledger event cited %s for "
+                new.update(state="ended", ended_at=now, ended_why="quiet: %s could not be read (%s), and no ledger event cited %s for "
                                                     "%d h" % (b["host"], why, b["id"], REMOTE_QUIET_S // 3600))
         cmp = lambda x: {k: v for k, v in x.items() if k not in ("host_read_at",)}  # noqa: E731
         if cmp(new) != cmp(b):
