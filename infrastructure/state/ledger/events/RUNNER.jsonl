@@ -12677,3 +12677,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_RESTART_UNSTICK_BENCH_YCVY_ZEXY","result":"broken","detail":"Restart request of BENCH unmatched 450 s (no restart_verified): goodbye","ts":"2026-11-28T05:04:29Z","tsn":1795842269268838316}
 {"seat":"RUNNER","event":"raise","id":"OPS_RESTART_UNSTICK_BENCH_YCVY_ZEXY","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-28T05:04:36Z","tsn":1795842276765067574}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_SCRATCH_REAP","result":"kept","detail":"sweep: running again","ts":"2026-11-28T05:18:17Z","tsn":1795843097518032465}
+{"seat":"RUNNER","event":"note","id":"OPS_RESTART_UNSTICK_BENCH_YCVY","text":"restart_reconcile: closed at 2026-11-28T05:18:31Z, the seat verified a restart or the request aged out","ts":"2026-11-28T05:18:39Z","tsn":1795843119647230353}
