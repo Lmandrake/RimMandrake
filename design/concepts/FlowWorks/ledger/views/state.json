@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "d25214a6edeed5677502565627f1849a68570de10687f0b33f4ee54ead395a54",
+  "body_sha256": "87eb13114c4db79f5c56b73c858df74da6911f7fc9a0ac7a40d7acffa7717c95",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -49,7 +49,7 @@
    "HOLDER.run-1795782541": 1037,
    "HOLDER.run-1795783799": 859,
    "HOLDER.run-1795818114": 3744,
-   "HOLDER.run-1795831307": 11902,
+   "HOLDER.run-1795831307": 12793,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1301,10 +1301,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795831307",
-   "done": "restart 3: covered pits on the walk map closed as done by d909b565d3; duplicate-pickup veto fixed a62c932133 (offline red/green, live FAIL on main PASS on fix, ArchBig)",
-   "next": "Work RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW test first, then the bundle state file Next",
-   "ruled_out": "the covered-pits ask was not open work: the 2026-11-25 rebuild built stations 42-45",
-   "ts": "2026-11-28T06:46:20Z"
+   "done": "restart 4: BIND_BRIDGE_CLIENT closed done already (dab37c9337); work_bundle re-homed members read rehomed, not open (70498e3164)",
+   "next": "Work RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW, test first",
+   "ruled_out": "a client-side refusal when no game is named: no game named means ArchBig by design",
+   "ts": "2026-11-28T07:09:00Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1756,7 +1756,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1904,
+  "events": 1906,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7872,7 +7872,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-28T06:46:20Z",
+   "last": "2026-11-28T07:09:00Z",
    "lease": "run-1795831307",
    "released": false,
    "token": 66
