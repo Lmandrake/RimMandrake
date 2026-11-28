@@ -71,9 +71,12 @@ def check(name, cond, detail=""):
 
 
 # the queues checks run first, in their own process (OPS_QUEUES_READING_RESTORE_HQXV): a crash later in this file
-# cannot hide them, and each of their lines counts here as it does there
+# cannot hide them, and each of their lines counts here as it does there.
+# The timeout is a hang guard, not a speed bar. Danger: a child that hangs holds this selftest and the publish door for
+# good. Measured need: the child ran 4 minutes alone on the loaded machine (2026-11-27), and the old 120 s guard killed
+# it twice that day. 2400 s is 10 times that need.
 _qp = subprocess.run([sys.executable, str(HERE / "selftest_ops_watch_queues.py")], capture_output=True, text=True,
-                     timeout=120, stdin=subprocess.DEVNULL)
+                     timeout=2400, stdin=subprocess.DEVNULL)
 for _ql in _qp.stdout.splitlines():
     if _ql.startswith(("PASS ", "FAIL ")):
         check(_ql[5:].split("  ", 1)[0], _ql.startswith("PASS "), _ql)
