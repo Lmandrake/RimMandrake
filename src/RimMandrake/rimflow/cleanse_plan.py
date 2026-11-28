@@ -18,7 +18,16 @@ Answers, in the order they are decided (reads, plan, exclusion, marks, approval)
     MARK_NOT_FOLDED         ids: a marked row's fate is outside the mark's class
     CHANGED_SINCE_APPROVAL  approve "digest" and the proposal's digest is not the approved one
     AWAITING_REVIEW         approve "fresh_review" and converge.json is not (applyable, open [], the current digest)
+    CONDUCTOR_ACT_UNRECORDED  the Conductor's acts file names the mod, but OWNER.jsonl holds no event on its act item
+                            under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS
     APPROVED
+
+A recorded Conductor act (Mandrake's card 2026-11-28 2:17 AM PST, "Change the code (Recommended)"; item
+RIMMANDRAKE_LET_CLEANSE_GATE_PASS_CONDUCTOR_ACT_ROLES_ALLOW): `design/concepts/CLEANSE_CONDUCTOR_ACTS.json` =
+{"schema": 1, "mods": {<Mod>: {"approved_digest", "act": <ledger item>}}} approves a mod his plan does not approve
+(PLAN_MISSING, NOT_IN_PLAN, CHANGED_SINCE_APPROVAL, AWAITING_REVIEW) when its digest is current and the act item has an
+OWNER.jsonl event under that ruling. His plan wins where it speaks: EXCLUDED, MARK_*, PLAN_MALFORMED and COULD_NOT_LOOK
+stand. Acceptance: design/specs/2026-11-28-cleanse-gate-conductor-act/case_conductor_act.py.
 
 CLI:  cleanse_plan.py check (<Mod> | --all) [--repo R] [--plan P]
       one `PLAN <Mod> <ANSWER> [ids|path]` line per mod; exit 0 all APPROVED, 4 any COULD_NOT_LOOK, else 1.
@@ -38,6 +47,10 @@ import designer_cleanse as DC  # noqa: E402
 PLAN_REL = os.path.join("design", "concepts", "CLEANSE_PLAN_OWNER_2026-11-17.json")
 MARK_CLASS = {"keep": tuple(DC.KEPT), "next_version": ("next_version",), "drop": ("recommend_retire",)}
 APPROVE = ("digest", "fresh_review")
+ACTS_REL = os.path.join("design", "concepts", "CLEANSE_CONDUCTOR_ACTS.json")
+LEDGER_REL = os.path.join("infrastructure", "state", "ledger", "events", "OWNER.jsonl")
+RULING = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS"
+CONDUCTOR_MAY = ("PLAN_MISSING", "NOT_IN_PLAN", "CHANGED_SINCE_APPROVAL", "AWAITING_REVIEW")
 
 
 class _Unreadable(Exception):
@@ -96,6 +109,53 @@ def _out(mod, answer, ids=(), path=""):
 
 
 def plan_check(repo, mod, plan=None):
+    r = _owner_plan_check(repo, mod, plan)
+    if r["answer"] not in CONDUCTOR_MAY:
+        return r
+    return _conductor_act(os.path.abspath(repo), mod) or r
+
+
+def _conductor_act(repo, mod):
+    """-> None when no Conductor act names the mod (the owner's-plan answer stands), else the act's answer."""
+    acts_path = os.path.join(repo, ACTS_REL)
+    try:
+        have, doc = _load(acts_path)
+    except (_Unreadable, ValueError):
+        return _out(mod, "COULD_NOT_LOOK", path=acts_path)
+    if not have:
+        return None
+    mods = doc.get("mods") if isinstance(doc, dict) else None
+    if not isinstance(mods, dict) or not all(
+            isinstance(e, dict) and isinstance(e.get("approved_digest"), str) and isinstance(e.get("act"), str)
+            for e in mods.values()):
+        return _out(mod, "COULD_NOT_LOOK", path=acts_path)
+    ent = mods.get(mod)
+    if ent is None:
+        return None
+    out = os.path.join(repo, "design", "concepts", mod, "cleanse")
+    if DC.proposal_digest(out) != ent["approved_digest"]:
+        return _out(mod, "CHANGED_SINCE_APPROVAL", path=acts_path)
+    ledger = os.path.join(repo, LEDGER_REL)
+    try:
+        if not _exists(ledger):
+            return _out(mod, "CONDUCTOR_ACT_UNRECORDED", path=ledger)
+        with open(ledger, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except (_Unreadable, OSError, UnicodeDecodeError):
+        return _out(mod, "COULD_NOT_LOOK", path=ledger)
+    for line in lines:
+        if not line.strip():
+            continue
+        try:
+            ev = json.loads(line)
+        except ValueError:
+            return _out(mod, "COULD_NOT_LOOK", path=ledger)
+        if isinstance(ev, dict) and ev.get("id") == ent["act"] and ev.get("perRuling") == RULING:
+            return _out(mod, "APPROVED", path=acts_path)
+    return _out(mod, "CONDUCTOR_ACT_UNRECORDED", path=ledger)
+
+
+def _owner_plan_check(repo, mod, plan=None):
     repo = os.path.abspath(repo)
     plan_path = os.path.join(repo, plan) if plan else os.path.join(repo, PLAN_REL)
     out = os.path.join(repo, "design", "concepts", mod, "cleanse")
