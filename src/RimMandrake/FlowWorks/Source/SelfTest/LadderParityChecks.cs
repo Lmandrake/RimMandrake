@@ -195,6 +195,24 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string w = Src("Superdeep", "RM_WallClimb.cs");
                 RiverSwitchFlipChecks.Has(w, @"RM_LadderParity\.CanClimbAt\(", "the climb seams ask the ladder too");
             });
+            // LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING (GPT FC_pits_superdeep_2.4): MightClimb let only the player's pawns and
+            // ladder carriers past the cheap gate, so a ladderless raider never reached CanClimbAt for a ladder leaning there.
+            Case("LadderParity_ladderless_hostile_uses_a_leaning_ladder", () =>
+            {
+                Assert(RM_LadderParityMath.MightClimbByLadder(true, true, false, false, true),
+                    "a ladderless hostile is asked CanClimbAt while a ladder leans on a wall of its map");
+                Assert(RM_LadderParityMath.MightClimbByLadder(true, true, true, false, false), "the player's pawn, as before");
+                Assert(RM_LadderParityMath.MightClimbByLadder(true, true, false, true, false), "a carrier, as before");
+                Assert(!RM_LadderParityMath.MightClimbByLadder(true, true, false, false, false),
+                    "can-fail: no ladder leaning anywhere and none carried: the hostile is not asked");
+                Assert(!RM_LadderParityMath.MightClimbByLadder(false, true, false, false, true), "can-fail: the setting off");
+                Assert(!RM_LadderParityMath.MightClimbByLadder(true, false, false, false, true), "can-fail: downed or dead");
+                string p = Src("Superdeep", "RM_LadderParity.cs");
+                RiverSwitchFlipChecks.Has(p, @"RM_LadderParityMath\.MightClimbByLadder\(RM_LadderParitySettings\.ladderOverWalls,[^;]*AnyLadderLeansOnWall\(p\.Map\)\)",
+                    "MightClimb asks the rule, with whether a ladder leans on a wall of the pawn's map");
+                Assert(!p.Contains("return p.Faction == Faction.OfPlayer || CarriedLadder(p) != null;"),
+                    "can-fail: the old player-or-carrier gate is gone");
+            });
             Case("LadderParity_wiring", () =>
             {
                 string u = Src("Superdeep", "RM_LadderUtility.cs");

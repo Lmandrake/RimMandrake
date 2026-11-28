@@ -263,18 +263,40 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Worth asking CanClimbAt for this pawn at all (the seams' cheap gate): climbing gear, or the ladder setting on
-		/// and either the player's pawn (it may find a ladder leaning there) or a pawn carrying one.</summary>
+		/// and the player's pawn, a pawn carrying a ladder, or any pawn while a ladder leans on a wall of its map
+		/// (LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING: both sides use each other's ladders).</summary>
 		public static bool MightClimb(Pawn p)
 		{
 			if (RM_WallClimb.CanClimb(p))
 			{
 				return true;
 			}
-			if (!RM_LadderParitySettings.ladderOverWalls || p == null || !p.Spawned || p.Downed || p.Dead)
+			if (p == null || !p.Spawned)
 			{
 				return false;
 			}
-			return p.Faction == Faction.OfPlayer || CarriedLadder(p) != null;
+			bool up = !p.Downed && !p.Dead;
+			return RM_LadderParityMath.MightClimbByLadder(RM_LadderParitySettings.ladderOverWalls, up, p.Faction == Faction.OfPlayer,
+				up && CarriedLadder(p) != null, up && RM_LadderParitySettings.ladderOverWalls && AnyLadderLeansOnWall(p.Map));
+		}
+
+		/// <summary>Does any portable ladder lean on a wall of <paramref name="map"/>? Only portable ladders lean (LeansOnWall), and
+		/// a map holds a handful, so this reads one lister list.</summary>
+		public static bool AnyLadderLeansOnWall(Map map)
+		{
+			if (map == null || RimMandrakeFlowWorks_DefOf.RM_LadderPortable == null)
+			{
+				return false;
+			}
+			List<Thing> portables = map.listerThings.ThingsOfDef(RimMandrakeFlowWorks_DefOf.RM_LadderPortable);
+			for (int i = 0; i < portables.Count; i++)
+			{
+				if (LeansOnWall(portables[i]))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>May this pawn go over the wall at <paramref name="wallCell"/> from <paramref name="foot"/>, a crossing

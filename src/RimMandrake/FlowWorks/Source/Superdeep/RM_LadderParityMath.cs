@@ -222,6 +222,15 @@ namespace RimMandrake.FlowWorks
 				&& RM_WallClimbMath.CrossingOpen(wallSquares, anyWallRoofed, fromRoofed, toRoofed, fromStandable, toStandable);
 		}
 
+		/// <summary>LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING: is a pawn with no climbing gear worth asking CanClimbAt at all? The
+		/// ladder setting on, the pawn up, and: the player's pawn (it may find a ladder leaning there), a pawn carrying a ladder,
+		/// or any pawn while a ladder leans on a wall of its map. Owner 2026-10-23: "Both sides should be able to use each
+		/// other's ladders", so a ladderless raider may climb a ladder the colony left leaning.</summary>
+		public static bool MightClimbByLadder(bool settingOn, bool up, bool isPlayer, bool carries, bool ladderLeansOnMap)
+		{
+			return settingOn && up && (isPlayer || carries || ladderLeansOnMap);
+		}
+
 		/// <summary>A portable ladder may stand on undug ground only against a single climbable wall it faces.</summary>
 		public static bool PlaceOnWall(bool settingOn, bool cellDug, bool facesClimbableWall, int wallSquares)
 		{
