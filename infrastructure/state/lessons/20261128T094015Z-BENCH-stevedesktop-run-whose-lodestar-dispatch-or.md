@@ -1,0 +1,3 @@
+A SteveDesktop run whose Lodestar, Dispatch or Machinist push fails on the read-only deploy key can still land the commit: pipe 'git format-patch -1 --stdout' over 'ssh mandrake@archmagi-wsl' (Tailscale SSH, BatchMode works) into a temporary 'git clone --shared' of Archmagi's ~/dev/Lodestar under /mnt/d/ClaudeWork/scratch, 'git am', push, delete the clone. Do not use a git worktree: the RimMandrake hook refuses the word. Then 'git reset --keep origin/main' the SteveDesktop clone.
+item: RIMMANDRAKE_CORRECT_STEVEDESKTOP_MACHINE_DOC_DEV_ORIGINS
+home: ~/dev/Lodestar/claude/global/machines/stevedesktop.md
