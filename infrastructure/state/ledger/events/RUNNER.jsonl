@@ -12665,3 +12665,4 @@
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_RM_METRONOME","result":"kept","detail":"sweep: running again","ts":"2026-11-28T00:03:48Z","tsn":1795824228974732991}
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL","result":"broken","detail":"Ops alarm CLONE_POOL_BREACH: disk.pool_breach = 1 pool breaches: over count, under the disk floor, stranded unpushed clones (MEASURED), line > 0","ts":"2026-11-28T01:02:04Z","tsn":1795827724583570187}
 {"seat":"RUNNER","event":"raise","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-28T01:02:21Z","tsn":1795827741838806480}
+{"seat":"RUNNER","event":"note","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ_PBAL","text":"ops_watch: cleared at 2026-11-28T02:12:56Z (disk.pool_breach now 0)","ts":"2026-11-28T02:13:15Z","tsn":1795831995432225951}
