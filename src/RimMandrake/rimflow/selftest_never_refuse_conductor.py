@@ -238,6 +238,17 @@ def t_replay_pipe_undo_stop_and_on_unit():
         ok5, r5 = False, str(e)
     check(ok5, "pipe replay: `pipe on unit:<unit>` is accepted and withdraws the unit's stop order", r5)
     check(C.scope_of("rm-probe-undo-5.service") == "unit:rm-probe-undo-5", "pipe replay: a bare unit name is a scope too")
+    # `off unit:<u>` is a scope that binds: a unit that reuses its name (the stop-resume sweep, the testq wake) is not
+    # admitted again while it is off, and `on unit:<u>` lets it run again (off-blocks-starts on the control page)
+    sc6 = C.scope_of("rm-probe-reuse-6")
+    C.switch(sc6, True, "keep this unit off")
+    sp6 = {"family": "probe", "unit": "rm-probe-reuse-6", "reuse_name": True}
+    b6, a6 = C.blocked(sp6), C.admit(dict(sp6))
+    check(b6 and "OFF" in b6 and not a6.get("ok"),
+          "pipe replay: `pipe off unit:<unit>` refuses the next run of that unit", (b6, a6))
+    C.switch(sc6, False, "on again")
+    a6b = C.admit(dict(sp6))
+    check(C.blocked(sp6) is None and a6b.get("ok"), "pipe replay: `pipe on unit:<unit>` lets that unit run again", a6b)
 
 
 def t_replay_fold_before_the_act_is_recorded():

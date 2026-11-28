@@ -458,6 +458,9 @@ def scope_of(t, strict=True, unseeded=False):
 def run_scopes(spec):
     """The scopes a run lives in: a live switch on any of them refuses it."""
     out = ["all", "family:" + str(spec.get("family"))]
+    if spec.get("unit"):                # `pipe off unit:<u>` keeps a unit that reuses its name from running again
+        u = str(spec["unit"])
+        out.append("unit:" + (u[:-len(".service")] if u.endswith(".service") else u))
     if spec.get("mod"):
         out.append("mod:" + key(spec["mod"]))
     for m in spec.get("mods") or []:    # a fleet over several mods: any one held or off refuses it
@@ -786,7 +789,8 @@ def owner_lifts(p=None):
 
 def hold_owner(mod, said, date=None, p=None, now=None, extra=None):
     """Write his hold on `mod` into the store, with his words (the one writer of his hold; mod_owner_hold.py hold, then
-    its mirror). The same words held again change nothing. -> switch()'s dict."""
+    its mirror). The same words held again while the hold stands change nothing; after a lift they hold again.
+    -> switch()'s dict."""
     if not (isinstance(said, str) and said.strip()):
         raise Refused("his hold carries his words (--said)")
     now = time.time() if now is None else now
@@ -795,9 +799,14 @@ def hold_owner(mod, said, date=None, p=None, now=None, extra=None):
         da = mod_holds(p, now).get(key(mod), {})
         extra = {"design_allowed": da["design_allowed"]} if da.get("store") and da.get("design_allowed") else None
     import hashlib
+    idem = "hold:owner:%s:%s:%s" % (key(mod), d, hashlib.sha1(said.strip().encode("utf-8")).hexdigest()[:12])
+    # the key replays only a hold that still stands: after a lift the same words, the same day, hold again
+    cur = _q("SELECT said, date FROM switches WHERE scope=? AND layer='owner'", ("mod:" + key(mod),), p=p, one=True)
+    if not (cur and cur["said"] == said.strip() and cur["date"] == d) and _q(
+            "SELECT id FROM acts WHERE idem=?", (idem,), p=p, one=True):
+        idem = None
     return switch("mod:" + key(mod), True, "his hold: " + said.strip(), layer="owner", said=said.strip(),
-                  owner_said=said.strip(), date=d, extra=extra, p=p, now=now, idem="hold:owner:%s:%s:%s" % (
-                      key(mod), d, hashlib.sha1(said.strip().encode("utf-8")).hexdigest()[:12]))
+                  owner_said=said.strip(), date=d, extra=extra, p=p, now=now, idem=idem)
 
 
 def allow_design_owner(mod, said, date, p=None, now=None):

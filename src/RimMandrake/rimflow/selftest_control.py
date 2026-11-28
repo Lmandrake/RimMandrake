@@ -1834,6 +1834,18 @@ def t_his_hold_refuses_launch():
     C.import_live(DB, hold_file=hf, concepts=[], voids_file=nov)
     b = C.blocked(spec("h4", mod="Graffiti")) or ""
     check("no, stop it again" in b, "a new hold the same day, with other words, holds again with his new words", b)
+    # the same words again, the same day, after a lift: still a new hold (the hold's own replay key once matched it)
+    C.hold_owner("Graffiti", "pause Graffiti", date="2026-11-28")
+    C.hold_owner("Graffiti", "pause Graffiti", date="2026-11-28")
+    n1 = C._q("SELECT COUNT(*) AS n FROM acts WHERE kind='hold' AND scope='mod:Graffiti'", one=True)["n"]
+    C.lift_owner("Graffiti", "go on again", date="2026-11-28")
+    r = C.hold_owner("Graffiti", "pause Graffiti", date="2026-11-28")
+    b = C.blocked(spec("h5", mod="Graffiti")) or ""
+    check(not r.get("replayed") and "pause Graffiti" in b and C.mod_holds().get("Graffiti", {}).get("store"),
+          "a new hold after a lift, the same day with the same words, holds again", (r, b))
+    C.hold_owner("Graffiti", "pause Graffiti", date="2026-11-28")
+    n2 = C._q("SELECT COUNT(*) AS n FROM acts WHERE kind='hold' AND scope='mod:Graffiti'", one=True)["n"]
+    check(n2 == n1 + 1, "the same hold sent twice while it holds is written once (before and after a lift)", (n1, n2))
 
 
 def t_void_never_moves_a_stage():
