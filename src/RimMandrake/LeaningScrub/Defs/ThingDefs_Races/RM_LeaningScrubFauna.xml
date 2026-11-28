@@ -415,13 +415,18 @@
     <flyingAnimationTicksPerFrame>6</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
-    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <!-- flyer_stage_colours.py: InheritColors true and one bodyGraphicData colour per life stage
+         (1/255 apart, not visible) are load-bearing: the engine (AnimationDefGenerator_Flying) sizes every stage's flight
+         frames from the first stage when InheritColors is false, and caches them by colour when it is true. Checked by
+         src/RimMandrake/Utils/art/flyer_size_census.py. -->
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Zellik/RM_Zellik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
+          <color>(255,255,255)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -429,6 +434,7 @@
           <texPath>Things/Pawn/Animal/RM_Zellik/RM_Zellik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.2</drawSize>
+          <color>(254,254,254)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -436,6 +442,7 @@
           <texPath>Things/Pawn/Animal/RM_Zellik/RM_Zellik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.6</drawSize>
+          <color>(253,253,253)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -896,13 +903,18 @@
     <flyingAnimationTicksPerFrame>6</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1.25</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
-    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <!-- flyer_stage_colours.py: InheritColors true and one bodyGraphicData colour per life stage
+         (1/255 apart, not visible) are load-bearing: the engine (AnimationDefGenerator_Flying) sizes every stage's flight
+         frames from the first stage when InheritColors is false, and caches them by colour when it is true. Checked by
+         src/RimMandrake/Utils/art/flyer_size_census.py. -->
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.15</drawSize>
+          <color>(255,255,255)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -910,6 +922,7 @@
           <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.22</drawSize>
+          <color>(254,254,254)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -917,6 +930,7 @@
           <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.3</drawSize>
+          <color>(253,253,253)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -1024,13 +1038,18 @@
     <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
-    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <!-- flyer_stage_colours.py: InheritColors true and one bodyGraphicData colour per life stage
+         (1/255 apart, not visible) are load-bearing: the engine (AnimationDefGenerator_Flying) sizes every stage's flight
+         frames from the first stage when InheritColors is false, and caches them by colour when it is true. Checked by
+         src/RimMandrake/Utils/art/flyer_size_census.py. -->
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Shirrel/RM_Shirrel</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
+          <color>(255,255,255)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -1038,6 +1057,7 @@
           <texPath>Things/Pawn/Animal/RM_Shirrel/RM_Shirrel</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.9</drawSize>
+          <color>(254,254,254)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -1045,6 +1065,7 @@
           <texPath>Things/Pawn/Animal/RM_Shirrel/RM_Shirrel</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.2</drawSize>
+          <color>(253,253,253)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
