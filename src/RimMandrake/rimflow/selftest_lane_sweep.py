@@ -94,6 +94,16 @@ def t_one_ticket_bundles_found():
     found("one-ticket bundles", "home", "system_per_ticket", "split")
 
 
+def t_live_bundle_with_no_run_found():
+    """A bundle left live with no running unit and no continuation step due must be a no_ender. Plant: note_end a
+    no-op, so the bundle stays live after its members close."""
+    found("live bundle with no run", "home", "bundle_no_end", "no_ender")
+    S = LS()
+    hit = [f for f in seen(S.sweep(["home"], plant="bundle_no_end"), "no_ender", "home")
+           if str(f.get("decision") or "").startswith("bundle ")]
+    chk(bool(hit), "live bundle with no run: the no_ender names the bundle (%d)" % len(hit))
+
+
 def t_shipped_code_sweeps_clean():
     S = LS()
     t0 = time.time()
@@ -114,7 +124,8 @@ def t_shipped_code_sweeps_clean():
 def main():
     for fn in (t_block_on_a_finished_ticket_found, t_chain_limit_with_no_next_step_found,
                t_load_line_hold_without_end_found, t_bundle_member_rightly_left_open_restarts_found,
-               t_one_ticket_bundles_found, t_shipped_code_sweeps_clean):
+               t_one_ticket_bundles_found, t_live_bundle_with_no_run_found,
+               t_shipped_code_sweeps_clean):
         print("== " + fn.__name__)
         try:
             fn()

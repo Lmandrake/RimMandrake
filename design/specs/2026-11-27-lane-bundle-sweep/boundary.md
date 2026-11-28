@@ -76,6 +76,9 @@ The stand-ins replace only what touches the world:
 - **one-ticket-bundles-found.** A home's ready tickets launched apart (planted: `system_of` without the item table, so
   a child with no home of its own stops joining its parent's home) is a `split` in regime `home`; the shipped code
   shows none.
+- **live-bundle-with-no-run-found.** A bundle left in a live state with no running unit and no continuation step due
+  (planted: `work_bundle.note_end` a no-op, so the bundle stays live after its members close) is a `no_ender` that names
+  the bundle in regime `home`; the shipped code shows none.
 - **shipped-code-sweeps-clean.** Over every regime, the shipped code shows no finding, every tick of every regime is
   read (at least 144 cases per regime), and the written range is swept.
 

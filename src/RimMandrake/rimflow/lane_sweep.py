@@ -119,7 +119,7 @@ def _old_continued_line(unit, rec, p, new, lad, sid, fresh_why):
         "its session resumed" if sid else "fresh: " + str(fresh_why), p["n"], LOC.MAX_PER_DAY)
 
 
-PLANTS = ("block_on_done", "chain_no_row", "load_no_row", "loc_old_line", "system_per_ticket")
+PLANTS = ("block_on_done", "chain_no_row", "load_no_row", "loc_old_line", "system_per_ticket", "bundle_no_end")
 
 
 @contextlib.contextmanager
@@ -144,6 +144,8 @@ def planted(name):
         elif name == "system_per_ticket":
             orig = WB.system_of
             es.enter_context(mock.patch.object(WB, "system_of", lambda it, reading, items=None: orig(it, reading, None)))
+        elif name == "bundle_no_end":       # a bundle whose end is never written stays live with no unit
+            es.enter_context(mock.patch.object(WB, "note_end", lambda *a, **k: None))
         elif name:
             raise ValueError("no plant %r (plants: %s)" % (name, ", ".join(PLANTS)))
         yield
@@ -414,8 +416,8 @@ def check(sim, rd):
     for iid, d in bad.items():
         hold(sim, "no_ender", iid, d, None, TICK_S, "no later step of the code ends it: %s" % (
             (rows.get(iid) or {}).get("why") or "no lane row"))
-    for k in list(sim.holds):
-        if k[0] == "no_ender" and bad.get(k[1]) != k[2]:
+    for k in list(sim.holds):       # a ticket's hold only: a bundle's hold is kept or cleared by the bundle loop below
+        if k[0] == "no_ender" and not str(k[2]).startswith("bundle ") and bad.get(k[1]) != k[2]:
             sim.holds.pop(k)
     for bid, b in sorted(WB.all_bundles().items()):
         sim.cases += 1
