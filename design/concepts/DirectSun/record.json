@@ -245,7 +245,7 @@
   },
   {
    "id": "a_mountain_drawn",
-   "status": "draft",
+   "status": "sent",
    "author": "rm-role-designer-1795846532",
    "source": [
     "OWNER:1795844105314149883",
@@ -256,9 +256,19 @@
     "inv_drawn_crown_shadow"
    ],
    "decision": "whether the mountain's long shadow is drawn on the ground",
-   "text": "How does the player feel the mountain: by a dark band drawn on the ground down-sun, or by the shade overlay and the cell readout only?",
-   "evidence_against": "Vanilla draws a rock's shadow at height 1, so with no drawn band the player sees a short shadow beside a long band of felt relief (what you see is not what they feel). His ruling on the greatbole's drawn crown shadow, due by 2026-12-04, is the same kind of work and may settle this one.",
-   "note": "Held as draft: the walk (a_live_walk) shows the drawn crown shadow, the same kind of drawing, and his ruling on it is likely to settle this; never ask him to predict what that look will show."
+   "text": "If you have looked at the greatbole's drawn crown shadow in CROWN_SHADOW_GREATBOLE_REVIEW on ArchSmall, answer from that look; otherwise answer from the idea alone. Which way should the player see a mountain's long shadow: (a) a soft dark band drawn on the ground down-sun of the mountain, the same kind of drawing as the greatbole's crown shadow, or (b) only on the shade overlay and in the cell readout, with the ground drawn as today (vanilla draws a rock's shadow about one cell long)?",
+   "evidence_against": "His drawn-shadow experiment on the greatbole is still open, 'to see how painful it is' (OWNER:1792412236936119410), and he has not ruled on it (item RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE); a drawn band over a mountain's long shadow is the same kind of drawing at a larger scale, so taking (a) now pre-empts that ruling. With (b), the player sees a one-cell rock shadow beside a long band of shade that colonists feel, which can read as a bug.",
+   "owner_cites": [
+    "OWNER:1795844105314149883",
+    "OWNER:1792412236936119410"
+   ],
+   "offers_removal": false,
+   "sent_by": "rm-role-designer-1795854754",
+   "review": {
+    "by": "rm-judge a9bbcd6d67bb3a782 (fresh reviewer, opus)",
+    "verdict": "pass",
+    "why": "not answered by his words (a feel for the mountain leans to a band but does not choose); nothing built is offered for removal; the answer changes what gets built (render work vs overlay only); the evidence against (a) is real, his crown-shadow experiment is unruled; wording fixed so the ask does not stall if he has not opened the save"
+   }
   }
  ],
  "inventory": [
@@ -839,6 +849,10 @@
   {
    "source": "OWNER:1792410174036406737",
    "not_design_input": "the same 'Sun heat design pass' card, stamped on the live-verify item; taken in through d_geometry_not_biome"
+  },
+  {
+   "source": "OWNER:1795854076234172046",
+   "not_design_input": "a scheduling note: he reads the DirectSun turn about 9 AM PST 2026-11-28; no word on the design, so a_root stays sent unchanged"
   }
  ],
  "failure_modes": [
