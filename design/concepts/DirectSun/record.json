@@ -1,0 +1,788 @@
+{
+ "mod": "DirectSun",
+ "packageId": "mandrake.rm.biomes (member Creature Behaviors; no packageId of its own)",
+ "stage": 0,
+ "scope": [
+  {
+   "id": "s_entry",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795844096864149267"
+   ],
+   "text": "DirectSun entered the Maturation Pipeline on his card of 2026-11-27 9:25 PM PST for design attention to Direct Sun, tree shade and mountain shade; his words start no build."
+  },
+  {
+   "id": "s_extras_named",
+   "speaker": "agent",
+   "source": [
+    "design/concepts/DirectSun/admission_proposal.md"
+   ],
+   "text": "Built parts he has not ruled on (moving shade, mirage, haze, sun pathing, decoy tarp, shade lessons) are units of coverage; stage 3 classes each as part of the one signature or an extra by the first-version rules. None is offered for removal."
+  }
+ ],
+ "decisions": [
+  {
+   "id": "d_geometry_not_biome",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792410159136516913"
+   ],
+   "date": "2026-10-19",
+   "what": "Shade vs not shade is a pure function of geometry, not biome: no biome-specific heat or sun; keep only parasols and tents, and any roof structure does what a tent does; 55 C everywhere."
+  },
+  {
+   "id": "d_day_night_off",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792410410301592239"
+   ],
+   "date": "2026-10-19",
+   "what": "On a day/night world Direct Sun follows the solar angle of the time of day, or is dropped if that is too much work; not the primary target."
+  },
+  {
+   "id": "d_tree_model_condition",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792411872974606312"
+   ],
+   "date": "2026-10-19",
+   "what": "With an excellent tree shade model, Direct Sun works the same everywhere on the day side; without one, turning it off on tree-heavy maps is the inferior option."
+  },
+  {
+   "id": "d_tree_crown_card",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792412236936119410"
+   ],
+   "date": "2026-10-19",
+   "what": "Tree shade model: projected crowns, full shade, overlay plus mouseover, plus a single-tree-type drawn experiment; anything drawn 1.5 cells or more counts as a tree."
+  },
+  {
+   "id": "d_every_sunlit_map",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792413247195290826"
+   ],
+   "date": "2026-10-19",
+   "what": "Direct Sun runs on every sunlit map (Scarlands, Miasma and the RUT_ twins included); sand glare comes from any natural sand under the sun."
+  },
+  {
+   "id": "d_home_inside_bb",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792412899282843157",
+    "OWNER:1792412900424878083",
+    "OWNER:1792412901561374780"
+   ],
+   "date": "2026-10-19",
+   "what": "Sun & Shade home: its own piece inside Baroque Biomes, stand-alone later."
+  },
+  {
+   "id": "d_merge_or_standalone_open",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795756206289623411"
+   ],
+   "date": "2026-11-26",
+   "what": "Direct Sun is required by Baroque Biomes; whether it merges into Baroque Biomes or stands alone is still being evaluated (not yet clear). Until he decides, no work does the stand-alone work and none removes the option."
+  },
+  {
+   "id": "d_conditions_not_place",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795293953410606974",
+    "OWNER:1795295446582329979",
+    "OWNER:1795300573123415582"
+   ],
+   "date": "2026-11-21",
+   "what": "Biome mechanics are universal; the biome showcases them. The Stillshade's long shadows and intense sun exposure are planet-wide (he meant shade vs direct sun); rule: conditions, never the place."
+  },
+  {
+   "id": "d_rest_dash_everywhere",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795764108962326792",
+    "OWNER:1795764178460456308"
+   ],
+   "date": "2026-11-27",
+   "what": "Rest-dash: creatures dash across dangerously hot ground from shade patch to shade patch; a mechanic present everywhere but critical to one biome by its geometry, evolution and contents."
+  },
+  {
+   "id": "d_light_follows_sun",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1792545682386028702"
+   ],
+   "date": "2026-10-21",
+   "what": "Lopsided tidal-lock daylight: light follows the sun."
+  },
+  {
+   "id": "d_admit_tree_mountain",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795844096864149267",
+    "OWNER:1795844101356450638",
+    "OWNER:1795844105314149883"
+   ],
+   "date": "2026-11-27",
+   "what": "Tree shade stays part of Direct Sun, as an addition to the shade of hard walls; add shadows cast by mountain-covered squares much larger than short walls', by the sun angle, so the player feels the mountain; Tree Shade + Direct Sun + mountain shade get design attention now, to a full modern design with tests."
+  },
+  {
+   "id": "d_tree_design_project",
+   "kind": "ruling",
+   "speaker": "owner",
+   "source": [
+    "OWNER:1795843537343819601"
+   ],
+   "date": "2026-11-27",
+   "what": "Tree shade is a timely pre-design or design-adaptation project: it technically touches all our biome mods."
+  }
+ ],
+ "asks": [
+  {
+   "id": "a_live_walk",
+   "status": "draft",
+   "author": "rm-role-designer-1795846532",
+   "source": [
+    "src/RimMandrake/CreatureBehaviors/crown_shadow_experiment_reading.json",
+    "ITEM:DIRECT_SUN_LIVE_VERIFY_ANGLE_NOT_BIOME"
+   ],
+   "about": [
+    "inv_direct_sun_heat",
+    "inv_tree_crowns",
+    "inv_shade_readable",
+    "inv_drawn_crown_shadow",
+    "inv_shade_hop"
+   ],
+   "decision": "whether the first move is a live walk of what is built",
+   "text": "Most of Direct Sun is built. Before more design, a walk of two saves that already exist: DIRECT_SUN_TUNING_SITTING_20261126_DASHERS (rows of colonists in open, roof, tent, parasol and a wall's lee, with animals dashing shade to shade) and CROWN_SHADOW_GREATBOLE_REVIEW on ArchSmall (32 greatboles with drawn crown shadows at a sun of 15 degrees). It shows what we would otherwise ask you to predict: whether shade reads at a glance (T3), whether the drawn crown shadow stays, and how a wall's short lee looks beside where a mountain's long one would fall.",
+   "evidence_against": ""
+  },
+  {
+   "id": "a_mountain_height",
+   "status": "draft",
+   "author": "rm-role-designer-1795846532",
+   "source": [
+    "OWNER:1795844105314149883"
+   ],
+   "about": [
+    "inv_mountain_shade"
+   ],
+   "decision": "what makes one mountain throw a longer shadow than another",
+   "text": "Picture a lone ridge rising from flat sand and a cliff that is the edge of a wide massif, at the same sun. Do they throw the same band of shade, or does the bigger mass throw a longer one? And a small rock outcrop with no roof over it (the game clears any natural roof patch under 20 cells): is that a mountain that casts, or a rock?",
+   "evidence_against": "The game keeps a coarse height: rock where the generator's elevation passed 0.70, thin rock roof above 0.728, thick rock roof above 0.798 (GenStep_RocksFromGrid). So the obvious answer, height from the roof band, makes a massif's deep core throw farther than its edge; but his words 'mountain-covered squares' would leave an unroofed outcrop casting only a wall's lee."
+  },
+  {
+   "id": "a_mountain_drawn",
+   "status": "draft",
+   "author": "rm-role-designer-1795846532",
+   "source": [
+    "OWNER:1795844105314149883",
+    "ITEM:RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE"
+   ],
+   "about": [
+    "inv_mountain_shade",
+    "inv_drawn_crown_shadow"
+   ],
+   "decision": "whether the mountain's long shadow is drawn on the ground",
+   "text": "How does the player feel the mountain: by a dark band drawn on the ground down-sun, or by the shade overlay and the cell readout only?",
+   "evidence_against": "Vanilla draws a rock's shadow at height 1, so with no drawn band the player sees a short shadow beside a long band of felt relief (what you see is not what they feel). His ruling on the greatbole's drawn crown shadow, due by 2026-12-04, is the same kind of work and may settle this one."
+  }
+ ],
+ "inventory": [
+  {
+   "id": "inv_direct_sun_heat",
+   "what": "Felt heat from the sun alone: zenith C x sin E (default 55), dimmed by the weather's sun factor and the strength dial, fed into vanilla Heatstroke on every sunlit map of a fixed-sun world; off on a day/night world. No biome carries a sun field or heat kind.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatPatches.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatMath.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatExtension.cs",
+    "src/RimMandrake/CreatureBehaviors/Patches/RM_DirectSun_WeatherSun.xml"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410159136516913",
+    "OWNER:1792410410301592239",
+    "OWNER:1792413247195290826",
+    "ITEM:DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES",
+    "ITEM:DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_direct_sun.py",
+    "src/RimMandrake/Utils/selftest_sun_heat.py",
+    "design/specs/2026-11-26-direct-sun/live_angle_result.json",
+    "design/specs/2026-11-26-direct-sun/boundary.md"
+   ],
+   "proof_note": "measured 2026-11-27 by rm-role-designer-1795846532 at a5b2593271: selftest_direct_sun ALL PASS (each planted fault caught), selftest_sun_heat 65/65; live L1a on ArchBig 2026-11-26: three biomes on one tile read the same E 32.0, offset 29.16 C, exposures and lee"
+  },
+  {
+   "id": "inv_fixed_sun",
+   "what": "The fixed sun of the shipped world: each map's sun elevation and bearing come from the planet's geometry (WeatherSuite PlanetGeometryDef fixedSun), held still; pinned-sun biomes clamp their drawn sky.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_PlanetSunGeometry.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_PinnedSun.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_PinnedSunExtension.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_PinnedSunPatches.cs"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410410301592239"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_planet_fixed_sun.py"
+   ],
+   "proof_note": "measured 2026-11-27 by rm-role-designer-1795846532 at a5b2593271: 72/72"
+  },
+  {
+   "id": "inv_cover",
+   "what": "Cover at every sun angle: a roof (constructed or overhead mountain), a shade tent and a parasol put the cell or the wearer out of the sun; the shade cloth stuff adds a bonus.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeGear.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeClothExtension.cs",
+    "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_ShadeGear.xml"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410159136516913"
+   ],
+   "proof_evidence": [
+    "design/specs/2026-11-26-direct-sun/live_angle_result.json",
+    "src/RimMandrake/Utils/selftest_sun_heat.py"
+   ],
+   "proof_note": "live L1a 2026-11-26: exposure open 1.0, roof 0, tent 0.15; colonist parasol 7.29 C of 29.16"
+  },
+  {
+   "id": "inv_wall_lee",
+   "what": "Cast shade of hard things: a wall, building or natural rock (staticSunShadowHeight, fillPercent) throws a lee down-sun whose length is height x cot E, longer as the sun drops. Natural rock is height 1, the same as a wall.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs:1149",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatMath.cs"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410159136516913",
+    "design/RimMandrake/standing_rulings.md"
+   ],
+   "proof_evidence": [
+    "design/specs/2026-11-26-direct-sun/live_angle_result.json",
+    "src/RimMandrake/Utils/selftest_sun_heat.py"
+   ],
+   "proof_note": "live L1a: leeCells 2 at E 32.0, shadowLengthPerHeight 1.60"
+  },
+  {
+   "id": "inv_standing_lee_casters",
+   "what": "Tall standing things cast a lee by the same geometry: the Long Shade shade mast and lure awning, and Stillsand's giant skeletons, through the lee mode of RM_CompShadeGear; switch sunShieldEnabled ('Standing masts and skeletons cast shade').",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeGear.cs:118",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs:1281",
+    "src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LongShadeMast.xml",
+    "src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LureAwning.xml",
+    "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GiantSkeletons.xml"
+   ],
+   "proof": "missing",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410159136516913",
+    "OWNER:1795293953410606974"
+   ],
+   "proof_note": "no offline or live row found that reads a mast's or skeleton's lee; Stillsand is held by the owner"
+  },
+  {
+   "id": "inv_tree_crowns",
+   "what": "Tree shade: a tree's crown is a parasol on a pole. Its shade disc (radius 0.8 x drawn/2) lies under it at a high sun and slides hc x cot E down-sun as the sun drops, sized by the tree's drawn size at its growth; the six giants carry crown factors measured from their art; a felled tree's shade is gone; a forest is mostly shade.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_TreeCrownExtension.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_TreeCrownPatches.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs",
+    "src/RimMandrake/CreatureBehaviors/Patches/RM_TreeCrowns_Giants.xml"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792411872974606312",
+    "OWNER:1792412236936119410",
+    "ITEM:TREE_SHADE_BUILD_CROWNS_ON_STILTS",
+    "ITEM:TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_tree_crowns.py",
+    "src/RimMandrake/Utils/selftest_sun_heat.py",
+    "design/specs/2026-11-26-tree-crowns/boundary.md",
+    "design/specs/2026-11-26-tree-crowns/live_tree_crowns_ArchSmall_2026-11-26.log",
+    "design/specs/2026-11-26-tree-crowns/canopy_census_2026-11-26.md"
+   ],
+   "proof_note": "measured 2026-11-27 by rm-role-designer-1795846532 at a5b2593271: selftest_tree_crowns ALL PASS; T1, T2 offline, T4-T6 green; T3 (readable) is his look; selftest_tree_crowns_measured is UNMEASURED in a clone without textures"
+  },
+  {
+   "id": "inv_shade_readable",
+   "what": "Shade made readable: the shade overlay button, the canopy ground tint, the cell readout's cause word (roof, shade tent, '<tree> canopy'), the pawn's sun-load gizmo, all reading the one shade grid.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeOverlay.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_Gizmo_SunLoad.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792412236936119410"
+   ],
+   "proof_evidence": [
+    "design/specs/2026-11-26-direct-sun/live_angle_result.json",
+    "src/RimMandrake/Utils/selftest_tree_crowns.py"
+   ],
+   "proof_note": "the cause word is read live (L1a cause roof / shade tent; live_tree_crowns cause '<label> canopy'); whether a player can read it at a glance (T3) is his look, not yet had"
+  },
+  {
+   "id": "inv_drawn_crown_shadow",
+   "what": "His experiment: the greatbole's crown shadow drawn as a soft dark disc on the ground from the cells the grid shades, one max-joined layer, setting renderedCrownShadows (on); every other tree keeps the flat tint.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeOverlay.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatMath.cs",
+    "ITEM:RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE"
+   ],
+   "proof": "current",
+   "scope": "opened_by_owner",
+   "source": [
+    "OWNER:1792412236936119410"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/CreatureBehaviors/crown_shadow_experiment_reading.json",
+    "src/RimMandrake/Utils/selftest_tree_crowns.py"
+   ],
+   "scope_source": "OWNER:1792412236936119410",
+   "proof_note": "ArchSmall 2026-11-27, Long Shade E 15.2: 32 planted, 32 drawn, 1 mesh, rebuild 5.8 ms, frame 16.666 ms on and off; review save CROWN_SHADOW_GREATBOLE_REVIEW waits for his keep, change or drop (wait to 2026-12-04)"
+  },
+  {
+   "id": "inv_mountain_shade",
+   "what": "Mountain shade (new): a square under a mountain roof casts a shadow much longer than a short wall's, by the sun angle, so the player feels the mountain on the map.",
+   "impl": "absent",
+   "search_scope": "src/, design/, skills/ and the live items for 'mountain shade' and 'mountain shadow' (admission_proposal.md, 2026-11-27); src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs CasterHeight: natural rock is height 1 like a wall, and an overhead-mountain roof gives roofShade 1 under it but casts nothing onto open ground",
+   "proof": "missing",
+   "scope": "opened_by_owner",
+   "scope_source": "OWNER:1795844105314149883",
+   "source": [
+    "OWNER:1795844096864149267",
+    "OWNER:1795844101356450638",
+    "OWNER:1795844105314149883",
+    "design/concepts/DirectSun/admission_proposal.md"
+   ],
+   "feasibility": "Vanilla GenStep_RocksFromGrid.Generate (read with RimSage 2026-11-27): rock where the generator's elevation > 0.70, RoofRockThin above 0.728, RoofRockThick above 0.798, and every natural-roof patch under 20 cells is cleared. The roof grid is saved, so a loaded map keeps a coarse three-band height trace (bare rock edge, thin roof, thick roof); a distance-inside-the-mountain field over the roof grid is a second source. Both are cheap pure functions over a grid and join RM_SunHeatMath's offline cases."
+  },
+  {
+   "id": "inv_air_heat",
+   "what": "Hot air is air: the Forge, the Scald and the Greentide raise the outdoor temperature by a vanilla GameCondition_TemperatureOffset named by RM_AirHeatExtension; shade does not cool it; on/off and degrees in each biome mod's settings.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_AirHeat.cs",
+    "src/RimMandrake/_Shared/AirHeat/AirHeatSetting.cs"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410159136516913",
+    "design/RimMandrake/standing_rulings.md"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_direct_sun.py",
+    "design/specs/2026-11-26-direct-sun/boundary.md"
+   ]
+  },
+  {
+   "id": "inv_moving_shade",
+   "what": "Moving shade: a creature with RM_Comp_ShadowCaster casts shade that moves with it.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MovingShadeLayer.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MovingShadeMath.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_Comp_ShadowCaster.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_ShadowCaster.cs"
+   ],
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MovingShadeLayer.cs"
+   ],
+   "proof_note": "no case in src/RimMandrake/CreatureBehaviors/Source/SelfTest/Program.cs names MovingShade; no live row found"
+  },
+  {
+   "id": "inv_shade_hop",
+   "what": "Shade-hop (rest-dash): wild animals rest in shade, pause at its edge and sprint across hot ground to the next shade patch; the shade patch graph; slider 'How far they will dash'.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHop.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadePatchGraph.cs",
+    "src/RimMandrake/CreatureBehaviors/live_shade_spread.py"
+   ],
+   "proof": "current",
+   "scope": "opened_by_owner",
+   "source": [
+    "OWNER:1795764108962326792",
+    "OWNER:1795764178460456308"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/CreatureBehaviors/live_shade_spread.py",
+    "ITEM:RIMMANDRAKE_ADD_SHADE_DASHERS_TO_DIRECT_SUN_SAVE_NONE_SEEN_HOPPING"
+   ],
+   "scope_source": "OWNER:1795764178460456308",
+   "proof_note": "live_shade_spread red on the parent and green on the fix, Steve1 2026-11-25; the dashers save DIRECT_SUN_TUNING_SITTING_20261126_DASHERS read a dash by state"
+  },
+  {
+   "id": "inv_sand_glare",
+   "what": "Sand glare and glare-blind: natural sand under the sun dazzles; a pawn gains RM_GlareBlind with exposure and adapts (RM_GlareAdapted).",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_GlareBlind.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatExtension.cs"
+   ],
+   "proof": "current",
+   "scope": "opened_by_owner",
+   "source": [
+    "OWNER:1792413247195290826"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_sun_heat.py"
+   ],
+   "scope_source": "OWNER:1792413247195290826",
+   "proof_note": "C# SelfTest cases name GlareBlind, GlareAdapted, GlareFloor (selftest_sun_heat 65/65)"
+  },
+  {
+   "id": "inv_mirage",
+   "what": "Mirage: hot open ground shows mirages that can break on approach.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_Mirage.cs"
+   ],
+   "proof": "current",
+   "scope": "not_opened",
+   "source": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_Mirage.cs"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_sun_heat.py"
+   ],
+   "proof_note": "C# SelfTest cases name Mirage, MirageActive, MirageEdge (offline only)"
+  },
+  {
+   "id": "inv_shade_haze",
+   "what": "Shade haze: a visual haze at the shade's edge.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHaze.cs"
+   ],
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHaze.cs"
+   ]
+  },
+  {
+   "id": "inv_sun_pathing",
+   "what": "Sun pathing: undrafted pawns route shade to shade by a sun path cost from the grid.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs"
+   ],
+   "proof": "missing",
+   "scope": "not_opened",
+   "source": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs"
+   ]
+  },
+  {
+   "id": "inv_decoy_tarp",
+   "what": "Decoy shade tarp: reads as shade to shade seekers, cools no one.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_DecoyShadeTarp.xml",
+    "ITEM:DECOY_SHADE_TARP_1"
+   ],
+   "proof": "stale",
+   "scope": "not_opened",
+   "source": [
+    "ITEM:DECOY_SHADE_TARP_1"
+   ],
+   "proof_note": "item validated before the Direct Sun unification; not re-read here"
+  },
+  {
+   "id": "inv_shade_lessons",
+   "what": "Shade lessons: research of parasol, tent and shade ideas learned by study (watching the herd cross).",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/EnvironmentalHazards/Defs/ResearchProjectDefs/RM_ShadeLessons_Research.xml",
+    "src/RimMandrake/EnvironmentalHazards/Patches/RM_ShadeLessons_Sources.xml"
+   ],
+   "proof": "current",
+   "scope": "not_opened",
+   "source": [
+    "design/RimMandrake/shadecraft_lessons_design_2026-10-31.md",
+    "ITEM:SHADE_LESSONS_BUILD_WATCH_THE_HERD_CROSS"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_shade_lessons.py"
+   ],
+   "proof_note": "measured 2026-11-27 by rm-role-designer-1795846532 at a5b2593271: PASS (0 fail), offline"
+  },
+  {
+   "id": "inv_sky_light",
+   "what": "Light follows the fixed sun: tidal sun glow lights the west terminator and darkens the east day rim, the sun flare hides behind the planet, the world view pins the sun.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_TidalSunGlowMath.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_TidalSunGlowPatch.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_SunFlareOcclusionPatch.cs",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_WorldSunPatch.cs"
+   ],
+   "proof": "current",
+   "scope": "opened_by_owner",
+   "source": [
+    "OWNER:1792545682386028702",
+    "ITEM:SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_planet_fixed_sun.py"
+   ],
+   "scope_source": "OWNER:1792545682386028702"
+  },
+  {
+   "id": "inv_settings",
+   "what": "Mod Settings, group 'Direct Sun' and the shade-gear and shade-hop groups: a master, strength, zenith C, weather dims, directional shade, canopy shade and strength, overlay, ground tint, drawn crown shadows, sun pathing, sun-load bar, parasol, tent, decoy, standing casters, shade-hop and range, glare, mirage, fixed-sun rows, shade grid, moving shade; every default on, 1 or 55. No row for mountain shade.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410171778479162",
+    "ITEM:DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_direct_sun.py",
+    "src/RimMandrake/Utils/selftest_tree_crowns.py"
+   ]
+  },
+  {
+   "id": "inv_legacy_strip",
+   "what": "Old defs and saves load: removed sun fields are stripped at load.",
+   "impl": "present",
+   "impl_evidence": [
+    "src/RimMandrake/CreatureBehaviors/Patches/RM_DirectSun_LegacyFields.xml"
+   ],
+   "proof": "current",
+   "scope": "approved",
+   "source": [
+    "OWNER:1792410159136516913"
+   ],
+   "proof_evidence": [
+    "src/RimMandrake/Utils/selftest_direct_sun.py"
+   ]
+  }
+ ],
+ "built_reviewed": [
+  {
+   "ref": "DIRECT_SUN_SELFTEST_BUILD_EVERY_BIOME_EQUAL",
+   "covered_by": "inv_direct_sun_heat"
+  },
+  {
+   "ref": "DIRECT_SUN_SETTINGS_WIRE_FEWER_KNOBS",
+   "covered_by": "inv_settings"
+  },
+  {
+   "ref": "DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES",
+   "covered_by": "inv_direct_sun_heat"
+  },
+  {
+   "ref": "RIMMANDRAKE_ADD_SHADE_DASHERS_TO_DIRECT_SUN_SAVE_NONE_SEEN_HOPPING",
+   "covered_by": "inv_shade_hop"
+  },
+  {
+   "ref": "RIMMANDRAKE_CLASS_SUN_SAVE_LOAD_ERRORS_DLC_WAS_LOADED",
+   "not_a_capability": "a triage of load errors on one tuning save; no player-facing feature"
+  },
+  {
+   "ref": "RIMMANDRAKE_LEVEL_ARCHBIG_MODS_FOR_SUN_SITTING_SEVEN_NEWER",
+   "not_a_capability": "a deploy levelling of ArchBig before his sitting"
+  },
+  {
+   "ref": "RIMMANDRAKE_READ_FIX_74DFF4C5BC_WITH_FRESH_EYES",
+   "not_a_capability": "a fresh read of the live test script live_direct_sun_angle.py"
+  },
+  {
+   "ref": "RIMMANDRAKE_ROUTE_ENGINE_CONVERSION_ROWS_NO_DESIGNER_READS_THEM",
+   "not_a_capability": "pipeline routing of conversion rows; the conversion list names no DirectSun row"
+  },
+  {
+   "ref": "RIMMANDRAKE_RULE_MECHANICS_ARE_UNIVERSAL_THE_BIOME_ONLY_SHOWCASES",
+   "not_a_capability": "a ruling, taken in as decision d_conditions_not_place"
+  },
+  {
+   "ref": "RIMMANDRAKE_SPREAD_SLOW_PART_OF_MOVE_NOT_CHANGE",
+   "not_a_capability": "rule text and list hygiene for his 2026-11-26 words, taken in as decision d_merge_or_standalone_open"
+  },
+  {
+   "ref": "RIMMANDRAKE_SWITCH_OFF_LANE_GAME_TICKETS_CROWN_SHADOW_RAN",
+   "not_a_capability": "a pipeline switch for the ticket lane"
+  },
+  {
+   "ref": "SUN_GLOW_DECIDE_WEST_TERMINATOR_SUNBATHING",
+   "covered_by": "inv_sky_light"
+  },
+  {
+   "ref": "TREE_SHADE_BUILD_CROWNS_ON_STILTS",
+   "covered_by": "inv_tree_crowns"
+  },
+  {
+   "ref": "TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT",
+   "covered_by": "inv_tree_crowns"
+  },
+  {
+   "ref": "VEE_WORLD_MUTATORS_DECIDE_FOURTEEN_THOUSAND",
+   "not_a_capability": "world-data cleanup of VEE mutators (per-tile solar power at odds with one Direct Sun); no Direct Sun code"
+  }
+ ],
+ "contradictions": [
+  {
+   "id": "c_sunshield_dead_claim",
+   "status": "resolved",
+   "resolved": true,
+   "source": [
+    "design/concepts/DirectSun/admission_proposal.md",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeGear.cs:118",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs:1281"
+   ],
+   "text": "admission_proposal.md said the field sunShieldEnabled is still saved though the shield is gone (a polish line). The code shows it is live: it gates the lee mode of RM_CompShadeGear, used by the Long Shade mast and lure awning and Stillsand's giant skeletons, with the settings row 'Standing masts and skeletons cast shade'.",
+   "resolution": "Measured in this run; the admission page's line is corrected; capability inv_standing_lee_casters."
+  },
+  {
+   "id": "c_no_height_claim",
+   "status": "resolved",
+   "resolved": true,
+   "source": [
+    "design/concepts/DirectSun/admission_proposal.md"
+   ],
+   "text": "admission_proposal.md question 1 said the game keeps no height for a map. Vanilla GenStep_RocksFromGrid writes RoofRockThin above elevation 0.728 and RoofRockThick above 0.798 (rock above 0.70), and the roof grid is saved, so a loaded map keeps a coarse three-band height.",
+   "resolution": "Read with RimSage 2026-11-27; the admission page's evidence is corrected; it becomes the evidence of draft ask a_mountain_height."
+  },
+  {
+   "id": "c_lee_mode_vs_parasols_only",
+   "status": "open",
+   "core": false,
+   "source": [
+    "OWNER:1792410159136516913",
+    "src/RimMandrake/CreatureBehaviors/Source/RM_ShadeGear.cs"
+   ],
+   "text": "His 2026-10-19 words keep only parasols and tents as shade gear; the masts and skeletons cast through a third shade-gear comp mode (lee). In play they are standing buildings that cast a lee like a wall, which his geometry rule covers. Settle at stage 3 by writing them as casters, not gear; no question for him."
+  },
+  {
+   "id": "c_pipeline_spans_members",
+   "status": "open",
+   "core": false,
+   "source": [
+    "design/concepts/DirectSun/admission_proposal.md"
+   ],
+   "text": "UNMEASURED: whether a pipeline record and test table can span a mod whose code is in Creature Behaviors, whose defs are in Environmental Hazards and three biome mods. A readiness question for the build stages, not a design fork."
+  }
+ ],
+ "script_audit": [
+  {
+   "script": "src/RimMandrake/CreatureBehaviors/live_direct_sun_angle.py",
+   "scenes": "L1a same angle same numbers across biomes on one tile; L1b air heat on and off; L1c the sun stands still",
+   "start": "present: asserts fixed sun, E > 0, weather forced Clear, staged square open ground",
+   "control": "present for L1a (roof, tent, parasol against open; the biomes against each other) and L1b (air heat off leaves exposure unchanged)",
+   "restore": "partial: restores the Forge air heat and removes the weather lock; no scene-begin/scene-end recovery entry",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/CreatureBehaviors/live_tree_crowns.py",
+   "scenes": "one grown tree on cleared ground: disc shaded, cause names it, felled shade gone",
+   "start": "present: the cleared square is checked open ground",
+   "control": "present: the mirror cell up-sun reads canopy 0, and the felled tree",
+   "restore": "partial: the tree is felled and the square left clear; no recovery entry",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/CreatureBehaviors/live_canopy_census.py",
+   "scenes": "census of crown shade on freshly regenerated maps per biome",
+   "start": "partial: regenerates the map; no assertion beyond a rebuilt grid",
+   "control": "absent (a census, not a decision)",
+   "restore": "absent: the current map is left regenerated as the last biome",
+   "hold": "absent"
+  },
+  {
+   "script": "src/RimMandrake/CreatureBehaviors/live_crown_shadow_experiment.py",
+   "scenes": "a planted greatbole forest with drawn shadows, setting off and on",
+   "start": "present: asserts isDirectional and E > 0",
+   "control": "present: setting off draws none",
+   "restore": "partial: the setting is left on (its default); the forest stays as the review save",
+   "hold": "present in effect: the review save waits for his look; not recorded by scene-hold"
+  },
+  {
+   "script": "src/RimMandrake/CreatureBehaviors/live_shade_spread.py",
+   "scenes": "six wild ullai dash for shade on a Pyrelands fixture and spread over the patch",
+   "start": "partial: loads a fixture; 'dashed' line marks a run with no dash COULD NOT LOOK",
+   "control": "partial: red on the parent of the fix (2026-11-25); no same-run control",
+   "restore": "present in effect: loads a fixture and saves under a new name",
+   "hold": "absent"
+  }
+ ],
+ "owner_elsewhere_reviewed": [
+  {
+   "source": "OWNER:1793682086244347248",
+   "not_design_input": "FOUNDRY retirement card: a reassignment of the item, no word on the mod"
+  },
+  {
+   "source": "OWNER:1793682086292070172",
+   "not_design_input": "FOUNDRY retirement card: a reassignment"
+  },
+  {
+   "source": "OWNER:1793682086362639693",
+   "not_design_input": "FOUNDRY retirement card: a reassignment"
+  },
+  {
+   "source": "OWNER:1793682086507156119",
+   "not_design_input": "FOUNDRY retirement card: a reassignment"
+  },
+  {
+   "source": "OWNER:1792410171778479162",
+   "not_design_input": "the same 'Sun heat design pass' card as OWNER:1792410159136516913, stamped on a second item; taken in through d_geometry_not_biome and inv_settings"
+  },
+  {
+   "source": "OWNER:1792410172883298759",
+   "not_design_input": "the same 'Sun heat design pass' card, stamped on a third item; taken in through d_geometry_not_biome"
+  },
+  {
+   "source": "OWNER:1792410174036406737",
+   "not_design_input": "the same 'Sun heat design pass' card, stamped on the live-verify item; taken in through d_geometry_not_biome"
+  }
+ ],
+ "failure_modes": [
+  "What you see is not what they feel: the mountain's long shade and the crowns' shade are felt by pawns, but vanilla draws a rock's shadow at height 1, so he sees a short shadow beside a long band of relief, and invisible shade reads as a bug rather than as the mountain on the map.",
+  "Shade floods the map: at a low fixed sun (the Long Shade clamps 2 to 30 degrees) a cast of height x cot E reaches about 11 cells per unit height at 5 degrees, so a mountain or a forest can shade most open ground and the sun stops being a thing he plans around, the opposite of 'a feel for said mountain depending on the sun angle'.",
+  "Built but undecidable: Direct Sun has no folder of its own (code in Creature Behaviors, defs in Environmental Hazards and three biome mods inside mandrake.rm.biomes) and many built parts have no proof row (moving shade, haze, sun pathing, standing casters), so bars cannot be decided by the pipeline and a change in a neighbour breaks the sun silently."
+ ]
+}

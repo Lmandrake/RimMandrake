@@ -88,8 +88,9 @@ In `src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs` (group 
 `sandGlareStrength`, `glareBlindEnabled`, `glareBlindRateMultiplier`, `mirageEnabled`, `mirageBreakChanceMultiplier`;
 the fixed-sun rows `pinnedSunEnabled`, `pinnedSunSkyStrength`, `sunFlareHiddenBehindPlanet`, `worldSunPinned`,
 `tidalSunGlowByGeometry`, `shadeGridEnabled`, `movingShadeEnabled`. Air heat: an on/off and a degrees row in each of the
-Forge, Terminal Biomes and Greentide settings. Every default is on, or 1, or 55. A field `sunShieldEnabled` is still
-saved, though the shield is gone (a polish line for the Designer, not a bar). No row for mountain shade.
+Forge, Terminal Biomes and Greentide settings. Every default is on, or 1, or 55. `sunShieldEnabled` ("Standing masts and
+skeletons cast shade") gates the lee that the Long Shade mast and lure awning and Stillsand's giant skeletons cast
+(`RM_ShadeGear.cs`, the lee mode). No row for mountain shade.
 
 ### Tests (run 2026-11-27 in this clone)
 
@@ -211,9 +212,11 @@ whether they run before his answer is a Designer and Conductor call, not this pa
 
 1. **How tall is a mountain?** Should a mountain's height come from how far a square lies inside the mountain (deep
    rock stands taller, so a ridge throws the longest shadow), or should every mountain-covered square have one height?
-   Evidence: the game keeps no height for a map. The map generator's `Elevation` grid lives only while the map is made
-   (`MapGenerator.Elevation`, a generation variable, read with RimSage; that it is not saved is [guess ~85%]), and every
-   rock has the one shadow height 1. So any mountain height is ours to invent, and the two ways look different: the
+   Evidence: the game keeps no height grid for a map. The map generator's `Elevation` grid lives only while the map is
+   made (`MapGenerator.Elevation`, a generation variable, read with RimSage; that it is not saved is [guess ~85%]), and
+   every rock has the one shadow height 1. But the saved roof grid keeps a coarse trace of it: `GenStep_RocksFromGrid`
+   puts rock where elevation passes 0.70, thin rock roof above 0.728 and thick rock roof above 0.798, and clears every
+   natural roof patch under 20 cells (read with RimSage 2026-11-27). So any finer mountain height is ours to invent, and the two ways look different: the
    first makes a ridge's shadow longer than a cliff edge's; the second makes every mountain edge throw the same band.
 2. **Is the mountain's shadow drawn on the ground?** Should the long mountain shadow be drawn on the ground, as the
    greatbole's crown shadow is drawn, or shown only by the shade overlay and the cell readout? Evidence: vanilla draws a
