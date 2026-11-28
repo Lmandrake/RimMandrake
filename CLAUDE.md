@@ -219,6 +219,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - No biome has its own heat kind, number or exception. Hot water is physics: water that hot scalds the same way on
   any map, and it harms faster than its steam. The Scald is where such water is common (§Direct Sun).
 - No animal or pawn ever vanishes without a sign that the player can read.
+- Baroque Biomes requires Direct Sun. Where Direct Sun ships is not decided: in Baroque Biomes, or as a stand-alone
+  mod. Until the owner decides, do not do the work of a stand-alone mod, and do not remove that option (§Direct Sun).
 
 ## Every DLC is assumed
 

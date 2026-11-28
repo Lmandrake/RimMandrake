@@ -34,9 +34,9 @@ or baked in" is mostly a **packaging flag**. The **code boundary** is the part t
 be drawn now whichever way the mod ships.
 
 **Recommendation: C.** Draw the boundary now. Give Sun & Shade its own source folder, DLL and settings
-section, and keep shipping it inside Baroque Biomes. Extract it as a standalone mod (A) only when
-Direct Sun can do something on an ordinary day/night world. Today it cannot: the ruling DS7 turns it
-off there.
+section, and keep shipping it inside Baroque Biomes. Whether to extract it as a stand-alone mod (A)
+is open: his words of 2026-11-26 (the top of this page) open the stand-alone question now, and no
+longer wait for Direct Sun to work on an ordinary day/night world (the ruling DS7 turns it off there).
 
 ## 1. Where every piece lives today (measured this pass)
 
@@ -241,9 +241,10 @@ C gives the same code boundary without spreading one feature across three mods.
 4. **Extraction stays a packaging step.** C keeps every full type name, its own settings page and its
    own DLL. A later "make it standalone" deletes a compose entry and writes an About.xml.
 
-**Trigger to revisit (A):** the clock mode is built and passes, or one of our mods must ship without
-Baroque Biomes. SolarMirrors would qualify the day it is meant to work outside our biomes. Today it
-does not have to (owner, 2026-10-15: biome mechanics are promised inside our biomes only).
+**Trigger to revisit (A):** his words of 2026-11-26 (the top of this page) open the stand-alone question now. Two
+more facts would weigh on it: the clock mode is built and passes, or one of our mods must ship without Baroque Biomes.
+A mechanic works by its physical conditions on every map (`GUIDING_PRINCIPLES.md` entries 1 and 2), but it still ships
+inside Baroque Biomes today.
 
 **The single biggest risk:** a moved type that changes its full name. Watchers and the JawaBench shade
 readers find the grid **by a string** and would go blind with no error. Every existing save would log a
