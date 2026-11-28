@@ -2,7 +2,7 @@
 
 Code: `src/RimMandrake/rimflow/run_void.py` (`resolve`, `sync_system`, `heal_system`), the Designer chain count in
 `src/RimMandrake/rimflow/role_launch.py` (`refuse_now`, `give_back_chain`, `close_concept`, the chain sweep in
-`decide_roles`, `never_opened`; the stage-5 judge look: `judge_looked`, `judge_look_close`, `reclass_judge_look`), the certificate rerun in `src/RimMandrake/rimflow/maturation_dispatch.py` (`cert_rerun_decide`,
+`decide_roles`, `never_opened`; the stage-5 judge look: `judge_looked`, `judge_look_close`, `reclass_judge_look`; the void hold's end: `void_held`, `void_probe_argv`, `read_void_probe`, `void_lift`, `prelaunch_dry`, `stage5_judge` dry), the certificate rerun in `src/RimMandrake/rimflow/maturation_dispatch.py` (`cert_rerun_decide`,
 `cert_rerun_launch`) and the Designer's loop ceiling in `src/RimMandrake/rimflow/designer_stage.py` (`loop_start`,
 `loop_spend`, `ceiling_crossed_at`, `loop_ceiling`; `judge_look_rejection`, `reclass_judge_look`). Item: `RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE`, written
 2026-11-19. The owner, 2026-11-18: *"I will not accept ANY system that pointlessly expends such statistical measurements
@@ -79,6 +79,24 @@ the void rule is `run_void.py`'s docstring and `design/RimMandrake/pipeline_tria
   chains the concept again the same day. A failed run, a done run launched before the last void, another concept's
   run, or a void unit lifts nothing. Added 2026-11-21 for incident queues-20261121133600 (Pyrelands sat ready 4.6 h
   after an accepted hand run-now).
+- **a-dry-check-that-passes-lifts-the-void-hold.** The void fault of a unit that ended with no claude result of its own
+  carries its dry check (`role_launch.void_probe_argv`: `role_launch.py prelaunch-dry <concept>`); a stop at
+  `run_max_s` carries none. At the limit, `void_held` reads the last void's dry check (`VOID_PROBE_READ`, under
+  `VOID_PROBE_DEADLINE_S`): exit 0 lifts the hold (a `void_lifts` row with the reading), and the sweep chains the held
+  concept in that same tick. Exit 1 holds, and nothing is chained. Any other reading (exit 2, a hang, a reader that
+  raises) is could not look, and the trial rule decides. Added 2026-11-27 by
+  `RIMMANDRAKE_REARM_BREAKER_BY_PROBE_KNOCKBACK_SAT_105_MIN` (Explosive Knockback: the judge-step fault was fixed at
+  9:10 PM PST 2026-11-26, and the held concept waited for a hand run-now at 10:55 PM PST).
+- **a-held-concept-with-no-dry-check-gets-one-trial-after-a-growing-wait.** A held concept that no dry check lifts
+  gets one trial run `VOID_TRIAL_WAIT_S` x 2^k after its last void, where k is the number of today's lifts that a void
+  followed. A lift lets one run through: one void after it holds the concept again at once. A dry check whose lift a
+  void followed is not read again that day. The danger that the wait guards is a loop of void runs (3 in 13 min).
+- **the-dry-check-reads-the-stage-5-judge-step-without-a-judge.** `stage5_judge(dry=True)` (`stage5-judge --dry`)
+  makes the same reads as the step and starts no judge and writes nothing. Where the step would start
+  `coverage_judge.py run`, it reads the exit from `coverage_judge.plan` as that file's `main` and `run` answer it: 0
+  for a judge plan, because a look is the judge's result and never a void; 1 for error, stopped, parked and ceiling;
+  for a skip, 1 only when an advisory verdict on unchanged inputs stands, else 0. `prelaunch_dry` exits 2 (could not
+  look) on an unreadable stage, or where the stage has no pre-launch step.
 - **an-unsigned-judge-look-is-the-judges-result.** A stage-5 Designer unit that ended at its coverage judge step, with
   no result.json, no claude result and no transcript, is the judge's look when the concept's `coverage_verdict.json`
   is unsigned, its judge started inside the unit's window, and its round did not die of a system cause

@@ -342,6 +342,148 @@ def t_a_done_run_after_the_voids_lifts_the_void_hold(tmp):
         ok(RL.void_held(rs, C1, last + 120), "%s lifts nothing" % why)
 
 
+# ---- the void hold ends by itself when the fault is gone ------------------------------------------------------------
+# RIMMANDRAKE_REARM_BREAKER_BY_PROBE_KNOCKBACK_SAT_105_MIN: three Explosive Knockback Designer runs were void in 13 min
+# (the stage-5 judge step exited 3 on a signed tree); the limit stopped the chain; the cause was fixed at 9:10 PM PST
+# 2026-11-26 (f84a3bc6e2), and nothing chained the concept until a hand run-now at 10:55 PM PST.
+
+NO_CLAUDE = "the unit ended with no claude result of its own"
+
+
+def held_rs(now, probe=True, n=None):
+    import role_launch as RL
+    import run_void as RV
+    n = RV.SYSTEM_FAULT_LIMIT if n is None else n
+    return {"void_faults": [dict({"day": RL.day_of(now), "concept": C1, "unit": "v%d" % i, "cause": NO_CLAUDE,
+                                  "at": now - 600 + i}, **({"probe": RL.void_probe_argv(C1, NO_CLAUDE)} if probe
+                                                          else {})) for i in range(n)]}
+
+
+def drive_sweep(rs, now, reader):
+    """One real decide tick over a chain_stages role whose one concept is ready at stage 5 (pending 2 h), with the void
+    dry check read by `reader(argv) -> (rc, line)`. -> (asks, role state, reader calls)."""
+    import role_launch as RL
+    import selftest_dispatcher as SD
+    calls = []
+    keep = RL.VOID_PROBE_READ
+    RL.VOID_PROBE_READ = lambda argv: (calls.append(list(argv)), reader(argv))[1]
+    try:
+        rows = [(C1, {"status": "ready", "stage": 5, "results": [], "history": [{"what": "open"}]}, now - 7200)]
+        o = SD.robs(SD.ops_status(now))
+        o["stage_concepts"] = lambda: rows
+        acts, st = [], {"roles": {"Operations": rs}}
+        role = SD.operations(chain_stages=True, runs_local=[], economy_pass_local=None)
+        RL.decide_roles({"roles": [role]}, st, o, now, lambda **k: acts.append(k), set(), None)
+    finally:
+        RL.VOID_PROBE_READ = keep
+    asks = [a for a in acts if a.get("do") == "role_hold" and "next stage chained" in str(a.get("why"))]
+    return asks, st["roles"]["Operations"], calls
+
+
+def t_a_dry_check_that_passes_lifts_the_void_hold(tmp):
+    import role_launch as RL
+    import selftest_dispatcher as SD
+    now = SD.at_local("10:15")
+    # the void route writes the dry check on the fault of a unit that ended with no claude result, none on a timeout
+    rs = {}
+    RL.void_route("Operations", rs, {}, {"concept": C1, "unit": "u1"}, NO_CLAUDE, now, lambda **k: None, {})
+    RL.void_route("Operations", rs, {}, {"concept": C1, "unit": "u2"}, "stopped at run_max_s after 1 stop(s), before "
+                  "it wrote result.json", now, lambda **k: None, {})
+    f1, f2 = rs["void_faults"]
+    ok(f1.get("probe") == ["python3", "src/RimMandrake/rimflow/role_launch.py", "prelaunch-dry", C1]
+       and "probe" not in f2, "the void fault of a unit that ended with no claude result carries its dry check, a "
+       "timeout none (%r / %r)" % (f1.get("probe"), f2.get("probe")))
+    # the step now exits 0: the next tick lifts the hold and chains the held concept
+    asks, rs, calls = drive_sweep(held_rs(now), now, lambda argv: (0, "stage5-judge: already signed"))
+    lift = (rs.get("void_lifts") or [{}])[-1]
+    req = rs.get("run_now") or rs.get("run_now_last") or {}     # the same decide takes the asked run-now
+    ok(calls and len(asks) == 1 and req.get("concept") == C1 and req.get("chained_from") == "orphan-sweep",
+       "a tripped void limit whose dry check now exits 0: the next tick chains the held concept (%d ask, %d read)"
+       % (len(asks), len(calls)))
+    ok(lift.get("how") == "probe" and lift.get("concept") == C1 and "already signed" in str(lift.get("reading")),
+       "the lift is recorded with its reading: %r" % lift)
+    # the step still fails: nothing is chained
+    asks, rs, calls = drive_sweep(held_rs(now), now, lambda argv: (1, "stage5-judge: the judge would end the unit"))
+    ok(calls and not asks and not rs.get("run_now") and not rs.get("run_now_last") and not rs.get("void_lifts"),
+       "a dry check that still exits 1 chains nothing (%d ask, %r)" % (len(asks), rs.get("void_lifts")))
+    # a probe that cannot look decides nothing by itself: the trial rule's wait still stands
+    asks, rs, calls = drive_sweep(held_rs(now), now, lambda argv: (2, "no pre-launch step at stage 3"))
+    ok(calls and not asks and not rs.get("void_lifts"),
+       "a dry check that could not look (exit 2) lifts nothing inside the trial wait (%d ask)" % len(asks))
+
+
+def t_a_held_concept_with_no_dry_check_gets_one_trial_after_a_growing_wait(tmp):
+    import role_launch as RL
+    import selftest_dispatcher as SD
+    now = SD.at_local("10:15")
+    W = RL.VOID_TRIAL_WAIT_S
+    no_read = lambda argv: (_ for _ in ()).throw(AssertionError("no dry check to read"))   # noqa: E731
+    rs = held_rs(now, probe=False)
+    last = max(f["at"] for f in rs["void_faults"])
+    asks, rs, calls = drive_sweep(rs, last + W - 60, no_read)
+    ok(not asks and not rs.get("void_lifts"), "inside the wait nothing is chained (%d ask)" % len(asks))
+    asks, rs, calls = drive_sweep(rs, last + W + 60, no_read)
+    ok(len(asks) == 1 and [x.get("how") for x in rs.get("void_lifts") or []] == ["trial"],
+       "after the wait one trial run is chained (%d ask, lifts %r)" % (len(asks), rs.get("void_lifts")))
+    # the trial voids: held at once, and the next wait is twice as long
+    rs.pop("run_now", None), rs.pop("run_now_last", None)
+    t4 = last + W + 300
+    rs["void_faults"].append({"day": RL.day_of(t4), "concept": C1, "unit": "trial1", "cause": NO_CLAUDE, "at": t4})
+    ok(RL.void_held(rs, C1, t4 + 60), "a void after the trial's lift holds the concept again at once")
+    asks, rs, calls = drive_sweep(rs, t4 + W + 60, no_read)
+    ok(not asks, "one wait after the failed trial nothing is chained: the wait grew (%d ask)" % len(asks))
+    asks, rs, calls = drive_sweep(rs, t4 + 2 * W + 60, no_read)
+    ok(len(asks) == 1 and len(rs.get("void_lifts") or []) == 2,
+       "two waits after the failed trial the second trial is chained (%d ask)" % len(asks))
+    # a dry check whose lift a void followed is not read again that day: the trial rule decides
+    rs = held_rs(now)
+    asks, rs, calls = drive_sweep(rs, now, lambda argv: (0, "fine"))
+    rs.pop("run_now", None)
+    t5 = now + 120
+    rs["void_faults"].append(dict(rs["void_faults"][0], unit="after-probe", at=t5))
+    asks, rs, calls = drive_sweep(rs, t5 + 60, lambda argv: (0, "fine"))
+    ok(not calls and not asks, "a dry check that lifted and was followed by a void is not read again (%d read, %d ask)"
+       % (len(calls), len(asks)))
+
+
+def t_the_dry_check_reads_the_stage_5_judge_step_without_a_judge(tmp):
+    import role_launch as RL
+    import designer_stage as DS
+    import coverage_judge as CJ
+    d = os.path.join(tmp, "dry_concept")
+    DS.init(d, "DryMod")
+    st = DS.load_state(d)
+    st.update(stage=5, status="ready")
+    DS.write_json(DS.state_path(d), st)
+    keep = CJ.plan, CJ.prior_verdict
+    ran = []
+    runner = lambda *a, **k: ran.append(a)      # noqa: E731
+    advisory = {"verdict": "not_covered", "advisory": "an uncalibrated brief"}
+    try:
+        # (plan, prior verdict, the dry exit): as coverage_judge.main/run answer each plan without a look
+        for what, why, prior, want in (("skip", "already signed at tree abc", advisory, 0),
+                                       ("judge", "the tree changed", None, 0),
+                                       ("skip", "the exam does not pass: x", None, 0),
+                                       ("skip", "the exam does not pass: x", advisory, 1),
+                                       ("skip", "the exam does not pass: x", dict(advisory, stale_inputs=["t"]), 0),
+                                       ("stopped", "the loop limit", None, 1), ("parked", "for him", None, 1),
+                                       ("error", "unreadable concept: x", None, 1)):
+            CJ.plan = lambda c, repo=None, w=what, y=why: (w, y)
+            CJ.prior_verdict = lambda c, p=prior: p
+            rc = RL.stage5_judge(d, runner=runner, dry=True)
+            ok(rc == want and not ran, "dry stage5-judge on a plan of %s (%s, prior %s) exits %d, no judge started "
+               "(got %r, %d judge calls)" % (what, why, "advisory" if prior else "none", want, rc, len(ran)))
+    finally:
+        CJ.plan, CJ.prior_verdict = keep
+    rc, line = RL.prelaunch_dry(os.path.join(tmp, "no_such_concept"))
+    ok(rc == 2, "prelaunch-dry on a concept with no readable stage exits 2, could not look: %r" % line)
+    st.update(stage=3)
+    DS.write_json(DS.state_path(d), st)
+    rc, line = RL.prelaunch_dry(d)
+    ok(rc == 2 and "no pre-launch step" in line, "prelaunch-dry where the stage has no pre-launch step exits 2: %r"
+       % line)
+
+
 # ---- a stage-5 unit that ended at its coverage judge ----------------------------------------------------------------
 
 NO_RESULT_WHY = "no result.json (a closing message is not a result)"
@@ -522,6 +664,9 @@ def main():
         t_a_concept_no_run_opened_is_not_swept(tmp)
         t_void_runs_spend_nothing_on_the_loop_ceiling(tmp)
         t_a_done_run_after_the_voids_lifts_the_void_hold(tmp)
+        t_a_dry_check_that_passes_lifts_the_void_hold(tmp)
+        t_a_held_concept_with_no_dry_check_gets_one_trial_after_a_growing_wait(tmp)
+        t_the_dry_check_reads_the_stage_5_judge_step_without_a_judge(tmp)
         t_an_unsigned_judge_look_is_the_judges_result(tmp)
         t_a_unit_with_no_look_of_its_own_stays_void(tmp)
         t_a_void_judge_look_is_reclassed_by_its_verb(tmp)

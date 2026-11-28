@@ -2288,12 +2288,17 @@ def session_part(rs, run, tok, res):
 JUDGE_TIMEOUT_S = 5400  # budget: class=judge
 
 
-def stage5_judge(concept, runner=None):
+def stage5_judge(concept, runner=None, dry=False):
     """The first pre-launch step at stage 5: `coverage_judge.py run` only while the concept is still at stage 5 when the
     unit runs. The steps are fixed when the run is asked; a run asked at stage 5 can reopen stage 3 at its open (inputs
     changed), and the judge's skip there handed back an old advisory verdict and exited STOP_EXIT, so the stage-3
     Designer never started (Contagion 2026-11-16, RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING). The check
-    lives here, not in coverage_judge.py: that file is part of the judge's calibrated brief. -> the step's exit code."""
+    lives here, not in coverage_judge.py: that file is part of the judge's calibrated brief. -> the step's exit code.
+    dry=True is the void hold's dry check (void_probe_argv): the same reads, and no judge and no write. Where the step
+    would start `coverage_judge.py run`, its exit is read from coverage_judge.plan as `main` and `run` answer it (no
+    edit of that file: it is the calibrated brief): a plan of judge starts a look, the judge's result and never a void
+    (0); error exits 2, and stopped, parked and ceiling exit STOP_EXIT (1); a skip exits STOP_EXIT only when an earlier
+    advisory verdict on unchanged inputs stands (1), else 0."""
     import designer_stage as DS
     try:
         stage = (DS.load_state(concept) or {}).get("stage")
@@ -2313,6 +2318,19 @@ def stage5_judge(concept, runner=None):
     if what == "skip" and str(why).startswith("already signed"):
         print("stage5-judge: %s: %s: no judge, nothing held" % (os.path.basename(concept), why))
         return 0
+    if dry:
+        ends = what != "judge"
+        if what == "skip":
+            try:
+                prior = CJ.prior_verdict(concept)
+            except Exception:  # noqa: BLE001 - an unread prior: the step may end the unit, so it reads as ending it
+                prior = {"advisory": "could not read the prior verdict"}
+            ends = bool(prior and not prior.get("stale_inputs") and (prior.get("advisory") or (
+                prior.get("contract") or {}).get("advisory")))
+        print("stage5-judge --dry: %s: the judge would %s (%s): %s" % (
+            os.path.basename(concept), what or "not read its plan", why,
+            "the step would end the unit" if ends else "the step lets the unit go on"))
+        return 1 if ends else 0
     run = runner or subprocess.run
     judge = os.path.join(os.path.dirname(os.path.abspath(__file__)), "coverage_judge.py")
     # the judge bounds its own claude (coverage_judge.TIMEOUT_S); this bound only stops a hung step from holding the unit
@@ -2322,6 +2340,23 @@ def stage5_judge(concept, runner=None):
 
 
 PRE_DONE_EXIT = 79     # a pre-step that did the run's work itself: the unit ends 0 and the model never starts
+
+
+def prelaunch_dry(concept):
+    """The void hold's dry check (void_probe_argv): the concept's pre-launch steps as a run asked now would get them
+    (coverage_pre), each read without a judge or a model. -> (0, line) every step lets the unit go on | (1, line) a
+    step would end it | (2, line) could not look: no readable stage, or no pre-launch step at this stage (then nothing
+    here can tell; void_held's trial rule decides). stage5-program never ends a unit (it exits 0 or PRE_DONE_EXIT)."""
+    import designer_stage as DS
+    try:
+        stage = DS.load_state(concept).get("stage")
+    except Exception as e:  # noqa: BLE001 - could not look
+        return 2, "could not look: %s: %s" % (type(e).__name__, e)
+    steps = coverage_pre(concept)
+    if not steps:
+        return 2, "no pre-launch step at stage %s: no dry check" % stage
+    rc = stage5_judge(concept, dry=True)
+    return (0 if rc == 0 else 1), "stage5-judge --dry exited %d" % rc
 
 
 def stage5_program(concept, unit=None, sync=True):
@@ -2685,11 +2720,58 @@ def give_back_req(rs, req):
     return True
 
 
+# RIMMANDRAKE_REARM_BREAKER_BY_PROBE_KNOCKBACK_SAT_105_MIN: a hold that only a done run lifts never lifts, because it
+# chains no run (Explosive Knockback 2026-11-26: the cause was fixed at 9:10 PM PST and the concept sat held until a
+# hand run-now at 10:55 PM PST). The hold now ends by itself: its dry check reads the failed step again, or one trial
+# run goes through after a wait that doubles after each trial that voided.
+# budget: danger=a loop of void runs (evidence: 3 void runs in 13 min, each 8 to 11 s and no model tokens, Explosive
+# budget: Knockback 2026-11-26); ends no work: one trial run waits this long after the last void, twice as long after each
+# budget: trial that voided, and the day's turn ends the hold
+VOID_TRIAL_WAIT_S = 1800
+# budget: danger=a hung dry check holds the Dispatcher's decide tick; evidence=a hang guard, none seen; longest=0.34s
+# budget: (role_launch.py prelaunch-dry on GelatinousSlime at stage 5, 2026-11-27); never a speed bar
+VOID_PROBE_DEADLINE_S = 300
+VOID_PROBE_CAUSES = ("the unit ended with no claude result of its own",)   # a pre-launch step can end such a unit
+
+
+def void_probe_argv(concept, cause):
+    """-> the dry check of a void fault, or None: a unit that ended with no claude result of its own may have ended at
+    a pre-launch step (stage5-judge), and `role_launch.py prelaunch-dry` reads that step again without a judge or a
+    model. A stop at run_max_s has no dry check (only a trial run tells)."""
+    if str(cause) not in VOID_PROBE_CAUSES:
+        return None
+    return ["python3", "src/RimMandrake/rimflow/role_launch.py", "prelaunch-dry", concept]
+
+
+def read_void_probe(argv):
+    """-> (exit code, its last line) of a dry check, run in this clone's root under VOID_PROBE_DEADLINE_S. A hang, or a
+    check that cannot start, is (None, why): could not look."""
+    root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
+    try:
+        r = subprocess.run(argv, cwd=root, capture_output=True, text=True, errors="replace", stdin=subprocess.DEVNULL,
+                           timeout=VOID_PROBE_DEADLINE_S)
+    except subprocess.TimeoutExpired:
+        return None, "the dry check ran past its %d s deadline" % VOID_PROBE_DEADLINE_S
+    except OSError as e:
+        return None, "the dry check could not start: %s" % e
+    lines = [x for x in ((r.stdout or "") + (r.stderr or "")).splitlines() if x.strip()]
+    return r.returncode, (lines[-1] if lines else "(no output)")
+
+
+VOID_PROBE_READ = read_void_probe     # the decide's reader of a dry check; a selftest stands in its own
+
+
 def void_held(rs, concept, now):
     """True when `concept` met run_void.SYSTEM_FAULT_LIMIT void_system runs today (void_route): nothing chains it,
-    harvest or sweep, until the day turns, or until a run on it launched after the last of those voids finishes
-    done. That run proves the system cause repaired, so the hold lifts and the chain goes on (queues-20261121133600:
-    Pyrelands sat ready 4.6 h after an accepted hand run-now, held to the local midnight)."""
+    harvest or sweep. The hold ends by itself, recorded as a `void_lifts` row:
+      * the day turns;
+      * a run on it launched after the last void finishes done (queues-20261121133600: Pyrelands sat ready 4.6 h);
+      * the last void's dry check (void_probe_argv) exits 0: the failed step passes now. Exit 1 holds; any other
+        reading is could not look, and the trial rule decides. A dry check whose lift a void followed lied once: it is
+        not read again that day;
+      * else one trial run goes through VOID_TRIAL_WAIT_S x 2^k after the last void, k = today's lifts that a void
+        followed.
+    After a lift one void holds the concept again at once: the lift lets one run through, never a fresh count."""
     import run_void as RV
     day = day_of(now)
     voids = [f for f in rs.get("void_faults") or [] if isinstance(f, dict) and f.get("day") == day
@@ -2697,9 +2779,38 @@ def void_held(rs, concept, now):
     if len(voids) < RV.SYSTEM_FAULT_LIMIT:
         return False
     last = max((f.get("at") or 0) for f in voids)
+    lifts = [x for x in rs.get("void_lifts") or [] if isinstance(x, dict) and x.get("day") == day
+             and x.get("concept") == concept]
+    if lifts and (lifts[-1].get("at") or 0) >= last:
+        return False                    # lifted, and no void since: the run it let through may still come
     void_units = {f.get("unit") for f in voids}
-    return not any(isinstance(r, dict) and r.get("concept") == concept and r.get("state") == "done"
-                   and r.get("unit") not in void_units and (r.get("at") or 0) > last for r in rs.get("runs") or [])
+    if any(isinstance(r, dict) and r.get("concept") == concept and r.get("state") == "done"
+           and r.get("unit") not in void_units and (r.get("at") or 0) > last for r in rs.get("runs") or []):
+        return False
+    probe = next((f.get("probe") for f in voids if (f.get("at") or 0) == last and f.get("probe")), None)
+    if probe and not any(x.get("how") == "probe" for x in lifts):
+        try:
+            rc, line = VOID_PROBE_READ(probe)
+        except Exception as e:  # noqa: BLE001 - a reader that raises is could not look; the trial rule decides
+            rc, line = None, "%s: %s" % (type(e).__name__, e)
+        rs.setdefault("void_probe_reads", {})[concept] = {"at": now, "rc": rc, "line": str(line)[:300]}
+        if rc == 0:
+            void_lift(rs, concept, now, "probe", "the dry check `%s` exited 0: %s" % (" ".join(probe[-2:]), line))
+            return False
+        if rc == 1:
+            return True                 # the failed step still fails: no trial
+    wait = VOID_TRIAL_WAIT_S * 2 ** len(lifts)
+    if now >= last + wait:
+        void_lift(rs, concept, now, "trial", "one trial run, %d min after the last void (%d earlier lift(s) voided)" % (
+            wait // 60, len(lifts)))
+        return False
+    return True
+
+
+def void_lift(rs, concept, now, how, reading):
+    """The void hold on `concept` ends: one `void_lifts` row (pruned to two days), read by void_held."""
+    keep = [x for x in rs.get("void_lifts") or [] if isinstance(x, dict) and now - (x.get("at") or 0) < 2 * 86400]
+    rs["void_lifts"] = keep + [{"day": day_of(now), "concept": concept, "at": now, "how": how, "reading": reading}]
 
 
 def void_route(name, rs, cfg, run, cause, now, act, obs):
@@ -2710,7 +2821,11 @@ def void_route(name, rs, cfg, run, cause, now, act, obs):
     import run_void as RV
     concept, item, day = run["concept"], run.get("item"), day_of(now)
     vf = [f for f in rs.get("void_faults") or [] if isinstance(f, dict) and f.get("day") == day]
-    vf.append({"day": day, "concept": concept, "unit": run["unit"], "cause": cause, "at": now})
+    fault = {"day": day, "concept": concept, "unit": run["unit"], "cause": cause, "at": now}
+    probe = void_probe_argv(concept, cause)
+    if probe:
+        fault["probe"] = probe      # void_held reads it at the limit: the hold ends when the failed step passes
+    vf.append(fault)
     rs["void_faults"] = vf
     n = sum(1 for f in vf if f.get("concept") == concept)
     gave = give_back_chain(rs, run["unit"])     # the dead run's own chain, at the limit too
@@ -3975,6 +4090,11 @@ def main(argv=None):
     g.add_argument("concept")
     j = sub.add_parser("stage5-judge", help="the stage-5 pre-launch judge step, only while still at stage 5 (stage5_judge)")
     j.add_argument("concept")
+    j.add_argument("--dry", action="store_true", help="read the step without a judge: exit 0 it lets the unit go on, 1 it "
+                   "would end it (the void hold's dry check)")
+    pd = sub.add_parser("prelaunch-dry", help="the void hold's dry check: the concept's pre-launch steps read without a "
+                        "judge or a model; exit 0 pass, 1 a step would end the unit, 2 could not look (prelaunch_dry)")
+    pd.add_argument("concept")
     k = sub.add_parser("reclass-judge-look", help="a run classed void_system that was its stage-5 judge's look: "
                        "reclass it (reclass_judge_look)")
     k.add_argument("unit")
@@ -4002,7 +4122,11 @@ def main(argv=None):
         finally:
             lk.close()
     if a.cmd == "stage5-judge":
-        return stage5_judge(os.path.abspath(a.concept))
+        return stage5_judge(os.path.abspath(a.concept), dry=a.dry)
+    if a.cmd == "prelaunch-dry":
+        rc, line = prelaunch_dry(os.path.abspath(a.concept))
+        print("prelaunch-dry: %s" % line)
+        return rc
     if a.cmd == "stage5-program":
         concept = os.path.abspath(a.concept)
         try:
