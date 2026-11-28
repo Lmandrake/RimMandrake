@@ -17,7 +17,9 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
 ## ACCEPTS (the only inputs this is built for)
 
 - **the-plan-file.** `plan.json` of schema 1 in `$RM_ACCOUNT_PLAN_DIR` (default
-  `~/.local/state/rimmandrake/account_plan`), written only by this tool.
+  `~/.local/state/rimmandrake/account_plan`), written only by this tool. A step's leave line is one number, `entry-N`,
+  or a line schedule that changes through the account's week (its promises:
+  `design/specs/2026-11-27-account-line-schedule/boundary.md`); every reader takes it from `line_of_step`.
 - **the-meter.** `account_usage.read_now()` rows, the MEASURED lines of its `series.jsonl`, `read_codex_points()` and
   `read_genai_status()`. No other reader of a level.
 - **the-live-account.** `account_live` (the switcher's status), and the switcher's own `log.jsonl` for past switches.
@@ -236,7 +238,7 @@ Each promise has a check of its name in `src/RimMandrake/Utils/selftest_account_
   load.
 - **burn_mode_ends_at_the_reset.** After the reset passes, the state is `off` with no command.
 - **the_reset_day_rule_is_plan_data.** Inside the reset-day hours, Codex's line is 0 and a Claude account's line is
-  its floor, for the accounts that the plan lists; Steve's account keeps its line.
+  its floor, for the accounts that the plan lists and whose step has no line schedule; Steve's account keeps its line.
 - **measures_count_erased_points_and_switches.** `measures` gives, per account and week, the points above the line at
   the reset from the reader's series, and the switches of the week from the switcher's log, and the live runs at each
   switch that this plan decided, from its own log (a pass whose runs could not be read is counted apart). A week with

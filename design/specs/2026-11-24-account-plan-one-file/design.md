@@ -101,7 +101,8 @@ each such case as a wanted difference.
 
 - **A step** is the owner's template: use `use`, until its level is at `leave` (or `until` is true), warn `warn` points
   before that, then the next step. Fields: `name` (its identity), `use`, `leave` (a number, or `entry-N`: N points under
-  the level at switch-in), `warn` (leeway in points; default from the numbers), `until` and `when` (conditions), and a
+  the level at switch-in), `schedule` (a line schedule: a leave line that changes through the account's week, with
+  `leave` its highest percent; `design/specs/2026-11-27-account-line-schedule/boundary.md`), `warn` (leeway in points; default from the numbers), `until` and `when` (conditions), and a
   life: `from`, `ends`, `ends_at_reset_of` (the first reset of that account after `from`, read from the meter).
 - **The rule of an account** is its first step, in list order, that is alive (inside its life, `when` true). A
   temporary step stands before the standing step of the same account and shadows it until it ends. The order in which
@@ -115,7 +116,7 @@ each such case as a wanted difference.
   Mode, and `./acct can-use codex` answers whether our work may send it a job.
 - **The reset-day rule** is data: `numbers.reset_day = {"hours": 24, "accounts": ["codex", "system", "lukas"],
   "line": {"meter": 0, "claude": "floor"}}`. Inside that many hours before an account's reset, its leave line is the
-  reset-day line. Steve's account is not in the list (the ruling's reading).
+  reset-day line, unless its step has a line schedule (the schedule says the line up to the reset). Steve's account is not in the list (the ruling's reading).
 - **A hold** has an id, a why, who, and an end (`--for 2h` or `--until`). A hold with no end is refused; the refusal
   names `--for`. While a hold stands, a timed pass acts on nothing.
 - **A pin** keeps rescue switches off the live account until its line or its end.

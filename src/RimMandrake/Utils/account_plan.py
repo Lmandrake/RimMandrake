@@ -41,7 +41,7 @@ OK, NO, COULD_NOT_LOOK, REFUSED, FAILED, NONE = 0, 1, 2, 3, 4, 5
 TZ = ZoneInfo("America/Los_Angeles")
 WEEK = 7 * 86400
 SEED = HERE / "account_plan.seed.json"
-STEP_KEYS = {"name", "use", "leave", "warn", "until", "when", "from", "ends", "ends_at_reset_of", "why", "by"}
+STEP_KEYS = {"name", "use", "leave", "schedule", "warn", "until", "when", "from", "ends", "ends_at_reset_of", "why", "by"}
 DAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 
 
@@ -292,8 +292,10 @@ def is_num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
-def problems(plan) -> list:
-    """Every fault of the plan, each with its repair. [] is a valid plan."""
+def problems(plan, writing=False) -> list:
+    """Every fault of the plan, each with its repair. [] is a valid plan. writing: a write is checked, so a line
+    schedule must read; at a read a schedule that cannot be read is no fault of the plan (the pass is could not look on
+    that step, and uses its highest percent: line_of_step)."""
     out = []
     if not isinstance(plan, dict) or plan.get("schema") != 1:
         return ["the plan is not a schema 1 object; repair: ./acct undo, or ./acct init"]
@@ -347,6 +349,18 @@ def problems(plan) -> list:
         if not rel and not (is_num(lv) and lo <= lv <= 100):
             out.append(f"{tag}: `leave` must be a percent from {g(lo)} to 100 (a Claude account is never taken under "
                        f"the floor) or entry-N, not {lv!r}; repair: ./acct step set {s['name']} leave=<percent>")
+        if s.get("schedule") is not None:
+            if not isinstance(s["schedule"], str) or not is_num(lv):
+                out.append(f"{tag}: a step with a line schedule holds its text in `schedule` and its highest percent in "
+                           f"`leave`; repair: ./acct line {a} --schedule \"...\"")
+            elif writing:
+                try:
+                    pts = parse_schedule(s["schedule"], lo)
+                    if lv != max(x["pct"] for x in pts):
+                        out.append(f"{tag}: `leave` must be the highest percent of its line schedule; repair: ./acct "
+                                   f"line {a} --schedule \"{s['schedule']}\"")
+                except Refused as e:
+                    out.append(f"{tag}: {e}")
         if s.get("warn") is not None and not (is_num(s["warn"]) and 0 <= s["warn"] <= 100):
             out.append(f"{tag}: `warn` is the leeway in points, 0 to 100")
         for k in ("until", "when"):
@@ -485,7 +499,7 @@ def commit(change, meta: dict, base=None):
         new = change(copy.deepcopy(old) if old is not None else None)
         if isinstance(new, dict):
             new.pop("driver", None)     # the key of the retired engine switch (until 2026-11-27): it means nothing now
-        bad = problems(new)
+        bad = problems(new, writing=True)
         if bad:
             raise Refused("; ".join(bad))
         new["rev"] = max([int((old or {}).get("rev") or 0)] + [int(h.get("rev") or 0) for h in history()]) + 1
@@ -620,9 +634,9 @@ def gather(now=None, slow=False) -> dict:
         write_atomic(plan_dir() / "frame.json", cache)
     codex = cache.get("codex") or {**reading(None, now), "why": "no timed pass has read it yet", "burn_h": None}
     entry = {}
-    if plan and any(isinstance(s.get("leave"), str) for s in plan["steps"]):
+    if plan and any(entry_points(s) is not None for s in plan["steps"]):
         for s in plan["steps"]:
-            if isinstance(s.get("leave"), str):
+            if entry_points(s) is not None:
                 entry[s["use"]] = entry_level(series, sws, s["use"])
     try:
         load = os.getloadavg()[0]
@@ -659,6 +673,223 @@ def readings_of(f) -> dict:
     return {a: reading(r, f["now"]) for a, r in (f.get("rows") or {}).items()}
 
 
+def frame_env(f):
+    """The Env of a frame's readings, Codex's included."""
+    rd = readings_of(f)
+    rd["codex"] = f.get("codex") or reading(None, f["now"])
+    return Env(f["now"], lambda a: (rd.get(a) or {}).get("left"), lambda a: (rd.get(a) or {}).get("reset"),
+               entry=lambda a: (f.get("entry") or {}).get(a))
+
+
+# ------------------------------------------------------------------ the line schedule (pure; page
+# design/specs/2026-11-27-account-line-schedule/boundary.md)
+# Not a limit (it ends no work): a tolerance. Danger of a small one: a reset that moves by minutes, or by the hour of a
+# daylight-saving change, puts the point at the reset at the start of the week and the schedule reads backwards.
+# Danger of a large one: a point meant hours after the reset is read as at the reset. Evidence: the meter moves a reset
+# by up to a minute (account_end.RESET_JITTER_S 15 min); a reset fixed in UTC moves one hour on the Pacific clock.
+SNAP_S = 2 * 3600
+# Ends no work: the command refuses a longer list with the repair. Danger: a schedule that nobody reads in one line.
+MAX_POINTS = 14
+DAY_OF = {**{d: i for i, d in enumerate(DAYS)},
+          **{d: i for i, d in enumerate(("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"))},
+          "tues": 1, "weds": 2, "thur": 3, "thurs": 3}
+POINT_RX = re.compile(r"([A-Za-z]+)\.?\s+(\d{1,2})(?::(\d\d))?\s*([AaPp][Mm])?\s*=\s*(-?\d+(?:\.\d+)?)\s*%?\s*([A-Za-z]+)?")
+SCHED_HELP = 'a weekday, a Pacific time, = a percent, and hold or ramp, in the order of the week from the reset: ' \
+             '--schedule "Sat 23:59=40 hold; Tue 13:30=0 ramp"'
+_SCHED = {}
+
+
+def parse_schedule(text, floor=0.0) -> list:
+    """The points of a line schedule, in the order typed: [{day, min, pct, how, text}]. Refused with the reason and
+    the repair. floor: the lowest percent a point may have (a Claude account's floor)."""
+    if not isinstance(text, str):
+        raise Refused("a line schedule is a text, not %r; repair: %s" % (text, SCHED_HELP))
+    parts = [x.strip() for x in text.split(";") if x.strip()]
+    if not parts:
+        raise Refused("the line schedule has no point; repair: %s" % SCHED_HELP)
+    if len(parts) > MAX_POINTS:
+        raise Refused("the line schedule has %d points, more than %d; repair: fewer points" % (len(parts), MAX_POINTS))
+    pts = []
+    for i, x in enumerate(parts):
+        m = POINT_RX.fullmatch(x)
+        if not m:
+            raise Refused("`%s` cannot be read as a point; repair: %s" % (x, SCHED_HELP))
+        day = DAY_OF.get(m.group(1).lower())
+        if day is None:
+            raise Refused("`%s`: %s is no weekday; repair: mon, tue, wed, thu, fri, sat or sun" % (x, m.group(1)))
+        hh, mm, half = int(m.group(2)), int(m.group(3) or 0), (m.group(4) or "").lower()
+        if half and not 1 <= hh <= 12:
+            hh = 99
+        elif half:
+            hh = hh % 12 + (12 if half == "pm" else 0)
+        if not (0 <= hh <= 23 and 0 <= mm <= 59):
+            raise Refused("`%s`: %s is no time; repair: 0:00 to 23:59, or 1:30pm" % (x, x.split("=")[0].split(None, 1)[1].strip()))
+        pct = float(m.group(5))
+        if not 0 <= pct <= 100:
+            raise Refused("`%s`: a percent is 0 to 100, not %s; repair: a percent from 0 to 100" % (x, g(pct)))
+        if pct < floor:
+            raise Refused("`%s`: %s%% is under the floor %s%% (a Claude account is never taken under it); repair: a percent "
+                          "of %s or more" % (x, g(pct), g(floor), g(floor)))
+        how = (m.group(6) or "hold").lower()
+        if how not in ("hold", "ramp"):
+            raise Refused("`%s`: `%s` is neither hold nor ramp; repair: %s" % (x, m.group(6), SCHED_HELP))
+        if i == 0 and how == "ramp":
+            raise Refused("`%s`: a ramp runs from the point before it, and the first point has no point before it; "
+                          "repair: make the first point hold (the line from the reset), or put a point before it" % x)
+        pts.append({"day": day, "min": hh * 60 + mm, "pct": pct, "how": how, "text": x})
+    span = 0
+    for a, b in zip(pts, pts[1:]):
+        gap = ((b["day"] * 1440 + b["min"]) - (a["day"] * 1440 + a["min"])) % (7 * 1440)
+        if gap == 0:
+            raise Refused("`%s` and `%s` are at the same moment; repair: keep one of them" % (a["text"], b["text"]))
+        span += gap
+    if span >= 7 * 1440:
+        raise Refused("the points run past a week (%s days from the first to the last, each after the one before); "
+                      "repair: type the points in the order of the week from the reset" % g(span / 1440))
+    return pts
+
+
+def schedule_points(text):
+    """parse_schedule with a cache, at a read: -> (points, None) or (None, why)."""
+    if text not in _SCHED:
+        try:
+            _SCHED[text] = (parse_schedule(text), None)
+        except Refused as e:
+            _SCHED[text] = (None, str(e))
+    return _SCHED[text]
+
+
+def next_moment(p, after):
+    """The first moment after `after` with the weekday and the Pacific clock of point p."""
+    d0 = datetime.fromtimestamp(after, TZ).date()
+    for k in range(9):
+        d = d0 + timedelta(days=k)
+        if d.weekday() != p["day"]:
+            continue
+        t = datetime(d.year, d.month, d.day, p["min"] // 60, p["min"] % 60, tzinfo=TZ).timestamp()
+        if t > after:
+            return t
+    raise ValueError("no moment for %r after %s" % (p, after))     # cannot happen: a weekday comes in 7 days
+
+
+def place_schedule(pts, reset):
+    """Each point's moment in the account's week (reset - 7 days, reset]: [{at, raw, outside, snapped}]. The first point
+    at its first moment after the reset began the week (SNAP_S of leeway), each next one after the point before; a
+    point up to SNAP_S past the reset is at the reset; one further past is outside the week."""
+    key = (tuple((p["day"], p["min"], p["pct"], p["how"]) for p in pts), reset)
+    got = _SCHED.get(key)
+    if got is not None:
+        return got
+    start, out, prev = reset - WEEK, [], None
+    for i, p in enumerate(pts):
+        raw = next_moment(p, start - SNAP_S if i == 0 else prev)
+        at, snapped = raw, 0.0
+        if i == 0 and raw < start:
+            at, snapped = start, start - raw
+        if raw > reset and raw - reset <= SNAP_S:
+            at, snapped = reset, raw - reset
+        out.append({"at": at, "raw": raw, "outside": raw - reset > SNAP_S, "snapped": snapped})
+        prev = raw
+    if len(_SCHED) > 4096:      # a cache, not a limit: a long sweep sees many resets
+        _SCHED.clear()
+    _SCHED[key] = out
+    return out
+
+
+def schedule_at(pts, reset, t) -> dict:
+    """The line of the schedule at t, in the week that ends at `reset` (or the week of t, when t is outside it).
+    -> {pct, next, next_at, points: [...], notes: [...], reset}."""
+    while t > reset:
+        reset += WEEK
+    while t <= reset - WEEK:
+        reset -= WEEK
+    pl = place_schedule(pts, reset)
+    times = [x["at"] if not x["outside"] else x["raw"] for x in pl]
+    j = next((i for i, x in enumerate(times) if x >= t), None)
+    if j is None:
+        pct = pts[-1]["pct"]
+    elif j == 0 or pts[j]["how"] != "ramp" or times[j] <= times[j - 1]:
+        pct = pts[j]["pct"]
+    else:
+        a, b = times[j - 1], times[j]
+        pct = pts[j - 1]["pct"] + (pts[j]["pct"] - pts[j - 1]["pct"]) * (t - a) / (b - a)
+    pct = round(pct, 2)
+    if j is None or times[j] > reset:
+        end = reset
+        nxt = "held until the reset %s, then %s%% again" % (pacific(reset), g(pts[0]["pct"])) if j is None or \
+            pts[j]["how"] != "ramp" else "a ramp towards %s%% at %s, cut by the reset %s (there %s%%)" % (
+                g(pts[j]["pct"]), pacific(times[j]), pacific(reset), g(round(pts[j - 1]["pct"] + (
+                    pts[j]["pct"] - pts[j - 1]["pct"]) * (reset - times[j - 1]) / (times[j] - times[j - 1]), 1)))
+    elif pts[j]["how"] == "ramp" and j > 0:
+        end = times[j]
+        nxt = "on a ramp to %s%% at %s" % (g(pts[j]["pct"]), pacific(times[j]))
+    else:
+        end = times[j]
+        k = j + 1
+        if k < len(pts) and times[k] <= reset + SNAP_S:
+            then = ("then a ramp to %s%% at %s" % (g(pts[k]["pct"]), pacific(min(times[k], reset))) if pts[k]["how"] == "ramp"
+                    else "then %s%% until %s" % (g(pts[k]["pct"]), pacific(min(times[k], reset))))
+        else:
+            then = "then %s%% until the reset %s" % (g(pts[j]["pct"]), pacific(reset)) if k >= len(pts) else \
+                "then %s (outside the week)" % pts[k]["text"]
+        nxt = "held until %s, %s" % (pacific(times[j]), then)
+    notes = []
+    for p, x in zip(pts, pl):
+        if x["outside"]:
+            notes.append("%s is outside the week: the reset %s comes %s h before it; the line follows the typed weekdays"
+                         % (p["text"], pacific(reset), g((x["raw"] - reset) / 3600)))
+        elif x["snapped"] >= 60:
+            notes.append("%s is taken as the reset (%s min from it)" % (p["text"], g(x["snapped"] / 60)))
+    return {"pct": pct, "next": nxt, "next_at": end, "reset": reset, "notes": notes,
+            "points": [{"text": p["text"], "at": x["at"], "outside": x["outside"],
+                        "h_before_reset": round((reset - (x["raw"] if x["outside"] else x["at"])) / 3600, 1)}
+                       for p, x in zip(pts, pl)]}
+
+
+def entry_points(s):
+    """N of a step whose leave is entry-N (N points under the level at switch-in), else None."""
+    lv = s.get("leave")
+    return float(lv.split("-", 1)[1]) if isinstance(lv, str) else None
+
+
+def line_of_step(plan, s, a, env, numeric_only=False):
+    """THE one function that gives the leave line of step s of account a at env.now: every reader of a line goes
+    through it (rule_of, standing_line). -> {line, note, schedule}, or None when the line cannot be known (entry-N
+    with no level at switch-in; numeric_only: an entry-N step). A schedule that cannot be read, or an account whose
+    reset is not measured: the step's leave (the schedule's highest percent), and a note that starts COULD NOT LOOK."""
+    lv = s["leave"]
+    if s.get("schedule") is not None:
+        pts, why = schedule_points(s["schedule"])
+        rs = None if env is None else env.reset(a)
+        hi = lv if is_num(lv) else 100.0
+        if pts is None or rs is None:
+            return {"line": hi, "schedule": None, "note": "COULD NOT LOOK: the line schedule of %s %s: its highest "
+                    "percent, %s%%, holds" % (a, "cannot be read (%s)" % why if pts is None else
+                                              "cannot be placed: the reset is not measured", g(hi))}
+        info = schedule_at(pts, rs, env.now)
+        return {"line": info["pct"], "schedule": info, "note": "; ".join(info["notes"]) or None}
+    if isinstance(lv, str):
+        e = None if (numeric_only or env is None) else env.entry_left(a)
+        if e is None:
+            return None         # the level at switch-in is unknown: this step gives no permission
+        return {"line": max(plan["numbers"]["floor_pct"], e - entry_points(s)), "schedule": None, "note": None}
+    return {"line": lv, "schedule": None, "note": None}
+
+
+def put_schedule(p, s, text):
+    """A write: step s of plan p takes the schedule text (parsed and refused here), and its leave the highest percent."""
+    floor = p["numbers"]["floor_pct"] if p["accounts"][s["use"]]["kind"] == "claude" else 0.0
+    pts = parse_schedule(text, floor)
+    s["schedule"] = text
+    s["leave"] = max(x["pct"] for x in pts)
+    return pts
+
+
+def pacific_point(t) -> str:
+    """A moment as a point of a schedule: `Sat 23:59` (Pacific)."""
+    return datetime.fromtimestamp(t, TZ).strftime("%a %H:%M")
+
+
 # ------------------------------------------------------------------ the rule of an account (pure)
 def claude_accounts(plan):
     return [a for a, c in plan["accounts"].items() if c["kind"] == "claude"]
@@ -682,33 +913,38 @@ def step_alive(step, env) -> bool:
 
 
 def rule_of(plan, a, env):
-    """The first alive step that uses `a`, with its leave line in force: {step, line, warn, until, reset_day}; None."""
+    """The first alive step that uses `a`, with its leave line in force (line_of_step): {step, line, warn, until,
+    reset_day, note, schedule}; None. A step with a line schedule keeps the schedule's line on the reset day: the
+    schedule says the line at every moment up to the reset."""
     N = plan["numbers"]
     kind = plan["accounts"][a]["kind"]
     for s in plan["steps"]:
         if s["use"] != a or not step_alive(s, env):
             continue
-        lv = s["leave"]
-        if isinstance(lv, str):
-            e = env.entry_left(a)
-            if e is None:
-                continue        # the level at switch-in is unknown: this step gives no permission
-            lv = max(N["floor_pct"], e - float(lv.split("-", 1)[1]))
-        line = lv + (N["evening_share_pct"] if kind == "claude" else 0)
+        ln = line_of_step(plan, s, a, env)
+        if ln is None:
+            continue        # the level at switch-in is unknown: this step gives no permission
+        line = ln["line"] + (N["evening_share_pct"] if kind == "claude" else 0)
         rd, h = N["reset_day"], env.to_reset_h(a)
-        day = a in rd["accounts"] and h is not None and 0 < h <= rd["hours"]
+        day = s.get("schedule") is None and a in rd["accounts"] and h is not None and 0 < h <= rd["hours"]
         if day:
             dl = rd["line"][kind]
             line = min(line, N["floor_pct"] if dl == "floor" else dl)
-        return {"step": s["name"], "line": line, "warn": s.get("warn"), "until": s.get("until"), "reset_day": day}
+        out = {"step": s["name"], "line": line, "warn": s.get("warn"), "until": s.get("until"), "reset_day": day}
+        if s.get("schedule") is not None:
+            out.update(note=ln["note"], schedule=ln["schedule"])
+        return out
     return None
 
 
-def standing_line(plan, a):
-    """The leave line of the last step that uses `a` (its standing step), whatever its `when`; None with no step."""
+def standing_line(plan, a, env=None):
+    """The leave line of the last step that uses `a` (its standing step), whatever its `when`, at env.now (a line
+    schedule needs env; with none it gives its highest percent); None with no step."""
     for s in reversed(plan["steps"]):
-        if s["use"] == a and is_num(s["leave"]):
-            return s["leave"]
+        if s["use"] == a:
+            ln = line_of_step(plan, s, a, env, numeric_only=True)
+            if ln is not None:
+                return ln["line"]
     return None
 
 
@@ -796,7 +1032,7 @@ def _run(plan, st, rate, horizon, dt):
                 before = Env(st["reset"][a] - 1, env.left, lambda b, a=a: st["reset"].get(b), burn=rate,
                              entry=env.entry_left)
                 rl = rule_of(plan, a, before)
-                line = rl["line"] if rl else standing_line(plan, a)
+                line = rl["line"] if rl else standing_line(plan, a, before)
                 lost = 0.0 if (line is None or st["left"][a] is None) else max(0.0, st["left"][a] - line)
                 st["erased"][a] = st["erased"].get(a, 0.0) + lost
                 st["events"].append({"kind": "reset", "at": st["reset"][a], "account": a, "erased": round(lost, 1),
@@ -1021,7 +1257,7 @@ def decide(plan, f, polled=True) -> dict:
     pl = 0.0 if blind else lr["left"]
     burn = f.get("burn_live")
     if rl is None:
-        line, warn = standing_line(plan, live) if live in accts else None, None
+        line, warn = standing_line(plan, live, env) if live in accts else None, None
         if line is None:
             line = N["floor_pct"]
     else:
@@ -1269,6 +1505,10 @@ def burn_mode(plan, f) -> dict:
         elif h > bm["window_h"]:
             out[a] = {"state": "off", "why": "%s resets in %s h, outside the %s h window" % (a, g(h), g(bm["window_h"]))}
         else:
+            if rl.get("schedule"):      # a line schedule: what the reset erases is above the line at the reset
+                end = rule_of(plan, a, Env(r["reset"] - 1, env.left, lambda x: r["reset"] if x == a else env.reset(x),
+                                           entry=env.entry_left))
+                rl = end or rl
             usable = max(0.0, r["left"] - rl["line"])
             need = usable / h if h > 0 else None
             row = {"usable_pts": round(usable, 1), "line": rl["line"], "hours_to_reset": round(h, 2),
@@ -1311,10 +1551,11 @@ def can_use(plan, f, a, carried=False):
         return NO, "NO: no step uses %s now" % a
     if not r["ok"]:
         return COULD_NOT_LOOK, "COULD NOT LOOK: %s reads %s (%s)" % (a, r["state"], r.get("why") or "no cause given")
+    tail = " (line schedule: %s)" % rl["note"] if rl.get("note") else " (line schedule)" if "note" in rl else ""
     if r["left"] > rl["line"]:
         return OK, "yes: %s has %s%% left, over its %s%% line%s" % (
-            a, g(r["left"]), g(rl["line"]), " (reset day: the line is lifted)" if rl["reset_day"] else "")
-    return NO, "NO: %s has %s%% left, at or under its %s%% line" % (a, g(r["left"]), g(rl["line"]))
+            a, g(r["left"]), g(rl["line"]), " (reset day: the line is lifted)" if rl["reset_day"] else tail)
+    return NO, "NO: %s has %s%% left, at or under its %s%% line%s" % (a, g(r["left"]), g(rl["line"]), tail)
 
 
 def meter_answer(a, now=None, slow=False):
@@ -1693,7 +1934,7 @@ def temporary_line(plan, a, now, hours_to_reset=None):
     if rl is None:
         return None
     s = plan["steps"][find_step(plan, rl["step"])]
-    if s.get("when") or not (s.get("ends") or s.get("ends_at_reset_of")) or not is_num(s.get("leave")):
+    if s.get("when") or not (s.get("ends") or s.get("ends_at_reset_of")) or entry_points(s) is not None:
         return None
     ends = [stamp(s.get("ends"))] + ([env.first_reset_after(s["ends_at_reset_of"], stamp(s.get("from")))]
                                      if s.get("ends_at_reset_of") and stamp(s.get("from")) is not None else [])
@@ -1707,10 +1948,13 @@ def week_of(t) -> str:
     return (d - timedelta(days=d.weekday())).strftime("%Y-%m-%d")
 
 
-def measures(rows, switches, line_at, since=None):
+def measures(rows, switches, line_at, since=None, line_now=None):
     """-> {week (its Monday): {"erased": {account: points | "UNMEASURED: why"}, "left_at_reset": {...}, "switches": n}}.
     A reset is seen where an account's reset time moves on by days. The level at a reset is its last MEASURED reading
-    before it; none inside 6 h before the reset is UNMEASURED, never 0. line_at(account, time) is the leave line then."""
+    before it; none inside 6 h before the reset is UNMEASURED, never 0. line_at(account, time) is the leave line then.
+    line_now(account, time, reset): the leave line of that moment; with it, each week also has the reserve kept:
+    `under_line_min` (the minutes that a reading was under that line, each reading counting until the next one of the
+    same week, at most 6 h) and `lowest_gap` (the lowest level less line)."""
     out, per = {}, {}
     for r in rows or []:
         if isinstance(r, dict) and r.get("source") == "MEASURED" and is_num(r.get("week_pct_used")):
@@ -1737,6 +1981,22 @@ def measures(rows, switches, line_at, since=None):
         t = stamp(s.get("ts"))
         if t is not None and (since is None or t >= since):
             out.setdefault(week_of(t), {"erased": {}, "left_at_reset": {}, "switches": 0, "resets": {}})["switches"] += 1
+    if line_now is not None:
+        for a, rd in per.items():
+            for (ta, ua, ra), (tb, _ub, rb) in zip(rd, rd[1:] + [(None, None, None)]):
+                if since is not None and ta < since:
+                    continue
+                line = line_now(a, ta, ra)
+                if line is None:
+                    continue
+                w = out.setdefault(week_of(ta), {"erased": {}, "left_at_reset": {}, "switches": 0, "resets": {}})
+                gap = round(100 - ua - line, 1)
+                lg = w.setdefault("lowest_gap", {})
+                lg[a] = gap if a not in lg else min(lg[a], gap)
+                um = w.setdefault("under_line_min", {})
+                um.setdefault(a, 0)
+                if gap < 0 and tb is not None and abs(rb - ra) <= 86400:
+                    um[a] += round(min(tb - ta, 6 * 3600) / 60)
     return dict(sorted(out.items()))
 
 
@@ -1795,7 +2055,9 @@ def account_lines(plan, f) -> list:
         r = rd.get(a) or reading(None, now)
         rl = rule_of(plan, a, env)
         rule = "no step uses it now" if rl is None else "step %s, line %s%%%s" % (
-            rl["step"], g(rl["line"]), " (reset day)" if rl["reset_day"] else "")
+            rl["step"], g(rl["line"]), " (reset day)" if rl["reset_day"] else " (line schedule%s)" % (
+                ": COULD NOT LOOK" if str(rl.get("note") or "").startswith("COULD NOT LOOK") else "")
+            if "note" in rl else "")
         reset = "reset unknown" if r["reset"] is None else "resets %s (in %s h)" % (
             pacific(r["reset"]), g((r["reset"] - now) / 3600))
         age = "age unknown" if r["age_min"] is None else "%s min old" % g(r["age_min"])
@@ -1809,6 +2071,41 @@ def account_lines(plan, f) -> list:
         else:
             lvl, mark = "UNMEASURED: %s" % (r.get("why") or r["state"]), age
         out.append("  %-10s %s, %s [%s]  %s%s" % (a, lvl, reset, mark, rule, "  LIVE" if a == f.get("live") else ""))
+    return out
+
+
+def schedule_lines(plan, f, accounts=None) -> list:
+    """For each account whose step in force (else its standing step) has a line schedule: the line now, its next change
+    with its Pacific time, and each point with its place as hours before the reset (what the pass computes)."""
+    now = f["now"]
+    rd = readings_of(f)
+    rd["codex"] = f.get("codex") or reading(None, now)
+    env = Env(now, lambda a: (rd.get(a) or {}).get("left"), lambda a: (rd.get(a) or {}).get("reset"),
+              entry=lambda a: (f.get("entry") or {}).get(a))
+    out = []
+    for a in plan["accounts"]:
+        if accounts is not None and a not in accounts:
+            continue
+        rl = rule_of(plan, a, env)
+        s = next((x for x in plan["steps"] if rl and x["name"] == rl["step"]), None) or next(
+            (x for x in reversed(plan["steps"]) if x["use"] == a and x.get("schedule") is not None), None)
+        if s is None or s.get("schedule") is None:
+            continue
+        ln = line_of_step(plan, s, a, env)
+        info = ln["schedule"]
+        alive = "" if rl and rl["step"] == s["name"] else " (the step is not in force now)"
+        if info is None:
+            out.append("SCHEDULE %s (step %s%s): %s" % (a, s["name"], alive, ln["note"]))
+            out.append("      as typed: %s" % s["schedule"])
+            continue
+        out.append("SCHEDULE %s (step %s%s): %s%% now, %s" % (a, s["name"], alive, g(info["pct"]), info["next"]))
+        out.append("      the points, in the week from the reset %s to %s: %s" % (
+            pacific(info["reset"] - WEEK), pacific(info["reset"]), "; ".join(
+                "%s at %s (%s h before the reset%s)" % (p["text"], pacific(p["at"]), g(p["h_before_reset"]),
+                                                        ", OUTSIDE THE WEEK" if p["outside"] else "")
+                for p in info["points"])))
+        for nt in info["notes"]:
+            out.append("      note: " + nt)
     return out
 
 
@@ -1874,6 +2171,7 @@ def status_text(plan, f):
     out += end_lines(plan, f, d)
     out.append("ACCOUNTS (what is LEFT)")
     out += account_lines(plan, f)
+    out += schedule_lines(plan, f)
     if f.get("slow_at"):
         out.append("      codex and jpl-genai were read by the timed pass %s min ago" % g((f["now"] - f["slow_at"]) / 60))
     for kind in ("holds", "pins", "requests"):
@@ -1891,7 +2189,9 @@ def plan_text(plan, f=None) -> str:
     out = ["PLAN rev %s (%s)" % (plan.get("rev"), plan_dir() / "plan.json"), "STEPS, in order (the first live step of "
            "an account is its rule; the order says only which account is next):"]
     for i, s in enumerate(plan["steps"], 1):
-        bits = ["use %s until %s%% left" % (s["use"], s["leave"]) if is_num(s["leave"]) else
+        bits = ["use %s by its line schedule \"%s\" (highest %s%%)" % (s["use"], s["schedule"], g(s["leave"]))
+                if s.get("schedule") is not None else
+                "use %s until %s%% left" % (s["use"], s["leave"]) if is_num(s["leave"]) else
                 "use %s until %s points under its level at switch-in" % (s["use"], s["leave"].split("-")[1])]
         if s.get("until"):
             bits.append("or until " + s["until"])
@@ -1913,6 +2213,8 @@ def plan_text(plan, f=None) -> str:
                                   h.get("why") or "no reason given") for h in live)))
     out.append("MACHINES that get this plan's decision for the account they are on: %s" % (", ".join(
         "%s (ssh %s)" % (m, c["ssh"]) for m, c in (plan.get("machines") or {}).items()) or "none but this one"))
+    if f is not None:
+        out += schedule_lines(plan, f)
     out.append("NUMBERS: " + json.dumps(plan["numbers"], sort_keys=True))
     return "\n".join(out)
 
@@ -1920,8 +2222,8 @@ def plan_text(plan, f=None) -> str:
 def forecast_text(plan, f, rate=None) -> tuple:
     res = week_ahead(plan, f, rate=rate)
     if res is None:
-        return "COULD NOT LOOK: the week ahead needs a burn rate (pass --rate), the live account and a reset time", \
-            COULD_NOT_LOOK
+        return "\n".join(["COULD NOT LOOK: the week ahead needs a burn rate (pass --rate), the live account and a reset "
+                          "time"] + schedule_lines(plan, f)), COULD_NOT_LOOK
     out = ["THE WEEK AHEAD at %s points an hour, %s h, from %s live: %s" % (g(res["rate"]), g(res["hours"]), f["live"],
                                                                              say(res))]
     for e in res["events"]:
@@ -1933,6 +2235,7 @@ def forecast_text(plan, f, rate=None) -> tuple:
     if res["idle_pts"]:
         out.append("  %s points of burn find no account (every account at its line), the first at %s" % (
             g(res["idle_pts"]), pacific(res["idle_from"])))
+    out += schedule_lines(plan, f)
     return "\n".join(out), OK
 
 
@@ -1991,12 +2294,15 @@ def change_of(a, now):
                 for acc in a.accounts:
                     base = next((s for s in reversed(p["steps"]) if s["use"] == acc), None) or {"leave": p["numbers"]["floor_pct"]}
                     s = {"name": "%s.%s" % (acc, tag), "use": acc, "leave": base["leave"], **lf}
+                    if base.get("schedule") is not None:
+                        s["schedule"] = base["schedule"]
                     if lf.get("ends_at_reset_of") is True:
                         s["ends_at_reset_of"] = acc
                     if base.get("when") and acc not in lines:
                         s["when"] = base["when"]
                     if acc in lines:
                         s["leave"] = value(lines[acc])
+                        s.pop("schedule", None)
                     new.append(s)
                 p["steps"] = new + p["steps"]
             else:
@@ -2010,10 +2316,15 @@ def change_of(a, now):
             return p
         return fn, "order " + " ".join(a.accounts)
     if c == "line":
+        sched = getattr(a, "schedule", None)
+        if (a.percent is None) == (sched is None):
+            raise Refused("a line is one percent or one --schedule; repair: ./acct line %s 25, or ./acct line %s "
+                          "--schedule \"Sat 23:59=40 hold; Tue 13:30=0 ramp\"" % (a.account, a.account))
+
         def fn(p):
             if a.account not in p["accounts"]:
                 raise Refused("%s is no account of the plan; repair: one of %s" % (a.account, ", ".join(p["accounts"])))
-            lf, lv = life(a, now), value(a.percent)
+            lf, lv = life(a, now), None if sched is not None else value(a.percent)
             if lf.get("ends_at_reset_of") is True:
                 lf["ends_at_reset_of"] = a.account
             if lf:
@@ -2025,11 +2336,17 @@ def change_of(a, now):
                 idx = [i for i, s in enumerate(p["steps"]) if s["use"] == a.account
                        and not (s.get("from") or s.get("ends") or s.get("ends_at_reset_of"))]
                 if idx:
-                    p["steps"][idx[-1]]["leave"] = lv
+                    s = p["steps"][idx[-1]]
                 else:
-                    p["steps"].append({"name": a.account, "use": a.account, "leave": lv})
+                    s = {"name": a.account, "use": a.account}
+                    p["steps"].append(s)
+                s["leave"] = lv
+            if sched is not None:
+                put_schedule(p, s, sched)
+            else:
+                s.pop("schedule", None)     # a flat number again
             return p
-        return fn, "line %s %s" % (a.account, a.percent)
+        return fn, "line %s %s" % (a.account, a.percent if sched is None else "--schedule \"%s\"" % sched)
     if c == "step":
         def fn(p):
             if a.act == "add":
@@ -2059,6 +2376,8 @@ def change_of(a, now):
                             kv, ", ".join(sorted(STEP_KEYS - {"name"}))))
                     if v == "":
                         s.pop(k, None)
+                    elif k == "schedule":
+                        put_schedule(p, s, v)
                     else:
                         s[k] = value(v) if k in ("leave", "warn") else v
             return p
@@ -2073,7 +2392,11 @@ def change_of(a, now):
                 if parts[0] == "steps":
                     if len(parts) != 3:
                         raise Refused("`%s`: a step field is steps.<name>.<field>=<value>" % kv)
-                    p["steps"][find_step(p, parts[1])][parts[2]] = value(v)
+                    st = p["steps"][find_step(p, parts[1])]
+                    if parts[2] == "schedule" and v != "":
+                        put_schedule(p, st, v)
+                    else:
+                        st[parts[2]] = value(v)
                     continue
                 d = p["numbers"]
                 for k in parts[1:-1]:
@@ -2269,7 +2592,7 @@ def gather_light(ACT) -> dict:
 
 def frame_for_pass(ACT, meter, live, now, state, markers, manual, live_runs, burn, plan) -> dict:
     series, sws = series_rows(), ACT.switches()
-    entry = {s["use"]: entry_level(series, sws, s["use"]) for s in plan["steps"] if isinstance(s.get("leave"), str)}
+    entry = {s["use"]: entry_level(series, sws, s["use"]) for s in plan["steps"] if entry_points(s) is not None}
     return {"now": now, "live": live, "runs": None if live_runs is None else list(live_runs), "rows": meter,
             "notice": ACT.read_json(ACT.OUT / "notice.json", {}), "burn_live": burn, "burn_h": fleet_burn(series, now, plan["numbers"]["forecast"]["burn_window_h"],
                                                     accounts=set(meter)),
@@ -2362,6 +2685,9 @@ CHANGE (each write prints its undo; --why "..." or --owner-said "..." records th
   ./acct hold --for 2h       stop each automatic act (./acct release ends it; a hold ends by itself)
   ./acct switch A --now      go to account A at the next pass (with no --now: at the first pass with no live run)
   ./acct line A N --until-reset    another leave line for A until its reset (burn deeper, or leave earlier)
+  ./acct line A --schedule "Sat 23:59=40 hold; Tue 13:30=0 ramp"   a leave line that changes through A's week:
+                             each point is the line up to its moment (hold), or a straight line to it from the point
+                             before (ramp); ./acct line A N sets one flat number again
   ./acct pin --for 6h        keep the live account: no rescue switch leaves it (./acct unpin ends it)
   ./acct order A B C         which account is next when the live one is finished
   ./acct step add|set|rm|move NAME ...    a step of the plan (use, leave, warn, until, when, a life)
@@ -2423,7 +2749,8 @@ def parser():
     p.add_argument("--line", action="append", help="account=percent, with a temporary order")
     p = sub.add_parser("line", parents=[who, ends])
     p.add_argument("account")
-    p.add_argument("percent")
+    p.add_argument("percent", nargs="?")
+    p.add_argument("--schedule", default=None, help='a line schedule: "Sat 23:59=40 hold; Tue 13:30=0 ramp"')
     p.add_argument("--until-reset", nargs="?", const=True, default=None)
     p.add_argument("--when", default=None)
     p = sub.add_parser("step", parents=[who])
@@ -2515,6 +2842,19 @@ def run(argv) -> int:
                 print("COULD NOT LOOK: the live account is unknown; repair: ./acct pin <account>")
                 return COULD_NOT_LOOK
         fn, what = change_of(a, now)
+        sched = a.cmd == "line" and getattr(a, "schedule", None) is not None
+        if sched:       # with the reset measured, a point that is outside the account's week is refused now
+            f = gather(now)
+            rs = frame_env(f).reset(a.account)
+            if rs is not None:
+                fl = plan["numbers"]["floor_pct"] if dig(plan, "accounts.%s.kind" % a.account) == "claude" else 0.0
+                out = [p["text"] for p, x in zip(parse_schedule(a.schedule, fl), place_schedule(
+                    parse_schedule(a.schedule, fl), schedule_at(parse_schedule(a.schedule, fl), rs, now)["reset"]))
+                    if x["outside"]]
+                if out:
+                    raise Refused("%s falls outside the week of %s (from the reset %s to %s); repair: type the points in "
+                                  "the order of the week from that reset" % (", ".join(out), a.account, pacific(rs - WEEK),
+                                                                            pacific(rs)))
         rev, new = commit(fn, meta_of(a, argv))
         f = gather(now)
         dead = not_alive(plan, new, f)
@@ -2523,8 +2863,11 @@ def run(argv) -> int:
             ok, err = MS.forget_machine(plan["machines"][a.name]["ssh"])
             what += "" if ok else (" (its follower mark could not be removed: %s; repair: ssh %s rm %s/follows.json)" % (
                 err, plan["machines"][a.name]["ssh"], MS.REMOTE_DIR))
-        print("DONE rev %s: %s%s\n%s\nundo: ./acct undo %s" % (
-            rev, what, " (NOT ALIVE NOW: %s)" % dead if dead else "", next_line(new, f), rev))
+        shown = schedule_lines(new, f, [a.account] if a.cmd == "line" else None) if (
+            sched or a.cmd in ("step", "set")) else []
+        print("DONE rev %s: %s%s\n%s\n%sundo: ./acct undo %s" % (
+            rev, what, " (NOT ALIVE NOW: %s)" % dead if dead else "", next_line(new, f),
+            "".join(x + "\n" for x in shown), rev))
         return OK
     if a.cmd == "whatif":
         rest = [x for x in a.rest if x != "--"]
@@ -2533,7 +2876,7 @@ def run(argv) -> int:
             raise Refused("whatif takes a write (%s), not `%s`" % (", ".join(WRITES), b.cmd))
         fn, what = change_of(b, now)
         new = fn(copy.deepcopy(plan))
-        bad = problems(new)
+        bad = problems(new, writing=True)
         if bad:
             raise Refused("; ".join(bad))
         f = gather(now)
@@ -2541,6 +2884,14 @@ def run(argv) -> int:
         print("WHAT IF %s (nothing is written)\nnow:   %s\n       week ahead: %s\nthen:  %s\n       week ahead: %s" % (
             what, next_line(plan, f), say(wa) if wa else "COULD NOT LOOK", next_line(new, f),
             say(wb) if wb else "COULD NOT LOOK"))
+        env = frame_env(f)
+        for x in plan["accounts"]:
+            ra, rb = rule_of(plan, x, env), rule_of(new, x, env)
+            la, lb = (None if ra is None else ra["line"]), (None if rb is None else rb["line"])
+            if la != lb:
+                print("       %s line %s -> %s" % (x, "none" if la is None else g(la) + "%", "none" if lb is None else g(lb) + "%"))
+        for ln in schedule_lines(new, f):
+            print("       " + ln)
         return OK
     f = gather(now, slow=a.cmd == "can-use" and dig(plan, "accounts.%s.kind" % a.account) == "meter")
     if a.cmd == "status":
@@ -2580,7 +2931,9 @@ def measures_cmd(plan, f, weeks) -> int:
     if rows is None:
         print("COULD NOT LOOK: the reader's series cannot be read (%s)" % AE.SERIES)
         return COULD_NOT_LOOK
-    m = measures(rows, sws, lambda a, t: standing_line(plan, a), since=f["now"] - weeks * WEEK)
+    m = measures(rows, sws, lambda a, t: standing_line(plan, a, Env(t - 1, lambda x: None, lambda x: t)),
+                 since=f["now"] - weeks * WEEK,
+                 line_now=lambda a, t, rs: standing_line(plan, a, Env(t, lambda x: None, lambda x: rs)))
     if not m:
         print("NONE: no reset and no switch in the last %d weeks of the series" % weeks)
         return NONE
@@ -2590,6 +2943,9 @@ def measures_cmd(plan, f, weeks) -> int:
         er = "; ".join("%s %s" % (a, x if isinstance(x, str) else "%s points (%s%% left at its reset)" % (
             g(x), g(v["left_at_reset"][a]))) for a, x in sorted(v["erased"].items())) or "no reset seen"
         k = mine.get(w)
+        res = "; ".join("%s %s min under its line, lowest gap %s" % (a, v["under_line_min"].get(a, 0), g(x))
+                        for a, x in sorted((v.get("lowest_gap") or {}).items()))
+        print("  week of %s: reserve kept: %s" % (w, res or "no reading"))
         print("  week of %s: %d switches; %s; erased: %s" % (w, v["switches"], (
             "%d live runs at the plan's %d switches%s" % (k["runs"], k["switches"], ", %d of them with the runs unread"
                                                           % k["unread"] if k["unread"] else "")) if k else

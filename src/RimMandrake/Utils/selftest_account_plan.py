@@ -2135,6 +2135,359 @@ def t_status_and_help_are_the_operators_page():
               not any(w in st for w in ("52%", "steven > system > lukas", "leave line of 25")), "a number of the plan is in the skill")
 
 
+# ------------------------------------------------------------------ the line schedule (page
+# design/specs/2026-11-27-account-line-schedule/boundary.md; each check's name starts ls_)
+GOLDEN = HERE / "account_plan_replay.golden.json"
+REPLAY_T0 = AP.stamp("2026-11-26T12:00:00-08:00")      # the dated steps of the live plan end inside this week
+
+
+def replay_frames(plan_):
+    """A simulated week of inputs for the live plan of 2026-11-27 (open loop: the levels and the live account follow
+    a script, so the old code and the new code see the same frames). One frame each 30 min, and each 5 min within 3
+    points of a line or 1 h of a reset. Deterministic."""
+    resets = {"steven": AP.stamp("2026-12-02T13:59:00-08:00"), "system": AP.stamp("2026-12-02T12:00:00-08:00"),
+              "lukas": AP.stamp("2026-12-02T14:59:00-08:00")}
+    codex_reset = AP.stamp("2026-12-01T13:36:00-08:00")
+    used = {"steven": 40.0, "system": 20.0, "lukas": 99.0}
+    codex_used = 30.0
+    script = ((0, "system"), (40, "steven"), (70, "system"), (100, "lukas"), (150, "system"))
+    out, t, k = [], REPLAY_T0, 0
+    while t < REPLAY_T0 + 7 * 86400:
+        h = (t - REPLAY_T0) / 3600
+        live = [a for at, a in script if h >= at][-1]
+        for a, rs in resets.items():
+            if rs <= t:
+                used[a], resets[a] = 0.0, rs + 7 * 86400
+        if codex_reset <= t:
+            codex_used, codex_reset = 0.0, codex_reset + 7 * 86400
+        age = 30.0 if k % 7 == 3 else 1.0
+        src = "ESTIMATE" if k % 23 == 11 else "MEASURED"
+        rows = {a: R(round(100 - used[a]), (resets[a] - t) / 3600, src=src if a == live else "MEASURED", age=age, now=t)
+                for a in resets}
+        cx = {**AP.reading(None, t), "left": round(100 - codex_used), "ok": True, "state": "MEASURED",
+              "reset": codex_reset, "age_min": 5.0, "last_left": round(100 - codex_used), "burn_h": 0.8}
+        out.append(F(live, rows, runs=RUN if k % 2 else [], burn_h=None if k % 13 == 5 else 4.0, now=t, codex=cx))
+        near = any(abs((100 - used[live]) - x) <= 3 for x in (1, 3, 5, 52)) or abs(codex_used - 75) <= 3 or any(
+            0 <= rs - t <= 3600 for rs in list(resets.values()) + [codex_reset])
+        dt = 300 if near else 1800
+        used[live] = min(100.0, used[live] + 2.0 * dt / 3600)
+        codex_used = min(100.0, codex_used + 0.8 * dt / 3600)
+        t += dt
+        k += 1
+    return out
+
+
+def replay_row(plan_, f):
+    """What one pass decides and what each reader gives: the fields that make an act (not the wording of a reason)."""
+    d = AP.decide(plan_, f)
+    keep = ("do", "to", "account", "line", "warn_line", "pct_left", "under", "drain", "drain_of", "account_end",
+            "warning", "last_account", "unread", "poll")
+    rc, _t = AP.can_use(plan_, f, "codex")
+    bm = AP.burn_mode(plan_, f)["accounts"]
+    lv = AP.legacy_view(plan_, f)
+    pp = AP.pool_pace(plan_, f)
+    return {"now": AP.iso(f["now"]), "decision": {k: d.get(k) for k in keep if d.get(k) is not None},
+            "can_use_codex": rc, "burn_mode": {a: [v.get("state"), v.get("usable_pts"), v.get("line")] for a, v in bm.items()},
+            "lines": {a: v.get("leave_pct_left") for a, v in lv["accounts"].items()}, "order": lv["order"],
+            "pool_rate": pp.get("rate_pct_h")}
+
+
+def write_golden(plan_path):
+    """Run by the code BEFORE a change of the leave line (it was: commit 34121b95c6): the old code's answers."""
+    p = json.loads(Path(plan_path).read_text())
+    p.pop("driver", None)
+    rows = [replay_row(p, f) for f in replay_frames(p)]
+    GOLDEN.write_text(json.dumps({"plan": p, "written_by": "the code before the line schedule (34121b95c6)"},
+                                 sort_keys=True) + "\n" + "".join(json.dumps(r, sort_keys=True) + "\n" for r in rows))
+    print("wrote %s: %d passes" % (GOLDEN, len(rows)))
+
+
+EX = "Sat 23:59=40 hold; Tue 13:30=0 ramp"          # the owner's example of 2026-11-27, as the brief typed it
+CR = AP.stamp("2026-12-01T13:30:00-08:00")          # Codex's reset in the example: Tuesday afternoon
+WED = AP.stamp("2026-11-25T12:00:00-08:00")
+SAT = AP.stamp("2026-11-28T23:59:00-08:00")
+MON = AP.stamp("2026-11-30T13:30:00-08:00")          # 24 h before the reset, on the ramp: 40 x 24 / 61.5 = 15.6
+
+
+def SP(acct_="codex", text=EX, p=None, **more):
+    """A plan whose standing step of acct_ holds the line schedule text (leave = its highest percent, as the command
+    writes it)."""
+    p = copy.deepcopy(p or BASE)
+    s = p["steps"][AP.find_step(p, acct_)]
+    nums = [float(x) for x in __import__("re").findall(r"=\s*(\d+(?:\.\d+)?)", text)] or [s["leave"]]
+    s.update(schedule=text, leave=max(nums), **more)
+    return p
+
+
+def LN(p, t, reset, acct_="codex"):
+    """The rule of acct_ at t with its next reset at `reset`."""
+    env = AP.Env(t, lambda x: None, lambda x: reset if x == acct_ else None)
+    return AP.rule_of(p, acct_, env)
+
+
+def near(x, y, tol=0.15):
+    return x is not None and y is not None and abs(x - y) <= tol
+
+
+def t_ls_hold_and_ramp_give_the_line_of_the_moment():
+    n = "ls_hold_and_ramp_give_the_line_of_the_moment"
+    p = SP()
+    got = {k: (LN(p, t, CR) or {}).get("line") for k, t in (("wed", WED), ("sat", SAT), ("mon", MON), ("end", CR - 1))}
+    check(n + ": the owner's example: 40 on Wednesday, 40 at Saturday 11:59 PM, 15.6 on Monday 1:30 PM, 0 at the reset",
+          near(got["wed"], 40) and near(got["sat"], 40) and near(got["mon"], 15.6) and near(got["end"], 0, 0.05), got)
+    q = SP(text="Thu 12:00=30 hold; Sat 23:59=40 hold")
+    got = {k: (LN(q, t, CR) or {}).get("line") for k, t in (("wed", WED), ("fri", WED + 2 * 86400), ("mon", MON))}
+    check(n + ": from the reset to the first point the first percent applies; after the last point the last one",
+          got == {"wed": 30, "fri": 40, "mon": 40}, got)
+    q = SP(text="Wed 00:00=50 hold; Sat 12:00=20 ramp; Mon 12:00=20 hold; Tue 13:30=5 hold")
+    got = {k: (LN(q, t, CR) or {}).get("line") for k, t in (
+        ("tue", CR - 6.9 * 86400), ("thu", AP.stamp("2026-11-26T12:00:00-08:00")),
+        ("sun", AP.stamp("2026-11-29T12:00:00-08:00")), ("mon_pm", AP.stamp("2026-11-30T18:00:00-08:00")))}
+    check(n + ": hold is the point's percent up to it, ramp a straight line from the point before",
+          got["tue"] == 50 and near(got["thu"], 50 - 30 * (36 / 84)) and got["sun"] == 20 and got["mon_pm"] == 5, got)
+
+
+def t_ls_a_point_at_the_reset_is_its_end():
+    n = "ls_a_point_at_the_reset_is_its_end"
+    p = SP()
+    for label, rs in (("5 min early", CR - 300), ("6 min late", CR + 360), ("1 h late", CR + 3600)):
+        got = (LN(p, WED, rs) or {}).get("line"), (LN(p, MON, rs) or {}).get("line"), (LN(p, rs - 1, rs) or {}).get("line")
+        check(n + ": the reset %s: Tue 13:30 is still the end of the week (40 on Wednesday, the ramp on Monday, near 0 "
+                  "at the reset)" % label, near(got[0], 40) and near(got[1], 15.6, 0.4) and got[2] is not None
+              and got[2] <= 0.8, got)
+    # 2026-11-01: a reset fixed in UTC comes one hour earlier on the Pacific clock after daylight saving ends
+    rs = AP.stamp("2026-11-03T12:30:00-08:00")
+    got = (LN(p, AP.stamp("2026-10-28T12:00:00-07:00"), rs) or {}).get("line"), (LN(p, rs - 1, rs) or {}).get("line")
+    check(n + ": a week with the daylight-saving change: the reset an hour earlier on the clock is still the end",
+          near(got[0], 40) and near(got[1], 0, 0.8), got)
+
+
+def t_ls_a_point_past_the_reset_is_dropped_and_said():
+    n = "ls_a_point_past_the_reset_is_dropped_and_said"
+    p = SP()
+    rs = CR - 86400       # the reset came a day earlier than the schedule assumed
+    rl = LN(p, rs - 1, rs) or {}
+    check(n + ": the line at the reset is where the ramp has got to (about 15.6), not 0 and not 40",
+          near(rl.get("line"), 15.6, 0.3), rl)
+    check(n + ": the line's note says that a point is outside the week", "outside the week" in str(rl.get("note")), rl)
+
+
+def t_ls_an_unreadable_schedule_uses_its_highest_percent():
+    n = "ls_an_unreadable_schedule_uses_its_highest_percent"
+    p = SP(text="Sat 23:59=40 hold; Tue 25:99=0 ramp")      # a hand edit broke the second point
+    rl = LN(p, MON, CR) or {}
+    check(n + ": a schedule that cannot be read gives its highest percent and says COULD NOT LOOK",
+          rl.get("line") == 40 and str(rl.get("note")).startswith("COULD NOT LOOK"), rl)
+    rl = LN(SP(), MON, None) or {}
+    check(n + ": a reset that is not measured: the highest percent, COULD NOT LOOK", rl.get("line") == 40
+          and str(rl.get("note")).startswith("COULD NOT LOOK"), rl)
+    fresh()
+    (TMP / "plan" / "plan.json").write_text(json.dumps(p))
+    got, why = AP.load_plan()
+    check(n + ": the plan file is not refused for it (the pass keeps every other rule)", got is not None, why)
+    rc, text = acct("status", frame=F("lukas", FAR, codex=CX(30, (MON - NOW) / 3600 + 24)))
+    check(n + ": status says COULD NOT LOOK for the schedule", "COULD NOT LOOK" in text and "codex" in text, text)
+    rc, text = AP.can_use(p, F("lukas", FAR, codex=CX(30, 24, burn=0.5)), "codex")
+    check(n + ": the account is not free to burn under it (30% left, the line 40)", rc == AP.NO, text)
+
+
+def t_ls_a_schedule_is_set_in_one_line():
+    n = "ls_a_schedule_is_set_in_one_line"
+    f = F("lukas", FAR, codex=CX(60, (CR - NOW) / 3600))
+    rc, text, p = one(["line", "codex", "--schedule", EX, "--why", "the owner's example"], frame=f)
+    s = p["steps"][AP.find_step(p, "codex")]
+    check(n + ": one write: the text as typed, leave = its highest percent", rc == 0 and s.get("schedule") == EX
+          and s.get("leave") == 40, (rc, text, s))
+    h = AP.history()[-1]
+    check(n + ": the history line keeps the why", h.get("why") == "the owner's example", h)
+    check(n + ": the output prints each point with its hours before the reset", "Sat 23:59" in text and
+          "h before the reset" in text and "61.5 h before the reset" in text, text)
+    rc2, t2 = acct("undo")
+    s2 = on_disk()["steps"][AP.find_step(on_disk(), "codex")]
+    check(n + ": undo gives the plan as it was", rc2 == 0 and "schedule" not in s2 and s2["leave"] == 25, (t2, s2))
+    rc, text, p = one(["line", "codex", "--schedule", "saturday 11:59 PM=40%; TUE 1:30pm=0% ramp"], frame=f)
+    s = p["steps"][AP.find_step(p, "codex")]
+    check(n + ": full day names, a 12-hour clock and % are read", rc == 0 and near((LN(p, MON, CR) or {}).get("line"), 15.6),
+          (text, s))
+
+
+def t_ls_a_bad_schedule_is_refused_at_the_command():
+    n = "ls_a_bad_schedule_is_refused_at_the_command"
+    f = F("lukas", FAR, codex=CX(60, (CR - NOW) / 3600))
+    bad = (("a percent under 0", "codex", "Sat 23:59=-5", "0 to 100"), ("a percent over 100", "codex", "Sat 23:59=140", "0 to 100"),
+           ("a weekday that does not exist", "codex", "Sax 23:59=40", "weekday"),
+           ("a time that does not exist", "codex", "Sat 25:00=40", "no time"),
+           ("a point that cannot be read", "codex", "Sat 23:59 40 hold", "cannot be read"), ("no point", "codex", " ; ", "no point"),
+           ("a ramp on the first point", "codex", "Sat 23:59=40 ramp; Tue 13:30=0 hold", "no point before it"),
+           ("two points at the same moment", "codex", "Sat 23:59=40; Sat 23:59=10", "same moment"),
+           ("points that run past a week", "codex", "Sat 23:59=40; Fri 12:00=30; Thu 12:00=20", "past a week"),
+           ("a Claude point under the floor", "lukas", "Wed 12:00=0.5", "floor"),
+           ("a point outside the measured week", "codex", "Mon 12:00=40 hold; Wed 12:00=0 ramp", "outside the week"))
+    for label, a, text, why in bad:
+        fresh(frame=f)
+        before = (TMP / "plan" / "plan.json").read_bytes()
+        rc, out = acct("line", a, "--schedule", text)
+        check(n + ": %s is refused with its reason (%s) and repair, nothing written" % (label, why), rc == AP.REFUSED
+              and why in out and "repair" in out and (TMP / "plan" / "plan.json").read_bytes() == before, out)
+
+
+def t_ls_a_flat_line_clears_the_schedule():
+    n = "ls_a_flat_line_clears_the_schedule"
+    f = F("lukas", FAR, codex=CX(60, (CR - NOW) / 3600))
+    one(["line", "codex", "--schedule", EX], frame=f)
+    had = on_disk()["steps"][AP.find_step(on_disk(), "codex")].get("schedule")
+    rc, text = acct("line", "codex", "25")
+    s = on_disk()["steps"][AP.find_step(on_disk(), "codex")]
+    check(n, had == EX and rc == 0 and "schedule" not in s and s["leave"] == 25, (had, s))
+
+
+def t_ls_a_schedule_replaces_the_reset_day_rule():
+    n = "ls_a_schedule_replaces_the_reset_day_rule"
+    t = CR - 3.5 * 3600         # inside the 24 reset-day hours
+    rl = LN(SP(text="Sat 23:59=40 hold; Tue 13:30=20 hold"), t, CR) or {}
+    check(n + ": a step with a schedule keeps the schedule's line on the reset day", rl.get("line") == 20
+          and not rl.get("reset_day"), rl)
+    rl = LN(BASE, t, CR) or {}
+    check(n + ": a flat step keeps the reset-day rule", rl.get("line") == 0 and rl.get("reset_day"), rl)
+
+
+def t_ls_every_reader_gets_the_line_from_one_function():
+    n = "ls_every_reader_gets_the_line_from_one_function"
+    LR = CR + 1800      # lukas resets at 2:00 PM, Codex at 1:30 PM
+    p = SP("lukas", "Thu 12:00=30 hold; Tue 14:00=2 ramp", p=SP(p=OPEN))
+    want = {}
+    for label, t in (("wed", WED), ("mon", MON)):
+        want[label] = ((LN(p, t, CR) or {}).get("line"), (LN(p, t, LR, "lukas") or {}).get("line"))
+    check(n + ": the two moments have different lines (the check can see)", want["wed"] != want["mon"]
+          and None not in want["wed"] + want["mon"], want)
+    for label, t in (("wed", WED), ("mon", MON)):
+        cx_line, lk_line = want[label]
+        rows = {"steven": R(90, (t + 3 * 86400 - t) / 3600, now=t), "system": R(80, 110, now=t),
+                "lukas": R(lk_line + 20, (LR - t) / 3600, now=t)}
+        f = F("lukas", rows, now=t, codex={**CX(30, 0), "reset": CR, "age_min": 5.0})
+        d = AP.decide(p, f)
+        check(n + ": decide (%s): the live account's line is the schedule's" % label, near(d.get("line"), lk_line), d)
+        rc, why = AP.can_use(p, f, "codex")
+        check(n + ": can_use codex (%s): 30%% left against the line %s" % (label, g_(cx_line)),
+              rc == (AP.OK if 30 > cx_line else AP.NO), why)
+        lv = AP.legacy_view(p, f)
+        check(n + ": legacy_view, the actuator's and account_end's lines (%s)" % label,
+              near(lv["accounts"]["lukas"].get("leave_pct_left"), lk_line), lv["accounts"])
+        pp = AP.pool_pace(p, f)
+        part = [x["spend_pct"] for x in pp["parts"] if x["account"] == "lukas"]
+        check(n + ": pool_pace, the allocator's pool (%s): lukas spends down to its line now (20 now, or 100 less the "
+                  "line at its refill)" % label, part and all(near(x, 20, 0.2) or near(x, 100 - lk_line, 0.2) for x in part),
+              pp["parts"])
+        v, _src = AP.rules_now(rows, t) if (TMP / "plan").exists() and fresh(p) is None else (None, None)
+        check(n + ": rules_now, the Dispatcher's priority (%s)" % label,
+              v and near(v["accounts"]["lukas"].get("leave_pct_left"), lk_line), v)
+        lines = AP.account_lines(p, f)
+        cl = next((x for x in lines if x.strip().startswith("codex")), "")
+        check(n + ": account_lines, status (%s): codex line %s" % (label, g_(cx_line)), "line %s%%" % g_(cx_line) in cl, cl)
+        os.environ["RM_ACCOUNT_PLAN_NOW"] = repr(t)
+        (TMP / "frame.json").write_text(json.dumps(f))
+        try:
+            import codex_advice as CA
+            adv = CA.advice(t, slow=False)
+        finally:
+            os.environ["RM_ACCOUNT_PLAN_NOW"] = repr(NOW)
+        check(n + ": codex_advice, Codex's door and the Codex lane (%s)" % label,
+              adv["state"] == ("OK" if 30 > cx_line else "LINE"), adv)
+    tp = copy.deepcopy(p)
+    s = copy.deepcopy(tp["steps"][AP.find_step(tp, "lukas")])
+    s.update(name="lukas.T9", **{"from": AP.iso(NOW), "ends_at_reset_of": "lukas"})
+    tp["steps"].insert(AP.first_of(tp, "lukas"), s)
+    tl = AP.temporary_line(tp, "lukas", MON, (LR - MON) / 3600)
+    check(n + ": temporary_line, the allocator's line of a temporary step", tl and near(tl[2], want["mon"][1]), tl)
+    wa = AP.week_ahead(p, F("lukas", {"steven": R(90, 100, now=MON), "system": R(80, 110, now=MON),
+                                      "lukas": R(60, (LR - MON) / 3600, now=MON)}, now=MON, burn_h=0.1))
+    ev = [e for e in (wa or {}).get("events", []) if e["kind"] == "reset" and e["account"] == "lukas"]
+    check(n + ": week_ahead erases at lukas's reset above the schedule's line there (2)",
+          ev and near(ev[0]["line"], 2, 0.1), wa)
+    src = (HERE / "account_plan.py").read_text()
+    import re as _re
+    body = {m.group(1): m.group(2) for m in _re.finditer(r"\ndef (\w+)\(.*?\n(.*?)(?=\ndef |\nclass |\Z)", src, _re.S)}
+    allowed = {"problems", "line_of_step", "entry_points", "change_of", "plan_text", "put_schedule"}
+    readers = sorted(k for k, v in body.items() if _re.search(r"""\[["']leave["']\]|get\(["']leave["']\)""", v) and k not in allowed)
+    check(n + ": no function of account_plan.py but line_of_step reads a step's leave to make a line", not readers, readers)
+    for name in ("slot_allocator.py", "ops_watch.py", "account_end.py", "account_actuator.py", "codex_advice.py",
+                 "../rimflow/codex_lane.py", "../rimflow/account_pick.py"):
+        code = (HERE / name).read_text()
+        check("%s: %s reads no step's leave" % (n, name), not _re.search(r"""\[["']leave["']\]|get\(["']leave["']\)""", code))
+    check(n + ": ops_watch's runway takes its lines from rule_of", "AP.rule_of(" in (HERE / "ops_watch.py").read_text())
+
+
+def g_(x):
+    return AP.g(x) if x is not None else "?"
+
+
+def t_ls_the_week_ahead_follows_the_schedule():
+    n = "ls_the_week_ahead_follows_the_schedule"
+    t = MON
+    SR = t + 30 * 3600                               # system resets in 30 h
+    p = SP("system", "Wed 00:00=30 hold; Thu 12:00=30 hold", p=OPEN)
+    rows = {"steven": R(90, 100, now=t), "system": R(70, 30, now=t), "lukas": R(60, 150, now=t)}
+    wa = AP.week_ahead(p, F("lukas", rows, now=t, burn_h=0.1))
+    ev = [e for e in (wa or {}).get("events", []) if e["kind"] == "reset" and e["account"] == "system"]
+    check(n + ": the reset erases the points above the schedule's line at the reset (70 - 30 = 40)",
+          ev and ev[0]["line"] == 30 and near(ev[0]["erased"], 40, 0.5), ev)
+    # system has a high line now that falls to 10 at its reset: it becomes a target before its reset
+    q = SP("system", "%s=80 hold; %s=10 ramp" % (AP.pacific_point(t + 3600), AP.pacific_point(SR)), p=OPEN)
+    q["steps"][AP.find_step(q, "steven")]["when"] = "left < 0"     # steven out of the plan
+    rows = {"steven": R(90, 100, now=t), "system": R(60, 30, now=t), "lukas": R(6, 150, now=t)}
+    wa = AP.week_ahead(q, F("lukas", rows, now=t, burn_h=1.0))
+    sw = [e for e in (wa or {}).get("events", []) if e["kind"] == "switch" and e["to"] == "system"]
+    check(n + ": a falling line makes an account a target in the week ahead before its reset",
+          sw and sw[0]["at"] < SR - 3600, (sw, wa and wa["events"][:4]))
+    b = AP.burn_mode(SP(), F("lukas", FAR, now=CR - 17.5 * 3600, codex={**CX(50, 0, burn=0.5), "reset": CR}))
+    b = b["accounts"]["codex"]
+    check(n + ": Burn Mode counts at risk against the line at the reset (0), not the line now (11.4)",
+          b.get("line") == 0 and b.get("usable_pts") == 50, b)
+
+
+def t_ls_status_plan_forecast_show_the_schedule():
+    n = "ls_status_plan_forecast_show_the_schedule"
+    f = F("lukas", {"steven": R(90, 100), "system": R(80, 110), "lukas": R(40, 120)}, codex=CX(60, (CR - NOW) / 3600))
+    fresh(SP(), frame=f)
+    for cmd in ("status", "plan", "forecast"):
+        rc, text = acct(cmd)
+        check(n + ": %s prints the line now, its next change with its Pacific time, and each point's hours" % cmd,
+              "SCHEDULE codex" in text and "40% now" in text and "Sat Nov 28 11:59 PM" in text
+              and "61.5 h before the reset" in text and "0 h before the reset" in text, text)
+    fresh(frame=f)
+    before = (TMP / "plan" / "plan.json").read_bytes()
+    rc, text = acct("whatif", "--", "line", "codex", "--schedule", EX)
+    check(n + ": whatif takes a schedule, shows the line before and after, writes nothing", rc == 0
+          and "codex line 25% -> 40%" in text and (TMP / "plan" / "plan.json").read_bytes() == before, text)
+
+
+def t_ls_measures_count_the_reserve():
+    n = "ls_measures_count_the_reserve"
+    r1 = NOW + 3 * 86400
+
+    def row(t, used):
+        return {"account": "lukas", "source": "MEASURED", "measured_at": AP.iso(t), "week_pct_used": used,
+                "week_resets_at": AP.iso(r1)}
+    rows = [row(NOW, 90), row(NOW + 1800, 96), row(NOW + 3600, 97), row(NOW + 5400, 94), row(NOW + 7200, 94)]
+    m = AP.measures(rows, [], lambda a, t: 5, line_now=lambda a, t, rs: 5)
+    w = m.get(AP.week_of(NOW)) or {}
+    check(n + ": 60 min under the line of 5 (4% and 3% left, each until the next reading), lowest gap -2",
+          w.get("under_line_min", {}).get("lukas") == 60 and w.get("lowest_gap", {}).get("lukas") == -2, w)
+
+
+def t_ls_the_live_plan_replays_pass_for_pass():
+    n = "ls_the_live_plan_replays_pass_for_pass"
+    lines = GOLDEN.read_text().splitlines()
+    g = {**json.loads(lines[0]), "rows": [json.loads(x) for x in lines[1:]]}
+    p = g["plan"]
+    rows = [json.loads(json.dumps(replay_row(p, f), sort_keys=True)) for f in replay_frames(p)]
+    diff = [(a, b) for a, b in zip(g["rows"], rows) if a != b]
+    check(n + ": %d passes of a simulated week, the same act, target, lines and readers as the old code" % len(rows),
+          len(rows) == len(g["rows"]) and len(rows) > 300 and not diff, diff[:2])
+    acts = {r["decision"].get("do") for r in rows}
+    check(n + ": the week holds more than one act (the replay is not one state)", len(acts) >= 3, acts)
+
+
 def main():
     for t in (t_live_account_stays_until_its_own_line, t_order_only_answers_which_account_is_next,
               t_no_start_is_refused_for_a_preference, t_a_rescue_switch_needs_points_worth_a_switch,
@@ -2174,7 +2527,14 @@ def main():
               t_a_push_that_fails_leaves_the_pass_whole,
               t_a_following_machine_that_cannot_look_refuses, t_readers_take_the_rules_through_one_door,
               t_the_allocator_raises_its_pace_to_the_target_burn, t_codex_door_asks_the_plan,
-              t_status_and_help_are_the_operators_page):
+              t_status_and_help_are_the_operators_page,
+              t_ls_the_live_plan_replays_pass_for_pass, t_ls_hold_and_ramp_give_the_line_of_the_moment,
+              t_ls_a_point_at_the_reset_is_its_end, t_ls_a_point_past_the_reset_is_dropped_and_said,
+              t_ls_an_unreadable_schedule_uses_its_highest_percent, t_ls_a_schedule_is_set_in_one_line,
+              t_ls_a_bad_schedule_is_refused_at_the_command, t_ls_a_flat_line_clears_the_schedule,
+              t_ls_a_schedule_replaces_the_reset_day_rule, t_ls_every_reader_gets_the_line_from_one_function,
+              t_ls_the_week_ahead_follows_the_schedule, t_ls_status_plan_forecast_show_the_schedule,
+              t_ls_measures_count_the_reserve):
         try:
             t()
         except Exception as e:  # noqa: BLE001  a check that broke is a FAIL of its promise, by name
@@ -2188,4 +2548,7 @@ def main():
 
 
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["--write-golden"]:
+        write_golden(sys.argv[2])
+        sys.exit(0)
     sys.exit(main())
