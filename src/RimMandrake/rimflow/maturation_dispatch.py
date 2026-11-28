@@ -3290,7 +3290,7 @@ def pilot_launch(root, cfg, mod, why, item=None, tokens=None, fx=None, now=None)
         stage, owed = f.get("stage"), f.get("owed")
         rb = s.get("road_back")
         opened = AUT.road_back_open(s, rb, fx.get("open_items") or (
-            lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw))) if rb else []
+            lambda ids, **kw: M.ledger_items_caused_by(root, ids, **kw)), mod=mod) if rb else []
         if owed == "build" or (stage in ("blind_challenge", "in_game") and owed in ("cycle", "run")):
             if not item:
                 return 2, "REFUSED: %s owes %s at %s; name the filed item it runs under: --item <ID>" % (mod, owed, stage)
@@ -3516,7 +3516,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
                 row["need"] = "%s: the open road-back items wait on a hand bundle (`./pipe bundle %s --why ...`): %s" % (
                     mod, mod, no)
             continue
-        items = list(row["road_back_items"]) if hold else AUT.road_back_open(s, s["road_back"], open_items)
+        items = list(row["road_back_items"]) if hold else AUT.road_back_open(s, s["road_back"], open_items, mod=mod)
         if not items:
             continue
         game_set = not M.game_takeable(row.get("stage")) and all((x or {}).get("needs") in M.LIVE_NEEDS for x in items)

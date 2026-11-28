@@ -5722,7 +5722,9 @@ def ledger_items_caused_by(root, ids, ended_too=False, named=()):
                     ended.add(e.get("id"))
     live = [k for k in sorted(filed) if ended_too or k not in ended]
     needs = ledger_needs(root, live)
-    return [{"id": k, "title": filed[k], "needs": needs.get(k)} for k in live]
+    homes = ledger_homes(root, live)
+    return [dict({"id": k, "title": filed[k], "needs": needs.get(k)}, **({"home": homes[k]} if k in homes else {}))
+            for k in live]
 
 
 def ledger_live_endings(root, ids):
@@ -5782,6 +5784,30 @@ def ledger_caused_by(root, ids):
                     continue
                 if e.get("id") in want and e.get("event") in ("file", "spawn") and e.get("caused_by"):
                     out[e["id"]] = e["caused_by"]
+    return out
+
+
+def ledger_homes(root, ids):
+    """-> {id: home} for these ledger items: the `home` of their last `home` event (`rimflow home`: mod:<folder>,
+    pipeline:<part>, game:<need>, machine:<name>, fix:<Mod> or unplaced), in time order, the fold model.replay does for
+    this one field. An item that never had one is absent: no home is no reading, never a home."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, out, seen = set(ids), {}, []
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if '"home"' not in ln:
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                if e.get("event") == "home" and e.get("id") in want and isinstance(e.get("home"), str):
+                    seen.append((str(e.get("ts") or ""), e.get("tsn") or 0, e["id"], e["home"]))
+    for _, _, i, h in sorted(seen, key=lambda x: (x[0], x[1])):     # shards interleave: time order, not file order
+        out[i] = h
     return out
 
 

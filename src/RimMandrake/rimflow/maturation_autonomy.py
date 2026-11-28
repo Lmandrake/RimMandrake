@@ -1308,12 +1308,30 @@ def walk_group(rb, item):
     return [item]
 
 
-def road_back_open(s, rb, open_items):
+def off_mod(x, mod):
+    """-> the home of the open item x when that home places it off `mod`'s work (pipeline:, game:, machine:, fix:, another
+    mod), else None. No home and `unplaced` are no reading: the item stays the mod's road-back work, as before. A home is
+    the decision (mod_work.of, rule 3): measured 2026-11-27, 75 of 93 past road-back items name no home and no path, and
+    a path alone misplaces a FlowWorks fix whose prose cites only its design/specs page."""
+    h = (x or {}).get("home") if isinstance(x, dict) else None
+    if not isinstance(h, str) or not h or h == "unplaced" or not mod or h == "mod:%s" % mod:
+        return None
+    return h
+
+
+def road_back_open(s, rb, open_items, mod=None):
     """-> open_items over the road back's caused_by ids (_road_back_ids), and the items its visit's failed lines cite
-    (rb["cited"]) as well; open_items is called without `named` when nothing is cited (the readers the selftests fake)."""
+    (rb["cited"]) as well; open_items is called without `named` when nothing is cited (the readers the selftests fake).
+    mod: the mod whose road back it is; an item whose ledger home is not that mod's (off_mod) is left out. It is not the
+    mod's work, so it gets no holder or fixer run of the mod and holds none of its stages: the Conductor filed the
+    pipeline repair RIMMANDRAKE_SEAL_STEWARD_SECTION_BLIND_JUDGE_READ_IT_FIRST caused by FlowWorks' blind cycle 5, the
+    tick ran FlowWorks' holder on it, and visit 14 waited on a free game (RIMMANDRAKE_FIX_REPAIR_RUN_HOLDS_MOD_VISIT_
+    WAITS_GAME_IDLE; design/specs/2026-11-27-road-back-holds-own-work/boundary.md)."""
     cited = [c for c in rb.get("cited") or [] if c]
     ids = _road_back_ids(s, rb)
     got = open_items(ids, named=cited) if cited else open_items(ids)
+    if got is not None and mod:
+        got = [x for x in got if off_mod(x, mod) is None]
     # a walk's road back is its fix and scene lists, nothing more: the route run files every ticket of the walk with
     # caused_by the route item, pick, next-version and another mod's tickets too (FlowWorks walk 3, 2026-11-25), and
     # none of those gets a fixer run (design/specs/2026-11-22-walk-result/boundary.md, tick-runs-no-fixer-on-pick-or-next)
@@ -1367,7 +1385,7 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
     if not rb:
         return False
     ids = _road_back_ids(s, rb)
-    items = road_back_open(s, rb, open_items)
+    items = road_back_open(s, rb, open_items, mod=row.get("mod"))
     if items is None:
         row.update(decision="blind", why="the ledger cannot be read for the road-back items")
         return True
