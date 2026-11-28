@@ -187,8 +187,9 @@ def status(h):
         return "CONTROL UNREADABLE: %s: nothing launches on %s until it can be read (pipe doctor)" % (h.get("said"),
                                                                                                    h["mod"])
     if h.get("control"):
-        return "OFF by pipe (act %s at %s): %s (on: pipe on %s --why \"...\")" % (
-            h.get("act"), h.get("at_pacific"), h.get("said"), h["mod"])
+        return "OFF by pipe (act %s at %s%s): %s (on: pipe on %s --why \"...\")" % (
+            h.get("act"), h.get("at_pacific"), "; its Designer runs, design text only" if h.get("design_ok") else "",
+            h.get("said"), h["mod"])
     return "HELD BY OWNER %s: \"%s\" (lift: %s)" % (h["date"], h["said"], LIFT % h["mod"])
 
 

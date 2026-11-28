@@ -1,7 +1,8 @@
 # BOUNDARY: the control store and `pipe`, Design Version 0.1.0
 
 Code: `src/RimMandrake/rimflow/control.py`, `src/RimMandrake/rimflow/pipeline_pause.py` (its reading of the store's
-switches), and the two doors that ask `src/RimMandrake/rimflow/test_process.py`
+switches), `src/RimMandrake/rimflow/mod_owner_hold.py` (his hold as a file row, and the status line of a held or off
+mod), and the two doors that ask `src/RimMandrake/rimflow/test_process.py`
 (`launch_unit` here, `append` in `src/RimMandrake/rimflow/model.py`). This page says where the control store stops. A claim about the store
 counts only if it quotes an entry here (`standing_rulings.md` §A boundary page before pipeline code). Written
 2026-11-18 11:50 PM PST. Read fresh 2026-11-19 by `RIMMANDRAKE_READ_CONTROL_PAGE_FRESH_BEFORE_CODE_IS_CUT`: 4 holes

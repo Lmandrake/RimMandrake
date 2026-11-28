@@ -2841,6 +2841,8 @@ def t_a_design_only_switch_admits_the_designer_alone():
     check(not o["ok"], "a role run that is not the Designer is refused", o)
     h = C.mod_holds().get("Graffiti") or {}
     check(h.get("control") and h.get("design_ok"), "the hold row a reader sees carries the allowance", h)
+    import mod_owner_hold as OH
+    check("Designer runs" in OH.status(h), "the status line of the mod says its Designer runs", OH.status(h))
     q = C.admit(designer("rm-role-designer-probe-q"))
     C.switch("mod:Graffiti", True, "off again, builds and design", idem=None)
     check(C.run_state(q["run"])["state"] == "cancelled", "an off without the allowance cancels an admitted Designer",
