@@ -49,9 +49,13 @@ most pipeline files, so the time falls less than the count.
   `RM_DOOR_READS` the hook does nothing.
 - **a-read-the-hook-cannot-see-is-unknown.** A Python child that drops or skips the hook, a git child that reads the
   tree as a whole (`ls-files`, `status`, `clone`), and any other child aimed at the tree make the record answer
-  "unknown". Then the door runs the test whenever its import closure names it.
+  "unknown", and so does a git child that takes its paths on its input (`cat-file --batch`, `hash-object
+  --stdin-paths`) or names the whole tree after `--` (nothing, or `.`). A git child in a subfolder reads its `-- paths`
+  under that subfolder. Then the door runs the test whenever its import closure names it.
 - **an-untouched-test-is-left-out.** With a record that decides, a change touches the test when it edits the test, a
-  file that the test read, or a folder that the test listed. Any other change leaves the test out.
+  file that the test read, or a folder that the test listed. A file in a folder that is new inside a listed folder
+  changes that listing too (a glob of `design/specs/*/boundary.md`, or a walk, finds it). Any other change leaves the
+  test out.
 - **a-record-of-other-code-decides-nothing.** A record whose `.py` files differ at the change's base answers
   "unknown", and so do no record and a torn record. Data that moved on main does not stop a record from deciding.
 - **the-door-runs-only-the-tests-a-change-touches.** `publish.py` runs the pipeline tests with the hook, keeps the
@@ -69,3 +73,8 @@ most pipeline files, so the time falls less than the count.
 - The selftest is green on the fix. Five planted faults, each caught by the promise that it breaks
   (`evidence/plants.txt`): `relation` never answers touched; no `.py` check; the hook ignores children; `narrow`
   never leaves a test out; folder listings ignored.
+- 2026-11-27, the fresh read (`RIMMANDRAKE_READ_DOOR_READS_FRESH_NOT_BY_ITS_WRITER`): six new checks, each red on the
+  parent for its named reason and green on the fix: a new subfolder of a listed folder; `cat-file --batch`;
+  `hash-object --stdin-paths`; an empty `--`; `-- .`; `-- paths` of a git child in a subfolder. The real records of
+  `selftest_boundary_check.py` and `selftest_codex_lane.py` list `design/specs`, so a new spec folder read "not
+  touched" before. Record format 2: a record parsed before the fix answers "unknown" until its test is green again.

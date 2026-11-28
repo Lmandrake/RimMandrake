@@ -19,13 +19,14 @@ keeps its import closure for that test. Page: design/specs/2026-11-26-door-reads
 import hashlib
 import json
 import os
+import posixpath
 import re
 import shlex
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 HOOK_DIR = os.path.join(HERE, "door_reads_hook")
-FORMAT = 1
+FORMAT = 2          # 2 (2026-11-27): a record parsed before git stdin reads and empty `--` were unknown decides nothing
 PYC = re.compile(r"^(?:(.*)/)?__pycache__/([^/.]+)\.[^/]+\.pyc$")
 # children that read no file of the tree whatever folder they start in
 NO_READ = frozenset(("true", "false", "sleep", "systemd-cat", "wslpath", "date", "echo", "nproc", "uname", "id",
@@ -42,9 +43,11 @@ def hook_env(env, tree, rec):
     return dict(env, RM_DOOR_READS=rec, RM_DOOR_READS_ROOT=tree, PYTHONPATH=os.pathsep.join([HOOK_DIR] + pp))
 
 
-def _git_reads(argv):
+def _git_reads(argv, cwd=None):
     """-> (paths, None) a git child aimed at the tree reads (relative to the tree), or (None, why) when it reads the tree
-    as a whole: a listing, a status, a clone or fetch of it, a commit in it."""
+    as a whole (a listing, a status, a clone or fetch of it, a commit in it, an empty pathspec after `--`) or reads
+    paths that its argv does not name (`--batch`, `--stdin-paths`: they come on its input). cwd: the child's folder
+    relative to the tree; its `-- paths` are relative to it, as git reads them."""
     a, i = argv[1:], 0
     while i < len(a) and a[i].startswith("-"):
         if a[i] in ("-C", "-c", "--git-dir", "--work-tree", "--namespace") and i + 1 < len(a):
@@ -54,17 +57,22 @@ def _git_reads(argv):
     if i >= len(a):
         return set(), None
     sub, rest = a[i], a[i + 1:]
+    if any(x == "--stdin-paths" or x.startswith("--batch") for x in rest):
+        return None, "git %s reads the paths on its input" % sub
+    under = "" if cwd in (None, "", ".") else cwd.strip("/") + "/"
     paths = set()
     for x in rest:
         if ":" in x and not x.startswith("-") and not x.startswith(":"):
             p = x.split(":", 1)[1].strip("/")
             if p:
                 paths.add(p)
-    if "--" in rest:
-        paths |= {x.strip("/") for x in rest[rest.index("--") + 1:] if x}
+    named = [posixpath.normpath(under + x) for x in rest[rest.index("--") + 1:] if x] if "--" in rest else []
+    if any(x == "." or x.startswith("../") or x == ".." for x in named):
+        return None, "git %s names the tree's top (or above it) after --" % sub
+    paths |= set(named)
     if sub in GIT_NAMED:
         return paths, None
-    if sub in GIT_PATHSPEC and "--" in rest:
+    if sub in GIT_PATHSPEC and named:
         return paths, None
     return None, "git %s reads the tree as a whole" % sub
 
@@ -100,7 +108,7 @@ def parse(rec):
             if exe in NO_READ:
                 continue
             if exe == "git":
-                got, why = _git_reads([str(x) for x in argv])
+                got, why = _git_reads([str(x) for x in argv], c.get("cwd"))
                 if why:
                     unknown.append(why)
                 else:
@@ -184,4 +192,11 @@ def relation(store, test, changed, blobs):
             return "touched", "it listed %s" % (p.rpartition("/")[0] or ".")
         if any(p.startswith(f.rstrip("/") + "/") for f in files):
             return "touched", "it read a folder holding %s" % p
+        # a folder it listed higher up gains an entry when p sits in a folder that is new there (a glob of
+        # specs/*/page.md, or a walk, finds the file in it)
+        parts = p.split("/")
+        for k in range(len(parts) - 1):
+            up = "/".join(parts[:k]) or "."
+            if up in dirs and parts[k] not in (dirs[up] or ()):
+                return "touched", "it listed %s, which gains %s" % (up, parts[k])
     return "not touched", "it read none of the changed paths (%d files, %d folders)" % (len(files), len(dirs))

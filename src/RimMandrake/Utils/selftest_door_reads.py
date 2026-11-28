@@ -98,6 +98,19 @@ def t_records_what_a_test_reads(tmp):
     check({"listed", "globbed"} <= got["dirs"], "records-what-a-test-reads: folders listed (%s)" % sorted(got["dirs"]))
     check(not got["unknown"], "records-what-a-test-reads: a git child outside the tree and `true` hide nothing (%s)"
           % got["unknown"])
+    # a git child started in a subfolder reads its `-- paths` relative to that subfolder; a `rev:path` stays rooted
+    sub = os.path.join(tmp, "subrec")
+    with open(sub, "w", encoding="utf-8") as f:
+        f.write("C %s\n" % json.dumps({"cwd": "lib", "argv": ["git", "log", "--", "mod_b.py"]}))
+        f.write("C %s\n" % json.dumps({"cwd": "lib", "argv": ["git", "show", "HEAD:data/shown.txt"]}))
+    sg = DR.parse(sub)
+    check({"lib/mod_b.py", "data/shown.txt"} <= sg["files"] and "mod_b.py" not in sg["files"],
+          "records-what-a-test-reads: a git child in a subfolder reads its `-- paths` under it (%s)" % sorted(sg["files"]))
+    top = os.path.join(tmp, "toprec")
+    with open(top, "w", encoding="utf-8") as f:
+        f.write("C %s\n" % json.dumps({"cwd": ".", "argv": ["git", "log", "--", "."]}))
+    check(DR.parse(top)["unknown"], "a-read-the-hook-cannot-see-is-unknown: git log -- . names the whole tree (%s)"
+          % DR.parse(top))
     check(DR.hook_env({}, r, rec)["PYTHONPATH"].split(os.pathsep)[0] == DR.HOOK_DIR,
           "records-what-a-test-reads: the hook is first on PYTHONPATH")
     q = subprocess.run([sys.executable, "-c", "open('data/a.txt').read()"], cwd=r, capture_output=True, text=True,
@@ -126,6 +139,14 @@ def t_a_read_the_hook_cannot_see_is_unknown(tmp):
         "git ls-files in the tree": "import subprocess\nsubprocess.run(['git', 'ls-files'], capture_output=True)\n",
         "a shell child in the tree": "import subprocess\nsubprocess.run('cat a.txt', shell=True, capture_output=True)\n",
         "a clone of the tree": "import subprocess, sys, tempfile\nsubprocess.run(['git', 'clone', '-q', '.', tempfile.mkdtemp()])\n",
+        # git verbs that take their paths on stdin: the argv names none of what they read
+        "git cat-file --batch in the tree": "import subprocess\nsubprocess.run(['git', 'cat-file', '--batch'], "
+                                            "input='HEAD:a.txt\\n', capture_output=True, text=True)\n",
+        "git hash-object --stdin-paths in the tree": "import subprocess\nsubprocess.run(['git', 'hash-object', "
+                                                     "'--stdin-paths'], input='a.txt\\n', capture_output=True, text=True)\n",
+        # an empty pathspec after `--` is the whole tree, as no `--` is
+        "git log -- with no path in the tree": "import subprocess\nsubprocess.run(['git', 'log', '--oneline', '--'], "
+                                               "capture_output=True)\n",
     }
     for i, (name, src) in enumerate(cases.items()):
         write(r, "c%d.py" % i, src)
@@ -155,6 +176,21 @@ def t_an_untouched_test_is_left_out(tmp):
                           ({"d/two.txt"}, "touched"), ({"e/two.txt"}, "not touched")):
         ans, why = DR.relation(store, "t.py", changed, blobs)
         check(ans == want, "an-untouched-test-is-left-out: a change to %s -> %s (%s)" % (sorted(changed)[0], ans, why))
+    # a new subfolder of a listed folder is a new entry in that folder's listing: a glob of specs/*/page.md, or a walk,
+    # sees the file in it (2026-11-27: the records of selftest_boundary_check.py and selftest_codex_lane.py list
+    # design/specs, and a new design/specs/<date>-x/boundary.md read "not touched")
+    write(r, "g.py", "import glob\nfor p in glob.glob('specs/*/page.md'):\n    open(p).read()\n")
+    write(r, "specs/old/page.md", "1\n")
+    commit(r, "glob")
+    blobs = DR.tree_blobs(lambda *a: subprocess.run(["git", "-C", r, *a], capture_output=True, text=True), "HEAD")
+    grec = os.path.join(tmp, "grec")
+    hooked(r, "g.py", grec)
+    DR.keep(store, "g.py", grec, blobs)
+    for changed, want in (({"specs/new/page.md"}, "touched"), ({"specs/old/page.md"}, "touched"),
+                          ({"specs/old/deeper/z.md"}, "not touched"), ({"other.py"}, "not touched")):
+        ans, why = DR.relation(store, "g.py", changed, blobs)
+        check(ans == want, "an-untouched-test-is-left-out: a test that globbed specs/*/page.md, a change to %s -> %s (%s)"
+              % (sorted(changed)[0], ans, why))
 
 
 def t_a_record_of_other_code_decides_nothing(tmp):
