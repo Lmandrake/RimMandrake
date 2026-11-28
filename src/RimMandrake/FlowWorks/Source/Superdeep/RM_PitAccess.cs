@@ -288,4 +288,63 @@ namespace RimMandrake.FlowWorks
 			return null;
 		}
 	}
+
+	/// <summary>
+	/// RIMMANDRAKE_VETO_DUPLICATE_PICKUP_ACROSS_SEALED_PIT_DROPS_HAUL (live 2026-11-16, the hauler's job log): after a pickup,
+	/// vanilla's Toils_Haul.CheckForGetOpportunityDuplicate retargets the haul at a same-def stack within 8 cells found by
+	/// GenClosest.ClosestThingReachable's REGION search, which never calls Reachability.CanReach; so FlowWorks' reach vetoes
+	/// (a raised ladder seals a pit) were never asked. The haul went to a stack in a sealed pit 6 cells off, the path errored,
+	/// the stack was dropped on the ladder cell, and the same haul repeated all day. The duplicate search now also asks
+	/// Reachability.CanReach with its own parameters (ClosestTouch, TraverseParms.For(actor)) from the carrier's cell: a stack
+	/// the carrier cannot reach is not a duplicate. Where no FlowWorks veto applies, CanReach agrees with the region search, so
+	/// vanilla's choice is unchanged. The actor is known only when the toil runs, so the toil's initAction is wrapped to hold
+	/// it for that call. Offline guard: selftest_flowworks_dupe_pickup_reach.py; live: northstar/live_haul_dupe_sealed_pit.py.
+	/// </summary>
+	[HarmonyPatch(typeof(Toils_Haul), nameof(Toils_Haul.CheckForGetOpportunityDuplicate))]
+	[RimMandrake.Shared.PatchFeature("Hauling picks up only stacks it can reach")]
+	public static class RM_Patch_HaulDupeReach
+	{
+		[System.ThreadStatic]
+		private static Pawn actor;
+
+		[HarmonyPrefix]
+		public static void Prefix(ref System.Predicate<Thing> extraValidator)
+		{
+			System.Predicate<Thing> orig = extraValidator;
+			extraValidator = t =>
+			{
+				Pawn a = actor;
+				if (a != null && a.Spawned && t.Spawned && a.Map == t.Map
+					&& !a.Map.reachability.CanReach(a.Position, t, PathEndMode.ClosestTouch, TraverseParms.For(a)))
+				{
+					return false;
+				}
+				return orig == null || orig(t);
+			};
+		}
+
+		[HarmonyPostfix]
+		public static void Postfix(Toil __result)
+		{
+			if (__result?.initAction == null)
+			{
+				return;
+			}
+			Toil toil = __result;
+			System.Action inner = toil.initAction;
+			toil.initAction = () =>
+			{
+				Pawn prev = actor;
+				actor = toil.actor;
+				try
+				{
+					inner();
+				}
+				finally
+				{
+					actor = prev;
+				}
+			};
+		}
+	}
 }

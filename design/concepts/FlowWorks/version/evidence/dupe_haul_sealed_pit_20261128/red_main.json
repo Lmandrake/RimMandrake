@@ -1,0 +1,139 @@
+{
+ "script": "live_haul_dupe_sealed_pit.py",
+ "started": "2026-11-27T22:26:16",
+ "rows": [
+  {
+   "id": "DUPE_site",
+   "status": "PASS",
+   "detail": {
+    "ladders": true,
+    "ladderA": "LADDER cell=121,122 present=True raised=False want=False ordered=False top=121,123 inspect=Ladder_down,_like_a_door_left_open:_every_creature_that_can_climb_a_l",
+    "ladderB": "LADDER cell=127,122 present=True raised=True want=True ordered=False top=127,123 inspect=Slid_up_onto_the_rim:_nobody_can_climb_down_or_out.",
+    "steel": true,
+    "zone": "{'success': True, 'action': 'createZone', 'created': 'Stockpile zone 1', 'cells': 1, 'cellsRequested': 1, 'refusedCount': 0, 'refusedCells': [], 'notes': ['Chec",
+    "reachA": "REACHPAIR canReach=True found=True veto=False inScope=True cls=2 band=2 agree=True",
+    "reachB": "REACHPAIR canReach=False found=False veto=True inScope=True cls=2 band=2 agree=True",
+    "steelBefore": [
+     {
+      "x": 121,
+      "z": 121,
+      "n": 20
+     },
+     {
+      "x": 127,
+      "z": 121,
+      "n": 20
+     }
+    ]
+   }
+  },
+  {
+   "id": "DUPE_haul_from_open_pit",
+   "status": "FAIL",
+   "detail": {
+    "atStockpile": 0,
+    "atSealedPitB": 20,
+    "stray": [
+     {
+      "x": 121,
+      "z": 123,
+      "n": 20
+     }
+    ],
+    "trace": [
+     {
+      "tick": 500,
+      "steel": [
+       {
+        "x": 121,
+        "z": 121,
+        "n": 20
+       },
+       {
+        "x": 127,
+        "z": 121,
+        "n": 20
+       }
+      ]
+     },
+     {
+      "tick": 1000,
+      "steel": [
+       {
+        "x": 127,
+        "z": 121,
+        "n": 20
+       },
+       {
+        "x": 121,
+        "z": 123,
+        "n": 20
+       }
+      ]
+     },
+     {
+      "tick": 1500,
+      "steel": [
+       {
+        "x": 127,
+        "z": 121,
+        "n": 20
+       },
+       {
+        "x": 121,
+        "z": 123,
+        "n": 20
+       }
+      ]
+     },
+     {
+      "tick": 2000,
+      "steel": [
+       {
+        "x": 127,
+        "z": 121,
+        "n": 20
+       },
+       {
+        "x": 121,
+        "z": 123,
+        "n": 20
+       }
+      ]
+     },
+     {
+      "tick": 2500,
+      "steel": [
+       {
+        "x": 127,
+        "z": 121,
+        "n": 20
+       },
+       {
+        "x": 121,
+        "z": 123,
+        "n": 20
+       }
+      ]
+     },
+     {
+      "tick": 3000,
+      "steel": [
+       {
+        "x": 127,
+        "z": 121,
+        "n": 20
+       },
+       {
+        "x": 121,
+        "z": 123,
+        "n": 20
+       }
+      ]
+     }
+    ],
+    "why": "A's steel short of the stockpile or B's stack moved: the duplicate pickup crossed into the sealed pit"
+   }
+  }
+ ]
+}
