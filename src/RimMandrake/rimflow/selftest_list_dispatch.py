@@ -1714,7 +1714,10 @@ def t_the_code_review_pause_holds_every_review_ticket():
 def t_the_shipped_pause_names_the_three_kinds_and_only_them():
     ld = LD()
     s = ld.load_cfg().get("code_review_pause") or {}
-    chk(lambda: s.get("on") is True and s.get("reason"), "the shipped lane carries the pause, on, with its reason")
+    # The owner or the Conductor lifts and sets the pause, so the shipped value may be on or off. The test must not
+    # refuse that act: it checks the switch, never its position.
+    chk(lambda: isinstance(s.get("on"), bool) and s.get("reason"),
+        "the shipped lane carries the pause switch, on or off, with its reason")
     import re
     held = ["RIMMANDRAKE_READ_FIX_1ECCD06DB0_WITH_FRESH_EYES", "RIMMANDRAKE_READ_FIX_5E0A5DB3_WITH_FRESH_EYES",
             "RIMMANDRAKE_READ_FIX_A01DAF8197_9F3C2B_WITH_FRESH_EYES",
@@ -1731,6 +1734,7 @@ def t_the_pause_command_edits_one_line_and_nothing_else():
     ld = LD()
     with open(ld.CFG_PATH, encoding="utf-8") as f:
         text = f.read()
+    text = ld.set_pause(text, True, None)          # start from on, whatever position the shipped file has
     off = ld.set_pause(text, False, None)
     on = ld.set_pause(off, True, "a new reason")
     chk(lambda: json.loads(off)["code_review_pause"]["on"] is False and json.loads(on)["code_review_pause"]["on"] is True
@@ -1941,8 +1945,10 @@ def t_the_game_pause_command_sets_one_line_and_counts_the_held():
     with open(ld.CFG_PATH, encoding="utf-8") as f:
         text = f.read()
     s = json.loads(text).get("game_work_pause") or {}
-    chk(lambda: s.get("on") is True and s.get("reason") and s.get("advancing_mods") == ["FlowWorks"],
-        "the shipped lane carries the game pause, on, with its reason and FlowWorks as the one advancing mod (%s)" % s)
+    chk(lambda: isinstance(s.get("on"), bool) and s.get("reason") and isinstance(s.get("advancing_mods"), list),
+        "the shipped lane carries the game pause switch, on or off, with its reason and its advancing mods (%s)" % s)
+    text = ld.set_pause(text, True, None, key="game_work_pause")   # start from on, whatever the shipped position
+    review_was = json.loads(text)["code_review_pause"]["on"]
     off = ld.set_pause(text, False, None, key="game_work_pause")
     on = ld.set_pause(off, True, "a new reason", key="game_work_pause")
     chk(lambda: json.loads(off)["game_work_pause"]["on"] is False and json.loads(on)["game_work_pause"]["reason"]
@@ -1965,7 +1971,7 @@ def t_the_game_pause_command_sets_one_line_and_counts_the_held():
     rc, out = cli("pause", "game", "off", "--why", "lifted in a test")
     with open(p, encoding="utf-8") as f:
         after = json.load(f)
-    chk(lambda: rc == 0 and after["game_work_pause"]["on"] is False and after["code_review_pause"]["on"] is True,
+    chk(lambda: rc == 0 and after["game_work_pause"]["on"] is False and after["code_review_pause"]["on"] is review_was,
         "`pause game off` switches only the game pause (%s)" % out.strip())
     rc, out = cli("pause", "off")
     with open(p, encoding="utf-8") as f:
