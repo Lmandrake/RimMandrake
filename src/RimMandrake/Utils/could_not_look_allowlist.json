@@ -2,6 +2,7 @@
  "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why). A third class, UNREAD (\"unread by owner's card 2026-11-19: only files that failed before are read\", RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO), marks a place allowed without a reading: only the files where a could-not-look collapse was seen were read.",
  "places": {
   "src/RimMandrake/rimflow/ticket_preflight.py::_split_def::or-empty": 1,
+  "src/RimMandrake/Utils/door_reads.py::records::except-returns-empty": 1,
   "src/RimMandrake/rimflow/check_once.py::kept::except-returns-empty": 1,
   "src/RimMandrake/rimflow/list_shape.py::own_check::except-returns-empty": 1,
   "src/RimMandrake/rimflow/check_once.py::shape_id::except-returns-empty": 1,
@@ -316,6 +317,9 @@
  "reasons": {
   "src/RimMandrake/rimflow/list_shape.py::own_check::except-returns-empty": [
    "NOT A COLLAPSE: False is \"not the item's own holds command\": a text that shlex cannot split is then run as its own check, which gives its own verdict"
+  ],
+  "src/RimMandrake/Utils/door_reads.py::records::except-returns-empty": [
+   "NOT A COLLAPSE: [] is \"no record kept for this test\": a missing folder is measured empty, and relation then answers \"unknown\" (no record of a green run yet), so the door runs the test (design/specs/2026-11-26-door-reads/boundary.md a-record-of-other-code-decides-nothing)"
   ],
   "src/RimMandrake/rimflow/check_once.py::kept::except-returns-empty": [
    "NOT A COLLAPSE: None is \"no kept result\": the check then runs and gives its own verdict; a kept file that cannot be read is never a verdict (design/specs/2026-11-27-check-once/boundary.md unmeasured-stays-unmeasured)"
