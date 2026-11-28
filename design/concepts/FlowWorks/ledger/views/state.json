@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "ffd12e8b52438690929a434e83f01ee9e2dd11760134a81caca6d013980dc960",
+  "body_sha256": "d25214a6edeed5677502565627f1849a68570de10687f0b33f4ee54ead395a54",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -49,7 +49,7 @@
    "HOLDER.run-1795782541": 1037,
    "HOLDER.run-1795783799": 859,
    "HOLDER.run-1795818114": 3744,
-   "HOLDER.run-1795831307": 9836,
+   "HOLDER.run-1795831307": 11902,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1301,10 +1301,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795831307",
-   "done": "restart 2: FULL_LOAD_RESIDUE_TRIAGE_1 dropped stale (0ffd419e26); deep sand no longer a natural water source (d097ea3260, C# red->green, live PASS and planted FAIL on ArchBig); GptA_bottle_fill T_CONVERT repaired, red seen; fuel sap ignition and spill-clean L5 recorded not worth the touch (237d95897b, cf70a27c05)",
-   "next": "Fix RIMMANDRAKE_SEAL_SLUICE_AT_ITS_PANEL_NOT_ITS_SQUARE in RM_FlowKernel (panel seal on one edge, fuzz first), then close the liquid-rules umbrella",
-   "ruled_out": "rain washing the L5 spill filth (weather locked Clear in preflight); filth thickness caps (maxThickness 100, CanBeThickened <5) as the +1 cause",
-   "ts": "2026-11-28T06:11:38Z"
+   "done": "restart 3: covered pits on the walk map closed as done by d909b565d3; duplicate-pickup veto fixed a62c932133 (offline red/green, live FAIL on main PASS on fix, ArchBig)",
+   "next": "Work RIMMANDRAKE_SIGN_WILD_ANIMAL_UNDER_TAR_HAS_NO_LABEL_TO_SHOW test first, then the bundle state file Next",
+   "ruled_out": "the covered-pits ask was not open work: the 2026-11-25 rebuild built stations 42-45",
+   "ts": "2026-11-28T06:46:20Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1756,7 +1756,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1900,
+  "events": 1904,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7093,14 +7093,14 @@
      "inv_pit_access"
     ],
     "by": "BACKFILL",
-    "claim": null,
+    "claim": "RM_Patch_HaulDupeReach: the duplicate pickup asks Reachability.CanReach, so a stack in a sealed pit is never a duplicate",
     "class": "problem",
-    "code_sha": null,
+    "code_sha": "a62c932133544ebf09982541ad9d9ed23bc467df",
     "proposed_fix": "Harmony on CheckForGetOpportunityDuplicate: prefix wraps extraValidator as t => (orig==null||orig(t)) && !RM_SuperdeepTrap.RelativeVeto(t.Map, A.Position, t, PathEndMode.ClosestTouch, A), A a [ThreadStatic] actor; postfix sets A = toil.actor around initAction.",
-    "status": "open",
+    "status": "claimed_fixed",
     "tags": [],
     "text": "Toils_Haul.CheckForGetOpportunityDuplicate retargets a haul to a same-def stack within 8 cells in a sealed pit via a region search; FlowWorks' pit reach rule is in a CanReach postfix that search never calls. Path errors, stack drops on the ladder cell, haul repeats forever.",
-    "ts": "2026-11-16T11:42:01Z",
+    "ts": "2026-11-28T06:45:44Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL": {
@@ -7872,7 +7872,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-28T06:11:38Z",
+   "last": "2026-11-28T06:46:20Z",
    "lease": "run-1795831307",
    "released": false,
    "token": 66
