@@ -321,6 +321,15 @@ def t_no_filing_lands_on_a_retired_item():
     again = filed([], dict(sub, **({hid: It(state="done", live_repeats=1)} if hid else {})), chk=lambda line: "it died")
     check([(t["item"], bool(t.get("spawn"))) for t in again] == [(hid, False)],
           "the host's successor is that subject's ticket from then on, reopened, not spawned again: %s" % again)
+    # Retiring an open host leaves its broken reading in the replayed item.
+    broken = DM.SHARED_MARK + "it died"
+    hosts = {cid: It(state="superseded", live_broken=broken),
+             "LIVE_RESTORE_RM_DEAD": It(state="dropped", live_broken=broken)}
+    if hid:
+        hosts[hid] = It(state="ready", live_broken=broken)
+    recovered = filed([], hosts, chk=lambda line: None)
+    check(hid is not None and [(t["item"], t["result"]) for t in recovered] == [(hid, "kept")],
+          "a cleared outage files kept on its active successor only: %s" % recovered)
 
 
 def t_cause_ids_are_item_names():

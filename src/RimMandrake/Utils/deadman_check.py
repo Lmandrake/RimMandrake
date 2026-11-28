@@ -514,7 +514,8 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
             SHARED_MARK, len(members), members[0]["why"], ", ".join(r["item"] for r in members))))
     seen = {r["item"] for r in rows} | set(hosts)
     host_rows += [{"item": iid, "line": None, "why": None} for iid, it in sorted(items.items())
-                  if iid not in seen and str(getattr(it, "live_broken", None) or "").startswith(SHARED_MARK)]
+                  if iid not in seen and it.state not in RETIRED
+                  and str(getattr(it, "live_broken", None) or "").startswith(SHARED_MARK)]
     for r in host_rows + rows:
         if r["item"] in shared:
             continue
