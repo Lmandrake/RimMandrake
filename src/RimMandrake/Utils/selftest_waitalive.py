@@ -240,12 +240,15 @@ def t_one_verdict_line_last():
 
 def t_a_taken_name_is_repaired():
     st = env(os.path.join(TMP, "names"))
-    cmd = ["sh", "-c", "sleep 3; exit 8"]
+    # job n must outlive the two 1 s waits below, so that the third call attaches to it: 3 s did not on a loaded
+    # machine (the ./publish door of 48acca2e9a, 2026-11-27: two waits and their starts took over 3 s, so the third
+    # call started n-3). 15 s is the margin; the 60 s --max of the third call is its hang guard only.
+    cmd = ["sh", "-c", "sleep 15; exit 8"]
     rc, out, last = wa("run", "--name", "n", "--max", "1s", "--", *cmd, env=st)
     need(rc == 4, last)
     rc, out, last = wa("run", "--name", "n", "--max", "1s", "--", "sh", "-c", "sleep 2; exit 9", env=st)
     need(rc == 4 and "attach n-2" in last, "another command: rc %s, %s" % (rc, last))
-    rc, out, last = wa("run", "--name", "n", "--max", "20s", "--", *cmd, env=st)
+    rc, out, last = wa("run", "--name", "n", "--max", "60s", "--", *cmd, env=st)
     need(rc == 1 and "rc=8" in last and "attaches" in out, "the same command: rc %s, %s" % (rc, last))
     # an ended job keeps its name, its output and its end; the next use of the name has a number
     rc, out, last = wa("run", "--name", "n", "--", "echo", "again", env=st)
