@@ -7,9 +7,8 @@ had 44 s of CPU and 242 s waiting in the run queue (/proc/<pid>/schedstat) at lo
 Nice=19 beside the other services of app.slice, so every one of them outranked it. Last clean run 6:01 PM, so
 disk.scratch_ok_age_h passed its 3 h line. The expiry is the root disk's backstop; it may be slow, not starved.
 
-Proves, on the repo copy of the unit and on the installed copy when one exists:
-(1) the unit sets Nice no higher than 5 (Nice=19 weighs 15 against 1024 at Nice=0);
-(2) the installed unit, when present, carries the same Nice as the repo copy."""
+Proves, on the repo copy of the unit (the installed copy is synced from the dispatch clone, so it is not the commit's):
+(1) the unit sets Nice no higher than 5 (Nice=19 weighs 15 against 1024 at Nice=0)."""
 import re
 import sys
 from pathlib import Path
@@ -32,7 +31,4 @@ def nice(p: Path):
 repo = HERE / "systemd" / "rm-scratch-reap.service"
 n = nice(repo)
 ck(n <= 5, f"(1) repo unit Nice={n}, at most 5")
-inst = Path.home() / ".config/systemd/user/rm-scratch-reap.service"
-if inst.exists():
-    ck(nice(inst) == n, f"(2) installed unit Nice={nice(inst)} equals the repo copy's {n}")
 sys.exit(1 if F else 0)
