@@ -416,9 +416,9 @@ check("an owner block that names no phase stays his, and its block reason is the
 check("a block on a kind other than owner is not read for the phase words",
       not Q.phase_wait(phase_item(kind="item")))
 md = Q.one_view([{"item": "REAL_ONE", "q": "Sit for the flight test, 20 min"}], [], None, phase=[{"item": "PH_ONE", "q": "x"}, {"item": "PH_TWO", "q": "y"}])
-check("the view shows 'Waits for a phase he opens (integration, faction work) (2)'", "Waits for a phase he opens (integration, faction work) (2)" in md)
+check("the view shows 'Waits for a phase or a hold he lifts (integration, faction work, held mods) (2)'", "Waits for a phase or a hold he lifts (integration, faction work, held mods) (2)" in md)
 check("the view says so for zero phase items too, and nothing else changed when none is given",
-      "Waits for a phase he opens" not in Q.one_view([], [], None))
+      "Waits for a phase or a hold he lifts" not in Q.one_view([], [], None))
 check("a line that states no minutes says so", "minutes: not stated" in Q.one_view([{"item": "A", "q": "Look at it"}], [], None))
 check("a line that states minutes does not", "minutes: not stated" not in md)
 check("repo questions file: every real owner ask on the live books states its minutes",

@@ -1,6 +1,6 @@
 # BOUNDARY: the owner's one view and the count of needs not filed anywhere, Design Version 0.1.0
 
-Code: `src/RimMandrake/Utils/no_home.py` (all of it), `src/RimMandrake/Utils/probe_his_words.py` (`no_home_rows`,
+Code: `src/RimMandrake/Utils/no_home.py` (all of it), `src/RimMandrake/Utils/owner_queue.py` (all of it), `src/RimMandrake/Utils/probe_his_words.py` (`no_home_rows`,
 `cards`; moved from `design/specs/2026-11-22-one-view-of-open-work/`), `owner_queue.one_view`, `owner_queue.ours`,
 `owner_queue.write_view`/`read_view`/`fresh_view`, and their calls in `src/RimMandrake/Utils/maturation_now.py` (`live_facts`,
 `needs_md`, `needs_html`).
@@ -69,6 +69,14 @@ Why: on 2026-11-23 Fleet Now listed 4 things for him and Maturation Now's "Needs
   acts or a physical act, `FIVE_ACTS_RX`) or the Conductor read it against now (a note `ASK HIS: <why>` after the
   routing). Every other lane ask is under `needs_you()["unvetted"]`, which the Conductor's owed view lists
   (`owed.view`). A STALE ask loses its route; a NOT HIS ask is re-shaped to the Conductor.
+- **a-wait-on-a-mod-hold-is-not-his.** `owner_queue.hold_wait` is True when a ticket's own title or block reason says it waits
+  for a mod hold to lift (`HOLD_RX`: "when each hold lifts", "owner-held mods") and the lane routes no ask to him. Such a
+  ticket is under `needs_you()["phase"]`, whose title (`PHASE_TITLE`) says "a phase or a hold he lifts", never under his
+  rows. A ticket that asks him about a hold ("Decide whether to lift the Contagion hold") stays his. Why: on 2026-11-28 the
+  page listed the seven held flyers' ticket under "Needs Mandrake".
+- **the-flight-tag-is-for-a-flight-test.** `maturation_now.act_of` tags a row "live flight test" only when its words name a
+  test or session of flight or of a flyer ("live flight test of a flyer"); the word "flyers" alone tags nothing. Why: the
+  same ticket carried that tag though it asked for no test.
 - **the-page-builds-from-one-view.** `maturation_now` (its "Needs Mandrake" block on MATURATION_DETAIL; the short block on
   MATURATION_NOW draws the same rows and counts) calls `owner_queue.one_view`. `maturation_now.live_facts` writes the
   view it built (`write_view`).

@@ -1713,7 +1713,9 @@ def view_block(d, fmt):
     return out
 
 
-ACT_WORDS = ((r"(?i)\bfly(?:er|ing)?\b|\bflight\b", "live flight test"), (r"^Look\b", "look in game"),
+# Danger: a bare "flyer" or "flight" word tagged a ticket about flyers "live flight test" on 2026-11-28, though it asked for no test.
+# The tag needs the word test or session beside flight, flyer or flier.
+ACT_WORDS = ((r"(?i)\b(?:flight|fl(?:y(?:er)?|ier))s?\b(?:\W+\w+){0,2}?\W+(?:test|session)s?\b", "live flight test"), (r"^Look\b", "look in game"),
              (r"(?i)\bwalk\b", "walk it"), (r"(?i)^(?:pick|choose)\b|\bpick\b", "pick"))
 
 
@@ -1776,9 +1778,12 @@ def conductor_short(lines, mods=()):
 
 
 def phase_line(d):
-    """"Waits for a phase he opens (N)": the items no act of his clears today, on their own line ("" when the view has no reading)."""
+    """"Waits for a phase or a hold he lifts (N)": the items no act of his clears today, on their own line ("" when the view has no reading)."""
     ph = (d.get("view") or {}).get("phase")
-    return "" if ph is None else "Waits for a phase he opens (integration, faction work) (%d)" % len(ph)
+    if ph is None:
+        return ""
+    import owner_queue  # noqa: E402
+    return "%s (%d)" % (owner_queue.PHASE_TITLE, len(ph))
 
 
 def needs_panel(d):

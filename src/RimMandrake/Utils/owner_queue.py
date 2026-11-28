@@ -141,10 +141,24 @@ def vetted(it, evs):
     return False
 
 
+# A ticket that waits only for a hold on a mod to lift (the owner's holds, mod_owner_hold.json) is not an ask: no act of his clears it
+# but the lift, which the Conductor decides. Danger: on 2026-11-28 the page listed "7 flyers on owner-held mods ... when each hold
+# lifts" under "Needs Mandrake" (needs=owner, not blocked). Read only the title and the block reason, and only these phrases, so
+# a real ask about a hold ("Decide whether to lift the Contagion hold") stays his.
+HOLD_RX = re.compile(r"\bwhen (?:each|every|the|its|a)(?: mod'?s?)? holds? lifts?\b|\bowner-held mods?\b", re.I)
+
+
+def hold_wait(it):
+    """True when the ticket's own title or block reason says it waits for a mod hold to lift, and the lane routes no ask to him."""
+    return bool(HOLD_RX.search(" ".join(str(getattr(it, k, None) or "") for k in ("title", "blocked_reason")))
+                and lane_route(it) is None)
+
+
 def phase_wait(it):
-    """True when the item is blocked on the owner only until a phase he opens (integration, faction work): it waits for a phase, not for him."""
+    """True when the item waits for a phase he opens (integration, faction work: blocked on the owner, reason names it) or for a
+    mod hold to lift (`hold_wait`): it waits for that, not for him."""
     return bool(getattr(it, "blocked", False) and getattr(it, "blocked_kind", None) == "owner"
-                and PHASE_RX.search(str(getattr(it, "blocked_reason", None) or "")))
+                and PHASE_RX.search(str(getattr(it, "blocked_reason", None) or ""))) or hold_wait(it)
 
 
 def tooling_hold(rs):
@@ -447,7 +461,7 @@ def home_line(home):
     return "not filed anywhere: %s%s" % (UNM if n is None else n, (" (%s)" % tail) if tail else "")
 
 
-PHASE_TITLE = "Waits for a phase he opens (integration, faction work)"
+PHASE_TITLE = "Waits for a phase or a hold he lifts (integration, faction work, held mods)"
 MIN_RX = re.compile(r"\b\d{1,3}(?:-\d{1,3})? ?min(?:ute)?s?\b", re.I)
 
 

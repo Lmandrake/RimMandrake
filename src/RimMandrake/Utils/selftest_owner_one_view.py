@@ -310,13 +310,49 @@ def t_lane_ask_filter():
     assert "LANE_UNVETTED" not in [x["item"] for x in _lane_needs(evs)["lines"]], "a read before a new routing still counted"
 
 
+# 2026-11-28: "7 flyers on owner-held mods still fly at their baby's size ... when each hold lifts" (needs=owner, filed as a wait
+# for five mod holds) sat under "Needs Mandrake" tagged "live flight test": the page read the word "flyers" as a flight test.
+HOLD_TICKET = ("7 flyers on owner-held mods still fly at their baby's size: Sparkleech (Contagion), Skellick (FeverWood); "
+               "fix as abbfb368 did (InheritColors true + one colour per stage) when each hold lifts")
+
+
+def t_a_wait_on_a_mod_hold_is_not_his():
+    from types import SimpleNamespace as NS
+
+    def row(iid, title, **kw):
+        return NS(**dict({"id": iid, "open": True, "needs": "owner", "title": title, "blocked": False, "blocked_kind": None,
+                          "blocked_reason": None, "blocked_on": None, "blocked_also": (), "wait_until": None, "history": [],
+                          "state": "proposed", "shape": None}, **kw))
+    items = {"HOLD_WAIT": row("HOLD_WAIT", HOLD_TICKET),
+             "HOLD_BLOCK": row("HOLD_BLOCK", "Fix the dust", blocked=True, blocked_kind="owner",
+                               blocked_reason="Waits until the owner-held mods are lifted: when the hold lifts, run the tool"),
+             "REAL_LIFT": row("REAL_LIFT", "Decide whether to lift the Contagion hold"),
+             "REAL_FLIGHT": row("REAL_FLIGHT", "Sit with an agent for the live flight test of the Skinflap")}
+    n = OQ.needs_you(items, {}, {}, evs=[], now=NOW)
+    assert sorted(x["item"] for x in n["lines"]) == ["REAL_FLIGHT", "REAL_LIFT"], n["lines"]
+    assert sorted(x["item"] for x in n["phase"]) == ["HOLD_BLOCK", "HOLD_WAIT"], n["phase"]
+    assert "hold" in OQ.PHASE_TITLE, "the group's title must say a hold also puts a ticket there"
+
+
+def t_the_flight_tag_is_for_a_flight_test():
+    import maturation_now as M
+    assert M.act_of(HOLD_TICKET) == "", "the word flyers alone is no flight test"
+    for q in ("Sit with an agent at ArchBig for the live flight test of a flyer (takeoff and flap), about 20 min.",
+              "Sit with an agent for a live flyer test: can the NET job catch a wild skarrin before it flies off?",
+              "sit for one live flight test (his act 1), 20 min"):
+        assert M.act_of(q) == "live flight test", q
+    assert M.act_of("Look at the flyer line overlays: may the held flyer flip-book sets be rebuilt?") == "look in game"
+    assert M.act_of("Walk the Pyrelands") == "walk it"
+
+
 def main():
     tests = [t_count_sums_the_readable_sources, t_no_readable_source_is_none_never_zero, t_an_unanswered_card_is_a_need,
              t_an_ended_run_with_no_later_act_is_a_need, t_the_reading_is_shared_and_cached,
              t_a_test_never_writes_the_shared_files,
              t_one_view_shows_his_ours_and_the_count, t_not_his_before_its_turn, t_the_page_builds_from_one_view,
              t_the_live_promise_follows_the_shared_view_file, t_each_limit_names_its_danger,
-             t_lane_route_is_his, t_asks_oldest_first_with_age, t_lane_ask_filter]
+             t_lane_route_is_his, t_asks_oldest_first_with_age, t_lane_ask_filter,
+             t_a_wait_on_a_mod_hold_is_not_his, t_the_flight_tag_is_for_a_flight_test]
     failed = 0
     for t in tests:
         try:
