@@ -832,8 +832,8 @@ def t_hooks_in_run_clone():
     C.launch_unit(["--user", "--", "true"], spec("rm-probe-hookclone"),
                   runner=runner, p=DB, clone=rc)
     props = [a for a in (got[0] if got else []) if a.startswith(("ExecCondition=", "ExecStopPost="))]
-    check(len(props) == 2 and all(mine in a for a in props), "the unit's start check and end receipt run the run "
-          "clone's control.py", props)
+    check(len(props) == 2 and all(mine in a for a in props), "the unit's start check and end receipt name the run "
+          "clone's control.py (the start check after the launcher's: t_start_check_runs_the_admitting_code)", props)
     import detached_helper as DH
     import role_launch as RL
     for name, f, arg in (("detached_helper", DH._control_settings, {"clone": rc}),
