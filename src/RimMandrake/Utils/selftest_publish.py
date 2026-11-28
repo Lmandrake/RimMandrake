@@ -152,7 +152,7 @@ def t_new_file_and_delete(a, b):
 
 def t_staged_delete_lands(a, b):
     """A path whose deletion is already staged (git rm) was refused: `git add --all -- <path>` failed with "pathspec did
-    not match any files" (lesson 20261118T063545Z, and again 2026-11-28 on RIMMANDRAKE_REVERT_KNOCKBACK_HAUL_WALKBACK_HE_LIKES_THE_SCATTER).
+    not match any files" (lesson 20261118T063545Z, deleted in beaff2881a, and again 2026-11-28 on RIMMANDRAKE_REVERT_KNOCKBACK_HAUL_WALKBACK_HE_LIKES_THE_SCATTER).
     The deletion lands, and a staged peer file still does not ride along."""
     write(a, "dir/two.txt", "two\n")
     quiet(P.publish, a, ["dir/two.txt"], "seed a dir")
