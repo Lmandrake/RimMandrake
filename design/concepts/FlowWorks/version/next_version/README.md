@@ -142,3 +142,22 @@ Each of these three ledger tickets held only an idea: nothing built, no failure,
 - **What:** heavy rain (black rain included) fills an open-sky tank and a dug moat or channel. His words 2026-11-13: black rain is "a rare chance to fill your moat against the fire and fill your water tanks". Today tanks fill only over the liquid net.
 - **Why here:** the Pyrelands 0.2.0 sort (`design/concepts/Pyrelands/version/next_version/README.md`, entry "Black rain fills the moat and the water tanks") ruled it a water mechanic that works by its conditions, so it is FlowWorks' design work when FlowWorks opens its next version.
 - **Acceptance test:** none yet, a Designer pass owes it (how much a heavy rain fills, a Mod Setting, a live look).
+
+## Eight ledger tickets aimed at 0.2.0, listed here by the work bundle of 2026-11-28 (WB-mod-FlowWorks-20261128-020147)
+- **Why listed:** each ticket names FlowWorks 0.2.0 in its own text, by his card or by the ticket sweep of 2026-11-22
+  (RIMMANDRAKE_SWEEP_FLOWWORKS_TICKETS_MERGE_TO_MODERN_BUILD_THE_VALUABLE); the 0.1.0 work bundle refused each one for
+  that reason and left it open on the ledger. Each ticket's text, acceptance test and merged older tickets are on the
+  ledger (`rimflow show <ID>`). None moves a 0.1.0 bar.
+- `RIMMANDRAKE_ADD_LIQUID_TIDE_MARK_SURFACE_REACTION_AND_BODY_UNDER_SURFACE`: parts B, C and D of the colonist-in-liquid
+  look (tide mark, surface reaction, body under the surface); his card 2026-11-23, "A now, rest next".
+- `RIMMANDRAKE_BUILD_FLOWWORKS_FOUNTAIN_LOOP_ART_FOR_ZERO_TWO`: the fountain that pumps its own rain, and its art pick.
+- `RIMMANDRAKE_BUILD_FLOWWORKS_THIN_FILM_WETTING_FOR_ZERO_TWO`: wetting as the thin film (the wetting entry above).
+- `RIMMANDRAKE_DESIGN_FLOWWORKS_WATER_WAVES_FOR_THE_NEXT_VERSION`: waves and ripples by depth; his card 2026-11-20,
+  "Colour and clarity now", waves wait for 0.2.0.
+- `RIMMANDRAKE_DESIGN_PIT_FLOOR_SOILS_FOR_GROWING_RIVER_MUD_IS_RICHEST`: soil types on pit floors, so a pit can be grown in.
+- `RIMMANDRAKE_PIN_FLOWWORKS_FOUR_UNWATCHED_LAWS_FOR_ZERO_TWO`: tests that pin toss range and relight, the fetch-fire
+  window and key, drill power when off, and coating on colonists.
+- `RIMMANDRAKE_REDRAW_FLOWWORKS_FOUR_PLACEHOLDER_ARTS_FOR_ZERO_TWO`: the gravel pile, the geyser plume bubble, the Modern
+  reel tail colour, and style icons in every look menu.
+- `RIMMANDRAKE_SHOW_TANK_FILL_LEVEL_AND_LIQUID_COLOUR_ON_ITS_SIDE`: every tank shows its fill and its liquid's colour on
+  its side ("a must by his words").
