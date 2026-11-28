@@ -3,6 +3,7 @@
  "places": {
   "src/RimMandrake/rimflow/ticket_preflight.py::_split_def::or-empty": 1,
   "src/RimMandrake/rimflow/check_once.py::kept::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/list_shape.py::own_check::except-returns-empty": 1,
   "src/RimMandrake/rimflow/check_once.py::shape_id::except-returns-empty": 1,
   "src/RimMandrake/rimflow/ticket_preflight.py::_read::except-returns-empty": 1,
   "src/RimMandrake/Utils/scene_world.py::RealWorld.stage_state::except-returns-empty": 1,
@@ -313,6 +314,9 @@
   "src/RimMandrake/rimflow/maturation_read_cache.py::load::except-returns-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/rimflow/list_shape.py::own_check::except-returns-empty": [
+   "NOT A COLLAPSE: False is \"not the item's own holds command\": a text that shlex cannot split is then run as its own check, which gives its own verdict"
+  ],
   "src/RimMandrake/rimflow/check_once.py::kept::except-returns-empty": [
    "NOT A COLLAPSE: None is \"no kept result\": the check then runs and gives its own verdict; a kept file that cannot be read is never a verdict (design/specs/2026-11-27-check-once/boundary.md unmeasured-stays-unmeasured)"
   ],
