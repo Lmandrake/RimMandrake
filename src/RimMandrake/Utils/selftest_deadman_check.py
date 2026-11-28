@@ -147,11 +147,19 @@ def sweeps():
     # a fixed id answers for its baseline line whatever it closed with
     p = DM.promises({"LIVE_RESTORE_RM_DEAD": It(live=GOOD)}, [DEAD])
     check(p == [{"item": "LIVE_RESTORE_RM_DEAD", "line": DEAD}], "a ledger line cannot hide a baseline line")
+    keep_moved = dict(DM.MOVED_READINGS)
     DM.MOVED_READINGS["/d/OLD_PAGE.md"] = "/d/NEW_PAGE.md"
     OLD = "unit=rm-x.timer reading=/d/OLD_PAGE.md max_age=5m"
     p = DM.promises({"I": It(live=OLD)}, [])
     DM.MOVED_READINGS.clear()
+    DM.MOVED_READINGS.update(keep_moved)
     check(p == [{"item": "I", "line": OLD.replace("OLD_PAGE", "NEW_PAGE")}], "a moved reading= path is swept at its new home")
+    # the Dispatcher's journal is an event log: it sat quiet 30 to 94 min while the metronome beat each minute
+    # (LIVE_RESTORE_RM_METRONOME); a promise on it is swept against the one line each tick writes
+    JRN = "unit=rm-metronome.timer reading=/mnt/d/ClaudeWork/rimmandrake/dispatcher/journal.jsonl max_age=30m"
+    p = DM.promises({"I": It(live=JRN)}, [])
+    check(p == [{"item": "I", "line": JRN.replace("journal.jsonl", "tick_steps.jsonl")}],
+          "a promise on the Dispatcher's event journal is swept against its per-tick heartbeat: %r" % p)
     # an old pause record excuses nothing; a pending restart does
     (TMP / "ops/timers_pauses.json").write_text(json.dumps({"timer-resume-1.timer": ["rm-dead.timer"]}))
     import subprocess as SP

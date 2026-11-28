@@ -371,9 +371,14 @@ def load_retired(path=None):
     return parse_retired(p.read_text(encoding="utf-8").splitlines()) if p.exists() else set()
 
 
-# A closed item cannot be re-closed to change its `live` line, so a file that moved on purpose is listed here: the
-# ledger's old reading= path is swept as the new one.
-MOVED_READINGS = {}
+# A closed item cannot be re-closed to change its `live` line, so a file that moved on purpose, or a reading that was
+# never a heartbeat of its unit, is listed here: the ledger's old reading= path is swept as the new one.
+MOVED_READINGS = {
+    # journal.jsonl is the Dispatcher's event log: 27 quiet spells over 25 min in 10 days, one of 94 min, while the
+    # metronome beat each minute (LIVE_RESTORE_RM_METRONOME, 2026-11-27). tick_steps.jsonl gets one line every tick
+    # (longest gap 767 s from 2026-11-14 to 2026-11-27).
+    "/mnt/d/ClaudeWork/rimmandrake/dispatcher/journal.jsonl": "/mnt/d/ClaudeWork/rimmandrake/dispatcher/tick_steps.jsonl",
+}
 
 
 def moved(line):
