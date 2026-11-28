@@ -258,8 +258,13 @@ def modcheck_today(now):
                         for h, v in (m.get("by_lane") or {}).items()},
             "alarms": m.get("alarms"), "waste_top": m.get("waste_top"), "gate": {k: (m.get("gate") or {}).get(k) for k in
                                                                                 ("decided", "skipped", "saved_min")}}
+    # executed_min counts every modcheck chain, stamped or not; lane busy minutes of testq jobs that run no modcheck
+    # sheet are outside O4's domain, so the why names them instead of guessing a cause
+    busy = sum(float((v or {}).get("busy_min") or 0) for v in (m.get("by_lane") or {}).values())
+    lanes = f"; {busy:.0f} lane busy min today are testq jobs with no modcheck sheet, which O4 does not judge" if busy >= 1 else ""
     o4 = (M(round(100.0 * off / ex, 1), now, offline_min=round(off, 1), executed_min=round(ex, 1), unit="% of live minutes")
-          if ex >= 1 else U(f"only {ex:.1f} classified live minutes today (testq chains carry no gate stamp yet)"))
+          if ex >= 1 else U(("no modcheck chain ran live today" if ex == 0 else
+                             f"only {ex:.1f} min of modcheck chains ran live today") + lanes))
     return {"fold": fold, "O4": o4}
 
 

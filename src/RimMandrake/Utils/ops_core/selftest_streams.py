@@ -65,8 +65,8 @@ check("O1/O2 UNMEASURED when the nightly file is unreadable", o["O1"]["m"] == o[
 real_compute = S.MX.compute
 
 
-def fake(ex, off):
-    return lambda *a, **k: {"day": "2026-10-26", "all_work": {"executed_min": ex}, "targeted": {}, "by_lane": {},
+def fake(ex, off, lanes=None):
+    return lambda *a, **k: {"day": "2026-10-26", "all_work": {"executed_min": ex}, "targeted": {}, "by_lane": lanes or {},
                             "alarms": [], "waste_top": [{"chain": "c", "why": "offline chain run in the live slot", "min": off}],
                             "gate": {}}
 
@@ -75,6 +75,12 @@ S.MX.compute = fake(0.2, 0.0)
 m = S.modcheck_today(NOW)
 check("O4 UNMEASURED with under a minute of classified live work", m["O4"]["m"] == "UNMEASURED", m["O4"])
 check("the modcheck fold is kept in the record even when O4 is unmeasured", m["fold"]["day"] == "2026-10-26")
+# measured 2026-11-27: 0 modcheck chain minutes, 325 testq busy minutes; the why blamed a missing gate stamp, but no
+# chain ran at all (an unstamped chain counts as executed). The why names what it saw.
+S.MX.compute = fake(0.0, 0.0, {"stevedesktop": {"busy_min": 274.4}, "stevedesktop.b": {"busy_min": 50.6}})
+w = S.modcheck_today(NOW)["O4"]["why"]
+check("O4 why: no chain ran is not blamed on a gate stamp, and names the lane minutes it cannot judge",
+      "gate stamp" not in w and "no modcheck chain" in w and "325" in w, w)
 S.MX.compute = fake(10.0, 2.0)
 check("O4 = offline minutes / executed minutes", S.modcheck_today(NOW)["O4"]["v"] == 20.0)
 S.MX.compute = real_compute
