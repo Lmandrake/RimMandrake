@@ -3,6 +3,7 @@
 DISPATCHER_HARDEN_MUTATION_SURVIVORS, run 20261028T013440 @113efcd97d: 380 alive). Pins the small observers whose
 exact argv, state strings, boundaries and return shapes nothing asserted: observe_agents, window_live, caps_ok,
 ledger_note, publish_bounded, default_obs. Loaded by selftest_dispatcher_mut.main() through TESTS."""
+import inspect
 import os
 import subprocess
 import sys
@@ -128,8 +129,8 @@ def test_ledger_note():
     check(argv == [sys.executable, os.path.join(D.HERE, "cli.py"), "note", "ITEM_X", "--text", "hello", "--seat", "DISPATCHER"], "argv %r" % argv)
     check(kw["cwd"] == D.REPO and kw["env"]["RIMFLOW_SEAT"] == "DISPATCHER" and kw["env"]["CLAUDE_PROJECT_DIR"] == D.REPO,
           "env/cwd")
-    check(kw["capture_output"] is True and kw["text"] is True and kw["timeout"] == 120 and kw["stdin"] == subprocess.DEVNULL,
-          "kwargs %r" % kw)
+    check(kw["capture_output"] is True and kw["text"] is True and kw["timeout"] == inspect.signature(D.ledger_note).parameters["timeout"].default
+          and kw["stdin"] == subprocess.DEVNULL, "kwargs %r" % kw)    # the timeout is the function's own budget
     check(os.path.isfile(argv[1]), "cli.py exists at the path used")
     r = D.ledger_note("I", "t", run=lambda a, **k: FakeProc(1, "a", "b"))
     check(r == (False, "ab"), "rc 1 -> False: %r" % (r,))
