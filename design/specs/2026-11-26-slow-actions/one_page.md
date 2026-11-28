@@ -66,9 +66,25 @@ hourly `--apply` run ended, because the two share one lock) took 814 s wall and 
 
 The borrower `find` is the 309 s wait of the first dry run (327 s here). The remaining 461 s of the 814 s (the child commands total 353 s) is the
 reaper's own walks and stats, which this change cuts only for folders it can keep from their own time. Timed per subtree (same `find`, 2026-11-27): `.seat-tmp` 129 s, `.cache` 41 s, `/tmp` 30 s, `walled` 25 s. `.seat-tmp/BENCH`
-holds about 2.0 M entries, mostly 286 `publish_check_*` and `wrong_check_*` folders of 100 to 214 k entries, the oldest
-from 2026-11-19. The `find` must keep walking `.seat-tmp`, which holds real borrowers; the fix is to stop leaving that
-residue (item `RIMMANDRAKE_SPEED_SCRATCH_REAP_SEAT_TMP_PUBLISH_CHECK_RESIDUE_2M`).
+held 2,029,541 entries at 17:47 PST, 1,128,987 of them in 279 `publish_check_*` and `wrong_check_*` folders, the oldest
+from 2026-11-19. The `find` must keep walking `.seat-tmp`, which holds real borrowers. So the fix stops leaving that
+residue: a check tree now names its owner and goes when its owner ends
+(`design/specs/2026-11-27-check-tree-owner/boundary.md`, item
+`RIMMANDRAKE_SPEED_SCRATCH_REAP_SEAT_TMP_PUBLISH_CHECK_RESIDUE_2M`). The reaper's own fixture rule removed 259 of the
+folders. After that, `.seat-tmp/BENCH` held 1,005,425 entries, and 20 young or held folders kept 103,132 of them.
+
+| dry run (2026-11-27) | `find` line of `child_commands` | whole dry run | load (1, 5, 15 min) on 14 cores |
+|---|---:|---:|---|
+| before: 2,029,541 entries in `.seat-tmp/BENCH` | 1 call, 327.1 s | 814 s | not recorded for that run (the census at 17:46 PST read 27.0, 26.5, 30.0) |
+| after: 1,005,425 entries | 1 call, 174.6 s | 414.5 s | 41.95, 28.93, 26.93 at the start (18:47 PST); 21.01, 26.17, 26.55 at the end (18:54 PST) |
+| after, a second run | 1 call, 128.5 s | 363.5 s | 24.58, 24.55, 25.60 at the start (18:59 PST); 18.25, 25.72, 26.38 at the end (19:05 PST) |
+
+The same `find`, run alone on the same trees between and after those runs, read 36.7 s (load 25.1, 18:58 PST), then
+100.0 s through `progress_guard` and 97.5 s as a plain subprocess (load 17.0 to 23.2, 19:07 PST). One walk thus reads
+37 s to 175 s within 30 minutes, so one reading cannot decide the 100 s line: the line reads UNMEASURED, not passed.
+Warm, `.seat-tmp` was 14.0 s of the 36.7 s, `.cache` 5.6 s and `/tmp` 6.1 s. The rest of `.seat-tmp/BENCH` is a long
+tail: 304,620 of its 992,348 entries are in the temp dirs of 288 selftest prefixes, and the others are tools' temp dirs,
+`mktemp -d` dirs and live session state.
 
 ### Folder-relative deploy listing, 2026-11-27
 
