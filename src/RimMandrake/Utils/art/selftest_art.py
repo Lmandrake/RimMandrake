@@ -169,6 +169,25 @@ def main():
                                                        "purgeTouched": True, "purge": []}}}))
     check(ingest.ingest(dec)["rulings"] == 0, "a row touched only to purge records no keep ruling")
 
+    # a row whose decision is only the unclicked prefill: his slot click is a keep (RSW_Grazer, picks1_redo), but a
+    # slot migrated from that prefill decision and a seeded `picks` entry are the generator's, never his
+    scyan = L.store_put_bytes(png((0, 255, 255, 255)))
+    snap3 = {"sheetId": "t3", "rows": {"Beast": {"columns": {"A": {"south": sblue}, "B": {"south": sgreen},
+                                                             "C": {"south": scyan}}}}}
+    sp3 = tmp / "t3.snapshot.json"
+    sp3.write_text(json.dumps(snap3))
+    dec3 = tmp / "t3.decisions.json"
+    dec3.write_text(json.dumps({"snapshot": str(sp3), "savedBy": "serve_sheet.py", "writeCount": 4, "decisions": {
+        "Beast": {"decision": "A", "prefill": "A", "note": "", "at": "2026-10-25T03:09:58Z", "schema": 2,
+                  "picks": {"Things/Beast/Beast_j": "B"},
+                  "slots": {"Things/Beast/Beast": {"state": "pick", "pick": "A", "migrated": True},
+                            "Things/Beast/Beast_f": {"state": "pick", "pick": "C", "at": "2026-10-25T03:09:58Z"}}}}}))
+    r3 = ingest.ingest(dec3)
+    rs3 = sorted((x["target"].get("graphic"), x["target"].get("column"))
+                 for x in L.Index().rulings if x.get("via", "").endswith("t3.decisions.json"))
+    check(r3["ok"] and rs3 == [("Things/Beast/Beast_f", "C")],
+          f"an unclicked-prefill row keeps only his slot click, never a migrated or seeded pick ({rs3})")
+
     # owner rule 2026-10-07 22:33 PDT: a geometric placeholder is never installed, kept or a variant
     from PIL import Image, ImageDraw
     im = Image.new("RGBA", (128, 128), (0, 0, 0, 0))

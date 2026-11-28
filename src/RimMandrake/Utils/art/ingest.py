@@ -346,10 +346,18 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                         out["rulings"] += 1
         elif srow and decided:
             # a row whose decision is only the unclicked prefill can still carry his per-slot picks (picks1_redo
-            # 2026-10-25, RSW_Grazer: Grazer_f pick C was never ingested, so enact promised an install it then refused)
+            # 2026-10-25, RSW_Grazer: Grazer_f pick C was never ingested, so enact promised an install it then refused).
+            # Only a slot he clicked counts: a slot migrated from the prefill decision, or a `picks` entry the generator
+            # seeded, is the agent's guess, never his keep (his click writes a non-migrated slot record, art_sheet SLX).
             for g, pl in sorted(DV.slot_picks(v).items()):
-                if pl not in cols or placeholder_set(cols[pl].values()):
-                    out.setdefault("placeholder_refused", []).append(f"{row}:{g}:{pl} (pick)") if pl in cols else None
+                s = (v.get("slots") or {}).get(g)
+                if not (isinstance(s, dict) and s.get("state") == "pick" and s.get("pick") == pl
+                        and not s.get("migrated")):
+                    continue
+                if pl not in cols:
+                    continue
+                if placeholder_set(cols[pl].values()):
+                    out.setdefault("placeholder_refused", []).append(f"{row}:{g}:{pl} (pick)")
                     continue
                 shas = sorted({s for s in cols[pl].values() if s} - xed)
                 if not shas:
