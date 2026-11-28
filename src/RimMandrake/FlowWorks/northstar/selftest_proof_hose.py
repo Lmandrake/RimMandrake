@@ -307,6 +307,60 @@ def zoo_start_checks(Zoo):
               'call("jawa/destroy_bulk", filter="nonColonists"' not in src)
 
 
+def scene2_hose_fill_checks(PH):
+    """NS_hose_port_removed_moves: the rebuilt far tank's first level is conserved in tank + hose, as in every other realflow
+    scene (rev 2 §3.7 L8). Live proof_hose_20261125T070730.json read units [0, 9417] as a FAIL on a hose that took the
+    remaining 583 while it filled. Can-fail both ways: a short level with an empty hose, and a hose that took it all."""
+    class _S(object):
+        def __init__(self, B, n):
+            self.tank, self.reel = (5, 5), (1, 1)
+
+        def site(self, rows, rid):
+            return True
+
+        def pump_scene(self):
+            pass
+
+        def lay(self):
+            pass
+
+        def build(self, spec):
+            self_b.rebuilt = True
+
+    class _B(object):
+        tick, rebuilt = 0, False
+
+        def ticks(self, n):
+            self.tick += n
+
+        def call(self, tool, **kw):
+            return {"success": True, "destroyed": 1}
+
+    saved = (PH.Scene, PH._hose, PH._tank, PH._held)
+    try:
+        for name, tank_gain, hose_gain, want in (("tank 9417 + hose 583 (live 2026-11-25) is one level", 9417, 583, True),
+                                                 ("tank 10000 with a full hose is one level", 10000, 0, True),
+                                                 ("tank 9417 with an empty hose is short", 9417, 0, False),
+                                                 ("a hose that took the whole level while the tank gained 0 is short", 0, 10000, False)):
+            self_b = _B()
+            t_mark = []
+            PH.Scene = _S
+            PH._hose = lambda B, reel: {"netLink": "N1"} if B.rebuilt else {"netLink": None, "id": 7}
+            PH._tank = lambda B, c, g=tank_gain: {"units": g if t_mark and B.tick > t_mark[0] else 0}
+            PH._held = lambda B, reels, g=hose_gain: g if t_mark and B.tick > t_mark[0] else 0
+            got = {}
+
+            def row(rid, ok, detail, cls="MOD", got=got, b=self_b):
+                got[rid] = (ok, detail)
+                if rid == "NS_hose_port_removed_discovered":
+                    t_mark.append(b.tick)       # the transfer window opens at the discovery read
+            PH._rf_scene2(self_b, [], row)
+            ok = got.get("NS_hose_port_removed_moves", (None, None))
+            check("realflow scene 2 port_removed_moves: " + name, ok[0] is want, ok)
+    finally:
+        PH.Scene, PH._hose, PH._tank, PH._held = saved
+
+
 def write_result_checks(PH):
     """HARNESS_REPAIR_CAUSE_C1B99C19: python.exe over \\\\wsl.localhost refused os.replace onto the existing
     result (WinError 5) and the final checkpoint crashed, so no result existed. The writer must land the result."""
@@ -718,6 +772,7 @@ def main():
     check("_posix: a D: export path becomes /mnt/d (offline gate from python.exe), WSL paths unchanged",
           PH._posix("D:\\ClaudeWork\\x\\y.py") == "/mnt/d/ClaudeWork/x/y.py" and PH._posix("/a/b") == "/a/b")
     write_result_checks(PH)
+    scene2_hose_fill_checks(PH)
     print("selftest_proof_hose: %s (%d failing)" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 0 if not FAILS else 1
 

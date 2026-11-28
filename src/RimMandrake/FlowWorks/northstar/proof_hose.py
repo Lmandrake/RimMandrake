@@ -471,9 +471,11 @@ def _rf_scene2(B, rows, row):
     row("NS_hose_port_removed_discovered", gone is None and found is not None, {"afterRemove": gone, "afterRebuild61": found,
         "destroy": {k: rm2.get(k) for k in ("success", "destroyed", "message")}})
     b0 = _tank(B, s2.tank).get("units") or 0
+    k2 = _held(B, [s2.reel])
     B.ticks(260)
     b1 = _tank(B, s2.tank).get("units") or 0
-    row("NS_hose_port_removed_moves", b1 - b0 >= UNITS_PER_LEVEL, {"units": [b0, b1]})
+    took2 = _held(B, [s2.reel]) - k2       # the level is conserved in tank + hose (_held); live 2026-11-25 read [0, 9417] + the hose's fill
+    row("NS_hose_port_removed_moves", b1 - b0 > 0 and b1 - b0 + took2 >= UNITS_PER_LEVEL, {"units": [b0, b1], "hoseTook": took2})
 
 
 def _rf_scene3(B, rows, row):
@@ -554,7 +556,7 @@ def _rf_scene5(B, rows, row):
         B.ticks(300)
         e1 = _tank(B, tank5).get("units") or 0
         # pass 2 (2026-10-19, HARNESS): the hose's first fill comes out of the level (see _held): 8,950 + the hose's room
-        # was read as a FAIL against a bare 10,000 bar -- the same fault f93867b198 fixed in scenes 1-4 and 6
+        # was read as a FAIL against a bare 10,000 bar -- the same fault f93867b198 fixed in scenes 1, 3, 4 and 6 (scene 2's port_removed_moves on 2026-11-28)
         took5 = _held(B, [reel5]) - k5
         row("NS_pipe_and_hose_one_net", e1 - e0 > 0 and e1 - e0 + took5 >= UNITS_PER_LEVEL,
             {"lay": lp, "units": [e0, e1], "hoseTook": took5, "net": B.hp("net:%d,%d" % s5.pump)})
