@@ -629,13 +629,15 @@ GATE_S = 400
 
 
 def gate_in_process(plant=False):
-    """Part C in its own process. -> its JSON, or {"error"}."""
+    """Part C in its own process. -> its JSON, or {"error"} with the last three diagnostic lines."""
     r = _subprocess.run([sys.executable, os.path.abspath(__file__), "gate"] + (["--plant"] if plant else []),
                         capture_output=True, text=True, timeout=GATE_S)
     try:
         return json.loads(r.stdout.strip().splitlines()[-1])
     except (ValueError, IndexError):
-        return {"error": (r.stdout + r.stderr)[-1500:]}
+        # Keep complete paths so the publish check can normalize them across checkouts.
+        lines = [line for stream in (r.stdout, r.stderr) for line in stream.splitlines() if line.strip()]
+        return {"error": "\n".join(lines[-3:]) or "exit %s with no output" % r.returncode}
 
 
 def line(name, out):

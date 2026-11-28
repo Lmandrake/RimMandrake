@@ -9,6 +9,8 @@ STEVE_LANE_SWEEP_PLANT=<plant> plants a fault in every regime: the run that show
 import os
 import sys
 import time
+from subprocess import CompletedProcess
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -64,10 +66,9 @@ def t_account_gate_refusing_every_launch_found():
     Planted (the code before 44a3797f6e: no bound, no write-now stop): STUCK on SteveDesktop; shipped: it switches."""
     p, c = OUT["gate_plant"], OUT["gate"]
     if p.get("error") or c.get("error"):
-        # whole lines, never a cut by characters: a cut lands inside a path whose length differs from clone to clone,
-        # so ./publish could not match this red on origin/main (2026-11-27, RELAPSE_MATURATION_FIX_DIED_TWICE)
-        err = [ln.strip() for ln in str(p.get("error") or c.get("error")).splitlines() if ln.strip()]
-        check("t_account_gate_refusing_every_launch_found", False, "part C did not run: %s" % " | ".join(err[-3:]))
+        err = p.get("error") or c.get("error")
+        check("t_account_gate_refusing_every_launch_found", False,
+              "part C did not run: %s" % " | ".join(line.strip() for line in err.splitlines()))
         return
     hits = [v for v in p["violations"] if v["detail"].get("machine") == "SteveDesktop"]
     sw = [s for s in c.get("switches") or [] if "SteveDesktop" in s]
@@ -78,6 +79,23 @@ def t_account_gate_refusing_every_launch_found():
           "shipped: %d STUCK, refused %s min at most, limit %s min, %s gate reads, switch %s" % (
               len(hits), p["refused_max_min"], p["limit_min"], p["gate_reads"], len(c["violations"]),
               c["refused_max_min"], c["limit_min"], c["gate_reads"], sw))
+
+
+def t_account_gate_error_keeps_whole_lines():
+    """A long subprocess failure keeps the complete traceback tail in either checkout."""
+    source = "    run_gate()"
+    reason = "RuntimeError: " + "gate failure detail " * 68 + "end"
+    bad = []
+    for root in ("/checkout", "/scratch/" + "long-checkout/" * 12):
+        frame = '  File "%s/src/steve_lane_sweep.py", line 1, in gate_case' % root.rstrip("/")
+        lines = [frame, source, reason]
+        stderr = "Traceback (most recent call last):\n" + "\n".join(lines) + "\n"
+        with patch.object(W._subprocess, "run", return_value=CompletedProcess([], 2, "", stderr)):
+            result = W.gate_in_process()
+        if result["error"].splitlines()[-3:] != lines:
+            bad.append(root)
+    check("t_account_gate_error_keeps_whole_lines", not bad,
+          "expected three complete error lines in both checkouts, mismatched: %s" % (bad or "none"))
 
 
 def t_each_check_sees_its_fault():
@@ -120,7 +138,7 @@ def main():
     cases += W.regions(QUICK)
     OUT.update(W.sweep_all(cases))
     for t in (t_pause_with_no_end_found, t_one_refusal_repeated_found, t_account_gate_refusing_every_launch_found,
-              t_each_check_sees_its_fault, t_shipped_lane_sweeps_clean):
+              t_account_gate_error_keeps_whole_lines, t_each_check_sees_its_fault, t_shipped_lane_sweeps_clean):
         try:
             t()
         except Exception as e:      # a test that cannot read its run is red, not skipped
