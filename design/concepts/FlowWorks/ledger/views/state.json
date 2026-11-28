@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "23098e24ae80e4c1de679bd3ec78fc1cf1765595c90a9f6ace64804de5ce3c80",
+  "body_sha256": "ffd12e8b52438690929a434e83f01ee9e2dd11760134a81caca6d013980dc960",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -49,7 +49,7 @@
    "HOLDER.run-1795782541": 1037,
    "HOLDER.run-1795783799": 859,
    "HOLDER.run-1795818114": 3744,
-   "HOLDER.run-1795831307": 8627,
+   "HOLDER.run-1795831307": 9836,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1301,10 +1301,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795831307",
-   "done": "restart 1 of WB-mod-FlowWorks-20261128-020147: step A on 22 members; fixes published b64b4353ef, 8491944d06, 8d559e4074, 989284c054, f0a9d24739; live rescue scene PASS 32a2ed9dfd; wrong-checks and rescue umbrellas closed",
-   "next": "Restart the bundle from its state file Next: liquid rules first, then the rain alert",
-   "ruled_out": "dug-substructure state cannot come from a colonist dig; MIDCHANNEL reach already PASS in visits 3 and 11",
-   "ts": "2026-11-28T04:58:01Z"
+   "done": "restart 2: FULL_LOAD_RESIDUE_TRIAGE_1 dropped stale (0ffd419e26); deep sand no longer a natural water source (d097ea3260, C# red->green, live PASS and planted FAIL on ArchBig); GptA_bottle_fill T_CONVERT repaired, red seen; fuel sap ignition and spill-clean L5 recorded not worth the touch (237d95897b, cf70a27c05)",
+   "next": "Fix RIMMANDRAKE_SEAL_SLUICE_AT_ITS_PANEL_NOT_ITS_SQUARE in RM_FlowKernel (panel seal on one edge, fuzz first), then close the liquid-rules umbrella",
+   "ruled_out": "rain washing the L5 spill filth (weather locked Clear in preflight); filth thickness caps (maxThickness 100, CanBeThickened <5) as the +1 cause",
+   "ts": "2026-11-28T06:11:38Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1756,7 +1756,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1898,
+  "events": 1900,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7872,7 +7872,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-28T05:44:42Z",
+   "last": "2026-11-28T06:11:38Z",
    "lease": "run-1795831307",
    "released": false,
    "token": 66
