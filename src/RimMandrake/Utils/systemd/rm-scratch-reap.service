@@ -6,7 +6,7 @@ Documentation=file:///home/mandrake/rm/dispatch/design/RimMandrake/buildup_preve
 Type=oneshot
 # The dispatch clone: it fast-forwards itself, and foundry is the arena's to freeze.
 WorkingDirectory=/home/mandrake/rm/dispatch
-Nice=19
+Nice=0
 IOSchedulingClass=idle
 CPUSchedulingPolicy=batch
 # budget: danger=a hung run stops this timer for good (systemd starts no second run); longest=3707.4s (user journal, 14 days to 2026-11-24)

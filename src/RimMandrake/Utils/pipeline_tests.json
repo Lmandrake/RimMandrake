@@ -322,6 +322,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_live_kinds.py", "inputs": ["design/specs/2026-11-23-live-kinds-exit-reader/boundary.md", "src/RimMandrake/rimflow/roles/designer_scene_contract.md", "src/RimMandrake/Utils/testq/testq.py"], "seconds": 27},
     {"test": "src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py", "inputs": ["design/specs/2026-11-20-wrong-check-fixed-in-sitting/boundary.md"], "seconds": 0.3},
     {"test": "src/RimMandrake/Utils/selftest_check_tree_owner.py", "inputs": ["src/RimMandrake/Utils/publish.py", "src/RimMandrake/Utils/selftest_own_dirs.py", "src/RimMandrake/Utils/scratch_reap.py", "src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py", "design/specs/2026-11-27-check-tree-owner/boundary.md"], "seconds": 2},
+    {"test": "src/RimMandrake/Utils/selftest_scratch_reap_unit_priority.py", "inputs": ["src/RimMandrake/Utils/systemd/rm-scratch-reap.service"], "seconds": 0.2},
     {"test": "src/RimMandrake/Utils/selftest_scratch_reap_lock_wait.py", "inputs": ["src/RimMandrake/Utils/scratch_reap.py", "design/specs/2026-11-27-reap-apply-waits-out-dry-run/boundary.md"], "seconds": 6},
     {"test": "src/RimMandrake/rimflow/selftest_blind_readers_fix.py", "inputs": ["design/specs/2026-11-25-blind-readers-fix/boundary.md"], "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_red_seen_owner.py", "inputs": ["design/specs/2026-11-20-red-seen-owner/boundary.md"], "seconds": 0.3},
