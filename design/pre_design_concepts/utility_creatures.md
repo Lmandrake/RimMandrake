@@ -104,3 +104,39 @@ What his words settle (the Conductor's reading):
 Open after this pass: whether a droid takes a click order or only works in the background (his own open point); what an
 animal's own digging leaves on the map and how the player reads it; which animal kinds dig; whether the droid half belongs
 to this mod or to the droid mod.
+
+## The design talk of 2026-11-27 (his card of 11:59 PM PST), second pass
+
+Three points went to him on a card. The whole card is on the ledger
+(`python3 src/RimMandrake/rimflow/card_capture.py show RIMMANDRAKE_FLESH_OUT_UTILITY_CREATURES_AND_SHARED_SPOTS_HIS_PICK`).
+
+**What should an animal's own, unordered digging leave behind?** The options were "Real holes, away from home
+(Recommended)", "Real holes anywhere" and "Marks only, real holes on order". He typed his own answer, word for word:
+
+"3+1 and also standard mountain-type mining. But this will be different for specific species of animals, these are just
+the meta-rules as an example. We will need to spec out many, many kinds of utility animals and their idiosyncratic
+behavior together."
+
+**Where should droid work orders live?** He picked "Droids go to the droid mod (Recommended)". The description, word for
+word: "Why: droids work by modules, like colonists, which is the droid mod's own design. Gets: Utility creatures is
+animals only, small and soon. Costs: no droid digs or cuts on order until the droid mod is designed. Recommended: it
+keeps two different systems apart." Not picked: "Droids stay in this mod", "Build the order here, droids join later".
+
+**How many animals and jobs should the first version hold?** He picked "Two animals, dig and cut". The description, word
+for word: "Why: your first words named both jobs. Gets: proof that the order works for more than digging. Costs: a
+second animal with its art, its own unordered behaviour to design, and about twice the scenes." Not picked: "One digging
+animal, 'dig here' (Recommended)", "Several digging kinds, one job".
+
+What his words settle (the Conductor's reading):
+
+- The rules for an animal's own digging are meta-rules. Each species gets its own behaviour from them.
+- The meta-rules that he named are three. Option 3: marks only, and a real hole where the player orders one. Option 1:
+  real holes, but never inside the home area. And standard mountain-type mining: an animal that mines rock as a colonist
+  mines rock.
+- The species are specified with him, one kind at a time: "many, many kinds of utility animals and their idiosyncratic
+  behavior together".
+- Utility creatures is animals only. Droid work orders belong to the droid mod.
+- The first version holds two animals and two jobs: one that digs and one that cuts trees.
+
+Open after this pass: which two animals come first; for each species, which meta-rule its own digging follows; what
+unordered behaviour the tree-cutting animal has; how the player reads each behaviour on the map.
