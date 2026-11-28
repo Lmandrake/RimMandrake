@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "624c7a7c3412db89d57512e9ee5298a3d60520b35160bdd7f9e256f61aaa791c",
+  "body_sha256": "11e6c6c28e4bb864d0e2966e433f74e4404a80c9aa8effd7da4504f265ab0078",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
@@ -49,7 +49,7 @@
    "HOLDER.run-1795782541": 1037,
    "HOLDER.run-1795783799": 859,
    "HOLDER.run-1795818114": 3744,
-   "HOLDER.run-1795831307": 14582,
+   "HOLDER.run-1795831307": 16211,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1301,10 +1301,10 @@
   },
   "checkpoint": {
    "by": "HOLDER.run-1795831307",
-   "done": "restart 4: BIND_BRIDGE_CLIENT done already; work_bundle rehomed outcome; SIGN_WILD_ANIMAL_UNDER_TAR closed at 3634353c9d; pit draw census green; bridge drag begun on the span says start on the landing (live red then 3/3 PASS on ArchSmall)",
-   "next": "Work the two asks left in RIMMANDRAKE_TEACH_FLOWWORKS_BRIDGE_TOOL_HIS_THREE_WALK_ASKS: span over wreck scrap, Choose style on built bridges",
-   "ruled_out": "the offline ValidateLane wording alone: the live refusal came from DeckNotchesFor first",
-   "ts": "2026-11-28T07:40:15Z"
+   "done": "restart 5: RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER closed at 669fe2fc9c (floor prints its own ground; live 9/9 grounds and 5/5 ladder PASS on ArchSmall; art judge PASS)",
+   "next": "Work RIMMANDRAKE_LET_FLOWWORKS_BRIDGE_SPAN_OVER_RUINED_BRIDGE_SCRAP inside RIMMANDRAKE_TEACH_FLOWWORKS_BRIDGE_TOOL_HIS_THREE_WALK_ASKS",
+   "ruled_out": "build A (darken gravel per ground): needs a per-ground brightness the game cannot read cheaply; B prints the ground the faces already use",
+   "ts": "2026-11-28T08:33:56Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1756,7 +1756,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1909,
+  "events": 1913,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7872,7 +7872,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-28T07:40:15Z",
+   "last": "2026-11-28T08:33:56Z",
    "lease": "run-1795831307",
    "released": false,
    "token": 66
