@@ -576,7 +576,8 @@ say you will write.
 - File it: `rimflow file <ID> --for CONDUCTOR --kind owed --title "<the act>" --caused-by <item it acts on>`.
 - Park an owed item with `rimflow wait` only on a trigger outside you: a date, or the end of a run. An owed item
   parked on your own act is a self-wait: do the act.
-- A brief whose decision is yours (a census, a study) does not say 'do not close the item'. Such an item stays in doing, and `left_open_continue.py` then starts an empty continuation run. Tell the helper to end with `rimflow wait` dated and naming the Conductor.
+- A brief whose decision is yours (a census, a study) does not say 'do not close the item'. Such an item stays in doing, and `left_open_continue.py` then starts an empty continuation run. Tell the helper to close the item with the sha of its page. Before the launch, file your own reading of the page as a separate owed item.
+  - Do not tell the helper to end with a `rimflow wait` that names the Conductor. `filing_gate.defer_check` refuses that wait in a helper run, unless its reason names one of his five acts, a hold, a reset or a timer.
 - Discharge it with evidence: `close --sha`, or `--no-code` naming a sha, a run id, a path or `told him at <time>`.
 - A close of its parent discharges nothing.
 - Spec: `design/specs/2026-11-15-conductor-restart-loses-nothing.md` §3.
