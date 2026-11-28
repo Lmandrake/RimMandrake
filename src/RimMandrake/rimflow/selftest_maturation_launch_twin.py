@@ -64,7 +64,9 @@ class Runner:
 
 
 def fake_brief(root, mod, cap, bars=None):
-    return "# brief\n\nbody\n", {"stage": "blind_challenge", "owed": "cycle", "cycle": 6}
+    # a blind brief always ends with its sealed section, which launch_mod cuts to its own file (seal_steward)
+    return ("# brief\n\nbody\n\n---\n\n%s\n\nselftest decisions\n" % M.SEAL_MARK,
+            {"stage": "blind_challenge", "owed": "cycle", "cycle": 6})
 
 
 def briefs():
