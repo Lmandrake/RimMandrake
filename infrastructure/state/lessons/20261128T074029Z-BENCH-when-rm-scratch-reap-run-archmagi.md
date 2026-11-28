@@ -1,0 +1,3 @@
+When an rm-scratch-reap run on Archmagi is slow, group the act_s of its DELETED rows in runs.jsonl by parent folder: on 2026-11-27 one 2 h 58 min run spent 10,256 s on 1,093 tiny clones in eight tmp.XXXXXXXXXX folders of 135 each, the litter of one selftest's bare mkdtemp run 45 times by its mutant tool. The archive keeps each clone's bundle, so its files name the test that made it. And a dry run of scratch_reap.py started by hand holds run.lock: before 3b3586df20 the hourly apply run then stood down and the last_run.json reading lost an hour.
+item: LIVE_RESTORE_RM_SCRATCH_REAP
+home: skills/rimflow-operations/references/traps.md
