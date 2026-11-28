@@ -1,0 +1,22 @@
+{
+ "mod": "DirectSun",
+ "version": "0.1.0",
+ "state": "open: admitted at intake 2026-11-27; no locked design yet; the vision and bars in admission_proposal.md are a proposal for the Designer",
+ "ruled_on": "2026-11-27",
+ "ruled_by": "owner",
+ "owner_words": "2026-11-27 9:25 PM PST, by card: I'd like it to remain as part of Direct Sun, as an addition to the obvious shade induced by hard walls. We should also add shadows cast by mountain-covered squares that are much larger than short walls would, so you get a feel for said mountain on the map depending on the sun angle. Very cool! So Tree Shade + Direct sun + mountain shade should all receive this design attention now to bring it to a full modern design with tests, etc.",
+ "record": "DirectSun",
+ "bars_total": "UNMEASURED",
+ "bars_met": "UNMEASURED",
+ "judge_rounds": 0,
+ "tokens_spent": 0,
+ "measured_from": {
+  "bars_total": "no Designer tree yet; the Designer's Lock step sets the bars",
+  "tokens_spent": "no Designer stage has run on this concept; the pre-pipeline build spend (2026-10-19 to 2026-11-27) is not charged here"
+ },
+ "caveats": [
+  "no shipping folder of its own: the code is in src/RimMandrake/CreatureBehaviors, the shade-gear defs in src/RimMandrake/EnvironmentalHazards, the air-heat defs in TheForge, TerminalBiomes and Greentide (admission_proposal.md section 'What exists')",
+  "where it ships is open (owner 2026-11-26): merged into Baroque Biomes, or stand-alone",
+  "admitted by item RIMMANDRAKE_ADMIT_DIRECT_SUN_WITH_TREE_AND_MOUNTAIN_SHADE, which is also its Designer item"
+ ]
+}
