@@ -1489,6 +1489,10 @@ def schedule_regions():
     R.append(("schedule: the owner's laptop burns the scheduled account (personal use)",
               {"sched": "rising", "laptop_on_sched": True, "hours": 96}))
     R.append(("schedule: a burst before a ramp", {"sched": "rising", "burn": ("burst",), "hours": 96}))
+    R.append(("schedule: the step order changed mid-week, beside two schedules that cross",
+              {"sched": "cross", "plan": ("order",), "hours": 96}))
+    R.append(("schedule: readings 10-60 min old, beside a line that rises", {"sched": "rising", "meter": ("every", 10, 60),
+                                                                           "hours": 96}))
     return R
 
 
@@ -1635,7 +1639,7 @@ def main(argv=None) -> int:
     ap.add_argument("--map", default=None, help="write the report here")
     ap.add_argument("--json", default=None, help="write every result here")
     ap.add_argument("--trace", default=None, help="one: write one line for each pass here")
-    ap.add_argument("--only", default=None, help="quick: only the regions whose name holds this text")
+    ap.add_argument("--only", default=None, help="quick, schedules, codex: only the regions whose name holds this text")
     a = ap.parse_args(argv)
     t = time.time()
     try:
@@ -1647,14 +1651,15 @@ def main(argv=None) -> int:
                 Path(a.trace).write_text("\n".join(tr) + "\n")
             print(json.dumps(r, indent=1, sort_keys=True, default=str))
             return 1 if r["violations"] else 0
+        pick = lambda regs: [q for q in regs if not a.only or a.only in q[0]]     # noqa: E731
         if a.what == "quick":
-            res = run_regions([q for q in QUICK if not a.only or a.only in q[0]], [1, 2])
+            res = run_regions(pick(QUICK), [1, 2])
         elif a.what == "tonight":
             res = run_regions(tonight_regions(), range(1, a.seeds + 1), a.hours)
         elif a.what == "schedules":
-            res = run_regions(schedule_regions(), range(1, a.seeds + 1), a.hours)
+            res = run_regions(pick(schedule_regions()), range(1, a.seeds + 1), a.hours)
         elif a.what == "codex":
-            res = run_regions(codex_regions(), range(1, a.seeds + 1), a.hours)
+            res = run_regions(pick(codex_regions()), range(1, a.seeds + 1), a.hours)
         else:
             res = run_regions(tonight_regions() + axis_regions() + schedule_regions() + codex_regions(),
                               range(1, a.seeds + 1), a.hours)

@@ -3,7 +3,8 @@
 Written by `src/RimMandrake/Utils/account_plan_sweep.py` (page `design/specs/2026-11-25-account-plan-sweep/boundary.md`,
 measures: `boundary.md` beside this map). Two runs on the code of this item:
 
-- `python3 src/RimMandrake/Utils/account_plan_sweep.py schedules --seeds 3`: the Claude accounts through the real pass
+- `python3 src/RimMandrake/Utils/account_plan_sweep.py schedules --seeds 3` (25 regions, then two more
+  regions with `--only`): the Claude accounts through the real pass
   (`account_plan.tick`), each regime 96 to 120 h.
 - `python3 src/RimMandrake/Utils/account_plan_sweep.py codex --seeds 4`: Codex on the real gate (`account_plan.can_use`),
   2 to 3 weeks each; the comparison table is at the end.
@@ -63,6 +64,16 @@ gives each regime of the region.
   - measures (each regime): under its line {'steven': 680, 'lukas': 4260} min, lowest gap {'steven': -4.7, 'system': 0.4, 'lukas': -52.0}, erased 0.0, dark 50.27 h, 6 switches (0 runs ended), fleet under 5.6; under its line {'steven': 2210, 'system': 4585, 'lukas': 5460} min, lowest gap {'steven': -17.5, 'system': -0.5, 'lukas': -80.0}, erased 0.0, dark 77.5 h, 2 switches (2 runs ended), fleet under 1.7; under its line {'system': 5545, 'lukas': 585} min, lowest gap {'system': -0.3, 'lukas': -0.4}, erased 0.3, dark 81.36 h, 4 switches (3 runs ended), fleet under 0.0
 - **schedule: a burst before a ramp**: OK (3 regimes, 158 s)
   - measures (each regime): under its line {'steven': 540, 'system': 4590, 'lukas': 4510} min, lowest gap {'steven': -5.3, 'system': -0.1, 'lukas': -71.6}, erased 0.0, dark 54.99 h, 6 switches (1 runs ended), fleet under 4.3; under its line {'steven': 2215, 'lukas': 5525} min, lowest gap {'steven': -17.5, 'system': 0.1, 'lukas': -63.6}, erased 0.1, dark 77.4 h, 2 switches (0 runs ended), fleet under 4.3; under its line {'lukas': 4360} min, lowest gap {'system': 0.0, 'lukas': -0.1}, erased 0.0, dark 72.67 h, 4 switches (2 runs ended), fleet under 0.1
+
+- **schedule: the step order changed mid-week, beside two schedules that cross**: OK (3 regimes, 114 s)
+  - measures (each regime): under its line {'steven': 680, 'system': 4700, 'lukas': 4130} min, lowest gap {'steven': -1.9, 'system': -13.2, 'lukas': -59.4}, erased 0.0, dark 54.27 h, 6 switches (0 runs ended), fleet under 8.4; under its line {'steven': 2215, 'system': 5260, 'lukas': 5525} min, lowest gap {'steven': -17.5, 'system': -7.4, 'lukas': -40.6}, erased 23.8, dark 84.0 h, 2 switches (0 runs ended), fleet under 3.7; under its line {'system': 5030, 'lukas': 5055} min, lowest gap {'system': -7.6, 'lukas': -0.8}, erased 0.0, dark 83.68 h, 6 switches (0 runs ended), fleet under 22.5
+
+(the same run, --only) schedules: 1 region, 3 regimes, 54 s: 1 OK, 0 VIOLATES, 0 COSTLY
+
+- **schedule: readings 10-60 min old, beside a line that rises**: OK (3 regimes, 106 s)
+  - measures (each regime): under its line {'lukas': 4130} min, lowest gap {'steven': 0.3, 'system': 1.5, 'lukas': -41.8}, erased 0.0, dark 51.17 h, 4 switches (0 runs ended), fleet under 0.0; under its line {'steven': 2215, 'lukas': 5445} min, lowest gap {'steven': -17.5, 'system': 0.4, 'lukas': -61.5}, erased 0.4, dark 72.67 h, 2 switches (2 runs ended), fleet under 4.7; under its line {'system': 5500, 'lukas': 410} min, lowest gap {'system': -0.1, 'lukas': -0.5}, erased 0.3, dark 77.1 h, 4 switches (4 runs ended), fleet under 0.5
+
+(the same run, --only) schedules: 1 region, 3 regimes, 46 s: 1 OK, 0 VIOLATES, 0 COSTLY
 
 schedules: 25 regions, 75 regimes, 618 s: 25 OK, 0 VIOLATES, 0 COSTLY
 

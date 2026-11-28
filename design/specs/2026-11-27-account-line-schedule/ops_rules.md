@@ -2,7 +2,7 @@
 
 For the owner. The words are defined on `boundary.md` beside this page. Each figure is `[measured]` by one of two sweep
 runs of 2026-11-27 on the code of item `RIMMANDRAKE_SCHEDULE_LEAVE_LINES_BY_WEEKDAY_FLAT_NUMBER_TODAY`:
-**run S** = `account_plan_sweep.py schedules --seeds 3` (Claude accounts, the real pass, 75 regimes) and **run C** =
+**run S** = `account_plan_sweep.py schedules --seeds 3` (Claude accounts, the real pass, 27 regions, 81 regimes) and **run C** =
 `account_plan_sweep.py codex --seeds 4` (Codex, the real gate, 116 regimes). Both read 0 VIOLATES. The regions and every
 regime's measures: `regime_map.md`. The numbers here are not chosen for you: you and the Conductor set them.
 
