@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":95886,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"JUDGE.judge-1795794888":4312,"STEWARD":2597} body_sha256=324f3a430ce44a67becd0eb88f53678f8ef1fd6774bd556b34f69847a183dbc2 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":892335,"DISPATCH":96228,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":2404,"HOLDER.run-1795164214":1355,"HOLDER.run-1795165115":1137,"HOLDER.run-1795223527":1482,"HOLDER.run-1795235568":2438,"HOLDER.run-1795244678":3570,"HOLDER.run-1795257509":5815,"HOLDER.run-1795260677":3322,"HOLDER.run-1795263747":1891,"HOLDER.run-1795268290":5226,"HOLDER.run-1795285878":924,"HOLDER.run-1795297113":4566,"HOLDER.run-1795304573":2662,"HOLDER.run-1795312089":1009,"HOLDER.run-1795312923":2298,"HOLDER.run-1795315124":1540,"HOLDER.run-1795321038":846,"HOLDER.run-1795325268":1929,"HOLDER.run-1795329869":754,"HOLDER.run-1795330730":1090,"HOLDER.run-1795335550":748,"HOLDER.run-1795338340":3967,"HOLDER.run-1795341097":2076,"HOLDER.run-1795346318":1646,"HOLDER.run-1795396410":1686,"HOLDER.run-1795412632":930,"HOLDER.run-1795427578":1657,"HOLDER.run-1795429371":2915,"HOLDER.run-1795441687":754,"HOLDER.run-1795461568":2159,"HOLDER.run-1795471235":562,"HOLDER.run-1795503470":1774,"HOLDER.run-1795670514":9857,"HOLDER.run-1795693138":26757,"HOLDER.run-1795761255":6260,"HOLDER.run-1795782541":1037,"HOLDER.run-1795783799":859,"HOLDER.run-1795818114":2901,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"JUDGE.judge-1795794888":4312,"STEWARD":2597} body_sha256=7badc3ee5c1c95f1fe37492e423255bf7ead0058df2f943bf176593a3e7e2976 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1860 events in 50 shards · reducer 1
-holder lease run-1795818114, token 65, last active 2026-11-27T22:23:17Z
+version 0.1.0 · stage in_game · 1869 events in 51 shards · reducer 1
+holder lease run-1795818114, token 65, last active 2026-11-28T00:48:40Z
 holder session 82aa7d8e-b875-4a92-8c71-607d39d27690, context 113254 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795783799, 2026-11-27T12:54:51Z)
-- done: FlowWorks 0.1.0 advanced offline_build -> blind_challenge at e38d3123e1 (8/8 exit tests, certificate OK, gate open)
-- next: Let the Dispatch tick launch the blind challenge (Stages 4 and 5)
-- ruled out: fix reader owed: bda4ca8c33 only re-recorded red_seen evidence, no mod fix
+## Last checkpoint (HOLDER.run-1795818114, 2026-11-28T00:48:40Z)
+- done: FlowWorks 0.1.0 advanced blind_challenge -> in_game on the steward confirm of cycle 5 (judge-1795794888): 5 offline bars green, 0 Problems open; PY_VALIDATION_V2_OFFLINE re-seen red after a comment-only edit (dd3a6ed454), certificate to in_game OK
+- next: Let the Dispatch tick launch the Stage 6 in-game visit; it owes the 50 lane-1 not_kernel rows and the tar-sheet fire and line-style comp checks
+- ruled out: the certificate refusal was a RECORD GAP (red proof of an older validation_v2.py blob; 8ff61b7067 changed only two comment lines), not a mod fault; asks_on_empty_game DID NOT RUN is a could-not-look clause, not a refusal
 
 ## Open findings (174)
 (claimed fixes, awaiting a judge, on one line each with the oldest 126 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -499,6 +499,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1860 events (views/history.md; never read whole)
+- the full history: 1869 events (views/history.md; never read whole)
 
-cursor: t=2026-11-27T22:23:36Z.1795818216190239326 (modledger.py since --mod FlowWorks t=2026-11-27T22:23:36Z.1795818216190239326 prints what changed after this packet)
+cursor: t=2026-11-28T00:48:40Z.1795826920050849939 (modledger.py since --mod FlowWorks t=2026-11-28T00:48:40Z.1795826920050849939 prints what changed after this packet)

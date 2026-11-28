@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "ce49cac49184f8e01f134dcc08f9274c5bddca1b6299e73558bd01514f43d522",
+  "body_sha256": "3e3c8f70fe6358f21fad09061a5d6c91998af31effd8b330992e11d04c96ce52",
   "reducer": 1,
   "shards": {
    "BACKFILL": 892335,
-   "DISPATCH": 95886,
+   "DISPATCH": 96228,
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
@@ -48,6 +48,7 @@
    "HOLDER.run-1795761255": 6260,
    "HOLDER.run-1795782541": 1037,
    "HOLDER.run-1795783799": 859,
+   "HOLDER.run-1795818114": 2901,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1298,11 +1299,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795783799",
-   "done": "FlowWorks 0.1.0 advanced offline_build -> blind_challenge at e38d3123e1 (8/8 exit tests, certificate OK, gate open)",
-   "next": "Let the Dispatch tick launch the blind challenge (Stages 4 and 5)",
-   "ruled_out": "fix reader owed: bda4ca8c33 only re-recorded red_seen evidence, no mod fix",
-   "ts": "2026-11-27T12:54:51Z"
+   "by": "HOLDER.run-1795818114",
+   "done": "FlowWorks 0.1.0 advanced blind_challenge -> in_game on the steward confirm of cycle 5 (judge-1795794888): 5 offline bars green, 0 Problems open; PY_VALIDATION_V2_OFFLINE re-seen red after a comment-only edit (dd3a6ed454), certificate to in_game OK",
+   "next": "Let the Dispatch tick launch the Stage 6 in-game visit; it owes the 50 lane-1 not_kernel rows and the tar-sheet fire and line-style comp checks",
+   "ruled_out": "the certificate refusal was a RECORD GAP (red proof of an older validation_v2.py blob; 8ff61b7067 changed only two comment lines), not a mod fault; asks_on_empty_game DID NOT RUN is a could-not-look clause, not a refusal",
+   "ts": "2026-11-28T00:48:40Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1754,7 +1755,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1860,
+  "events": 1869,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7870,7 +7871,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-27T22:23:17Z",
+   "last": "2026-11-28T00:48:40Z",
    "lease": "run-1795818114",
    "released": false,
    "token": 65
@@ -7998,6 +7999,7 @@
    "HOLDER.run-1795761255",
    "HOLDER.run-1795782541",
    "HOLDER.run-1795783799",
+   "HOLDER.run-1795818114",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
@@ -8006,7 +8008,7 @@
   ],
   "spend_tokens": 45401435,
   "spend_usd": 78.9355,
-  "stage": "blind_challenge",
+  "stage": "in_game",
   "superseded": [],
   "tests": [
    {

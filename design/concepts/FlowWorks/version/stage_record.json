@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-27T04:53:45-08:00",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-27T16:48:23-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -590,6 +590,27 @@
         "every_bar_has_a_check_that_runs",
         "table_version",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-27T16:48:23-08:00",
+      "by": "BENCH",
+      "why": "blind cycle 5 exit met: 5 offline bars green, 0 Problems open, certificate to in_game OK after PY_VALIDATION_V2_OFFLINE re-seen red (dd3a6ed454)",
+      "unit": "rm-detached-bench-rimmandrake-confirm-flowworks-cycle-five-1795818224",
+      "item": "RIMMANDRAKE_CONFIRM_FLOWWORKS_CYCLE_FIVE_EXIT_MET",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/FlowWorks/version/blind_challenge/cycle_5/SUMMARY.md of judge run judge-1795794888 and its rows: lane1 78 rows (27 PASS, 1 INFO, 0 FAIL, 50 UNSETTLED, all not_kernel on stage-6 bars, none on an offline bar); lane2 reruns 8 of 8 deciders PASS and match, T_DIG_TIME_ARITHMETIC UNRUN as recorded; after-fix reruns 5 PASS; planted 22 of 29 caught, 7 misses on stage-6 bars or the one Problem; faults 1 Problem RIMMANDRAKE_PIN_SHEET_CALLER_KILLS_THE_DROWNED_CROP fixed at 5d68be6e66 (a check repair, red 62/63 on the plant, green 63/63), 4 Polish for the Conductor; tests_edited: SheetWaterChecks.cs 24 lines added, 0 removed, no assertion weakened. Verdict: exit met, confirmed."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }
