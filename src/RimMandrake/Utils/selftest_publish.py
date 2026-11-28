@@ -150,6 +150,24 @@ def t_new_file_and_delete(a, b):
     assert "dir/new.sh" in names and "g.txt" not in names, names
 
 
+def t_staged_delete_lands(a, b):
+    """A path whose deletion is already staged (git rm) was refused: `git add --all -- <path>` failed with "pathspec did
+    not match any files" (lesson 20261118T063545Z, and again 2026-11-28 on RIMMANDRAKE_REVERT_KNOCKBACK_HAUL_WALKBACK_HE_LIKES_THE_SCATTER).
+    The deletion lands, and a staged peer file still does not ride along."""
+    write(a, "dir/two.txt", "two\n")
+    quiet(P.publish, a, ["dir/two.txt"], "seed a dir")
+    sh(a, "rm", "-q", "g.txt")
+    sh(a, "rm", "-q", "-r", "dir")
+    write(a, "f.txt", LINES.replace("line 3", "LINE 3"))
+    write(a, "peer.txt", "staged, not mine\n")
+    sh(a, "add", "peer.txt")
+    sha, log = quiet(P.publish, a, ["g.txt", "dir", "f.txt"], "rm staged")
+    assert "PUBLISHED %s" % sha in log, log
+    names = sh(a, "ls-tree", "-r", "--name-only", "origin/main").split()
+    assert "g.txt" not in names and "dir/two.txt" not in names and "peer.txt" not in names, names
+    assert "LINE 3" in show(a, "f.txt")
+
+
 ITEMS_DIR = "infrastructure/state/items"
 BENCH_SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
 

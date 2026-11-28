@@ -332,6 +332,14 @@ def rel_paths(top, paths, cwd):
 
 def commit(top, paths, msg):
     """Commit exactly these paths. Returns the new sha, or None when they carry no change."""
+    # a path whose deletion is already staged (git rm) is in neither the tree nor the index, so `git add -- <path>` refused
+    # it ("pathspec did not match"; lesson 20261118T063545Z, seen again 2026-11-28). Its index entry is put back from HEAD,
+    # and the add below stages the deletion again: the same commit, no refusal.
+    for p in paths:
+        if not os.path.lexists(os.path.join(top, p)) \
+                and run(top, "ls-files", "--error-unmatch", "--", p, check=False).returncode \
+                and not run(top, "cat-file", "-e", "HEAD:" + p, check=False).returncode:
+            run(top, "reset", "-q", "HEAD", "--", p)
     run(top, "add", "--all", "--", *paths)
     if not run(top, "diff", "--cached", "--quiet", "--", *paths, check=False).returncode:
         return None
