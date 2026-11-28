@@ -26,6 +26,9 @@ READER_LINE = ("A run that fixes code files the fresh reader of its fix as a tic
                "the reader.")
 READER_RULE = READER_LINE + (" The reader gets the fixed file, its boundary page and its tests, never the diff or the "
                              "earlier findings. A reader ticket is never given to the run that made the fix.")
+NEW_MACHINERY_RULE = ("A run that adds pipeline machinery files its blind Opus review before it ends. After publishing, "
+                      "run `python3 src/RimMandrake/rimflow/new_machinery_review.py file <sha>...` with your published "
+                      "commits in order.")
 NOT_EVIDENCE = "A large task, a long run or a full context is not evidence. A fresh session goes on from your notes."
 STALE = ("would not finish", "more than this run", "more than one run")
 

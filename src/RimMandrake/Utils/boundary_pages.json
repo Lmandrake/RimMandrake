@@ -20,6 +20,7 @@
   "design/specs/2026-11-26-conductor-stops/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_stops.py",
   "design/specs/2026-11-26-pipe-off-end/boundary.md": "src/RimMandrake/rimflow/selftest_pipe_off_end.py",
   "design/specs/2026-11-26-fresh-reader-ticket/boundary.md": "src/RimMandrake/rimflow/selftest_fresh_reader.py",
+  "design/specs/2026-11-28-new-machinery-review/boundary.md": "src/RimMandrake/rimflow/selftest_new_machinery_review.py",
   "design/specs/2026-11-26-one-call-walk-stage/boundary.md": "src/RimMandrake/Utils/selftest_walk_stage.py",
   "design/specs/2026-11-26-deploy-index/boundary.md": "src/RimMandrake/Utils/selftest_deploy_index.py",
   "design/specs/2026-11-27-deploy-listing/boundary.md": "src/RimMandrake/Utils/selftest_deploy_listing.py",

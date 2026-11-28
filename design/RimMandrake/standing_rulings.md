@@ -570,6 +570,11 @@ The rule:
   - If the reader also finds a significant thing, the reader fixes it (same test rule). Then the reader flags the file:
     `code_review_status.py flag <path> --why "…"`.
   - Nobody reviews a FLAGGED file again. There is no third read.
+- **New pipeline machinery gets a blind Opus review.** A run that adds pipeline machinery files its blind Opus
+  review before it ends. After publishing, run `python3 src/RimMandrake/rimflow/new_machinery_review.py file <sha>...`
+  with your published commits in order. The ticket lane gives the review to a fresh run under
+  `src/RimMandrake/rimflow/roles/code_review.md`. Paths with READ-CLEAN or FLAGGED records are left out.
+  The owner gave this order on 2026-11-26.
 - **Flagged files are examined about weekly.**
   - Read the list with `code_review_status.py list --flagged`.
   - For each file, ask one question: must the definition of significant change, or is this code really unstable?

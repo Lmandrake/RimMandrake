@@ -78,9 +78,14 @@ def reader_tickets():
 
 def file_argv(sha, paths, maker, seat="BENCH", tid=None):
     """-> the `rimflow file` line the fixing run runs (exactly one ticket per fix; `tid` names its twin, `resolve`)."""
-    return [sys.executable, os.path.join(HERE, "cli.py"), "file", tid or ticket_id(sha), "--for", "BENCH",
-            "--title", title(sha, paths, maker), "--effect", effect(sha, paths), "--not-now", NOT_NOW,
-            "--seat", seat, "--why", "the fixing run files the fresh reader of its fix (his card, 2026-11-26)", "--publish"]
+    return filing_argv(tid or ticket_id(sha), title(sha, paths, maker), effect(sha, paths), NOT_NOW,
+                       "the fixing run files the fresh reader of its fix (his card, 2026-11-26)", seat)
+
+
+def filing_argv(tid, title_text, check, not_now, why, seat="BENCH"):
+    """Build the ledger filing command shared by a fresh reread and a blind machinery review."""
+    return [sys.executable, os.path.join(HERE, "cli.py"), "file", tid, "--for", "BENCH",
+            "--title", title_text, "--effect", check, "--not-now", not_now, "--seat", seat, "--why", why, "--publish"]
 
 
 def is_reader(it):
@@ -129,6 +134,7 @@ or tickets that led to it: judge each file against its page and its tests. Read 
 - A significant finding (measured, or a concrete case: this input, this wrong result): write a test and see it fail,
   fix, see it pass, then `python3 src/RimMandrake/Utils/code_review_status.py flag <path> --why "..."`. There is no
   third read. A nit goes on the page's polish.md, never a ticket.
+Publish the changed review record shard under `infrastructure/state/code_review/` before closing the reader ticket.
 """.format(maker=maker or "unknown", sha=sha or "?", rows="\n".join(rows) or "   (the title names no file)")
 
 

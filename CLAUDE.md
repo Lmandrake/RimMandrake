@@ -741,6 +741,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - The reviewer fixes a significant finding in the same job. First write a test and see it fail. Then fix it and see
   the test pass.
 - A run that fixes code files the fresh reader of its fix as a ticket, before it ends (`python3 src/RimMandrake/rimflow/fresh_reader.py file --fix <sha> <path>...`); the ticket lane launches the reader.
+- A run that adds pipeline machinery files its blind Opus review before it ends. After publishing, run
+  `python3 src/RimMandrake/rimflow/new_machinery_review.py file <sha>...` with your published commits in order.
 - After a fix in a code review, one fresh reader who did not make the fix reads the fixed file once. If that reader
   finds nothing significant, the review is over.
 - If that reader also finds a significant thing, the reader fixes it (same test rule). Then the reader flags the file

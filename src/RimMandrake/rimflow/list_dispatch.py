@@ -101,6 +101,7 @@ for _p in (HERE, os.path.join(REPO, "src", "RimMandrake", "Utils")):
 
 import failure_class as FC  # noqa: E402
 from form_fault import FORM_HEAD  # noqa: E402
+import new_machinery_review as NMR  # noqa: E402
 
 ITEM = "RIMMANDRAKE_BUILD_LIST_LANE_ON_RED_DISPATCH_GOALS_FIRST"
 UNIT = "rm-list-dispatch.service"
@@ -500,6 +501,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
         if urgent:
             facts = dict(facts, items=dict([(i, items[i]) for i in items if i in urgent]
                                            + [(i, items[i]) for i in items if i not in urgent]))
+        if facts.get("systems") is not None:
+            # A blind review must start in its own run, without a bundle's brief or history.
+            facts = dict(facts, systems={i: s for i, s in facts["systems"].items() if not NMR.is_review(items.get(i))})
     hold, until = {}, {}
     if items is not None and facts.get("systems") is not None:
         import work_bundle as WB
@@ -880,6 +884,11 @@ def _decide(cfg, st, facts, now, account=(True, ""), hold=None):
             model, mwhy = "opus", "a second look is a judgement"
         elif repair:
             model, mwhy = "opus", "the repair of a check that cannot look is a judgement"
+        elif NMR.is_review(it):
+            if not NMR.parse_title(it["title"])[0]:
+                put("blind", "the machinery review ticket does not name its files and writer")
+                continue
+            model, mwhy = "opus", "new pipeline machinery gets a blind Opus review"
         else:
             model, mwhy = pick_model(cfg, it.get("effect"))
         cap = cfg.get("%s_cap_usd" % model, _shipped().get("%s_cap_usd" % model))   # a partial cfg keeps the shipped cap
@@ -2053,6 +2062,8 @@ def account_gate(gate=None, drain=None, now=None):
 # ---- the acts -------------------------------------------------------------------------------------------------------
 
 def brief_text(iid, it, row):
+    if NMR.is_review(it) and not (row.get("close_fix") or row.get("repair_check")):
+        return NMR.brief_text(iid, it)
     return """Work list item {item} (the Workshop Pipeline's Work stage, run {n} of at most 2).
 
 Title: {title}

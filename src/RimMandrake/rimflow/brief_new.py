@@ -38,6 +38,7 @@ LINES = {
     "test2_judge": fixer_rule.JUDGE_STATEMENT,
     "evidence": fixer_rule.evidence_line(),
     "reader": fixer_rule.READER_LINE,
+    "new_machinery_review": fixer_rule.NEW_MACHINERY_RULE,
     "machinery": "The pipeline fixes its own defects: fix a machinery defect with a known fix in this run, test first.",
     # the rules of the run
     "no_helper": "Start no helper of your own. Do not background a command. Do not end your turn to wait.",
@@ -101,7 +102,7 @@ BLANKS = {
 BLANK = re.compile(r"<<([A-Z]+):[^>]*>>")
 
 _TESTS = ["test1", "polish", "test2", "evidence", "machinery"]
-_RULES = ["no_helper", "commit", "publish", "authority"]
+_RULES = ["no_helper", "commit", "publish", "authority", "new_machinery_review"]
 _STOP = ["?ENOUGH", "?STOP"]
 _SKILLS = ["skill_rimflow", "skill_landing"]
 _REPORT = ["report_sha", "report_paths", "?REPORT"]
