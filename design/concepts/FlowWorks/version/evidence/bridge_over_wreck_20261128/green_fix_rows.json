@@ -1,0 +1,41 @@
+{
+ "script": "live_bridge_over_wreck.py",
+ "started": "2026-11-28T01:14:06",
+ "rows": [
+  {
+   "id": "WR_bridge_spans_the_wreck",
+   "status": "PASS",
+   "detail": {
+    "got": "BUILD ok=True anchors=0 decks=0 blueprints=7 records=1 reason=-"
+   }
+  },
+  {
+   "id": "WR_wreck_marked_for_clearing",
+   "status": "PASS",
+   "detail": {
+    "wreck_still_there": 1,
+    "designations": [
+     {
+      "def": "Deconstruct",
+      "x": 43,
+      "z": 70,
+      "thing": "RM_SuspensionWreck"
+     }
+    ],
+    "why": null
+   }
+  },
+  {
+   "id": "WR_other_building_still_blocks",
+   "status": "PASS",
+   "detail": {
+    "got": "BUILD ok=False anchors=0 decks=0 blueprints=0 records=0 reason=A suspension bridge can only cross dug ground at least 0.5 m deep; square 3 of the drag is blocked."
+   }
+  }
+ ],
+ "open_sky": true,
+ "staged": {
+  "wreck": 1,
+  "sandbags": 1
+ }
+}

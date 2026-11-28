@@ -353,7 +353,8 @@ namespace RimMandrake.FlowWorks.Pits
 				return SpanGround.Blocked;
 			}
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
-			if (c.GetEdifice(map) != null || RM_SpanUtility.DeckedAt(map, c))
+			Building edifice = c.GetEdifice(map);
+			if (RM_SuspensionMath.EdificeBlocksSpan(edifice != null, IsWreck(edifice)) || RM_SpanUtility.DeckedAt(map, c))
 			{
 				return SpanGround.Blocked;
 			}
@@ -387,8 +388,54 @@ namespace RimMandrake.FlowWorks.Pits
 			return SpanGround.Ground;
 		}
 
+		/// <summary>A fallen suspension bridge's wreck (RM_MapComponent_SuspensionBridges.LandWreck).</summary>
+		public static bool IsWreck(Thing t)
+		{
+			return t != null && RM_SuspensionDefOf.RM_SuspensionWreck != null && t.def == RM_SuspensionDefOf.RM_SuspensionWreck;
+		}
+
+		/// <summary>RIMMANDRAKE_LET_FLOWWORKS_BRIDGE_SPAN_OVER_RUINED_BRIDGE_SCRAP: every wreck under a planned bridge is marked for
+		/// clearing (in god mode, cleared at once, as the god-mode deck is built at once), and the player is told once.</summary>
+		internal static void ClearWrecksUnder(Map map, SuspensionBridgeRecord r)
+		{
+			List<Thing> wrecks = new List<Thing>();
+			for (int lane = 0; lane < r.width; lane++)
+			{
+				for (int i = 0; i < r.length; i++)
+				{
+					foreach (Thing t in r.Cell(lane, i).GetThingList(map))
+					{
+						if (IsWreck(t))
+						{
+							wrecks.Add(t);
+						}
+					}
+				}
+			}
+			if (wrecks.Count == 0)
+			{
+				return;
+			}
+			foreach (Thing w in wrecks)
+			{
+				if (DebugSettings.godMode)
+				{
+					w.Destroy(DestroyMode.Deconstruct);
+				}
+				else if (map.designationManager.DesignationOn(w, DesignationDefOf.Deconstruct) == null)
+				{
+					map.designationManager.AddDesignation(new Designation(w, DesignationDefOf.Deconstruct));
+				}
+			}
+			if (!DebugSettings.godMode)
+			{
+				Messages.Message(RM_SuspensionMath.WreckMarkedForClearing, new LookTargets(wrecks), MessageTypeDefOf.NeutralEvent, false);
+			}
+		}
+
 		private void Place(Map map, SuspensionBridgeRecord r)
 		{
+			ClearWrecksUnder(map, r);
 			ThingDef anchor = RM_SuspensionDefOf.AnchorOf(r.tier);
 			ThingDef deck = RM_SuspensionDefOf.DeckOf(r.tier, r.grated);
 			map.GetComponent<RM_MapComponent_SuspensionBridges>().Register(r);
@@ -766,6 +813,7 @@ namespace RimMandrake.FlowWorks.Pits
 				}
 			}
 			map.GetComponent<RM_MapComponent_SuspensionBridges>().Register(r);
+			Designator_SuspensionBridge.ClearWrecksUnder(map, r);
 			for (int i = rootAnchor ? 1 : 0; i < r.length; i++)
 			{
 				ThingDef d = i == 0 ? anchor : deck;

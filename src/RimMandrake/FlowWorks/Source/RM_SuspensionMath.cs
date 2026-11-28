@@ -656,6 +656,19 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>What a dragged square is for a deck at <paramref name="deckNotches"/>: an end (anchor) square sits at exactly
 		/// the deck's height and is dry; a crossed square is at least one notch deeper (parent rule 3).</summary>
+		/// <summary>RIMMANDRAKE_LET_FLOWWORKS_BRIDGE_SPAN_OVER_RUINED_BRIDGE_SCRAP (his walk 2026-11-20: "Would not place over a pit that
+		/// had the scrap of a ruined bridge in it, even though it likely still should."): does the building standing on a dragged
+		/// square block the span? A fallen bridge's wreck does not: the new bridge marks it for clearing, and the deck square goes up
+		/// once it is cleared (vanilla holds the deck's construction while a blocking building stands there). Any other building
+		/// blocks.</summary>
+		public static bool EdificeBlocksSpan(bool hasEdifice, bool edificeIsWreck)
+		{
+			return hasEdifice && !edificeIsWreck;
+		}
+
+		/// <summary>The message when a new bridge marks the wreck under it for clearing (RIMMANDRAKE_LET_FLOWWORKS_BRIDGE_SPAN_OVER_RUINED_BRIDGE_SCRAP).</summary>
+		public const string WreckMarkedForClearing = "The wreck of the old bridge under the new one is marked for clearing; the deck goes up over it once it is cleared.";
+
 		public static SpanGround GroundFor(int walkDepth, int deckNotches, bool dryAndClear)
 		{
 			if (!dryAndClear)

@@ -104,15 +104,15 @@
   "test_blob": "37b99ece8064c1dbd6e8cb0fbe593721f6e57a5f"
  },
  "T_BRIDGES": {
-  "at": "2026-11-27T15:03:22Z",
+  "at": "2026-11-28T08:56:57Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Drawbridge*,SpanBase*,Suspension*,SuspensionBridges*,Underpass*,Waters*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "dir 1 side -1: a rope north of the deck draws behind pawns, every other over them",
-  "patch": "diff --git a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\nindex 50fde71046..f954e7ffc6 100644\n--- a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\n@@ -61,7 +61,7 @@ namespace RimMandrake.FlowWorks\n \t\t/// Pawn); the south side, and both sides of a north-south run, stand beside or in front of him and print over him.</summary>\n \t\tpublic static bool RopeOverPawns(int sideZ, float sg)\n \t\t{\n-\t\t\treturn sideZ * sg <= 0f;\n+\t\t\treturn true;   // PLANTED: every rope over pawns (the base)\n \t\t}\n \n \t\t/// <summary>Widest drag by kind: rope 1, timber 2, steel and heavy 4.</summary>\n",
+  "last": "can-fail: a wreck in the hole does not block the span",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\t2026-11-28 00:49:57.400423600 -0800\n+++ b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\t2026-11-28 00:49:57.422585200 -0800\n@@ -663,7 +663,7 @@\n \t\t/// blocks.</summary>\n \t\tpublic static bool EdificeBlocksSpan(bool hasEdifice, bool edificeIsWreck)\n \t\t{\n-\t\t\treturn hasEdifice && !edificeIsWreck;\n+\t\t\treturn hasEdifice;\n \t\t}\n \n \t\t/// <summary>The message when a new bridge marks the wreck under it for clearing (RIMMANDRAKE_LET_FLOWWORKS_BRIDGE_SPAN_OVER_RUINED_BRIDGE_SCRAP).</summary>\n",
   "patch_files": [
    "src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs"
   ],
-  "patch_sha": "7dd53dba823cdbfe",
+  "patch_sha": "5eabb4d1d9334011",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
@@ -130,15 +130,15 @@
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },
  "T_DOORS": {
-  "at": "2026-11-23T04:13:48Z",
+  "at": "2026-11-28T09:03:30Z",
   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only FLOWWORKS*,FlowDoor*,FlowDoorFacing*,Grate*,Ruling18*,Sluice*",
   "file": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
-  "last": "verify L1: grated chance = open-pit chance \u00d7 0.75 (0.8)",
-  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_FireMath.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RM_FireMath.cs\n@@ -117,7 +117,7 @@\n \t\n \t\t/// <summary>SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP (parent design \u00a74.1): a grated deck passes the fire below to the people\n \t\t/// on it at this share of the open-pit (trapped) chance; a solid deck keeps the open-cell chance.</summary>\n-\t\tpublic const float GratedOpenPitFactor = 0.75f;\n+\t\tpublic const float GratedOpenPitFactor = 0.8f;\n \n \t\t/// <summary>C4-F7 plus the grate: a flyer is never lit; a pawn on an intact GRATED deck over the fire catches at the\n \t\t/// open-pit chance \u00d7 <see cref=\"GratedOpenPitFactor\"/>; on a solid deck or cover, the open-cell chance.</summary>\n",
+  "last": "can-fail: a solid deck keeps its spill",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\t2026-11-28 00:49:57.675539600 -0800\n+++ b/src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs\t2026-11-28 00:49:57.691305300 -0800\n@@ -584,7 +584,7 @@\n \t\t/// a grate over a dug square with the setting on; nothing otherwise (a solid deck keeps its spill as filth).</summary>\n \t\tpublic static long GrateDrainDl(bool grated, bool settingOn, bool dug, long spilledDl, long roomDl)\n \t\t{\n-\t\t\tif (!grated || !settingOn || !dug || spilledDl <= 0 || roomDl <= 0)\n+\t\t\tif (!settingOn || !dug || spilledDl <= 0 || roomDl <= 0)\n \t\t\t{\n \t\t\t\treturn 0;\n \t\t\t}\n",
   "patch_files": [
-   "src/RimMandrake/FlowWorks/Source/RM_FireMath.cs"
+   "src/RimMandrake/FlowWorks/Source/RM_SuspensionMath.cs"
   ],
-  "patch_sha": "5468184284f53f38",
+  "patch_sha": "6c6e7ecb32ec75eb",
   "rc": 1,
   "test_blob": "ecdb632246123de160f342b464f55bcbb9ce7ca5"
  },

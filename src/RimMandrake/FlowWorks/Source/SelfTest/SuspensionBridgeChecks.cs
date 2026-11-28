@@ -440,6 +440,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(defs.Contains("<defName>RM_SuspensionWreck</defName>") && !defs.Contains("For now nobody can walk under it"),
                     "the wreck exists and no description still says nobody walks under");
             });
+            // RIMMANDRAKE_LET_FLOWWORKS_BRIDGE_SPAN_OVER_RUINED_BRIDGE_SCRAP (his walk 2026-11-20: "Would not place over a pit that had
+            // the scrap of a ruined bridge in it, even though it likely still should."): the planner called every building in the hole
+            // Blocked, the wreck too. A wreck is now spanned and marked for clearing; any other building still blocks.
+            Case("Suspension_span_over_a_wreck_marks_it_for_clearing", () =>
+            {
+                Assert(!RM_SuspensionMath.EdificeBlocksSpan(true, true), "can-fail: a wreck in the hole does not block the span");
+                Assert(RM_SuspensionMath.EdificeBlocksSpan(true, false), "can-fail: any other building in the hole still blocks");
+                Assert(!RM_SuspensionMath.EdificeBlocksSpan(false, false), "can-fail: an empty square does not block");
+                string des = Src("Pits", "Suspension", "Designator_SuspensionBridge.cs");
+                Assert(des.Contains("RM_SuspensionMath.EdificeBlocksSpan(edifice != null, IsWreck(edifice))")
+                    && !des.Contains("if (c.GetEdifice(map) != null || RM_SpanUtility.DeckedAt(map, c))"),
+                    "can-fail: the drag planner asks the wreck rule, not 'any building blocks'");
+                int place = des.IndexOf("private void Place(Map map, SuspensionBridgeRecord r)");
+                int jetty = des.IndexOf("private string Place(Map map, SuspensionBridgeRecord r, bool rootAnchor)");
+                Assert(place > 0 && des.IndexOf("ClearWrecksUnder(map, r);", place) > place
+                    && des.IndexOf("ClearWrecksUnder(map, r);", place) < des.IndexOf("foreach ((int lane, int i) in order)", place),
+                    "can-fail: a placed bridge clears its wrecks before its parts go down");
+                Assert(jetty > 0 && des.IndexOf("Designator_SuspensionBridge.ClearWrecksUnder(map, r);", jetty) > jetty, "can-fail: a jetty clears its wrecks too");
+                Assert(des.Contains("new Designation(w, DesignationDefOf.Deconstruct)") && des.Contains("w.Destroy(DestroyMode.Deconstruct)")
+                    && des.Contains("RM_SuspensionMath.WreckMarkedForClearing"), "can-fail: the wreck is marked (or cleared in god mode) and the player told");
+            });
             // SUSPENSION_WATERS_BUILD_MAY_BACKTRACK (parent §3, §7; Q5): natural water, floods, current, towers.
             Case("Waters_spannable_and_flood_damage", () =>
             {
