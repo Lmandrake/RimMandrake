@@ -28,7 +28,11 @@ test is written and committed; what is left is landing, live readings, the slow-
 - `RIMMANDRAKE_SPEED_SCRATCH_REAP_FOLDER_TIME_TWO_MILLION_LSTAT`: the Codex lane's build landed first (young or held
   folders kept by their own time; child_time names the child commands). This bundle's part is merged on top:
   find_clones reads each folder's `.git` from its listing, and publish_check_* folders are not searched and are swept as
-  fixtures (test `selftest_scratch_reap_listing.py`, page `design/specs/2026-11-27-scratch-reap-listing/boundary.md`).
+  fixtures. NOT LANDED: origin's scratch_reap.py moved again (40475c6bcd, RIMMANDRAKE_SPEED_SCRATCH_REAP_SEAT_TMP_PUBLISH_
+  CHECK_RESIDUE_2M: another run took the publish_check litter). The two commits are kept as a patch,
+  `D:\ClaudeWork\scratch\checkonce\scratch_listing_two_commits.patch` (and the local branch scratch-listing-pending
+  in this clone): test `selftest_scratch_reap_listing.py`, page `design/specs/2026-11-27-scratch-reap-listing/
+  boundary.md`. Next: read 40475c6bcd; land only find_clones's `.git` from the listing if it is still not there.
   Cause measured: 870 k folders walked, 806 k in 100 publish_check_* folders left by killed publishes; candidates()
   288 s (load 26) -> 127 s (load 42). Dry run 723 s at load ~40: live 322 s (the borrower find 314 s), judge 254 s.
 - `RIMMANDRAKE_RECORD_MODEL_AND_TOOL_SECONDS_833_HOURS_UNSPLIT`: the Codex lane's build LANDED first (ccc65c468d,
