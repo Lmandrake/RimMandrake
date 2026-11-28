@@ -69,6 +69,10 @@ def _install():
             return
         reads[p] = ["pending"]      # first: sig lists a folder, and that listing comes back here
         reads[p] = sig(p)
+        # an import from a valid .pyc opens only the .pyc and stats its source with no audit event: key the source too,
+        # or a changed module would keep the old result (selftest: "a changed imported module whose .pyc existed")
+        if p.endswith(".pyc") and os.path.basename(os.path.dirname(p)) == "__pycache__":
+            note(os.path.join(os.path.dirname(os.path.dirname(p)), os.path.basename(p).split(".")[0] + ".py"))
 
     def wrap(fn):
         def inner(path, *a, **k):

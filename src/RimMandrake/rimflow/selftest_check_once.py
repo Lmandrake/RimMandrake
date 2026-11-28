@@ -177,6 +177,20 @@ def t_a_result_is_kept_until_a_read_file_changes():
     put("mods/helper_mod.py", "OK = True\n")
     v2 = co.run_many([t], X["root"], store=store)[0][t][0]
     chk((v1, v2) == ("fails", "holds"), "kept: a changed imported module runs it again (%s %s)" % (v1, v2))
+    # the same, when the module's .pyc already exists before the first recorded run (the repo's modules have one):
+    # python then opens only the .pyc and stats the source without an audit event
+    put("mods2/helper_pyc.py", "OK = False\n")
+    put("keep_i.py", "import sys, os\nsys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "
+        "'mods2'))\nimport helper_pyc\nsys.exit(0 if helper_pyc.OK else 1)\n")
+    subprocess.run([sys.executable, os.path.join(X["root"], "keep_i.py")], capture_output=True)
+    had_pyc = os.path.isdir(os.path.join(X["root"], "mods2", "__pycache__"))
+    t = "cmd:python3 keep_i.py"
+    v1 = co.run_many([t], X["root"], store=store)[0][t][0]
+    time.sleep(0.01)
+    put("mods2/helper_pyc.py", "OK = True\n")
+    v2 = co.run_many([t], X["root"], store=store)[0][t][0]
+    chk(had_pyc and (v1, v2) == ("fails", "holds"), "kept: a changed imported module whose .pyc existed runs it "
+        "again (pyc %s, %s %s)" % (had_pyc, v1, v2))
     # a python child that records its own reads
     put("data/kid.txt", "no")
     put("kid.py", "import sys, os\nh = os.path.dirname(os.path.abspath(__file__))\n"
