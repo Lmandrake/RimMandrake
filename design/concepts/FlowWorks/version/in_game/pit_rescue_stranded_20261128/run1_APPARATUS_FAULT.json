@@ -1,0 +1,24 @@
+{
+ "script": "live_pit_rescue_stranded.py",
+ "started": "2026-11-27T20:47:39",
+ "rows": [
+  {
+   "id": "RESCUE_site",
+   "status": "UNMEASURED",
+   "detail": {
+    "why": "the pit did not dig to 4 m",
+    "depths": [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  }
+ ]
+}

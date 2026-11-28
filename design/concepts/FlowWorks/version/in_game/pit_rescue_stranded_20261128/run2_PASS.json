@@ -1,0 +1,46 @@
+{
+ "script": "live_pit_rescue_stranded.py",
+ "started": "2026-11-27T20:48:08",
+ "rows": [
+  {
+   "id": "RESCUE_site",
+   "status": "PASS",
+   "detail": {
+    "climb": "CLIMB k=2 held=False trapped=False cell=121,121 | POCKET k=2 comp=1 pocket=True size=9 depth=8 gen=74 built=74 rebuilds=11",
+    "blueprintsBefore": []
+   }
+  },
+  {
+   "id": "RESCUE_control_setting_off",
+   "status": "PASS",
+   "detail": {
+    "blueprints": [],
+    "why": "rescue off: nothing queues a ladder"
+   }
+  },
+  {
+   "id": "RESCUE_stranded_colonist_gets_a_ladder",
+   "status": "PASS",
+   "detail": {
+    "blueprints": [
+     {
+      "def": "Blueprint_RM_Ladder",
+      "x": 120,
+      "z": 120,
+      "label": "Wooden ladder (blueprint)"
+     }
+    ],
+    "near": [
+     {
+      "def": "Blueprint_RM_Ladder",
+      "x": 120,
+      "z": 120,
+      "label": "Wooden ladder (blueprint)"
+     }
+    ],
+    "climbAfter": "CLIMB k=2 held=False trapped=False cell=121,121 | POCKET k=2 comp=1 pocket=True size=9 depth=8 gen=74 built=74 rebuilds=11",
+    "why": "a ladder blueprint at the pit wall within 1000 ticks"
+   }
+  }
+ ]
+}
