@@ -28,3 +28,8 @@ Granite_Rough and Marble_Rough PASS):
 - The depth ladder keeps its 5 rows (each doubling darker, the law, the 16 m floor keeps its grain).
 - Failing moment: `design/specs/2026-11-23-pit-floor-depth-ladder/img/pit_floor_on_nine_grounds.png`; keeper save
   `RM_PIT_FLOOR_ON_NINE_GROUNDS` (ArchBig Saves, the 23-mod list).
+
+## refs
+file: src/RimMandrake/FlowWorks/Source/RM_PitReliefMath.cs
+file: src/RimMandrake/FlowWorks/Source/Superdeep/RM_ExcavationWalls.cs
+file: src/RimMandrake/FlowWorks/northstar/pit_floor_ground_live.py

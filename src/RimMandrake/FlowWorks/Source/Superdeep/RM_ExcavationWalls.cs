@@ -38,6 +38,11 @@ namespace RimMandrake.FlowWorks
 			// RIMMANDRAKE_REDRAW_STEPPED_PIT_INNER_CLIFF_STOPS_SHORT_OF_THE_RIM: the relief is lit by the game's own sun (RM_PitSunDraw
 			// raises PitSunFlag when the snapped sun or sky moves), and a lamp or a roof changes what reaches a square.
 			relevantChangeTypes |= RM_PitSunDraw.PitSunFlag | (ulong)MapMeshFlagDefOf.GroundGlow | (ulong)MapMeshFlagDefOf.Roofs;
+			// RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER: a floor printed in its own ground shows that ground's polluted look
+			if (MapMeshFlagDefOf.Pollution != null)
+			{
+				relevantChangeTypes |= (ulong)MapMeshFlagDefOf.Pollution;
+			}
 		}
 
 		/// <summary>The sun as it reaches the square being drawn (set by ReliefCell; read by its faces and cast shadow).</summary>
@@ -96,7 +101,14 @@ namespace RimMandrake.FlowWorks
 					? RM_SubmergeDraw.LookAt(map, eng, c) : null;
 				bool sheet = look != null && look.seeThrough > 0f;
 				float lv = sheet ? 0f : lvTrue;
-				if (note == 0 && material && RM_PitReliefMath.ReprintsFloor(true, false, BesideLiquidTerrain(map, c)))
+				// RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER: the dry floor (and the dry pit seen under a clear sheet)
+				// is the ground it was dug in, so its depth tone darkens THAT ground (a slate pit has a slate floor)
+				Material ground = (note == 0 || sheet) ? FloorGroundMat(map, eng, c, material) : null;
+				if (note == 0 && ground != null)
+				{
+					Quad(ground, c.x, c.z, 1f, 1f, y - 0.0008f, Opaque, Opaque, UvWorld);
+				}
+				else if (note == 0 && material && RM_PitReliefMath.ReprintsFloor(true, false, BesideLiquidTerrain(map, c)))
 				{
 					FloorReprint(map, c, y - 0.0008f);
 				}
@@ -146,7 +158,7 @@ namespace RimMandrake.FlowWorks
 				}
 				if (sheet)
 				{
-					WaterSurface(map, eng, c, d, lvTrue, look, north, south, west, east, nw, ne, relief, y - 0.0008f);
+					WaterSurface(map, eng, c, d, lvTrue, look, north, south, west, east, nw, ne, relief, y - 0.0008f, ground);
 					if (RimMandrakeFlowWorksSettings.pitOutlineEnabled)
 					{
 						outlineMat = sheetMatDrawn;
@@ -176,7 +188,7 @@ namespace RimMandrake.FlowWorks
 				float ew = RM_UnderLiquid.SideFace(ed);
 				if (relief)
 				{
-					ReliefCell(map, eng, c, d, sp, note == 0 || sheet, sc, y);
+					ReliefCell(map, eng, c, d, sp, note == 0 || sheet, sc, y, ground != null);
 					continue;
 				}
 				if (nd > 0f)
@@ -202,7 +214,7 @@ namespace RimMandrake.FlowWorks
 				if (note == 0 || sheet)
 				{
 					// every floor shaded by its own depth, the dry pit's under a clear liquid's sheet too
-					FloorShade(c, d, ww, ew, h, wnw, hnw, wne, hne, y + 0.0012f);
+					FloorShade(c, RM_PitReliefMath.FloorShade(d, ground != null), ww, ew, h, wnw, hnw, wne, hne, y + 0.0012f);
 				}
 			}
 			FinalizeMesh(MeshParts.All);
@@ -285,7 +297,8 @@ namespace RimMandrake.FlowWorks
 
 		private readonly int[] win = new int[49];
 
-		private void ReliefCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, bool dry, float sc, float y)
+		private void ReliefCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, bool dry, float sc, float y,
+			bool onGround)
 		{
 			sunHere = RM_PitSunDraw.SunAt(map, eng, c);
 			if (sp.T > 0f)
@@ -312,8 +325,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			LipBands(c, d, sp, y + 0.0005f);
-			FloorShade(c, RM_PitReliefMath.StepFloorShade(d), sp.L, sp.R, sp.T, sp.CnwW, sp.CnwH, sp.CneW, sp.CneH, y + 0.0012f);
+			LipBands(c, d, sp, y + 0.0005f, onGround);
+			FloorShade(c, RM_PitReliefMath.StepFloorShade(d, onGround), sp.L, sp.R, sp.T, sp.CnwW, sp.CnwH, sp.CneW, sp.CneH, y + 0.0012f);
 			CastShadow(map, eng, c, d, sp, y + 0.0013f);
 		}
 
@@ -447,10 +460,10 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The pale band of this floor along an edge where its neighbour is deeper (his "differently colored edge").</summary>
-		private void LipBands(IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, float y)
+		private void LipBands(IntVec3 c, int d, RM_PitReliefMath.StepPlan sp, float y, bool onGround)
 		{
 			float b = RM_PitReliefMath.LipBand;
-			Color32 w = new Color32(255, 248, 232, Alpha(RM_PitReliefMath.StepLipAlpha(d)));
+			Color32 w = new Color32(255, 248, 232, Alpha(RM_PitReliefMath.StepLipAlpha(d, onGround)));
 			Material m = RM_FaceMaterial.ShadeMat;
 			if (sp.EdgeS)
 			{
@@ -941,7 +954,7 @@ namespace RimMandrake.FlowWorks
 		/// printed opaque (the liquid's terrain has replaced it), then ONE sheet, then the damp band on the dry wall just above the
 		/// line.</summary>
 		private void WaterSurface(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float lv, RM_LiquidSurfaceLook look,
-			int north, int south, int west, int east, int nw, int ne, bool relief, float y)
+			int north, int south, int west, int east, int nw, int ne, bool relief, float y, Material groundFloor)
 		{
 			Window(map, eng, c, out float wx0, out float wx1, out float wz0, out float wz1);
 			// the dry pit's faces at level 0 with each face's waterline (the dry part's reach from its edge at the true level)
@@ -1002,12 +1015,13 @@ namespace RimMandrake.FlowWorks
 			}
 			// the floor between the faces, opaque in the dry pit's own ground (the liquid's terrain replaced it)
 			TerrainDef floor = RM_ExcavationDepth.DryTerrainFor((byte)Mathf.Clamp(d, RM_ExcavationDepth.Shallow, 255)) ?? TerrainDefOf.Soil;
+			Material floorMat = groundFloor ?? RM_FaceMaterial.FaceMat(floor);
 			int nr = RM_PitReliefMath.FloorRects(ww, ew, h, wnw, hnw, wne, hne, floorRects);
 			sheetPieces.Clear();
 			for (int i = 0; i < nr; i++)
 			{
 				float x0 = floorRects[4 * i], z0 = floorRects[4 * i + 1], x1 = floorRects[4 * i + 2], z1 = floorRects[4 * i + 3];
-				Quad(RM_FaceMaterial.FaceMat(floor), c.x + x0, c.z + z0, x1 - x0, z1 - z0, y, Opaque, Opaque, UvWorld);
+				Quad(floorMat, c.x + x0, c.z + z0, x1 - x0, z1 - z0, y, Opaque, Opaque, UvWorld);
 				RM_PitReliefMath.AddUnderLine(new[] { x0, z0, x0, z1, x1, z1, x1, z0 }, -1, 0f, wx0, wx1, wz0, wz1, sheetPieces);
 			}
 			for (int i = 0; i < facePolys.Count; i++)
@@ -1095,6 +1109,23 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>A dry dug square's own floor printed whole over vanilla's edge fade of a liquid beside it (RM_PitReliefMath
 		/// .ReprintsFloor): the drained side of a shut sluice drew the gate square's water fading over it.</summary>
+		/// <summary>RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER: the material a dug square's floor prints, the ground
+		/// recorded before its first cut (RM_MapComponent_Excavation.OriginalTerrainAt) as vanilla would draw it there (its polluted
+		/// look on a polluted square), in the face queue; null when RM_PitReliefMath.FloorPrintsGround says the floor keeps its dug
+		/// terrain (the ground-material look off, a floor laid on the square, no printable ground recorded).</summary>
+		private static Material FloorGroundMat(Map map, RM_MapComponent_Excavation eng, IntVec3 c, bool materialLook)
+		{
+			TerrainDef top = map.terrainGrid.TerrainAt(c);
+			TerrainDef g = eng.OriginalTerrainAt(c);
+			bool printable = g != null && g.natural && !g.IsWater && RM_FluidIdentity.FluidOfTerrain(g) == null && g.DrawMatSingle != null;
+			if (!RM_PitReliefMath.FloorPrintsGround(materialLook, top != null && top.layerable, printable))
+			{
+				return null;
+			}
+			bool polluted = c.IsPolluted(map) && g.graphicPolluted != null && g.graphicPolluted != BaseContent.BadGraphic;
+			return RM_FaceMaterial.FaceMat(map.terrainGrid.GetMaterial(g, polluted, null) ?? g.DrawMatSingle);
+		}
+
 		private void FloorReprint(Map map, IntVec3 c, float y)
 		{
 			TerrainDef t = map.terrainGrid.TerrainAt(c);

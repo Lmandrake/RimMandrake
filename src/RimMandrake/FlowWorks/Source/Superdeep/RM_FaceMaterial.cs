@@ -125,6 +125,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The terrain's own material, cloned into the face queue so it draws over the cut's floor.</summary>
 		public static Material FaceMat(TerrainDef t) => Clone(t, faceClones, FaceQueue);
 
+		/// <summary>A terrain material (a variant such as its polluted look), cloned into the face queue.</summary>
+		public static Material FaceMat(Material terrainMat) => CloneMat(terrainMat, faceClones, FaceQueue);
+
 		/// <summary>The terrain's own material, cloned into the occluder queue (after pawns).</summary>
 		public static Material OccluderMat(TerrainDef t) => Clone(t, occluderClones, OccluderQueue);
 

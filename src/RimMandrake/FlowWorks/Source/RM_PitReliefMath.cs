@@ -198,7 +198,8 @@ namespace RimMandrake.FlowWorks
 		// shelf is incredibly narrow" at 0.26, 2026-11-22); a one-square north shelf keeps 0.4 in view to 8 m.
 		private static readonly float[] StepNorthTable = { 0f, 0.7f * 0.12f, 0.7f * 0.23f, 0.7f * 0.35f, 0.7f * 0.50f };
 		private const double StepHSlope = 0.085, StepHLog = 0.078;
-		// The tone (the same twin): K(z) = KFloor + (1 - KFloor)(1 + z / KScale)^-KPow, a multiplier on undug ground. The 2 m floor
+		// The tone (the same twin): K(z) = KFloor + (1 - KFloor)(1 + z / KScale)^-KPow, a multiplier on undug ground (true since the
+		// dry floor prints its own ground: FloorPrintsGround). The 2 m floor
 		// at 0.63 (it was 0.38, and 3 m to 16 m fit in a dozen grey levels); never under KFloor, so the deepest floor keeps its grain.
 		private const double KFloor = 0.22, KScale = 1.6, KPow = 0.8;
 		private static readonly float[] StepSideTable = { 0f, 0.06f, 0.11f, 0.17f, 0.23f, 0.29f };
@@ -254,6 +255,60 @@ namespace RimMandrake.FlowWorks
 			float t = TerrainColour[d < 4 ? d : 4];
 			float a = 1f - StepFloorBrightness(d) / t;
 			return a > 0f ? (float)Math.Round(a, 5) : 0f;
+		}
+
+		// ── the floor in its own ground (RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER) ──────────────────────────
+		// Measured live 2026-11-23 (build 81ee41df54): the floor drew 60-65 grey at 0.5 m on EVERY ground, because the tone was laid
+		// over the one brown gravel floor terrain (RM_Channel_*). On rich soil, marsh, mud and slate a 0.5 m floor was as bright as
+		// its ground or brighter (slate 1.22 of its ground). Build B, picked by the builder (Conductor note 2026-11-23: "fix choice
+		// delegated to builder plus art judge"): the dry floor prints the ground it was dug in (a slate pit has a slate floor), so
+		// StepK is what its comment says, a multiplier on undug ground, on any ground, modded ground included.
+
+		/// <summary>Does a dug square's floor print the ground it was dug in? Only when the ground-material look is on, no laid floor
+		/// (a player's floor, a foundation) lies on the square, and the recorded ground can be printed (natural, not a liquid, with a
+		/// material). Else the floor keeps its dug terrain and the old shade.</summary>
+		public static bool FloorPrintsGround(bool materialLook, bool laidFloorOnTop, bool groundPrintable)
+		{
+			return materialLook && !laidFloorOnTop && groundPrintable;
+		}
+
+		/// <summary>The black alpha over a dry floor at depth <paramref name="d"/> under the stepped rule: over its own ground (printed
+		/// at full brightness) the floor draws at StepK(d) of that ground; over the dug terrain, as <see cref="StepFloorShade(int)"/>.</summary>
+		public static float StepFloorShade(int d, bool onGround)
+		{
+			if (!onGround) return StepFloorShade(d);
+			if (d <= 0) return 0f;
+			float a = 1f - StepFloorBrightness(d);
+			return a > 0f ? (float)Math.Round(a, 5) : 0f;
+		}
+
+		/// <summary>The old law's shade (relief off) over a floor printed in its own ground: the floor draws at FloorBrightness(d) of
+		/// that ground.</summary>
+		public static float FloorShade(int d, bool onGround)
+		{
+			if (!onGround) return FloorShade(d);
+			if (d <= 0) return 0f;
+			float a = 1f - FloorBrightness(d);
+			return a > 0f ? (float)Math.Round(a, 5) : 0f;
+		}
+
+		/// <summary>The pale lip band's alpha on a floor printed in its own ground (about half bright, lifted by LipLift).</summary>
+		public static float StepLipAlpha(int d, bool onGround)
+		{
+			if (!onGround) return StepLipAlpha(d);
+			if (d <= 0) return StepLipAlpha(0);
+			float ft = 0.5f;
+			float a = (LipLift - 1f) * ft / (1f - ft);
+			return a <= 0f ? 0f : (a >= 1f ? 1f : a);
+		}
+
+		/// <summary>What a dry floor at depth <paramref name="d"/> draws at, as a share of its own ground's brightness, under the
+		/// stepped rule: the printed terrain (its ground at 1, or the dug terrain at <paramref name="dugTerrainOverGround"/> of the
+		/// ground) under the black shade.</summary>
+		public static float StepFloorOverGround(int d, bool onGround, float dugTerrainOverGround)
+		{
+			float t = onGround ? 1f : dugTerrainOverGround * FloorTerrainColour(d);
+			return (1f - StepFloorShade(d, onGround)) * t;
 		}
 
 		/// <summary>The white alpha of the pale lip band on a floor at depth <paramref name="d"/>: lifts its terrain (about half bright

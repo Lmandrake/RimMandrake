@@ -133,10 +133,11 @@ def floor_shade_follows_depth_past_two_metres():
     mod = _planner()
     a, b = mod.floor_shade(7), mod.floor_shade(11)
     walls = _read(WALLS)
-    dry = re.search(r"FloorShade\(c, d, ww, ew, h, wnw, hnw, wne, hne,", walls) is not None
+    # the floor's own-ground shade (RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER) is still one shade by depth
+    dry = re.search(r"FloorShade\(c, RM_PitReliefMath\.FloorShade\(d, ground != null\), ww, ew, h, wnw, hnw, wne, hne,", walls) is not None
     # a drowned floor is the dry pit's floor under one sheet (RIMMANDRAKE_DRILL_FLOWWORKS_WATER_LAYERS_HE_SAW_STACKED_BLUE): the
     # same floor shade runs for a square under a clear liquid
-    wet = "ReliefCell(map, eng, c, d, sp, note == 0 || sheet, sc, y);" in walls and "if (note == 0 || sheet)" in walls
+    wet = "ReliefCell(map, eng, c, d, sp, note == 0 || sheet, sc, y, ground != null);" in walls and "if (note == 0 || sheet)" in walls
     ok = a != b and dry and wet
     return ok, "model floor_shade(7)=%s floor_shade(11)=%s; layer shades dry floors %s, drowned floors %s" % (a, b, dry, wet)
 

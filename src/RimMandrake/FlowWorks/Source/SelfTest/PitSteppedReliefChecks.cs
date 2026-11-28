@@ -2508,6 +2508,38 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(RM_PitReliefMath.StepH(6) - RM_PitReliefMath.StepH(4) >= 0.07f && RM_PitReliefMath.StepH(8) - RM_PitReliefMath.StepH(6) >= 0.07f,
 					"can-fail: the north face grows with depth: 2 m " + RM_PitReliefMath.StepH(4) + ", 3 m " + RM_PitReliefMath.StepH(6) + ", 4 m " + RM_PitReliefMath.StepH(8));
 			});
+			// RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER: measured live 2026-11-23 the floor drew 60-65 grey at 0.5 m on
+			// every ground (the tone was laid over the one gravel floor terrain), so on slate (ground about 52 grey) a 0.5 m floor drew
+			// at 1.22 of its ground. The dry floor now prints its own ground: every depth draws at least 10 % under that ground, on
+			// every ground from bright sand (the dug terrain at 0.7 of it) to slate (1.46 of it).
+			Case("PitStepped_floor_on_its_own_ground_draws_under_that_ground", () =>
+			{
+				int read = 0;
+				float worst = 0f;
+				for (float g = 0.5f; g <= 1.6001f; g += 0.05f)
+				{
+					for (int d = 1; d <= 255; d++)
+					{
+						float b = RM_PitReliefMath.StepFloorOverGround(d, true, g);
+						worst = Math.Max(worst, b);
+						read++;
+						Assert(b <= 0.9f, "can-fail: a floor printed in its ground at " + d + " notches draws at " + b + " of that ground");
+						Assert(Near(b, RM_PitReliefMath.StepK(d), 1e-4f), "can-fail: the floor draws StepK of its own ground (" + d + ")");
+						float a = RM_PitReliefMath.FloorShade(d, true);
+						Assert(1f - a <= 0.9f, "can-fail: the old law's floor in its ground at " + d + " notches draws at " + (1f - a));
+					}
+				}
+				Console.WriteLine("    floor over its own ground: worst " + worst + " of the ground, limit 0.9, " + read + " cases");
+				// the fault this rule removes, still seen on the dug terrain: slate's case (dug terrain 1.46 of the ground) at 0.5 m
+				float old = RM_PitReliefMath.StepFloorOverGround(1, false, 1.46f);
+				Assert(old > 1f, "can-fail: over the dug terrain the 0.5 m floor on slate draws brighter than slate (" + old + ")");
+				Assert(RM_PitReliefMath.FloorPrintsGround(true, false, true), "can-fail: a dry dug floor prints its ground");
+				Assert(!RM_PitReliefMath.FloorPrintsGround(false, false, true), "can-fail: the ground-material look off keeps the dug terrain");
+				Assert(!RM_PitReliefMath.FloorPrintsGround(true, true, true), "can-fail: a floor laid on the square is never printed over");
+				Assert(!RM_PitReliefMath.FloorPrintsGround(true, false, false), "can-fail: an unprintable ground (water, none) keeps the dug terrain");
+				Assert(RM_PitReliefMath.StepFloorShade(4, false) == RM_PitReliefMath.StepFloorShade(4)
+					&& RM_PitReliefMath.StepLipAlpha(4, false) == RM_PitReliefMath.StepLipAlpha(4), "can-fail: the dug-terrain path is unchanged");
+			});
 			Case("PitStepped_north_shelf_stays_in_view", () =>
 			{
 				// his words (2026-11-22): "the lower-right northern inner shelf is incredibly narrow, that's a bit weird and incorrect";
