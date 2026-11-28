@@ -62,6 +62,8 @@ SITES = {
     "Stillsand/Source/RM_StillsandWater.cs": "LISTED: a biome's own water surface, not a thing in a pit",
     "BiomesShell/Source/RM_WorldDecals.cs": "LISTED: the world map, not a local map",
     "CreatureBehaviors/Source/RM_Mirage.cs": "LISTED: an air effect (mirage), not a thing standing on a floor",
+    "CreatureBehaviors/Source/RM_ShadeOverlay.cs": "LISTED: the shade overlay and a crown's shadow, a darkening of the top "
+    "surface (ground, or a liquid's surface over a pit), not a thing standing on a floor",
     "SolarMirrors/Source/RM_MapComponent_MirrorLight.cs": "LISTED: reflected light, a lighting effect",
     "AcousticScanner/Source/RM_MapComponent_AcousticReading.cs": "LISTED: a scanner reading overlay (player information)",
     "FlowWorks/Source/Superdeep/RM_PitDepthDraw.cs": "LISTED: the drafted-move destination ghost and circle (MetaOverlays), "
