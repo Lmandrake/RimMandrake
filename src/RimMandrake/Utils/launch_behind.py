@@ -243,7 +243,7 @@ public static class RmWin {
           }
           i++;
         }
-        w.WriteLine("{\"k\":\"s\",\"t\":" + Now() + ",\"fg\":" + Win(fg) + ",\"watched\":[" + ws + "]}");
+        w.WriteLine("{\"k\":\"s\",\"t\":" + Now() + ",\"fg\":" + Win(fg) + ",\"idle\":" + SinceInput() + ",\"watched\":[" + ws + "]}");
         long sampled = Now();
         while (Now() - sampled < periodMs) {
           if (Now() < burstUntil) {
@@ -266,9 +266,9 @@ public static class RmWin {
   static void G(string kind, string rest) { lock (gate) try { glog.WriteLine("{\"k\":\"" + kind + "\",\"t\":" + Now() + (rest.Length > 0 ? "," + rest : "") + "}"); } catch { } }
   static IntPtr prev;
   static HashSet<long> startWins = new HashSet<long>();
-  static HashSet<long> shownNew = new HashSet<long>();
-  static HashSet<long> startOn = new HashSet<long>();
-  static long hideUntil = 0;                                // the 400 ms after a new watched window hid       // his windows: on screen when the guard started      // new watched windows that the guard saw shown
+  static HashSet<long> shownNew = new HashSet<long>();      // new watched windows that the guard saw shown
+  static HashSet<long> startOn = new HashSet<long>();       // his windows: on screen when the guard started
+  static long hideUntil = 0;                                // the 400 ms after a new watched window hid
   static string[] gwatch;
   static int restores = 0, pushes = 0;
 

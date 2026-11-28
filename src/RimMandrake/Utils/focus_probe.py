@@ -24,7 +24,9 @@ The verdict, the last line:
   COULD NOT LOOK  the probe wrote no samples, or the launch failed: no verdict about the game.
 Exit 0 GREEN, 1 RED, 2 COULD NOT LOOK.
 
-A foreground change to a window that is not a new watched window (his own click) is counted as `other`, never as a steal.
+A foreground change to a window that is not a new watched window (his own click) is counted as `other`, never as a steal,
+except a game or Steam window that was open before the launch, in front when the sample at the change reads no input
+of his for over NO_INPUT_MS + PERIOD_MS (the guard's own rule): that is a steal (a record with no `idle` reads `other`).
 """
 import argparse
 import json
@@ -43,6 +45,11 @@ PERIOD_MS = 100
 # goes in that time is not seen to come to the front. Danger of a larger value: a steal that he sees, read as a flicker.
 # A keystroke that lands in those milliseconds still reaches the game; the verdict line counts the flickers.
 FLICKER_MS = 50
+# A game or Steam window that was open before the launch, in front with no input of his for this long when the
+# foreground came to it, is the launch's doing (MEASURED 2026-11-27: Steam's "Launching..." closed and Windows handed
+# the foreground to the other game). The guard's own bound (launch_behind.CS OnFg, `SinceInput() > 1000`); the
+# selftest holds the two equal. The first sample of the change reads up to PERIOD_MS after the change itself.
+NO_INPUT_MS = 1000
 # The probe's own life bound. Danger: a probe left sampling forever if this script dies before its stop file. The
 # longest record is one launch and one map load: ArchSmall's small list measured about 90 s to the menu plus about 90 s
 # for a quicktest map (CLAUDE.md, Facts you cannot guess); the full list's cold load about 25 min. 3 h is past 10 x the
@@ -104,12 +111,21 @@ def judge(rows, marks=None, shot=None):
             return False
         return (fg.get("name") or "").lower() in watch or (fg.get("title") or "").lower().startswith("rimworld by ludeon")
 
-    steals, above, others = [], [], 0
+    start_h = (start[0].get("fg") or {}).get("h")
+
+    def handed(fg, idle):   # a game or Steam window open before the launch, brought forward with no input of his
+        return (fg.get("h") in on0 and fg.get("h") != start_h and isinstance(idle, (int, float))
+                and idle > NO_INPUT_MS + PERIOD_MS and ((fg.get("name") or "").lower() in watch
+                                                         or (fg.get("title") or "").lower().startswith("rimworld by ludeon")))
+
+    steals, above, others, run_h, run_idle = [], [], 0, None, None
     for r in samples:
         fg = r.get("fg") or {}
-        if thief(fg):
+        if fg.get("h") != run_h:        # the foreground changed: his input is judged at the change, not after it
+            run_h, run_idle = fg.get("h"), r.get("idle")
+        if thief(fg) or handed(fg, run_idle):
             steals.append({"t": r["t"], "how": "sample", "phase": _phase(r["t"], marks), "fg": fg})
-        elif fg.get("h") != (start[0].get("fg") or {}).get("h"):
+        elif fg.get("h") != start_h:
             others += 1
         for w in r.get("watched", []):
             if w.get("new") and w.get("start_below", 0) > 0 and not w.get("iconic"):

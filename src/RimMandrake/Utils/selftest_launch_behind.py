@@ -8,13 +8,17 @@ RIMMANDRAKE_LAUNCH_GAME_BEHIND_HIS_WINDOWS_IT_STEALS_FOCUS. Offline, no Windows.
                        argument, or in a private function that is itself reached only through one. No public function
                        (launch, fire_a, main, ...) reaches a launch act outside guarded.
   no_other_starter     no other file under src/RimMandrake starts the game itself (rungameid, a Start-Process of
-                       RimWorldWin64, start_script or [RmWin]::Start): every tool goes through game_instance.
+                       RimWorldWin64, start_script or a WMI Win32_Process Create): every tool goes through game_instance.
   planted_paths_red    three planted faults turn the two checks above red: the named game's start unguarded, a new
                        public function that starts the exe directly, and a second file that fires rungameid.
   the_guard_is_up_before_the_launch_fires, a_front_reason_starts_no_guard_and_says_why,
   a_guard_that_cannot_start_never_stops_the_launch:
                        guarded() starts the guard before the launch; with a front reason (argument or RM_LAUNCH_FRONT)
                        it starts none and says why; a guard that cannot start never stops the launch.
+  start_guard_waits_for_ready, start_guard_planted_red:
+                       the REAL start_guard (the checks above replace it) in a stand-in world: ok only once READY is
+                       there, the full READY_S wait then `no READY`, `COULD NOT START` for no pid or an error, the
+                       launch fired each time; a copy that does not wait and a copy that calls a timeout ok go red.
 Each check above is part of a promise test of the same name on design/specs/2026-11-27-launch-behind/boundary.md.
 Exit 0 all pass, 1 a check failed.
 """
@@ -227,11 +231,148 @@ def t_a_guard_that_cannot_start_never_stops_the_launch():
               and "COULD NOT START" in note, "%s %r" % (f.calls, note))
 
 
+def _guard_world(sg_name, ready_after, spawn="pid"):
+    """The real start_guard (or a planted copy, by name) in a stand-in world: the scratch folder is a temp folder, the
+    hidden start returns a pid (or None, or raises), and the guard writes its READY after `ready_after` sleeps (None:
+    never). The clock moves 0.2 s per sleep. -> readings: ok, note, sleeps, seconds waited, READY there when it returned,
+    and through guarded(): whether the launch fired and whether READY was there when it fired."""
+    import shutil
+    seams = ("_storage", "win_path", "_exe", "_spawn_hidden")
+    saved = {k: getattr(launch_behind, k) for k in seams}
+    tmp = tempfile.mkdtemp(prefix="lb_guard_")
+    w = {"sleeps": 0, "now": 1000.0, "ready": None}
+
+    def spawn_hidden(argv):
+        if spawn == "raise":
+            raise OSError("planted: no WMI")
+        w["ready"] = argv[-1]
+        return None if spawn == "none" else 4242
+
+    def sleep(s):
+        w["sleeps"] += 1
+        w["now"] += s
+        if ready_after is not None and w["sleeps"] >= ready_after and w["ready"]:
+            open(w["ready"], "w").close()
+
+    try:
+        launch_behind._storage = lambda: tmp
+        launch_behind.win_path = lambda p: p
+        launch_behind._exe = lambda n: n
+        launch_behind._spawn_hidden = spawn_hidden
+        sg = getattr(launch_behind, sg_name)
+        ok, note = sg("L", sleep=sleep, clock=lambda: w["now"])
+        out = {"ok": ok, "note": note, "sleeps": w["sleeps"], "waited": round(w["now"] - 1000.0, 1),
+               "ready_at_return": bool(w["ready"]) and os.path.exists(w["ready"])}
+        for f in os.listdir(tmp):
+            if f.endswith(".ready"):
+                os.remove(os.path.join(tmp, f))
+        w.update(sleeps=0, now=1000.0, ready=None)
+        real, fired = launch_behind.start_guard, []
+        launch_behind.start_guard = lambda log, **k: sg(log, sleep=sleep, clock=lambda: w["now"])
+        os.environ.pop(launch_behind.FRONT_ENV, None)
+        try:
+            r, gnote = launch_behind.guarded(lambda: fired.append(bool(w["ready"]) and os.path.exists(w["ready"]))
+                                             or "fired", "L")
+        finally:
+            launch_behind.start_guard = real
+        out.update(fired=r == "fired", ready_when_fired=fired[:1] == [True], guarded_note=gnote)
+        return out
+    finally:
+        for k, v in saved.items():
+            setattr(launch_behind, k, v)
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def _start_guard_ready_reds(sg_name):
+    """-> the readings of the stand-in world that break the promise (empty: it keeps it)."""
+    bad = []
+    a = _guard_world(sg_name, ready_after=3)
+    if not (a["ok"] and a["ready_at_return"] and a["sleeps"] >= 3 and a["fired"] and a["ready_when_fired"]
+            and "behind" in a["guarded_note"]):
+        bad.append(("READY after 3 polls", a))
+    b = _guard_world(sg_name, ready_after=None)
+    if not (not b["ok"] and "no READY" in b["note"] and b["waited"] >= launch_behind.READY_S and b["fired"]
+            and "no READY" in b["guarded_note"]):
+        bad.append(("no READY ever", b))
+    for spawn in ("none", "raise"):
+        c = _guard_world(sg_name, ready_after=1, spawn=spawn)
+        if not (not c["ok"] and "COULD NOT START" in c["note"] and c["fired"] and "COULD NOT START" in c["guarded_note"]):
+            bad.append(("hidden start " + spawn, c))
+    return bad
+
+
+def _planted_start_guard(name, old, new):
+    """Define launch_behind.<name>: a copy of the real start_guard with one fault planted (old -> new)."""
+    import inspect
+    src = inspect.getsource(launch_behind.start_guard)
+    assert src.count(old) == 1, "the plant's anchor is found %d times: %s" % (src.count(old), old)
+    exec(compile(src.replace(old, new).replace("def start_guard(", "def %s(" % name, 1), "<planted>", "exec"),
+         launch_behind.__dict__)
+
+
+def t_start_guard_waits_for_ready():
+    """the-guard-is-up-before-the-launch-fires and a-guard-that-cannot-start-never-stops-the-launch, on the REAL
+    start_guard (the tests above replace it): it returns ok only once READY is there, waits READY_S for it, and says
+    `no READY` or `COULD NOT START` while the launch still fires. Two planted copies must turn it red."""
+    bad = _start_guard_ready_reds("start_guard")
+    check("start_guard_waits_for_ready", not bad, "%d of 4 cases broken%s" % (len(bad), "".join(
+        "; %s: %s" % (c, r) for c, r in bad)))
+    plants = (("_planted_no_wait", "if os.path.exists(ready):", "if True:"),
+              ("_planted_timeout_ok", 'return False, "guard: no READY', 'return True, "guard: no READY'))
+    for name, old, new in plants:
+        try:
+            _planted_start_guard(name, old, new)
+            red = _start_guard_ready_reds(name)
+        except AssertionError as e:     # the anchor moved: the plant is not planted, so it proves nothing
+            red = []
+            print("  (plant %s not planted: %s)" % (name, e))
+        finally:
+            launch_behind.__dict__.pop(name, None)
+        check("start_guard_planted_red:" + name, bool(red), "%d of 4 cases broken: %s" % (
+            len(red), ", ".join("%s (ok %s, waited %s s)" % (c, r["ok"], r["waited"]) for c, r in red)))
+
+
+def _probe_rows(old_fg_idle, idle_on_rows=True):
+    """A stand-in probe record (focus_probe's rows): his window (h 1) in front at the start, the other game (h 50, open
+    before the launch) and the new game (h 99, below his windows). From sample 10 the other game is in front for 20
+    samples; the first of them reads `old_fg_idle` ms since his last input (the 2026-11-27 case: Steam's "Launching..."
+    closed and Windows handed the foreground to ArchSmall)."""
+    his = {"h": 1, "pid": 10, "name": "firefox", "title": "his page"}
+    other = {"h": 50, "pid": 20, "name": "RimWorldWin64", "title": "RimWorld by Ludeon Studios"}
+    new = {"h": 99, "pid": 30, "title": "RimWorld by Ludeon Studios", "z": 9, "new": True, "iconic": False, "start_below": 0}
+    rows = [{"k": "start", "t": 0, "fg": his, "onscreen": [his, other], "existed": [1, 50]}]
+    for i in range(40):
+        fg = other if 10 <= i < 30 else his
+        row = {"k": "s", "t": 100 * (i + 1), "fg": fg, "watched": [new]}
+        if idle_on_rows:
+            row["idle"] = (old_fg_idle + 100 * (i - 10)) if 10 <= i < 30 else 5000 + 100 * i
+        rows.append(row)
+    return rows
+
+
+def t_the_probe_sees_the_other_game_handed_the_foreground():
+    """LIVE line 1 (the window in front before the launch is in front at each sample), read by focus_probe.judge: the
+    other game brought forward with no input of his (the guard's own rule) is a steal; his own click on it is not."""
+    import focus_probe
+    handed = focus_probe.judge(_probe_rows(5000))
+    clicked = focus_probe.judge(_probe_rows(60))
+    check("probe_other_game_handed_is_red", handed["verdict"] == "RED" and handed["steal_samples"] == 20,
+          "verdict %s, %s steal samples of 20, %s other" % (handed["verdict"], handed.get("steal_samples"),
+                                                           handed.get("other_fg_samples")))
+    check("probe_his_click_on_the_other_game_is_green", clicked["verdict"] == "GREEN" and clicked["other_fg_samples"] == 20,
+          "verdict %s, %s other samples of 20" % (clicked["verdict"], clicked.get("other_fg_samples")))
+    rule = "SinceInput() > %d" % getattr(focus_probe, "NO_INPUT_MS", -1)
+    check("probe_and_guard_share_the_no_input_bound", rule in launch_behind.CS and '\\"idle\\":" + SinceInput()'
+          in launch_behind.CS, "%r in the guard, and the probe's sample carries idle" % rule)
+
+
 def main():
     t_every_start_goes_through_guarded()
     t_the_guard_is_up_before_the_launch_fires()
     t_a_front_reason_starts_no_guard_and_says_why()
     t_a_guard_that_cannot_start_never_stops_the_launch()
+    t_start_guard_waits_for_ready()
+    t_the_probe_sees_the_other_game_handed_the_foreground()
     t_a_direct_start_shows_the_window_without_activating_it()
     print("selftest_launch_behind: %s" % ("ALL PASS" if not FAILS else "FAILED: " + ", ".join(FAILS)))
     return 1 if FAILS else 0
