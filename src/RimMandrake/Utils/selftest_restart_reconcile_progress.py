@@ -29,8 +29,30 @@ os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 os.environ["RM_DISPATCHER_STATE"] = str(TMP / "disp")
 os.environ["CLAUDE_CONFIG_DIR"] = str(TMP / "claude")
 import ops_watch as OW  # noqa: E402
-import restart_reconcile as RR  # noqa: E402
 import seat_restart as SR  # noqa: E402
+
+
+def _alarm_module(argv):
+    """The alarm under test: this tree's, or with `--code <sha>` the one committed at <sha> (the guard replays the
+    instance on the parent of the fix: `--code 88b88ed5e2` goes red)."""
+    if "--code" not in argv:
+        import restart_reconcile
+        return restart_reconcile
+    import importlib.util
+    sha = argv[argv.index("--code") + 1]
+    src = subprocess.run(["git", "show", "%s:src/RimMandrake/Utils/restart_reconcile.py" % sha], cwd=str(HERE),
+                         capture_output=True, check=True, timeout=60, stdin=subprocess.DEVNULL).stdout
+    p = TMP / "restart_reconcile.py"
+    p.write_bytes(src)
+    spec = importlib.util.spec_from_file_location("restart_reconcile", str(p))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.RULES, mod.SCHEDULE = HERE / "ops_watch_rules.json", HERE.parent / "rimflow" / "dispatcher_schedule.json"
+    print("  the alarm under test: restart_reconcile.py at %s" % sha)
+    return mod
+
+
+RR = _alarm_module(sys.argv[1:])
 
 FAILS = []
 SHIPPED = json.loads((HERE.parent / "rimflow/dispatcher_schedule.json").read_text(encoding="utf-8"))
