@@ -23,10 +23,24 @@
     "ref": "run rm-role-designer-1795846936",
     "stage": 1,
     "tokens": 742636
+   },
+   {
+    "at": "2026-11-28T08:35:27Z",
+    "kind": "review",
+    "ref": "review a9bbcd6d67bb3a782 of a_mountain_drawn (opus)",
+    "stage": 1,
+    "tokens": 25453
+   },
+   {
+    "at": "2026-11-28T08:38:37Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1795854754",
+    "stage": 1,
+    "tokens": 339272
    }
   ],
   "reserve": 60000,
-  "spent": 1442294
+  "spent": 1807019
  },
  "history": [
   {
@@ -58,6 +72,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designer-1795846936: stage 1 waiting_owner"
+  },
+  {
+   "at": "2026-11-28T08:33:27Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designer-1795854754, stage 1, budget 2497706"
+  },
+  {
+   "at": "2026-11-28T08:38:38Z",
+   "stage": 1,
+   "what": "close",
+   "why": "run rm-role-designer-1795854754: stage 1 waiting_owner"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_DIRECT_SUN_WITH_TREE_AND_MOUNTAIN_SHADE",
@@ -130,6 +156,35 @@
    "run": "rm-role-designer-1795846936",
    "stage": 1,
    "summary": "Stage 1 Argue the idea for DirectSun. One ask sent: a_root, the proposed root (one geometry for sun heat and every caster: cover, wall and rock lee, tree crowns, and a new mountain shadow that shows its bulk; animals dash shade to shade; the overlay shows what a colonist feels; no biome changes the rule), with its doubt that casts flood the map at a terminator's low sun. Reviewed by a fresh Opus (rm-judge a70b136599dfbe493): a_root passed after four wording fixes, now applied; a_live_walk struck as a process question, so the look rides on quick_look instead. Taken without asking (Evidence-for-Ask, OWNER-shard event 1795847134968698829): the bigger mountain mass throws the longer shadow, and an unroofed outcrop is rock (d_mountain_bulk; ask a_mountain_height struck). a_mountain_drawn is held as a draft until his look at the drawn crown shadow."
+  },
+  {
+   "at": "2026-11-28T08:38:37Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": null,
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "d12bfae6c6f4043539f1c2fd9f8e7362ee3be546bdf4f4a4987c7bc47ed7feeb",
+    "designer_dialogue.md": "83bf743a11d9c04907ac4b1124a66121599d41c2e873011d6b978ea146111758"
+   },
+   "outcome": "waiting_owner",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "On ArchSmall (D:\\ClaudeWork\\rimmandrake\\instances\\b\\Saves\\): CROWN_SHADOW_GREATBOLE_REVIEW, 32 greatboles with drawn crown shadows at a 15-degree sun, shows how far tree shade already spreads at a low sun (the root's doubt) and how a drawn shadow reads beside the flat tint (the same call as a drawn mountain band); DIRECT_SUN_TUNING_SITTING_20261126_DASHERS (also in ArchBig's Saves) shows colonists in the open, under roof, tent and parasol and in a wall's 2-cell lee at a 32-degree sun, with animals dashing shade to shade.",
+    "settles": [
+     "a_root",
+     "a_mountain_drawn"
+    ]
+   },
+   "run": "rm-role-designer-1795854754",
+   "stage": 1,
+   "summary": "Stage 1 for DirectSun, re-run by the orphan sweep. His only new word (OWNER:1795854076234172046) is a scheduling note: he reads the turn about 9 AM PST 2026-11-28; cited in owner_elsewhere_reviewed as not design input, so a_root stays sent unchanged. For that card, which the Conductor said carries the root and the two mountain questions: a_mountain_drawn (drawn band on the ground, or overlay and readout only) passed a fresh Opus review (rm-judge a9bbcd6d67bb3a782) after one wording fix (it no longer waits on his look at the save) and is now sent; a_mountain_height stays struck, taken by Evidence-for-Ask as d_mountain_bulk (the bigger mass throws farther; an unroofed outcrop is rock), which he may undo on the same card."
   }
  ],
  "runner": "claude",
