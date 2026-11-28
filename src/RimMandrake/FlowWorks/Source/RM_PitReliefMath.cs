@@ -28,10 +28,10 @@ namespace RimMandrake.FlowWorks
 		/// FloorBrightness law keeps its brightness (its shade takes the difference).</summary>
 		private static readonly float[] TerrainColour = { 1f, 1f, 0.78f, 0.69f, 0.64f };
 
-		/// <summary>Floor brightness wanted at 0.5, 1, 1.5 and 2 m: even steps of 0.14 down to the 2 m floor, which keeps its look.</summary>
+		/// <summary>Floor brightness wanted at 0.5, 1, 1.5 and 2 m: one step of 0.2 at 0.5 m, then even steps of 0.14 down to the 2 m floor, which keeps its look.</summary>
 		private static readonly float[] BrightnessShallow = { 1f, 0.80f, 0.66f, 0.52f, 0.38f };
 
-		/// <summary>Past 2 m: brightness 0.38 x (1 - FloorLogK x log2(d / 4)), never under FloorMin of 0.38 (a fixed share darker at
+		/// <summary>Past 2 m: brightness 0.38 x (1 - FloorLogK x log2(d / 4)), the factor never under FloorMin (0.25), so never under 0.38 x 0.25 (a fixed share darker at
 		/// every doubling of depth; the rate is a choice for his look, the bar is that two depths never draw alike).</summary>
 		public const float FloorLogK = 0.22f;
 		public const float FloorMin = 0.25f;
@@ -54,7 +54,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The black alpha laid over a dug floor (its terrain) at depth <paramref name="d"/> notches, so the floor draws at
-		/// <see cref="FloorBrightness"/>. 0 at 2 m (that floor keeps its look).</summary>
+		/// <see cref="FloorBrightness"/>. About 0.41 at 2 m: the 2 m terrain colour was lifted to 0.64, and the shade takes the difference.</summary>
 		public static float FloorShade(int d)
 		{
 			if (d <= 0) return 0f;

@@ -1160,8 +1160,6 @@ namespace RimMandrake.FlowWorks
 			return false;
 		}
 
-		/// <summary>A dry dug square's own floor printed whole over vanilla's edge fade of a liquid beside it (RM_PitReliefMath
-		/// .ReprintsFloor): the drained side of a shut sluice drew the gate square's water fading over it.</summary>
 		/// <summary>RIMMANDRAKE_DARKEN_PIT_FLOOR_BELOW_GROUND_SLATE_DRAWS_BRIGHTER: the material a dug square's floor prints, the ground
 		/// recorded before its first cut (RM_MapComponent_Excavation.OriginalTerrainAt) as vanilla would draw it there (its polluted
 		/// look on a polluted square), in the face queue; null when RM_PitReliefMath.FloorPrintsGround says the floor keeps its dug
@@ -1179,6 +1177,8 @@ namespace RimMandrake.FlowWorks
 			return RM_FaceMaterial.FaceMat(map.terrainGrid.GetMaterial(g, polluted, null) ?? g.DrawMatSingle);
 		}
 
+		/// <summary>A dry dug square's own floor printed whole over vanilla's edge fade of a liquid beside it (RM_PitReliefMath
+		/// .ReprintsFloor): the drained side of a shut sluice drew the gate square's water fading over it.</summary>
 		private void FloorReprint(Map map, IntVec3 c, float y)
 		{
 			TerrainDef t = map.terrainGrid.TerrainAt(c);
