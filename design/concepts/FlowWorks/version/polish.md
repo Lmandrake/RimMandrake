@@ -172,3 +172,14 @@ Source rows: `blind_challenge/cycle_5/lane2/faults.json` (class Polish, status N
 
 - `RIMMANDRAKE_RECORD_TAR_SHEET_FIRE_UNSEEN_OFFLINE`: no offline check of the sheet sees the tar sheet's creeping catch in `src/RimMandrake/FlowWorks/Source/Sheet/RM_SheetFire.cs` (changed since cycle 4); the Stage 6 scene `sc_canal_fire` stages a channel, not a tar sheet; risk: a tar spill that does not catch, or that burns without creeping, passes every check that runs today. CONDUCTOR CALL 2026-11-27 (on the steward's recommendation after blind cycle 5): this is work of the current version, not polish to leave. The driver of the next in-game visit that runs `sc_canal_fire` stages a tar sheet in that scene and reads its creeping catch, then removes this line.
 - `RIMMANDRAKE_RECORD_LINE_STYLE_COMP_UNCHECKED_ON_TWO_DEFS`: no test reads the new `CompProperties_LineLook` on the sprinkler head and the faucet; a misspelt class fails the def load, which the first game load of Stage 6 shows.
+
+## Wrong checks that decide no 0.1.0 bar (work bundle WB-mod-FlowWorks-20261128-020147, 2026-11-28)
+
+Each merged ticket of RIMMANDRAKE_REPAIR_FLOWWORKS_WRONG_CHECKS_SIX_OLD_TICKETS was read against `test_table.json`. A wrong
+check is worth repair only when a bar would go undecided without it. These five are run by no row of the table (no
+`command` or `reads` names them), so no bar waits on them; each is recorded here and not repaired.
+- record: `RIMMANDRAKE_FIX_FLOWWORKS_FUZZ_FOUR_FLAWS_SINK_STILL_FLOAT`: the sink and per-fluid laws in `src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs` (lines ~336, ~340) still compare at 1e-3; its cases run as `Kernel_*`, which no table row filters in (T_LEVEL runs `Fuzz*`, `Level*`, `Exact*` and others, not `Kernel*`).
+- record: `LEVEL_SET_SELFTEST_FIX_IDLE_PULSE_SETTLES`: `LevelSetChecks.Run` in `src/RimMandrake/FlowWorks/Source/SelfTest/LevelSetChecks.cs` reads one quiet final pulse as settled; its cases run as `WATER_LEVELSET_*`, in no table row.
+- record: `LEVEL_WATER_FIX_POND_SPLITS_ARMS`: `level_water.surface_gaps` does not join canal arms through their pond; `T_LEVEL_WATER_OFFLINE` only supports `inv_flow_level` and `one_still_surface`, whose deciders (T_LEVEL, PY_FLOWWORKS_KERNEL_ORACLE, sc_one_surface and others) stand without it.
+- record: `PIT_SHOT_PROOF_FIX_OTHER_TARGET_PASSES`: `src/RimMandrake/FlowWorks/northstar/depth_rebuild_proofs.py` (~line 420) passes 'unhittable' when the AI picks any other target; the file is in no table row.
+- record: `EXT_PLOTS_HARDEN_GRID_OFF_THE_MAP`: `src/RimMandrake/FlowWorks/northstar/extension_proof.py` calls a plot off a 100-wide map MOD instead of SITE; the file is in no table row.
