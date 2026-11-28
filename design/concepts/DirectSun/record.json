@@ -158,6 +158,13 @@
     "OWNER:1795844105314149883"
    ],
    "why": "Evidence-for-Ask: his words 'a feel for said mountain' and 'mountain-covered squares' settle it; struck ask a_mountain_height."
+  },
+  {
+   "id": "d_mountain_drawn_band",
+   "speaker": "owner",
+   "source": "OWNER:1795861940796843369",
+   "text": "The player sees a mountain's long shadow as a soft dark band drawn on the ground down-sun of the mountain, the same kind of drawing as the greatbole's crown shadow, so the shade reads without the overlay. He picked it knowing it commits before he has judged the greatbole trial; that trial's ruling for trees stays open (ITEM:RIMMANDRAKE_TRY_RENDERED_CROWN_SHADOW_ON_ONE_GIANT_TREE).",
+   "answers": "a_mountain_drawn"
   }
  ],
  "asks": [
@@ -193,7 +200,7 @@
   },
   {
    "id": "a_root",
-   "status": "sent",
+   "status": "answered",
    "author": "rm-role-designer-1795846936",
    "source": [
     "design/concepts/DirectSun/admission_proposal.md"
@@ -221,6 +228,11 @@
     "by": "rm-judge a70b136599dfbe493 (fresh reviewer)",
     "verdict": "pass",
     "why": "claims match the inventory and his 2026-11-27 card once four wordings were fixed (heat dimmed by cloud; overlay, not drawn shade; the terminator, not the Long Shade's drawn-sky clamp; crowns at a high sun), and the doubt names mountain bulk so he rules on both together; fixes applied before sending"
+   },
+   "answer": {
+    "source": "OWNER:1795861938602549019",
+    "words": "Soften every sunlit map but also add language that planning for unwanted mountain shade is a major concern too.",
+    "taken_by": "rm-role-designer-1795862365"
    }
   },
   {
@@ -245,7 +257,7 @@
   },
   {
    "id": "a_mountain_drawn",
-   "status": "sent",
+   "status": "answered",
    "author": "rm-role-designer-1795846532",
    "source": [
     "OWNER:1795844105314149883",
@@ -268,6 +280,11 @@
     "by": "rm-judge a9bbcd6d67bb3a782 (fresh reviewer, opus)",
     "verdict": "pass",
     "why": "not answered by his words (a feel for the mountain leans to a band but does not choose); nothing built is offered for removal; the answer changes what gets built (render work vs overlay only); the evidence against (a) is real, his crown-shadow experiment is unruled; wording fixed so the ask does not stall if he has not opened the save"
+   },
+   "answer": {
+    "source": "OWNER:1795861940796843369",
+    "by_card": "Mtn shadow -> Draw a soft dark band on the ground",
+    "taken_by": "rm-role-designer-1795862365"
    }
   }
  ],
@@ -449,7 +466,7 @@
   },
   {
    "id": "inv_mountain_shade",
-   "what": "Mountain shade (new): a square under a mountain roof casts a shadow much longer than a short wall's, by the sun angle, so the player feels the mountain on the map.",
+   "what": "Mountain shade (new): a square under a mountain roof casts a shadow much longer than a short wall's, by the sun angle, so the player feels the mountain on the map; the player sees it as a soft dark band drawn on the ground (d_mountain_drawn_band).",
    "impl": "absent",
    "search_scope": "src/, design/, skills/ and the live items for 'mountain shade' and 'mountain shadow' (admission_proposal.md, 2026-11-27); src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs CasterHeight: natural rock is height 1 like a wall, and an overhead-mountain roof gives roofShade 1 under it but casts nothing onto open ground",
    "proof": "missing",
@@ -459,7 +476,8 @@
     "OWNER:1795844096864149267",
     "OWNER:1795844101356450638",
     "OWNER:1795844105314149883",
-    "design/concepts/DirectSun/admission_proposal.md"
+    "design/concepts/DirectSun/admission_proposal.md",
+    "OWNER:1795861940796843369"
    ],
    "feasibility": "Vanilla GenStep_RocksFromGrid.Generate (read with RimSage 2026-11-27): rock where the generator's elevation > 0.70, RoofRockThin above 0.728, RoofRockThick above 0.798, and every natural-roof patch under 20 cells is cleared. The roof grid is saved, so a loaded map keeps a coarse three-band height trace (bare rock edge, thin roof, thick roof); a distance-inside-the-mountain field over the roof grid is a second source. Both are cheap pure functions over a grid and join RM_SunHeatMath's offline cases."
   },
@@ -853,6 +871,14 @@
   {
    "source": "OWNER:1795854076234172046",
    "not_design_input": "a scheduling note: he reads the DirectSun turn about 9 AM PST 2026-11-28; no word on the design, so a_root stays sent unchanged"
+  },
+  {
+   "source": "OWNER:1795857764021494635",
+   "not_design_input": "his request (11:56 PM PST 2026-11-27) that the root question come as a card with the root sentence shown; it answered neither ask, and the card it asked for is OWNER:1795861938602549019"
+  },
+  {
+   "source": "OWNER:1795861940796843369",
+   "not_design_input": "the second stamp of the same card; its root words are taken in through root (OWNER:1795861938602549019) and its mountain answer through d_mountain_drawn_band"
   }
  ],
  "failure_modes": [
@@ -866,5 +892,14 @@
   "attack": "At a low fixed sun the casts flood the map (about 11 cells per unit of height at 5 degrees), and at a high sun only cover shades; so the planet-wide 'thing you plan around' may hold only on mid-angle maps, and an undrawn mountain shadow makes what the player sees differ from what a colonist feels.",
   "picture": "If the claim wins: at a 15-degree sun a colonist walks from a mountain's long shadow across a sunlit band to a parasol, and the overlay shows both bands. If the attack wins: on the Long Shade the overlay is shade from edge to edge and the sun-load line never moves.",
   "source": "design/concepts/DirectSun/admission_proposal.md"
+ },
+ "root": {
+  "text": "On a world whose sun stands still, Direct Sun makes the sun a thing the player feels wherever it shines, and on many maps a thing the player plans around. The sun's heat a colonist feels follows the sun's height, dimmed only by cloud: a high sun burns hard and leaves shade only under cover and tree crowns; a low sun burns gently and throws long shadows. Everything solid casts shade by one geometry: a roof, a tent or a parasol covers its ground, a wall or a rock throws a short lee, a tree's crown shades the ground under it and down-sun of it, and a mountain throws a long shadow out over the open ground that shows its bulk and is longer where the sun stands lower. Colonists and animals live by it: a forest is mostly shade and its clearings sunlit, animals dash across hot ground from shade to shade, and the lee of a mountain is a refuge from the sun. Shade is not always wanted: the sun's warmth is felt too, so a mountain's long shadow can take the sun from a cold camp, a work site or a field that the player meant to keep in it, and where a mountain's shadow will fall is a major concern when the player picks where to build. The player sees where the shade lies and what casts it, the shade overlay shows the shade a colonist feels, and no biome changes the rule.",
+  "source": "OWNER:1795861938602549019",
+  "speaker": "owner",
+  "answers": "a_root",
+  "quote": "Soften every sunlit map but also add language that planning for unwanted mountain shade is a major concern too.",
+  "note": "His card answer of 2:27 AM PST 2026-11-28 to a_root ('Is this the root, or which words would you change?') named two changes and kept the rest, as on Graffiti and GimmeSomeSlack; both are folded in by rm-role-designer-1795862365 with his meaning unchanged: (1) 'plans around on every sunlit map' becomes 'feels wherever it shines, and on many maps ... plans around'; Direct Sun still runs on every sunlit map (d_every_sunlit_map), only the claim of planning is softened; (2) the new 'Shade is not always wanted' sentence, grounded in the code: the sun's offset is added to a pawn's felt temperature at every temperature (RM_SunHeatPatches.cs Postfix_AmbientTemperature), so shade also takes the sun's warmth. One agent correction: 'grows as the sun drops' became 'is longer where the sun stands lower', because the sun is fixed on a map and differs only between maps (inv_fixed_sun). His addition also answers the root's doubt in part: a long shadow at a low sun is now a thing to plan against, not a reason the sun stops mattering; how long a mountain's shadow may reach is the edge, for stage 2.",
+  "author": "rm-role-designer-1795862365"
  }
 }
