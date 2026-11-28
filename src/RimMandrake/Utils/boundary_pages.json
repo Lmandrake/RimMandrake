@@ -1,5 +1,6 @@
 {
   "_doc": "page -> its tests file, repo-relative; read by boundary_check.py (PAGES) and through it by code_review_status.py check. A new boundary page adds its row here. A key that starts with _ is prose, not a row. Data, not code, so a new row leaves boundary_check.py's bytes (and a READ-CLEAN mark on them) alone (RIMMANDRAKE_MOVE_PAGES_TO_DATA_STALE_TWICE_HALF_HOUR).",
+  "design/specs/2026-11-27-launch-behind/boundary.md": "src/RimMandrake/Utils/selftest_launch_behind.py",
   "design/specs/2026-11-27-red-seen-plant-record/boundary.md": "src/RimMandrake/rimflow/selftest_red_seen_restore.py",
   "design/specs/2026-11-27-card-note/boundary.md": "src/RimMandrake/rimflow/selftest_card_note.py",
   "design/specs/2026-11-27-brief-new/boundary.md": "src/RimMandrake/rimflow/selftest_brief_new.py",

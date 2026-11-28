@@ -16,7 +16,8 @@ process means, and game_paths, rimbridge_client and driver_lock follow that name
                                                                     game runs)
     python3 src/RimMandrake/Utils/game_instance.py install b [--refresh]   copy the install into <root>/b/game (game a's
                                                                     is only read)
-    python3 src/RimMandrake/Utils/game_instance.py launch a|b [--wait]
+    python3 src/RimMandrake/Utils/game_instance.py launch a|b [--wait] [--front "<reason>"]   behind his windows, no
+                                                                    focus (launch_behind.py), unless --front names why
     python3 src/RimMandrake/Utils/game_instance.py status
     python3 src/RimMandrake/Utils/game_instance.py free [--busy a] [--for "why"]   the first game a run may take, else 3
     python3 src/RimMandrake/Utils/game_instance.py leftovers        games up with nobody holding them (may be stopped)
@@ -877,21 +878,28 @@ def _steam_url():
                    capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
 
 
-def _start_direct_a(flags):
+def _start_direct_a(flags, front=None):
     """RimWorldWin64.exe as Steam starts it: the game folder, Steam's flags, no GABP pair (port 5174, the token line)."""
+    import launch_behind
     gd = win_path(a_game_dir())
-    script = ("Remove-Item Env:GABP_SERVER_PORT,Env:GABP_TOKEN -ErrorAction SilentlyContinue; "
-              "Start-Process -FilePath '%s\\%s' -WorkingDirectory '%s'%s"
-              % (gd, GAME_EXE, gd, (" -ArgumentList " + ",".join("'%s'" % f for f in flags)) if flags else ""))
+    script = launch_behind.start_script("%s\\%s" % (gd, GAME_EXE), gd, flags,
+                                        env_remove=("GABP_SERVER_PORT", "GABP_TOKEN"), front=front)
     r = _ps(script)
     if r.returncode != 0:
-        raise Refused("Start-Process failed (exit %d): %s" % (r.returncode, (r.stderr or "").strip()))
+        raise Refused("the start of %s failed (exit %d): %s" % (GAME_EXE, r.returncode, (r.stderr or "").strip()))
 
 
-def fire_a(sleep=time.sleep, clock=time.time):
+def fire_a(sleep=time.sleep, clock=time.time, front=None):
     """Send game a's launch -> (route, text): 'steam' when Steam took it (or is still working on it), 'direct' when
     Steam refused it, or said nothing while another game lives, and this started the exe itself. Waits for nothing
-    else; the caller waits for the process (launch, launch_ready)."""
+    else; the caller waits for the process (launch, launch_ready). Both starts run inside launch_behind.guarded: the
+    game opens behind his windows and takes no focus, unless front names a reason."""
+    import launch_behind
+    (route, text), note = launch_behind.guarded(lambda: _fire_a(sleep, clock, front), a_player_log(), front)
+    return route, "%s; %s" % (text, note)
+
+
+def _fire_a(sleep, clock, front=None):
     rows = games()
     others = sorted({g["instance"] or "?" for g in rows if g["instance"] != DEFAULT})
     _, start = _steam_log_tail()
@@ -901,7 +909,7 @@ def fire_a(sleep=time.sleep, clock=time.time):
         return "steam", "through Steam (%s)" % ("Steam is launching it" if said else "Steam has not said yet; no other game up")
     _need_appid("%s started directly" % _n(DEFAULT))
     flags = inherited_flags(rows)
-    _start_direct_a(flags)
+    _start_direct_a(flags, front)
     return "direct", ("directly (Steam %s while %s runs), flags %s" % (
         "answered WaitingPrevProcess" if said else "said nothing", ",".join(_n(o) for o in others) or "?", " ".join(flags) or "none"))
 
@@ -921,11 +929,11 @@ def a_player_log():
     return os.path.join(game_paths.resolve(game_paths._DEF_LOW_WIN, game_paths._DEF_LOW_WSL), "Player.log")
 
 
-def _launch_a(wait, wait_s, sleep, clock):
+def _launch_a(wait, wait_s, sleep, clock, front=None):
     log = a_player_log()
     t0 = clock()
     t_file = time.time()
-    route, how = fire_a(sleep, clock)
+    route, how = fire_a(sleep, clock, front)
     t_fired = clock()           # Steam's answer may have taken STEAM_ANSWER_S; the process window starts now
     up, seen_s = None, STEAM_SEEN_S if route == "steam" else LAUNCH_SEEN_S
     while up is None and clock() - t_fired < seen_s:
@@ -956,10 +964,11 @@ def _launch_a(wait, wait_s, sleep, clock):
 
 
 @_named
-def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.time, despite=None):
+def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.time, despite=None, front=None):
     """Start a game -> (exit code, text). Game a through Steam, or directly when Steam will not (fire_a); a named game
     directly. Raises Refused for no Steam, or a direct start with no steam_appid.txt; a game already up is ok, with its
-    pid. wait: until this run's log has the port line."""
+    pid. wait: until this run's log has the port line. Every start opens behind his windows and takes no focus
+    (launch_behind.guarded); front="<reason>" (an owner sitting) lets it come to the front."""
     name = check_name(name or current())
     up = pid(name)
     if up:
@@ -971,12 +980,12 @@ def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.ti
         raise Refused("Steam is not running, and a game started now would have no Workshop mods (rw_game.sh up starts it)")
     if name == DEFAULT:
         line = list_line(name)
-        rc, text = _launch_a(wait, wait_s, sleep, clock)
+        rc, text = _launch_a(wait, wait_s, sleep, clock, front)
         return rc, "%s; %s" % (text, line)
     d = prepare(name)
     _need_appid("game %s" % name, name)
     line = list_line(name)
-    rc, text = _launch_named(name, d, wait, wait_s, sleep, clock)
+    rc, text = _launch_named(name, d, wait, wait_s, sleep, clock, front)
     return rc, "%s; %s" % (text, line)
 
 
@@ -998,7 +1007,7 @@ def list_line(name):
         return "list: COULD NOT LOOK (%s: %s)" % (type(e).__name__, e)
 
 
-def _launch_named(name, d, wait, wait_s, sleep, clock):
+def _launch_named(name, d, wait, wait_s, sleep, clock, front=None):
     log = log_path(name)
     if os.path.exists(log):
         os.replace(log, log + ".prev")
@@ -1007,12 +1016,13 @@ def _launch_named(name, d, wait, wait_s, sleep, clock):
     args = ["-savedatafolder=%s" % wd, "-logfile", "%s\\Player.log" % wd, "-screen-fullscreen", "0",
             "-screen-width", str(WINDOW[0]), "-screen-height", str(WINDOW[1])]
     args += inherited_flags()
-    script = ("$env:GABP_SERVER_PORT='%d'; $env:GABP_TOKEN='%s'; Start-Process -FilePath '%s\\%s' -WorkingDirectory '%s' "
-              "-ArgumentList %s" % (port(name), ensure_token(name), gdir, GAME_EXE, gdir,
-                                    ",".join("'%s'" % a for a in args)))
-    r = _ps(script)
+    import launch_behind
+    script = launch_behind.start_script("%s\\%s" % (gdir, GAME_EXE), gdir, args,
+                                        env_set=(("GABP_SERVER_PORT", port(name)), ("GABP_TOKEN", ensure_token(name))),
+                                        front=front)
+    r, behind = launch_behind.guarded(lambda: _ps(script), log, front)
     if r.returncode != 0:
-        return 1, "Start-Process failed (exit %d): %s" % (r.returncode, (r.stderr or ""))
+        return 1, "the start of %s failed (exit %d): %s" % (GAME_EXE, r.returncode, (r.stderr or ""))
     t0 = clock()
     up = None
     while up is None and clock() - t0 < LAUNCH_SEEN_S:
@@ -1020,13 +1030,14 @@ def _launch_named(name, d, wait, wait_s, sleep, clock):
         if up is None:
             sleep(1)
     if up is None:
-        return 1, "no game %s process %d s after Start-Process" % (name, LAUNCH_SEEN_S)
+        return 1, "no game %s process %d s after its start" % (name, LAUNCH_SEEN_S)
     if not wait:
-        return 0, "started game %s, pid %d, port %d" % (name, up, port(name))
+        return 0, "started game %s, pid %d, port %d; %s" % (name, up, port(name), behind)
     while clock() - t0 < wait_s:
         text = _read(log)
         if "%s %d" % (PORT_LINE, port(name)) in text:
-            return 0, "started game %s, pid %d, bridge on port %d after %d s" % (name, up, port(name), clock() - t0)
+            return 0, "started game %s, pid %d, bridge on port %d after %d s; %s" % (name, up, port(name), clock() - t0,
+                                                                                    behind)
         if "[RimBridge] Failed to start server" in text:
             return 1, "game %s pid %d: [RimBridge] Failed to start server (the port is taken, or the pair did not carry)" % (
                 name, up)
@@ -1158,6 +1169,8 @@ def main(argv=None):
     s.add_argument("name", nargs="?")
     s.add_argument("--wait", action="store_true")
     s.add_argument("--despite-hold", dest="despite", default=None, help="act on a held game on purpose: why")
+    s.add_argument("--front", default=None, help="let the game come to the front, for a named reason (an owner "
+                   "sitting); without it the game opens behind his windows and takes no focus")
     s = sub.add_parser("stop")
     s.add_argument("pid", nargs="?", type=int)
     s.add_argument("--force", action="store_true")
@@ -1206,7 +1219,7 @@ def main(argv=None):
                 emergency = {"broken": True} if getattr(a, "broken", False) else {}
                 rc, text = stop(a.pid, a.force, a.instance, a.purpose, a.despite, wait_s=a.wait_s, **emergency)
             else:
-                rc, text = launch(a.name, a.wait, despite=a.despite)
+                rc, text = launch(a.name, a.wait, despite=a.despite, front=a.front)
             print(text)
             return rc
     except Blind as e:

@@ -134,14 +134,24 @@ elif "Get-Process steam" in script:
 elif "Start-Process 'steam://" in script:
     log("START " + script)
     steam(re.search(r"'(steam://[^']*)'", script).group(1))
-elif "Start-Process" in script:
+elif "Start-Process" in script or "-MethodName Create" in script:
     log("START " + script)
     env = dict(os.environ)
     for k in re.findall(r"Remove-Item[^;]*?Env:(\w+)", script) + re.findall(r",Env:(\w+)", script):
         env.pop(k, None)
     for k, v in re.findall(r"\$env:(\w+)='([^']*)'", script):
         env[k] = v
-    args = re.findall(r"'([^']*)'", script[script.index("-ArgumentList"):]) if "-ArgumentList" in script else []
+    if "-MethodName Create" in script:      # launch_behind.start_script: a WMI start with its own environment block
+        drop = re.search(r"@\(([^)]*)\) -notcontains", script).group(1)
+        for k in re.findall(r"'(\w+)'", drop):
+            env.pop(k, None)
+        for k, v in re.findall(r"'(\w+)=([^']*)'", script[script.index("+ @("):script.index("$su")]):
+            env[k] = v
+        cl = script[script.index("CommandLine=(") + 13:script.index("); CurrentDirectory")]
+        args = re.findall(r"'([^']*)'", cl)[1:]
+        args = [a for a in args if a != " "]
+    else:
+        args = re.findall(r"'([^']*)'", script[script.index("-ArgumentList"):]) if "-ArgumentList" in script else []
     subprocess.Popen([sys.executable, FAKE] + args, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                      stderr=subprocess.DEVNULL, start_new_session=True)
 elif m:

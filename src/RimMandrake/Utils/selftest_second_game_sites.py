@@ -108,7 +108,7 @@ def launches(w):
     b = w.gi("pid", "b").stdout.strip()
     check(line and line[0].startswith("VERDICT READY") and " 5175 " in line[0], "launch_ready under b comes up READY on the port line: %s %s" % (line, r.stderr[-200:]))
     check(F.alive(a) and w.kills() == [], "launch_ready under b left game a alone: %s" % w.kills())
-    check(any("Start-Process" in ln for ln in w.log_lines("START")) and not w.log_lines("cmd "), "launch_ready under b never touched steam://")
+    check(any("-MethodName Create" in ln for ln in w.log_lines("START")) and not w.log_lines("cmd "), "launch_ready under b never touched steam://")
     # b up, a's launch_ready replaces only a
     r = w.py(code, cwd=w.repo, timeout=120)
     check(F.wait_dead(a) and F.alive(int(b)), "launch_ready, nothing set, stops only game a: %s" % r.stdout[-120:])
