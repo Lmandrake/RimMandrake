@@ -58,6 +58,11 @@ most pipeline files, so the time falls less than the count.
   test out.
 - **a-record-of-other-code-decides-nothing.** A record whose `.py` files differ at the change's base answers
   "unknown", and so do no record and a torn record. Data that moved on main does not stop a record from deciding.
+- **a-tree-that-never-landed-hides-no-record.** A test keeps one record per distinct set of `.py` blobs that its green
+  runs read, and the newest record whose `.py` blobs all match the base decides. So the green run of a publish whose
+  tree never lands, or lands later, does not hide the record of the base's code (on 2026-11-27, 46 % of the door's
+  selected runs were "another version", because each publish overwrote the one record of a test with its own tree's
+  blobs: `design/specs/2026-11-26-slow-actions/publish_line.md`). The store keeps the newest `TREES` records of a test.
 - **the-door-runs-only-the-tests-a-change-touches.** `publish.py` runs the pipeline tests with the hook, keeps the
   record of each green run, and leaves out a test that its import closure names only when a record that decides
   shows the change untouched and no `inputs` glob of the test names a changed path. With no base to read, every
@@ -65,8 +70,10 @@ most pipeline files, so the time falls less than the count.
 
 ## LIMITS
 
-- None of its own. A record is written once per green run. `keep` keeps the first 20 unknown reasons of a record
-  (a display bound: one reason decides).
+- `TREES = 16` records per test (`door_reads.py`). Danger: a store that grows without end (a full set of records is
+  14 MB, measured 2026-11-27, and about 100 publishes a day change code that tests read). Need: the line held 11
+  publishes at once (4:05 PM PST 2026-11-27). A pruned record only makes its test run again.
+- `keep` keeps the first 20 unknown reasons of a record (a display bound: one reason decides).
 
 ## PROOF
 
@@ -78,3 +85,7 @@ most pipeline files, so the time falls less than the count.
   `hash-object --stdin-paths`; an empty `--`; `-- .`; `-- paths` of a git child in a subfolder. The real records of
   `selftest_boundary_check.py` and `selftest_codex_lane.py` list `design/specs`, so a new spec folder read "not
   touched" before. Record format 2: a record parsed before the fix answers "unknown" until its test is green again.
+- 2026-11-27, one record per tree (`RIMMANDRAKE_MEASURE_PUBLISH_SLOT_DANGER_BEFORE_ANY_CHANGE`):
+  `t_a_tree_that_never_landed_hides_no_record` red on the parent (the base's record "ran another version of lib.py"
+  after another tree's record was kept; no `TREES`), green on the fix. The one-record file of before
+  (`<store>/<hash>.json`) is still read, after the per-tree records, and never written.

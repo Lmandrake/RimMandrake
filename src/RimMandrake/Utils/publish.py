@@ -1173,7 +1173,7 @@ def pipeline_checks(top, changed, gate=None):
     return _run_pipeline_checks(top, changed, cfg, base)
 
 
-DOOR_READS = "door-reads"     # under RM_ROOT: each pipeline test's record of its last green run (door_reads.py)
+DOOR_READS = "door-reads"     # under RM_ROOT: each pipeline test's records of its last green runs, one per tree (door_reads.py)
 
 
 def _door_reads():

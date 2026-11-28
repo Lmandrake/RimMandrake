@@ -225,6 +225,43 @@ def t_a_record_of_other_code_decides_nothing(tmp):
           "a-record-of-other-code-decides-nothing: a torn record is unknown")
 
 
+def t_a_tree_that_never_landed_hides_no_record(tmp):
+    """Publishes in the line overwrite one record per test with the blobs of their own trees, landed or not (46 % of
+    the door's selected runs read "another version", publish_line.md 2026-11-27). A record of the base's code must
+    still decide after a record of another tree is kept; the store keeps a bounded number of trees per test."""
+    r = repo(tmp)
+    write(r, "t.py", "import sys\nsys.path.insert(0, '.')\nimport lib\n")
+    write(r, "lib.py", "x = 1\n")
+    base = commit(r, "base")
+    tb = lambda: DR.tree_blobs(lambda *a: subprocess.run(["git", "-C", r, *a], capture_output=True, text=True),
+                               "HEAD")
+    b1 = tb()
+    store, rec = os.path.join(tmp, "store"), os.path.join(tmp, "rec")
+    hooked(r, "t.py", rec)
+    DR.keep(store, "t.py", rec, b1)
+    write(r, "lib.py", "x = 2\n")
+    commit(r, "a tree that never lands")
+    hooked(r, "t.py", rec)
+    DR.keep(store, "t.py", rec, tb())
+    ans, why = DR.relation(store, "t.py", {"other.py"}, b1)
+    check(ans == "not touched", "a-tree-that-never-landed-hides-no-record: the base's record still decides after "
+                                "another tree's record is kept (%s, %s)" % (ans, why))
+    ans, why = DR.relation(store, "t.py", {"lib.py"}, b1)
+    check(ans == "touched", "a-tree-that-never-landed-hides-no-record: a change to what the base's record read "
+                            "touches the test (%s, %s)" % (ans, why))
+    for i in range(DR.TREES + 3):
+        write(r, "lib.py", "x = %d\n" % (10 + i))
+        commit(r, "tree %d" % i)
+        hooked(r, "t.py", rec)
+        DR.keep(store, "t.py", rec, tb())
+    kept = DR.records(store, "t.py")
+    check(len(kept) == DR.TREES, "a-tree-that-never-landed-hides-no-record: the store keeps the newest %d trees of a "
+                                 "test (%d kept)" % (DR.TREES, len(kept)))
+    ans, why = DR.relation(store, "t.py", {"other.py"}, tb())
+    check(ans == "not touched", "a-tree-that-never-landed-hides-no-record: the newest tree's record decides (%s, %s)"
+                                % (ans, why))
+
+
 HUB = "def use_a():\n    import leaf_a\n    return leaf_a.A\n\n\ndef use_b():\n    import leaf_b\n    return leaf_b.B\n"
 TEST = r'''import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -294,7 +331,8 @@ def t_the_door_runs_only_the_tests_a_change_touches(tmp):
 
 def main():
     for t in (t_records_what_a_test_reads, t_a_read_the_hook_cannot_see_is_unknown, t_an_untouched_test_is_left_out,
-              t_a_record_of_other_code_decides_nothing, t_the_door_runs_only_the_tests_a_change_touches):
+              t_a_record_of_other_code_decides_nothing, t_a_tree_that_never_landed_hides_no_record,
+              t_the_door_runs_only_the_tests_a_change_touches):
         tmp = tempfile.mkdtemp(prefix="doorreads-")
         try:
             t(tmp)

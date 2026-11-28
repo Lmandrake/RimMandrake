@@ -20,6 +20,14 @@ publish that waited 1980 s and was stopped; pipeline checks 192 to 217 tests in 
 7 to 8 publishes ahead at 2:50 PM. So the line is long because each holder holds a slot for 9 to 17 min, not because 2
 slots are too few for the machine.
 
+A worse reading, by the Conductor (ps at 4:05, 4:08 and 4:13 PM PST 2026-11-27, load 30 to 48, 14 detached runs live):
+11 `./publish` processes alive at 4:05 PM, ages 98 to 2,968 s; at 4:13 PM 10, ages up to 3,417 s, of which 2 held a
+kept tree and 8 waited for a slot. In one kept tree, `selftest_maturation_autonomy.py` and
+`selftest_maturation_dispatch.py` had each run for over 530 s. One publish ended in those 8 minutes. Before the pile-up
+origin/main held a red time-budget lint (87693986ee to 4206877ef1) that refused publishers; that the refused publishers
+came back together and made the pile-up is a guess, not measured. This reading says the same as the ones above: the
+holders hold long, at a load that a third slot would raise.
+
 ## 2. What the door's re-runs touch (the door-reads record)
 
 `publish_line_measure.py 25`, over the 25 newest commits on origin/main that select pipeline tests (2026-11-27, 2:55 PM):
@@ -48,6 +56,15 @@ base); the newest commits read 74 to 77 of about 250 (30 %).
 2. Keep a door-reads record per test and per tree, not per test only: keep the records of the last few distinct sets of
    read `.py` blobs, and let `relation` use the one whose blobs all match the base. A record of a tree that never landed
    then decides nothing and harms nothing. Expected: most of the 30 to 46 % "another version" re-runs leave.
+   BUILT 2026-11-27 evening: `door_reads.py` keeps the newest `TREES = 16` records per test
+   (promise `a-tree-that-never-landed-hides-no-record`, `design/specs/2026-11-26-door-reads/boundary.md`). The
+   records of before decide as before until each test has been green once under the new store. At 7:30 PM PST, before it
+   landed, the 3 newest selecting commits read 401 of 757 selected runs as "another version" (53 %).
 3. Name the reads of the 61 tests whose records hold a read the hook cannot see (`door_reads.parse` keeps the first
    cause in `unknown`), so the door can leave them out when a change does not touch them: 25 % of the selected runs.
+   Census of the store at 7:30 PM PST (68 records with an unseen read, first cause each): `git ls-files` 19, `git clone`
+   11, a `systemctl` child 7, a `claude-account` child 6, `sh`/`bash` children 6, a Python child without the hook 4,
+   `git cat-file` on its input 3, `git fetch` 2, and 10 kinds once each. `git ls-files`, `clone` and `fetch` do read
+   the whole tree; a narrower record for them (the file list, not the contents) is a design per child. Filed as its
+   own item.
 4. Measure the line again after 2 and 3 with this script and the slot waits of a day.

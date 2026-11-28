@@ -9,10 +9,12 @@ door_reads_hook/ first on PYTHONPATH; the hook writes the repo paths the test's 
 a green run the record is kept, with the git blob of every path it read.
 
     hook_env(env, tree, rec)          the test's environment with the hook on, writing to the file rec
-    keep(store, test, rec, blobs)     keep a green run's record (blobs: path -> blob of the tree the test ran on)
+    keep(store, test, rec, blobs)     keep a green run's record (blobs: path -> blob of the tree the test ran on),
+                                      one per distinct set of .py blobs read, the newest TREES of them
     relation(store, test, changed, blobs) -> ("touched" | "not touched" | "unknown", why); blobs of the change's base
 
-A record decides only while the code it ran is unchanged: every .py file it read must have the same blob at the base.
+A record decides only while the code it ran is unchanged: every .py file it read must have the same blob at the base;
+the newest such record decides.
 Else, and when there is no record, or the record holds a read the hook cannot see, the answer is "unknown" and the door
 keeps its import closure for that test. Page: design/specs/2026-11-26-door-reads/boundary.md.
 """
@@ -147,47 +149,96 @@ def tree_blobs(git, rev):
 
 
 def _path(store, test):
+    """The record file of the one-record-per-test store (before 2026-11-27): still read, never written."""
     return os.path.join(store, hashlib.sha1(test.encode()).hexdigest()[:20] + ".json")
 
 
+def _dir(store, test):
+    return os.path.join(store, hashlib.sha1(test.encode()).hexdigest()[:20])
+
+
+# TREES: records kept per test, one per distinct set of .py blobs read. Danger: a store that grows without end (a full
+# set of records is 14 MB, and the door keeps one set per publish that changes code the tests read: about 100 a day).
+# Need: the line held 11 publishes at once (4:05 PM PST 2026-11-27); a pruned record only makes a test run again.
+TREES = 16
+
+
+def records(store, test):
+    """-> the paths of `test`'s kept records, newest first (the one-record file of before is not among them)."""
+    d = _dir(store, test)
+    try:
+        ents = [e for e in os.scandir(d) if e.name.endswith(".json") and not e.name.startswith(".")]
+    except FileNotFoundError:
+        return []
+    out = []
+    for e in ents:
+        try:
+            out.append((e.stat().st_mtime_ns, e.path))
+        except FileNotFoundError:          # pruned by another publish meanwhile
+            pass
+    return [p for _t, p in sorted(out, reverse=True)]
+
+
 def keep(store, test, rec, blobs):
-    """Keep the record of a green run of `test`. blobs: tree_blobs() of the commit the test ran on. A record with a
-    read the hook cannot see is kept too (it answers "unknown", and says why). -> (kept path, None), or (None, why)
-    when it could not be written (then the test has no new record, and the next door keeps the import closure)."""
+    """Keep the record of a green run of `test`. blobs: tree_blobs() of the commit the test ran on. One record per
+    distinct set of .py blobs that the run read, so a publish whose tree never lands does not hide the record of the
+    base's code; the newest TREES are kept. A record with a read the hook cannot see is kept too (it answers "unknown",
+    and says why). -> (kept path, None), or (None, why) when it could not be written (then the test has no new
+    record, and the next door keeps the import closure)."""
     reads = parse(rec)
     b, names = blobs
-    doc = {"format": FORMAT, "test": test, "files": {p: b.get(p) for p in sorted(reads["files"])},
+    files = {p: b.get(p) for p in sorted(reads["files"])}
+    doc = {"format": FORMAT, "test": test, "files": files,
            "dirs": {d: names.get(d, []) for d in sorted(reads["dirs"])}, "unknown": reads["unknown"][:20]}
+    key = hashlib.sha1(json.dumps(sorted((p, v) for p, v in files.items() if p.endswith(".py"))).encode()).hexdigest()
+    d = _dir(store, test)
+    dest = os.path.join(d, key[:20] + ".json")
     try:
-        os.makedirs(store, exist_ok=True)
-        fd, tmp = tempfile.mkstemp(prefix=".rec-", dir=store)
+        os.makedirs(d, exist_ok=True)
+        fd, tmp = tempfile.mkstemp(prefix=".rec-", dir=d)
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(doc, f)
-        os.replace(tmp, _path(store, test))
-        return _path(store, test), None
+        os.replace(tmp, dest)
     except OSError as e:
         return None, "the record could not be written: %s" % e
+    for old in records(store, test)[TREES:]:
+        try:
+            os.remove(old)
+        except OSError:                    # another publish pruned it, or it cannot go: it only costs room
+            pass
+    return dest, None
 
 
 def relation(store, test, changed, blobs):
     """-> (answer, why): does the change touch what `test` read? blobs: tree_blobs() of the change's base commit.
-    "unknown" whenever the record cannot decide; the caller then keeps its own rule."""
-    try:
-        with open(_path(store, test), encoding="utf-8") as f:
-            doc = json.load(f)
-    except FileNotFoundError:
-        return "unknown", "no record of a green run yet"
-    except (OSError, ValueError) as e:
-        return "unknown", "its record cannot be read: %s" % e
-    if doc.get("format") != FORMAT or doc.get("test") != test:
-        return "unknown", "its record is of another format or test"
+    The newest kept record whose .py blobs all match the base decides. "unknown" whenever no record can decide; the
+    caller then keeps its own rule."""
+    paths = records(store, test) + [_path(store, test)]
+    b, names = blobs
+    first = None
+    for path in paths:
+        try:
+            with open(path, encoding="utf-8") as f:
+                doc = json.load(f)
+        except FileNotFoundError:
+            continue
+        except (OSError, ValueError) as e:
+            first = first or "its record cannot be read: %s" % e
+            continue
+        if doc.get("format") != FORMAT or doc.get("test") != test:
+            first = first or "its record is of another format or test"
+            continue
+        other = next((p for p, blob in (doc.get("files") or {}).items() if p.endswith(".py") and b.get(p) != blob),
+                     None)
+        if other is not None:
+            first = first or "its record ran another version of %s" % other
+            continue
+        break
+    else:
+        return "unknown", first or "no record of a green run yet"
     if doc.get("unknown"):
         return "unknown", "its record holds a read the hook cannot see (%s)" % doc["unknown"][0]
-    b, names = blobs
     files, dirs = doc.get("files") or {}, doc.get("dirs") or {}
-    for p, blob in files.items():
-        if p.endswith(".py") and b.get(p) != blob:
-            return "unknown", "its record ran another version of %s" % p
     if test in changed:
         return "touched", "the change edits the test itself"
     for p in changed:
