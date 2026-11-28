@@ -1,0 +1,3 @@
+Before you fix why a run 'holds' a mod, read the run's record env (RM_CONTROL_MOD, RM_CONTROL_STAGE, RM_MODLEDGER_WRITER) and the dispatcher state's ledger_runs. On 2026-11-27 the run said to be a ticket-lane repair was FlowWorks' own road-back holder, launched by the tick, so the status page was right and the fault lay in the road back's item selection. A ticket filed with caused_by a mod's stage item joins that mod's road back unless its ledger home (rimflow home) places it elsewhere: give a pipeline repair its pipeline: home when you file it.
+item: RIMMANDRAKE_FIX_REPAIR_RUN_HOLDS_MOD_VISIT_WAITS_GAME_IDLE
+home: skills/using-rimflow/SKILL.md
