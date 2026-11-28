@@ -20,16 +20,17 @@ test is written and committed; what is left is landing, live readings, the slow-
 - `RIMMANDRAKE_MEMO_SUBJECT_ALIASES_THREE_MILLION_CALLS_A_RUN`: the Codex lane's build LANDED first (db371e01aa). This
   bundle's own build was dropped before publish. Measured with this bundle's build: collect 82 -> 54 s wall. Check the
   ticket's state; close it on db371e01aa if still open.
-- `RIMMANDRAKE_SPEED_DEPLOY_PLAN_RELATIVE_STAT_ENOMEM_SILENT`: commit "deploy plan lists relative to each folder".
-  `deploy_def_guard.listing` (scandir of a dir fd, ENOMEM waits, ListingFailed, plan exit 2). Interleaved at load ~30,
-  Gimme Some Slack on ArchSmall: base 97.7 and 98.0 s, new 60.3 and 54.5 s, same plan text. Page
-  `design/specs/2026-11-27-deploy-listing/boundary.md`.
-- `RIMMANDRAKE_SPEED_SCRATCH_REAP_FOLDER_TIME_TWO_MILLION_LSTAT`: commits "find clones from each folder's listing" and
-  "the borrower find is named". Cause measured: find_clones walked 870 k folders, 806 k in 100 publish_check_* folders
-  left by killed publishes; now not entered and swept as day-old fixtures. candidates() 288 s (load 26) -> 127 s (load
-  42). Dry run 723 s at load ~40: live 322 s (the borrower find 314 s), judge 254 s, fixtures 108 s; git children 32 s.
-  A folder's own time is not a safe judge (a deep in-place write leaves it), so no folder-time shortcut. Page
-  `design/specs/2026-11-27-scratch-reap-listing/boundary.md`.
+- `RIMMANDRAKE_SPEED_DEPLOY_PLAN_RELATIVE_STAT_ENOMEM_SILENT`: the Codex lane's build LANDED first (6:20 PM); this
+  bundle's build was dropped. Its numbers (Gimme Some Slack on ArchSmall, interleaved at load ~30: base 97.7 and 98.0 s,
+  dropped build 60.3 and 54.5 s) were of the dropped build: time the landed code the same way before writing the line.
+  What the dropped build found: 85 of 104 s of a plan is the def guard (parse_defs stats by absolute path, 6,411 at
+  about 9 ms; xml_files lists by path, 3,288); xml_files also skipped a failed listing without a word.
+- `RIMMANDRAKE_SPEED_SCRATCH_REAP_FOLDER_TIME_TWO_MILLION_LSTAT`: the Codex lane's build landed first (young or held
+  folders kept by their own time; child_time names the child commands). This bundle's part is merged on top:
+  find_clones reads each folder's `.git` from its listing, and publish_check_* folders are not searched and are swept as
+  fixtures (test `selftest_scratch_reap_listing.py`, page `design/specs/2026-11-27-scratch-reap-listing/boundary.md`).
+  Cause measured: 870 k folders walked, 806 k in 100 publish_check_* folders left by killed publishes; candidates()
+  288 s (load 26) -> 127 s (load 42). Dry run 723 s at load ~40: live 322 s (the borrower find 314 s), judge 254 s.
 - `RIMMANDRAKE_RECORD_MODEL_AND_TOOL_SECONDS_833_HOURS_UNSPLIT`: the Codex lane's build LANDED first (ccc65c468d,
   fields model_seconds and tool_seconds); this bundle's build was dropped at 5:10 PM. Owed for the spec: the 7-day split
   on the slow-actions page, from the landed fields or the transcripts.
