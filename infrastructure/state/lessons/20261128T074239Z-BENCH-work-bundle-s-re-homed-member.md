@@ -1,0 +1,1 @@
+A work bundle's re-homed member (rimflow home to another system) read as open in work_bundle.outcomes until 70498e3164, so a bundle that re-homed members could never end and a restart could target a re-homed ticket first; the outcome is now rehomed.

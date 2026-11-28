@@ -1,0 +1,1 @@
+A player-facing refusal that is tested only offline can be unreachable in game: the suspension bridge drag begun on the span was refused first by the designator's ends-at-one-height check (DeckNotchesFor), so the new ValidateLane text never showed. Run the live drag through the designator's own path (RM_SuspensionProofs.ProofBuild) before you call a refusal text fixed.
