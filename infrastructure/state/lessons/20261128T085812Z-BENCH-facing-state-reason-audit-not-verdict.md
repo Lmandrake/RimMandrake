@@ -1,0 +1,3 @@
+In the facing batch state (D:\ClaudeWork\rimmandrake\facing_backlog_20261026\batch\state.json) the 'reason' field is the FIRST AUDIT note about the art installed then (drv.py reads auditrows/manifest.json), not the art judge's refusal of the redraw. The refusal of each round is the newest line for that subject in infrastructure/state/art_eval/runs/*/decisions.jsonl (gpt.concerns[].seen, opus reply findings). Quoting 'reason' as the judge's verdict states a wrong cause, and many audit notes describe art that has since changed.
+item: RIMMANDRAKE_BUILD_PICK_SHEET_CAPPED_FACINGS_HE_ASKED_FOR_PNG
+home: NONE
